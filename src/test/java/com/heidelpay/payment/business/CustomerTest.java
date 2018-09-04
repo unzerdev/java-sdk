@@ -6,7 +6,8 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.heidelpay.payment.business.Customer.Salutation;
+import com.heidelpay.payment.Customer;
+import com.heidelpay.payment.Customer.Salutation;
 
 public class CustomerTest {
 

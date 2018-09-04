@@ -4,46 +4,57 @@ import java.math.BigDecimal;
 import java.net.URL;
 import java.util.Currency;
 
-import com.heidelpay.payment.business.Authorization;
-import com.heidelpay.payment.business.Cancel;
-import com.heidelpay.payment.business.Charge;
-import com.heidelpay.payment.business.Customer;
-import com.heidelpay.payment.business.Payment;
-import com.heidelpay.payment.business.paymenttypes.Card;
-import com.heidelpay.payment.business.paymenttypes.PaymentType;
+import com.heidelpay.payment.communication.HttpCommunicationException;
+import com.heidelpay.payment.paymenttypes.Card;
+import com.heidelpay.payment.paymenttypes.PaymentType;
+import com.heidelpay.payment.service.PaymentService;
 
 public class Heidelpay {
+	private String privateKey;
+	private PaymentService paymentService;
 
 	public Heidelpay(String privateKey) {
 		super();
+		this.privateKey = privateKey;
+		this.paymentService = new PaymentService(this);
 	}
 	
 	public Customer createCustomer(Customer customer) {
 		return customer;
 	}
 	
-	public PaymentType createPaymentType(PaymentType paymentType) {
-		return paymentType;
+	public PaymentType createPaymentType(PaymentType paymentType) throws HttpCommunicationException {
+		return paymentService.createPaymentType((AbstractPayment)paymentType);
 	}
 
 	// Authorization calls
-	public Authorization authorize(BigDecimal amount, Currency currency, String typeId) {
-		return new Authorization(this);
+	public Authorization authorize(BigDecimal amount, Currency currency, String typeId) throws HttpCommunicationException {
+		return authorize(amount, currency, typeId, (String)null, (URL)null);
 	}
-	public Authorization authorize(BigDecimal amount, Currency currency, String typeId, URL returnUrl) {
-		return new Authorization(this);
+	public Authorization authorize(BigDecimal amount, Currency currency, String typeId, URL returnUrl) throws HttpCommunicationException {
+		return authorize(amount, currency, typeId, (String)null, returnUrl);
 	}
-	public Authorization authorize(BigDecimal amount, Currency currency, String typeId, String customerId) {
-		return new Authorization(this);
+	public Authorization authorize(BigDecimal amount, Currency currency, String typeId, String customerId) throws HttpCommunicationException {
+		return authorize(amount, currency, typeId, customerId, (URL)null);
 	}
-	public Authorization authorize(BigDecimal amount, Currency currency, String typeId, String customerId, URL returnUrl) {
-		return new Authorization(this);
+	public Authorization authorize(BigDecimal amount, Currency currency, String typeId, Customer customer, URL returnUrl) throws HttpCommunicationException {
+		return authorize(amount, currency, typeId, customer.getCustomerId(), returnUrl);
 	}
-	public Authorization authorize(BigDecimal amount, Currency currency, PaymentType paymentType) {
-		return new Authorization(this);
+	public Authorization authorize(BigDecimal amount, Currency currency, PaymentType paymentType) throws HttpCommunicationException {
+		if (paymentType.getId() == null) {
+			paymentType = createPaymentType(paymentType);
+		}
+		return authorize(amount, currency, paymentType.getId(), (String)null, (URL)null);
 	}
-	public Authorization authorize(BigDecimal amount, Currency currency, PaymentType paymentType, Customer customer, URL returnUrl) {
-		return new Authorization(this);
+	public Authorization authorize(BigDecimal amount, Currency currency, PaymentType paymentType, Customer customer, URL returnUrl) throws HttpCommunicationException {
+		return authorize(amount, currency, paymentType.getId(), customer!=null?customer.getCustomerId():null, returnUrl);
+	}
+	public Authorization authorize(BigDecimal amount, Currency currency, String typeId, String customerId, URL returnUrl) throws HttpCommunicationException {
+		return paymentService.authorize(amount, currency, typeId, customerId, returnUrl);
+	}
+	public Authorization authorize(Authorization authorization) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 	// Charge without Authorization calls
@@ -115,5 +126,11 @@ public class Heidelpay {
 	public PaymentType fetchPaymentType(String typeId) {
 		return new Card("4444333322221111", "12/18");
 	}
+
+	public String getPrivateKey() {
+		return privateKey;
+	}
+
+
 
 }

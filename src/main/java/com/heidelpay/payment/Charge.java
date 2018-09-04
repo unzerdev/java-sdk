@@ -1,10 +1,11 @@
-package com.heidelpay.payment.business;
+package com.heidelpay.payment;
 
 import java.math.BigDecimal;
-
-import com.heidelpay.payment.Heidelpay;
+import java.util.List;
 
 public class Charge extends AbstractPayment {
+	private List<Cancel> cancelList;
+	
 	public Charge() {
 		super();
 	}
@@ -17,6 +18,16 @@ public class Charge extends AbstractPayment {
 	}
 	public Cancel cancel(BigDecimal amount) {
 		return getHeidelpay().cancelCharge(getPayment().getId(), getId(), amount);
+	}
+	@Override
+	public String getTypeUrl() {
+		return "";
+	}
+	public List<Cancel> getCancelList() {
+		return cancelList;
+	}
+	public void setCancelList(List<Cancel> cancelList) {
+		this.cancelList = cancelList;
 	}
 
 }

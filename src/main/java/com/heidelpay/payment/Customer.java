@@ -1,4 +1,4 @@
-package com.heidelpay.payment.business;
+package com.heidelpay.payment;
 
 import java.util.Date;
 

@@ -9,19 +9,36 @@ import java.util.Currency;
 
 import org.junit.Test;
 
-import com.heidelpay.payment.business.paymenttypes.Card;
-import com.heidelpay.payment.business.paymenttypes.PaymentType;
+import com.heidelpay.payment.Authorization;
+import com.heidelpay.payment.Customer;
+import com.heidelpay.payment.Payment;
+import com.heidelpay.payment.communication.HttpCommunicationException;
+import com.heidelpay.payment.paymenttypes.Card;
+import com.heidelpay.payment.paymenttypes.PaymentType;
 
 public class AuthorizationTest extends AbstractPaymentTest {
 
 	@Test
-	public void testAuthorizeWithTypeId() throws MalformedURLException {
+	public void testAuthorizeWithAuthorization() throws MalformedURLException, HttpCommunicationException {
+		Authorization authorize = getHeidelpay().authorize(getAuthorization());
+		authorize.getResources().getTypeId();
+		assertNotNull(authorize);
+	}
+
+	private Authorization getAuthorization() {
+		Authorization authorization = new Authorization();
+		return authorization;
+	}
+
+	@Test
+	public void testAuthorizeWithTypeId() throws MalformedURLException, HttpCommunicationException {
 		Authorization authorize = getHeidelpay().authorize(BigDecimal.ONE, Currency.getInstance("EUR"), "s-crd-1");
+		authorize.getResources().getTypeId();
 		assertNotNull(authorize);
 	}
 	
 	@Test
-	public void testAuthorizeWithPaymentType() throws MalformedURLException {
+	public void testAuthorizeWithPaymentType() throws MalformedURLException, HttpCommunicationException {
 		Card card = new Card("4444333322221111", "12/19");
 		Authorization authorize = getHeidelpay().authorize(BigDecimal.ONE, Currency.getInstance("EUR"), card);
 		Payment payment = authorize.getPayment();
@@ -31,19 +48,19 @@ public class AuthorizationTest extends AbstractPaymentTest {
 	}
 
 	@Test
-	public void testAuthorizeWithCustomerId() throws MalformedURLException {
+	public void testAuthorizeWithCustomerId() throws MalformedURLException, HttpCommunicationException {
 		Authorization authorize = getHeidelpay().authorize(BigDecimal.ONE, Currency.getInstance("EUR"), "s-crd-1", "rene.felder@felderit.at");
 		assertNotNull(authorize);
 	}
 
 	@Test
-	public void testAuthorizeWithReturnUrl() throws MalformedURLException {
+	public void testAuthorizeWithReturnUrl() throws MalformedURLException, HttpCommunicationException {
 		Authorization authorize = getHeidelpay().authorize(BigDecimal.ONE, Currency.getInstance("EUR"), "s-crd-1", new URL("https://www.google.at"));
 		assertNotNull(authorize);
 	}
 
 	@Test
-	public void testAuthorizeWithCustomerTypeReturnUrl() throws MalformedURLException {
+	public void testAuthorizeWithCustomerTypeReturnUrl() throws MalformedURLException, HttpCommunicationException {
 		Card card = new Card("4444333322221111", "12/19");
 		Customer customer = new Customer("Rene", "Felder");
 		Authorization authorize = getHeidelpay().authorize(BigDecimal.ONE, Currency.getInstance("EUR"), card, customer, new URL("https://www.google.at"));
@@ -51,7 +68,7 @@ public class AuthorizationTest extends AbstractPaymentTest {
 	}
 
 	@Test
-	public void testAuthorizeWithCustomerIdReturnUrl() throws MalformedURLException {
+	public void testAuthorizeWithCustomerIdReturnUrl() throws MalformedURLException, HttpCommunicationException {
 		Authorization authorize = getHeidelpay().authorize(BigDecimal.ONE, Currency.getInstance("EUR"), "s-crd-1", "rene.felder@felderit.at", new URL("https://www.google.at"));
 		assertNotNull(authorize);
 	}

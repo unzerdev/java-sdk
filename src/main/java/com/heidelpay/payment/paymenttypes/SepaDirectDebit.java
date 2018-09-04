@@ -1,6 +1,6 @@
-package com.heidelpay.payment.business.paymenttypes;
+package com.heidelpay.payment.paymenttypes;
 
-import com.heidelpay.payment.business.AbstractPayment;
+import com.heidelpay.payment.AbstractPayment;
 
 public class SepaDirectDebit extends AbstractPayment implements PaymentType {
 	private String id;
@@ -43,6 +43,11 @@ public class SepaDirectDebit extends AbstractPayment implements PaymentType {
 
 	public void setHolder(String holder) {
 		this.holder = holder;
+	}
+
+	@Override
+	public String getTypeUrl() {
+		return "types/sepa-direct-debit";
 	}
 	
 }

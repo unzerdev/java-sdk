@@ -1,21 +1,24 @@
-package com.heidelpay.payment.business;
+package com.heidelpay.payment;
 
-import com.heidelpay.payment.Heidelpay;
+import com.heidelpay.payment.paymenttypes.PaymentType;
 
-public abstract class AbstractPayment {
+public abstract class AbstractPayment implements PaymentType {
 	private String id;
-	private Payment payment;
-	private Heidelpay heidelpay;
+	
+	private transient Payment payment;
+	private transient Heidelpay heidelpay;
 	
 	public AbstractPayment(Heidelpay heidelpay) {
 		super();
-		this.heidelpay = heidelpay;
+		this.setHeidelpay(heidelpay);
 	}
 
 	public AbstractPayment() {
 		super();
 	}
 
+	public abstract String getTypeUrl();
+	
 	public String getId() {
 		return id;
 	}
@@ -34,6 +37,10 @@ public abstract class AbstractPayment {
 
 	public Heidelpay getHeidelpay() {
 		return heidelpay;
+	}
+
+	public void setHeidelpay(Heidelpay heidelpay) {
+		this.heidelpay = heidelpay;
 	}
 
 }

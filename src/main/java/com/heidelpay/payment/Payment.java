@@ -1,4 +1,4 @@
-package com.heidelpay.payment.business;
+package com.heidelpay.payment;
 
 import java.math.BigDecimal;
 import java.net.URL;
@@ -6,14 +6,21 @@ import java.util.ArrayList;
 import java.util.Currency;
 import java.util.List;
 
-import com.heidelpay.payment.Heidelpay;
-import com.heidelpay.payment.business.paymenttypes.Card;
-import com.heidelpay.payment.business.paymenttypes.PaymentType;
+import com.heidelpay.payment.communication.HttpCommunicationException;
+import com.heidelpay.payment.paymenttypes.Card;
+import com.heidelpay.payment.paymenttypes.PaymentType;
 
 public class Payment extends AbstractPayment {
 	private String typeId;
 	private String customerId;
+	
 	private Customer customer;
+	private PaymentType paymentType;
+	
+	private Authorization authorization;
+	private List<Charge> chargesList;
+	private List<Cancel> cancelList;
+
 	private List<String> paymentUrlList;
 	
 	public Payment(Heidelpay heidelpay) {
@@ -48,22 +55,22 @@ public class Payment extends AbstractPayment {
 	}
 	
 	// Delegates to Heidelpay authorize 
-	public Authorization authorize(BigDecimal amount, Currency currency, String typeId) {
+	public Authorization authorize(BigDecimal amount, Currency currency, String typeId) throws HttpCommunicationException {
 		return getHeidelpay().authorize(amount, currency, typeId);
 	}
-	public Authorization authorize(BigDecimal amount, Currency currency, String typeId, URL returnUrl) {
+	public Authorization authorize(BigDecimal amount, Currency currency, String typeId, URL returnUrl) throws HttpCommunicationException {
 		return getHeidelpay().authorize(amount, currency, typeId, returnUrl);
 	}
-	public Authorization authorize(BigDecimal amount, Currency currency, String typeId, String customerId) {
+	public Authorization authorize(BigDecimal amount, Currency currency, String typeId, String customerId) throws HttpCommunicationException {
 		return getHeidelpay().authorize(amount, currency, typeId, customerId);
 	}
-	public Authorization authorize(BigDecimal amount, Currency currency, String typeId, String customerId, URL returnUrl) {
+	public Authorization authorize(BigDecimal amount, Currency currency, String typeId, String customerId, URL returnUrl) throws HttpCommunicationException {
 		return getHeidelpay().authorize(amount, currency, typeId, customerId, returnUrl);
 	}
-	public Authorization authorize(BigDecimal amount, Currency currency, PaymentType paymentType) {
+	public Authorization authorize(BigDecimal amount, Currency currency, PaymentType paymentType) throws HttpCommunicationException {
 		return getHeidelpay().authorize(amount, currency, paymentType);
 	}
-	public Authorization authorize(BigDecimal amount, Currency currency, PaymentType paymentType, Customer customer, URL returnUrl) {
+	public Authorization authorize(BigDecimal amount, Currency currency, PaymentType paymentType, Customer customer, URL returnUrl) throws HttpCommunicationException {
 		return getHeidelpay().authorize(amount, currency, paymentType, customer, returnUrl);
 	}
 
@@ -104,6 +111,10 @@ public class Payment extends AbstractPayment {
 			customer = getHeidelpay().fetchCustomer(customerId);
 		}
 		return customer;
+	}
+	@Override
+	public String getTypeUrl() {
+		return "";
 	}
 
 }

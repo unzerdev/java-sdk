@@ -7,6 +7,9 @@ import java.net.MalformedURLException;
 
 import org.junit.Test;
 
+import com.heidelpay.payment.Cancel;
+import com.heidelpay.payment.Charge;
+
 public class CancelAfterChargeTest extends AbstractPaymentTest {
 
 	@Test

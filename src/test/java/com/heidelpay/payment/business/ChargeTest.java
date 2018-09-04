@@ -9,7 +9,9 @@ import java.util.Currency;
 
 import org.junit.Test;
 
-import com.heidelpay.payment.business.paymenttypes.Card;
+import com.heidelpay.payment.Charge;
+import com.heidelpay.payment.Customer;
+import com.heidelpay.payment.paymenttypes.Card;
 
 public class ChargeTest extends AbstractPaymentTest {
 

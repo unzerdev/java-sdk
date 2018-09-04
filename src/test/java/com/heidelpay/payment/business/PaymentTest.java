@@ -9,6 +9,12 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import com.heidelpay.payment.Authorization;
+import com.heidelpay.payment.Cancel;
+import com.heidelpay.payment.Charge;
+import com.heidelpay.payment.Payment;
+import com.heidelpay.payment.communication.HttpCommunicationException;
+
 public class PaymentTest extends AbstractPaymentTest {
 
 	@Before
@@ -62,7 +68,7 @@ public class PaymentTest extends AbstractPaymentTest {
 	}
 	
 	@Test
-	public void testAuthorize() {
+	public void testAuthorize() throws HttpCommunicationException{
 		// Variant 1
 		Payment payment = new Payment(getHeidelpay());
 		Authorization authorizationUsingPayment = payment.authorize(BigDecimal.ONE, Currency.getInstance("EUR"), "s-crd-1");

@@ -8,6 +8,9 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import com.heidelpay.payment.Authorization;
+import com.heidelpay.payment.Charge;
+
 public class ChargeAfterAuthorizationTest extends AbstractPaymentTest {
 
 	@Before
