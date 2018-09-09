@@ -11,7 +11,6 @@ import java.util.Currency;
 
 import org.junit.Test;
 
-import com.heidelpay.payment.Authorization;
 import com.heidelpay.payment.Charge;
 import com.heidelpay.payment.business.AbstractPaymentTest;
 import com.heidelpay.payment.communication.HttpCommunicationException;
