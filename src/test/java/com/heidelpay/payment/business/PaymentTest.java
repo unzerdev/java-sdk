@@ -119,7 +119,7 @@ public class PaymentTest extends AbstractPaymentTest {
 		
 		// Variant 2
 		Authorization authorizationUsingHeidelpay = getHeidelpay().authorize(BigDecimal.ONE, Currency.getInstance("EUR"), createPaymentType().getId(), new URL("https://www.google.at"));
-		Payment pay = authorizationUsingHeidelpay.getPayment();
+		authorizationUsingHeidelpay.getPayment();
 		
 		assertNotNull(authorizationUsingPayment);
 		assertNotNull(authorizationUsingHeidelpay);

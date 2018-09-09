@@ -12,6 +12,7 @@
 package com.heidelpay.payment.communication;
 
 import java.math.BigDecimal;
+import java.net.URL;
 import java.util.Date;
 import java.util.Objects;
 
@@ -31,6 +32,7 @@ public class JsonParser<T> {
     		.registerTypeAdapter(Date.class, new JsonDateConverter())
     		.registerTypeAdapter(String.class, new JsonStringConverter())
     		.registerTypeAdapter(BigDecimal.class, new JsonBigDecimalConverter())
+    		.registerTypeAdapter(URL.class, new JsonURLConverter())
     		.create();
   }
   
