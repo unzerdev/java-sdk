@@ -5,53 +5,67 @@ import static org.junit.Assert.assertNotNull;
 import java.math.BigDecimal;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.text.ParseException;
 import java.util.Currency;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
 import com.heidelpay.payment.Charge;
 import com.heidelpay.payment.Customer;
+import com.heidelpay.payment.communication.HttpCommunicationException;
 import com.heidelpay.payment.paymenttypes.Card;
 
 public class ChargeTest extends AbstractPaymentTest {
-
+	
 	@Test
-	public void testChargeWithTypeId() throws MalformedURLException {
-		Charge Charge = getHeidelpay().charge(BigDecimal.ONE, Currency.getInstance("EUR"), "s-crd-1");
-		assertNotNull(Charge);
+	public void testChargeWithTypeId() throws MalformedURLException, HttpCommunicationException {
+		Charge charge = getHeidelpay().charge(BigDecimal.ONE, Currency.getInstance("EUR"), createPaymentType().getId(), new URL("https://www.google.at"));
+		assertNotNull(charge);
+		assertNotNull(charge.getId());
 	}
 	
 	@Test
-	public void testChargeWithPaymentType() throws MalformedURLException {
+	public void testChargeWithPaymentType() throws MalformedURLException, HttpCommunicationException {
 		Card card = new Card("4444333322221111", "12/19");
-		Charge Charge = getHeidelpay().charge(BigDecimal.ONE, Currency.getInstance("EUR"), card);
-		assertNotNull(Charge);
+		Charge charge = getHeidelpay().charge(BigDecimal.ONE, Currency.getInstance("EUR"), card, new URL("https://www.google.at"));
+		assertNotNull(charge);
+		assertNotNull(charge.getId());
 	}
 
 	@Test
-	public void testChargeWithCustomerId() throws MalformedURLException {
-		Charge Charge = getHeidelpay().charge(BigDecimal.ONE, Currency.getInstance("EUR"), "s-crd-1", "rene.felder@felderit.at");
-		assertNotNull(Charge);
+	public void testChargeWithReturnUrl() throws MalformedURLException, HttpCommunicationException {
+		Charge charge = getHeidelpay().charge(BigDecimal.ONE, Currency.getInstance("EUR"), createPaymentType().getId(), new URL("https://www.google.at"));
+		assertNotNull(charge);
+		assertNotNull(charge.getId());
 	}
 
 	@Test
-	public void testChargeWithReturnUrl() throws MalformedURLException {
-		Charge Charge = getHeidelpay().charge(BigDecimal.ONE, Currency.getInstance("EUR"), "s-crd-1", new URL("https://www.google.at"));
-		assertNotNull(Charge);
-	}
-
-	@Test
-	public void testChargeWithCustomerTypeReturnUrl() throws MalformedURLException {
+	@Ignore("Bug ticket AHC-267 created")
+	public void testChargeWithCustomerTypeReturnUrl() throws MalformedURLException, HttpCommunicationException {
 		Card card = new Card("4444333322221111", "12/19");
 		Customer customer = new Customer("Rene", "Felder");
-		Charge Charge = getHeidelpay().charge(BigDecimal.ONE, Currency.getInstance("EUR"), card, customer, new URL("https://www.google.at"));
-		assertNotNull(Charge);
+		Charge charge = getHeidelpay().charge(BigDecimal.ONE, Currency.getInstance("EUR"), card, new URL("https://www.google.at"), customer);
+		assertNotNull(charge);
+		assertNotNull(charge.getId());
 	}
 
 	@Test
-	public void testChargeWithCustomerIdReturnUrl() throws MalformedURLException {
-		Charge Charge = getHeidelpay().charge(BigDecimal.ONE, Currency.getInstance("EUR"), "s-crd-1", "rene.felder@felderit.at", new URL("https://www.google.at"));
-		assertNotNull(Charge);
+	@Ignore("Bug ticket AHC-267 created")
+	public void testChargeWithCustomerIdReturnUrl() throws MalformedURLException, HttpCommunicationException, ParseException {
+		Customer customer = getHeidelpay().createCustomer(getMaximumCustomer(getRandomId()));
+		Charge charge = getHeidelpay().charge(BigDecimal.ONE, Currency.getInstance("EUR"), createPaymentType().getId(), new URL("https://www.google.at"), customer.getId());
+		assertNotNull(charge);
+	}
+
+	@Test
+	public void testChargeReturnPayment() throws MalformedURLException, HttpCommunicationException {
+		Card card = new Card("4444333322221111", "12/19");
+		Charge charge = getHeidelpay().charge(BigDecimal.ONE, Currency.getInstance("EUR"), card, new URL("https://www.google.at"));
+		assertNotNull(charge);
+		assertNotNull(charge.getId());
+		assertNotNull(charge.getPayment());
+		assertNotNull(charge.getPayment().getId());
 	}
 
 }

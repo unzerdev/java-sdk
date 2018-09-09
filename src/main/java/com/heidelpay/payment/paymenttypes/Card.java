@@ -14,6 +14,8 @@ public class Card extends AbstractPayment implements PaymentType {
 	private String pan;
 	private String cvc;
 	private String expiryDate;
+	private String brand;
+	
 	public Card(String number, String expiryDate) {
 		super();
 		this.pan = number;
@@ -46,25 +48,34 @@ public class Card extends AbstractPayment implements PaymentType {
 		this.expiryDate = expiryDate;
 		return this;
 	}
-	
-	public Authorization authorize(BigDecimal amount, Currency currency) throws HttpCommunicationException {
-		return authorize(amount, currency, (Customer)null, (URL)null);
-	}
+// Currently returnUrl is mandatory	
+//	public Charge charge(BigDecimal amount, Currency currency) throws HttpCommunicationException {
+//		return getHeidelpay().charge(amount, currency, this);
+//	}
+//	public Authorization authorize(BigDecimal amount, Currency currency) throws HttpCommunicationException {
+//		return authorize(amount, currency, (URL)null, (Customer)null);
+//	}
 	public Authorization authorize(BigDecimal amount, Currency currency, URL returnUrl) throws HttpCommunicationException {
-		return authorize(amount, currency, (Customer)null, returnUrl);
+		return authorize(amount, currency, returnUrl, (Customer)null);
 	}
-	public Authorization authorize(BigDecimal amount, Currency currency, Customer customer, URL returnUrl) throws HttpCommunicationException {
-		return getHeidelpay().authorize(amount, currency, this, customer, returnUrl);
+	public Authorization authorize(BigDecimal amount, Currency currency, URL returnUrl, Customer customer) throws HttpCommunicationException {
+		return getHeidelpay().authorize(amount, currency, this, returnUrl, customer);
 	}
-	public Charge charge(BigDecimal amount, Currency currency) {
-		return getHeidelpay().charge(amount, currency, this);
+	public Charge charge(BigDecimal amount, Currency currency, URL returnUrl) throws HttpCommunicationException {
+		return getHeidelpay().charge(amount, currency, this, returnUrl, (Customer)null);
 	}
-	public Charge charge(BigDecimal amount, Currency currency, Customer customer, URL returnUrl) {
-		return getHeidelpay().charge(amount, currency, this, customer, returnUrl);
+	public Charge charge(BigDecimal amount, Currency currency, URL returnUrl, Customer customer) throws HttpCommunicationException {
+		return getHeidelpay().charge(amount, currency, this, returnUrl, customer);
 	}
 	
 	@Override
 	public String getTypeUrl() {
 		return "types/cards";
+	}
+	public String getBrand() {
+		return brand;
+	}
+	public void setBrand(String brand) {
+		this.brand = brand;
 	}
 }

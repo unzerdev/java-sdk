@@ -1,26 +1,23 @@
-package com.heidelpay.payment;
+package com.heidelpay.payment.communication.json;
 
-public class Resources {
-	private Customer customer;
+public class JsonResources {
 	private String typeId;
 	private String customerId;
 	private String metadataId;
 	private String paymentId;
 	private String riskId;
-	
+	private String basketId;
 	public String getTypeId() {
 		return typeId;
 	}
-	public Resources setTypeId(String typeId) {
+	public void setTypeId(String typeId) {
 		this.typeId = typeId;
-		return this;
 	}
 	public String getCustomerId() {
 		return customerId;
 	}
-	public Resources setCustomerId(String customerId) {
+	public void setCustomerId(String customerId) {
 		this.customerId = customerId;
-		return this;
 	}
 	public String getMetadataId() {
 		return metadataId;
@@ -39,6 +36,12 @@ public class Resources {
 	}
 	public void setRiskId(String riskId) {
 		this.riskId = riskId;
+	}
+	public String getBasketId() {
+		return basketId;
+	}
+	public void setBasketId(String basketId) {
+		this.basketId = basketId;
 	}
 
 }

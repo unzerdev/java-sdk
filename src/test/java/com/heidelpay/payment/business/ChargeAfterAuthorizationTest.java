@@ -1,43 +1,40 @@
 package com.heidelpay.payment.business;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertNotNull;
 
 import java.math.BigDecimal;
+import java.net.MalformedURLException;
 
-import org.junit.After;
-import org.junit.Before;
 import org.junit.Test;
 
 import com.heidelpay.payment.Authorization;
 import com.heidelpay.payment.Charge;
+import com.heidelpay.payment.communication.HttpCommunicationException;
 
 public class ChargeAfterAuthorizationTest extends AbstractPaymentTest {
 
-	@Before
-	public void setUp() throws Exception {
-	}
-
-	@After
-	public void tearDown() throws Exception {
-	}
-
 	@Test
-	public void fetchAuthorization() {
-		Authorization authorization = getHeidelpay().fetchAuthorization("s-pay-1");
+	public void fetchAuthorization() throws HttpCommunicationException, MalformedURLException {
+		Authorization authorize = getHeidelpay().authorize(getAuthorization(createPaymentType().getId()));
+		Authorization authorization = getHeidelpay().fetchAuthorization(authorize.getPaymentId());
 		assertNotNull(authorization);
 	}
 
 	@Test
-	public void fullChargeAfterAuthorization() {
-		Authorization authorization = getHeidelpay().fetchAuthorization("s-pay-1");
+	public void fullChargeAfterAuthorization() throws HttpCommunicationException, MalformedURLException {
+		Authorization authorize = getHeidelpay().authorize(getAuthorization(createPaymentType().getId()));
+		Authorization authorization = getHeidelpay().fetchAuthorization(authorize.getPaymentId());
 		Charge charge = authorization.charge();
 		assertNotNull(charge);
+		assertNotNull(charge.getId());
 	}
 
 	@Test
-	public void partialChargeAfterAuthorization() {
-		Authorization authorization = getHeidelpay().fetchAuthorization("s-pay-1");
+	public void partialChargeAfterAuthorization() throws HttpCommunicationException, MalformedURLException {
+		Authorization authorize = getHeidelpay().authorize(getAuthorization(createPaymentType().getId()));
+		Authorization authorization = getHeidelpay().fetchAuthorization(authorize.getPaymentId());
 		Charge charge = authorization.charge(new BigDecimal(0.1));
 		assertNotNull(charge);
+		assertNotNull(charge.getId());
 	}
 }

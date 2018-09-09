@@ -11,6 +11,8 @@
  */
 package com.heidelpay.payment.communication;
 
+import java.math.BigDecimal;
+import java.util.Date;
 import java.util.Objects;
 
 import com.google.gson.Gson;
@@ -19,16 +21,16 @@ import com.google.gson.GsonBuilder;
 /**
  * Provides functions which is interact with json
  */
-public class JsonParser {
+public class JsonParser<T> {
 
   private Gson gson;
 
-  private JsonParser() {
+  public JsonParser() {
     gson = new GsonBuilder()
     		.setPrettyPrinting()
-//    		.registerTypeAdapterFactory(new JsonTypeAdapterFactory())
-//    		.registerTypeAdapter(BigDecimal.class, new JsonBigDecimalConverter())
-//    		.registerTypeAdapter(Currency.class, new JsonCurrencyConverter())
+    		.registerTypeAdapter(Date.class, new JsonDateConverter())
+    		.registerTypeAdapter(String.class, new JsonStringConverter())
+    		.registerTypeAdapter(BigDecimal.class, new JsonBigDecimalConverter())
     		.create();
   }
   
@@ -58,11 +60,4 @@ public class JsonParser {
     return gson.fromJson(json, clazz);
   }
   
-  /**
-   * Create new instance of {@link JsonParser}
-   * @return {@link JsonParser}
-   */
-  public static final JsonParser create() {
-    return new JsonParser();
-  }
 }

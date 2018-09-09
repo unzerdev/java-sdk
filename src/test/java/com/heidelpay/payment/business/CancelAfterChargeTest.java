@@ -9,11 +9,12 @@ import org.junit.Test;
 
 import com.heidelpay.payment.Cancel;
 import com.heidelpay.payment.Charge;
+import com.heidelpay.payment.communication.HttpCommunicationException;
 
 public class CancelAfterChargeTest extends AbstractPaymentTest {
 
 	@Test
-	public void testFetchChargeWithId() throws MalformedURLException {
+	public void testFetchChargeWithId() throws MalformedURLException, HttpCommunicationException {
 		Charge charge = getHeidelpay().fetchCharge("s-pay1",  "s-chg-1");
 		assertNotNull(charge);
 	}
@@ -25,7 +26,7 @@ public class CancelAfterChargeTest extends AbstractPaymentTest {
 	}
 
 	@Test
-	public void testFullRefundWithCharge() throws MalformedURLException {
+	public void testFullRefundWithCharge() throws MalformedURLException, HttpCommunicationException {
 		Charge charge = getHeidelpay().fetchCharge("s-pay-1", "s-chg-1");
 		Cancel cancel = charge.cancel();
 		assertNotNull(cancel);
@@ -38,7 +39,7 @@ public class CancelAfterChargeTest extends AbstractPaymentTest {
 	}
 
 	@Test
-	public void testPartialRefundWithCharge() throws MalformedURLException {
+	public void testPartialRefundWithCharge() throws MalformedURLException, HttpCommunicationException {
 		Charge charge = getHeidelpay().fetchCharge("s-pay-1", "s-chg-1");
 		Cancel cancel = charge.cancel(new BigDecimal(0.1));
 		assertNotNull(cancel);

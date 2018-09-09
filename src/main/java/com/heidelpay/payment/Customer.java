@@ -2,7 +2,7 @@ package com.heidelpay.payment;
 
 import java.util.Date;
 
-public class Customer {
+public class Customer extends AbstractPayment {
 	public enum Salutation {mr, ms, unknown};
 
 	private String firstname;
@@ -102,6 +102,11 @@ public class Customer {
 	public Customer setAddress(Address address) {
 		this.address = address;
 		return this;
+	}
+
+	@Override
+	public String getTypeUrl() {
+		return "customers";
 	}
 	
 }

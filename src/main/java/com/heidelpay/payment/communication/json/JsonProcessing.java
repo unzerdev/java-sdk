@@ -1,6 +1,6 @@
-package com.heidelpay.payment;
+package com.heidelpay.payment.communication.json;
 
-public class Processing {
+public class JsonProcessing {
 	private String uniqueId;
 	private String shortId;
 	public String getUniqueId() {
@@ -15,5 +15,4 @@ public class Processing {
 	public void setShortId(String shortId) {
 		this.shortId = shortId;
 	}
-	
 }

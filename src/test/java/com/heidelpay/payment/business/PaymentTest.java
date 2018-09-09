@@ -1,67 +1,109 @@
 package com.heidelpay.payment.business;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 import java.math.BigDecimal;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.Currency;
 
-import org.junit.After;
-import org.junit.Before;
 import org.junit.Test;
 
 import com.heidelpay.payment.Authorization;
 import com.heidelpay.payment.Cancel;
 import com.heidelpay.payment.Charge;
 import com.heidelpay.payment.Payment;
+import com.heidelpay.payment.PaymentException;
 import com.heidelpay.payment.communication.HttpCommunicationException;
 
 public class PaymentTest extends AbstractPaymentTest {
 
-	@Before
-	public void setUp() throws Exception {
-	}
-
-	@After
-	public void tearDown() throws Exception {
+	@Test
+	public void testFetchPaymentWithAuthorization() throws MalformedURLException, HttpCommunicationException {
+		Authorization authorize = getHeidelpay().authorize(getAuthorization(createPaymentType().getId()));
+		Payment payment = getHeidelpay().fetchPayment(authorize.getPayment().getId());
+		assertNotNull(payment);
+		assertNotNull(payment.getId());
+		assertNotNull(payment.getAuthorization());
+		assertNotNull(payment.getAuthorization().getId());
 	}
 
 	@Test
-	public void testFullChargeAfterAuthorize() {
-		Payment payment = getHeidelpay().fetchPayment("s-pay-1");
-		payment.charge();
+	public void testFullChargeAfterAuthorize() throws MalformedURLException, HttpCommunicationException {
+		Authorization authorize = getHeidelpay().authorize(getAuthorization(createPaymentType().getId()));
+		Payment payment = getHeidelpay().fetchPayment(authorize.getPayment().getId());
+		Charge charge = payment.charge();
+		assertNotNull(charge);
+		assertNotNull(charge.getId());
 	}
 
 	@Test
-	public void testPartialChargeAfterAuthorize() {
-		Payment payment = getHeidelpay().fetchPayment("s-pay-1");
+	public void testFetchPaymentWithCharges() throws MalformedURLException, HttpCommunicationException {
+		Authorization authorize = getHeidelpay().authorize(getAuthorization(createPaymentType().getId()));
+		Payment payment = getHeidelpay().fetchPayment(authorize.getPayment().getId());
+		assertNotNull(payment);
+		assertNotNull(payment.getId());
+		assertNotNull(payment.getAuthorization());
+		assertNotNull(payment.getAuthorization().getId());
+		Charge charge = payment.charge();
+		payment = charge.getPayment();
+		assertNotNull(payment.getChargesList());
+		assertEquals(1, payment.getChargesList().size());
+		assertEquals(charge.getAmount(), payment.getCharge(0).getAmount());
+		assertEquals(charge.getCurrency(), payment.getCharge(0).getCurrency());
+		assertEquals(charge.getId(), payment.getCharge(0).getId());
+		assertEquals(charge.getReturnUrl(), payment.getCharge(0).getReturnUrl());
+		
+	}
+
+	@Test
+	public void testPartialChargeAfterAuthorize() throws MalformedURLException, HttpCommunicationException {
+		Authorization authorize = getHeidelpay().authorize(getAuthorization(createPaymentType().getId()));
+		Payment payment = getHeidelpay().fetchPayment(authorize.getPayment().getId());
 		Charge charge = payment.charge(BigDecimal.ONE);
 		assertNotNull(charge);
+		assertEquals("s-chg-1", charge.getId());
+		assertEquals(BigDecimal.ONE, charge.getAmount());
 	}
 
 	@Test
-	public void testFullCancelAuthorize() {
-		Payment payment = getHeidelpay().fetchPayment("s-pay-1");
+	public void testFullCancelAuthorize() throws MalformedURLException, HttpCommunicationException {
+		Authorization authorize = getHeidelpay().authorize(getAuthorization(createPaymentType().getId()));
+		Payment payment = getHeidelpay().fetchPayment(authorize.getPayment().getId());
 		Cancel cancel = payment.getAuthorization().cancel();
-		Cancel cancel2 = payment.cancel();
 		assertNotNull(cancel);
+		assertEquals("s-cnl-1", cancel.getId());
+		assertEquals(authorize.getAmount(), cancel.getAmount());
+		
+		try {
+			payment.cancel();
+		} catch (PaymentException e) {
+			assertTrue("Second cancel should lead to an Exception as the whole amount was already canceled", true);
+		}
+		
 	}
 
 	@Test
-	public void testPartialCancelAuthorize() {
-		Payment payment = getHeidelpay().fetchPayment("s-pay-1");
+	public void testPartialCancelAuthorize() throws MalformedURLException, HttpCommunicationException {
+		Authorization authorize = getHeidelpay().authorize(getAuthorization(createPaymentType().getId()));
+		Payment payment = getHeidelpay().fetchPayment(authorize.getPayment().getId());
 		Cancel cancel = payment.cancel(BigDecimal.ONE);
 		assertNotNull(cancel);
+		assertEquals("s-cnl-1", cancel.getId());
+		assertEquals(BigDecimal.ONE, cancel.getAmount());
 	}
 
 	@Test
-	public void testFullCancelOnCharge() {
+	public void testFullCancelOnCharge() throws HttpCommunicationException {
 		Payment payment = getHeidelpay().fetchPayment("s-pay-1");
 		Cancel cancel = payment.getCharge("s-chg-1").cancel();
 		assertNotNull(cancel);
 	}
 
 	@Test
-	public void testPartialCancelOnCharge() {
+	public void testPartialCancelOnCharge() throws HttpCommunicationException {
 		Payment payment = getHeidelpay().fetchPayment("s-pay-1");
 		Cancel cancel = payment.getCharge(1).cancel(BigDecimal.ONE);
 		assertNotNull(cancel);
@@ -82,9 +124,9 @@ public class PaymentTest extends AbstractPaymentTest {
 	}
 	
 	@Test
-	public void testChargeWithoutAuthorize() {
-		Charge chargeUsingPayment = new Payment(getHeidelpay()).charge(BigDecimal.ONE, Currency.getInstance("EUR"), "s-crd-1");
-		Charge chargeUsingHeidelpay = getHeidelpay().charge(BigDecimal.ONE, Currency.getInstance("EUR"), "s-crd-1");
+	public void testChargeWithoutAuthorize() throws HttpCommunicationException, MalformedURLException {
+		Charge chargeUsingPayment = new Payment(getHeidelpay()).charge(BigDecimal.ONE, Currency.getInstance("EUR"), "s-crd-1", new URL("https://www.google.at"));
+		Charge chargeUsingHeidelpay = getHeidelpay().charge(BigDecimal.ONE, Currency.getInstance("EUR"), "s-crd-1", new URL("https://www.google.at"));
 		assertNotNull(chargeUsingPayment);
 		assertNotNull(chargeUsingHeidelpay);
 	}

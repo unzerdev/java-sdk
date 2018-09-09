@@ -1,6 +1,6 @@
 package com.heidelpay.payment.business.paymenttypes;
 
-import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.*;
 
 import java.math.BigDecimal;
 import java.net.MalformedURLException;
@@ -49,11 +49,25 @@ public class CardTest extends AbstractPaymentTest {
 	}
 
 	@Test
-	public void testChargeCardType() throws HttpCommunicationException {
+	public void testChargeCardType() throws HttpCommunicationException, MalformedURLException {
 		Card card = new Card("4444333322221111", "03/20");
 		card.setCvc("123");
 		card = (Card)getHeidelpay().createPaymentType(card);
-		Charge charge = card.charge(BigDecimal.ONE, Currency.getInstance("EUR"));
+		Charge charge = card.charge(BigDecimal.ONE, Currency.getInstance("EUR"), new URL("https://www.google.at"));
 		assertNotNull(charge);
 	}
+	
+	@Test
+	public void testFetchCardType() throws HttpCommunicationException {
+		Card card = new Card("4444333322221111", "03/20");
+		card.setCvc("123");
+		card = (Card)getHeidelpay().createPaymentType(card);
+		assertNotNull(card.getId());
+		Card fetchedCard = (Card)getHeidelpay().fetchPaymentType(card.getId());
+		assertNotNull(fetchedCard.getId());
+		assertEquals(card.getNumber(), fetchedCard.getNumber());
+		assertEquals(card.getExpiryDate(), fetchedCard.getExpiryDate());
+		assertEquals(card.getCvc(), fetchedCard.getCvc());
+	}
+
 }
