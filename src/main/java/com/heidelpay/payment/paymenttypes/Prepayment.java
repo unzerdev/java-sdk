@@ -1,8 +1,6 @@
 package com.heidelpay.payment.paymenttypes;
 
-import com.heidelpay.payment.AbstractPayment;
-
-public class Prepayment extends AbstractPayment implements PaymentType {
+public class Prepayment extends AbstractPaymentType implements PaymentType {
 
 	@Override
 	public String getTypeUrl() {

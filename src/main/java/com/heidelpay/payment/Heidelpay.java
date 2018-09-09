@@ -5,6 +5,7 @@ import java.net.URL;
 import java.util.Currency;
 
 import com.heidelpay.payment.communication.HttpCommunicationException;
+import com.heidelpay.payment.paymenttypes.AbstractPaymentType;
 import com.heidelpay.payment.paymenttypes.PaymentType;
 import com.heidelpay.payment.service.PaymentService;
 
@@ -27,7 +28,7 @@ public class Heidelpay {
 	
 	public PaymentType createPaymentType(PaymentType paymentType) throws HttpCommunicationException {
 		if (paymentType != null && paymentType.getId() == null) {
-			return paymentService.createPaymentType((AbstractPayment)paymentType);
+			return paymentService.createPaymentType((AbstractPaymentType)paymentType);
 		} else if (paymentType != null && paymentType.getId() != null){
 			return paymentType;
 		} else {

@@ -1,8 +1,6 @@
 package com.heidelpay.payment.paymenttypes;
 
-import com.heidelpay.payment.AbstractPayment;
-
-public class Ideal extends AbstractPayment implements PaymentType {
+public class Ideal extends AbstractPaymentType implements PaymentType {
 
 	private String bankName;
 	

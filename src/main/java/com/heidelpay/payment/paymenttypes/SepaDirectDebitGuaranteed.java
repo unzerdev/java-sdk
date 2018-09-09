@@ -1,8 +1,6 @@
 package com.heidelpay.payment.paymenttypes;
 
-import com.heidelpay.payment.AbstractPayment;
-
-public class SepaDirectDebitGuaranteed extends AbstractPayment implements PaymentType {
+public class SepaDirectDebitGuaranteed extends AbstractPaymentType implements PaymentType {
 	private String id;
 	private String iban;
 	private String bic;
