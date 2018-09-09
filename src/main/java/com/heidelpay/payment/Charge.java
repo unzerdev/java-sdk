@@ -5,6 +5,8 @@ import java.net.URL;
 import java.util.Currency;
 import java.util.List;
 
+import com.heidelpay.payment.communication.HttpCommunicationException;
+
 public class Charge extends AbstractPayment {
 	private BigDecimal amount;
 	private Currency currency;
@@ -27,10 +29,10 @@ public class Charge extends AbstractPayment {
 		super(heidelpay);
 	}
 	
-	public Cancel cancel() {
+	public Cancel cancel() throws HttpCommunicationException {
 		return getHeidelpay().cancelCharge(getPayment().getId(), getId());
 	}
-	public Cancel cancel(BigDecimal amount) {
+	public Cancel cancel(BigDecimal amount) throws HttpCommunicationException {
 		return getHeidelpay().cancelCharge(getPayment().getId(), getId(), amount);
 	}
 	public List<Cancel> getCancelList() {
@@ -38,6 +40,15 @@ public class Charge extends AbstractPayment {
 	}
 	public void setCancelList(List<Cancel> cancelList) {
 		this.cancelList = cancelList;
+	}
+	public Cancel getCancel(String cancelId) {
+		if (cancelList == null) return null;
+		for (Cancel cancel : cancelList) {
+			if (cancelId.equalsIgnoreCase(cancel.getId())) {
+				return cancel;
+			}
+		} 
+		return null;
 	}
 	public BigDecimal getAmount() {
 		return amount;
@@ -105,4 +116,5 @@ public class Charge extends AbstractPayment {
 	public String getTypeUrl() {
 		return "payments/<paymentId>/charges";
 	}
+
 }

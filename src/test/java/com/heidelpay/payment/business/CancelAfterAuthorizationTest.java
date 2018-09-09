@@ -37,6 +37,6 @@ public class CancelAfterAuthorizationTest extends AbstractPaymentTest {
 		Cancel cancel = authorization.cancel(new BigDecimal(0.1));
 		assertNotNull(cancel);
 		assertNotNull(cancel.getId());
-		assertEquals(new BigDecimal(0.1), cancel.getAmount());
+		assertEquals(getBigDecimal("0.1000"), cancel.getAmount());
 	}
 }

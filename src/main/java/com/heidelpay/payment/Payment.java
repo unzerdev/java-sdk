@@ -2,7 +2,6 @@ package com.heidelpay.payment;
 
 import java.math.BigDecimal;
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.Currency;
 import java.util.List;
 
@@ -33,8 +32,6 @@ public class Payment extends AbstractPayment {
 	private List<Charge> chargesList;
 	private List<Cancel> cancelList;
 
-	private List<String> paymentUrlList;
-	
 	public Payment(Heidelpay heidelpay) {
 		super(heidelpay);
 	}
@@ -68,21 +65,21 @@ public class Payment extends AbstractPayment {
 	}
 	
 	// Delegates to Heidelpay authorize 
-	public Authorization authorize(BigDecimal amount, Currency currency, String typeId) throws HttpCommunicationException {
-		return getHeidelpay().authorize(amount, currency, typeId);
-	}
-	public Authorization authorize(BigDecimal amount, Currency currency, String typeId, URL returnUrl) throws HttpCommunicationException {
-		return getHeidelpay().authorize(amount, currency, typeId, returnUrl);
-	}
 // Currently returnUrl is mandatory
 //	public Authorization authorize(BigDecimal amount, Currency currency, String typeId, String customerId) throws HttpCommunicationException {
 //		return getHeidelpay().authorize(amount, currency, typeId, customerId);
 //	}
+//	public Authorization authorize(BigDecimal amount, Currency currency, String typeId) throws HttpCommunicationException {
+//		return getHeidelpay().authorize(amount, currency, typeId);
+//	}
+//	public Authorization authorize(BigDecimal amount, Currency currency, PaymentType paymentType) throws HttpCommunicationException {
+//		return getHeidelpay().authorize(amount, currency, paymentType);
+//	}
+	public Authorization authorize(BigDecimal amount, Currency currency, String typeId, URL returnUrl) throws HttpCommunicationException {
+		return getHeidelpay().authorize(amount, currency, typeId, returnUrl);
+	}
 	public Authorization authorize(BigDecimal amount, Currency currency, String typeId, URL returnUrl, String customerId) throws HttpCommunicationException {
 		return getHeidelpay().authorize(amount, currency, typeId, returnUrl, customerId);
-	}
-	public Authorization authorize(BigDecimal amount, Currency currency, PaymentType paymentType) throws HttpCommunicationException {
-		return getHeidelpay().authorize(amount, currency, paymentType);
 	}
 	public Authorization authorize(BigDecimal amount, Currency currency, PaymentType paymentType, URL returnUrl, Customer customer) throws HttpCommunicationException {
 		return getHeidelpay().authorize(amount, currency, paymentType, returnUrl, customer);
@@ -100,21 +97,28 @@ public class Payment extends AbstractPayment {
 		return authorization;
 	}
 	public Charge getCharge(String chargeId) {
+		if (chargesList == null) return null;
 		for (Charge charge : chargesList) {
 			if (chargeId.equalsIgnoreCase(charge.getId())) {
 				return charge;
 			}
 		}
-		return new Charge();
+		return null;
 	}
 	public Charge getCharge(int index) {
 		return getChargesList().get(index);
 	}
 	public List<Cancel> getCancelList() {
-		return new ArrayList<Cancel>();
+		return cancelList;
 	}
 	public Cancel getCancel(String cancelId) {
-		return new Cancel();
+		if (getCancelList() == null) return null;
+		for (Cancel cancel : getCancelList()) {
+			if (cancelId.equalsIgnoreCase(cancel.getId())) {
+				return cancel;
+			}
+		}
+		return null;
 	}
 	public Cancel getCancel(String chargeId, String refundId) {
 		return new Cancel();

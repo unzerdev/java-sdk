@@ -7,7 +7,6 @@ import java.text.ParseException;
 
 import org.junit.Test;
 
-import com.heidelpay.payment.Address;
 import com.heidelpay.payment.Customer;
 import com.heidelpay.payment.communication.HttpCommunicationException;
 
@@ -53,25 +52,5 @@ public class CustomerTest extends AbstractPaymentTest {
 		assertCustomerEquals(expectedCustomer, fetchedCustomer);
 	}
 
-	private void assertCustomerEquals(Customer customerExpected, Customer customer) {
-		assertEquals(customerExpected.getFirstname(), customer.getFirstname());
-		assertEquals(customerExpected.getLastname(), customer.getLastname());
-		assertEquals(customerExpected.getCustomerId(), customer.getCustomerId());
-		// Deactivated until Bug  AHC-268 is fixed
-//		assertEquals(customerExpected.getBirthDate(), customer.getBirthDate());
-		assertEquals(customerExpected.getEmail(), customer.getEmail());
-		assertEquals(customerExpected.getMobile(), customer.getMobile());
-		assertEquals(customerExpected.getPhone(), customer.getPhone());
-		assertAddressEquals(customerExpected.getAddress(), customer.getAddress());		
-	}
-	private void assertAddressEquals(Address addressExpected, Address address) {
-		if (addressExpected == null) return;
-		assertEquals(addressExpected.getCity(), address.getCity());
-		assertEquals(addressExpected.getCountry(), address.getCountry());
-		assertEquals(addressExpected.getName(), address.getName());
-		assertEquals(addressExpected.getState(), address.getState());
-		assertEquals(addressExpected.getStreet(), address.getStreet());
-		assertEquals(addressExpected.getZip(), address.getZip());
-	}
 
 }

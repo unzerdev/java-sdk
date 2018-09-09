@@ -9,6 +9,7 @@ import com.heidelpay.payment.communication.HttpCommunicationException;
 public class Authorization extends AbstractPayment {
 	private BigDecimal amount;
 	private Currency currency;
+	private URL returnUrl;
 	
 
 	private String typeId;
@@ -18,7 +19,6 @@ public class Authorization extends AbstractPayment {
 	private String riskId;
 
 	private Processing processing = new Processing();
-	private URL returnUrl;
 	
 	public Authorization() {
 		super();

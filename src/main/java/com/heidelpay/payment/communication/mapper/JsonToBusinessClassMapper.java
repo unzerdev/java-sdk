@@ -67,19 +67,35 @@ public class JsonToBusinessClassMapper {
 
 	public Authorization mapToBusinessObject(Authorization authorization, JsonAuthorization json) {
 		authorization.setId(json.getId());
-		authorization.setProcessing(getProcessing(json.getProcessing()));
+		authorization.setAmount(json.getAmount());
+		authorization.setCurrency(json.getCurrency());
+		authorization.setCustomerId(json.getResources().getCustomerId());
+		authorization.setMetadataId(json.getResources().getMetadataId());
 		authorization.setPaymentId(json.getResources().getPaymentId());
+		authorization.setReturnUrl(json.getReturnUrl());
+		authorization.setRiskId(json.getResources().getRiskId());
+		authorization.setTypeId(json.getResources().getTypeId());
+		authorization.setProcessing(getProcessing(json.getProcessing()));
 		return authorization;
 	}
 
 	public Charge mapToBusinessObject(Charge charge, JsonCharge json) {
 		charge.setId(json.getId());
+		charge.setAmount(json.getAmount());
+		charge.setCurrency(json.getCurrency());
+		charge.setCustomerId(json.getResources().getCustomerId());
+		charge.setMetadataId(json.getResources().getMetadataId());
+		charge.setPaymentId(json.getResources().getPaymentId());
+		charge.setReturnUrl(json.getReturnUrl());
+		charge.setRiskId(json.getResources().getRiskId());
+		charge.setTypeId(json.getResources().getTypeId());
 		charge.setProcessing(getProcessing(json.getProcessing()));
 		return charge;
 	}
 
 	public Cancel mapToBusinessObject(Cancel cancel, JsonCancel json) {
 		cancel.setId(json.getId());
+		cancel.setAmount(json.getAmount());
 		cancel.setProcessing(getProcessing(json.getProcessing()));
 		return cancel;
 	}

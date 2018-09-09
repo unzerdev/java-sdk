@@ -1,5 +1,7 @@
 package com.heidelpay.payment.business;
 
+import static org.junit.Assert.assertEquals;
+
 import java.math.BigDecimal;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -11,8 +13,11 @@ import java.util.UUID;
 
 import com.heidelpay.payment.Address;
 import com.heidelpay.payment.Authorization;
+import com.heidelpay.payment.Cancel;
+import com.heidelpay.payment.Charge;
 import com.heidelpay.payment.Customer;
 import com.heidelpay.payment.Heidelpay;
+import com.heidelpay.payment.Processing;
 import com.heidelpay.payment.Customer.Salutation;
 import com.heidelpay.payment.communication.HttpCommunicationException;
 import com.heidelpay.payment.paymenttypes.Card;
@@ -76,5 +81,60 @@ public class AbstractPaymentTest {
 	private Date getDate(String date) throws ParseException {
 		return new SimpleDateFormat("dd.MM.yy").parse(date);
 	}
+
+	protected void assertChargeEquals(Charge initCharge, Charge charge) {
+		assertEquals(initCharge.getAmount(), charge.getAmount());
+		assertEquals(initCharge.getCurrency(), charge.getCurrency());
+		assertEquals(initCharge.getCustomerId(), charge.getCustomerId());
+		assertEquals(initCharge.getId(), charge.getId());
+		assertEquals(initCharge.getPaymentId(), charge.getPaymentId());
+		assertEquals(initCharge.getReturnUrl(), charge.getReturnUrl());
+		assertEquals(initCharge.getRiskId(), charge.getRiskId());
+		assertEquals(initCharge.getTypeId(), charge.getTypeId());
+		assertEquals(initCharge.getTypeUrl(), charge.getTypeUrl());
+		assertEquals(initCharge.getCancelList(), charge.getCancelList());
+		assertProcessingEquals(initCharge.getProcessing(), charge.getProcessing());
+	}
+
+	private void assertProcessingEquals(Processing initProcessing, Processing processing) {
+		assertEquals(initProcessing.getShortId(), processing.getShortId());
+		assertEquals(initProcessing.getUniqueId(), processing.getUniqueId());
+	}
+	
+	protected void assertCustomerEquals(Customer customerExpected, Customer customer) {
+		assertEquals(customerExpected.getFirstname(), customer.getFirstname());
+		assertEquals(customerExpected.getLastname(), customer.getLastname());
+		assertEquals(customerExpected.getCustomerId(), customer.getCustomerId());
+		// Deactivated until Bug  AHC-268 is fixed
+//		assertEquals(customerExpected.getBirthDate(), customer.getBirthDate());
+		assertEquals(customerExpected.getEmail(), customer.getEmail());
+		assertEquals(customerExpected.getMobile(), customer.getMobile());
+		assertEquals(customerExpected.getPhone(), customer.getPhone());
+		assertAddressEquals(customerExpected.getAddress(), customer.getAddress());		
+	}
+	protected void assertAddressEquals(Address addressExpected, Address address) {
+		if (addressExpected == null) return;
+		assertEquals(addressExpected.getCity(), address.getCity());
+		assertEquals(addressExpected.getCountry(), address.getCountry());
+		assertEquals(addressExpected.getName(), address.getName());
+		assertEquals(addressExpected.getState(), address.getState());
+		assertEquals(addressExpected.getStreet(), address.getStreet());
+		assertEquals(addressExpected.getZip(), address.getZip());
+	}
+
+	protected void assertCancelEquals(Cancel cancelInit, Cancel cancel) {
+		assertEquals(cancelInit.getAmount(), cancel.getAmount());
+		assertEquals(cancelInit.getId(), cancel.getId());
+		assertEquals(cancelInit.getTypeUrl(), cancel.getTypeUrl());
+	}
+
+
+	protected BigDecimal getBigDecimal(String number) {
+		BigDecimal bigDecimal = new BigDecimal(number);
+		bigDecimal.setScale(4);
+		return bigDecimal;
+	}
+
+
 
 }

@@ -8,6 +8,12 @@ import org.apache.log4j.Logger;
 import com.heidelpay.payment.paymenttypes.PaymentType;
 
 public class UrlUtil {
+	private static final String PLACEHOLDER_CHARGE_ID = "<chargeId>";
+
+	private static final String PLACEHOLDER_PAYMENT_ID = "<paymentId>";
+
+	private static final String REFUND_URL = "payments/<paymentId>/charges/<chargeId>/cancels";
+
 	public final static Logger logger = Logger.getLogger(UrlUtil.class);
 
 	private PropertiesUtil properties = new PropertiesUtil();
@@ -21,12 +27,21 @@ public class UrlUtil {
 		}
 	}
 	
+	public String getRefundUrl(String paymentId, String chargeId) {
+		StringBuffer buffer = new StringBuffer();
+		buffer.append(getRestUrl());
+		appendSlashIfNeeded(buffer);
+		buffer.append(REFUND_URL);
+		String result = buffer.toString();
+		result = result.replaceAll(PLACEHOLDER_PAYMENT_ID, paymentId);
+		return result.replaceAll(PLACEHOLDER_CHARGE_ID, chargeId);
+	}
 	public String getPaymentUrl(PaymentType paymentType, String paymentId) {
 		StringBuffer buffer = new StringBuffer();
 		buffer.append(getRestUrlInternal(paymentType));
 		appendSlashIfNeeded(buffer);
 		String result = buffer.toString();
-		return result.replaceAll("<paymentId>", paymentId);
+		return result.replaceAll(PLACEHOLDER_PAYMENT_ID, paymentId);
 	}
 	public String getPaymentUrl(PaymentType paymentType, String paymentId, String id) {
 		StringBuffer buffer = new StringBuffer();
@@ -34,7 +49,7 @@ public class UrlUtil {
 		appendSlashIfNeeded(buffer);
 		buffer.append(id);
 		String result = buffer.toString();
-		return result.replaceAll("<paymentId>", paymentId);
+		return result.replaceAll(PLACEHOLDER_PAYMENT_ID, paymentId);
 	}
 	public String getHttpGetUrl(PaymentType paymentType, String id) {
 		StringBuffer buffer = new StringBuffer();

@@ -6,6 +6,14 @@ public class Cancel extends AbstractPayment {
 	private BigDecimal amount;
 	private Processing processing = new Processing();
 
+	public Cancel() {
+		super();
+	}
+	public Cancel(Heidelpay heidelpay) {
+		super(heidelpay);
+	}
+	
+
 	public BigDecimal getAmount() {
 		return amount;
 	}

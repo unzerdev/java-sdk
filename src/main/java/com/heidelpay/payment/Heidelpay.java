@@ -5,7 +5,6 @@ import java.net.URL;
 import java.util.Currency;
 
 import com.heidelpay.payment.communication.HttpCommunicationException;
-import com.heidelpay.payment.paymenttypes.Card;
 import com.heidelpay.payment.paymenttypes.PaymentType;
 import com.heidelpay.payment.service.PaymentService;
 
@@ -137,11 +136,11 @@ public class Heidelpay {
 		return paymentService.cancelAuthorization(paymentId, amount);
 	}
 	
-	public Cancel cancelCharge(String paymentId, String chargeId) {
-		return new Cancel();
+	public Cancel cancelCharge(String paymentId, String chargeId) throws HttpCommunicationException {
+		return paymentService.cancelCharge(paymentId, chargeId);
 	}
-	public Cancel cancelCharge(String paymentId, String chargeId, BigDecimal amount) {
-		return new Cancel();
+	public Cancel cancelCharge(String paymentId, String chargeId, BigDecimal amount) throws HttpCommunicationException {
+		return paymentService.cancelCharge(paymentId, chargeId, amount);
 	}
 
 	
@@ -153,13 +152,13 @@ public class Heidelpay {
 		return paymentService.fetchAuthorization(paymentId);
 	}
 	public Charge fetchCharge(String paymentId, String chargeId) throws HttpCommunicationException {
-		return fetchPayment(paymentId).getCharge(chargeId);
+		return paymentService.fetchCharge(paymentId, chargeId);
 	}
 	public Cancel fetchCancel(String paymentId, String cancelId) throws HttpCommunicationException {
-		return fetchPayment(paymentId).getCancel(cancelId);
+		return paymentService.fetchCancel(paymentId, cancelId);
 	}
-	public Cancel fetchRefund(String paymentId, String refundId) throws HttpCommunicationException {
-		return fetchPayment(paymentId).getCancel(refundId);
+	public Cancel fetchCancel(String paymentId, String chargeId, String cancelId) throws HttpCommunicationException {
+		return paymentService.fetchCancel(paymentId, chargeId, cancelId);
 	}
 	
 	public Customer fetchCustomer(String customerId) throws HttpCommunicationException {
