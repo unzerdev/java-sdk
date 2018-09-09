@@ -15,7 +15,8 @@ public class JsonAuthorization extends JsonIdObject implements JsonObject {
 	private BigDecimal amount;
 	private Currency currency;
 	private URL returnUrl;
-	
+	private URL redirectUrl;
+
 	private JsonResources resources; 
 	private JsonProcessing processing = new JsonProcessing();
 	
@@ -106,6 +107,14 @@ public class JsonAuthorization extends JsonIdObject implements JsonObject {
 
 	public void setDate(Date date) {
 		this.date = date;
+	}
+
+	public URL getRedirectUrl() {
+		return redirectUrl;
+	}
+
+	public void setRedirectUrl(URL redirectUrl) {
+		this.redirectUrl = redirectUrl;
 	}
 
 }

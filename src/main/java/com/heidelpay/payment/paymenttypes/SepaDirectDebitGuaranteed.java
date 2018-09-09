@@ -1,9 +1,6 @@
 package com.heidelpay.payment.paymenttypes;
 
-import com.heidelpay.payment.AbstractPayment;
-
-public class SepaDirectDebitGuaranteed extends AbstractPayment implements PaymentType {
-	private String id;
+public class SepaDirectDebitGuaranteed extends AbstractPaymentType implements PaymentType {
 	private String iban;
 	private String bic;
 	private String holder;
@@ -11,14 +8,6 @@ public class SepaDirectDebitGuaranteed extends AbstractPayment implements Paymen
 	public SepaDirectDebitGuaranteed(String iban) {
 		super();
 		this.iban = iban;
-	}
-
-	public String getId() {
-		return id;
-	}
-
-	public void setId(String id) {
-		this.id = id;
 	}
 
 	public String getIban() {

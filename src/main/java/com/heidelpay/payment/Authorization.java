@@ -11,12 +11,13 @@ public class Authorization extends AbstractPayment {
 	private Currency currency;
 	private URL returnUrl;
 	
-
 	private String typeId;
 	private String customerId;
 	private String metadataId;
 	private String paymentId;
 	private String riskId;
+
+	private URL redirectUrl;
 
 	private Processing processing = new Processing();
 	
@@ -128,6 +129,14 @@ public class Authorization extends AbstractPayment {
 	@Override
 	public String getTypeUrl() {
 		return "payments/<paymentId>/authorize";
+	}
+
+	public URL getRedirectUrl() {
+		return redirectUrl;
+	}
+
+	public void setRedirectUrl(URL redirectUrl) {
+		this.redirectUrl = redirectUrl;
 	}
 
 }

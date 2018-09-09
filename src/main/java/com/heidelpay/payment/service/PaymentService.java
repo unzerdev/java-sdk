@@ -7,7 +7,6 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 
-import com.heidelpay.payment.AbstractPayment;
 import com.heidelpay.payment.Authorization;
 import com.heidelpay.payment.Cancel;
 import com.heidelpay.payment.Charge;
@@ -28,6 +27,7 @@ import com.heidelpay.payment.communication.json.JsonPayment;
 import com.heidelpay.payment.communication.json.JsonSepaDirectDebit;
 import com.heidelpay.payment.communication.json.JsonTransaction;
 import com.heidelpay.payment.communication.mapper.JsonToBusinessClassMapper;
+import com.heidelpay.payment.paymenttypes.AbstractPaymentType;
 import com.heidelpay.payment.paymenttypes.Card;
 import com.heidelpay.payment.paymenttypes.Eps;
 import com.heidelpay.payment.paymenttypes.Giropay;
@@ -60,7 +60,7 @@ public class PaymentService {
 		this.heidelpay = heidelpay;
 	}
 
-	public PaymentType createPaymentType(AbstractPayment paymentType) throws HttpCommunicationException {
+	public PaymentType createPaymentType(AbstractPaymentType paymentType) throws HttpCommunicationException {
 		String response = restCommunication.httpPost(urlUtil.getRestUrl(paymentType), heidelpay.getPrivateKey(), paymentType);
 		JsonIdObject jsonResponse = new JsonParser<JsonIdObject>().fromJson(response, JsonIdObject.class);
 		return fetchPaymentType(jsonResponse.getId());
@@ -168,7 +168,7 @@ public class PaymentService {
 	}
 
 	public PaymentType fetchPaymentType(String typeId) throws HttpCommunicationException {
-		AbstractPayment paymentType = getPaymentTypeFromTypeId(typeId);
+		AbstractPaymentType paymentType = getPaymentTypeFromTypeId(typeId);
 		paymentType.setHeidelpay(heidelpay);
 		String response = restCommunication.httpGet(urlUtil.getHttpGetUrl(paymentType, typeId), heidelpay.getPrivateKey());
 		JsonIdObject jsonPaymentType = new JsonParser<JsonIdObject>().fromJson(response, getJsonObjectFromTypeId(typeId).getClass());
@@ -322,7 +322,7 @@ public class PaymentService {
 		}
 		
 	}
-	private AbstractPayment getPaymentTypeFromTypeId(String typeId) {
+	private AbstractPaymentType getPaymentTypeFromTypeId(String typeId) {
 		if (typeId.length()<5) {
 			throw new PaymentException("TypeId '" + typeId + "' is invalid");
 		}

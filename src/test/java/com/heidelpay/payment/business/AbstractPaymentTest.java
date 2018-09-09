@@ -135,6 +135,29 @@ public class AbstractPaymentTest {
 		return bigDecimal;
 	}
 
+	protected String maskIban(String text) {
+		return maskString(text, 6, text.length()-4, '*');
+	}
+
+	protected static String maskString(String strText, int start, int end, char maskChar) {
+
+		if (strText == null) return null;
+		if (strText.equals("")) return "";
+		if (start < 0) start = 0;
+		if (end > strText.length()) end = strText.length();
+
+		int maskLength = end - start;
+
+		if (maskLength == 0) return strText;
+
+		StringBuilder sbMaskString = new StringBuilder(maskLength);
+
+		for (int i = 0; i < maskLength; i++) {
+			sbMaskString.append(maskChar);
+		}
+
+		return strText.substring(0, start) + sbMaskString.toString() + strText.substring(start + maskLength);
+	}
 
 
 }

@@ -1,8 +1,6 @@
 package com.heidelpay.payment.paymenttypes;
 
-import com.heidelpay.payment.AbstractPayment;
-
-public class Przelewy24 extends AbstractPayment implements PaymentType {
+public class Przelewy24 extends AbstractPaymentType implements PaymentType {
 
 	@Override
 	public String getTypeUrl() {

@@ -10,15 +10,17 @@ import com.heidelpay.payment.communication.HttpCommunicationException;
 public class Charge extends AbstractPayment {
 	private BigDecimal amount;
 	private Currency currency;
+	private URL returnUrl;
 
 	private String typeId;
 	private String customerId;
 	private String metadataId;
 	private String paymentId;
 	private String riskId;
+	
+	private URL redirectUrl;
 
 	private Processing processing = new Processing();
-	private URL returnUrl;
 	
 	private List<Cancel> cancelList;
 	
@@ -115,6 +117,12 @@ public class Charge extends AbstractPayment {
 	@Override
 	public String getTypeUrl() {
 		return "payments/<paymentId>/charges";
+	}
+	public URL getRedirectUrl() {
+		return redirectUrl;
+	}
+	public void setRedirectUrl(URL redirectUrl) {
+		this.redirectUrl = redirectUrl;
 	}
 
 }
