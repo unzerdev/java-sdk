@@ -32,7 +32,7 @@ public class PaymentTest extends AbstractPaymentTest {
 
 	@Test
 	public void testFullChargeAfterAuthorize() throws MalformedURLException, HttpCommunicationException {
-		Authorization authorize = getHeidelpay().authorize(getAuthorization(createPaymentType().getId()));
+		Authorization authorize = getHeidelpay().authorize(getAuthorization(createPaymentType().getId()));		
 		Payment payment = getHeidelpay().fetchPayment(authorize.getPayment().getId());
 		Charge charge = payment.charge();
 		assertNotNull(charge);
@@ -68,7 +68,7 @@ public class PaymentTest extends AbstractPaymentTest {
 		assertEquals(getBigDecimal("1.0000"), charge.getAmount());
 	}
 
-	@Test
+	@Test(expected=HttpCommunicationException.class)
 	public void testFullCancelAuthorize() throws MalformedURLException, HttpCommunicationException {
 		Authorization authorize = getHeidelpay().authorize(getAuthorization(createPaymentType().getId()));
 		Payment payment = getHeidelpay().fetchPayment(authorize.getPayment().getId());
@@ -76,13 +76,7 @@ public class PaymentTest extends AbstractPaymentTest {
 		assertNotNull(cancel);
 		assertEquals("s-cnl-1", cancel.getId());
 		assertEquals(authorize.getAmount(), cancel.getAmount());
-		
-		try {
-			payment.cancel();
-		} catch (HttpCommunicationException e) {
-			assertTrue("Second cancel should lead to an Exception as the whole amount was already canceled", true);
-		}
-		
+		payment.cancel();
 	}
 
 	@Test
@@ -126,8 +120,6 @@ public class PaymentTest extends AbstractPaymentTest {
 	}
 	
 	@Test
-	// TODO This is an invalid use case
-	@Ignore("I think this is an invalid case")
 	public void testChargeWithoutAuthorize() throws HttpCommunicationException, MalformedURLException {
 		Charge chargeUsingPayment = new Payment(getHeidelpay()).charge(BigDecimal.ONE, Currency.getInstance("EUR"), createPaymentType().getId(), new URL("https://www.google.at"));
 		Charge chargeUsingHeidelpay = getHeidelpay().charge(BigDecimal.ONE, Currency.getInstance("EUR"), createPaymentType().getId(), new URL("https://www.google.at"));

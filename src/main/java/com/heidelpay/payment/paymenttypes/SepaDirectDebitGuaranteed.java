@@ -39,4 +39,5 @@ public class SepaDirectDebitGuaranteed extends AbstractPaymentType implements Pa
 		return "types/sepa-direct-debit-guaranteed";
 	}
 	
+
 }

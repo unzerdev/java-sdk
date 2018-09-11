@@ -1,7 +1,6 @@
 package com.heidelpay.payment.business.paymenttypes;
 
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
 
 import java.math.BigDecimal;
 import java.net.MalformedURLException;
@@ -24,16 +23,10 @@ public class GiropayTest extends AbstractPaymentTest {
 		assertNotNull(giropay.getId());
 	}
 
-	@Test
+	@Test(expected=HttpCommunicationException.class)
 	public void testAuthorizeSddType() throws HttpCommunicationException, MalformedURLException {
 		Giropay giropay = (Giropay) getHeidelpay().createPaymentType(getGiropay());
-	
-		try {
-			giropay.authorize(BigDecimal.ONE, Currency.getInstance("EUR"), new URL("https://www.mpay24.com"));
-		} catch (HttpCommunicationException e) {
-			assertTrue("Authorization not allowed for Sepa Direct Debit", true);
-		}
-		
+		giropay.authorize(BigDecimal.ONE, Currency.getInstance("EUR"), new URL("https://www.mpay24.com"));		
 	}
 
 	@Test

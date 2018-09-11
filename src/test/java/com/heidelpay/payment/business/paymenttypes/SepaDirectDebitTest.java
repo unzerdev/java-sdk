@@ -32,16 +32,10 @@ public class SepaDirectDebitTest extends AbstractPaymentTest {
 		assertSddEquals(sddOriginal, sddCreated);
 	}
 
-	@Test
+	@Test(expected=HttpCommunicationException.class)
 	public void testAuthorizeSddType() throws HttpCommunicationException, MalformedURLException {
 		SepaDirectDebit sdd = (SepaDirectDebit) getHeidelpay().createPaymentType(getSepaDirectDebit());
-	
-		try {
-			sdd.authorize(BigDecimal.ONE, Currency.getInstance("EUR"), new URL("https://www.mpay24.com"));
-		} catch (HttpCommunicationException e) {
-			assertTrue("Authorization not allowed for Sepa Direct Debit", true);
-		}
-		
+		sdd.authorize(BigDecimal.ONE, Currency.getInstance("EUR"), new URL("https://www.mpay24.com"));		
 	}
 
 	@Test

@@ -33,20 +33,13 @@ public class SepaDirectDebitGuaranteedTest extends AbstractPaymentTest {
 		assertSddEquals(sddOriginal, sddCreated);
 	}
 
-	@Test
+	@Test(expected=HttpCommunicationException.class)
 	public void testAuthorizeSddType() throws HttpCommunicationException, MalformedURLException {
 		SepaDirectDebitGuaranteed sdd = (SepaDirectDebitGuaranteed) getHeidelpay().createPaymentType(getSepaDirectDebitGuaranteed());
-	
-		try {
-			sdd.authorize(BigDecimal.ONE, Currency.getInstance("EUR"), new URL("https://www.mpay24.com"));
-		} catch (HttpCommunicationException e) {
-			assertTrue("Authorization not allowed for Sepa Direct Debit", true);
-		}
-		
+		sdd.authorize(BigDecimal.ONE, Currency.getInstance("EUR"), new URL("https://www.mpay24.com"));		
 	}
 
 	@Test
-	// TODO Should we put the charge method into specific classes?
 	public void testChargeSepaDirectDebitGuaranteedType() throws HttpCommunicationException, MalformedURLException, ParseException {
 		SepaDirectDebitGuaranteed sdd = (SepaDirectDebitGuaranteed) getHeidelpay().createPaymentType(getSepaDirectDebitGuaranteed());
 		Charge charge = sdd.charge(BigDecimal.ONE, Currency.getInstance("EUR"), new URL("https://www.google.at"), getMaximumCustomer(getRandomId()));

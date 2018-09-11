@@ -71,8 +71,7 @@ public class AbstractPaymentTest {
 		.setName("Mozart")
 		.setStreet("Grüngasse 16")
 		.setCity("Vienna")
-// need to deactivate until Bug AHC-264 is fixed
-//		.setState("Vienna")
+		.setState("AT-1")
 		.setZip("1010")
 		.setCountry("AT");
 		return address;
