@@ -72,9 +72,9 @@ public class CardTest extends AbstractPaymentTest {
 	public void testFetchCardType() throws HttpCommunicationException {
 		Card card = new Card("4444333322221111", "03/20");
 		card.setCvc("123");
-		card = (Card)getHeidelpay().createPaymentType(card);
+		Card createdCard = (Card)getHeidelpay().createPaymentType(card);
 		assertNotNull(card.getId());
-		Card fetchedCard = (Card)getHeidelpay().fetchPaymentType(card.getId());
+		Card fetchedCard = (Card)getHeidelpay().fetchPaymentType(createdCard.getId());
 		assertNotNull(fetchedCard.getId());
 		assertEquals(card.getNumber(), fetchedCard.getNumber());
 		assertEquals(card.getExpiryDate(), fetchedCard.getExpiryDate());

@@ -2,7 +2,6 @@ package com.heidelpay.payment.business.paymenttypes;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
 
 import java.math.BigDecimal;
 import java.net.MalformedURLException;
