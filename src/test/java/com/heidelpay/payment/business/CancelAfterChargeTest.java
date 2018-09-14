@@ -53,7 +53,9 @@ public class CancelAfterChargeTest extends AbstractPaymentTest {
 	public void testPartialRefundWithCharge() throws MalformedURLException, HttpCommunicationException {
 		Charge initCharge = getHeidelpay().charge(BigDecimal.ONE, Currency.getInstance("EUR"), createPaymentType().getId(), new URL("https://www.google.at"));
 		Charge charge = getHeidelpay().fetchCharge(initCharge.getPaymentId(), initCharge.getId());
-		Cancel cancel = charge.cancel(new BigDecimal(0.1));
+		Cancel cancelExecuted = charge.cancel(new BigDecimal(0.1));
+		assertNotNull(cancelExecuted);
+		Cancel cancel = getHeidelpay().fetchCancel(initCharge.getPaymentId(), charge.getId(), cancelExecuted.getId());
 		assertNotNull(cancel);
 	}
 	

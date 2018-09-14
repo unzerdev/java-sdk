@@ -30,6 +30,14 @@ public class ChargeAfterAuthorizationTest extends AbstractPaymentTest {
 	}
 
 	@Test
+	public void fullChargeAfterAuthorizationHeidelpay() throws HttpCommunicationException, MalformedURLException {
+		Authorization authorize = getHeidelpay().authorize(getAuthorization(createPaymentType().getId()));
+		Charge charge = getHeidelpay().chargeAuthorization(authorize.getPaymentId());
+		assertNotNull(charge);
+		assertNotNull(charge.getId());
+	}
+
+	@Test
 	public void partialChargeAfterAuthorization() throws HttpCommunicationException, MalformedURLException {
 		Authorization authorize = getHeidelpay().authorize(getAuthorization(createPaymentType().getId()));
 		Authorization authorization = getHeidelpay().fetchAuthorization(authorize.getPaymentId());

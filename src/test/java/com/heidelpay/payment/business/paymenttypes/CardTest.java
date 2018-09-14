@@ -49,7 +49,7 @@ public class CardTest extends AbstractPaymentTest {
 
 	@Test
 	public void testAuthorizeAndPaymentCardType() throws HttpCommunicationException, MalformedURLException {
-		Card card = new Card("4444333322221111", "03/20");
+		Card card = new Card("4444333322221111", "03/20").setCvc("123");
 		card.setCvc("123");
 		card = (Card)getHeidelpay().createPaymentType(card);
 		Authorization authorization = card.authorize(BigDecimal.ONE, Currency.getInstance("EUR"), new URL("https://www.mpay24.com"));

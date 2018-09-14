@@ -14,24 +14,27 @@ public class SepaDirectDebit extends AbstractPaymentType implements PaymentType 
 		return iban;
 	}
 
-	public void setIban(String iban) {
+	public SepaDirectDebit setIban(String iban) {
 		this.iban = iban;
+		return this;
 	}
 
 	public String getBic() {
 		return bic;
 	}
 
-	public void setBic(String bic) {
+	public SepaDirectDebit setBic(String bic) {
 		this.bic = bic;
+		return this;
 	}
 
 	public String getHolder() {
 		return holder;
 	}
 
-	public void setHolder(String holder) {
+	public SepaDirectDebit setHolder(String holder) {
 		this.holder = holder;
+		return this;
 	}
 
 	@Override

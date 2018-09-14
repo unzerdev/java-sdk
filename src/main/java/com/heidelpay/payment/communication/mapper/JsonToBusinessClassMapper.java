@@ -82,12 +82,14 @@ public class JsonToBusinessClassMapper {
 		authorization.setId(json.getId());
 		authorization.setAmount(json.getAmount());
 		authorization.setCurrency(json.getCurrency());
-		authorization.setCustomerId(json.getResources().getCustomerId());
-		authorization.setMetadataId(json.getResources().getMetadataId());
-		authorization.setPaymentId(json.getResources().getPaymentId());
+		if (json.getResources() != null) {
+			authorization.setCustomerId(json.getResources().getCustomerId());
+			authorization.setMetadataId(json.getResources().getMetadataId());
+			authorization.setPaymentId(json.getResources().getPaymentId());
+			authorization.setRiskId(json.getResources().getRiskId());
+			authorization.setTypeId(json.getResources().getTypeId());
+		}
 		authorization.setReturnUrl(json.getReturnUrl());
-		authorization.setRiskId(json.getResources().getRiskId());
-		authorization.setTypeId(json.getResources().getTypeId());
 		authorization.setProcessing(getProcessing(json.getProcessing()));
 		authorization.setRedirectUrl(json.getRedirectUrl());
 		return authorization;
@@ -97,12 +99,14 @@ public class JsonToBusinessClassMapper {
 		charge.setId(json.getId());
 		charge.setAmount(json.getAmount());
 		charge.setCurrency(json.getCurrency());
-		charge.setCustomerId(json.getResources().getCustomerId());
-		charge.setMetadataId(json.getResources().getMetadataId());
-		charge.setPaymentId(json.getResources().getPaymentId());
+		if (json.getResources() != null) {
+			charge.setCustomerId(json.getResources().getCustomerId());
+			charge.setMetadataId(json.getResources().getMetadataId());
+			charge.setPaymentId(json.getResources().getPaymentId());
+			charge.setRiskId(json.getResources().getRiskId());
+			charge.setTypeId(json.getResources().getTypeId());
+		}
 		charge.setReturnUrl(json.getReturnUrl());
-		charge.setRiskId(json.getResources().getRiskId());
-		charge.setTypeId(json.getResources().getTypeId());
 		charge.setProcessing(getProcessing(json.getProcessing()));
 		charge.setRedirectUrl(json.getRedirectUrl());
 		return charge;
