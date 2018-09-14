@@ -1,14 +1,6 @@
 package com.heidelpay.payment.paymenttypes;
 
-import java.math.BigDecimal;
-import java.net.URL;
-import java.util.Currency;
-
-import com.heidelpay.payment.Authorization;
-import com.heidelpay.payment.Charge;
-import com.heidelpay.payment.Customer;
 import com.heidelpay.payment.Heidelpay;
-import com.heidelpay.payment.communication.HttpCommunicationException;
 
 public abstract class AbstractPaymentType implements PaymentType {
 	private String id;

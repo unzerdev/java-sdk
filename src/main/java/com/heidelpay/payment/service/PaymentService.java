@@ -191,6 +191,7 @@ public class PaymentService {
 		}
 	}
 
+	@SuppressWarnings("unchecked")
 	public <T extends PaymentType> T fetchPaymentType(String typeId) throws HttpCommunicationException {
 		AbstractPaymentType paymentType = getPaymentTypeFromTypeId(typeId);
 		paymentType.setHeidelpay(heidelpay);
