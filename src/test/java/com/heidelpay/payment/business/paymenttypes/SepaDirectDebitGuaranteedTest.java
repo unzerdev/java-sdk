@@ -9,9 +9,11 @@ import java.net.URL;
 import java.text.ParseException;
 import java.util.Currency;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
 import com.heidelpay.payment.Charge;
+import com.heidelpay.payment.Shipment;
 import com.heidelpay.payment.business.AbstractPaymentTest;
 import com.heidelpay.payment.communication.HttpCommunicationException;
 import com.heidelpay.payment.paymenttypes.SepaDirectDebitGuaranteed;
@@ -21,34 +23,29 @@ public class SepaDirectDebitGuaranteedTest extends AbstractPaymentTest {
 	@Test
 	public void testCreateSepaDirectDebitGuaranteedManatoryType() throws HttpCommunicationException {
 		SepaDirectDebitGuaranteed sdd = new SepaDirectDebitGuaranteed("DE89370400440532013000");
-		sdd = (SepaDirectDebitGuaranteed) getHeidelpay().createPaymentType(sdd);
+		sdd = getHeidelpay().createPaymentType(sdd);
 		assertNotNull(sdd.getId());
 	}
 
 	@Test
 	public void testCreateSepaDirectDebitGuaranteedFullType() throws HttpCommunicationException {
 		SepaDirectDebitGuaranteed sddOriginal = getSepaDirectDebitGuaranteed();
-		SepaDirectDebitGuaranteed sddCreated = (SepaDirectDebitGuaranteed) getHeidelpay().createPaymentType(sddOriginal);
+		SepaDirectDebitGuaranteed sddCreated = getHeidelpay().createPaymentType(sddOriginal);
 		assertSddEquals(sddOriginal, sddCreated);
 	}
 
-	@Test(expected=HttpCommunicationException.class)
-	public void testAuthorizeSddType() throws HttpCommunicationException, MalformedURLException {
-		SepaDirectDebitGuaranteed sdd = (SepaDirectDebitGuaranteed) getHeidelpay().createPaymentType(getSepaDirectDebitGuaranteed());
-		sdd.authorize(BigDecimal.ONE, Currency.getInstance("EUR"), new URL("https://www.mpay24.com"));		
-	}
-
 	@Test
-	public void testChargeSepaDirectDebitGuaranteedType() throws HttpCommunicationException, MalformedURLException, ParseException {
-		SepaDirectDebitGuaranteed sdd = (SepaDirectDebitGuaranteed) getHeidelpay().createPaymentType(getSepaDirectDebitGuaranteed());
-		Charge charge = sdd.charge(BigDecimal.ONE, Currency.getInstance("EUR"), new URL("https://www.google.at"), getMaximumCustomer(getRandomId()));
-		assertNotNull(charge);
-		assertNotNull(charge.getId());
+	@Ignore("Created Bug AHC-302 for Shipment")
+	public void testShipmentSepaDirectDebitGuaranteedType() throws HttpCommunicationException, MalformedURLException, ParseException {
+		Charge charge = getHeidelpay().charge(BigDecimal.TEN, Currency.getInstance("EUR"), new SepaDirectDebitGuaranteed("DE89370400440532013000"), new URL("https://www.google.at"), getMaximumCustomer(getRandomId()));
+		Shipment shipment = getHeidelpay().shipment(charge.getPaymentId());
+		assertNotNull(shipment);
+		assertNotNull(shipment.getId());
 	}
 
 	@Test
 	public void testFetchSepaDirectDebitGuaranteedType() throws HttpCommunicationException {
-		SepaDirectDebitGuaranteed sdd = (SepaDirectDebitGuaranteed) getHeidelpay().createPaymentType(getSepaDirectDebitGuaranteed());
+		SepaDirectDebitGuaranteed sdd = getHeidelpay().createPaymentType(getSepaDirectDebitGuaranteed());
 		assertNotNull(sdd.getId());
 		SepaDirectDebitGuaranteed fetchedSdd = (SepaDirectDebitGuaranteed) getHeidelpay().fetchPaymentType(sdd.getId());
 		assertNotNull(fetchedSdd.getId());
@@ -70,6 +67,5 @@ public class SepaDirectDebitGuaranteedTest extends AbstractPaymentTest {
 		sdd.setHolder("Rene Felder");
 		return sdd;
 	}
-
 
 }

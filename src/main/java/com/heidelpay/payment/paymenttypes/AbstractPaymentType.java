@@ -42,18 +42,6 @@ public abstract class AbstractPaymentType implements PaymentType {
 		this.heidelpay = heidelpay;
 	}
 
-	public Authorization authorize(BigDecimal amount, Currency currency, URL returnUrl) throws HttpCommunicationException {
-		return authorize(amount, currency, returnUrl, (Customer)null);
-	}
-	public Authorization authorize(BigDecimal amount, Currency currency, URL returnUrl, Customer customer) throws HttpCommunicationException {
-		return getHeidelpay().authorize(amount, currency, this, returnUrl, customer);
-	}
-	public Charge charge(BigDecimal amount, Currency currency, URL returnUrl) throws HttpCommunicationException {
-		return getHeidelpay().charge(amount, currency, this, returnUrl, (Customer)null);
-	}
-	public Charge charge(BigDecimal amount, Currency currency, URL returnUrl, Customer customer) throws HttpCommunicationException {
-		return getHeidelpay().charge(amount, currency, this, returnUrl, customer);
-	}
 	// Currently returnUrl is mandatory	
 //		public Charge charge(BigDecimal amount, Currency currency) throws HttpCommunicationException {
 //			return getHeidelpay().charge(amount, currency, this);

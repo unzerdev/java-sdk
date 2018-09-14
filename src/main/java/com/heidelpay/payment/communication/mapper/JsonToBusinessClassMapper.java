@@ -11,6 +11,7 @@ import com.heidelpay.payment.Processing;
 import com.heidelpay.payment.communication.json.JsonAuthorization;
 import com.heidelpay.payment.communication.json.JsonCancel;
 import com.heidelpay.payment.communication.json.JsonCard;
+import com.heidelpay.payment.communication.json.JsonCardFetch;
 import com.heidelpay.payment.communication.json.JsonCharge;
 import com.heidelpay.payment.communication.json.JsonIdObject;
 import com.heidelpay.payment.communication.json.JsonIdeal;
@@ -139,7 +140,12 @@ public class JsonToBusinessClassMapper {
 
 	public PaymentType mapToBusinessObject(PaymentType paymentType, JsonIdObject jsonPaymentType) {
 		if (paymentType instanceof Card) {
-			return map((Card) paymentType, (JsonCard) jsonPaymentType);
+			// workaround for Bug AHC-265
+			if (jsonPaymentType instanceof JsonCardFetch) {
+				return map((Card) paymentType, (JsonCardFetch) jsonPaymentType);
+			} else {
+				return map((Card) paymentType, (JsonCard) jsonPaymentType);
+			}
 		} else if (paymentType instanceof SepaDirectDebitGuaranteed) {
 			return map((SepaDirectDebitGuaranteed) paymentType, (JsonSepaDirectDebit) jsonPaymentType);
 		} else if (paymentType instanceof SepaDirectDebit) {
@@ -168,6 +174,14 @@ public class JsonToBusinessClassMapper {
 		}
 	}
 
+	private PaymentType map(Card card, JsonCardFetch jsonCard) {
+		card.setCvc(jsonCard.getCvv());
+		card.setExpiryDate(jsonCard.getExpiry());
+		card.setNumber(jsonCard.getNumber());
+		card.setId(jsonCard.getId());
+		return card;
+		
+	}
 	private PaymentType map(Card card, JsonCard jsonCard) {
 		card.setCvc(jsonCard.getCvc());
 		card.setExpiryDate(jsonCard.getExpiryDate());

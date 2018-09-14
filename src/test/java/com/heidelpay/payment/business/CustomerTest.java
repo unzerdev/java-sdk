@@ -52,5 +52,27 @@ public class CustomerTest extends AbstractPaymentTest {
 		assertCustomerEquals(expectedCustomer, fetchedCustomer);
 	}
 
+	@Test
+	// TODO How to update a customer? Should we remove restriction of Constructor?
+	public void testUpdateCustomer() throws HttpCommunicationException, ParseException {
+		Customer customer = getHeidelpay().createCustomer(getMaximumCustomer(getRandomId()));
+		assertNotNull(customer);
+		assertNotNull(customer.getId());
+		Customer customerToUpdate = new Customer(customer.getFirstname(), customer.getLastname());
+		customerToUpdate.setFirstname("Max");
+		Customer updatedCustomer = getHeidelpay().updateCustomer(customer.getId(), customerToUpdate);
+		assertEquals("Max", updatedCustomer.getFirstname());
+		Customer fetchedCustomer = getHeidelpay().fetchCustomer(customer.getId());
+		assertEquals("Max", fetchedCustomer.getFirstname());
+	}
+	
+	@Test(expected=HttpCommunicationException.class)
+	public void testDeleteCustomer() throws HttpCommunicationException, ParseException {
+		Customer customer = getHeidelpay().createCustomer(getMaximumCustomer(getRandomId()));
+		assertNotNull(customer);
+		assertNotNull(customer.getId());
+		getHeidelpay().deleteCustomer(customer.getId());
+		getHeidelpay().fetchCustomer(customer.getId());
+	}
 
 }

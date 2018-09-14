@@ -46,7 +46,7 @@ public class CancelAfterAuthorizationTest extends AbstractPaymentTest {
 		Cancel cancel = getHeidelpay().cancelAuthorization(authorize.getPaymentId());
 		assertNotNull(cancel);
 		assertNotNull(cancel.getId());
-		assertEquals(getBigDecimal("0.1000"), cancel.getAmount());
+		assertEquals(getBigDecimal("10.0000"), cancel.getAmount());
 	}
 
 	@Test

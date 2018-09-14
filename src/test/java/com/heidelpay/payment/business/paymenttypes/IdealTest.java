@@ -22,15 +22,9 @@ public class IdealTest extends AbstractPaymentTest {
 		assertNotNull(ideal.getId());
 	}
 
-	@Test(expected=HttpCommunicationException.class)
-	public void testAuthorizeType() throws HttpCommunicationException, MalformedURLException {
-		Ideal ideal = (Ideal) getHeidelpay().createPaymentType(getIdeal());
-		ideal.authorize(BigDecimal.ONE, Currency.getInstance("EUR"), new URL("https://www.mpay24.com"));		
-	}
-
 	@Test
 	public void testChargeIdealType() throws HttpCommunicationException, MalformedURLException {
-		Ideal ideal = (Ideal) getHeidelpay().createPaymentType(getIdeal());
+		Ideal ideal = getHeidelpay().createPaymentType(getIdeal());
 		Charge charge = ideal.charge(BigDecimal.ONE, Currency.getInstance("EUR"), new URL("https://www.google.at"));
 		assertNotNull(charge);
 		assertNotNull(charge.getId());
@@ -39,7 +33,7 @@ public class IdealTest extends AbstractPaymentTest {
 
 	@Test
 	public void testFetchIdealType() throws HttpCommunicationException {
-		Ideal ideal = (Ideal) getHeidelpay().createPaymentType(getIdeal());
+		Ideal ideal = getHeidelpay().createPaymentType(getIdeal());
 		assertNotNull(ideal.getId());
 		Ideal fetchedIdeal = (Ideal) getHeidelpay().fetchPaymentType(ideal.getId());
 		assertNotNull(fetchedIdeal.getId());
@@ -47,8 +41,7 @@ public class IdealTest extends AbstractPaymentTest {
 
 	
 	private Ideal getIdeal() {
-		Ideal ideal = new Ideal();
-		ideal.setBankName("RABONL2U");
+		Ideal ideal = new Ideal().setBankName("RABONL2U");
 		return ideal;
 	}
 

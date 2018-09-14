@@ -7,8 +7,10 @@ import java.util.Objects;
 import org.apache.http.HttpEntity;
 import org.apache.http.StatusLine;
 import org.apache.http.client.methods.CloseableHttpResponse;
+import org.apache.http.client.methods.HttpDelete;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
+import org.apache.http.client.methods.HttpPut;
 import org.apache.http.client.methods.HttpUriRequest;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.CloseableHttpClient;
@@ -46,6 +48,25 @@ public class RestCommunication {
 		logger.debug("Response: '" + json + "'");
 		return response;
 	}
+
+	public String httpDelete(String url, String privateKey) throws HttpCommunicationException {
+		HttpDelete httpDelete = getHttpDelete(url);
+		httpDelete = (HttpDelete)addAuthentication(privateKey, httpDelete);
+		return this.execute(httpDelete);
+	}
+
+	public String httpPut(String url, String privateKey, Object data) throws HttpCommunicationException {
+		HttpPut httpPut = getHttpPut(url, "application/json; charset=UTF-8");
+		httpPut = (HttpPut)addAuthentication(privateKey, httpPut);
+		String json = new JsonParser<String>().toJson(data);
+		logger.debug("Request: '" + json + "'");
+		HttpEntity entity = new StringEntity(json, "UTF-8");
+		httpPut.setEntity(entity);
+		String response =  this.execute(httpPut);
+		logger.debug("Response: '" + json + "'");
+		return response;
+	}
+
 
 	private HttpUriRequest addAuthentication(String privateKey, HttpUriRequest http) {
 		if (!privateKey.endsWith(":")) {
@@ -99,8 +120,21 @@ public class RestCommunication {
 	
 	private HttpGet getHttpGet(String url) {
 		HttpGet httpGet = new HttpGet(url);
+		httpGet.setHeader("User-Agent", "HeidelpayJava");
 		return httpGet;
 	}
 
+	private HttpDelete getHttpDelete(String url) {
+		HttpDelete httpDelete = new HttpDelete(url);
+		httpDelete.setHeader("User-Agent", "HeidelpayJava");
+		return httpDelete;
+	}
+
+	private HttpPut getHttpPut(String url, String contentType) {
+		HttpPut httpPut = new HttpPut(url);
+		httpPut.setHeader("User-Agent", "HeidelpayJava");
+		httpPut.addHeader("Content-Type", contentType);
+		return httpPut;
+	}
 
 }

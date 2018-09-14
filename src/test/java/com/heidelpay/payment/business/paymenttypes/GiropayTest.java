@@ -23,15 +23,9 @@ public class GiropayTest extends AbstractPaymentTest {
 		assertNotNull(giropay.getId());
 	}
 
-	@Test(expected=HttpCommunicationException.class)
-	public void testAuthorizeSddType() throws HttpCommunicationException, MalformedURLException {
-		Giropay giropay = (Giropay) getHeidelpay().createPaymentType(getGiropay());
-		giropay.authorize(BigDecimal.ONE, Currency.getInstance("EUR"), new URL("https://www.mpay24.com"));		
-	}
-
 	@Test
 	public void testChargeGiropayType() throws HttpCommunicationException, MalformedURLException {
-		Giropay giropay = (Giropay) getHeidelpay().createPaymentType(getGiropay());
+		Giropay giropay = getHeidelpay().createPaymentType(getGiropay());
 		Charge charge = giropay.charge(BigDecimal.ONE, Currency.getInstance("EUR"), new URL("https://www.google.at"));
 		assertNotNull(charge);
 		assertNotNull(charge.getId());
@@ -40,7 +34,7 @@ public class GiropayTest extends AbstractPaymentTest {
 
 	@Test
 	public void testFetchGiropayType() throws HttpCommunicationException {
-		Giropay giropay = (Giropay) getHeidelpay().createPaymentType(getGiropay());
+		Giropay giropay = getHeidelpay().createPaymentType(getGiropay());
 		assertNotNull(giropay.getId());
 		Giropay fetchedGiropay = (Giropay) getHeidelpay().fetchPaymentType(giropay.getId());
 		assertNotNull(fetchedGiropay.getId());

@@ -5,7 +5,6 @@ import java.net.URL;
 import java.util.Currency;
 
 import com.heidelpay.payment.communication.HttpCommunicationException;
-import com.heidelpay.payment.paymenttypes.AbstractPaymentType;
 import com.heidelpay.payment.paymenttypes.PaymentType;
 import com.heidelpay.payment.service.PaymentService;
 
@@ -26,9 +25,17 @@ public class Heidelpay {
 		return customer;
 	}
 	
-	public PaymentType createPaymentType(PaymentType paymentType) throws HttpCommunicationException {
+	public Customer updateCustomer(String id, Customer customer) throws HttpCommunicationException {
+		return paymentService.updateCustomer(id, customer);
+	}
+
+	public void deleteCustomer(String customerId) throws HttpCommunicationException {
+		paymentService.deleteCustomer(customerId);
+	}
+
+	public <T extends PaymentType> T createPaymentType(T paymentType) throws HttpCommunicationException {
 		if (paymentType != null && paymentType.getId() == null) {
-			return paymentService.createPaymentType((AbstractPaymentType)paymentType);
+			return  paymentService.createPaymentType(paymentType);
 		} else if (paymentType != null && paymentType.getId() != null){
 			return paymentType;
 		} else {
@@ -143,6 +150,10 @@ public class Heidelpay {
 	public Cancel cancelCharge(String paymentId, String chargeId, BigDecimal amount) throws HttpCommunicationException {
 		return paymentService.cancelCharge(paymentId, chargeId, amount);
 	}
+	
+	public Shipment shipment(String paymentId) throws HttpCommunicationException {
+		return paymentService.shipment(paymentId);
+	}
 
 	
 	// Load data from Interface
@@ -173,6 +184,7 @@ public class Heidelpay {
 	public String getPrivateKey() {
 		return privateKey;
 	}
+
 
 
 

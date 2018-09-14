@@ -9,7 +9,7 @@ import java.util.Currency;
 
 import org.junit.Test;
 
-import com.heidelpay.payment.Charge;
+import com.heidelpay.payment.Authorization;
 import com.heidelpay.payment.business.AbstractPaymentTest;
 import com.heidelpay.payment.communication.HttpCommunicationException;
 import com.heidelpay.payment.paymenttypes.Invoice;
@@ -24,22 +24,15 @@ public class InvoiceTest extends AbstractPaymentTest {
 
 	@Test
 	public void testAuthorizeType() throws HttpCommunicationException, MalformedURLException {
-		Invoice invoice = (Invoice) getHeidelpay().createPaymentType(getInvoice());
-		invoice.authorize(BigDecimal.ONE, Currency.getInstance("EUR"), new URL("https://www.mpay24.com"));		
-	}
-
-	@Test
-	public void testShipmentInvoiceType() throws HttpCommunicationException, MalformedURLException {
-		Invoice invoice = (Invoice) getHeidelpay().createPaymentType(getInvoice());
-		Charge charge = invoice.charge(BigDecimal.ONE, Currency.getInstance("EUR"), new URL("https://www.google.at"));
-		assertNotNull(charge);
-		assertNotNull(charge.getId());
-		assertNotNull(charge.getRedirectUrl());
+		Invoice invoice = getHeidelpay().createPaymentType(getInvoice());
+		Authorization authorization = invoice.authorize(BigDecimal.ONE, Currency.getInstance("EUR"), new URL("https://www.mpay24.com"));		
+		assertNotNull(authorization);
+		assertNotNull(authorization.getId());
 	}
 
 	@Test
 	public void testFetchInvoiceType() throws HttpCommunicationException {
-		Invoice invoice = (Invoice) getHeidelpay().createPaymentType(getInvoice());
+		Invoice invoice = getHeidelpay().createPaymentType(getInvoice());
 		assertNotNull(invoice.getId());
 		Invoice fetchedInvoice = (Invoice) getHeidelpay().fetchPaymentType(invoice.getId());
 		assertNotNull(fetchedInvoice.getId());
