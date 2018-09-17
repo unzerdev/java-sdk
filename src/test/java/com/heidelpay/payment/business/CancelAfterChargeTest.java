@@ -17,7 +17,7 @@ public class CancelAfterChargeTest extends AbstractPaymentTest {
 
 	@Test
 	public void testFetchChargeWithId() throws MalformedURLException, HttpCommunicationException {
-		Charge initCharge = getHeidelpay().charge(BigDecimal.ONE, Currency.getInstance("EUR"), createPaymentType().getId(), new URL("https://www.google.at"));
+		Charge initCharge = getHeidelpay().charge(BigDecimal.ONE, Currency.getInstance("EUR"), createPaymentTypeCard().getId(), new URL("https://www.google.at"));
 		Charge charge = getHeidelpay().fetchCharge(initCharge.getPaymentId(),  initCharge.getId());
 		assertNotNull(charge);
 		assertNotNull(charge.getId());
@@ -27,7 +27,7 @@ public class CancelAfterChargeTest extends AbstractPaymentTest {
 
 	@Test
 	public void testFullRefundWithId() throws MalformedURLException, HttpCommunicationException {
-		Charge initCharge = getHeidelpay().charge(BigDecimal.ONE, Currency.getInstance("EUR"), createPaymentType().getId(), new URL("https://www.google.at"));
+		Charge initCharge = getHeidelpay().charge(BigDecimal.ONE, Currency.getInstance("EUR"), createPaymentTypeCard().getId(), new URL("https://www.google.at"));
 		Cancel cancel = getHeidelpay().cancelCharge(initCharge.getPaymentId(), initCharge.getId());
 		assertNotNull(cancel);
 		assertNotNull(cancel.getId());
@@ -35,7 +35,7 @@ public class CancelAfterChargeTest extends AbstractPaymentTest {
 
 	@Test
 	public void testFullRefundWithCharge() throws MalformedURLException, HttpCommunicationException {
-		Charge initCharge = getHeidelpay().charge(BigDecimal.ONE, Currency.getInstance("EUR"), createPaymentType().getId(), new URL("https://www.google.at"));
+		Charge initCharge = getHeidelpay().charge(BigDecimal.ONE, Currency.getInstance("EUR"), createPaymentTypeCard().getId(), new URL("https://www.google.at"));
 		Charge charge = getHeidelpay().fetchCharge(initCharge.getPaymentId(), initCharge.getId());
 		Cancel cancel = charge.cancel();
 		assertNotNull(cancel);
@@ -44,14 +44,14 @@ public class CancelAfterChargeTest extends AbstractPaymentTest {
 
 	@Test
 	public void testPartialRefundWithId() throws MalformedURLException, HttpCommunicationException {
-		Charge initCharge = getHeidelpay().charge(BigDecimal.ONE, Currency.getInstance("EUR"), createPaymentType().getId(), new URL("https://www.google.at"));
+		Charge initCharge = getHeidelpay().charge(BigDecimal.ONE, Currency.getInstance("EUR"), createPaymentTypeCard().getId(), new URL("https://www.google.at"));
 		Cancel cancel = getHeidelpay().cancelCharge(initCharge.getPaymentId(), initCharge.getId(), new BigDecimal(0.1));
 		assertNotNull(cancel);
 	}
 
 	@Test
 	public void testPartialRefundWithCharge() throws MalformedURLException, HttpCommunicationException {
-		Charge initCharge = getHeidelpay().charge(BigDecimal.ONE, Currency.getInstance("EUR"), createPaymentType().getId(), new URL("https://www.google.at"));
+		Charge initCharge = getHeidelpay().charge(BigDecimal.ONE, Currency.getInstance("EUR"), createPaymentTypeCard().getId(), new URL("https://www.google.at"));
 		Charge charge = getHeidelpay().fetchCharge(initCharge.getPaymentId(), initCharge.getId());
 		Cancel cancelExecuted = charge.cancel(new BigDecimal(0.1));
 		assertNotNull(cancelExecuted);

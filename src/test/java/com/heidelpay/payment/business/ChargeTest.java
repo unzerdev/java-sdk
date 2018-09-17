@@ -20,7 +20,7 @@ public class ChargeTest extends AbstractPaymentTest {
 	
 	@Test
 	public void testChargeWithTypeId() throws MalformedURLException, HttpCommunicationException {
-		Charge charge = getHeidelpay().charge(BigDecimal.ONE, Currency.getInstance("EUR"), createPaymentType().getId(), new URL("https://www.google.at"));
+		Charge charge = getHeidelpay().charge(BigDecimal.ONE, Currency.getInstance("EUR"), createPaymentTypeCard().getId(), new URL("https://www.google.at"));
 		assertNotNull(charge);
 		assertNotNull(charge.getId());
 	}
@@ -35,7 +35,7 @@ public class ChargeTest extends AbstractPaymentTest {
 
 	@Test
 	public void testChargeWithReturnUrl() throws MalformedURLException, HttpCommunicationException {
-		Charge charge = getHeidelpay().charge(BigDecimal.ONE, Currency.getInstance("EUR"), createPaymentType().getId(), new URL("https://www.google.at"));
+		Charge charge = getHeidelpay().charge(BigDecimal.ONE, Currency.getInstance("EUR"), createPaymentTypeCard().getId(), new URL("https://www.google.at"));
 		assertNotNull(charge);
 		assertNotNull(charge.getId());
 	}
@@ -54,7 +54,7 @@ public class ChargeTest extends AbstractPaymentTest {
 	@Ignore("Bug ticket AHC-267 created")
 	public void testChargeWithCustomerIdReturnUrl() throws MalformedURLException, HttpCommunicationException, ParseException {
 		Customer customer = getHeidelpay().createCustomer(getMaximumCustomer(getRandomId()));
-		Charge charge = getHeidelpay().charge(BigDecimal.ONE, Currency.getInstance("EUR"), createPaymentType().getId(), new URL("https://www.google.at"), customer.getId());
+		Charge charge = getHeidelpay().charge(BigDecimal.ONE, Currency.getInstance("EUR"), createPaymentTypeCard().getId(), new URL("https://www.google.at"), customer.getId());
 		assertNotNull(charge);
 	}
 

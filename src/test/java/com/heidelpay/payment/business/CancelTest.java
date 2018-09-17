@@ -19,7 +19,7 @@ public class CancelTest extends AbstractPaymentTest {
 
 	@Test
 	public void testFetchCancelAuthorizationWithHeidelpay() throws MalformedURLException, HttpCommunicationException {
-		Authorization authorize = getHeidelpay().authorize(getAuthorization(createPaymentType().getId()));
+		Authorization authorize = getHeidelpay().authorize(getAuthorization(createPaymentTypeCard().getId()));
 		Cancel cancelInit = authorize.cancel();
 		Cancel cancel = getHeidelpay().fetchCancel(authorize.getPaymentId(),  cancelInit.getId());
 		assertNotNull(cancel);
@@ -29,7 +29,7 @@ public class CancelTest extends AbstractPaymentTest {
 
 	@Test
 	public void testFetchCancelAuthorizationWithPayment() throws MalformedURLException, HttpCommunicationException {
-		Authorization authorize = getHeidelpay().authorize(getAuthorization(createPaymentType().getId()));
+		Authorization authorize = getHeidelpay().authorize(getAuthorization(createPaymentTypeCard().getId()));
 		Cancel cancelInit = authorize.cancel();
 		List<Cancel> cancelList = cancelInit.getPayment().getCancelList();
 		assertNotNull(cancelList);
@@ -39,7 +39,7 @@ public class CancelTest extends AbstractPaymentTest {
 
 	@Test
 	public void testFetchCancelChargeWithHeidelpay() throws MalformedURLException, HttpCommunicationException {
-		Charge initCharge = getHeidelpay().charge(BigDecimal.ONE, Currency.getInstance("EUR"), createPaymentType().getId(), new URL("https://www.google.at"));
+		Charge initCharge = getHeidelpay().charge(BigDecimal.ONE, Currency.getInstance("EUR"), createPaymentTypeCard().getId(), new URL("https://www.google.at"));
 		Cancel cancelInit = initCharge.cancel();
 		Cancel cancel = getHeidelpay().fetchCancel(initCharge.getPaymentId(), initCharge.getId(), cancelInit.getId());
 		assertNotNull(cancel);
@@ -49,7 +49,7 @@ public class CancelTest extends AbstractPaymentTest {
 	
 	@Test
 	public void testFetchCancelChargeWithPayment() throws MalformedURLException, HttpCommunicationException {
-		Charge initCharge = getHeidelpay().charge(BigDecimal.ONE, Currency.getInstance("EUR"), createPaymentType().getId(), new URL("https://www.google.at"));
+		Charge initCharge = getHeidelpay().charge(BigDecimal.ONE, Currency.getInstance("EUR"), createPaymentTypeCard().getId(), new URL("https://www.google.at"));
 		Cancel cancelInit = initCharge.cancel();
 		Cancel cancel = cancelInit.getPayment().getCharge(initCharge.getId()).getCancel(cancelInit.getId());
 		assertNotNull(cancel);

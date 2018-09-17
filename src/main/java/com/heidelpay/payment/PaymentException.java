@@ -1,5 +1,6 @@
 package com.heidelpay.payment;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class PaymentException extends RuntimeException {
@@ -23,6 +24,12 @@ public class PaymentException extends RuntimeException {
 	
 	public PaymentException(String message) {
 		super(message);
+	}
+
+	public PaymentException(String merchantMessage, String customerMessage, String code) {
+		super(merchantMessage);
+		this.paymentErrorList = new ArrayList<PaymentError>();
+		this.paymentErrorList.add(new PaymentError(merchantMessage, customerMessage, code));
 	}
 
 	public PaymentException(String message, List<PaymentError> paymentErrorList) {

@@ -2,6 +2,15 @@ package com.heidelpay.payment;
 
 public class PaymentError {
 	
+	public PaymentError() {
+		super();
+	}
+	public PaymentError(String merchantMessage, String customerMessage, String code) {
+		super();
+		this.merchantMessage = merchantMessage;
+		this.customerMessage = customerMessage;
+		this.code = code;
+	}
 	private String merchantMessage;
 	private String customerMessage;
 	private String code;

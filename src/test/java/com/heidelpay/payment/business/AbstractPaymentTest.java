@@ -28,6 +28,9 @@ public class AbstractPaymentTest {
 	public Heidelpay getHeidelpay() {
 		return heidelpay;
 	}
+	public Heidelpay getHeidelpay(String key) {
+		return new Heidelpay(key);
+	}
 
 	protected Authorization getAuthorization(String typeId) throws MalformedURLException {
 		Authorization authorization = new Authorization();
@@ -38,10 +41,14 @@ public class AbstractPaymentTest {
 		.setReturnUrl(new URL("https://www.heidelpay.com"));
 		return authorization;
 	}
-	protected Card createPaymentType() throws HttpCommunicationException {
+	protected Card createPaymentTypeCard() throws HttpCommunicationException {
+		Card card = getPaymentTypeCard();
+		card = (Card)getHeidelpay().createPaymentType(card);
+		return card;
+	}
+	protected Card getPaymentTypeCard() {
 		Card card = new Card("4444333322221111", "03/20");
 		card.setCvc("123");
-		card = (Card)getHeidelpay().createPaymentType(card);
 		return card;
 	}
 
@@ -77,7 +84,7 @@ public class AbstractPaymentTest {
 		return address;
 	}
 
-	private Date getDate(String date) throws ParseException {
+	protected Date getDate(String date) throws ParseException {
 		return new SimpleDateFormat("dd.MM.yy").parse(date);
 	}
 
@@ -158,5 +165,13 @@ public class AbstractPaymentTest {
 		return strText.substring(0, start) + sbMaskString.toString() + strText.substring(start + maskLength);
 	}
 
+	protected Charge getCharge() throws MalformedURLException, HttpCommunicationException {
+		Charge charge = new Charge();
+		charge.setAmount(BigDecimal.ONE)
+		.setCurrency(Currency.getInstance("EUR"))
+		.setTypeId(createPaymentTypeCard().getId())
+		.setReturnUrl(new URL("https://www.google.at"));
+		return charge;
+	}
 
 }
