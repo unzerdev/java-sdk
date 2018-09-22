@@ -18,6 +18,10 @@ public class Heidelpay {
 		this.paymentService = new PaymentService(this);
 	}
 	
+	public Customer createCustomerIfPresent(Customer customer) throws HttpCommunicationException {
+		if (customer == null) return null;
+		return createCustomer(customer);
+	}
 	public Customer createCustomer(Customer customer) throws HttpCommunicationException {
 		if (customer == null) throw new NullPointerException("Customer must not be null");
 		if (customer.getId() != null) throw new PaymentException("Customer has an id set. createCustomer can only be called without Customer.id. Please use updateCustomer or remove the id from Customer.");
@@ -63,7 +67,7 @@ public class Heidelpay {
 		return authorize(amount, currency, paymentType, returnUrl, (Customer)null);
 	}
 	public Authorization authorize(BigDecimal amount, Currency currency, PaymentType paymentType, URL returnUrl, Customer customer) throws HttpCommunicationException {
-		return authorize(amount, currency, createPaymentType(paymentType).getId(), returnUrl, getCustomerId(createCustomer(customer)));
+		return authorize(amount, currency, createPaymentType(paymentType).getId(), returnUrl, getCustomerId(createCustomerIfPresent(customer)));
 	}
 	public Authorization authorize(BigDecimal amount, Currency currency, String typeId, URL returnUrl, String customerId) throws HttpCommunicationException {
 		return authorize(getAuthorization(amount, currency, typeId, returnUrl, customerId));
@@ -108,7 +112,7 @@ public class Heidelpay {
 		return charge(amount, currency, createPaymentType(paymentType).getId(), returnUrl, (String)null);
 	}
 	public Charge charge(BigDecimal amount, Currency currency, PaymentType paymentType, URL returnUrl, Customer customer) throws HttpCommunicationException {
-		return charge(amount, currency, createPaymentType(paymentType).getId(), returnUrl, getCustomerId(createCustomer(customer)));
+		return charge(amount, currency, createPaymentType(paymentType).getId(), returnUrl, getCustomerId(createCustomerIfPresent(customer)));
 	}
 	public Charge charge(Charge charge) throws HttpCommunicationException {
 		return paymentService.charge(charge);
