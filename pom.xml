@@ -7,6 +7,12 @@
 	<groupId>com.heidelpay.payment</groupId>
 	<artifactId>heidelpayJava</artifactId>
 	<version>0.0.1.0</version>
+	
+	<name>Heidelpay Java SDK</name>
+	<inceptionYear>2018</inceptionYear>
+	<organization>
+		<name>Heidelpay GmbH</name>
+	</organization>
 
 	<description>Heidelpay Java SDK</description>
 
