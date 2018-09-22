@@ -134,7 +134,10 @@ public class JsonToBusinessClassMapper {
 		payment.setAmountRemaining(json.getAmount().getRemaining());
 		payment.setOrderId(json.getOrderId());
 		payment.setId(json.getId());
-		payment.setPaymentTypeId(json.getResources().getTypeId());
+		if (json.getResources() != null) { 
+			payment.setPaymentTypeId(json.getResources().getTypeId());
+			payment.setCustomerId(json.getResources().getCustomerId());
+		}
 		return payment;
 	}
 
@@ -218,7 +221,7 @@ public class JsonToBusinessClassMapper {
 	
 	private PaymentType map(Ideal ideal, JsonIdeal jsonIdeal) {
 		ideal.setId(jsonIdeal.getId());
-		ideal.setBankName(jsonIdeal.getBankName());
+		ideal.setBic(jsonIdeal.getBankName());
 		return ideal;
 	}
 	

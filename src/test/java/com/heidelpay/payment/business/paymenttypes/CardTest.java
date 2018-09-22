@@ -79,13 +79,13 @@ public class CardTest extends AbstractPaymentTest {
 		assertNotNull(createdCard.getId());
 		assertEquals(maskString(card.getNumber(), 6, card.getNumber().length()-4, '*'), createdCard.getNumber());
 		assertEquals(card.getExpiryDate(), createdCard.getExpiryDate());
-		assertNull(createdCard.getCvc());
+		assertNotNull(createdCard.getCvc());
 
 		Card fetchedCard = (Card)getHeidelpay().fetchPaymentType(createdCard.getId());
 		assertNotNull(fetchedCard.getId());
 		assertEquals(maskString(card.getNumber(), 6, card.getNumber().length()-4, '*'), fetchedCard.getNumber());
 		assertEquals(card.getExpiryDate(), fetchedCard.getExpiryDate());
-		assertNull(fetchedCard.getCvc());
+		assertNotNull(fetchedCard.getCvc());
 	}
 
 }

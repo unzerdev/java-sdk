@@ -10,19 +10,19 @@ import com.heidelpay.payment.communication.HttpCommunicationException;
 
 public class Ideal extends AbstractPaymentType implements PaymentType {
 
-	private String bankName;
+	private String bic;
 	
 	@Override
 	public String getTypeUrl() {
 		return "types/ideal";
 	}
 
-	public String getBankName() {
-		return bankName;
+	public String getBic() {
+		return bic;
 	}
 
-	public Ideal setBankName(String bankName) {
-		this.bankName = bankName;
+	public Ideal setBic(String bic) {
+		this.bic = bic;
 		return this;
 	}
 

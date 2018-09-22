@@ -68,7 +68,7 @@ public class AbstractPaymentTest {
 		.setEmail("rene.felder@felderit.at")
 		.setMobile("+43676123456")
 		.setBirthDate(getDate("03.10.1974"))
-		.setAddress(getAddress());
+		.setBillingAddress(getAddress());
 		return customer;
 	}
 
@@ -116,7 +116,7 @@ public class AbstractPaymentTest {
 		assertEquals(customerExpected.getEmail(), customer.getEmail());
 		assertEquals(customerExpected.getMobile(), customer.getMobile());
 		assertEquals(customerExpected.getPhone(), customer.getPhone());
-		assertAddressEquals(customerExpected.getAddress(), customer.getAddress());		
+		assertAddressEquals(customerExpected.getBillingAddress(), customer.getBillingAddress());		
 	}
 	protected void assertAddressEquals(Address addressExpected, Address address) {
 		if (addressExpected == null) return;

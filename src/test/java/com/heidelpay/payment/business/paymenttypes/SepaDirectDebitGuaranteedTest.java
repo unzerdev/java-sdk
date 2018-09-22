@@ -9,7 +9,6 @@ import java.net.URL;
 import java.text.ParseException;
 import java.util.Currency;
 
-import org.junit.Ignore;
 import org.junit.Test;
 
 import com.heidelpay.payment.Charge;
@@ -35,7 +34,6 @@ public class SepaDirectDebitGuaranteedTest extends AbstractPaymentTest {
 	}
 
 	@Test
-	@Ignore("Created Bug AHC-302 for Shipment")
 	public void testShipmentSepaDirectDebitGuaranteedType() throws HttpCommunicationException, MalformedURLException, ParseException {
 		Charge charge = getHeidelpay().charge(BigDecimal.TEN, Currency.getInstance("EUR"), new SepaDirectDebitGuaranteed("DE89370400440532013000"), new URL("https://www.google.at"), getMaximumCustomer(getRandomId()));
 		Shipment shipment = getHeidelpay().shipment(charge.getPaymentId());

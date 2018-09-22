@@ -8,7 +8,6 @@ import java.net.URL;
 import java.text.ParseException;
 import java.util.Currency;
 
-import org.junit.Ignore;
 import org.junit.Test;
 
 import com.heidelpay.payment.Authorization;

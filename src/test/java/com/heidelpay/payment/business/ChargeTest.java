@@ -8,7 +8,6 @@ import java.net.URL;
 import java.text.ParseException;
 import java.util.Currency;
 
-import org.junit.Ignore;
 import org.junit.Test;
 
 import com.heidelpay.payment.Charge;
@@ -41,7 +40,6 @@ public class ChargeTest extends AbstractPaymentTest {
 	}
 
 	@Test
-	@Ignore("Bug ticket AHC-267 created")
 	public void testChargeWithCustomerTypeReturnUrl() throws MalformedURLException, HttpCommunicationException {
 		Card card = new Card("4444333322221111", "12/19");
 		Customer customer = new Customer("Rene", "Felder");
@@ -51,7 +49,6 @@ public class ChargeTest extends AbstractPaymentTest {
 	}
 
 	@Test
-	@Ignore("Bug ticket AHC-267 created")
 	public void testChargeWithCustomerIdReturnUrl() throws MalformedURLException, HttpCommunicationException, ParseException {
 		Customer customer = getHeidelpay().createCustomer(getMaximumCustomer(getRandomId()));
 		Charge charge = getHeidelpay().charge(BigDecimal.ONE, Currency.getInstance("EUR"), createPaymentTypeCard().getId(), new URL("https://www.google.at"), customer.getId());

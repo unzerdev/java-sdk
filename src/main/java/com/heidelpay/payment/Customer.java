@@ -13,7 +13,7 @@ public class Customer extends AbstractPayment {
 	private String email;
 	private String phone;
 	private String mobile;
-	private Address address;
+	private Address billingAddress;
 	
 	
 
@@ -95,12 +95,12 @@ public class Customer extends AbstractPayment {
 		return this;
 	}
 
-	public Address getAddress() {
-		return address;
+	public Address getBillingAddress() {
+		return billingAddress;
 	}
 
-	public Customer setAddress(Address address) {
-		this.address = address;
+	public Customer setBillingAddress(Address billingAddress) {
+		this.billingAddress = billingAddress;
 		return this;
 	}
 

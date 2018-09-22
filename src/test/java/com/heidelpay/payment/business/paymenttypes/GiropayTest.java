@@ -7,6 +7,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Currency;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
 import com.heidelpay.payment.Charge;
@@ -24,6 +25,7 @@ public class GiropayTest extends AbstractPaymentTest {
 	}
 
 	@Test
+	@Ignore
 	public void testChargeGiropayType() throws HttpCommunicationException, MalformedURLException {
 		Giropay giropay = getHeidelpay().createPaymentType(getGiropay());
 		Charge charge = giropay.charge(BigDecimal.ONE, Currency.getInstance("EUR"), new URL("https://www.google.at"));

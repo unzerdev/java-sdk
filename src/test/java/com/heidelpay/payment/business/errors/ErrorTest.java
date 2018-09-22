@@ -94,8 +94,8 @@ public class ErrorTest extends AbstractPaymentTest {
 		} catch (PaymentException e) {
 			assertNotNull(e.getPaymentErrorList());
 			assertTrue(e.getPaymentErrorList().size() > 0);
-			assertEquals("API.320.300.999", e.getPaymentErrorList().get(0).getCode());
-			assertEquals("Invalid return URL", e.getPaymentErrorList().get(0).getMerchantMessage());
+			assertEquals("API.320.100.203", e.getPaymentErrorList().get(0).getCode());
+			assertEquals("Return URL is missing", e.getPaymentErrorList().get(0).getMerchantMessage());
 		}
 	}
 

@@ -19,10 +19,9 @@ public class Heidelpay {
 	}
 	
 	public Customer createCustomer(Customer customer) throws HttpCommunicationException {
-		if (customer != null && customer.getId() == null) {
-			customer = paymentService.createCustomer(customer);
-		} 
-		return customer;
+		if (customer == null) throw new NullPointerException("Customer must not be null");
+		if (customer.getId() != null) throw new PaymentException("Customer has an id set. createCustomer can only be called without Customer.id. Please use updateCustomer or remove the id from Customer.");
+		return paymentService.createCustomer(customer);
 	}
 	
 	public Customer updateCustomer(String id, Customer customer) throws HttpCommunicationException {
@@ -44,10 +43,9 @@ public class Heidelpay {
 	}
 
 	// Authorization calls
-// currently returnUrl is mandatory
-//	public Authorization authorize(BigDecimal amount, Currency currency, String typeId, String customerId) throws HttpCommunicationException {
-//		return authorize(amount, currency, typeId, customerId, (URL)null);
-//	}
+	public Authorization authorize(BigDecimal amount, Currency currency, String typeId, String customerId) throws HttpCommunicationException {
+		return authorize(amount, currency, typeId, (URL)null, customerId);
+	}
 	public Authorization authorize(BigDecimal amount, Currency currency, String typeId) throws HttpCommunicationException {
 		return authorize(amount, currency, typeId, (URL)null, (String)null);
 	}
@@ -90,17 +88,15 @@ public class Heidelpay {
 	}
 
 
-	// Charge without Authorization calls
-// returnURL is mandatory for the time being
-//	public Charge charge(BigDecimal amount, Currency currency, String typeId) throws HttpCommunicationException {
-//		return charge(amount, currency, typeId, (String)null, (URL)null);
-//	}
-//	public Charge charge(BigDecimal amount, Currency currency, String typeId, String customerId) throws HttpCommunicationException {
-//		return charge(amount, currency, typeId, customerId, (URL)null);
-//	}
-//	public Charge charge(BigDecimal amount, Currency currency, PaymentType paymentType) throws HttpCommunicationException {
-//		return charge(amount, currency, createPaymentType(paymentType).getId(), (String)null, (URL)null);
-//	}
+	public Charge charge(BigDecimal amount, Currency currency, String typeId) throws HttpCommunicationException {
+		return charge(amount, currency, typeId, (URL)null);
+	}
+	public Charge charge(BigDecimal amount, Currency currency, String typeId, String customerId) throws HttpCommunicationException {
+		return charge(amount, currency, typeId, (URL)null, customerId);
+	}
+	public Charge charge(BigDecimal amount, Currency currency, PaymentType paymentType) throws HttpCommunicationException {
+		return charge(amount, currency, createPaymentType(paymentType).getId(), (URL)null, (String)null);
+	}
 	public Charge charge(BigDecimal amount, Currency currency, String typeId, URL returnUrl) throws HttpCommunicationException {
 		return charge(amount, currency, typeId, returnUrl, (String)null);
 	}

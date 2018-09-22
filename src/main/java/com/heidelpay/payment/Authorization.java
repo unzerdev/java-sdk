@@ -3,6 +3,7 @@ package com.heidelpay.payment;
 import java.math.BigDecimal;
 import java.net.URL;
 import java.util.Currency;
+import java.util.List;
 
 import com.heidelpay.payment.communication.HttpCommunicationException;
 
@@ -21,6 +22,8 @@ public class Authorization extends AbstractPayment {
 
 	private Processing processing = new Processing();
 	
+	private List<Cancel> cancelList;
+
 	public Authorization() {
 		super();
 	}
@@ -137,6 +140,14 @@ public class Authorization extends AbstractPayment {
 
 	public void setRedirectUrl(URL redirectUrl) {
 		this.redirectUrl = redirectUrl;
+	}
+
+	public List<Cancel> getCancelList() {
+		return cancelList;
+	}
+
+	public void setCancelList(List<Cancel> cancelList) {
+		this.cancelList = cancelList;
 	}
 
 }

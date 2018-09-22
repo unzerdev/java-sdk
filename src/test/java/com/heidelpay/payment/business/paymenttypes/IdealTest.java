@@ -41,7 +41,7 @@ public class IdealTest extends AbstractPaymentTest {
 
 	
 	private Ideal getIdeal() {
-		Ideal ideal = new Ideal().setBankName("RABONL2U");
+		Ideal ideal = new Ideal().setBic("RABONL2U");
 		return ideal;
 	}
 
