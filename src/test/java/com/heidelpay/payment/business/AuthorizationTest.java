@@ -42,7 +42,6 @@ public class AuthorizationTest extends AbstractPaymentTest {
 	}
 
 	@Test
-	@Ignore("Decativated until Bug AHC-267 is fixed")
 	public void testAuthorizeReturnPaymentTypeAndCustomer() throws MalformedURLException, HttpCommunicationException {
 		Card card = new Card("4444333322221111", "12/19");
 		Customer customer = new Customer("Rene", "Felder");
@@ -69,7 +68,6 @@ public class AuthorizationTest extends AbstractPaymentTest {
 	}
 
 	@Test
-	@Ignore("Decativated until Bug AHC-267 is fixed")
 	public void testAuthorizeWithCustomerTypeReturnUrl() throws MalformedURLException, HttpCommunicationException {
 		Card card = new Card("4444333322221111", "12/19");
 		Customer customer = new Customer("Rene", "Felder");

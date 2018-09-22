@@ -10,27 +10,27 @@ import com.heidelpay.payment.Customer;
 import com.heidelpay.payment.communication.HttpCommunicationException;
 
 public class Card extends AbstractPaymentType implements PaymentType {
-	private String pan;
+	private String number;
 	private String cvc;
 	private String expiryDate;
 	private String brand;
 	
 	public Card(String number, String expiryDate) {
 		super();
-		this.pan = number;
+		this.number = number;
 		this.expiryDate = expiryDate;
 	}
 	public Card(String number, String expiryDate, String cvc) {
 		super();
-		this.pan = number;
+		this.number = number;
 		this.expiryDate = expiryDate;
 		this.cvc = cvc;
 	}
 	public String getNumber() {
-		return pan;
+		return number;
 	}
 	public Card setNumber(String number) {
-		this.pan = number;
+		this.number = number;
 		return this;
 	}
 	public String getCvc() {
@@ -49,7 +49,7 @@ public class Card extends AbstractPaymentType implements PaymentType {
 	}
 	@Override
 	public String getTypeUrl() {
-		return "types/cards";
+		return "types/card";
 	}
 	public String getBrand() {
 		return brand;

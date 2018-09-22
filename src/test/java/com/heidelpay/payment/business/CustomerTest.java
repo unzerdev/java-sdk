@@ -8,6 +8,7 @@ import java.text.ParseException;
 import org.junit.Test;
 
 import com.heidelpay.payment.Customer;
+import com.heidelpay.payment.PaymentException;
 import com.heidelpay.payment.communication.HttpCommunicationException;
 
 public class CustomerTest extends AbstractPaymentTest {
@@ -66,7 +67,7 @@ public class CustomerTest extends AbstractPaymentTest {
 		assertEquals("Max", fetchedCustomer.getFirstname());
 	}
 	
-	@Test(expected=HttpCommunicationException.class)
+	@Test(expected=PaymentException.class)
 	public void testDeleteCustomer() throws HttpCommunicationException, ParseException {
 		Customer customer = getHeidelpay().createCustomer(getMaximumCustomer(getRandomId()));
 		assertNotNull(customer);

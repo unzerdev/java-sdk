@@ -10,6 +10,7 @@ import java.util.Currency;
 import org.junit.Test;
 
 import com.heidelpay.payment.Charge;
+import com.heidelpay.payment.PaymentException;
 import com.heidelpay.payment.business.AbstractPaymentTest;
 import com.heidelpay.payment.communication.HttpCommunicationException;
 import com.heidelpay.payment.paymenttypes.Paypal;
@@ -23,7 +24,7 @@ public class PaypalTest extends AbstractPaymentTest {
 		assertNotNull(paypal.getId());
 	}
 
-	@Test(expected=HttpCommunicationException.class)
+	@Test(expected=PaymentException.class)
 	public void testAuthorizeType() throws HttpCommunicationException, MalformedURLException {
 		Paypal paypal = getHeidelpay().createPaymentType(getPaypal());
 		paypal.authorize(BigDecimal.ONE, Currency.getInstance("EUR"), new URL("https://www.mpay24.com"));		

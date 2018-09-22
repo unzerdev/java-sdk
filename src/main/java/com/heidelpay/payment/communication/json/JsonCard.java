@@ -1,15 +1,15 @@
 package com.heidelpay.payment.communication.json;
 
 public class JsonCard extends JsonIdObject implements JsonObject {
-	private String pan;
+	private String number;
 	private String cvc;
 	private String expiryDate;
 	
 	public String getNumber() {
-		return pan;
+		return number;
 	}
 	public JsonCard setNumber(String number) {
-		this.pan = number;
+		this.number = number;
 		return this;
 	}
 	public String getCvc() {

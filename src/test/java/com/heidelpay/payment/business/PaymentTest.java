@@ -14,6 +14,7 @@ import com.heidelpay.payment.Authorization;
 import com.heidelpay.payment.Cancel;
 import com.heidelpay.payment.Charge;
 import com.heidelpay.payment.Payment;
+import com.heidelpay.payment.PaymentException;
 import com.heidelpay.payment.communication.HttpCommunicationException;
 
 public class PaymentTest extends AbstractPaymentTest {
@@ -66,7 +67,7 @@ public class PaymentTest extends AbstractPaymentTest {
 		assertEquals(getBigDecimal("1.0000"), charge.getAmount());
 	}
 
-	@Test(expected=HttpCommunicationException.class)
+	@Test(expected=PaymentException.class)
 	public void testFullCancelAuthorize() throws MalformedURLException, HttpCommunicationException {
 		Authorization authorize = getHeidelpay().authorize(getAuthorization(createPaymentTypeCard().getId()));
 		Payment payment = getHeidelpay().fetchPayment(authorize.getPayment().getId());

@@ -21,7 +21,6 @@ import com.heidelpay.payment.communication.RestCommunication;
 import com.heidelpay.payment.communication.json.JsonAuthorization;
 import com.heidelpay.payment.communication.json.JsonCancel;
 import com.heidelpay.payment.communication.json.JsonCard;
-import com.heidelpay.payment.communication.json.JsonCardFetch;
 import com.heidelpay.payment.communication.json.JsonCharge;
 import com.heidelpay.payment.communication.json.JsonIdObject;
 import com.heidelpay.payment.communication.json.JsonIdeal;
@@ -198,11 +197,7 @@ public class PaymentService {
 		String response = restCommunication.httpGet(urlUtil.getHttpGetUrl(paymentType, typeId), heidelpay.getPrivateKey());
 		// workaround for Bug AHC-265
 		JsonIdObject jsonPaymentType = null;
-		if (getTypeIdentifier(typeId).equalsIgnoreCase("crd")) {
-			jsonPaymentType = new JsonParser<JsonIdObject>().fromJson(response, JsonCardFetch.class);
-		} else {
-			jsonPaymentType = new JsonParser<JsonIdObject>().fromJson(response, getJsonObjectFromTypeId(typeId).getClass());
-		}
+		jsonPaymentType = new JsonParser<JsonIdObject>().fromJson(response, getJsonObjectFromTypeId(typeId).getClass());
 		return (T) jsonToBusinessClassMapper.mapToBusinessObject(paymentType, jsonPaymentType);
 	}
 	
