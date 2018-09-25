@@ -99,7 +99,7 @@ public class ErrorTest extends AbstractPaymentTest {
 	public void testInvalidAccess() throws MalformedURLException, HttpCommunicationException {
 		Card card = createPaymentTypeCard();
 		try {
-			getHeidelpay("s-priv-2a107CYZMp3UbyVPAuqWoxQHi9nFyeiW").fetchPaymentType(card.getId());
+			getHeidelpay("s-priv-2a10SyGqMkJQoku5BdPSYUi3YO2iXQO9").fetchPaymentType(card.getId());
 		} catch (PaymentException e) {
 			assertNotNull(e.getPaymentErrorList());
 			assertTrue(e.getPaymentErrorList().size() > 0);
