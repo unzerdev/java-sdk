@@ -42,11 +42,12 @@ import com.heidelpay.payment.Authorization;
 import com.heidelpay.payment.Cancel;
 import com.heidelpay.payment.Charge;
 import com.heidelpay.payment.Customer;
+import com.heidelpay.payment.Customer.Salutation;
 import com.heidelpay.payment.Heidelpay;
 import com.heidelpay.payment.Processing;
-import com.heidelpay.payment.Customer.Salutation;
 import com.heidelpay.payment.communication.HttpCommunicationException;
 import com.heidelpay.payment.paymenttypes.Card;
+import com.heidelpay.payment.paymenttypes.InvoiceGuaranteed;
 
 public class AbstractPaymentTest {
 	private Heidelpay heidelpay = new Heidelpay("s-priv-6S59Dt6Q9mJYj8X5qpcxSpA3XLXUw4Zf");
@@ -59,12 +60,16 @@ public class AbstractPaymentTest {
 	}
 
 	protected Authorization getAuthorization(String typeId) throws MalformedURLException {
+		return getAuthorization(typeId, null);
+	}
+	protected Authorization getAuthorization(String typeId, String customerId) throws MalformedURLException {
 		Authorization authorization = new Authorization();
 		authorization
 		.setAmount(new BigDecimal(10))
 		.setCurrency(Currency.getInstance("EUR"))
 		.setTypeId(typeId)
-		.setReturnUrl(new URL("https://www.heidelpay.com"));
+		.setReturnUrl(new URL("https://www.heidelpay.com"))
+		.setCustomerId(customerId);
 		return authorization;
 	}
 	protected Card createPaymentTypeCard() throws HttpCommunicationException {
@@ -72,6 +77,12 @@ public class AbstractPaymentTest {
 		card = (Card)getHeidelpay().createPaymentType(card);
 		return card;
 	}
+	protected InvoiceGuaranteed createPaymentTypeInvoiceGuaranteed() throws HttpCommunicationException {
+		InvoiceGuaranteed invoice = new InvoiceGuaranteed();
+		invoice = (InvoiceGuaranteed)getHeidelpay().createPaymentType(invoice);
+		return invoice;
+	}
+
 	protected Card getPaymentTypeCard() {
 		Card card = new Card("4444333322221111", "03/20");
 		card.setCvc("123");
@@ -82,6 +93,10 @@ public class AbstractPaymentTest {
 		return UUID.randomUUID().toString();
 	}
 
+	protected Customer createMaximumCustomer() throws HttpCommunicationException, ParseException {
+		return getHeidelpay().createCustomer(getMaximumCustomer(getRandomId()));
+	}
+	
 	protected Customer getMinimumCustomer() {
 		return new Customer("Rene", "Felder"); 
 	}

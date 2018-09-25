@@ -81,14 +81,14 @@ public class ErrorTest extends AbstractPaymentTest {
 	@Test
 	public void testPCILevelSaqA() throws MalformedURLException, HttpCommunicationException {
 		try {
-			getHeidelpay("s-priv-2a107CYZMp3UbyVPAuqWoxQHi9nFyeiW").createPaymentType(getPaymentTypeCard());
+			getHeidelpay("s-pub-2a10ehAb66CT6wXy43gJVqMvvOjGY5Gt").createPaymentType(getPaymentTypeCard());
 		} catch (PaymentException e) {
 			assertNotNull(e.getPaymentErrorList());
 			assertTrue(e.getPaymentErrorList().size() > 0);
 			assertEquals("API.710.000.005", e.getPaymentErrorList().get(0).getCode());
 			assertEquals(
-					"You do not have the permission to access this resource. This might happen you are using either invalid credentials",
-					e.getPaymentErrorList().get(0).getMerchantMessage());
+					"You do not have the permission to access this resource. Please contact the owner of the shop.",
+					e.getPaymentErrorList().get(0).getCustomerMessage());
 		}
 	}
 
