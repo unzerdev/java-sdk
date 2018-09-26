@@ -53,6 +53,7 @@ public class PaymentTest extends AbstractPaymentTest {
 		assertNotNull(payment.getId());
 		assertNotNull(payment.getAuthorization());
 		assertNotNull(payment.getAuthorization().getId());
+		assertNotNull(payment.getPaymentState());
 	}
 
 	@Test

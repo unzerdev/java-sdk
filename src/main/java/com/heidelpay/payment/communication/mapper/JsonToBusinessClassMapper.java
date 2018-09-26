@@ -46,6 +46,7 @@ import com.heidelpay.payment.communication.json.JsonPayment;
 import com.heidelpay.payment.communication.json.JsonProcessing;
 import com.heidelpay.payment.communication.json.JsonResources;
 import com.heidelpay.payment.communication.json.JsonSepaDirectDebit;
+import com.heidelpay.payment.communication.json.JsonState;
 import com.heidelpay.payment.paymenttypes.Card;
 import com.heidelpay.payment.paymenttypes.Eps;
 import com.heidelpay.payment.paymenttypes.Giropay;
@@ -159,12 +160,24 @@ public class JsonToBusinessClassMapper {
 		payment.setAmountCharged(json.getAmount().getCharged());
 		payment.setAmountRemaining(json.getAmount().getRemaining());
 		payment.setOrderId(json.getOrderId());
+		payment.setPaymentState(getPaymentState(json.getState()));
 		payment.setId(json.getId());
 		if (json.getResources() != null) { 
 			payment.setPaymentTypeId(json.getResources().getTypeId());
 			payment.setCustomerId(json.getResources().getCustomerId());
 		}
 		return payment;
+	}
+
+	private Payment.State getPaymentState(JsonState state) {
+		if (state == null) return null;
+		if (state.getId() == 0) return Payment.State.pending;
+		if (state.getId() == 1) return Payment.State.completed;
+		if (state.getId() == 2) return Payment.State.canceled;
+		if (state.getId() == 3) return Payment.State.partly;
+		if (state.getId() == 4) return Payment.State.payment_review;
+		if (state.getId() == 5) return Payment.State.chargeback;
+		return null;
 	}
 
 	public PaymentType mapToBusinessObject(PaymentType paymentType, JsonIdObject jsonPaymentType) {

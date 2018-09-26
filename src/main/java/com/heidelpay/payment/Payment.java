@@ -36,8 +36,8 @@ import com.heidelpay.payment.paymenttypes.PaymentType;
 
 public class Payment extends AbstractPayment {
 	
-	private enum State {
-		completed, pending, 
+	public enum State {
+		completed, pending, canceled, partly, payment_review, chargeback
 	}
 	
 	private State paymentState;
@@ -69,17 +69,15 @@ public class Payment extends AbstractPayment {
 		return getHeidelpay().chargeAuthorization(getId(), amount);
 	}
 	
-	// Delegates to Heidelpay charge 
-	// returnUrl is mandatory for now
-//	public Charge charge(BigDecimal amount, Currency currency, String typeId) throws HttpCommunicationException {
-//		return getHeidelpay().charge(amount, currency, typeId);
-//	}
-//	public Charge charge(BigDecimal amount, Currency currency, String typeId, String customerId) throws HttpCommunicationException {
-//		return getHeidelpay().charge(amount, currency, typeId, customerId);
-//	}
-//	public Charge charge(BigDecimal amount, Currency currency, PaymentType paymentType) throws HttpCommunicationException {
-//		return getHeidelpay().charge(amount, currency, paymentType);
-//	}
+	public Charge charge(BigDecimal amount, Currency currency, String typeId) throws HttpCommunicationException {
+		return getHeidelpay().charge(amount, currency, typeId);
+	}
+	public Charge charge(BigDecimal amount, Currency currency, String typeId, String customerId) throws HttpCommunicationException {
+		return getHeidelpay().charge(amount, currency, typeId, customerId);
+	}
+	public Charge charge(BigDecimal amount, Currency currency, PaymentType paymentType) throws HttpCommunicationException {
+		return getHeidelpay().charge(amount, currency, paymentType);
+	}
 	public Charge charge(BigDecimal amount, Currency currency, String typeId, URL returnUrl) throws HttpCommunicationException {
 		return getHeidelpay().charge(amount, currency, typeId, returnUrl);
 	}
@@ -90,17 +88,15 @@ public class Payment extends AbstractPayment {
 		return getHeidelpay().charge(amount, currency, paymentType, returnUrl, customer);
 	}
 	
-	// Delegates to Heidelpay authorize 
-// Currently returnUrl is mandatory
-//	public Authorization authorize(BigDecimal amount, Currency currency, String typeId, String customerId) throws HttpCommunicationException {
-//		return getHeidelpay().authorize(amount, currency, typeId, customerId);
-//	}
-//	public Authorization authorize(BigDecimal amount, Currency currency, String typeId) throws HttpCommunicationException {
-//		return getHeidelpay().authorize(amount, currency, typeId);
-//	}
-//	public Authorization authorize(BigDecimal amount, Currency currency, PaymentType paymentType) throws HttpCommunicationException {
-//		return getHeidelpay().authorize(amount, currency, paymentType);
-//	}
+	public Authorization authorize(BigDecimal amount, Currency currency, String typeId, String customerId) throws HttpCommunicationException {
+		return getHeidelpay().authorize(amount, currency, typeId, customerId);
+	}
+	public Authorization authorize(BigDecimal amount, Currency currency, String typeId) throws HttpCommunicationException {
+		return getHeidelpay().authorize(amount, currency, typeId);
+	}
+	public Authorization authorize(BigDecimal amount, Currency currency, PaymentType paymentType) throws HttpCommunicationException {
+		return getHeidelpay().authorize(amount, currency, paymentType);
+	}
 	public Authorization authorize(BigDecimal amount, Currency currency, String typeId, URL returnUrl) throws HttpCommunicationException {
 		return getHeidelpay().authorize(amount, currency, typeId, returnUrl);
 	}

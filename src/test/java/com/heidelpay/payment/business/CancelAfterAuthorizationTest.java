@@ -25,8 +25,8 @@ package com.heidelpay.payment.business;
  * THE SOFTWARE.
  * #L%
  */
-
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 import java.math.BigDecimal;
 import java.net.MalformedURLException;
@@ -35,6 +35,7 @@ import org.junit.Test;
 
 import com.heidelpay.payment.Authorization;
 import com.heidelpay.payment.Cancel;
+import com.heidelpay.payment.Payment;
 import com.heidelpay.payment.communication.HttpCommunicationException;
 
 public class CancelAfterAuthorizationTest extends AbstractPaymentTest {
@@ -56,6 +57,16 @@ public class CancelAfterAuthorizationTest extends AbstractPaymentTest {
 		assertNotNull(cancel.getId());
 	}
 
+	@Test
+	public void partialCancelPayment() throws HttpCommunicationException, MalformedURLException {
+		Authorization authorize = getHeidelpay().authorize(getAuthorization(createPaymentTypeCard().getId()));
+		Payment payment = getHeidelpay().fetchPayment(authorize.getPaymentId());
+		Cancel cancel = payment.cancel(new BigDecimal(0.1));
+		assertNotNull(cancel);
+		assertNotNull(cancel.getId());
+		assertEquals(getBigDecimal("0.1000"), cancel.getAmount());
+	}
+	
 	@Test
 	public void partialCancelAfterAuthorization() throws HttpCommunicationException, MalformedURLException {
 		Authorization authorize = getHeidelpay().authorize(getAuthorization(createPaymentTypeCard().getId()));

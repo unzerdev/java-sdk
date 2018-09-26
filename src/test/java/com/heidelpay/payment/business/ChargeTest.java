@@ -40,6 +40,7 @@ import com.heidelpay.payment.Charge;
 import com.heidelpay.payment.Customer;
 import com.heidelpay.payment.communication.HttpCommunicationException;
 import com.heidelpay.payment.paymenttypes.Card;
+import com.heidelpay.payment.paymenttypes.Sofort;
 
 public class ChargeTest extends AbstractPaymentTest {
 	
@@ -91,4 +92,12 @@ public class ChargeTest extends AbstractPaymentTest {
 		assertNotNull(charge.getPayment().getId());
 	}
 
+	@Test
+	public void testChargeSofort() throws MalformedURLException, HttpCommunicationException {
+		Charge charge = getHeidelpay().charge(BigDecimal.ONE, Currency.getInstance("EUR"), new Sofort(), new URL("https://www.google.at"));
+		assertNotNull(charge);
+		assertNotNull(charge.getId());
+		assertNotNull(charge.getPayment());
+		assertNotNull(charge.getPayment().getId());
+	}
 }
