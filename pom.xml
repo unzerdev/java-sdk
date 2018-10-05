@@ -19,8 +19,8 @@
 
 	<licenses>
 		<license>
-			<name>MIT-License</name>
-			<url>https://opensource.org/licenses/MIT</url>
+			<name>Apache License, Version 2.0</name>
+			<url>https://www.apache.org/licenses/LICENSE-2.0</url>
 		</license>
 	</licenses>
 
@@ -122,7 +122,7 @@
 						</goals>
 						<phase>process-sources</phase>
 						<configuration>
-							<licenseName>mit</licenseName>
+							<licenseName>apache_v2</licenseName>
 							<roots>
 								<root>src/main/java</root>
 								<root>src/test/java</root>
