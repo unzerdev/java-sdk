@@ -146,26 +146,30 @@ public class RestCommunication {
 
 	private HttpPost getHttpPost(String url, String contentType) {
 		HttpPost httpPost = new HttpPost(url);
-		httpPost.setHeader("User-Agent", "HeidelpayJava");
+		setUserAgent(httpPost);
 		httpPost.addHeader("Content-Type", contentType);
 		return httpPost;
 	}
 
+	private void setUserAgent(HttpUriRequest httpRequest) {
+		httpRequest.setHeader("User-Agent", "heidelpay-Java-1.0.0.2");
+	}
+
 	private HttpGet getHttpGet(String url) {
 		HttpGet httpGet = new HttpGet(url);
-		httpGet.setHeader("User-Agent", "HeidelpayJava");
+		setUserAgent(httpGet);
 		return httpGet;
 	}
 
 	private HttpDelete getHttpDelete(String url) {
 		HttpDelete httpDelete = new HttpDelete(url);
-		httpDelete.setHeader("User-Agent", "HeidelpayJava");
+		setUserAgent(httpDelete);
 		return httpDelete;
 	}
 
 	private HttpPut getHttpPut(String url, String contentType) {
 		HttpPut httpPut = new HttpPut(url);
-		httpPut.setHeader("User-Agent", "HeidelpayJava");
+		setUserAgent(httpPut);
 		httpPut.addHeader("Content-Type", contentType);
 		return httpPut;
 	}

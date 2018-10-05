@@ -106,7 +106,7 @@ public class AbstractPaymentTest {
 		customer
 		.setCustomerId(customerId)
 		.setSalutation(Salutation.mr)
-		.setEmail("rene.felder@felderit.at")
+		.setEmail("info@heidelpay.com")
 		.setMobile("+43676123456")
 		.setBirthDate(getDate("03.10.1974"))
 		.setBillingAddress(getAddress());
