@@ -20,6 +20,11 @@ package com.heidelpay.payment;
  * #L%
  */
 
+/**
+ * Business object for Address data
+ * @author rene.felder
+ *
+ */
 public class Address {
 	private String name;
 	private String street;

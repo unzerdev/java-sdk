@@ -28,6 +28,11 @@ import com.heidelpay.payment.Charge;
 import com.heidelpay.payment.Customer;
 import com.heidelpay.payment.communication.HttpCommunicationException;
 
+/**
+ * Sepa direct debit business object. Iban is mandatory, bic and holder are optional fields 
+ * @author rene.felder
+ *
+ */
 public class SepaDirectDebit extends AbstractPaymentType implements PaymentType {
 	private String iban;
 	private String bic;

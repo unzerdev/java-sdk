@@ -22,6 +22,11 @@ package com.heidelpay.payment;
 
 import java.math.BigDecimal;
 
+/**
+ * Business object for Cancelations
+ * @author rene.felder
+ *
+ */
 public class Cancel extends AbstractPayment {
 	private BigDecimal amount;
 	private Processing processing = new Processing();

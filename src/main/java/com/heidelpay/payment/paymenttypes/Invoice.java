@@ -28,6 +28,11 @@ import com.heidelpay.payment.Authorization;
 import com.heidelpay.payment.Customer;
 import com.heidelpay.payment.communication.HttpCommunicationException;
 
+/**
+ * Invoice business object
+ * @author rene.felder
+ *
+ */
 public class Invoice extends AbstractPaymentType implements PaymentType {
 
 	@Override

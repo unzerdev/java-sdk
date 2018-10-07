@@ -28,6 +28,11 @@ import com.heidelpay.payment.Charge;
 import com.heidelpay.payment.Customer;
 import com.heidelpay.payment.communication.HttpCommunicationException;
 
+/**
+ * 
+ * @author rene.felder
+ *
+ */
 public class SepaDirectDebitGuaranteed extends AbstractPaymentType implements PaymentType {
 	private String iban;
 	private String bic;

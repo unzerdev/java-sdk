@@ -27,6 +27,14 @@ import java.util.List;
 
 import com.heidelpay.payment.communication.HttpCommunicationException;
 
+/**
+ * Business object for Charge. Amount, currency and typeId are mandatory parameter to 
+ * execute an Charge. 
+ * 
+ * The returnUrl is mandatory in case of redirectPayments like Sofort, Paypal, Giropay, Creditcard 3DS
+ * @author rene.felder
+ *
+ */
 public class Charge extends AbstractPayment {
 	private BigDecimal amount;
 	private Currency currency;

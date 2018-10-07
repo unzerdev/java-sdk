@@ -22,6 +22,13 @@ package com.heidelpay.payment;
 
 import java.util.Date;
 
+/**
+ * Business object for Customer toghether with billingAddress.
+ * 
+ * firstname and lastname are mandatory to create a new Customer.
+ * @author rene.felder
+ *
+ */
 public class Customer extends AbstractPayment {
 	public enum Salutation {mr, ms, unknown};
 

@@ -28,6 +28,12 @@ import com.heidelpay.payment.Authorization;
 import com.heidelpay.payment.Customer;
 import com.heidelpay.payment.communication.HttpCommunicationException;
 
+/**
+ * Prepayment business object
+ * 
+ * @author rene.felder
+ *
+ */
 public class Prepayment extends AbstractPaymentType implements PaymentType {
 
 	@Override

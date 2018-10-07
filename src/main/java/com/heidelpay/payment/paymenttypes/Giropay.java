@@ -28,6 +28,12 @@ import com.heidelpay.payment.Charge;
 import com.heidelpay.payment.Customer;
 import com.heidelpay.payment.communication.HttpCommunicationException;
 
+/**
+ * Giropay business object
+ * 
+ * @author rene.felder
+ *
+ */
 public class Giropay extends AbstractPaymentType implements PaymentType {
 
 	@Override

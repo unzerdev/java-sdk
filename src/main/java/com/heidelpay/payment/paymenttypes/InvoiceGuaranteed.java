@@ -28,6 +28,11 @@ import com.heidelpay.payment.Authorization;
 import com.heidelpay.payment.Customer;
 import com.heidelpay.payment.communication.HttpCommunicationException;
 
+/**
+ * Invoice guaranteed is an Invoice payment with guarantee for the Merchant
+ * @author rene.felder
+ *
+ */
 public class InvoiceGuaranteed extends AbstractPaymentType implements PaymentType {
 
 	@Override
