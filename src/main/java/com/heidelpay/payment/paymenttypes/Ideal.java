@@ -28,6 +28,11 @@ import com.heidelpay.payment.Charge;
 import com.heidelpay.payment.Customer;
 import com.heidelpay.payment.communication.HttpCommunicationException;
 
+/**
+ * Ideal business object
+ * @author rene.felder
+ *
+ */
 public class Ideal extends AbstractPaymentType implements PaymentType {
 
 	private String bic;

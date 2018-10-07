@@ -29,6 +29,13 @@ import com.heidelpay.payment.Charge;
 import com.heidelpay.payment.Customer;
 import com.heidelpay.payment.communication.HttpCommunicationException;
 
+/**
+ * Credit / Debit Card business object. 
+ * 
+ * When fetching a Card the number and cvc will be masked. 
+ * @author rene.felder
+ *
+ */
 public class Card extends AbstractPaymentType implements PaymentType {
 	private String number;
 	private String cvc;

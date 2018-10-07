@@ -29,6 +29,11 @@ import com.heidelpay.payment.Charge;
 import com.heidelpay.payment.Customer;
 import com.heidelpay.payment.communication.HttpCommunicationException;
 
+/**
+ * Paypal business object
+ * @author rene.felder
+ *
+ */
 public class Paypal extends AbstractPaymentType implements PaymentType {
 
 	@Override

@@ -28,6 +28,12 @@ import com.heidelpay.payment.Charge;
 import com.heidelpay.payment.Customer;
 import com.heidelpay.payment.communication.HttpCommunicationException;
 
+/**
+ * P24 business object 
+ * 
+ * @author rene.felder
+ *
+ */
 public class Przelewy24 extends AbstractPaymentType implements PaymentType {
 
 	@Override
