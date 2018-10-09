@@ -88,7 +88,7 @@ Charge charge3 = heidelpay.chargeAuthorization("s-pay-1");
 Cancelling a payment after authorization. There are again three options how to do this:
 
 ```java
-mpay24.cancel(payment);Heidelpay heidelpay = new Heidelpay("s-priv-2a102ZMq3gV4I3zJ888J7RR6u75oqK3n");
+Heidelpay heidelpay = new Heidelpay("s-priv-2a102ZMq3gV4I3zJ888J7RR6u75oqK3n");
 
 // Cancel Authorization
 Authorization authorization = heidelpay.fetchAuthorization("s-pay-1");
