@@ -47,7 +47,7 @@ public class PaypalTest extends AbstractPaymentTest {
 	@Test(expected=PaymentException.class)
 	public void testAuthorizeType() throws HttpCommunicationException, MalformedURLException {
 		Paypal paypal = getHeidelpay().createPaymentType(getPaypal());
-		paypal.authorize(BigDecimal.ONE, Currency.getInstance("EUR"), new URL("https://www.mpay24.com"));		
+		paypal.authorize(BigDecimal.ONE, Currency.getInstance("EUR"), new URL("https://www.meinShop.de"));		
 	}
 
 	@Test

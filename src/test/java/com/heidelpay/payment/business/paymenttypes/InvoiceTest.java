@@ -45,7 +45,7 @@ public class InvoiceTest extends AbstractPaymentTest {
 	@Test
 	public void testAuthorizeType() throws HttpCommunicationException, MalformedURLException {
 		Invoice invoice = getHeidelpay().createPaymentType(getInvoice());
-		Authorization authorization = invoice.authorize(BigDecimal.ONE, Currency.getInstance("EUR"), new URL("https://www.mpay24.com"));		
+		Authorization authorization = invoice.authorize(BigDecimal.ONE, Currency.getInstance("EUR"), new URL("https://www.meinShop.de"));		
 		assertNotNull(authorization);
 		assertNotNull(authorization.getId());
 	}

@@ -46,7 +46,7 @@ public class PrepaymentTest extends AbstractPaymentTest {
 	@Test
 	public void testAuthorizeSddType() throws HttpCommunicationException, MalformedURLException {
 		Prepayment prepayment = getHeidelpay().createPaymentType(getPrepayment());
-		Authorization authorization = prepayment.authorize(BigDecimal.ONE, Currency.getInstance("EUR"), new URL("https://www.mpay24.com"));		
+		Authorization authorization = prepayment.authorize(BigDecimal.ONE, Currency.getInstance("EUR"), new URL("https://www.meinShop.de"));		
 		assertNotNull(authorization);
 		assertNotNull(authorization.getId());
 	}

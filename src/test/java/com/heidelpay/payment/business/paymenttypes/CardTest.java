@@ -63,7 +63,7 @@ public class CardTest extends AbstractPaymentTest {
 		Card card = new Card("4444333322221111", "03/20");
 		card.setCvc("123");
 		card = getHeidelpay().createPaymentType(card);
-		Authorization authorization = card.authorize(BigDecimal.ONE, Currency.getInstance("EUR"), new URL("https://www.mpay24.com"));
+		Authorization authorization = card.authorize(BigDecimal.ONE, Currency.getInstance("EUR"), new URL("https://www.meinShop.de"));
 		assertNotNull(authorization);
 		assertNotNull(authorization.getId());
 	}
@@ -73,7 +73,7 @@ public class CardTest extends AbstractPaymentTest {
 		Card card = new Card("4444333322221111", "03/20").setCvc("123");
 		card.setCvc("123");
 		card = getHeidelpay().createPaymentType(card);
-		Authorization authorization = card.authorize(BigDecimal.ONE, Currency.getInstance("EUR"), new URL("https://www.mpay24.com"));
+		Authorization authorization = card.authorize(BigDecimal.ONE, Currency.getInstance("EUR"), new URL("https://www.meinShop.de"));
 		Payment payment = authorization.getPayment();
 		assertNotNull(authorization);
 		assertNotNull(payment);

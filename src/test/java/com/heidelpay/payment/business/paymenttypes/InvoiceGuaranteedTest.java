@@ -47,12 +47,12 @@ public class InvoiceGuaranteedTest extends AbstractPaymentTest {
 	@Test
 	public void testAuthorizeType() throws HttpCommunicationException, MalformedURLException, ParseException {
 		InvoiceGuaranteed invoice = getHeidelpay().createPaymentType(getInvoiceGuaranteed());
-		invoice.authorize(BigDecimal.TEN, Currency.getInstance("EUR"), new URL("https://www.mpay24.com"), getMaximumCustomer(getRandomId()));		
+		invoice.authorize(BigDecimal.TEN, Currency.getInstance("EUR"), new URL("https://www.meinShop.de"), getMaximumCustomer(getRandomId()));		
 	}
 
 	@Test
 	public void testShipmentInvoiceGuaranteedType() throws HttpCommunicationException, MalformedURLException, ParseException {
-		Authorization authorize = getHeidelpay().authorize(BigDecimal.TEN, Currency.getInstance("EUR"), new InvoiceGuaranteed(), new URL("https://www.google.at"), getMaximumCustomer(getRandomId()));
+		Authorization authorize = getHeidelpay().authorize(BigDecimal.TEN, Currency.getInstance("EUR"), new InvoiceGuaranteed(), new URL("https://www.meinShop.de"), getMaximumCustomer(getRandomId()));
 		Shipment shipment = getHeidelpay().shipment(authorize.getPaymentId());
 		assertNotNull(shipment);
 		assertNotNull(shipment.getId());
