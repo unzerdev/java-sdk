@@ -41,6 +41,7 @@ public class ShipmentTest extends AbstractPaymentTest {
 		Shipment shipment = getHeidelpay().shipment(authorize.getPaymentId());
 		assertNotNull(authorize.getId());
 		assertNotNull(authorize);
+		assertNotNull(shipment);
 	}
 
 

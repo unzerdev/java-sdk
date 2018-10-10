@@ -110,12 +110,19 @@ public class AuthorizationTest extends AbstractPaymentTest {
 		assertNotNull(authorize.getId());
 		Authorization authorization = getHeidelpay().fetchAuthorization(authorize.getPaymentId());
 		assertNotNull(authorization);
+		assertNotNull(authorization.getId());		
+	}
+	
+	@Test
+	public void testAuthorizeWithOrderId() throws MalformedURLException, HttpCommunicationException {
+		String orderId = getRandomId();
+		Authorization authorize = getHeidelpay().authorize(getAuthorization(createPaymentTypeCard().getId(), null, orderId));
+		assertNotNull(authorize);
+		assertNotNull(authorize.getId());
+		Authorization authorization = getHeidelpay().fetchAuthorization(orderId);
+		assertNotNull(authorization);
 		assertNotNull(authorization.getId());
 		
 	}
-	
-	
-	
-
 
 }

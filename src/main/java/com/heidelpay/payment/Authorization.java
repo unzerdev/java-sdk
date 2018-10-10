@@ -40,6 +40,7 @@ public class Authorization extends AbstractPayment {
 	private Currency currency;
 	private URL returnUrl;
 	
+	private String orderId;
 	private String typeId;
 	private String customerId;
 	private String metadataId;
@@ -176,6 +177,15 @@ public class Authorization extends AbstractPayment {
 
 	public void setCancelList(List<Cancel> cancelList) {
 		this.cancelList = cancelList;
+	}
+
+	public String getOrderId() {
+		return orderId;
+	}
+
+	public Authorization setOrderId(String orderId) {
+		this.orderId = orderId;
+		return this;
 	}
 
 }

@@ -57,12 +57,16 @@ public class AbstractPaymentTest {
 		return getAuthorization(typeId, null);
 	}
 	protected Authorization getAuthorization(String typeId, String customerId) throws MalformedURLException {
+		return getAuthorization(typeId, customerId, null);
+	}
+	protected Authorization getAuthorization(String typeId, String customerId, String orderId) throws MalformedURLException {
 		Authorization authorization = new Authorization();
 		authorization
 		.setAmount(new BigDecimal(10))
 		.setCurrency(Currency.getInstance("EUR"))
 		.setTypeId(typeId)
 		.setReturnUrl(new URL("https://www.heidelpay.com"))
+		.setOrderId(orderId)
 		.setCustomerId(customerId);
 		return authorization;
 	}
@@ -201,11 +205,15 @@ public class AbstractPaymentTest {
 	}
 
 	protected Charge getCharge() throws MalformedURLException, HttpCommunicationException {
+		return getCharge(null);
+	}
+	protected Charge getCharge(String orderId) throws MalformedURLException, HttpCommunicationException {
 		Charge charge = new Charge();
 		charge.setAmount(BigDecimal.ONE)
 		.setCurrency(Currency.getInstance("EUR"))
 		.setTypeId(createPaymentTypeCard().getId())
-		.setReturnUrl(new URL("https://www.google.at"));
+		.setReturnUrl(new URL("https://www.google.at"))
+		.setOrderId(orderId);
 		return charge;
 	}
 

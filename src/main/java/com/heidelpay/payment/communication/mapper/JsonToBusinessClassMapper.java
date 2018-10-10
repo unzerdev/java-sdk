@@ -63,6 +63,7 @@ public class JsonToBusinessClassMapper {
 		json.setAmount(authorization.getAmount());
 		json.setCurrency(authorization.getCurrency());
 		json.setReturnUrl(authorization.getReturnUrl());
+		json.setOrderId(authorization.getOrderId());
 		json.setResources(getResources(authorization));
 		return json;
 	}
@@ -72,6 +73,7 @@ public class JsonToBusinessClassMapper {
 		json.setAmount(charge.getAmount());
 		json.setCurrency(charge.getCurrency());
 		json.setReturnUrl(charge.getReturnUrl());
+		json.setOrderId(charge.getOrderId());
 		json.setResources(getResources(charge));
 		return json;
 	}

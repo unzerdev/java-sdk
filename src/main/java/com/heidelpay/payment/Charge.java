@@ -40,6 +40,7 @@ public class Charge extends AbstractPayment {
 	private Currency currency;
 	private URL returnUrl;
 
+	private String orderId;
 	private String typeId;
 	private String customerId;
 	private String metadataId;
@@ -132,14 +133,16 @@ public class Charge extends AbstractPayment {
 	public Processing getProcessing() {
 		return processing;
 	}
-	public void setProcessing(Processing processing) {
+	public Charge setProcessing(Processing processing) {
 		this.processing = processing;
+		return this;
 	}
 	public URL getReturnUrl() {
 		return returnUrl;
 	}
-	public void setReturnUrl(URL returnUrl) {
+	public Charge setReturnUrl(URL returnUrl) {
 		this.returnUrl = returnUrl;
+		return this;
 	}
 
 	@Override
@@ -151,6 +154,13 @@ public class Charge extends AbstractPayment {
 	}
 	public void setRedirectUrl(URL redirectUrl) {
 		this.redirectUrl = redirectUrl;
+	}
+	public String getOrderId() {
+		return orderId;
+	}
+	public Charge setOrderId(String orderId) {
+		this.orderId = orderId;
+		return this;
 	}
 
 }

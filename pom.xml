@@ -6,7 +6,7 @@
 
 	<groupId>com.heidelpay.payment</groupId>
 	<artifactId>heidelpayJava</artifactId>
-	<version>1.0.0.2</version>
+	<version>1.0.0.3</version>
 
 	<name>Heidelpay Java SDK</name>
 	<description>Heidelpay Java SDK</description>

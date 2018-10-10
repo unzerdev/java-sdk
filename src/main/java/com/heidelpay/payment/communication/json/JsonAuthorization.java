@@ -32,6 +32,7 @@ public class JsonAuthorization extends JsonIdObject implements JsonObject {
 	private JsonMessage message;
 	private Date date;	
 	
+	private String orderId;
 	private BigDecimal amount;
 	private Currency currency;
 	private URL returnUrl;
@@ -135,6 +136,14 @@ public class JsonAuthorization extends JsonIdObject implements JsonObject {
 
 	public void setRedirectUrl(URL redirectUrl) {
 		this.redirectUrl = redirectUrl;
+	}
+
+	public String getOrderId() {
+		return orderId;
+	}
+
+	public void setOrderId(String orderId) {
+		this.orderId = orderId;
 	}
 
 }
