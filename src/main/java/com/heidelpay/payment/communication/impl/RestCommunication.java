@@ -1,4 +1,4 @@
-package com.heidelpay.payment.communication;
+package com.heidelpay.payment.communication.impl;
 
 /*-
  * #%L
@@ -41,9 +41,17 @@ import org.apache.http.util.EntityUtils;
 import org.apache.log4j.Logger;
 
 import com.heidelpay.payment.PaymentException;
+import com.heidelpay.payment.communication.HeidelpayRestCommunication;
+import com.heidelpay.payment.communication.HttpCommunicationException;
+import com.heidelpay.payment.communication.JsonParser;
 import com.heidelpay.payment.communication.json.JsonErrorObject;
 
-public class RestCommunication {
+/**
+ * @deprecated
+ * use {@code HttpClientBasedRestCommunication} as a default implementation.
+ *
+ */
+public class RestCommunication implements HeidelpayRestCommunication {
 
 	public final static Logger logger = Logger.getLogger(RestCommunication.class);
 
@@ -89,7 +97,13 @@ public class RestCommunication {
 
 	private HttpUriRequest addAuthentication(String privateKey, HttpUriRequest http) {
 		if (privateKey == null) {
-			throw new PaymentException("PrivateKey/PublicKey is missing", "There was a problem authenticating your request.Please contact us for more information.", "API.000.000.001");
+			String uri;
+			if(http.getURI() == null) {
+				uri = null;
+			} else {
+				uri = http.getURI().toString();
+			}
+			throw new PaymentException("PrivateKey/PublicKey is missing", "There was a problem authenticating your request.Please contact us for more information.", "API.000.000.001", uri);
 		}
 		if (!privateKey.endsWith(":")) {
 			privateKey = privateKey + ":";
@@ -113,8 +127,7 @@ public class RestCommunication {
 
 			if (status.getStatusCode() > 201 || status.getStatusCode() < 200) {
 				JsonErrorObject error = new JsonParser<JsonErrorObject>().fromJson(content, JsonErrorObject.class);
-				throw new PaymentException("Heidelpay responded with " + status.toString() + " when calling URL '"
-						+ httpPost.getURI() + "'. Details: " + error.getErrors(), error.getErrors());
+				throw new PaymentException(error.getUrl(), status.getStatusCode(), error.getTimestamp(), error.getErrors());
 			}
 			return content;
 		} catch (IOException e) {
