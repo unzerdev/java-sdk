@@ -40,17 +40,19 @@ import com.heidelpay.payment.Customer.Salutation;
 import com.heidelpay.payment.Heidelpay;
 import com.heidelpay.payment.Processing;
 import com.heidelpay.payment.communication.HttpCommunicationException;
+import com.heidelpay.payment.communication.impl.HttpClientBasedRestCommunication;
+import com.heidelpay.payment.communication.impl.RestCommunication;
 import com.heidelpay.payment.paymenttypes.Card;
 import com.heidelpay.payment.paymenttypes.InvoiceGuaranteed;
 
 public class AbstractPaymentTest {
-	private Heidelpay heidelpay = new Heidelpay("s-priv-6S59Dt6Q9mJYj8X5qpcxSpA3XLXUw4Zf");
+	private Heidelpay heidelpay = new Heidelpay(new HttpClientBasedRestCommunication(), "s-priv-6S59Dt6Q9mJYj8X5qpcxSpA3XLXUw4Zf");
 
 	public Heidelpay getHeidelpay() {
 		return heidelpay;
 	}
 	public Heidelpay getHeidelpay(String key) {
-		return new Heidelpay(key);
+		return new Heidelpay(new HttpClientBasedRestCommunication(), key);
 	}
 
 	protected Authorization getAuthorization(String typeId) throws MalformedURLException {
