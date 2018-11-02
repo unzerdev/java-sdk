@@ -44,6 +44,10 @@ public class Heidelpay {
 	private String privateKey;
 	private PaymentService paymentService;
 
+	public Heidelpay(String privateKey) {
+		this(new HttpClientBasedRestCommunication(), privateKey);
+	}
+	
 	/**
 	 * Creates an instance of the {@code Heidelpay}-facade.
 	 * @param restCommunication - an appropriate implementation of {@code HeidelpayRestCommunication}. If you are fine with apache's httpCLient you might choose {@code HttpClientBasedRestCommunication}.
