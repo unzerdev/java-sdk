@@ -55,7 +55,6 @@ public class SepaDirectDebitGuaranteedTest extends AbstractPaymentTest {
 	}
 
 	@Test
-	@Ignore
 	public void testShipmentSepaDirectDebitGuaranteedType() throws HttpCommunicationException, MalformedURLException, ParseException {
 		Charge charge = getHeidelpay().charge(BigDecimal.TEN, Currency.getInstance("EUR"), new SepaDirectDebitGuaranteed("DE89370400440532013000"), new URL("https://www.google.at"), getMaximumCustomer(getRandomId()));
 		Shipment shipment = getHeidelpay().shipment(charge.getPaymentId());
