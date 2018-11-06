@@ -23,6 +23,7 @@ The Heidelpay class is instantiated using your private or public key:
 ```java
 Heidelpay heidelpay = new Heidelpay("s-priv-2a102ZMq3gV4I3zJ888J7RR6u75oqK3n");
 ```
+You can inject a custom implementation of the http-network communication into the Heidelpay constructor. For implementing a custom communication stack, you have to subclass the AbstractHeidelpayRestCommunication class together with a HeidelpayHttpRequest. For an example please refer to the reference implementation com.heidelpay.payment.communication.impl.HttpClientBasedRestCommunication.
 
 ### Authorize or Charge a payment
 The first step is to create a Payment Type and then do an authorize or charge for this Payment Type

@@ -28,11 +28,13 @@ import com.heidelpay.payment.Charge;
 import com.heidelpay.payment.Payment;
 import com.heidelpay.payment.PaymentException;
 import com.heidelpay.payment.Processing;
+import com.heidelpay.payment.UnsupportedPaymentTypeException;
 import com.heidelpay.payment.communication.json.JsonAuthorization;
 import com.heidelpay.payment.communication.json.JsonCancel;
 import com.heidelpay.payment.communication.json.JsonCard;
 import com.heidelpay.payment.communication.json.JsonCardFetch;
 import com.heidelpay.payment.communication.json.JsonCharge;
+import com.heidelpay.payment.communication.json.JsonError;
 import com.heidelpay.payment.communication.json.JsonIdObject;
 import com.heidelpay.payment.communication.json.JsonIdeal;
 import com.heidelpay.payment.communication.json.JsonObject;
@@ -207,7 +209,7 @@ public class JsonToBusinessClassMapper {
 		} else if (paymentType instanceof Sofort) {
 			return map((Sofort) paymentType, (JsonIdObject) jsonPaymentType);
 		} else {
-			throw new PaymentException(
+			throw new UnsupportedPaymentTypeException(
 					"Type '" + paymentType.getClass().getName() + "' is currently now supported by the SDK");
 		}
 	}
