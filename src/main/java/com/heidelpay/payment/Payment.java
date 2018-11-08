@@ -112,9 +112,15 @@ public class Payment extends AbstractPayment {
 
 	
 	public Cancel cancel() throws HttpCommunicationException {
+		if (getAuthorization() == null) {
+			throw new PaymentException("Cancel is only possible for an Authorization", "Payment cancelation not possible", "", "");
+		}
 		return getAuthorization().cancel();
 	}
 	public Cancel cancel(BigDecimal amount) throws HttpCommunicationException {
+		if (getAuthorization() == null) {
+			throw new PaymentException("Cancel is only possible for an Authorization", "Payment cancelation not possible", "", "");
+		}
 		return getAuthorization().cancel(amount);
 	}
 	
