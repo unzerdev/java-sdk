@@ -38,7 +38,6 @@ import com.heidelpay.payment.service.PaymentService;
  * httpClient you can choose the {@code HttpClientBasedRestCommunication}.
  * 
  * @see HeidelpayRestCommunication for details of the http-layer abstraction.
- * @see https://docs.heidelpay.com/v1.0/reference for details on the api itself
  */
 public class Heidelpay {
 	private String privateKey;

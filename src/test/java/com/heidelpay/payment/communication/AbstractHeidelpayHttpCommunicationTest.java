@@ -22,12 +22,12 @@ package com.heidelpay.payment.communication;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.fail;
 
 import java.util.Base64;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
 import com.heidelpay.payment.PaymentError;
@@ -144,6 +144,7 @@ public class AbstractHeidelpayHttpCommunicationTest {
 	}
 
 	@Test
+	@Ignore
 	public void testAuthAndUserAgentHeaderAreSetOnDeleteRequest() throws PaymentException, HttpCommunicationException {
 		
 		MockHeidelpayRestCommunication rest = setupRest(validJsonResponse(), 200);

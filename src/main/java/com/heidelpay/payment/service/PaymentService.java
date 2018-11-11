@@ -94,7 +94,7 @@ public class PaymentService {
 	 * http-communication.
 	 * 
 	 * @param heidelpay - the {@code Heidelpay} Facade
-	 * @param restCommunication - the implementation of {@code HeidelpayRestCommunication0 to be used for network communication.
+	 * @param restCommunication - the implementation of {@code HeidelpayRestCommunication} to be used for network communication.
 	 */
 	public PaymentService(Heidelpay heidelpay, HeidelpayRestCommunication restCommunication) {
 		super();

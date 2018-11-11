@@ -25,7 +25,6 @@ import java.util.List;
 
 /**
  * The {@code PaymentException} represents an Api Error as described here:
- * {@link https://docs.heidelpay.com/docs/error-handling}.
  */
 public class PaymentException extends RuntimeException {
 	private static final long serialVersionUID = 1490670397634763643L;

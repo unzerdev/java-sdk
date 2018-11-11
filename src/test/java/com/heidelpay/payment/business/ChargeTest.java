@@ -90,6 +90,7 @@ public class ChargeTest extends AbstractPaymentTest {
 	@Test
 	public void testChargeSofort() throws MalformedURLException, HttpCommunicationException {
 		Charge charge = getHeidelpay().charge(BigDecimal.ONE, Currency.getInstance("EUR"), new Sofort(), new URL("https://www.google.at"));
+		assertNotNull(charge.getRedirectUrl());
 		assertNotNull(charge);
 		assertNotNull(charge.getId());
 		assertNotNull(charge.getPayment());
