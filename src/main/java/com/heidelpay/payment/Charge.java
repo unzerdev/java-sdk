@@ -46,6 +46,7 @@ public class Charge extends AbstractPayment {
 	private String metadataId;
 	private String paymentId;
 	private String riskId;
+	private String basketId;
 	
 	private URL redirectUrl;
 
@@ -161,6 +162,12 @@ public class Charge extends AbstractPayment {
 	public Charge setOrderId(String orderId) {
 		this.orderId = orderId;
 		return this;
+	}
+	public String getBasketId() {
+		return basketId;
+	}
+	public void setBasketId(String basketId) {
+		this.basketId = basketId;
 	}
 
 }

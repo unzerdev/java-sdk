@@ -56,6 +56,10 @@ public class Payment extends AbstractPayment {
 	private Customer customer;
 	private String paymentTypeId;
 	private PaymentType paymentType;
+	private String metadataId;
+	private Metadata metadata;
+	private String basketId;
+	private Basket basket;
 	
 	private Authorization authorization;
 	private List<Charge> chargesList;
@@ -269,6 +273,38 @@ public class Payment extends AbstractPayment {
 
 	public void setCustomerId(String customerId) {
 		this.customerId = customerId;
+	}
+
+	public String getMetadataId() {
+		return metadataId;
+	}
+
+	public void setMetadataId(String metadataId) {
+		this.metadataId = metadataId;
+	}
+
+	public Metadata getMetadata() {
+		return metadata;
+	}
+
+	public void setMetadata(Metadata metadata) {
+		this.metadata = metadata;
+	}
+
+	public String getBasketId() {
+		return basketId;
+	}
+
+	public void setBasketId(String basketId) {
+		this.basketId = basketId;
+	}
+
+	public Basket getBasket() {
+		return basket;
+	}
+
+	public void setBasket(Basket basket) {
+		this.basket = basket;
 	}
 
 }

@@ -112,6 +112,24 @@ public class Heidelpay {
 		paymentService.deleteCustomer(customerId);
 	}
 
+	
+	public Metadata createMetadata(Metadata metadata) throws PaymentException, HttpCommunicationException {
+		return paymentService.createMetadata(metadata);
+	}
+	
+	public Metadata fetchMetadata(String id) throws PaymentException, HttpCommunicationException {
+		return paymentService.fetchMetadata(id);
+	}
+
+	public Basket createBasket(Basket basket) throws PaymentException, HttpCommunicationException {
+		return paymentService.createBasket(basket);
+	}
+
+	public Basket fetchBasket(String id) throws PaymentException, HttpCommunicationException {
+		return paymentService.fetchBasket(id);
+	}
+
+
 	/**
 	 * Create a new PaymentType at Heidelpay. This can be any Object which
 	 * implements the Interface PaymentType
@@ -586,5 +604,7 @@ public class Heidelpay {
 				.setCustomerId(customerId);
 		return authorization;
 	}
+
+
 
 }

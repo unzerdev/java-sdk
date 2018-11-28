@@ -41,6 +41,7 @@ public class Customer extends AbstractPayment {
 	private String phone;
 	private String mobile;
 	private Address billingAddress;
+	private Address shippingAddress;
 	
 	
 
@@ -134,6 +135,15 @@ public class Customer extends AbstractPayment {
 	@Override
 	public String getTypeUrl() {
 		return "customers";
+	}
+
+	public Address getShippingAddress() {
+		return shippingAddress;
+	}
+
+	public Customer setShippingAddress(Address shippingAddress) {
+		this.shippingAddress = shippingAddress;
+		return this;
 	}
 	
 }

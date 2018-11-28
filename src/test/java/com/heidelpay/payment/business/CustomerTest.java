@@ -74,7 +74,6 @@ public class CustomerTest extends AbstractPaymentTest {
 	}
 
 	@Test
-	// TODO How to update a customer? Should we remove restriction of Constructor?
 	public void testUpdateCustomer() throws HttpCommunicationException, ParseException {
 		Customer customer = getHeidelpay().createCustomer(getMaximumCustomer(getRandomId()));
 		assertNotNull(customer);

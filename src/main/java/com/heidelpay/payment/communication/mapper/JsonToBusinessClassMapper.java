@@ -163,6 +163,8 @@ public class JsonToBusinessClassMapper {
 		if (json.getResources() != null) { 
 			payment.setPaymentTypeId(json.getResources().getTypeId());
 			payment.setCustomerId(json.getResources().getCustomerId());
+			payment.setMetadataId(json.getResources().getMetadataId());
+			payment.setBasketId(json.getResources().getBasketId());
 		}
 		return payment;
 	}
