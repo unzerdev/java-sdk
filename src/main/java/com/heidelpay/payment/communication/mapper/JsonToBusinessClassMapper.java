@@ -91,6 +91,7 @@ public class JsonToBusinessClassMapper {
 		json.setMetadataId(charge.getMetadataId());
 		json.setTypeId(charge.getTypeId());
 		json.setRiskId(charge.getRiskId());
+		json.setBasketId(charge.getBasketId());
 		return json;
 	}
 
@@ -100,6 +101,7 @@ public class JsonToBusinessClassMapper {
 		json.setMetadataId(authorization.getMetadataId());
 		json.setTypeId(authorization.getTypeId());
 		json.setRiskId(authorization.getRiskId());
+		json.setBasketId(authorization.getBasketId());
 		return json;
 	}
 
