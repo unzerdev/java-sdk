@@ -29,6 +29,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Currency;
 import java.util.Date;
+import java.util.Map;
 import java.util.UUID;
 
 import com.heidelpay.payment.Address;
@@ -38,6 +39,8 @@ import com.heidelpay.payment.Charge;
 import com.heidelpay.payment.Customer;
 import com.heidelpay.payment.Customer.Salutation;
 import com.heidelpay.payment.Heidelpay;
+import com.heidelpay.payment.Metadata;
+import com.heidelpay.payment.PaymentException;
 import com.heidelpay.payment.Processing;
 import com.heidelpay.payment.communication.HttpCommunicationException;
 import com.heidelpay.payment.communication.impl.HttpClientBasedRestCommunication;
@@ -57,9 +60,12 @@ public class AbstractPaymentTest {
 		return getAuthorization(typeId, null);
 	}
 	protected Authorization getAuthorization(String typeId, String customerId) throws MalformedURLException {
-		return getAuthorization(typeId, customerId, null);
+		return getAuthorization(typeId, customerId, null, null, null);
 	}
-	protected Authorization getAuthorization(String typeId, String customerId, String orderId) throws MalformedURLException {
+	protected Authorization getAuthorization(String typeId, String customerId, String metadataId) throws MalformedURLException {
+		return getAuthorization(typeId, customerId, null, metadataId, null);
+	}
+	protected Authorization getAuthorization(String typeId, String customerId, String orderId, String metadataId, String basketId) throws MalformedURLException {
 		Authorization authorization = new Authorization();
 		authorization
 		.setAmount(new BigDecimal(10))
@@ -67,9 +73,31 @@ public class AbstractPaymentTest {
 		.setTypeId(typeId)
 		.setReturnUrl(new URL("https://www.heidelpay.com"))
 		.setOrderId(orderId)
-		.setCustomerId(customerId);
+		.setCustomerId(customerId)
+		.setMetadataId(metadataId)
+		.setBasketId(basketId);
 		return authorization;
 	}
+	
+	protected Charge getCharge() throws MalformedURLException, HttpCommunicationException {
+		return getCharge(null);
+	}
+	protected Charge getCharge(String orderId) throws MalformedURLException, HttpCommunicationException {
+		return getCharge(createPaymentTypeCard().getId(), null, null, null, null);
+	}
+	protected Charge getCharge(String typeId, String customerId, String orderId, String metadataId, String basketId) throws MalformedURLException, HttpCommunicationException {
+		Charge charge = new Charge();
+		charge.setAmount(BigDecimal.ONE)
+		.setCurrency(Currency.getInstance("EUR"))
+		.setTypeId(typeId)
+		.setReturnUrl(new URL("https://www.google.at"))
+		.setOrderId(orderId)
+		.setCustomerId(customerId)
+		.setMetadataId(metadataId)
+		.setBasketId(basketId);
+		return charge;
+	}
+	
 	protected Card createPaymentTypeCard() throws HttpCommunicationException {
 		Card card = getPaymentTypeCard();
 		card = (Card)getHeidelpay().createPaymentType(card);
@@ -95,10 +123,26 @@ public class AbstractPaymentTest {
 		return getHeidelpay().createCustomer(getMaximumCustomer(getRandomId()));
 	}
 	
+	protected Customer createMaximumCustomerSameAddress() throws HttpCommunicationException, ParseException {
+		return getHeidelpay().createCustomer(getMaximumCustomerSameAddress(getRandomId()));
+	}
+
 	protected Customer getMinimumCustomer() {
 		return new Customer("Rene", "Felder"); 
 	}
 
+	protected Customer getMaximumCustomerSameAddress(String customerId) throws ParseException {
+		Customer customer = new Customer("Rene", "Felder");
+		customer
+		.setCustomerId(customerId)
+		.setSalutation(Salutation.mr)
+		.setEmail("info@heidelpay.com")
+		.setMobile("+43676123456")
+		.setBirthDate(getDate("03.10.1974"))
+		.setBillingAddress(getAddress())
+		.setShippingAddress(getAddress());
+		return customer;
+	}
 	protected Customer getMaximumCustomer(String customerId) throws ParseException {
 		Customer customer = new Customer("Rene", "Felder");
 		customer
@@ -107,25 +151,55 @@ public class AbstractPaymentTest {
 		.setEmail("info@heidelpay.com")
 		.setMobile("+43676123456")
 		.setBirthDate(getDate("03.10.1974"))
-		.setBillingAddress(getAddress());
+		.setBillingAddress(getAddress())
+		.setShippingAddress(getAddress("Schubert", "Vangerowstraße 18", "Heidelberg", "BW", "69115", "DE"));
 		return customer;
 	}
 
 	private Address getAddress() {
+		return getAddress("Mozart", "Grüngasse 16", "Vienna", "Vienna", "1010", "AT");
+	}
+	private Address getAddress(String name, String street, String city, String state, String zip, String country) {
 		Address address = new Address();
 		address
-		.setName("Mozart")
-		.setStreet("Grüngasse 16")
-		.setCity("Vienna")
-		.setState("AT-1")
-		.setZip("1010")
-		.setCountry("AT");
+		.setName(name)
+		.setStreet(street)
+		.setCity(city)
+		.setState(state)
+		.setZip(zip)
+		.setCountry(country);
 		return address;
 	}
+
+	protected Metadata createTestMetadata() throws PaymentException, HttpCommunicationException {
+		Metadata metadata = getTestMetadata();
+		metadata = getHeidelpay().createMetadata(metadata);
+		return metadata;
+
+	}
+	
+	
+	protected Metadata getTestMetadata() {
+		Metadata metadata = new Metadata();
+		metadata.addMetadata("invoice-nr", "Rg-2018-11-1");
+		metadata.addMetadata("shop-id", "4711");
+		metadata.addMetadata("delivery-date", "24.12.2018");
+		metadata.addMetadata("reason", "X-mas present");
+		return metadata;
+	}
+
+
 
 	protected Date getDate(String date) throws ParseException {
 		return new SimpleDateFormat("dd.MM.yy").parse(date);
 	}
+
+	protected void assertMapEquals(Map<String, String> testMetadataMap, Map<String, String> metadataMap) {
+		for (Map.Entry<String, String> entry : metadataMap.entrySet()) {
+			assertEquals(entry.getValue(), testMetadataMap.get(entry.getKey()));
+		}
+	}
+
 
 	protected void assertChargeEquals(Charge initCharge, Charge charge) {
 		assertEquals(initCharge.getAmount(), charge.getAmount());
@@ -150,12 +224,12 @@ public class AbstractPaymentTest {
 		assertEquals(customerExpected.getFirstname(), customer.getFirstname());
 		assertEquals(customerExpected.getLastname(), customer.getLastname());
 		assertEquals(customerExpected.getCustomerId(), customer.getCustomerId());
-		// Deactivated until Bug  AHC-268 is fixed
-//		assertEquals(customerExpected.getBirthDate(), customer.getBirthDate());
+		assertEquals(customerExpected.getBirthDate(), customer.getBirthDate());
 		assertEquals(customerExpected.getEmail(), customer.getEmail());
 		assertEquals(customerExpected.getMobile(), customer.getMobile());
 		assertEquals(customerExpected.getPhone(), customer.getPhone());
 		assertAddressEquals(customerExpected.getBillingAddress(), customer.getBillingAddress());		
+		assertAddressEquals(customerExpected.getShippingAddress(), customer.getShippingAddress());		
 	}
 	protected void assertAddressEquals(Address addressExpected, Address address) {
 		if (addressExpected == null) return;
@@ -204,17 +278,6 @@ public class AbstractPaymentTest {
 		return strText.substring(0, start) + sbMaskString.toString() + strText.substring(start + maskLength);
 	}
 
-	protected Charge getCharge() throws MalformedURLException, HttpCommunicationException {
-		return getCharge(null);
-	}
-	protected Charge getCharge(String orderId) throws MalformedURLException, HttpCommunicationException {
-		Charge charge = new Charge();
-		charge.setAmount(BigDecimal.ONE)
-		.setCurrency(Currency.getInstance("EUR"))
-		.setTypeId(createPaymentTypeCard().getId())
-		.setReturnUrl(new URL("https://www.google.at"))
-		.setOrderId(orderId);
-		return charge;
-	}
+
 
 }

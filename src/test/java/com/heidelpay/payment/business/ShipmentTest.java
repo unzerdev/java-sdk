@@ -28,6 +28,7 @@ import java.text.ParseException;
 import org.junit.Test;
 
 import com.heidelpay.payment.Authorization;
+import com.heidelpay.payment.PaymentException;
 import com.heidelpay.payment.Shipment;
 import com.heidelpay.payment.communication.HttpCommunicationException;
 
@@ -35,7 +36,7 @@ public class ShipmentTest extends AbstractPaymentTest {
 
 	@Test
 	public void testAuthorizeWithShipment() throws MalformedURLException, HttpCommunicationException, ParseException {
-		Authorization authorize = getHeidelpay().authorize(getAuthorization(createPaymentTypeInvoiceGuaranteed().getId(), createMaximumCustomer().getId()));
+		Authorization authorize = getHeidelpay().authorize(getAuthorization(createPaymentTypeInvoiceGuaranteed().getId(), createMaximumCustomerSameAddress().getId()));
 		assertNotNull(authorize.getId());
 		assertNotNull(authorize);
 		Shipment shipment = getHeidelpay().shipment(authorize.getPaymentId());
@@ -44,5 +45,9 @@ public class ShipmentTest extends AbstractPaymentTest {
 		assertNotNull(shipment);
 	}
 
+	@Test(expected=PaymentException.class)
+	public void testAuthorizeWithShipmentNotSameAddress() throws MalformedURLException, HttpCommunicationException, ParseException {
+		Authorization authorize = getHeidelpay().authorize(getAuthorization(createPaymentTypeInvoiceGuaranteed().getId(), createMaximumCustomer().getId()));
+	}
 
 }
