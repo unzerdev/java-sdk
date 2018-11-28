@@ -56,7 +56,7 @@ public class BasketTest extends AbstractPaymentTest {
 	}
 
 	@Test
-	@Ignore("Bug with same orderId")
+	@Ignore("Bug with same orderId: https://heidelpay.atlassian.net/browse/AHC-559")
 	public void testUpdateBasketWithFetched() throws MalformedURLException, HttpCommunicationException {
 		Basket minBasket = getMinTestBasket();
 		Basket basket = getHeidelpay().createBasket(minBasket);
