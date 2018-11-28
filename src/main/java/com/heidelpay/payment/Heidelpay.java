@@ -129,6 +129,12 @@ public class Heidelpay {
 		return paymentService.fetchBasket(id);
 	}
 
+	public Basket updateBasket(Basket basket, String id) throws PaymentException, HttpCommunicationException {
+		return paymentService.updateBasket(id, basket);
+	}
+
+
+
 
 	/**
 	 * Create a new PaymentType at Heidelpay. This can be any Object which
@@ -604,7 +610,6 @@ public class Heidelpay {
 				.setCustomerId(customerId);
 		return authorization;
 	}
-
 
 
 }

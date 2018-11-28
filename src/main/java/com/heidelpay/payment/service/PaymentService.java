@@ -127,6 +127,12 @@ public class PaymentService {
 		return fetchCustomer(id);
 	}
 
+	public Basket updateBasket(String id, Basket basket) throws PaymentException, HttpCommunicationException {
+		restCommunication.httpPut(urlUtil.getHttpGetUrl(basket, id), heidelpay.getPrivateKey(), basket);
+		return fetchBasket(id);
+	}
+
+
 	public Metadata createMetadata(Metadata metadata) throws PaymentException, HttpCommunicationException {
 		String response = restCommunication.httpPost(urlUtil.getRestUrl(metadata), heidelpay.getPrivateKey(), metadata.getMetadataMap());
 		Metadata metadataJson = new JsonParser<Metadata>().fromJson(response, Metadata.class);

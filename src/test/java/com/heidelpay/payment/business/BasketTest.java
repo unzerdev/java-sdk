@@ -34,6 +34,28 @@ public class BasketTest extends AbstractPaymentTest {
 	}
 
 	@Test
+	public void testCreateFetchMinBasket() throws MalformedURLException, HttpCommunicationException {
+		Basket minBasket = getMinTestBasket();
+		Basket basket = getHeidelpay().createBasket(minBasket);
+		Basket basketFetched = getHeidelpay().fetchBasket(basket.getId());
+		assertNotNull(basketFetched);
+		assertNotNull(basketFetched.getId());
+		assertBasketEquals(minBasket, basketFetched);
+	}
+
+	@Test
+	public void testUpdateBasket() throws MalformedURLException, HttpCommunicationException {
+		Basket minBasket = getMinTestBasket();
+		Basket basket = getHeidelpay().createBasket(minBasket);
+		Basket basketFetched = getHeidelpay().fetchBasket(basket.getId());
+		Basket maxBasket = getMaxTestBasket();
+		Basket updatedBasket = getHeidelpay().updateBasket(maxBasket, basket.getId());
+		assertNotNull(basketFetched);
+		assertNotNull(basketFetched.getId());
+		assertBasketEquals(maxBasket, updatedBasket);
+	}
+
+	@Test
 	public void testAuthorizationWithBasket() throws MalformedURLException, HttpCommunicationException {
 		String basketId = createMaxTestBasket().getId();
 		Authorization authorize = getHeidelpay().authorize(getAuthorization(createPaymentTypeCard().getId(), null, null, null, basketId));
@@ -57,8 +79,8 @@ public class BasketTest extends AbstractPaymentTest {
 		assertNotNull(payment.getCharge(0));
 		assertNotNull(payment.getCharge(0).getId());
 		// TODO Currently a bug in production
-//		assertEquals(basketId, payment.getBasketId());
-//		assertEquals(basketId, payment.getCharge(0).getBasketId());
+		assertEquals(basketId, payment.getBasketId());
+		assertEquals(basketId, payment.getCharge(0).getBasketId());
 	}
 
 	private Basket createMaxTestBasket() throws PaymentException, HttpCommunicationException {
@@ -76,6 +98,14 @@ public class BasketTest extends AbstractPaymentTest {
 		return basket;
 	}
 
+	private Basket getMinTestBasket() {
+		Basket basket = new Basket()
+				.setAmountTotal(new BigDecimal(500.5))
+				.setCurrencyCode(Currency.getInstance("EUR"))
+				.setOrderId(getRandomId())
+				.addBasketItem(getMinTestBasketItem());
+		return basket;
+	}
 	private BasketItem getMaxTestBasketItem() {
 		BasketItem basketItem = new BasketItem();
 		basketItem.setBasketItemReferenceId("Artikelnummer 4711");
@@ -91,6 +121,15 @@ public class BasketTest extends AbstractPaymentTest {
 		
 		return basketItem;
 	}
+	private BasketItem getMinTestBasketItem() {
+		BasketItem basketItem = new BasketItem()
+				.setBasketItemReferenceId("Artikelnummer 4711")
+				.setQuantity(5)
+				.setAmountPerUnit(new BigDecimal(100.1))
+				.setAmountNet(new BigDecimal(420.1))
+				.setTitle("Apple iPhone");
+		return basketItem;
+	}
 	private void assertBasketEquals(Basket expected, Basket actual) {
 		assertBigDecimalEquals(expected.getAmountTotal(), actual.getAmountTotal());
 		assertBigDecimalEquals(expected.getAmountTotalDiscount(), actual.getAmountTotalDiscount());
@@ -103,6 +142,9 @@ public class BasketTest extends AbstractPaymentTest {
 
 
 	private void assertBigDecimalEquals(BigDecimal expected, BigDecimal actual) {
+		if (expected == null) {
+			return;
+		}
 		expected = expected.setScale(4, RoundingMode.HALF_UP);
 		actual = actual.setScale(4, RoundingMode.HALF_UP);
 		assertTrue( expected.compareTo(actual) == 0);
@@ -127,7 +169,12 @@ public class BasketTest extends AbstractPaymentTest {
 		assertEquals(expected.getQuantity(), actual.getQuantity());
 		assertEquals(expected.getTitle(), actual.getTitle());
 		assertEquals(expected.getUnit(), actual.getUnit());
-		assertEquals(expected.getVat(), actual.getVat());
+		assertNumberEquals(expected.getVat(), actual.getVat());
+	}
+
+	private void assertNumberEquals(Integer expected, Integer actual) {
+		if (expected == null) return;
+		else assertEquals(expected, actual);
 	}
 
 
