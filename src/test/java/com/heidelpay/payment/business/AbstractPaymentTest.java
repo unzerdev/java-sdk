@@ -50,7 +50,7 @@ import com.heidelpay.payment.paymenttypes.InvoiceGuaranteed;
 public class AbstractPaymentTest {
 
 	public Heidelpay getHeidelpay() {
-		return new Heidelpay(new HttpClientBasedRestCommunication(), "s-priv-2a10BasoM1EwSnrgVPNXErHHfO2y4GXT");
+		return new Heidelpay("s-priv-2a102ZMq3gV4I3zJ888J7RR6u75oqK3n");
 	}
 	public Heidelpay getHeidelpay(String key) {
 		return new Heidelpay(new HttpClientBasedRestCommunication(), key);
