@@ -50,7 +50,7 @@ import com.heidelpay.payment.paymenttypes.InvoiceGuaranteed;
 public class AbstractPaymentTest {
 
 	public Heidelpay getHeidelpay() {
-		return new Heidelpay(new HttpClientBasedRestCommunication(), "s-priv-6S59Dt6Q9mJYj8X5qpcxSpA3XLXUw4Zf");
+		return new Heidelpay(new HttpClientBasedRestCommunication(), "s-priv-2a10BasoM1EwSnrgVPNXErHHfO2y4GXT");
 	}
 	public Heidelpay getHeidelpay(String key) {
 		return new Heidelpay(new HttpClientBasedRestCommunication(), key);
@@ -83,7 +83,7 @@ public class AbstractPaymentTest {
 		return getCharge(null);
 	}
 	protected Charge getCharge(String orderId) throws MalformedURLException, HttpCommunicationException {
-		return getCharge(createPaymentTypeCard().getId(), null, null, null, null);
+		return getCharge(createPaymentTypeCard().getId(), null, orderId, null, null);
 	}
 	protected Charge getCharge(String typeId, String customerId, String orderId, String metadataId, String basketId) throws MalformedURLException, HttpCommunicationException {
 		Charge charge = new Charge();

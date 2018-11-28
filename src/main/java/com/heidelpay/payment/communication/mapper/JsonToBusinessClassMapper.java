@@ -26,7 +26,6 @@ import com.heidelpay.payment.Authorization;
 import com.heidelpay.payment.Cancel;
 import com.heidelpay.payment.Charge;
 import com.heidelpay.payment.Payment;
-import com.heidelpay.payment.PaymentException;
 import com.heidelpay.payment.Processing;
 import com.heidelpay.payment.UnsupportedPaymentTypeException;
 import com.heidelpay.payment.communication.json.JsonAuthorization;
@@ -34,7 +33,6 @@ import com.heidelpay.payment.communication.json.JsonCancel;
 import com.heidelpay.payment.communication.json.JsonCard;
 import com.heidelpay.payment.communication.json.JsonCardFetch;
 import com.heidelpay.payment.communication.json.JsonCharge;
-import com.heidelpay.payment.communication.json.JsonError;
 import com.heidelpay.payment.communication.json.JsonIdObject;
 import com.heidelpay.payment.communication.json.JsonIdeal;
 import com.heidelpay.payment.communication.json.JsonObject;
@@ -51,6 +49,7 @@ import com.heidelpay.payment.paymenttypes.Invoice;
 import com.heidelpay.payment.paymenttypes.InvoiceGuaranteed;
 import com.heidelpay.payment.paymenttypes.PaymentType;
 import com.heidelpay.payment.paymenttypes.Paypal;
+import com.heidelpay.payment.paymenttypes.Pis;
 import com.heidelpay.payment.paymenttypes.Prepayment;
 import com.heidelpay.payment.paymenttypes.Przelewy24;
 import com.heidelpay.payment.paymenttypes.SepaDirectDebit;
@@ -210,6 +209,8 @@ public class JsonToBusinessClassMapper {
 			return map((Przelewy24) paymentType, (JsonIdObject) jsonPaymentType);
 		} else if (paymentType instanceof Sofort) {
 			return map((Sofort) paymentType, (JsonIdObject) jsonPaymentType);
+		} else if (paymentType instanceof Pis) {
+			return map((Pis) paymentType, (JsonIdObject) jsonPaymentType);
 		} else {
 			throw new UnsupportedPaymentTypeException(
 					"Type '" + paymentType.getClass().getName() + "' is currently now supported by the SDK");
@@ -294,4 +295,8 @@ public class JsonToBusinessClassMapper {
 		return sofort;
 	}
 	
+	private PaymentType map(Pis pis, JsonIdObject jsonId) {
+		pis.setId(jsonId.getId());
+		return pis;
+	}
 }

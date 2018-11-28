@@ -61,6 +61,7 @@ import com.heidelpay.payment.paymenttypes.Invoice;
 import com.heidelpay.payment.paymenttypes.InvoiceGuaranteed;
 import com.heidelpay.payment.paymenttypes.PaymentType;
 import com.heidelpay.payment.paymenttypes.Paypal;
+import com.heidelpay.payment.paymenttypes.Pis;
 import com.heidelpay.payment.paymenttypes.Prepayment;
 import com.heidelpay.payment.paymenttypes.Przelewy24;
 import com.heidelpay.payment.paymenttypes.SepaDirectDebit;
@@ -455,6 +456,8 @@ public class PaymentService {
 			return new JsonSepaDirectDebit();
 		} else if ("sft".equalsIgnoreCase(paymentType)) {
 			return new JsonIdObject();
+		} else if ("pis".equalsIgnoreCase(paymentType)) {
+			return new JsonIdObject();
 		} else {
 			throw new PaymentException("Type '" + typeId + "' is currently now supported by the SDK");
 		}
@@ -490,6 +493,8 @@ public class PaymentService {
 			return new SepaDirectDebitGuaranteed("");
 		} else if ("sft".equalsIgnoreCase(paymentType)) {
 			return new Sofort();
+		} else if ("pis".equalsIgnoreCase(paymentType)) {
+			return new Pis();
 		} else {
 			throw new PaymentException("Type '" + typeId + "' is currently now supported by the SDK");
 		}
