@@ -2,6 +2,7 @@ package com.heidelpay.payment;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.TreeMap;
 
 import com.heidelpay.payment.paymenttypes.PaymentType;
 
@@ -11,17 +12,21 @@ public class Metadata implements PaymentType {
 	}
 	public Metadata(boolean sorted) {
 		super();
-		this.sorted = sorted;
+		if (sorted) {
+			metadataMap = new TreeMap<String, String>();
+		} else {
+			metadataMap = new LinkedHashMap<String, String>();
+		}
 	}
 	
 	private String id;
 	private Map<String, String> metadataMap = new LinkedHashMap<>();
-	private boolean sorted = false;
 	private Heidelpay heidelpay;
 
 	
-	public void addMetadata(String key, String value) {
+	public Metadata addMetadata(String key, String value) {
 		getMetadataMap().put(key, value);
+		return this;
 	}
 	
 	public String getId() {

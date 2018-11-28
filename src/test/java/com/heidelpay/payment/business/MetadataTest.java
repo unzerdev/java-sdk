@@ -25,6 +25,18 @@ public class MetadataTest extends AbstractPaymentTest {
 	}
 
 	@Test
+	public void testSortedMetadata() throws MalformedURLException, HttpCommunicationException {
+		Metadata metadata = getHeidelpay().createMetadata(getTestMetadata(true));
+		assertEquals("delivery-date", metadata.getMetadataMap().keySet().toArray()[0]);
+		
+		Metadata metadataFetched = getHeidelpay().fetchMetadata(metadata.getId());
+		assertEquals("delivery-date", metadataFetched.getMetadataMap().keySet().toArray()[0]);
+		assertNotNull(metadataFetched);
+		assertNotNull(metadataFetched.getId());
+		assertMapEquals(getTestMetadata().getMetadataMap(), metadata.getMetadataMap());
+	}
+
+	@Test
 	public void testAuthorizationWithMetadata() throws MalformedURLException, HttpCommunicationException {
 		String metadataId = createTestMetadata().getId();
 		Authorization authorize = getHeidelpay().authorize(getAuthorization(createPaymentTypeCard().getId(), null, metadataId));

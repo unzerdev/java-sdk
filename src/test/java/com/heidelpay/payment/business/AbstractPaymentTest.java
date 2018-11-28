@@ -180,11 +180,14 @@ public class AbstractPaymentTest {
 	
 	
 	protected Metadata getTestMetadata() {
-		Metadata metadata = new Metadata();
-		metadata.addMetadata("invoice-nr", "Rg-2018-11-1");
-		metadata.addMetadata("shop-id", "4711");
-		metadata.addMetadata("delivery-date", "24.12.2018");
-		metadata.addMetadata("reason", "X-mas present");
+		return getTestMetadata(false);
+	}
+	protected Metadata getTestMetadata(boolean sorted) {
+		Metadata metadata = new Metadata(sorted)
+				.addMetadata("invoice-nr", "Rg-2018-11-1")
+				.addMetadata("shop-id", "4711")
+				.addMetadata("delivery-date", "24.12.2018")
+				.addMetadata("reason", "X-mas present");
 		return metadata;
 	}
 
