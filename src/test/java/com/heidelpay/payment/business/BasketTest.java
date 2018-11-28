@@ -10,9 +10,9 @@ import java.net.MalformedURLException;
 import java.util.Currency;
 import java.util.List;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
-import com.heidelpay.payment.AbstractPayment;
 import com.heidelpay.payment.Authorization;
 import com.heidelpay.payment.Basket;
 import com.heidelpay.payment.BasketItem;
@@ -55,6 +55,19 @@ public class BasketTest extends AbstractPaymentTest {
 		assertBasketEquals(maxBasket, updatedBasket);
 	}
 
+	@Test
+	@Ignore("Bug with same orderId")
+	public void testUpdateBasketWithFetched() throws MalformedURLException, HttpCommunicationException {
+		Basket minBasket = getMinTestBasket();
+		Basket basket = getHeidelpay().createBasket(minBasket);
+		Basket basketFetched = getHeidelpay().fetchBasket(basket.getId());
+		basketFetched.setNote("Something changed");
+		Basket updatedBasket = getHeidelpay().updateBasket(basketFetched, basket.getId());
+		assertNotNull(basketFetched);
+		assertNotNull(basketFetched.getId());
+		assertBasketEquals(basketFetched, updatedBasket);
+	}
+	
 	@Test
 	public void testAuthorizationWithBasket() throws MalformedURLException, HttpCommunicationException {
 		String basketId = createMaxTestBasket().getId();
