@@ -75,7 +75,8 @@ public class ErrorTest extends AbstractPaymentTest {
 	@Test
 	public void testPCILevelSaqA() throws MalformedURLException, HttpCommunicationException {
 		try {
-			getHeidelpay("s-pub-2a10ehAb66CT6wXy43gJVqMvvOjGY5Gt").createPaymentType(getPaymentTypeCard());
+//			getHeidelpay("s-pub-2a10ehAb66CT6wXy43gJVqMvvOjGY5Gt").createPaymentType(getPaymentTypeCard()); // Development
+			getHeidelpay("s-pub-2a10xITCUtmO2FlTP8RKB3OhdnKI4RmU").createPaymentType(getPaymentTypeCard()); // Prod Sandbox
 		} catch (PaymentException e) {
 			assertNotNull(e.getPaymentErrorList());
 			assertTrue(e.getPaymentErrorList().size() > 0);
@@ -93,7 +94,9 @@ public class ErrorTest extends AbstractPaymentTest {
 	public void testInvalidAccess() throws MalformedURLException, HttpCommunicationException {
 		Card card = createPaymentTypeCard();
 		try {
-			getHeidelpay("s-priv-2a10SyGqMkJQoku5BdPSYUi3YO2iXQO9").fetchPaymentType(card.getId());
+//			getHeidelpay("s-priv-2a10SyGqMkJQoku5BdPSYUi3YO2iXQO9").fetchPaymentType(card.getId());  // Dev
+			getHeidelpay("s-priv-2a1095rIVXy4IrNFXG6yQiguSAqNjciC").fetchPaymentType(card.getId());  // Prod-Sandbox
+			
 		} catch (PaymentException e) {
 			assertNotNull(e.getPaymentErrorList());
 			assertTrue(e.getPaymentErrorList().size() > 0);
