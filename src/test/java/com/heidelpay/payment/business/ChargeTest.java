@@ -108,6 +108,7 @@ public class ChargeTest extends AbstractPaymentTest {
 		Payment payment = getHeidelpay().fetchPayment(orderId);
 		assertNotNull(payment);
 		assertEquals(charge.getPayment().getId(), payment.getId());
+		assertEquals(orderId, charge.getOrderId());
 	}
 
 }

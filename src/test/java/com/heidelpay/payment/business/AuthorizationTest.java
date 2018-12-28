@@ -20,7 +20,7 @@ package com.heidelpay.payment.business;
  * #L%
  */
 
-import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.*;
 
 import java.math.BigDecimal;
 import java.net.MalformedURLException;
@@ -122,6 +122,7 @@ public class AuthorizationTest extends AbstractPaymentTest {
 		Authorization authorization = getHeidelpay().fetchAuthorization(orderId);
 		assertNotNull(authorization);
 		assertNotNull(authorization.getId());
+		assertEquals(orderId, authorization.getOrderId());
 		
 	}
 

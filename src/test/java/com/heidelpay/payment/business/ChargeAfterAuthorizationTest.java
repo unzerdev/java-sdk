@@ -20,7 +20,7 @@ package com.heidelpay.payment.business;
  * #L%
  */
 
-import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.*;
 
 import java.math.BigDecimal;
 import java.net.MalformedURLException;
@@ -42,11 +42,15 @@ public class ChargeAfterAuthorizationTest extends AbstractPaymentTest {
 
 	@Test
 	public void fullChargeAfterAuthorization() throws HttpCommunicationException, MalformedURLException {
-		Authorization authorize = getHeidelpay().authorize(getAuthorization(createPaymentTypeCard().getId()));
+		String orderId = getRandomId();
+		Authorization authorize = getHeidelpay().authorize(getAuthorization(createPaymentTypeCard().getId(), null, orderId, null, null));
 		Authorization authorization = getHeidelpay().fetchAuthorization(authorize.getPaymentId());
 		Charge charge = authorization.charge();
 		assertNotNull(charge);
 		assertNotNull(charge.getId());
+		assertEquals(orderId, authorize.getOrderId());
+		assertEquals(orderId, authorization.getOrderId());
+		assertEquals(orderId, charge.getOrderId());
 	}
 
 	@Test
@@ -65,4 +69,5 @@ public class ChargeAfterAuthorizationTest extends AbstractPaymentTest {
 		assertNotNull(charge);
 		assertNotNull(charge.getId());
 	}
+
 }
