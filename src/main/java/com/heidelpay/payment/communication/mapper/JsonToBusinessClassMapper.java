@@ -109,6 +109,7 @@ public class JsonToBusinessClassMapper {
 		authorization.setId(json.getId());
 		authorization.setAmount(json.getAmount());
 		authorization.setCurrency(json.getCurrency());
+		authorization.setOrderId(json.getOrderId());
 		if (json.getResources() != null) {
 			authorization.setCustomerId(json.getResources().getCustomerId());
 			authorization.setMetadataId(json.getResources().getMetadataId());

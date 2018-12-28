@@ -67,6 +67,7 @@ public class MetadataTest extends AbstractPaymentTest {
 		assertNotNull(payment.getAuthorization().getId());
 		assertEquals(metadataId, payment.getMetadataId());
 		assertEquals(metadataId, payment.getAuthorization().getMetadataId());
+		assertNotNull(payment.getMetadata().getMetadataMap());
 	}
 
 	@Test
@@ -80,6 +81,7 @@ public class MetadataTest extends AbstractPaymentTest {
 		assertNotNull(payment.getCharge(0).getId());
 		assertEquals(metadataId, payment.getMetadataId());
 		assertEquals(metadataId, payment.getCharge(0).getMetadataId());
+		assertNotNull(payment.getMetadata().getMetadataMap());
 	}
 
 
