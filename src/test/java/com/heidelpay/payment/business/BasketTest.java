@@ -141,7 +141,7 @@ public class BasketTest extends AbstractPaymentTest {
 	}
 	private BasketItem getMaxTestBasketItem() {
 		BasketItem basketItem = new BasketItem();
-		basketItem.setBasketItemReferenceId("Artikelnummer 4711");
+		basketItem.setBasketItemReferenceId("Artikelnummer4711");
 		basketItem.setAmountDiscount(BigDecimal.ONE);
 		basketItem.setAmountGross(new BigDecimal(500.5));
 		basketItem.setAmountNet(new BigDecimal(420.1));
@@ -156,7 +156,7 @@ public class BasketTest extends AbstractPaymentTest {
 	}
 	private BasketItem getMinTestBasketItem() {
 		BasketItem basketItem = new BasketItem()
-				.setBasketItemReferenceId("Artikelnummer 4711")
+				.setBasketItemReferenceId("Artikelnummer4711")
 				.setQuantity(5)
 				.setAmountPerUnit(new BigDecimal(100.1))
 				.setAmountNet(new BigDecimal(420.1))

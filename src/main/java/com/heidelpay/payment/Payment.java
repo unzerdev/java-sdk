@@ -169,13 +169,19 @@ public class Payment extends AbstractPayment {
 	}
 
 	public Customer getCustomer() throws HttpCommunicationException {
-		if (customer == null) {
+		if (customer == null && isNotEmpty(getCustomerId())) {
 			customer = fetchCustomer(getCustomerId());
 		}
 		return customer;
 	}
+	protected boolean isNotEmpty(String value) {
+		return value != null && !"".equalsIgnoreCase(value.trim());
+	}
 	private Customer fetchCustomer(String customerId) throws HttpCommunicationException {
 		return getHeidelpay().fetchCustomer(customerId);
+	}
+	private Metadata fetchMetadata(String metadataId) throws HttpCommunicationException {
+		return getHeidelpay().fetchMetadata(metadataId);
 	}
 
 	@Override
@@ -283,7 +289,10 @@ public class Payment extends AbstractPayment {
 		this.metadataId = metadataId;
 	}
 
-	public Metadata getMetadata() {
+	public Metadata getMetadata() throws HttpCommunicationException {
+		if (metadata == null && isNotEmpty(getMetadataId())) {
+			metadata = fetchMetadata(getMetadataId());
+		}
 		return metadata;
 	}
 

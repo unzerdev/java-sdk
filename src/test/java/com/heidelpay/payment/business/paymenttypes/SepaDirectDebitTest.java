@@ -32,6 +32,7 @@ import java.util.Currency;
 import org.junit.Test;
 
 import com.heidelpay.payment.Charge;
+import com.heidelpay.payment.PaymentException;
 import com.heidelpay.payment.business.AbstractPaymentTest;
 import com.heidelpay.payment.communication.HttpCommunicationException;
 import com.heidelpay.payment.paymenttypes.SepaDirectDebit;
@@ -69,7 +70,7 @@ public class SepaDirectDebitTest extends AbstractPaymentTest {
 		assertSddEquals(sdd, fetchedSdd);
 	}
 
-	@Test
+	@Test(expected=PaymentException.class)
 	public void testCreateSepaDirectDebitBlockedIban() throws HttpCommunicationException, MalformedURLException {
 		SepaDirectDebit sdd = new SepaDirectDebit("DE69545100670661762678");
 		sdd = getHeidelpay().createPaymentType(sdd);
