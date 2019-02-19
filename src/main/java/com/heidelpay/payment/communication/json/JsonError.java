@@ -25,6 +25,7 @@ public class JsonError {
 	private String merchantMessage;
 	private String customerMessage;
 	private String customer;
+
 	public String getCode() {
 		return code;
 	}

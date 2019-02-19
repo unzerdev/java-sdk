@@ -188,7 +188,7 @@ public abstract class AbstractHeidelpayRestCommunication implements HeidelpayRes
 		logRequest(request);
 		
 		HeidelpayHttpResponse response = doExecute(request);
-
+		
 		logResponse(response);
 
 		if (isError(response)) {
@@ -203,7 +203,7 @@ public abstract class AbstractHeidelpayRestCommunication implements HeidelpayRes
 			throws PaymentException {
 		JsonErrorObject error = new JsonParser<JsonErrorObject>().fromJson(response.getContent(),
 				JsonErrorObject.class);
-		throw new PaymentException(error.getUrl(), response.getStatusCode(), error.getTimestamp(), error.getErrors());
+		throw new PaymentException(error.getUrl(), response.getStatusCode(), error.getTimestamp(), error.getId(), error.getErrors());
 	}
 
 	protected boolean isError(HeidelpayHttpResponse response) {

@@ -33,16 +33,24 @@ package com.heidelpay.payment.communication;
 
 import java.math.BigDecimal;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Objects;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.heidelpay.payment.PaymentError;
+import com.heidelpay.payment.PaymentException;
+import com.heidelpay.payment.communication.json.JsonErrorObject;
 
 /**
  * Provides functions which is interact with json
  */
 public class JsonParser<T> {
+
+	private static final String ERRORS = "errors";
+	private static final String ERROR_CODE = "code";
 
 	private Gson gson;
 
@@ -72,14 +80,27 @@ public class JsonParser<T> {
 	 * 
 	 * @param json
 	 * @param clazz
-	 * @return
+	 * @return an object of type T
 	 */
 	@SuppressWarnings("hiding")
 	public <T> T fromJson(String json, Class<T> clazz) {
 		if (Objects.isNull(json) || Objects.isNull(clazz)) {
 			throw new NullPointerException();
 		}
+		if (isError(json) && !clazz.isAssignableFrom(JsonErrorObject.class)) {
+			throw toPaymentException(json);
+		}
 		return gson.fromJson(json, clazz);
+	}
+
+	private PaymentException toPaymentException(String json) {
+		JsonErrorObject error = gson.fromJson(json, JsonErrorObject.class);
+
+		return new PaymentException(error.getId(), error.getUrl(), error.getTimestamp(), error.getErrors());
+	}
+
+	private boolean isError(String json) {
+		return json.contains(ERRORS) && json.contains(ERROR_CODE);
 	}
 
 }

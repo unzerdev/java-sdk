@@ -27,6 +27,7 @@ import com.heidelpay.payment.PaymentError;
 public class JsonErrorObject {
 	private String url;
 	private String timestamp;
+	private String id;
 	private List<PaymentError> errors;
 	public String getUrl() {
 		return url;
@@ -45,6 +46,12 @@ public class JsonErrorObject {
 	}
 	public void setErrors(List<PaymentError> errors) {
 		this.errors = errors;
+	}
+	public String getId() {
+		return id;
+	}
+	public void setId(String id) {
+		this.id = id;
 	}
 	
 }

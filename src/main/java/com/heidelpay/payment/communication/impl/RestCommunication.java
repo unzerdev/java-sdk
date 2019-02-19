@@ -47,8 +47,8 @@ import com.heidelpay.payment.communication.JsonParser;
 import com.heidelpay.payment.communication.json.JsonErrorObject;
 
 /**
- * @deprecated
- * use {@code HttpClientBasedRestCommunication} as a default implementation.
+ * @deprecated use {@code HttpClientBasedRestCommunication} as a default
+ *             implementation.
  *
  */
 public class RestCommunication implements HeidelpayRestCommunication {
@@ -98,12 +98,14 @@ public class RestCommunication implements HeidelpayRestCommunication {
 	private HttpUriRequest addAuthentication(String privateKey, HttpUriRequest http) {
 		if (privateKey == null) {
 			String uri;
-			if(http.getURI() == null) {
+			if (http.getURI() == null) {
 				uri = null;
 			} else {
 				uri = http.getURI().toString();
 			}
-			throw new PaymentException("PrivateKey/PublicKey is missing", "There was a problem authenticating your request.Please contact us for more information.", "API.000.000.001", uri);
+			throw new PaymentException("PrivateKey/PublicKey is missing",
+					"There was a problem authenticating your request.Please contact us for more information.",
+					"API.000.000.001", uri);
 		}
 		if (!privateKey.endsWith(":")) {
 			privateKey = privateKey + ":";
@@ -127,13 +129,16 @@ public class RestCommunication implements HeidelpayRestCommunication {
 
 			if (status.getStatusCode() > 201 || status.getStatusCode() < 200) {
 				JsonErrorObject error = new JsonParser<JsonErrorObject>().fromJson(content, JsonErrorObject.class);
-				throw new PaymentException(error.getUrl(), status.getStatusCode(), error.getTimestamp(), error.getErrors());
+				throw new PaymentException(error.getUrl(), status.getStatusCode(), error.getTimestamp(), error.getId(),
+						error.getErrors());
 			}
 			return content;
 		} catch (IOException e) {
-			throw new HttpCommunicationException("Error communicating to "+ httpPost.getURI() + ": Detail: " + e.getMessage());
+			throw new HttpCommunicationException(
+					"Error communicating to " + httpPost.getURI() + ": Detail: " + e.getMessage());
 		} catch (ParseException e) {
-			throw new HttpCommunicationException("Error communicating to "+ httpPost.getURI() + ": Detail: " + e.getMessage());
+			throw new HttpCommunicationException(
+					"Error communicating to " + httpPost.getURI() + ": Detail: " + e.getMessage());
 		} finally {
 			if (response != null) {
 				try {
