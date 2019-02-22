@@ -33,6 +33,7 @@ public class PaymentException extends RuntimeException {
 	private String timestamp;
 	private String url;
 	private Integer statusCode;
+	private String id;
 
 	/**
 	 * Creates an unspecific {@code PaymentException}.
@@ -52,18 +53,34 @@ public class PaymentException extends RuntimeException {
 	 *            the http status code
 	 * @param timestamp
 	 *            the timestamp the cal was made
+	 * @param id the id for referencing the error
 	 * @param errors
-	 *            the list of {@code PymentError}.
+	 *            the list of {@code PaymentError}.
 	 */
-	public PaymentException(String url, Integer statusCode, String timestamp, List<PaymentError> errors) {
+	public PaymentException(String url, Integer statusCode, String timestamp, String id, List<PaymentError> errors) {
 		super(toMessage(url, statusCode, errors));
 		this.timestamp = timestamp;
 		this.url = url;
 		this.paymentErrorList = errors;
 		this.statusCode = statusCode;
+		this.id = id;
 
 	}
 
+	/**
+	 * Creates a {@code PaymentException} from the given values.
+	 * @param id the error id as returned from the api
+	 * @param url called endpoint causing the error
+	 * @param timestamp timestamp the call was made
+	 * @param errors a list of errors returned from the Api.
+	 */
+	public PaymentException(String id, String url, String timestamp, List<PaymentError> errors) {
+		this.id = id;
+		this.url = url;
+		this.timestamp = timestamp;
+		this.paymentErrorList = errors;
+	}
+	
 	/**
 	 * Creates a {@code PaymentException} for the given values. The merchantMessage,
 	 * customerMessage and the code will be packed into a {@code PaymentError}.
@@ -115,6 +132,12 @@ public class PaymentException extends RuntimeException {
 	 */
 	public Integer getStatusCode() {
 		return statusCode;
+	}
+	
+	
+
+	public String getId() {
+		return id;
 	}
 
 	private static String toMessage(String url, Integer statusCode, List<PaymentError> errors) {
