@@ -36,6 +36,8 @@ import com.heidelpay.payment.communication.HttpCommunicationException;
  *
  */
 public class Charge extends AbstractPayment {
+	public enum Status {SUCCESS, PENDING, ERRROR};
+
 	private BigDecimal amount;
 	private Currency currency;
 	private URL returnUrl;
@@ -48,9 +50,7 @@ public class Charge extends AbstractPayment {
 	private String riskId;
 	private String basketId;
 	
-	private Boolean success;
-	private Boolean pending;
-	private Boolean error;
+	private Status status;
 	
 	private URL redirectUrl;
 
@@ -173,22 +173,11 @@ public class Charge extends AbstractPayment {
 	public void setBasketId(String basketId) {
 		this.basketId = basketId;
 	}
-	public Boolean isSuccess() {
-		return success;
+	public Status getStatus() {
+		return status;
 	}
-	public void setSuccess(Boolean success) {
-		this.success = success;
+	public void setStatus(Status status) {
+		this.status = status;
 	}
-	public Boolean isPending() {
-		return pending;
-	}
-	public void setPending(Boolean pending) {
-		this.pending = pending;
-	}
-	public Boolean isError() {
-		return error;
-	}
-	public void setError(Boolean error) {
-		this.error = error;
-	}
+
 }

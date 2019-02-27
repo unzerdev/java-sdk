@@ -31,6 +31,7 @@ import java.util.Currency;
 import org.junit.Test;
 
 import com.heidelpay.payment.Authorization;
+import com.heidelpay.payment.Authorization.Status;
 import com.heidelpay.payment.Customer;
 import com.heidelpay.payment.Payment;
 import com.heidelpay.payment.communication.HttpCommunicationException;
@@ -57,9 +58,7 @@ public class AuthorizationTest extends AbstractPaymentTest {
 		Authorization authorize = getHeidelpay().authorize(BigDecimal.ONE, Currency.getInstance("EUR"), createPaymentTypeCard().getId(), new URL("https://www.google.at"));
 		assertNotNull(authorize);
 		assertNotNull(authorize.getId());
-		assertTrue(authorize.isSuccess());
-		assertFalse(authorize.isPending());
-		assertFalse(authorize.isError());
+		assertEquals(Status.SUCCESS, authorize.getStatus());
 	}
 	
 	@Test

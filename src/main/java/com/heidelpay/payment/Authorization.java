@@ -25,6 +25,7 @@ import java.net.URL;
 import java.util.Currency;
 import java.util.List;
 
+import com.heidelpay.payment.Charge.Status;
 import com.heidelpay.payment.communication.HttpCommunicationException;
 
 /**
@@ -36,6 +37,8 @@ import com.heidelpay.payment.communication.HttpCommunicationException;
  *
  */
 public class Authorization extends AbstractPayment {
+	public enum Status {SUCCESS, PENDING, ERRROR};
+
 	private BigDecimal amount;
 	private Currency currency;
 	private URL returnUrl;
@@ -48,9 +51,7 @@ public class Authorization extends AbstractPayment {
 	private String riskId;
 	private String basketId;
 
-	private Boolean success;
-	private Boolean pending;
-	private Boolean error;
+	private Status status;
 
 	private URL redirectUrl;
 
@@ -201,28 +202,12 @@ public class Authorization extends AbstractPayment {
 		this.basketId = basketId;
 	}
 
-	public Boolean isSuccess() {
-		return success;
+	public Status getStatus() {
+		return status;
 	}
 
-	public void setSuccess(Boolean success) {
-		this.success = success;
-	}
-
-	public Boolean isPending() {
-		return pending;
-	}
-
-	public void setPending(Boolean pending) {
-		this.pending = pending;
-	}
-
-	public Boolean isError() {
-		return error;
-	}
-
-	public void setError(Boolean error) {
-		this.error = error;
+	public void setStatus(Status status) {
+		this.status = status;
 	}
 
 }

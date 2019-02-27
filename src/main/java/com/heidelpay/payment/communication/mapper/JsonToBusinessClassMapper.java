@@ -1,5 +1,7 @@
 package com.heidelpay.payment.communication.mapper;
 
+import javax.security.sasl.AuthorizeCallback;
+
 /*-
  * #%L
  * Heidelpay Java SDK
@@ -28,6 +30,7 @@ import com.heidelpay.payment.Charge;
 import com.heidelpay.payment.Payment;
 import com.heidelpay.payment.Processing;
 import com.heidelpay.payment.UnsupportedPaymentTypeException;
+import com.heidelpay.payment.Charge.Status;
 import com.heidelpay.payment.communication.json.JsonAuthorization;
 import com.heidelpay.payment.communication.json.JsonCancel;
 import com.heidelpay.payment.communication.json.JsonCard;
@@ -121,9 +124,7 @@ public class JsonToBusinessClassMapper {
 		authorization.setProcessing(getProcessing(json.getProcessing()));
 		authorization.setRedirectUrl(json.getRedirectUrl());
 
-		authorization.setSuccess(json.getIsSuccess());
-		authorization.setError(json.getIsError());
-		authorization.setPending(json.getIsPending());
+		setStatus(authorization, json);
 		return authorization;
 	}
 
@@ -143,10 +144,30 @@ public class JsonToBusinessClassMapper {
 		charge.setProcessing(getProcessing(json.getProcessing()));
 		charge.setRedirectUrl(json.getRedirectUrl());
 
-		charge.setSuccess(json.getIsSuccess());
-		charge.setError(json.getIsError());
-		charge.setPending(json.getIsPending());
+		setStatus(charge, json);
 		return charge;
+	}
+
+	private void setStatus(Authorization authorization, JsonAuthorization json) {
+		if (json.getIsSuccess()) {
+			authorization.setStatus(com.heidelpay.payment.Authorization.Status.SUCCESS);
+		} else if (json.getIsPending()) {
+			authorization.setStatus(com.heidelpay.payment.Authorization.Status.PENDING);
+		} else if (json.getIsError()) {
+			authorization.setStatus(com.heidelpay.payment.Authorization.Status.ERRROR);
+		}
+	
+	}
+
+	private void setStatus(Charge charge, JsonCharge json) {
+		if (json.getIsSuccess()) {
+			charge.setStatus(Status.SUCCESS);
+		} else if (json.getIsPending()) {
+			charge.setStatus(Status.PENDING);
+		} else if (json.getIsError()) {
+			charge.setStatus(Status.ERRROR);
+		}
+	
 	}
 
 	public Cancel mapToBusinessObject(Cancel cancel, JsonCancel json) {

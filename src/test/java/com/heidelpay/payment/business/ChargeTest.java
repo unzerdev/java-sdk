@@ -51,9 +51,7 @@ public class ChargeTest extends AbstractPaymentTest {
 		Charge charge = getHeidelpay().charge(BigDecimal.ONE, Currency.getInstance("EUR"), createPaymentTypeCard().getId(), new URL("https://www.google.at"));
 		assertNotNull(charge);
 		assertNotNull(charge.getId());
-		assertTrue(charge.isSuccess());
-		assertFalse(charge.isPending());
-		assertFalse(charge.isError());
+		assertEquals(Charge.Status.SUCCESS, charge.getStatus());
 	}
 
 	@Test
