@@ -48,6 +48,10 @@ public class Authorization extends AbstractPayment {
 	private String riskId;
 	private String basketId;
 
+	private Boolean success;
+	private Boolean pending;
+	private Boolean error;
+
 	private URL redirectUrl;
 
 	private Processing processing = new Processing();
@@ -195,6 +199,30 @@ public class Authorization extends AbstractPayment {
 
 	public void setBasketId(String basketId) {
 		this.basketId = basketId;
+	}
+
+	public Boolean isSuccess() {
+		return success;
+	}
+
+	public void setSuccess(Boolean success) {
+		this.success = success;
+	}
+
+	public Boolean isPending() {
+		return pending;
+	}
+
+	public void setPending(Boolean pending) {
+		this.pending = pending;
+	}
+
+	public Boolean isError() {
+		return error;
+	}
+
+	public void setError(Boolean error) {
+		this.error = error;
 	}
 
 }

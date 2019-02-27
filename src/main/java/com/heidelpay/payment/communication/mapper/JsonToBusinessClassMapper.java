@@ -120,6 +120,10 @@ public class JsonToBusinessClassMapper {
 		authorization.setReturnUrl(json.getReturnUrl());
 		authorization.setProcessing(getProcessing(json.getProcessing()));
 		authorization.setRedirectUrl(json.getRedirectUrl());
+
+		authorization.setSuccess(json.getIsSuccess());
+		authorization.setError(json.getIsError());
+		authorization.setPending(json.getIsPending());
 		return authorization;
 	}
 
@@ -138,6 +142,10 @@ public class JsonToBusinessClassMapper {
 		charge.setReturnUrl(json.getReturnUrl());
 		charge.setProcessing(getProcessing(json.getProcessing()));
 		charge.setRedirectUrl(json.getRedirectUrl());
+
+		charge.setSuccess(json.getIsSuccess());
+		charge.setError(json.getIsError());
+		charge.setPending(json.getIsPending());
 		return charge;
 	}
 
