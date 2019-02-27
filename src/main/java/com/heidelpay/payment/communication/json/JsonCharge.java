@@ -26,9 +26,9 @@ import java.util.Currency;
 import java.util.Date;
 
 public class JsonCharge extends JsonIdObject implements JsonObject {
-	private String isSuccess;
-	private String isPending;
-	private String isError;
+	private Boolean isSuccess;
+	private Boolean isPending;
+	private Boolean isError;
 	private JsonMessage message;
 	private Date date;	
 	
@@ -90,29 +90,6 @@ public class JsonCharge extends JsonIdObject implements JsonObject {
 		this.resources = resources;
 	}
 
-	public String getIsSuccess() {
-		return isSuccess;
-	}
-
-	public void setIsSuccess(String isSuccess) {
-		this.isSuccess = isSuccess;
-	}
-
-	public String getIsPending() {
-		return isPending;
-	}
-
-	public void setIsPending(String isPending) {
-		this.isPending = isPending;
-	}
-
-	public String getIsError() {
-		return isError;
-	}
-
-	public void setIsError(String isError) {
-		this.isError = isError;
-	}
 
 	public JsonMessage getMessage() {
 		return message;
@@ -144,6 +121,30 @@ public class JsonCharge extends JsonIdObject implements JsonObject {
 
 	public void setOrderId(String orderId) {
 		this.orderId = orderId;
+	}
+
+	public Boolean getIsSuccess() {
+		return isSuccess;
+	}
+
+	public void setIsSuccess(Boolean isSuccess) {
+		this.isSuccess = isSuccess;
+	}
+
+	public Boolean getIsPending() {
+		return isPending;
+	}
+
+	public void setIsPending(Boolean isPending) {
+		this.isPending = isPending;
+	}
+
+	public Boolean getIsError() {
+		return isError;
+	}
+
+	public void setIsError(Boolean isError) {
+		this.isError = isError;
 	}
 
 }

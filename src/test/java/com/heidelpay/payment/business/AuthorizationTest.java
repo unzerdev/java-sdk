@@ -53,6 +53,16 @@ public class AuthorizationTest extends AbstractPaymentTest {
 	}
 	
 	@Test
+	public void testAuthorizeSuccess() throws MalformedURLException, HttpCommunicationException {
+		Authorization authorize = getHeidelpay().authorize(BigDecimal.ONE, Currency.getInstance("EUR"), createPaymentTypeCard().getId(), new URL("https://www.google.at"));
+		assertNotNull(authorize);
+		assertNotNull(authorize.getId());
+		assertTrue(authorize.isSuccess());
+		assertFalse(authorize.isPending());
+		assertFalse(authorize.isError());
+	}
+	
+	@Test
 	public void testAuthorizeWithPaymentType() throws MalformedURLException, HttpCommunicationException {
 		Card card = new Card("4444333322221111", "12/19");
 		Authorization authorize = getHeidelpay().authorize(BigDecimal.ONE, Currency.getInstance("EUR"), card, new URL("https://www.google.at"));

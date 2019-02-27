@@ -47,6 +47,16 @@ public class ChargeTest extends AbstractPaymentTest {
 	}
 	
 	@Test
+	public void testChargeIsSuccess() throws MalformedURLException, HttpCommunicationException {
+		Charge charge = getHeidelpay().charge(BigDecimal.ONE, Currency.getInstance("EUR"), createPaymentTypeCard().getId(), new URL("https://www.google.at"));
+		assertNotNull(charge);
+		assertNotNull(charge.getId());
+		assertTrue(charge.isSuccess());
+		assertFalse(charge.isPending());
+		assertFalse(charge.isError());
+	}
+
+	@Test
 	public void testChargeWithPaymentType() throws MalformedURLException, HttpCommunicationException {
 		Card card = new Card("4444333322221111", "12/19");
 		Charge charge = getHeidelpay().charge(BigDecimal.ONE, Currency.getInstance("EUR"), card, new URL("https://www.google.at"));
