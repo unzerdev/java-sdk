@@ -22,28 +22,11 @@ import javax.security.sasl.AuthorizeCallback;
  * #L%
  */
 
+import com.heidelpay.payment.*;
+import com.heidelpay.payment.communication.json.*;
 import org.apache.log4j.Logger;
 
-import com.heidelpay.payment.Authorization;
-import com.heidelpay.payment.Cancel;
-import com.heidelpay.payment.Charge;
-import com.heidelpay.payment.Payment;
-import com.heidelpay.payment.Processing;
-import com.heidelpay.payment.UnsupportedPaymentTypeException;
 import com.heidelpay.payment.Charge.Status;
-import com.heidelpay.payment.communication.json.JsonAuthorization;
-import com.heidelpay.payment.communication.json.JsonCancel;
-import com.heidelpay.payment.communication.json.JsonCard;
-import com.heidelpay.payment.communication.json.JsonCardFetch;
-import com.heidelpay.payment.communication.json.JsonCharge;
-import com.heidelpay.payment.communication.json.JsonIdObject;
-import com.heidelpay.payment.communication.json.JsonIdeal;
-import com.heidelpay.payment.communication.json.JsonObject;
-import com.heidelpay.payment.communication.json.JsonPayment;
-import com.heidelpay.payment.communication.json.JsonProcessing;
-import com.heidelpay.payment.communication.json.JsonResources;
-import com.heidelpay.payment.communication.json.JsonSepaDirectDebit;
-import com.heidelpay.payment.communication.json.JsonState;
 import com.heidelpay.payment.paymenttypes.Card;
 import com.heidelpay.payment.paymenttypes.Eps;
 import com.heidelpay.payment.paymenttypes.Giropay;
@@ -123,6 +106,7 @@ public class JsonToBusinessClassMapper {
 		authorization.setReturnUrl(json.getReturnUrl());
 		authorization.setProcessing(getProcessing(json.getProcessing()));
 		authorization.setRedirectUrl(json.getRedirectUrl());
+		authorization.setMessage(json.getMessage());
 
 		setStatus(authorization, json);
 		return authorization;
@@ -143,6 +127,7 @@ public class JsonToBusinessClassMapper {
 		charge.setReturnUrl(json.getReturnUrl());
 		charge.setProcessing(getProcessing(json.getProcessing()));
 		charge.setRedirectUrl(json.getRedirectUrl());
+		charge.setMessage(json.getMessage());
 
 		setStatus(charge, json);
 		return charge;
@@ -174,7 +159,14 @@ public class JsonToBusinessClassMapper {
 		cancel.setId(json.getId());
 		cancel.setAmount(json.getAmount());
 		cancel.setProcessing(getProcessing(json.getProcessing()));
+		cancel.setMessage(json.getMessage());
 		return cancel;
+	}
+
+	public Shipment mapToBusinessObject(Shipment shipment, JsonShipment json) {
+		shipment.setId(json.getId());
+		shipment.setMessage(json.getMessage());
+		return shipment;
 	}
 
 	private Processing getProcessing(JsonProcessing json) {

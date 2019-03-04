@@ -1,12 +1,10 @@
-package com.heidelpay.payment.communication.json;
-
-import com.heidelpay.payment.Message;
+package com.heidelpay.payment;
 
 /*-
  * #%L
  * Heidelpay Java SDK
  * %%
- * Copyright (C) 2018 Heidelpay GmbH
+ * Copyright (C) 2018 - 2019 Heidelpay GmbH
  * %%
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,27 +20,8 @@ import com.heidelpay.payment.Message;
  * #L%
  */
 
-public class JsonMessage implements Message {
-	private String code;
-	private String customer;
-	private String merchant;
-	public String getCode() {
-		return code;
-	}
-	public void setCode(String code) {
-		this.code = code;
-	}
-	public String getCustomer() {
-		return customer;
-	}
-	public void setCustomer(String customer) {
-		this.customer = customer;
-	}
-	public String getMerchant() {
-		return merchant;
-	}
-	public void setMerchant(String merchant) {
-		this.merchant = merchant;
-	}
-	
+public interface Message {
+  String getCode();
+  String getCustomer();
+  String getMerchant();
 }

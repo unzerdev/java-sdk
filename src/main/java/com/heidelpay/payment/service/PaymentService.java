@@ -26,6 +26,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import com.heidelpay.payment.communication.json.*;
 import org.apache.log4j.Logger;
 
 import com.heidelpay.payment.Authorization;
@@ -42,15 +43,6 @@ import com.heidelpay.payment.communication.HeidelpayRestCommunication;
 import com.heidelpay.payment.communication.HttpCommunicationException;
 import com.heidelpay.payment.communication.JsonParser;
 import com.heidelpay.payment.communication.impl.RestCommunication;
-import com.heidelpay.payment.communication.json.JsonAuthorization;
-import com.heidelpay.payment.communication.json.JsonCancel;
-import com.heidelpay.payment.communication.json.JsonCard;
-import com.heidelpay.payment.communication.json.JsonCharge;
-import com.heidelpay.payment.communication.json.JsonIdObject;
-import com.heidelpay.payment.communication.json.JsonIdeal;
-import com.heidelpay.payment.communication.json.JsonPayment;
-import com.heidelpay.payment.communication.json.JsonSepaDirectDebit;
-import com.heidelpay.payment.communication.json.JsonTransaction;
 import com.heidelpay.payment.communication.mapper.JsonToBusinessClassMapper;
 import com.heidelpay.payment.paymenttypes.AbstractPaymentType;
 import com.heidelpay.payment.paymenttypes.Card;
@@ -222,7 +214,11 @@ public class PaymentService {
 
 	private Shipment shipment(Shipment shipment, String url) throws HttpCommunicationException {
 		String response = restCommunication.httpPost(url, heidelpay.getPrivateKey(), shipment);
-		return new JsonParser<Shipment>().fromJson(response, Shipment.class);
+		JsonShipment jsonShipment = new JsonParser<JsonShipment>().fromJson(response, JsonShipment.class);
+		shipment = jsonToBusinessClassMapper.mapToBusinessObject(shipment, jsonShipment);
+		shipment.setPayment(fetchPayment(jsonShipment.getResources().getPaymentId()));
+		shipment.setHeidelpay(heidelpay);
+		return shipment;
 	}
 
 	private Cancel cancel(Cancel cancel, String url) throws HttpCommunicationException {

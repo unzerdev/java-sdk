@@ -44,6 +44,8 @@ public class CancelTest extends AbstractPaymentTest {
 		Cancel cancel = getHeidelpay().fetchCancel(authorize.getPaymentId(),  cancelInit.getId());
 		assertNotNull(cancel);
 		assertNotNull(cancel.getId());
+		assertEquals("COR.000.100.112", cancel.getMessage().getCode());
+		assertNotNull(cancel.getMessage().getCustomer());
 		assertCancelEquals(cancelInit, cancel);
 	}
 
@@ -51,6 +53,8 @@ public class CancelTest extends AbstractPaymentTest {
 	public void testFetchCancelAuthorizationWithPayment() throws MalformedURLException, HttpCommunicationException {
 		Authorization authorize = getHeidelpay().authorize(getAuthorization(createPaymentTypeCard().getId()));
 		Cancel cancelInit = authorize.cancel();
+		assertEquals("COR.000.100.112", cancelInit.getMessage().getCode());
+		assertNotNull(cancelInit.getMessage().getCustomer());
 		List<Cancel> cancelList = cancelInit.getPayment().getCancelList();
 		assertNotNull(cancelList);
 		assertEquals(1, cancelList.size());
@@ -61,6 +65,8 @@ public class CancelTest extends AbstractPaymentTest {
 	public void testFetchCancelChargeWithHeidelpay() throws MalformedURLException, HttpCommunicationException {
 		Charge initCharge = getHeidelpay().charge(BigDecimal.ONE, Currency.getInstance("EUR"), createPaymentTypeCard().getId(), new URL("https://www.google.at"));
 		Cancel cancelInit = initCharge.cancel();
+		assertEquals("COR.000.100.112", cancelInit.getMessage().getCode());
+		assertNotNull(cancelInit.getMessage().getCustomer());
 		Cancel cancel = getHeidelpay().fetchCancel(initCharge.getPaymentId(), initCharge.getId(), cancelInit.getId());
 		assertNotNull(cancel);
 		assertNotNull(cancel.getId());
@@ -71,6 +77,8 @@ public class CancelTest extends AbstractPaymentTest {
 	public void testFetchCancelChargeWithPayment() throws MalformedURLException, HttpCommunicationException {
 		Charge initCharge = getHeidelpay().charge(BigDecimal.ONE, Currency.getInstance("EUR"), createPaymentTypeCard().getId(), new URL("https://www.google.at"));
 		Cancel cancelInit = initCharge.cancel();
+		assertEquals("COR.000.100.112", cancelInit.getMessage().getCode());
+		assertNotNull(cancelInit.getMessage().getCustomer());
 		Cancel cancel = cancelInit.getPayment().getCharge(initCharge.getId()).getCancel(cancelInit.getId());
 		assertNotNull(cancel);
 		assertNotNull(cancel.getId());
