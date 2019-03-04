@@ -20,6 +20,7 @@ package com.heidelpay.payment.business;
  * #L%
  */
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
 import java.net.MalformedURLException;
@@ -43,6 +44,8 @@ public class ShipmentTest extends AbstractPaymentTest {
 		assertNotNull(authorize.getId());
 		assertNotNull(authorize);
 		assertNotNull(shipment);
+		assertEquals("COR.000.100.112", shipment.getMessage().getCode());
+		assertNotNull(shipment.getMessage().getCustomer());
 	}
 
 	@Test(expected=PaymentException.class)

@@ -44,6 +44,8 @@ public class AuthorizationTest extends AbstractPaymentTest {
 		Authorization authorize = getHeidelpay().authorize(getAuthorization(createPaymentTypeCard().getId()));
 		assertNotNull(authorize.getId());
 		assertNotNull(authorize);
+		assertEquals("COR.000.100.112", authorize.getMessage().getCode());
+		assertNotNull(authorize.getMessage().getCustomer());
 	}
 
 	@Test
@@ -51,6 +53,8 @@ public class AuthorizationTest extends AbstractPaymentTest {
 		Authorization authorize = getHeidelpay().authorize(BigDecimal.ONE, Currency.getInstance("EUR"), createPaymentTypeCard().getId(), new URL("https://www.google.at"));
 		assertNotNull(authorize);
 		assertNotNull(authorize.getId());
+		assertEquals("COR.000.100.112", authorize.getMessage().getCode());
+		assertNotNull(authorize.getMessage().getCustomer());
 	}
 	
 	@Test
@@ -58,6 +62,8 @@ public class AuthorizationTest extends AbstractPaymentTest {
 		Authorization authorize = getHeidelpay().authorize(BigDecimal.ONE, Currency.getInstance("EUR"), createPaymentTypeCard().getId(), new URL("https://www.google.at"));
 		assertNotNull(authorize);
 		assertNotNull(authorize.getId());
+		assertEquals("COR.000.100.112", authorize.getMessage().getCode());
+		assertNotNull(authorize.getMessage().getCustomer());
 		assertEquals(Status.SUCCESS, authorize.getStatus());
 	}
 	
@@ -66,6 +72,8 @@ public class AuthorizationTest extends AbstractPaymentTest {
 		Card card = new Card("4444333322221111", "12/19");
 		Authorization authorize = getHeidelpay().authorize(BigDecimal.ONE, Currency.getInstance("EUR"), card, new URL("https://www.google.at"));
 		assertNotNull(authorize);
+		assertEquals("COR.000.100.112", authorize.getMessage().getCode());
+		assertNotNull(authorize.getMessage().getCustomer());
 		assertNotNull(authorize.getId());
 	}
 
@@ -78,6 +86,8 @@ public class AuthorizationTest extends AbstractPaymentTest {
 		assertNotNull(payment.getPaymentType());
 		assertNotNull(payment.getCustomer());
 		assertNotNull(authorize);
+		assertEquals("COR.000.100.112", authorize.getMessage().getCode());
+		assertNotNull(authorize.getMessage().getCustomer());
 	}
 	
 	@Test
@@ -86,6 +96,8 @@ public class AuthorizationTest extends AbstractPaymentTest {
 		Authorization authorize = getHeidelpay().authorize(BigDecimal.ONE, Currency.getInstance("EUR"), createPaymentTypeCard().getId(), new URL("https://www.google.at"), customer.getCustomerId());
 		assertNotNull(authorize);
 		assertNotNull(authorize.getId());
+		assertEquals("COR.000.100.112", authorize.getMessage().getCode());
+		assertNotNull(authorize.getMessage().getCustomer());
 	}
 
 	@Test
@@ -93,6 +105,8 @@ public class AuthorizationTest extends AbstractPaymentTest {
 		Authorization authorize = getHeidelpay().authorize(BigDecimal.ONE, Currency.getInstance("EUR"), createPaymentTypeCard().getId(), new URL("https://www.google.at"));
 		assertNotNull(authorize);
 		assertNotNull(authorize.getId());
+		assertEquals("COR.000.100.112", authorize.getMessage().getCode());
+		assertNotNull(authorize.getMessage().getCustomer());
 	}
 
 	@Test
@@ -102,6 +116,8 @@ public class AuthorizationTest extends AbstractPaymentTest {
 		Authorization authorize = getHeidelpay().authorize(BigDecimal.ONE, Currency.getInstance("EUR"), card, new URL("https://www.google.at"), customer);
 		assertNotNull(authorize);
 		assertNotNull(authorize.getId());
+		assertEquals("COR.000.100.112", authorize.getMessage().getCode());
+		assertNotNull(authorize.getMessage().getCustomer());
 	}
 
 	@Test
@@ -110,6 +126,8 @@ public class AuthorizationTest extends AbstractPaymentTest {
 		Authorization authorize = getHeidelpay().authorize(BigDecimal.ONE, Currency.getInstance("EUR"), createPaymentTypeCard().getId(), new URL("https://www.google.at"), maxCustomer.getId());
 		assertNotNull(authorize);
 		assertNotNull(authorize.getId());
+		assertEquals("COR.000.100.112", authorize.getMessage().getCode());
+		assertNotNull(authorize.getMessage().getCustomer());
 	}
 	
 	@Test
@@ -119,7 +137,9 @@ public class AuthorizationTest extends AbstractPaymentTest {
 		assertNotNull(authorize.getId());
 		Authorization authorization = getHeidelpay().fetchAuthorization(authorize.getPaymentId());
 		assertNotNull(authorization);
-		assertNotNull(authorization.getId());		
+		assertNotNull(authorization.getId());
+		assertEquals("COR.000.100.112", authorize.getMessage().getCode());
+		assertNotNull(authorize.getMessage().getCustomer());
 	}
 	
 	@Test
@@ -128,6 +148,8 @@ public class AuthorizationTest extends AbstractPaymentTest {
 		Authorization authorize = getHeidelpay().authorize(getAuthorization(createPaymentTypeCard().getId(), null, orderId, null, null));
 		assertNotNull(authorize);
 		assertNotNull(authorize.getId());
+		assertEquals("COR.000.100.112", authorize.getMessage().getCode());
+		assertNotNull(authorize.getMessage().getCustomer());
 		Authorization authorization = getHeidelpay().fetchAuthorization(orderId);
 		assertNotNull(authorization);
 		assertNotNull(authorization.getId());

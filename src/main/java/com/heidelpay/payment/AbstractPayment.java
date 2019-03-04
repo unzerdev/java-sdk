@@ -31,6 +31,7 @@ public abstract class AbstractPayment implements PaymentType {
 	private transient Heidelpay heidelpay;
 	private transient URL resourceUrl;
 	private transient String type;
+	private Message message;
 	
 	public AbstractPayment(Heidelpay heidelpay) {
 		super();
@@ -81,6 +82,14 @@ public abstract class AbstractPayment implements PaymentType {
 
 	public void setType(String type) {
 		this.type = type;
+	}
+
+	public Message getMessage() {
+		return message;
+	}
+
+	public void setMessage(Message message) {
+		this.message = message;
 	}
 
 }
