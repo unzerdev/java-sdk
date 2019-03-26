@@ -33,14 +33,11 @@ package com.heidelpay.payment.communication;
 
 import java.math.BigDecimal;
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 import java.util.Objects;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.heidelpay.payment.PaymentError;
 import com.heidelpay.payment.PaymentException;
 import com.heidelpay.payment.communication.json.JsonErrorObject;
 

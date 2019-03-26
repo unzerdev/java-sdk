@@ -34,6 +34,8 @@ import java.util.UUID;
 
 import com.heidelpay.payment.Address;
 import com.heidelpay.payment.Authorization;
+import com.heidelpay.payment.Basket;
+import com.heidelpay.payment.BasketItem;
 import com.heidelpay.payment.Cancel;
 import com.heidelpay.payment.Charge;
 import com.heidelpay.payment.Customer;
@@ -296,6 +298,48 @@ public class AbstractPaymentTest {
 		return strText.substring(0, start) + sbMaskString.toString() + strText.substring(start + maskLength);
 	}
 
+	protected Basket getMaxTestBasket() {
+		Basket basket = new Basket();
+		basket.setAmountTotal(new BigDecimal(500.5));
+		basket.setAmountTotalDiscount(BigDecimal.TEN);
+		basket.setCurrencyCode(Currency.getInstance("EUR"));
+		basket.setNote("Mistery shopping");
+		basket.setOrderId(getRandomId());
+		basket.addBasketItem(getMaxTestBasketItem());
+		return basket;
+	}
 
+	protected Basket getMinTestBasket() {
+		Basket basket = new Basket()
+				.setAmountTotal(new BigDecimal(500.5))
+				.setCurrencyCode(Currency.getInstance("EUR"))
+				.setOrderId(getRandomId())
+				.addBasketItem(getMinTestBasketItem());
+		return basket;
+	}
+	private BasketItem getMaxTestBasketItem() {
+		BasketItem basketItem = new BasketItem();
+		basketItem.setBasketItemReferenceId("Artikelnummer4711");
+		basketItem.setAmountDiscount(BigDecimal.ONE);
+		basketItem.setAmountGross(new BigDecimal(500.5));
+		basketItem.setAmountNet(new BigDecimal(420.1));
+		basketItem.setAmountPerUnit(new BigDecimal(100.1));
+		basketItem.setAmountVat(new BigDecimal(80.4));
+		basketItem.setQuantity(5);
+		basketItem.setTitle("Apple iPhone");
+		basketItem.setUnit("Pc.");
+		basketItem.setVat(19);
+		
+		return basketItem;
+	}
+	private BasketItem getMinTestBasketItem() {
+		BasketItem basketItem = new BasketItem()
+				.setBasketItemReferenceId("Artikelnummer4711")
+				.setQuantity(5)
+				.setAmountPerUnit(new BigDecimal(100.1))
+				.setAmountNet(new BigDecimal(420.1))
+				.setTitle("Apple iPhone");
+		return basketItem;
+	}
 
 }

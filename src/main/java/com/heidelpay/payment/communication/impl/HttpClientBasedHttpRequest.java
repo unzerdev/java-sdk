@@ -32,7 +32,6 @@ import org.apache.http.client.methods.HttpUriRequest;
 import org.apache.http.entity.StringEntity;
 
 import com.heidelpay.payment.communication.HeidelpayHttpRequest;
-import com.heidelpay.payment.communication.HeidelpayHttpRequest.HeidelpayHttpMethod;
 
 /**
  * Implementation of the {@code HeidelpayHttpRequest} wrapping an apache

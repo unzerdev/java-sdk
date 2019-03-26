@@ -33,6 +33,7 @@ public class JsonCharge extends JsonIdObject implements JsonObject {
 	private Date date;	
 	
 	private String orderId;
+	private String invoiceId;
 	private BigDecimal amount;
 	private Currency currency;
 	private URL returnUrl;
@@ -154,6 +155,14 @@ public class JsonCharge extends JsonIdObject implements JsonObject {
 
 	public void setCard3ds(Boolean card3ds) {
 		this.card3ds = card3ds;
+	}
+
+	public String getInvoiceId() {
+		return invoiceId;
+	}
+
+	public void setInvoiceId(String invoiceId) {
+		this.invoiceId = invoiceId;
 	}
 
 }

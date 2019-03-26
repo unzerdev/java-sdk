@@ -469,12 +469,30 @@ public class Heidelpay {
 	 * @param typeId
 	 * @param returnUrl
 	 * @param customerId
+	 * @param basketId
+	 * @return Charge with paymentId and authorize id
+	 * @throws HttpCommunicationException
+	 */
+	public Charge charge(BigDecimal amount, Currency currency, String typeId, URL returnUrl, String customerId, String basketId, Boolean card3ds)
+			throws HttpCommunicationException {
+		return charge(getCharge(amount, currency, typeId, returnUrl, customerId, basketId, card3ds));
+	}
+
+	/**
+	 * Charge call with a typeId that was created using the Javascript or Mobile SDK
+	 * for redirect payments
+	 * 
+	 * @param amount
+	 * @param currency
+	 * @param typeId
+	 * @param returnUrl
+	 * @param customerId
 	 * @return Charge with paymentId and authorize id
 	 * @throws HttpCommunicationException
 	 */
 	public Charge charge(BigDecimal amount, Currency currency, String typeId, URL returnUrl, String customerId, Boolean card3ds)
 			throws HttpCommunicationException {
-		return charge(getCharge(amount, currency, typeId, returnUrl, customerId, card3ds));
+		return charge(getCharge(amount, currency, typeId, returnUrl, customerId, null, card3ds));
 	}
 
 	/**
@@ -525,6 +543,30 @@ public class Heidelpay {
 			Customer customer) throws HttpCommunicationException {
 		return charge(amount, currency, createPaymentType(paymentType).getId(), returnUrl,
 				getCustomerId(createCustomerIfPresent(customer)));
+	}
+
+	/**
+	 * Charge call for redirect payments. The PaymentType will be created within
+	 * this method
+	 * 
+	 * @param amount
+	 * @param currency
+	 * @param paymentType
+	 * @param returnUrl
+	 * @param customer
+	 * @param basket
+	 * @return Charge with paymentId and authorize id
+	 * @throws HttpCommunicationException
+	 */
+	public Charge charge(BigDecimal amount, Currency currency, PaymentType paymentType, URL returnUrl,
+			Customer customer, Basket basket) throws HttpCommunicationException {
+		return charge(amount, currency, createPaymentType(paymentType).getId(), returnUrl,
+				getCustomerId(createCustomerIfPresent(customer)), getBasketId(createBasket(basket)), null);
+	}
+	
+	private String getBasketId(Basket basket) {
+		if (basket != null) return basket.getId();
+		else return null;
 	}
 
 	/**
@@ -639,7 +681,18 @@ public class Heidelpay {
 	 * @throws HttpCommunicationException
 	 */
 	public Shipment shipment(String paymentId) throws HttpCommunicationException {
-		return paymentService.shipment(paymentId);
+		return paymentService.shipment(paymentId, (String)null);
+	}
+
+	/**
+	 * Inform about a shipment of goods and provide invoiceId. From this time the insurance start.
+	 * 
+	 * @param paymentId
+	 * @return Shipment with id
+	 * @throws HttpCommunicationException
+	 */
+	public Shipment shipment(String paymentId, String invoiceId) throws HttpCommunicationException {
+		return paymentService.shipment(paymentId, invoiceId);
 	}
 
 	/**
@@ -728,13 +781,14 @@ public class Heidelpay {
 		return privateKey;
 	}
 
-	private Charge getCharge(BigDecimal amount, Currency currency, String typeId, URL returnUrl, String customerId, Boolean card3ds) {
+	private Charge getCharge(BigDecimal amount, Currency currency, String typeId, URL returnUrl, String customerId, String basketId, Boolean card3ds) {
 		Charge charge = new Charge();
 		charge
 		.setAmount(amount)
 		.setCurrency(currency)
 		.setTypeId(typeId)
 		.setCustomerId(customerId)
+		.setBasketId(basketId)
 		.setReturnUrl(returnUrl)
 		.setCard3ds(card3ds);
 		return charge;

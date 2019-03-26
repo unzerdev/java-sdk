@@ -19,8 +19,8 @@ package com.heidelpay.payment.business;
  * limitations under the License.
  * #L%
  */
-
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 import java.math.BigDecimal;
 import java.net.MalformedURLException;
@@ -31,7 +31,6 @@ import java.util.Currency;
 import org.junit.Test;
 
 import com.heidelpay.payment.Authorization;
-import com.heidelpay.payment.Charge;
 import com.heidelpay.payment.Authorization.Status;
 import com.heidelpay.payment.Customer;
 import com.heidelpay.payment.Payment;

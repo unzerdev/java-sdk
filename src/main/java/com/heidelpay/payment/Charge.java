@@ -41,6 +41,7 @@ public class Charge extends AbstractPayment {
 	private BigDecimal amount;
 	private Currency currency;
 	private URL returnUrl;
+	private String invoiceId;
 	private Boolean card3ds;
 
 	private String orderId;
@@ -187,6 +188,13 @@ public class Charge extends AbstractPayment {
 	}
 	public Charge setCard3ds(Boolean card3ds) {
 		this.card3ds = card3ds;
+		return this;
+	}
+	public String getInvoiceId() {
+		return invoiceId;
+	}
+	public Charge setInvoiceId(String invoiceId) {
+		this.invoiceId = invoiceId;
 		return this;
 	}
 

@@ -47,6 +47,7 @@ import com.heidelpay.payment.paymenttypes.Eps;
 import com.heidelpay.payment.paymenttypes.Giropay;
 import com.heidelpay.payment.paymenttypes.Ideal;
 import com.heidelpay.payment.paymenttypes.Invoice;
+import com.heidelpay.payment.paymenttypes.InvoiceFactoring;
 import com.heidelpay.payment.paymenttypes.InvoiceGuaranteed;
 import com.heidelpay.payment.paymenttypes.PaymentType;
 import com.heidelpay.payment.paymenttypes.Paypal;
@@ -77,6 +78,7 @@ public class JsonToBusinessClassMapper {
 		json.setCurrency(charge.getCurrency());
 		json.setReturnUrl(charge.getReturnUrl());
 		json.setOrderId(charge.getOrderId());
+		json.setInvoiceId(charge.getInvoiceId());
 		json.setResources(getResources(charge));
 		json.setCard3ds(charge.getCard3ds());
 		return json;
@@ -238,6 +240,8 @@ public class JsonToBusinessClassMapper {
 			return map((Ideal) paymentType, (JsonIdeal) jsonPaymentType);
 		} else if (paymentType instanceof Invoice) {
 			return map((Invoice) paymentType, (JsonIdObject) jsonPaymentType);
+		} else if (paymentType instanceof InvoiceFactoring) {
+			return map((InvoiceFactoring) paymentType, (JsonIdObject) jsonPaymentType);
 		} else if (paymentType instanceof InvoiceGuaranteed) {
 			return map((InvoiceGuaranteed) paymentType, (JsonIdObject) jsonPaymentType);
 		} else if (paymentType instanceof Paypal) {
@@ -307,6 +311,12 @@ public class JsonToBusinessClassMapper {
 		return invoice;
 	}
 	
+	private PaymentType map(InvoiceFactoring invoice, JsonIdObject jsonId) {
+		invoice.setId(jsonId.getId());
+		return invoice;
+	}
+
+
 	private PaymentType map(Paypal paypal, JsonIdObject jsonId) {
 		paypal.setId(jsonId.getId());
 		return paypal;

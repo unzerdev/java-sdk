@@ -59,6 +59,7 @@ import com.heidelpay.payment.paymenttypes.Eps;
 import com.heidelpay.payment.paymenttypes.Giropay;
 import com.heidelpay.payment.paymenttypes.Ideal;
 import com.heidelpay.payment.paymenttypes.Invoice;
+import com.heidelpay.payment.paymenttypes.InvoiceFactoring;
 import com.heidelpay.payment.paymenttypes.InvoiceGuaranteed;
 import com.heidelpay.payment.paymenttypes.PaymentType;
 import com.heidelpay.payment.paymenttypes.Paypal;
@@ -217,8 +218,8 @@ public class PaymentService {
 		return cancel(cancel, urlUtil.getRefundUrl(paymentId, chargeId));
 	}
 
-	public Shipment shipment(String paymentId) throws HttpCommunicationException {
-		return shipment(new Shipment(), urlUtil.getPaymentUrl(new Shipment(), paymentId));
+	public Shipment shipment(String paymentId, String invoiceId) throws HttpCommunicationException {
+		return shipment(new Shipment(invoiceId), urlUtil.getPaymentUrl(new Shipment(), paymentId));
 	}
 
 	private Shipment shipment(Shipment shipment, String url) throws HttpCommunicationException {
@@ -457,6 +458,8 @@ public class PaymentService {
 			return new JsonIdObject();
 		} else if ("ivg".equalsIgnoreCase(paymentType)) {
 			return new JsonIdObject();
+		} else if ("ivf".equalsIgnoreCase(paymentType)) {
+			return new JsonIdObject();
 		} else if ("ppl".equalsIgnoreCase(paymentType)) {
 			return new JsonIdObject();
 		} else if ("ppy".equalsIgnoreCase(paymentType)) {
@@ -494,6 +497,8 @@ public class PaymentService {
 			return new Invoice();
 		} else if ("ivg".equalsIgnoreCase(paymentType)) {
 			return new InvoiceGuaranteed();
+		} else if ("ivf".equalsIgnoreCase(paymentType)) {
+			return new InvoiceFactoring();
 		} else if ("ppl".equalsIgnoreCase(paymentType)) {
 			return new Paypal();
 		} else if ("ppy".equalsIgnoreCase(paymentType)) {
