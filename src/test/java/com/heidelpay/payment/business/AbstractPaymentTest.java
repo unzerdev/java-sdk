@@ -139,6 +139,10 @@ public class AbstractPaymentTest {
 	protected Customer createMaximumCustomer() throws HttpCommunicationException, ParseException {
 		return getHeidelpay().createCustomer(getMaximumCustomer(getRandomId()));
 	}
+
+	protected Customer createFactoringOKCustomer() throws HttpCommunicationException, ParseException {
+		return getHeidelpay().createCustomer(getFactoringOKCustomer(getRandomId()));
+	}
 	
 	protected Customer createMaximumCustomerSameAddress() throws HttpCommunicationException, ParseException {
 		return getHeidelpay().createCustomer(getMaximumCustomerSameAddress(getRandomId()));
@@ -160,6 +164,7 @@ public class AbstractPaymentTest {
 		.setShippingAddress(getAddress());
 		return customer;
 	}
+
 	protected Customer getMaximumCustomer(String customerId) throws ParseException {
 		Customer customer = new Customer("Rene", "Felder");
 		customer
@@ -171,6 +176,21 @@ public class AbstractPaymentTest {
 		.setBillingAddress(getAddress())
 		.setShippingAddress(getAddress("Schubert", "Vangerowstraße 18", "Heidelberg", "BW", "69115", "DE"));
 		return customer;
+	}
+
+	protected Customer getFactoringOKCustomer(String customerId) throws ParseException {
+		Customer customer = new Customer("Maximilian", "Mustermann");
+		customer
+						.setCustomerId(customerId)
+						.setSalutation(Salutation.mr)
+						.setBirthDate(getDate("22.11.1980"))
+						.setBillingAddress(getFactoringOKAddress())
+						.setShippingAddress(getFactoringOKAddress());
+		return customer;
+	}
+
+	private Address getFactoringOKAddress() {
+		return getAddress("Maximilian Mustermann", "Hugo-Junkers-Str. 3", "Frankfurt am Main", "Frankfurt am Main", "60386", "DE");
 	}
 
 	private Address getAddress() {
