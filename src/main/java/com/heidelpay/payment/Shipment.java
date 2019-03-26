@@ -22,9 +22,32 @@ package com.heidelpay.payment;
 
 public class Shipment extends AbstractPayment {
 
+	private String invoiceId;
+	
+	public Shipment() {
+		super();
+	}
+
+	public Shipment(String invoiceId) {
+		super();
+		this.invoiceId = invoiceId;
+	}
+	
+	public Shipment(Heidelpay heidelpay) {
+		super(heidelpay);
+	}
+
 	@Override
 	public String getTypeUrl() {
 		return "payments/<paymentId>/shipments";
+	}
+
+	public String getInvoiceId() {
+		return invoiceId;
+	}
+
+	public void setInvoiceId(String invoiceId) {
+		this.invoiceId = invoiceId;
 	}
 
 }

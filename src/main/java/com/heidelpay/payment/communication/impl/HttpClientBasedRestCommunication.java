@@ -32,10 +32,9 @@ import org.apache.log4j.Logger;
 
 import com.heidelpay.payment.communication.AbstractHeidelpayRestCommunication;
 import com.heidelpay.payment.communication.HeidelpayHttpRequest;
-import com.heidelpay.payment.communication.HeidelpayHttpResponse;
-import com.heidelpay.payment.communication.HeidelpayRestCommunication;
-import com.heidelpay.payment.communication.HttpCommunicationException;
 import com.heidelpay.payment.communication.HeidelpayHttpRequest.HeidelpayHttpMethod;
+import com.heidelpay.payment.communication.HeidelpayHttpResponse;
+import com.heidelpay.payment.communication.HttpCommunicationException;
 
 /**
  * Reference implementation of the {@code HeidelpayRestCommunication}, based on apaches {@code HttpClient}. 

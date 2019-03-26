@@ -26,7 +26,6 @@ import static org.junit.Assert.assertNotNull;
 import java.net.MalformedURLException;
 import java.text.ParseException;
 
-import org.junit.Ignore;
 import org.junit.Test;
 
 import com.heidelpay.payment.Authorization;
