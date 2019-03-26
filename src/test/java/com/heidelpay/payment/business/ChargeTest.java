@@ -41,7 +41,7 @@ public class ChargeTest extends AbstractPaymentTest {
 	
 	@Test
 	public void testChargeWithTypeId() throws MalformedURLException, HttpCommunicationException {
-		Charge charge = getHeidelpay().charge(BigDecimal.ONE, Currency.getInstance("EUR"), createPaymentTypeCard().getId(), new URL("https://www.google.at"));
+		Charge charge = getHeidelpay().charge(BigDecimal.ONE, Currency.getInstance("EUR"), createPaymentTypeCard().getId(), new URL("https://www.google.at"), false);
 		assertNotNull(charge);
 		assertNotNull(charge.getId());
 		assertEquals("COR.000.100.112", charge.getMessage().getCode());
@@ -50,7 +50,7 @@ public class ChargeTest extends AbstractPaymentTest {
 	
 	@Test
 	public void testChargeIsSuccess() throws MalformedURLException, HttpCommunicationException {
-		Charge charge = getHeidelpay().charge(BigDecimal.ONE, Currency.getInstance("EUR"), createPaymentTypeCard().getId(), new URL("https://www.google.at"));
+		Charge charge = getHeidelpay().charge(BigDecimal.ONE, Currency.getInstance("EUR"), createPaymentTypeCard().getId(), new URL("https://www.google.at"), false);
 		assertNotNull(charge);
 		assertNotNull(charge.getId());
 		assertEquals("COR.000.100.112", charge.getMessage().getCode());
@@ -61,7 +61,7 @@ public class ChargeTest extends AbstractPaymentTest {
 	@Test
 	public void testChargeWithPaymentType() throws MalformedURLException, HttpCommunicationException {
 		Card card = new Card("4444333322221111", "12/19");
-		Charge charge = getHeidelpay().charge(BigDecimal.ONE, Currency.getInstance("EUR"), card, new URL("https://www.google.at"));
+		Charge charge = getHeidelpay().charge(BigDecimal.ONE, Currency.getInstance("EUR"), card, new URL("https://www.google.at"), false);
 		assertNotNull(charge);
 		assertEquals("COR.000.100.112", charge.getMessage().getCode());
 		assertNotNull(charge.getMessage().getCustomer());
@@ -70,7 +70,7 @@ public class ChargeTest extends AbstractPaymentTest {
 
 	@Test
 	public void testChargeWithReturnUrl() throws MalformedURLException, HttpCommunicationException {
-		Charge charge = getHeidelpay().charge(BigDecimal.ONE, Currency.getInstance("EUR"), createPaymentTypeCard().getId(), new URL("https://www.google.at"));
+		Charge charge = getHeidelpay().charge(BigDecimal.ONE, Currency.getInstance("EUR"), createPaymentTypeCard().getId(), new URL("https://www.google.at"), false);
 		assertNotNull(charge);
 		assertEquals("COR.000.100.112", charge.getMessage().getCode());
 		assertNotNull(charge.getMessage().getCustomer());
@@ -81,7 +81,7 @@ public class ChargeTest extends AbstractPaymentTest {
 	public void testChargeWithCustomerTypeReturnUrl() throws MalformedURLException, HttpCommunicationException {
 		Card card = new Card("4444333322221111", "12/19");
 		Customer customer = new Customer("Rene", "Felder");
-		Charge charge = getHeidelpay().charge(BigDecimal.ONE, Currency.getInstance("EUR"), card, new URL("https://www.google.at"), customer);
+		Charge charge = getHeidelpay().charge(BigDecimal.ONE, Currency.getInstance("EUR"), card, new URL("https://www.google.at"), customer, false);
 		assertNotNull(charge);
 		assertEquals("COR.000.100.112", charge.getMessage().getCode());
 		assertNotNull(charge.getMessage().getCustomer());
@@ -91,7 +91,7 @@ public class ChargeTest extends AbstractPaymentTest {
 	@Test
 	public void testChargeWithCustomerIdReturnUrl() throws MalformedURLException, HttpCommunicationException, ParseException {
 		Customer customer = getHeidelpay().createCustomer(getMaximumCustomer(getRandomId()));
-		Charge charge = getHeidelpay().charge(BigDecimal.ONE, Currency.getInstance("EUR"), createPaymentTypeCard().getId(), new URL("https://www.google.at"), customer.getId());
+		Charge charge = getHeidelpay().charge(BigDecimal.ONE, Currency.getInstance("EUR"), createPaymentTypeCard().getId(), new URL("https://www.google.at"), customer.getId(), false);
 		assertNotNull(charge);
 		assertEquals("COR.000.100.112", charge.getMessage().getCode());
 		assertNotNull(charge.getMessage().getCustomer());
@@ -100,7 +100,7 @@ public class ChargeTest extends AbstractPaymentTest {
 	@Test
 	public void testChargeReturnPayment() throws MalformedURLException, HttpCommunicationException {
 		Card card = new Card("4444333322221111", "12/19");
-		Charge charge = getHeidelpay().charge(BigDecimal.ONE, Currency.getInstance("EUR"), card, new URL("https://www.google.at"));
+		Charge charge = getHeidelpay().charge(BigDecimal.ONE, Currency.getInstance("EUR"), card, new URL("https://www.google.at"), false);
 		assertNotNull(charge);
 		assertEquals("COR.000.100.112", charge.getMessage().getCode());
 		assertNotNull(charge.getMessage().getCustomer());
@@ -124,7 +124,7 @@ public class ChargeTest extends AbstractPaymentTest {
 	@Test
 	public void testChargeOrderId() throws MalformedURLException, HttpCommunicationException {
 		String orderId = getRandomId();
-		Charge charge = getHeidelpay().charge(getCharge(orderId));
+		Charge charge = getHeidelpay().charge(getCharge(orderId, false));
 		assertNotNull(charge);
 		assertEquals("COR.000.100.112", charge.getMessage().getCode());
 		assertNotNull(charge.getMessage().getCustomer());
@@ -137,4 +137,29 @@ public class ChargeTest extends AbstractPaymentTest {
 		assertEquals(orderId, charge.getOrderId());
 	}
 
+	@Test
+	public void testChargeWith3dsFalse() throws MalformedURLException, HttpCommunicationException {
+		String orderId = getRandomId();
+		Charge charge = getHeidelpay().charge(getCharge(orderId, false));
+		assertNotNull(charge);
+		assertNotNull(charge.getId());
+		assertEquals("COR.000.100.112", charge.getMessage().getCode());
+		assertNotNull(charge.getMessage().getCustomer());
+		assertEquals(Charge.Status.SUCCESS, charge.getStatus());
+		// TODO Bug in API, Ticket AHC-1197
+//		assertFalse(charge.getCard3ds());
+	}
+
+	@Test
+	public void testChargeWith3dsTrue() throws MalformedURLException, HttpCommunicationException {
+		String orderId = getRandomId();
+		Charge charge = getHeidelpay().charge(getCharge(orderId, true));
+		assertNotNull(charge);
+		assertNotNull(charge.getId());
+		assertEquals("COR.000.200.000", charge.getMessage().getCode());
+		assertNotNull(charge.getMessage().getCustomer());
+		assertEquals(Charge.Status.PENDING, charge.getStatus());
+		// TODO Bug in API, Ticket AHC-1197
+//		assertTrue(charge.getCard3ds());
+	}
 }

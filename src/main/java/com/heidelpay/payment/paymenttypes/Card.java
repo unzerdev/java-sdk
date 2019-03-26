@@ -24,6 +24,7 @@ import java.math.BigDecimal;
 import java.net.URL;
 import java.util.Currency;
 
+import com.google.gson.annotations.SerializedName;
 import com.heidelpay.payment.Authorization;
 import com.heidelpay.payment.Charge;
 import com.heidelpay.payment.Customer;
@@ -41,6 +42,8 @@ public class Card extends AbstractPaymentType implements PaymentType {
 	private String cvc;
 	private String expiryDate;
 	private String brand;
+	@SerializedName("3ds")
+	private Boolean threeDs;
 	
 	public Card(String number, String expiryDate) {
 		super();
@@ -96,6 +99,12 @@ public class Card extends AbstractPaymentType implements PaymentType {
 	}
 	public Charge charge(BigDecimal amount, Currency currency, URL returnUrl, Customer customer) throws HttpCommunicationException {
 		return getHeidelpay().charge(amount, currency, this, returnUrl, customer);
+	}
+	public Boolean get3ds() {
+		return threeDs;
+	}
+	public void set3ds(Boolean threeDs) {
+		this.threeDs = threeDs;
 	}
 
 }

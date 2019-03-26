@@ -26,23 +26,27 @@ import static org.junit.Assert.assertNotNull;
 import java.net.MalformedURLException;
 import java.text.ParseException;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
 import com.heidelpay.payment.Authorization;
+import com.heidelpay.payment.Charge;
 import com.heidelpay.payment.PaymentException;
 import com.heidelpay.payment.Shipment;
 import com.heidelpay.payment.communication.HttpCommunicationException;
 
 public class ShipmentTest extends AbstractPaymentTest {
 
+	// TODO Problem with Merchant configuration
 	@Test
+//	@Ignore("Merchant is having problem with insurance provider")
 	public void testAuthorizeWithShipment() throws MalformedURLException, HttpCommunicationException, ParseException {
-		Authorization authorize = getHeidelpay().authorize(getAuthorization(createPaymentTypeInvoiceGuaranteed().getId(), createMaximumCustomerSameAddress().getId()));
-		assertNotNull(authorize.getId());
-		assertNotNull(authorize);
-		Shipment shipment = getHeidelpay().shipment(authorize.getPaymentId());
-		assertNotNull(authorize.getId());
-		assertNotNull(authorize);
+		Charge charge = getHeidelpay().charge(getCharge(createPaymentTypeInvoiceGuaranteed().getId(), createMaximumCustomerSameAddress().getId(), null, null, null));
+		assertNotNull(charge.getId());
+		assertNotNull(charge);
+		Shipment shipment = getHeidelpay().shipment(charge.getPaymentId());
+		assertNotNull(charge.getId());
+		assertNotNull(charge);
 		assertNotNull(shipment);
 		assertEquals("COR.000.100.112", shipment.getMessage().getCode());
 		assertNotNull(shipment.getMessage().getCustomer());

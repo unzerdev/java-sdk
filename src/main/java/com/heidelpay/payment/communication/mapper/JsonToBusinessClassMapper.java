@@ -1,6 +1,6 @@
 package com.heidelpay.payment.communication.mapper;
 
-import javax.security.sasl.AuthorizeCallback;
+import org.apache.log4j.Logger;
 
 /*-
  * #%L
@@ -21,12 +21,27 @@ import javax.security.sasl.AuthorizeCallback;
  * limitations under the License.
  * #L%
  */
-
-import com.heidelpay.payment.*;
-import com.heidelpay.payment.communication.json.*;
-import org.apache.log4j.Logger;
-
+import com.heidelpay.payment.Authorization;
+import com.heidelpay.payment.Cancel;
+import com.heidelpay.payment.Charge;
 import com.heidelpay.payment.Charge.Status;
+import com.heidelpay.payment.Payment;
+import com.heidelpay.payment.Processing;
+import com.heidelpay.payment.Shipment;
+import com.heidelpay.payment.UnsupportedPaymentTypeException;
+import com.heidelpay.payment.communication.json.JsonAuthorization;
+import com.heidelpay.payment.communication.json.JsonCancel;
+import com.heidelpay.payment.communication.json.JsonCard;
+import com.heidelpay.payment.communication.json.JsonCharge;
+import com.heidelpay.payment.communication.json.JsonIdObject;
+import com.heidelpay.payment.communication.json.JsonIdeal;
+import com.heidelpay.payment.communication.json.JsonObject;
+import com.heidelpay.payment.communication.json.JsonPayment;
+import com.heidelpay.payment.communication.json.JsonProcessing;
+import com.heidelpay.payment.communication.json.JsonResources;
+import com.heidelpay.payment.communication.json.JsonSepaDirectDebit;
+import com.heidelpay.payment.communication.json.JsonShipment;
+import com.heidelpay.payment.communication.json.JsonState;
 import com.heidelpay.payment.paymenttypes.Card;
 import com.heidelpay.payment.paymenttypes.Eps;
 import com.heidelpay.payment.paymenttypes.Giropay;
@@ -52,6 +67,7 @@ public class JsonToBusinessClassMapper {
 		json.setReturnUrl(authorization.getReturnUrl());
 		json.setOrderId(authorization.getOrderId());
 		json.setResources(getResources(authorization));
+		json.setCard3ds(authorization.getCard3ds());
 		return json;
 	}
 
@@ -62,6 +78,7 @@ public class JsonToBusinessClassMapper {
 		json.setReturnUrl(charge.getReturnUrl());
 		json.setOrderId(charge.getOrderId());
 		json.setResources(getResources(charge));
+		json.setCard3ds(charge.getCard3ds());
 		return json;
 	}
 
@@ -96,6 +113,7 @@ public class JsonToBusinessClassMapper {
 		authorization.setAmount(json.getAmount());
 		authorization.setCurrency(json.getCurrency());
 		authorization.setOrderId(json.getOrderId());
+		authorization.setCard3ds(json.getCard3ds());
 		if (json.getResources() != null) {
 			authorization.setCustomerId(json.getResources().getCustomerId());
 			authorization.setMetadataId(json.getResources().getMetadataId());
@@ -117,6 +135,7 @@ public class JsonToBusinessClassMapper {
 		charge.setAmount(json.getAmount());
 		charge.setCurrency(json.getCurrency());
 		charge.setOrderId(json.getOrderId());
+		charge.setCard3ds(json.getCard3ds());
 		if (json.getResources() != null) {
 			charge.setCustomerId(json.getResources().getCustomerId());
 			charge.setMetadataId(json.getResources().getMetadataId());
@@ -206,12 +225,7 @@ public class JsonToBusinessClassMapper {
 
 	public PaymentType mapToBusinessObject(PaymentType paymentType, JsonIdObject jsonPaymentType) {
 		if (paymentType instanceof Card) {
-			// workaround for Bug AHC-265
-			if (jsonPaymentType instanceof JsonCardFetch) {
-				return map((Card) paymentType, (JsonCardFetch) jsonPaymentType);
-			} else {
-				return map((Card) paymentType, (JsonCard) jsonPaymentType);
-			}
+			return map((Card) paymentType, (JsonCard) jsonPaymentType);
 		} else if (paymentType instanceof SepaDirectDebitGuaranteed) {
 			return map((SepaDirectDebitGuaranteed) paymentType, (JsonSepaDirectDebit) jsonPaymentType);
 		} else if (paymentType instanceof SepaDirectDebit) {
@@ -242,19 +256,12 @@ public class JsonToBusinessClassMapper {
 		}
 	}
 
-	private PaymentType map(Card card, JsonCardFetch jsonCard) {
-		card.setCvc(jsonCard.getCvv());
-		card.setExpiryDate(jsonCard.getExpiry());
-		card.setNumber(jsonCard.getNumber());
-		card.setId(jsonCard.getId());
-		return card;
-		
-	}
 	private PaymentType map(Card card, JsonCard jsonCard) {
 		card.setCvc(jsonCard.getCvc());
 		card.setExpiryDate(jsonCard.getExpiryDate());
 		card.setNumber(jsonCard.getNumber());
 		card.setId(jsonCard.getId());
+		card.set3ds(jsonCard.get3ds());
 		return card;
 	}
 

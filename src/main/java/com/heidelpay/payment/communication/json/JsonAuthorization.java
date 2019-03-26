@@ -37,6 +37,7 @@ public class JsonAuthorization extends JsonIdObject implements JsonObject {
 	private Currency currency;
 	private URL returnUrl;
 	private URL redirectUrl;
+	private Boolean card3ds;
 
 	private JsonResources resources; 
 	private JsonProcessing processing = new JsonProcessing();
@@ -144,6 +145,14 @@ public class JsonAuthorization extends JsonIdObject implements JsonObject {
 
 	public void setIsError(Boolean isError) {
 		this.isError = isError;
+	}
+
+	public Boolean getCard3ds() {
+		return card3ds;
+	}
+
+	public void setCard3ds(Boolean card3ds) {
+		this.card3ds = card3ds;
 	}
 
 }

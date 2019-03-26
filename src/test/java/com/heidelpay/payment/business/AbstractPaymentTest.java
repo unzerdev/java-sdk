@@ -58,15 +58,21 @@ public class AbstractPaymentTest {
 	}
 
 	protected Authorization getAuthorization(String typeId) throws MalformedURLException {
-		return getAuthorization(typeId, null);
+		return getAuthorization(typeId, (String)null);
+	}
+	protected Authorization getAuthorization(String typeId, Boolean card3ds) throws MalformedURLException {
+		return getAuthorization(typeId, null, null, null, null, card3ds);
 	}
 	protected Authorization getAuthorization(String typeId, String customerId) throws MalformedURLException {
-		return getAuthorization(typeId, customerId, null, null, null);
+		return getAuthorization(typeId, customerId, null, null, null, null);
 	}
 	protected Authorization getAuthorization(String typeId, String customerId, String metadataId) throws MalformedURLException {
-		return getAuthorization(typeId, customerId, null, metadataId, null);
+		return getAuthorization(typeId, customerId, null, metadataId, null, null);
 	}
 	protected Authorization getAuthorization(String typeId, String customerId, String orderId, String metadataId, String basketId) throws MalformedURLException {
+		return getAuthorization(typeId, customerId, orderId, metadataId, basketId, null);
+	}
+	protected Authorization getAuthorization(String typeId, String customerId, String orderId, String metadataId, String basketId, Boolean card3ds) throws MalformedURLException {
 		Authorization authorization = new Authorization();
 		authorization
 		.setAmount(new BigDecimal(10))
@@ -76,7 +82,8 @@ public class AbstractPaymentTest {
 		.setOrderId(orderId)
 		.setCustomerId(customerId)
 		.setMetadataId(metadataId)
-		.setBasketId(basketId);
+		.setBasketId(basketId)
+		.setCard3ds(card3ds);
 		return authorization;
 	}
 	
@@ -84,9 +91,15 @@ public class AbstractPaymentTest {
 		return getCharge(null);
 	}
 	protected Charge getCharge(String orderId) throws MalformedURLException, HttpCommunicationException {
-		return getCharge(createPaymentTypeCard().getId(), null, orderId, null, null);
+		return getCharge(createPaymentTypeCard().getId(), null);
+	}
+	protected Charge getCharge(String orderId, Boolean card3ds) throws MalformedURLException, HttpCommunicationException {
+		return getCharge(createPaymentTypeCard().getId(), null, orderId, null, null, card3ds);
 	}
 	protected Charge getCharge(String typeId, String customerId, String orderId, String metadataId, String basketId) throws MalformedURLException, HttpCommunicationException {
+		return getCharge(typeId, customerId, orderId, metadataId, basketId, null);
+	}
+	protected Charge getCharge(String typeId, String customerId, String orderId, String metadataId, String basketId, Boolean card3ds) throws MalformedURLException, HttpCommunicationException {
 		Charge charge = new Charge();
 		charge.setAmount(BigDecimal.ONE)
 		.setCurrency(Currency.getInstance("EUR"))
@@ -95,7 +108,8 @@ public class AbstractPaymentTest {
 		.setOrderId(orderId)
 		.setCustomerId(customerId)
 		.setMetadataId(metadataId)
-		.setBasketId(basketId);
+		.setBasketId(basketId)
+		.setCard3ds(card3ds);
 		return charge;
 	}
 	

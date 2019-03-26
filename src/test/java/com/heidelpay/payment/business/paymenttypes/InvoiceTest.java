@@ -29,7 +29,7 @@ import java.util.Currency;
 
 import org.junit.Test;
 
-import com.heidelpay.payment.Authorization;
+import com.heidelpay.payment.Charge;
 import com.heidelpay.payment.business.AbstractPaymentTest;
 import com.heidelpay.payment.communication.HttpCommunicationException;
 import com.heidelpay.payment.paymenttypes.Invoice;
@@ -43,11 +43,11 @@ public class InvoiceTest extends AbstractPaymentTest {
 	}
 
 	@Test
-	public void testAuthorizeType() throws HttpCommunicationException, MalformedURLException {
+	public void testChargeType() throws HttpCommunicationException, MalformedURLException {
 		Invoice invoice = getHeidelpay().createPaymentType(getInvoice());
-		Authorization authorization = invoice.authorize(BigDecimal.ONE, Currency.getInstance("EUR"), new URL("https://www.meinShop.de"));		
-		assertNotNull(authorization);
-		assertNotNull(authorization.getId());
+		Charge charge = invoice.charge(BigDecimal.ONE, Currency.getInstance("EUR"), new URL("https://www.meinShop.de"));		
+		assertNotNull(charge);
+		assertNotNull(charge.getId());
 	}
 
 	@Test

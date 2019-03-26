@@ -60,6 +60,20 @@ public class CardTest extends AbstractPaymentTest {
 	}
 
 	@Test
+	public void testCreateCardTypeWith3DSFlag() throws HttpCommunicationException {
+		Card card = new Card("4444333322221111", "03/20");
+		card.setCvc("123");
+		card.set3ds(false);
+		card = getHeidelpay().createPaymentType(card);
+		assertNotNull(card.getId());
+		assertFalse(card.get3ds());
+		card = (Card)getHeidelpay().fetchPaymentType(card.getId());
+		assertNotNull(card.getId());
+		assertFalse(card.get3ds());
+	}
+
+
+	@Test
 	public void testAuthorizeCardType() throws HttpCommunicationException, MalformedURLException {
 		Card card = new Card("4444333322221111", "03/20");
 		card.setCvc("123");

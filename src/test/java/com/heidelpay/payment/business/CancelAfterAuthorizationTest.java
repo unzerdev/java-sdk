@@ -44,7 +44,7 @@ public class CancelAfterAuthorizationTest extends AbstractPaymentTest {
 
 	@Test
 	public void fullCancelAfterAuthorization() throws HttpCommunicationException, MalformedURLException {
-		Authorization authorize = getHeidelpay().authorize(getAuthorization(createPaymentTypeCard().getId()));
+		Authorization authorize = getHeidelpay().authorize(getAuthorization(createPaymentTypeCard().getId(), false));
 		Authorization authorization = getHeidelpay().fetchAuthorization(authorize.getPaymentId());
 		Cancel cancel = authorization.cancel();
 		assertNotNull(cancel);
@@ -53,7 +53,7 @@ public class CancelAfterAuthorizationTest extends AbstractPaymentTest {
 
 	@Test
 	public void partialCancelPayment() throws HttpCommunicationException, MalformedURLException {
-		Authorization authorize = getHeidelpay().authorize(getAuthorization(createPaymentTypeCard().getId()));
+		Authorization authorize = getHeidelpay().authorize(getAuthorization(createPaymentTypeCard().getId(), false));
 		Payment payment = getHeidelpay().fetchPayment(authorize.getPaymentId());
 		Cancel cancel = payment.cancel(new BigDecimal(0.1));
 		assertNotNull(cancel);
@@ -63,7 +63,7 @@ public class CancelAfterAuthorizationTest extends AbstractPaymentTest {
 	
 	@Test
 	public void partialCancelAfterAuthorization() throws HttpCommunicationException, MalformedURLException {
-		Authorization authorize = getHeidelpay().authorize(getAuthorization(createPaymentTypeCard().getId()));
+		Authorization authorize = getHeidelpay().authorize(getAuthorization(createPaymentTypeCard().getId(), false));
 		Authorization authorization = getHeidelpay().fetchAuthorization(authorize.getPaymentId());
 		Cancel cancel = authorization.cancel(new BigDecimal(0.1));
 		assertNotNull(cancel);
@@ -73,7 +73,7 @@ public class CancelAfterAuthorizationTest extends AbstractPaymentTest {
 	
 	@Test
 	public void partialCancelAfterAuthorizationHeidelpay() throws HttpCommunicationException, MalformedURLException {
-		Authorization authorize = getHeidelpay().authorize(getAuthorization(createPaymentTypeCard().getId()));
+		Authorization authorize = getHeidelpay().authorize(getAuthorization(createPaymentTypeCard().getId(), false));
 		Cancel cancel = getHeidelpay().cancelAuthorization(authorize.getPaymentId());
 		assertNotNull(cancel);
 		assertNotNull(cancel.getId());
@@ -82,7 +82,7 @@ public class CancelAfterAuthorizationTest extends AbstractPaymentTest {
 
 	@Test
 	public void fetchCancelHeidelpay() throws HttpCommunicationException, MalformedURLException {
-		Authorization authorize = getHeidelpay().authorize(getAuthorization(createPaymentTypeCard().getId()));
+		Authorization authorize = getHeidelpay().authorize(getAuthorization(createPaymentTypeCard().getId(), false));
 		Cancel cancelExecuted = getHeidelpay().cancelAuthorization(authorize.getPaymentId());
 		assertNotNull(cancelExecuted);
 		assertNotNull(cancelExecuted.getId());
@@ -94,7 +94,7 @@ public class CancelAfterAuthorizationTest extends AbstractPaymentTest {
 
 	@Test
 	public void partialCancelAfterAuthorizationIsListFilled() throws HttpCommunicationException, MalformedURLException {
-		Authorization authorize = getHeidelpay().authorize(getAuthorization(createPaymentTypeCard().getId()));
+		Authorization authorize = getHeidelpay().authorize(getAuthorization(createPaymentTypeCard().getId(), false));
 		Authorization authorization = getHeidelpay().fetchAuthorization(authorize.getPaymentId());
 		Cancel cancel = authorization.cancel(BigDecimal.ONE);
 		assertNotNull(cancel);

@@ -22,7 +22,6 @@ package com.heidelpay.payment.communication;
 
 import java.util.Base64;
 
-import com.heidelpay.payment.PaymentError;
 import com.heidelpay.payment.PaymentException;
 import com.heidelpay.payment.communication.HeidelpayHttpRequest.HeidelpayHttpMethod;
 import com.heidelpay.payment.communication.impl.HttpClientBasedRestCommunication;

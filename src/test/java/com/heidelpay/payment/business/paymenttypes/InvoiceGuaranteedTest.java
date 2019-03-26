@@ -30,7 +30,7 @@ import java.util.Currency;
 
 import org.junit.Test;
 
-import com.heidelpay.payment.Authorization;
+import com.heidelpay.payment.Charge;
 import com.heidelpay.payment.PaymentException;
 import com.heidelpay.payment.Shipment;
 import com.heidelpay.payment.business.AbstractPaymentTest;
@@ -46,21 +46,21 @@ public class InvoiceGuaranteedTest extends AbstractPaymentTest {
 	}
 
 	@Test
-	public void testAuthorizeType() throws HttpCommunicationException, MalformedURLException, ParseException {
+	public void testChargeType() throws HttpCommunicationException, MalformedURLException, ParseException {
 		InvoiceGuaranteed invoice = getHeidelpay().createPaymentType(getInvoiceGuaranteed());
-		invoice.authorize(BigDecimal.TEN, Currency.getInstance("EUR"), new URL("https://www.meinShop.de"), getMaximumCustomerSameAddress(getRandomId()));		
+		invoice.charge(BigDecimal.TEN, Currency.getInstance("EUR"), new URL("https://www.meinShop.de"), getMaximumCustomerSameAddress(getRandomId()));		
 	}
 
 	@Test(expected=PaymentException.class)
-	public void testAuthorizeTypeDifferentAddresses() throws HttpCommunicationException, MalformedURLException, ParseException {
+	public void testChargeTypeDifferentAddresses() throws HttpCommunicationException, MalformedURLException, ParseException {
 		InvoiceGuaranteed invoice = getHeidelpay().createPaymentType(getInvoiceGuaranteed());
-		invoice.authorize(BigDecimal.TEN, Currency.getInstance("EUR"), new URL("https://www.meinShop.de"), getMaximumCustomer(getRandomId()));		
+		invoice.charge(BigDecimal.TEN, Currency.getInstance("EUR"), new URL("https://www.meinShop.de"), getMaximumCustomer(getRandomId()));		
 	}
 
 	@Test
 	public void testShipmentInvoiceGuaranteedType() throws HttpCommunicationException, MalformedURLException, ParseException {
-		Authorization authorize = getHeidelpay().authorize(BigDecimal.TEN, Currency.getInstance("EUR"), new InvoiceGuaranteed(), new URL("https://www.meinShop.de"), getMaximumCustomerSameAddress(getRandomId()));
-		Shipment shipment = getHeidelpay().shipment(authorize.getPaymentId());
+		Charge charge = getHeidelpay().charge(BigDecimal.TEN, Currency.getInstance("EUR"), new InvoiceGuaranteed(), new URL("https://www.meinShop.de"), getMaximumCustomerSameAddress(getRandomId()));
+		Shipment shipment = getHeidelpay().shipment(charge.getPaymentId());
 		assertNotNull(shipment);
 		assertNotNull(shipment.getId());
 	}

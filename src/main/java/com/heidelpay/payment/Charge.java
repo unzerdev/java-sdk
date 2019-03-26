@@ -41,6 +41,7 @@ public class Charge extends AbstractPayment {
 	private BigDecimal amount;
 	private Currency currency;
 	private URL returnUrl;
+	private Boolean card3ds;
 
 	private String orderId;
 	private String typeId;
@@ -170,14 +171,23 @@ public class Charge extends AbstractPayment {
 	public String getBasketId() {
 		return basketId;
 	}
-	public void setBasketId(String basketId) {
+	public Charge setBasketId(String basketId) {
 		this.basketId = basketId;
+		return this;
 	}
 	public Status getStatus() {
 		return status;
 	}
-	public void setStatus(Status status) {
+	public Charge setStatus(Status status) {
 		this.status = status;
+		return this;
+	}
+	public Boolean getCard3ds() {
+		return card3ds;
+	}
+	public Charge setCard3ds(Boolean card3ds) {
+		this.card3ds = card3ds;
+		return this;
 	}
 
 }

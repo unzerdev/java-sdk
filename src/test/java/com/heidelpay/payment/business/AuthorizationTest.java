@@ -31,6 +31,7 @@ import java.util.Currency;
 import org.junit.Test;
 
 import com.heidelpay.payment.Authorization;
+import com.heidelpay.payment.Charge;
 import com.heidelpay.payment.Authorization.Status;
 import com.heidelpay.payment.Customer;
 import com.heidelpay.payment.Payment;
@@ -41,7 +42,7 @@ public class AuthorizationTest extends AbstractPaymentTest {
 
 	@Test
 	public void testAuthorizeWithAuthorizationObject() throws MalformedURLException, HttpCommunicationException {
-		Authorization authorize = getHeidelpay().authorize(getAuthorization(createPaymentTypeCard().getId()));
+		Authorization authorize = getHeidelpay().authorize(getAuthorization(createPaymentTypeCard().getId(), false));
 		assertNotNull(authorize.getId());
 		assertNotNull(authorize);
 		assertEquals("COR.000.100.112", authorize.getMessage().getCode());
@@ -50,7 +51,7 @@ public class AuthorizationTest extends AbstractPaymentTest {
 
 	@Test
 	public void testAuthorizeWithTypeId() throws MalformedURLException, HttpCommunicationException {
-		Authorization authorize = getHeidelpay().authorize(BigDecimal.ONE, Currency.getInstance("EUR"), createPaymentTypeCard().getId(), new URL("https://www.google.at"));
+		Authorization authorize = getHeidelpay().authorize(BigDecimal.ONE, Currency.getInstance("EUR"), createPaymentTypeCard().getId(), new URL("https://www.google.at"), false);
 		assertNotNull(authorize);
 		assertNotNull(authorize.getId());
 		assertEquals("COR.000.100.112", authorize.getMessage().getCode());
@@ -59,7 +60,7 @@ public class AuthorizationTest extends AbstractPaymentTest {
 	
 	@Test
 	public void testAuthorizeSuccess() throws MalformedURLException, HttpCommunicationException {
-		Authorization authorize = getHeidelpay().authorize(BigDecimal.ONE, Currency.getInstance("EUR"), createPaymentTypeCard().getId(), new URL("https://www.google.at"));
+		Authorization authorize = getHeidelpay().authorize(BigDecimal.ONE, Currency.getInstance("EUR"), createPaymentTypeCard().getId(), new URL("https://www.google.at"), false);
 		assertNotNull(authorize);
 		assertNotNull(authorize.getId());
 		assertEquals("COR.000.100.112", authorize.getMessage().getCode());
@@ -70,7 +71,7 @@ public class AuthorizationTest extends AbstractPaymentTest {
 	@Test
 	public void testAuthorizeWithPaymentType() throws MalformedURLException, HttpCommunicationException {
 		Card card = new Card("4444333322221111", "12/19");
-		Authorization authorize = getHeidelpay().authorize(BigDecimal.ONE, Currency.getInstance("EUR"), card, new URL("https://www.google.at"));
+		Authorization authorize = getHeidelpay().authorize(BigDecimal.ONE, Currency.getInstance("EUR"), card, new URL("https://www.google.at"), false);
 		assertNotNull(authorize);
 		assertEquals("COR.000.100.112", authorize.getMessage().getCode());
 		assertNotNull(authorize.getMessage().getCustomer());
@@ -81,7 +82,7 @@ public class AuthorizationTest extends AbstractPaymentTest {
 	public void testAuthorizeReturnPaymentTypeAndCustomer() throws MalformedURLException, HttpCommunicationException {
 		Card card = new Card("4444333322221111", "12/19");
 		Customer customer = new Customer("Rene", "Felder");
-		Authorization authorize = getHeidelpay().authorize(BigDecimal.ONE, Currency.getInstance("EUR"), card, new URL("https://www.google.at"), customer);
+		Authorization authorize = getHeidelpay().authorize(BigDecimal.ONE, Currency.getInstance("EUR"), card, new URL("https://www.google.at"), customer, false);
 		Payment payment = authorize.getPayment();
 		assertNotNull(payment.getPaymentType());
 		assertNotNull(payment.getCustomer());
@@ -93,7 +94,7 @@ public class AuthorizationTest extends AbstractPaymentTest {
 	@Test
 	public void testAuthorizeWithCustomerId() throws MalformedURLException, HttpCommunicationException, ParseException {
 		Customer customer = getHeidelpay().createCustomer(getMaximumCustomer(getRandomId()));
-		Authorization authorize = getHeidelpay().authorize(BigDecimal.ONE, Currency.getInstance("EUR"), createPaymentTypeCard().getId(), new URL("https://www.google.at"), customer.getCustomerId());
+		Authorization authorize = getHeidelpay().authorize(BigDecimal.ONE, Currency.getInstance("EUR"), createPaymentTypeCard().getId(), new URL("https://www.google.at"), customer.getCustomerId(), false);
 		assertNotNull(authorize);
 		assertNotNull(authorize.getId());
 		assertEquals("COR.000.100.112", authorize.getMessage().getCode());
@@ -102,7 +103,7 @@ public class AuthorizationTest extends AbstractPaymentTest {
 
 	@Test
 	public void testAuthorizeWithReturnUrl() throws MalformedURLException, HttpCommunicationException {
-		Authorization authorize = getHeidelpay().authorize(BigDecimal.ONE, Currency.getInstance("EUR"), createPaymentTypeCard().getId(), new URL("https://www.google.at"));
+		Authorization authorize = getHeidelpay().authorize(BigDecimal.ONE, Currency.getInstance("EUR"), createPaymentTypeCard().getId(), new URL("https://www.google.at"), false);
 		assertNotNull(authorize);
 		assertNotNull(authorize.getId());
 		assertEquals("COR.000.100.112", authorize.getMessage().getCode());
@@ -113,7 +114,7 @@ public class AuthorizationTest extends AbstractPaymentTest {
 	public void testAuthorizeWithCustomerTypeReturnUrl() throws MalformedURLException, HttpCommunicationException {
 		Card card = new Card("4444333322221111", "12/19");
 		Customer customer = new Customer("Rene", "Felder");
-		Authorization authorize = getHeidelpay().authorize(BigDecimal.ONE, Currency.getInstance("EUR"), card, new URL("https://www.google.at"), customer);
+		Authorization authorize = getHeidelpay().authorize(BigDecimal.ONE, Currency.getInstance("EUR"), card, new URL("https://www.google.at"), customer, false);
 		assertNotNull(authorize);
 		assertNotNull(authorize.getId());
 		assertEquals("COR.000.100.112", authorize.getMessage().getCode());
@@ -123,7 +124,7 @@ public class AuthorizationTest extends AbstractPaymentTest {
 	@Test
 	public void testAuthorizeWithCustomerIdReturnUrl() throws MalformedURLException, HttpCommunicationException, ParseException {
 		Customer maxCustomer = getMaximumCustomer(getRandomId());
-		Authorization authorize = getHeidelpay().authorize(BigDecimal.ONE, Currency.getInstance("EUR"), createPaymentTypeCard().getId(), new URL("https://www.google.at"), maxCustomer.getId());
+		Authorization authorize = getHeidelpay().authorize(BigDecimal.ONE, Currency.getInstance("EUR"), createPaymentTypeCard().getId(), new URL("https://www.google.at"), maxCustomer.getId(), false);
 		assertNotNull(authorize);
 		assertNotNull(authorize.getId());
 		assertEquals("COR.000.100.112", authorize.getMessage().getCode());
@@ -132,7 +133,7 @@ public class AuthorizationTest extends AbstractPaymentTest {
 	
 	@Test
 	public void testFetchAuthorization() throws MalformedURLException, HttpCommunicationException {
-		Authorization authorize = getHeidelpay().authorize(BigDecimal.ONE, Currency.getInstance("EUR"), createPaymentTypeCard().getId(), new URL("https://www.google.at"));
+		Authorization authorize = getHeidelpay().authorize(BigDecimal.ONE, Currency.getInstance("EUR"), createPaymentTypeCard().getId(), new URL("https://www.google.at"), false);
 		assertNotNull(authorize);
 		assertNotNull(authorize.getId());
 		Authorization authorization = getHeidelpay().fetchAuthorization(authorize.getPaymentId());
@@ -145,7 +146,7 @@ public class AuthorizationTest extends AbstractPaymentTest {
 	@Test
 	public void testAuthorizeWithOrderId() throws MalformedURLException, HttpCommunicationException {
 		String orderId = getRandomId();
-		Authorization authorize = getHeidelpay().authorize(getAuthorization(createPaymentTypeCard().getId(), null, orderId, null, null));
+		Authorization authorize = getHeidelpay().authorize(getAuthorization(createPaymentTypeCard().getId(), null, orderId, null, null, false));
 		assertNotNull(authorize);
 		assertNotNull(authorize.getId());
 		assertEquals("COR.000.100.112", authorize.getMessage().getCode());
@@ -155,6 +156,38 @@ public class AuthorizationTest extends AbstractPaymentTest {
 		assertNotNull(authorization.getId());
 		assertEquals(orderId, authorization.getOrderId());
 		
+	}
+
+	@Test
+	public void testAuthorizeCard3dsFalse() throws MalformedURLException, HttpCommunicationException {
+		String orderId = getRandomId();
+		Authorization authorize = getHeidelpay().authorize(getAuthorization(createPaymentTypeCard().getId(), null, orderId, null, null, false));
+		assertNotNull(authorize);
+		assertNotNull(authorize.getId());
+		assertEquals("COR.000.100.112", authorize.getMessage().getCode());
+		assertEquals(Authorization.Status.SUCCESS, authorize.getStatus());
+//		assertTrue(authorize.getCard3ds());
+		Authorization authorization = getHeidelpay().fetchAuthorization(orderId);
+		assertNotNull(authorization);
+		assertNotNull(authorization.getId());
+		assertEquals(orderId, authorization.getOrderId());
+//		assertTrue(authorization.getCard3ds());
+	}
+
+	@Test
+	public void testAuthorizeCard3dsTrue() throws MalformedURLException, HttpCommunicationException {
+		String orderId = getRandomId();
+		Authorization authorize = getHeidelpay().authorize(getAuthorization(createPaymentTypeCard().getId(), null, orderId, null, null, true));
+		assertNotNull(authorize);
+		assertNotNull(authorize.getId());
+		assertEquals("COR.000.200.000", authorize.getMessage().getCode());
+		assertEquals(Authorization.Status.PENDING, authorize.getStatus());
+//		assertTrue(authorize.getCard3ds());
+		Authorization authorization = getHeidelpay().fetchAuthorization(orderId);
+		assertNotNull(authorization);
+		assertNotNull(authorization.getId());
+		assertEquals(orderId, authorization.getOrderId());
+//		assertTrue(authorization.getCard3ds());
 	}
 
 }

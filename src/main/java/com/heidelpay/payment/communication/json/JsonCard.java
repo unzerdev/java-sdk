@@ -1,5 +1,7 @@
 package com.heidelpay.payment.communication.json;
 
+import com.google.gson.annotations.SerializedName;
+
 /*-
  * #%L
  * Heidelpay Java SDK
@@ -24,6 +26,8 @@ public class JsonCard extends JsonIdObject implements JsonObject {
 	private String number;
 	private String cvc;
 	private String expiryDate;
+	@SerializedName("3ds")
+	private Boolean threeDs;
 	
 	public String getNumber() {
 		return number;
@@ -45,5 +49,11 @@ public class JsonCard extends JsonIdObject implements JsonObject {
 	public JsonCard setExpiryDate(String expiryDate) {
 		this.expiryDate = expiryDate;
 		return this;
+	}
+	public Boolean get3ds() {
+		return threeDs;
+	}
+	public void set3ds(Boolean threeDs) {
+		this.threeDs = threeDs;
 	}
 }
