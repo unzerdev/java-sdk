@@ -82,7 +82,7 @@ public class Heidelpay {
 	 */
 	public Customer createCustomer(Customer customer) throws HttpCommunicationException {
 		if (customer == null)
-			throw new NullPointerException("Customer must not be null");
+			throw new IllegalArgumentException("Customer must not be null");
 		if (customer.getId() != null)
 			throw new PaymentException(
 					"Customer has an id set. createCustomer can only be called without Customer.id. Please use updateCustomer or remove the id from Customer.");
