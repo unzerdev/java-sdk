@@ -26,6 +26,7 @@ import static org.junit.Assert.assertNotNull;
 import java.net.MalformedURLException;
 import java.text.ParseException;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
 import com.heidelpay.payment.Authorization;
@@ -38,7 +39,7 @@ public class ShipmentTest extends AbstractPaymentTest {
 
 	// TODO Problem with Merchant configuration
 	@Test
-//	@Ignore("Merchant is having problem with insurance provider")
+	@Ignore("Merchant is having problem with insurance provider")
 	public void testAuthorizeWithShipment() throws MalformedURLException, HttpCommunicationException, ParseException {
 		Charge charge = getHeidelpay().charge(getCharge(createPaymentTypeInvoiceGuaranteed().getId(), createMaximumCustomerSameAddress().getId(), null, null, null));
 		assertNotNull(charge.getId());
