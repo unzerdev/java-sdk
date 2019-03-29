@@ -63,11 +63,11 @@ public class JsonParser<T> {
 	 * 
 	 * @param model refers to object to be parsed
 	 * @return json method
-	 * @throws NullPointerException if the model is null
+	 * @throws IllegalArgumentException if the model is null
 	 */
 	public String toJson(Object model) {
 		if (Objects.isNull(model)) {
-			throw new NullPointerException();
+			throw new IllegalArgumentException("Null object cannot be parsed!");
 		}
 		return gson.toJson(model);
 	}
@@ -82,7 +82,7 @@ public class JsonParser<T> {
 	@SuppressWarnings("hiding")
 	public <T> T fromJson(String json, Class<T> clazz) {
 		if (Objects.isNull(json) || Objects.isNull(clazz)) {
-			throw new NullPointerException();
+			throw new IllegalArgumentException("Null object cannot be parsed!");
 		}
 		if (isError(json) && !clazz.isAssignableFrom(JsonErrorObject.class)) {
 			throw toPaymentException(json);

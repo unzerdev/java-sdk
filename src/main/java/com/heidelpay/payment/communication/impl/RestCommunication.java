@@ -27,12 +27,7 @@ import java.util.Objects;
 import org.apache.http.HttpEntity;
 import org.apache.http.ParseException;
 import org.apache.http.StatusLine;
-import org.apache.http.client.methods.CloseableHttpResponse;
-import org.apache.http.client.methods.HttpDelete;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.client.methods.HttpPut;
-import org.apache.http.client.methods.HttpUriRequest;
+import org.apache.http.client.methods.*;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClientBuilder;
@@ -53,28 +48,21 @@ import com.heidelpay.payment.communication.json.JsonErrorObject;
  */
 public class RestCommunication implements HeidelpayRestCommunication {
 
-	public final static Logger logger = Logger.getLogger(RestCommunication.class);
+	private final static Logger logger = Logger.getLogger(RestCommunication.class);
 
 	public String httpGet(String url, String privateKey) throws HttpCommunicationException {
 		HttpGet httpGet = getHttpGet(url);
 		httpGet = (HttpGet) addAuthentication(privateKey, httpGet);
-		String response = this.execute(httpGet);
-		return response;
+		return this.execute(httpGet);
 	}
 
 	public String httpPost(String url, String privateKey, Object data) throws HttpCommunicationException {
 		if (Objects.isNull(url) || Objects.isNull(data)) {
-			throw new NullPointerException("Cannot create a http post request with null params");
+			throw new IllegalArgumentException("Cannot create a http post request to an empty URL or with null params");
 		}
-		HttpPost httpPost = getHttpPost(url, "application/json; charset=UTF-8");
+		HttpPost httpPost = getHttpPost(url);
 		httpPost = (HttpPost) addAuthentication(privateKey, httpPost);
-		String json = new JsonParser<String>().toJson(data);
-		logger.debug("Request: '" + json + "'");
-		HttpEntity entity = new StringEntity(json, "UTF-8");
-		httpPost.setEntity(entity);
-		String response = this.execute(httpPost);
-		logger.debug("Response: '" + json + "'");
-		return response;
+		return makeRequest(httpPost, data);
 	}
 
 	public String httpDelete(String url, String privateKey) throws HttpCommunicationException {
@@ -84,13 +72,17 @@ public class RestCommunication implements HeidelpayRestCommunication {
 	}
 
 	public String httpPut(String url, String privateKey, Object data) throws HttpCommunicationException {
-		HttpPut httpPut = getHttpPut(url, "application/json; charset=UTF-8");
+		HttpPut httpPut = getHttpPut(url);
 		httpPut = (HttpPut) addAuthentication(privateKey, httpPut);
+		return makeRequest(httpPut, data);
+	}
+
+	private String makeRequest(HttpEntityEnclosingRequestBase request, Object data) throws HttpCommunicationException {
 		String json = new JsonParser<String>().toJson(data);
 		logger.debug("Request: '" + json + "'");
 		HttpEntity entity = new StringEntity(json, "UTF-8");
-		httpPut.setEntity(entity);
-		String response = this.execute(httpPut);
+		request.setEntity(entity);
+		String response = this.execute(request);
 		logger.debug("Response: '" + json + "'");
 		return response;
 	}
@@ -133,10 +125,7 @@ public class RestCommunication implements HeidelpayRestCommunication {
 						error.getErrors());
 			}
 			return content;
-		} catch (IOException e) {
-			throw new HttpCommunicationException(
-					"Error communicating to " + httpPost.getURI() + ": Detail: " + e.getMessage());
-		} catch (ParseException e) {
+		} catch (IOException | ParseException e) {
 			throw new HttpCommunicationException(
 					"Error communicating to " + httpPost.getURI() + ": Detail: " + e.getMessage());
 		} finally {
@@ -148,19 +137,11 @@ public class RestCommunication implements HeidelpayRestCommunication {
 				}
 			}
 		}
-
 	}
 
 	private CloseableHttpClient getHttpClient() {
 		HttpClientBuilder builder = HttpClients.custom().useSystemProperties();
 		return builder.build();
-	}
-
-	private HttpPost getHttpPost(String url, String contentType) {
-		HttpPost httpPost = new HttpPost(url);
-		setUserAgent(httpPost);
-		httpPost.addHeader("Content-Type", contentType);
-		return httpPost;
 	}
 
 	private void setUserAgent(HttpUriRequest httpRequest) {
@@ -179,11 +160,18 @@ public class RestCommunication implements HeidelpayRestCommunication {
 		return httpDelete;
 	}
 
-	private HttpPut getHttpPut(String url, String contentType) {
+	private HttpPut getHttpPut(String url) {
 		HttpPut httpPut = new HttpPut(url);
 		setUserAgent(httpPut);
-		httpPut.addHeader("Content-Type", contentType);
+		httpPut.addHeader("Content-Type", "application/json; charset=UTF-8");
 		return httpPut;
+	}
+
+	private HttpPost getHttpPost(String url) {
+		HttpPost httpPost = new HttpPost(url);
+		setUserAgent(httpPost);
+		httpPost.addHeader("Content-Type", "application/json; charset=UTF-8");
+		return httpPost;
 	}
 
 }
