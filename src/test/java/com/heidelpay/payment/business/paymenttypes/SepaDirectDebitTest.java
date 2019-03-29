@@ -29,6 +29,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Currency;
 
+import com.heidelpay.payment.Cancel;
 import org.junit.Ignore;
 import org.junit.Test;
 
@@ -79,6 +80,18 @@ public class SepaDirectDebitTest extends AbstractPaymentTest {
 		assertNotNull(sdd.getId());
 		Charge charge = sdd.charge(BigDecimal.ONE, Currency.getInstance("EUR"), new URL("https://www.google.at"));
 		assertNull(charge.getId());
+	}
+
+	@Test
+	public void testCancelSepaDirectDebitType() throws HttpCommunicationException, MalformedURLException {
+		SepaDirectDebit sdd = getHeidelpay().createPaymentType(getSepaDirectDebit());
+		Charge charge = sdd.charge(BigDecimal.ONE, Currency.getInstance("EUR"), new URL("https://www.google.at"));
+		assertNotNull(charge);
+		assertNotNull(charge.getId());
+
+		Cancel cancel = charge.cancel();
+		assertNotNull(cancel);
+		assertNotNull(cancel.getId());
 	}
 	
 	private void assertSddEquals(SepaDirectDebit sddOriginal, SepaDirectDebit sddCreated) {
