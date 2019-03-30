@@ -31,7 +31,6 @@ import java.util.Currency;
 import org.junit.Test;
 
 import com.heidelpay.payment.Authorization;
-import com.heidelpay.payment.Authorization.Status;
 import com.heidelpay.payment.Customer;
 import com.heidelpay.payment.Payment;
 import com.heidelpay.payment.communication.HttpCommunicationException;
@@ -64,7 +63,7 @@ public class AuthorizationTest extends AbstractPaymentTest {
 		assertNotNull(authorize.getId());
 		assertEquals("COR.000.100.112", authorize.getMessage().getCode());
 		assertNotNull(authorize.getMessage().getCustomer());
-		assertEquals(Status.SUCCESS, authorize.getStatus());
+		assertEquals(com.heidelpay.payment.AbstractInitPayment.Status.SUCCESS, authorize.getStatus());
 	}
 	
 	@Test

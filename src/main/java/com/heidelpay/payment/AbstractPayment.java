@@ -21,6 +21,7 @@ package com.heidelpay.payment;
  */
 
 import java.net.URL;
+import java.util.Date;
 
 import com.heidelpay.payment.paymenttypes.PaymentType;
 
@@ -32,6 +33,8 @@ public abstract class AbstractPayment implements PaymentType {
 	private transient URL resourceUrl;
 	private transient String type;
 	private Message message;
+
+	private Date date;
 	
 	public AbstractPayment(Heidelpay heidelpay) {
 		super();
@@ -92,4 +95,12 @@ public abstract class AbstractPayment implements PaymentType {
 		this.message = message;
 	}
 
+	public Date getDate() {
+		return date;
+	}
+
+	public AbstractPayment setDate(Date date) {
+		this.date = date;
+		return this;
+	}
 }

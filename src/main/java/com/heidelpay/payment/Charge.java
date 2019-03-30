@@ -21,9 +21,6 @@ package com.heidelpay.payment;
  */
 
 import java.math.BigDecimal;
-import java.net.URL;
-import java.util.Currency;
-import java.util.List;
 
 import com.heidelpay.payment.communication.HttpCommunicationException;
 
@@ -35,167 +32,39 @@ import com.heidelpay.payment.communication.HttpCommunicationException;
  * @author rene.felder
  *
  */
-public class Charge extends AbstractPayment {
-	public enum Status {SUCCESS, PENDING, ERRROR};
+public class Charge extends AbstractInitPayment {
 
-	private BigDecimal amount;
-	private Currency currency;
-	private URL returnUrl;
 	private String invoiceId;
-	private Boolean card3ds;
 
-	private String orderId;
-	private String typeId;
-	private String customerId;
-	private String metadataId;
-	private String paymentId;
-	private String riskId;
-	private String basketId;
-	
-	private Status status;
-	
-	private URL redirectUrl;
-
-	private Processing processing = new Processing();
-	
-	private List<Cancel> cancelList;
-	
 	public Charge() {
 		super();
 	}
 	public Charge(Heidelpay heidelpay) {
 		super(heidelpay);
 	}
-	
+
+	public String getInvoiceId() {
+		return invoiceId;
+	}
+
+	public Charge setInvoiceId(String invoiceId) {
+		this.invoiceId = invoiceId;
+		return this;
+	}
+
+	@Override
 	public Cancel cancel() throws HttpCommunicationException {
 		return getHeidelpay().cancelCharge(getPayment().getId(), getId());
 	}
+
+	@Override
 	public Cancel cancel(BigDecimal amount) throws HttpCommunicationException {
 		return getHeidelpay().cancelCharge(getPayment().getId(), getId(), amount);
-	}
-	public List<Cancel> getCancelList() {
-		return cancelList;
-	}
-	public void setCancelList(List<Cancel> cancelList) {
-		this.cancelList = cancelList;
-	}
-	public Cancel getCancel(String cancelId) {
-		if (cancelList == null) return null;
-		for (Cancel cancel : cancelList) {
-			if (cancelId.equalsIgnoreCase(cancel.getId())) {
-				return cancel;
-			}
-		} 
-		return null;
-	}
-	public BigDecimal getAmount() {
-		return amount;
-	}
-	public Charge setAmount(BigDecimal amount) {
-		this.amount = amount;
-		return this;
-	}
-	public Currency getCurrency() {
-		return currency;
-	}
-	public Charge setCurrency(Currency currency) {
-		this.currency = currency;
-		return this;
-	}
-	public String getTypeId() {
-		return typeId;
-	}
-	public Charge setTypeId(String typeId) {
-		this.typeId = typeId;
-		return this;
-	}
-	public String getCustomerId() {
-		return customerId;
-	}
-	public Charge setCustomerId(String customerId) {
-		this.customerId = customerId;
-		return this;
-	}
-	public String getMetadataId() {
-		return metadataId;
-	}
-	public Charge setMetadataId(String metadataId) {
-		this.metadataId = metadataId;
-		return this;
-	}
-	public String getPaymentId() {
-		return paymentId;
-	}
-	public Charge setPaymentId(String paymentId) {
-		this.paymentId = paymentId;
-		return this;
-	}
-	public String getRiskId() {
-		return riskId;
-	}
-	public Charge setRiskId(String riskId) {
-		this.riskId = riskId;
-		return this;
-	}
-	public Processing getProcessing() {
-		return processing;
-	}
-	public Charge setProcessing(Processing processing) {
-		this.processing = processing;
-		return this;
-	}
-	public URL getReturnUrl() {
-		return returnUrl;
-	}
-	public Charge setReturnUrl(URL returnUrl) {
-		this.returnUrl = returnUrl;
-		return this;
 	}
 
 	@Override
 	public String getTypeUrl() {
 		return "payments/<paymentId>/charges";
-	}
-	public URL getRedirectUrl() {
-		return redirectUrl;
-	}
-	public void setRedirectUrl(URL redirectUrl) {
-		this.redirectUrl = redirectUrl;
-	}
-	public String getOrderId() {
-		return orderId;
-	}
-	public Charge setOrderId(String orderId) {
-		this.orderId = orderId;
-		return this;
-	}
-	public String getBasketId() {
-		return basketId;
-	}
-	public Charge setBasketId(String basketId) {
-		this.basketId = basketId;
-		return this;
-	}
-	public Status getStatus() {
-		return status;
-	}
-	public Charge setStatus(Status status) {
-		this.status = status;
-		return this;
-	}
-	public Boolean getCard3ds() {
-		return card3ds;
-	}
-	public Charge setCard3ds(Boolean card3ds) {
-		this.card3ds = card3ds;
-		return this;
-	}
-	public String getInvoiceId() {
-		return invoiceId;
-	}
-	public Charge setInvoiceId(String invoiceId) {
-		this.invoiceId = invoiceId;
-		return this;
 	}
 
 }
