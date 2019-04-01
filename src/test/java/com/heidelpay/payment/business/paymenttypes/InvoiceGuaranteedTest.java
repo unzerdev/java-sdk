@@ -41,7 +41,7 @@ public class InvoiceGuaranteedTest extends AbstractPaymentTest {
 
 	@Test
 	public void testCreateInvoiceGuaranteedManatoryType() throws HttpCommunicationException {
-		InvoiceGuaranteed invoice = (InvoiceGuaranteed) getHeidelpay().createPaymentType(getInvoiceGuaranteed());
+		InvoiceGuaranteed invoice = getHeidelpay().createPaymentType(getInvoiceGuaranteed());
 		assertNotNull(invoice.getId());
 	}
 
@@ -75,8 +75,7 @@ public class InvoiceGuaranteedTest extends AbstractPaymentTest {
 
 	
 	private InvoiceGuaranteed getInvoiceGuaranteed() {
-		InvoiceGuaranteed invoice = new InvoiceGuaranteed();
-		return invoice;
+		return new InvoiceGuaranteed();
 	}
 
 }
