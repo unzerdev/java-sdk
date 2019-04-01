@@ -52,14 +52,13 @@ public class InvoiceFactoring extends AbstractPaymentType implements PaymentType
 
 	private Charge getCharge(BigDecimal amount, Currency currency, InvoiceFactoring invoiceFactoring, URL returnUrl,
 			Customer customer, Basket basket, String invoiceId) throws HttpCommunicationException, PaymentException {
-		Charge charge = new Charge()
-				.setAmount(amount)
-				.setCurrency(currency)
-				.setTypeId(getHeidelpay().createPaymentType(invoiceFactoring).getId())
-				.setReturnUrl(returnUrl)
-				.setCustomerId(getHeidelpay().createCustomerIfPresent(customer).getId())
-				.setBasketId(getHeidelpay().createBasket(basket).getId())
-				.setInvoiceId(invoiceId);
-		return charge;
+		return ((Charge) new Charge()
+            .setAmount(amount)
+            .setCurrency(currency)
+            .setTypeId(getHeidelpay().createPaymentType(invoiceFactoring).getId())
+            .setReturnUrl(returnUrl)
+            .setCustomerId(getHeidelpay().createCustomerIfPresent(customer).getId())
+            .setBasketId(getHeidelpay().createBasket(basket).getId()))
+            .setInvoiceId(invoiceId);
 	}
 }

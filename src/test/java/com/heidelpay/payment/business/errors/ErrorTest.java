@@ -73,7 +73,7 @@ public class ErrorTest extends AbstractPaymentTest {
     // Card resources can only be created directly with a valid PCI certification.
     // Please contact Heidelpay to grant permission for PCI level SAQ-D or SAQ-A EP
     @Test
-    public void testPCILevelSaqA() throws MalformedURLException, HttpCommunicationException {
+    public void testPCILevelSaqA() throws HttpCommunicationException {
         try {
 //			getHeidelpay("s-pub-2a10ehAb66CT6wXy43gJVqMvvOjGY5Gt").createPaymentType(getPaymentTypeCard()); // Development
             getHeidelpay("s-pub-2a10xITCUtmO2FlTP8RKB3OhdnKI4RmU").createPaymentType(getPaymentTypeCard()); // Prod Sandbox
@@ -91,7 +91,7 @@ public class ErrorTest extends AbstractPaymentTest {
     // s-crd-jy8xfchnfte2.
     // Payment type '/types/s-crd-jbrjthrghag2' not found
     @Test
-    public void testInvalidAccess() throws MalformedURLException, HttpCommunicationException {
+    public void testInvalidAccess() throws HttpCommunicationException {
         Card card = createPaymentTypeCard();
         try {
 //			getHeidelpay("s-priv-2a10SyGqMkJQoku5BdPSYUi3YO2iXQO9").fetchPaymentType(card.getId());  // Dev
@@ -135,14 +135,14 @@ public class ErrorTest extends AbstractPaymentTest {
     }
 
     @Test
-    public void testFetchNonExistingPayment() throws MalformedURLException, HttpCommunicationException {
+    public void testFetchNonExistingPayment() throws HttpCommunicationException {
         try {
             getHeidelpay().fetchAuthorization("213");
         } catch (PaymentException e) {
             assertNotNull(e.getPaymentErrorList());
             assertTrue(e.getPaymentErrorList().size() > 0);
             assertEquals("API.310.100.003", e.getPaymentErrorList().get(0).getCode());
-            assertEquals("Payment not found with key 230", e.getPaymentErrorList().get(0).getMerchantMessage());
+            assertEquals("Payment not found with key 213", e.getPaymentErrorList().get(0).getMerchantMessage());
         }
     }
 
@@ -154,7 +154,7 @@ public class ErrorTest extends AbstractPaymentTest {
     }
 
     @Test
-    public void testinvalidPutCustomer() throws MalformedURLException, HttpCommunicationException, ParseException {
+    public void testinvalidPutCustomer() throws HttpCommunicationException, ParseException {
         try {
             Customer customer = getHeidelpay().createCustomer(getMaximumCustomer(getRandomId()));
             Customer customerUpdate = new Customer(customer.getFirstname(), customer.getLastname());
@@ -170,7 +170,7 @@ public class ErrorTest extends AbstractPaymentTest {
 
 
     @Test
-    public void testCreateInvalidCustomer() throws MalformedURLException, HttpCommunicationException, ParseException {
+    public void testCreateInvalidCustomer() throws HttpCommunicationException, ParseException {
         try {
             Customer customer = getMinimumCustomer();
             customer.setBirthDate(getDate("01.01.1944"));
@@ -181,7 +181,7 @@ public class ErrorTest extends AbstractPaymentTest {
             getHeidelpay().createCustomer(customer);
         } catch (PaymentException e) {
             assertNotNull(e.getPaymentErrorList());
-            assertTrue(e.getPaymentErrorList().size() == 4);
+            assertEquals(4, e.getPaymentErrorList().size());
             assertEquals("API.410.200.005", getCode("API.410.200.005", e.getPaymentErrorList()));
             assertEquals("First name This is a very long first name because someone put the wrong content into the field has invalid length", getMerchantMessage("API.410.200.005", e.getPaymentErrorList()));
             assertEquals("API.410.200.002", getCode("API.410.200.002", e.getPaymentErrorList()));
