@@ -21,6 +21,7 @@ package com.heidelpay.payment.communication;
  */
 
 import java.util.Base64;
+import java.util.Locale;
 
 import com.heidelpay.payment.PaymentException;
 import com.heidelpay.payment.communication.HeidelpayHttpRequest.HeidelpayHttpMethod;
@@ -49,12 +50,20 @@ import com.heidelpay.payment.util.SDKInfo;
  */
 public abstract class AbstractHeidelpayRestCommunication implements HeidelpayRestCommunication {
 
-	protected static final String USER_AGENT = "User-Agent";
-	protected static final String AUTHORIZATION = "Authorization";
-	protected static final String BASIC = "Basic ";
-	protected static final String USER_AGENT_PREFIX = "heidelpay-Java-";
-	protected static final String CONTENT_TYPE_JSON = "application/json; charset=UTF-8";
-	protected static final String CONTENT_TYPE = "Content-Type";
+	private static final String USER_AGENT = "User-Agent";
+	private static final String AUTHORIZATION = "Authorization";
+	private static final String BASIC = "Basic ";
+	static final String USER_AGENT_PREFIX = "heidelpay-Java-";
+	private static final String CONTENT_TYPE_JSON = "application/json; charset=UTF-8";
+	private static final String CONTENT_TYPE = "Content-Type";
+	private static final String ACCEPT_LANGUAGE = "Accept-Language";
+	private static final Locale ACCEPT_LANGUAGE_DEFAULT_VALUE = Locale.ENGLISH;
+
+	private Locale locale;
+
+	public AbstractHeidelpayRestCommunication(Locale locale) {
+		this.locale = locale;
+	}
 
 	/**
 	 * Creates a {@code HeidelpayHttpRequest} for the given
@@ -137,7 +146,7 @@ public abstract class AbstractHeidelpayRestCommunication implements HeidelpayRes
 		return this.execute(createRequest(url, HeidelpayHttpMethod.DELETE), privateKey);
 	}
 
-	protected String sendPutOrPost(HeidelpayHttpRequest request, String privateKey, Object data)
+	private String sendPutOrPost(HeidelpayHttpRequest request, String privateKey, Object data)
 			throws HttpCommunicationException, PaymentException {
 		if (data == null) {
 			throw new IllegalArgumentException("Cannot create a http post request with null params");
@@ -157,15 +166,15 @@ public abstract class AbstractHeidelpayRestCommunication implements HeidelpayRes
 	 * This method is called from the {@code #execute(HeidelpayHttpRequest)} method, you do not need to call it explicettely.
 	 * @param request the request the content type 
 	 */
-	protected void setContentType(HeidelpayHttpRequest request) {
+	private void setContentType(HeidelpayHttpRequest request) {
 		request.addHeader(CONTENT_TYPE, CONTENT_TYPE_JSON);
 	}
 
-	protected void addUserAgent(HeidelpayHttpRequest request) {
+	private void addUserAgent(HeidelpayHttpRequest request) {
 		request.addHeader(USER_AGENT, USER_AGENT_PREFIX + SDKInfo.getVersion() + " - " + getClass().getCanonicalName());
 	}
 
-	protected void addAuthentication(String privateKey, HeidelpayHttpRequest request) throws PaymentException {
+	private void addAuthentication(String privateKey, HeidelpayHttpRequest request) throws PaymentException {
 
 		if (privateKey == null) {
 			throw new PaymentException("PrivateKey/PublicKey is missing",
@@ -179,10 +188,19 @@ public abstract class AbstractHeidelpayRestCommunication implements HeidelpayRes
 		request.addHeader(AUTHORIZATION, BASIC + privateKeyBase64);
 	}
 
-	
-	protected String execute(HeidelpayHttpRequest request, String privateKey) throws PaymentException, HttpCommunicationException {
+	private void addAcceptLanguageHeader(HeidelpayHttpRequest request) throws PaymentException {
+		if(this.locale == null) {
+			request.addHeader(ACCEPT_LANGUAGE, ACCEPT_LANGUAGE_DEFAULT_VALUE.getLanguage());
+		} else {
+			request.addHeader(ACCEPT_LANGUAGE, this.locale.getLanguage());
+		}
+	}
+
+
+	String execute(HeidelpayHttpRequest request, String privateKey) throws PaymentException, HttpCommunicationException {
 		addUserAgent(request);
 		addAuthentication(privateKey, request);
+		addAcceptLanguageHeader(request);
 		
 		logRequest(request);
 		
@@ -191,14 +209,14 @@ public abstract class AbstractHeidelpayRestCommunication implements HeidelpayRes
 		logResponse(response);
 
 		if (isError(response)) {
-			throwPaymentException(request, response);
+			throwPaymentException(response);
 		}
 
 		return response.getContent();
 
 	}
 
-	protected void throwPaymentException(HeidelpayHttpRequest request, HeidelpayHttpResponse response)
+	private void throwPaymentException(HeidelpayHttpResponse response)
 			throws PaymentException {
 		JsonErrorObject error = new JsonParser<JsonErrorObject>().fromJson(response.getContent(),
 				JsonErrorObject.class);

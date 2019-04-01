@@ -22,6 +22,8 @@ package com.heidelpay.payment.communication;
 
 import com.heidelpay.payment.communication.HeidelpayHttpRequest.HeidelpayHttpMethod;
 
+import java.util.Locale;
+
 public class MockHeidelpayRestCommunication extends AbstractHeidelpayRestCommunication {
 
 	MockHeidelpayHttpRequest request;
@@ -32,14 +34,22 @@ public class MockHeidelpayRestCommunication extends AbstractHeidelpayRestCommuni
 	HeidelpayHttpResponse loggedResponse;
 	HeidelpayHttpRequest loggedRequest;
 	String loggedBody;
-	
+
+	public MockHeidelpayRestCommunication() {
+		super(null);
+	}
+
+	public MockHeidelpayRestCommunication(Locale locale) {
+		super(locale);
+	}
+
 	@Override
 	protected HeidelpayHttpRequest createRequest(String url, HeidelpayHttpMethod method) {
 		return new MockHeidelpayHttpRequest(url, method);
 	}
 
 	@Override
-	protected HeidelpayHttpResponse doExecute(HeidelpayHttpRequest request) throws HttpCommunicationException {
+	protected HeidelpayHttpResponse doExecute(HeidelpayHttpRequest request) {
 		this.request = (MockHeidelpayHttpRequest) request;
 		return new HeidelpayHttpResponse(responseMockContent, responseMockStatus);
 	}
