@@ -43,7 +43,7 @@ public class InvoiceFactoringTest extends AbstractPaymentTest {
 
 	@Test
 	public void testCreateInvoiceFactoringManatoryType() throws HttpCommunicationException {
-		InvoiceFactoring invoice = (InvoiceFactoring) getHeidelpay().createPaymentType(getInvoiceFactoring());
+		InvoiceFactoring invoice = getHeidelpay().createPaymentType(getInvoiceFactoring());
 		assertNotNull(invoice.getId());
 	}
 
@@ -71,8 +71,7 @@ public class InvoiceFactoringTest extends AbstractPaymentTest {
 	}
 
 	private InvoiceFactoring createInvoiceFactoring() throws HttpCommunicationException {
-		InvoiceFactoring invoice = getHeidelpay().createPaymentType(getInvoiceFactoring());
-		return invoice;
+		return getHeidelpay().createPaymentType(getInvoiceFactoring());
 	}
 
 	@Test(expected=PaymentException.class)
@@ -103,8 +102,7 @@ public class InvoiceFactoringTest extends AbstractPaymentTest {
 
 	
 	private InvoiceFactoring getInvoiceFactoring() {
-		InvoiceFactoring invoice = new InvoiceFactoring();
-		return invoice;
+		return new InvoiceFactoring();
 	}
 
 }
