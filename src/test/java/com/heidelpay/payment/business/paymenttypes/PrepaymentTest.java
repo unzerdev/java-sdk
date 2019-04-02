@@ -61,8 +61,7 @@ public class PrepaymentTest extends AbstractPaymentTest {
 
 	
 	private Prepayment getPrepayment() {
-		Prepayment prepayment = new Prepayment();
-		return prepayment;
+		return new Prepayment();
 	}
 
 

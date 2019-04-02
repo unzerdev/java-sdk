@@ -27,10 +27,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Currency;
-import java.util.Date;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 import com.heidelpay.payment.Address;
 import com.heidelpay.payment.Authorization;
@@ -55,8 +52,14 @@ public class AbstractPaymentTest {
 		return new Heidelpay("s-priv-2a102ZMq3gV4I3zJ888J7RR6u75oqK3n");
 //		return new Heidelpay("s-priv-6S59Dt6Q9mJYj8X5qpcxSpA3XLXUw4Zf");
 	}
+	public Heidelpay getHeidelpayDE() {
+		return new Heidelpay("s-priv-2a102ZMq3gV4I3zJ888J7RR6u75oqK3n", Locale.GERMANY);
+	}
 	public Heidelpay getHeidelpay(String key) {
 		return new Heidelpay(new HttpClientBasedRestCommunication(), key);
+	}
+	public Heidelpay getHeidelpayDE(String key) {
+		return new Heidelpay(new HttpClientBasedRestCommunication(Locale.GERMANY), key);
 	}
 
 	protected Authorization getAuthorization(String typeId) throws MalformedURLException {
@@ -143,7 +146,7 @@ public class AbstractPaymentTest {
 	protected Customer createFactoringOKCustomer() throws HttpCommunicationException, ParseException {
 		return getHeidelpay().createCustomer(getFactoringOKCustomer(getRandomId()));
 	}
-	
+
 	protected Customer createMaximumCustomerSameAddress() throws HttpCommunicationException, ParseException {
 		return getHeidelpay().createCustomer(getMaximumCustomerSameAddress(getRandomId()));
 	}
@@ -214,8 +217,8 @@ public class AbstractPaymentTest {
 		return metadata;
 
 	}
-	
-	
+
+
 	protected Metadata getTestMetadata() {
 		return getTestMetadata(false);
 	}
@@ -259,7 +262,7 @@ public class AbstractPaymentTest {
 		assertEquals(initProcessing.getShortId(), processing.getShortId());
 		assertEquals(initProcessing.getUniqueId(), processing.getUniqueId());
 	}
-	
+
 	protected void assertCustomerEquals(Customer customerExpected, Customer customer) {
 		assertEquals(customerExpected.getFirstname(), customer.getFirstname());
 		assertEquals(customerExpected.getLastname(), customer.getLastname());

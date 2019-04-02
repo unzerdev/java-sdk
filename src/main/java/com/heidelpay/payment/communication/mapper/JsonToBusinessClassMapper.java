@@ -1,6 +1,6 @@
 package com.heidelpay.payment.communication.mapper;
 
-import org.apache.log4j.Logger;
+import com.heidelpay.payment.*;
 
 /*-
  * #%L
@@ -21,27 +21,7 @@ import org.apache.log4j.Logger;
  * limitations under the License.
  * #L%
  */
-import com.heidelpay.payment.Authorization;
-import com.heidelpay.payment.Cancel;
-import com.heidelpay.payment.Charge;
-import com.heidelpay.payment.Charge.Status;
-import com.heidelpay.payment.Payment;
-import com.heidelpay.payment.Processing;
-import com.heidelpay.payment.Shipment;
-import com.heidelpay.payment.UnsupportedPaymentTypeException;
-import com.heidelpay.payment.communication.json.JsonAuthorization;
-import com.heidelpay.payment.communication.json.JsonCancel;
-import com.heidelpay.payment.communication.json.JsonCard;
-import com.heidelpay.payment.communication.json.JsonCharge;
-import com.heidelpay.payment.communication.json.JsonIdObject;
-import com.heidelpay.payment.communication.json.JsonIdeal;
-import com.heidelpay.payment.communication.json.JsonObject;
-import com.heidelpay.payment.communication.json.JsonPayment;
-import com.heidelpay.payment.communication.json.JsonProcessing;
-import com.heidelpay.payment.communication.json.JsonResources;
-import com.heidelpay.payment.communication.json.JsonSepaDirectDebit;
-import com.heidelpay.payment.communication.json.JsonShipment;
-import com.heidelpay.payment.communication.json.JsonState;
+import com.heidelpay.payment.communication.json.*;
 import com.heidelpay.payment.paymenttypes.Card;
 import com.heidelpay.payment.paymenttypes.Eps;
 import com.heidelpay.payment.paymenttypes.Giropay;
@@ -59,28 +39,21 @@ import com.heidelpay.payment.paymenttypes.SepaDirectDebitGuaranteed;
 import com.heidelpay.payment.paymenttypes.Sofort;
 
 public class JsonToBusinessClassMapper {
-	public final static Logger logger = Logger.getLogger(JsonToBusinessClassMapper.class);
 
-	public JsonObject map(Authorization authorization) {
-		JsonAuthorization json = new JsonAuthorization();
-		json.setAmount(authorization.getAmount());
-		json.setCurrency(authorization.getCurrency());
-		json.setReturnUrl(authorization.getReturnUrl());
-		json.setOrderId(authorization.getOrderId());
-		json.setResources(getResources(authorization));
-		json.setCard3ds(authorization.getCard3ds());
-		return json;
-	}
+	public JsonObject map(AbstractInitPayment abstractInitPayment) {
+		JsonInitPayment json = new JsonInitPayment();
+		json.setAmount(abstractInitPayment.getAmount());
+		json.setCurrency(abstractInitPayment.getCurrency());
+		json.setReturnUrl(abstractInitPayment.getReturnUrl());
+		json.setOrderId(abstractInitPayment.getOrderId());
+		json.setResources(getResources(abstractInitPayment));
+		json.setCard3ds(abstractInitPayment.getCard3ds());
 
-	public JsonObject map(Charge charge) {
-		JsonCharge json = new JsonCharge();
-		json.setAmount(charge.getAmount());
-		json.setCurrency(charge.getCurrency());
-		json.setReturnUrl(charge.getReturnUrl());
-		json.setOrderId(charge.getOrderId());
-		json.setInvoiceId(charge.getInvoiceId());
-		json.setResources(getResources(charge));
-		json.setCard3ds(charge.getCard3ds());
+		if(abstractInitPayment instanceof Charge) {
+			json = new JsonCharge(json);
+			((JsonCharge) json).setInvoiceId(((Charge) abstractInitPayment).getInvoiceId());
+		}
+
 		return json;
 	}
 
@@ -90,88 +63,47 @@ public class JsonToBusinessClassMapper {
 		return json;
 	}
 
-	private JsonResources getResources(Charge charge) {
+	private JsonResources getResources(AbstractInitPayment abstractInitPayment) {
 		JsonResources json = new JsonResources();
-		json.setCustomerId(charge.getCustomerId());
-		json.setMetadataId(charge.getMetadataId());
-		json.setTypeId(charge.getTypeId());
-		json.setRiskId(charge.getRiskId());
-		json.setBasketId(charge.getBasketId());
+		json.setCustomerId(abstractInitPayment.getCustomerId());
+		json.setMetadataId(abstractInitPayment.getMetadataId());
+		json.setTypeId(abstractInitPayment.getTypeId());
+		json.setRiskId(abstractInitPayment.getRiskId());
+		json.setBasketId(abstractInitPayment.getBasketId());
 		return json;
 	}
-
-	private JsonResources getResources(Authorization authorization) {
-		JsonResources json = new JsonResources();
-		json.setCustomerId(authorization.getCustomerId());
-		json.setMetadataId(authorization.getMetadataId());
-		json.setTypeId(authorization.getTypeId());
-		json.setRiskId(authorization.getRiskId());
-		json.setBasketId(authorization.getBasketId());
-		return json;
-	}
-
-	public Authorization mapToBusinessObject(Authorization authorization, JsonAuthorization json) {
-		authorization.setId(json.getId());
-		authorization.setAmount(json.getAmount());
-		authorization.setCurrency(json.getCurrency());
-		authorization.setOrderId(json.getOrderId());
-		authorization.setCard3ds(json.getCard3ds());
-		if (json.getResources() != null) {
-			authorization.setCustomerId(json.getResources().getCustomerId());
-			authorization.setMetadataId(json.getResources().getMetadataId());
-			authorization.setPaymentId(json.getResources().getPaymentId());
-			authorization.setRiskId(json.getResources().getRiskId());
-			authorization.setTypeId(json.getResources().getTypeId());
-		}
-		authorization.setReturnUrl(json.getReturnUrl());
-		authorization.setProcessing(getProcessing(json.getProcessing()));
-		authorization.setRedirectUrl(json.getRedirectUrl());
-		authorization.setMessage(json.getMessage());
-
-		setStatus(authorization, json);
-		return authorization;
-	}
-
-	public Charge mapToBusinessObject(Charge charge, JsonCharge json) {
-		charge.setId(json.getId());
-		charge.setAmount(json.getAmount());
-		charge.setCurrency(json.getCurrency());
-		charge.setOrderId(json.getOrderId());
-		charge.setCard3ds(json.getCard3ds());
-		if (json.getResources() != null) {
-			charge.setCustomerId(json.getResources().getCustomerId());
-			charge.setMetadataId(json.getResources().getMetadataId());
-			charge.setPaymentId(json.getResources().getPaymentId());
-			charge.setRiskId(json.getResources().getRiskId());
-			charge.setTypeId(json.getResources().getTypeId());
-		}
-		charge.setReturnUrl(json.getReturnUrl());
-		charge.setProcessing(getProcessing(json.getProcessing()));
-		charge.setRedirectUrl(json.getRedirectUrl());
-		charge.setMessage(json.getMessage());
-
-		setStatus(charge, json);
-		return charge;
-	}
-
-	private void setStatus(Authorization authorization, JsonAuthorization json) {
-		if (json.getIsSuccess()) {
-			authorization.setStatus(com.heidelpay.payment.Authorization.Status.SUCCESS);
-		} else if (json.getIsPending()) {
-			authorization.setStatus(com.heidelpay.payment.Authorization.Status.PENDING);
-		} else if (json.getIsError()) {
-			authorization.setStatus(com.heidelpay.payment.Authorization.Status.ERRROR);
-		}
 	
+	public AbstractInitPayment mapToBusinessObject(AbstractInitPayment abstractInitPayment, JsonInitPayment json) {
+		abstractInitPayment.setId(json.getId());
+		abstractInitPayment.setAmount(json.getAmount());
+		abstractInitPayment.setCurrency(json.getCurrency());
+		abstractInitPayment.setOrderId(json.getOrderId());
+		abstractInitPayment.setCard3ds(json.getCard3ds());
+		if (json.getResources() != null) {
+			abstractInitPayment.setCustomerId(json.getResources().getCustomerId());
+			abstractInitPayment.setMetadataId(json.getResources().getMetadataId());
+			abstractInitPayment.setPaymentId(json.getResources().getPaymentId());
+			abstractInitPayment.setRiskId(json.getResources().getRiskId());
+			abstractInitPayment.setTypeId(json.getResources().getTypeId());
+		}
+		abstractInitPayment.setReturnUrl(json.getReturnUrl());
+		abstractInitPayment.setProcessing(getProcessing(json.getProcessing()));
+		abstractInitPayment.setRedirectUrl(json.getRedirectUrl());
+		abstractInitPayment.setMessage(json.getMessage());
+
+		abstractInitPayment.setDate(json.getDate());
+
+		setStatus(abstractInitPayment, json);
+		return abstractInitPayment;
 	}
 
-	private void setStatus(Charge charge, JsonCharge json) {
+	private void setStatus(AbstractInitPayment abstractInitPayment, JsonInitPayment json) {
 		if (json.getIsSuccess()) {
-			charge.setStatus(Status.SUCCESS);
+			abstractInitPayment.setStatus(com.heidelpay.payment.AbstractInitPayment.Status.SUCCESS);
 		} else if (json.getIsPending()) {
-			charge.setStatus(Status.PENDING);
+			abstractInitPayment.setStatus(com.heidelpay.payment.AbstractInitPayment.Status.PENDING);
 		} else if (json.getIsError()) {
-			charge.setStatus(Status.ERRROR);
+			abstractInitPayment.setStatus(com.heidelpay.payment.AbstractInitPayment.Status.ERRROR);
 		}
 	
 	}
@@ -181,12 +113,14 @@ public class JsonToBusinessClassMapper {
 		cancel.setAmount(json.getAmount());
 		cancel.setProcessing(getProcessing(json.getProcessing()));
 		cancel.setMessage(json.getMessage());
+		cancel.setDate(json.getDate());
 		return cancel;
 	}
 
 	public Shipment mapToBusinessObject(Shipment shipment, JsonShipment json) {
 		shipment.setId(json.getId());
 		shipment.setMessage(json.getMessage());
+		shipment.setDate(json.getDate());
 		return shipment;
 	}
 
@@ -233,27 +167,27 @@ public class JsonToBusinessClassMapper {
 		} else if (paymentType instanceof SepaDirectDebit) {
 			return map((SepaDirectDebit) paymentType, (JsonSepaDirectDebit) jsonPaymentType);
 		} else if (paymentType instanceof Eps) {
-			return map((Eps) paymentType, (JsonIdObject) jsonPaymentType);
+			return map((Eps) paymentType, jsonPaymentType);
 		} else if (paymentType instanceof Giropay) {
-			return map((Giropay) paymentType, (JsonIdObject) jsonPaymentType);
+			return map((Giropay) paymentType, jsonPaymentType);
 		} else if (paymentType instanceof Ideal) {
 			return map((Ideal) paymentType, (JsonIdeal) jsonPaymentType);
 		} else if (paymentType instanceof Invoice) {
-			return map((Invoice) paymentType, (JsonIdObject) jsonPaymentType);
+			return map((Invoice) paymentType, jsonPaymentType);
 		} else if (paymentType instanceof InvoiceFactoring) {
-			return map((InvoiceFactoring) paymentType, (JsonIdObject) jsonPaymentType);
+			return map((InvoiceFactoring) paymentType, jsonPaymentType);
 		} else if (paymentType instanceof InvoiceGuaranteed) {
-			return map((InvoiceGuaranteed) paymentType, (JsonIdObject) jsonPaymentType);
+			return map((InvoiceGuaranteed) paymentType, jsonPaymentType);
 		} else if (paymentType instanceof Paypal) {
-			return map((Paypal) paymentType, (JsonIdObject) jsonPaymentType);
+			return map((Paypal) paymentType, jsonPaymentType);
 		} else if (paymentType instanceof Prepayment) {
-			return map((Prepayment) paymentType, (JsonIdObject) jsonPaymentType);
+			return map((Prepayment) paymentType, jsonPaymentType);
 		} else if (paymentType instanceof Przelewy24) {
-			return map((Przelewy24) paymentType, (JsonIdObject) jsonPaymentType);
+			return map((Przelewy24) paymentType, jsonPaymentType);
 		} else if (paymentType instanceof Sofort) {
-			return map((Sofort) paymentType, (JsonIdObject) jsonPaymentType);
+			return map((Sofort) paymentType, jsonPaymentType);
 		} else if (paymentType instanceof Pis) {
-			return map((Pis) paymentType, (JsonIdObject) jsonPaymentType);
+			return map((Pis) paymentType, jsonPaymentType);
 		} else {
 			throw new UnsupportedPaymentTypeException(
 					"Type '" + paymentType.getClass().getName() + "' is currently now supported by the SDK");
@@ -275,14 +209,6 @@ public class JsonToBusinessClassMapper {
 		sdd.setIban(jsonSdd.getIban());
 		sdd.setHolder(jsonSdd.getHolder());
 		return sdd;
-	}
-
-	private PaymentType map(SepaDirectDebitGuaranteed ddg, JsonSepaDirectDebit jsonSdd) {
-		ddg.setId(jsonSdd.getId());
-		ddg.setBic(jsonSdd.getBic());
-		ddg.setIban(jsonSdd.getIban());
-		ddg.setHolder(jsonSdd.getHolder());
-		return ddg;
 	}
 
 	private PaymentType map(Eps eps, JsonIdObject jsonId) {

@@ -26,8 +26,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.log4j.Logger;
-
 import com.heidelpay.payment.Authorization;
 import com.heidelpay.payment.Basket;
 import com.heidelpay.payment.Cancel;
@@ -75,8 +73,6 @@ public class PaymentService {
 	private static final String TRANSACTION_TYPE_CHARGE = "charge";
 	private static final String TRANSACTION_TYPE_CANCEL_AUTHORIZE = "cancel-authorize";
 	private static final String TRANSACTION_TYPE_CANCEL_CHARGE = "cancel-charge";
-
-	public final static Logger logger = Logger.getLogger(PaymentService.class);
 
 	private HeidelpayRestCommunication restCommunication;
 
@@ -175,7 +171,7 @@ public class PaymentService {
 				jsonToBusinessClassMapper.map(authorization));
 		JsonAuthorization jsonAuthorization = new JsonParser<JsonAuthorization>().fromJson(response,
 				JsonAuthorization.class);
-		authorization = jsonToBusinessClassMapper.mapToBusinessObject(authorization, jsonAuthorization);
+		authorization = (Authorization) jsonToBusinessClassMapper.mapToBusinessObject(authorization, jsonAuthorization);
 		authorization.setPayment(fetchPayment(jsonAuthorization.getResources().getPaymentId()));
 		authorization.setHeidelpay(heidelpay);
 		return authorization;
@@ -245,7 +241,7 @@ public class PaymentService {
 		String response = restCommunication.httpPost(url, heidelpay.getPrivateKey(),
 				jsonToBusinessClassMapper.map(charge));
 		JsonCharge jsonCharge = new JsonParser<JsonCharge>().fromJson(response, JsonCharge.class);
-		charge = jsonToBusinessClassMapper.mapToBusinessObject(charge, jsonCharge);
+		charge = (Charge) jsonToBusinessClassMapper.mapToBusinessObject(charge, jsonCharge);
 		charge.setPayment(fetchPayment(jsonCharge.getResources().getPaymentId()));
 		charge.setPaymentId(jsonCharge.getResources().getPaymentId());
 		charge.setHeidelpay(heidelpay);
@@ -271,8 +267,7 @@ public class PaymentService {
 		customer.setId(customerId);
 		String response = restCommunication.httpGet(urlUtil.getHttpGetUrl(customer, customer.getId()),
 				heidelpay.getPrivateKey());
-		Customer jsonCustomer = new JsonParser<Customer>().fromJson(response, Customer.class);
-		return jsonCustomer;
+		return new JsonParser<Customer>().fromJson(response, Customer.class);
 	}
 
 	public void deleteCustomer(String customerId) throws HttpCommunicationException {
@@ -290,7 +285,7 @@ public class PaymentService {
 		String response = restCommunication.httpGet(urlUtil.getHttpGetUrl(paymentType, typeId),
 				heidelpay.getPrivateKey());
 		// workaround for Bug AHC-265
-		JsonIdObject jsonPaymentType = null;
+		JsonIdObject jsonPaymentType;
 		jsonPaymentType = new JsonParser<JsonIdObject>().fromJson(response, getJsonObjectFromTypeId(typeId).getClass());
 		return (T) jsonToBusinessClassMapper.mapToBusinessObject(paymentType, jsonPaymentType);
 	}
@@ -316,7 +311,7 @@ public class PaymentService {
 		String response = restCommunication.httpGet(url.toString(), heidelpay.getPrivateKey());
 		JsonAuthorization jsonAuthorization = new JsonParser<JsonAuthorization>().fromJson(response,
 				JsonAuthorization.class);
-		authorization = jsonToBusinessClassMapper.mapToBusinessObject(authorization, jsonAuthorization);
+		authorization = (Authorization) jsonToBusinessClassMapper.mapToBusinessObject(authorization, jsonAuthorization);
 		authorization.setCancelList(getCancelListForAuthorization(payment.getCancelList()));
 		authorization.setHeidelpay(heidelpay);
 		return authorization;
@@ -364,16 +359,13 @@ public class PaymentService {
 	}
 
 	private boolean containsChargeId(URL resourceUrl, String chargeId) {
-		if (resourceUrl.toString().indexOf(chargeId) == -1)
-			return false;
-		else
-			return true;
+		return resourceUrl.toString().contains(chargeId);
 	}
 
 	private Charge fetchCharge(Payment payment, Charge charge, URL url) throws HttpCommunicationException {
 		String response = restCommunication.httpGet(url.toString(), heidelpay.getPrivateKey());
 		JsonCharge jsonCharge = new JsonParser<JsonCharge>().fromJson(response, JsonCharge.class);
-		charge = jsonToBusinessClassMapper.mapToBusinessObject(charge, jsonCharge);
+		charge = (Charge) jsonToBusinessClassMapper.mapToBusinessObject(charge, jsonCharge);
 		charge.setPayment(payment);
 		charge.setResourceUrl(url);
 		return charge;
@@ -519,8 +511,7 @@ public class PaymentService {
 	}
 
 	private String getTypeIdentifier(String typeId) {
-		String paymentType = typeId.substring(2, 5);
-		return paymentType;
+		return typeId.substring(2, 5);
 	}
 
 

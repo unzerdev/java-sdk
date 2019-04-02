@@ -23,6 +23,7 @@ package com.heidelpay.payment;
 import java.math.BigDecimal;
 import java.net.URL;
 import java.util.Currency;
+import java.util.Locale;
 
 import com.heidelpay.payment.communication.HeidelpayRestCommunication;
 import com.heidelpay.payment.communication.HttpCommunicationException;
@@ -44,9 +45,12 @@ public class Heidelpay {
 	private PaymentService paymentService;
 
 	public Heidelpay(String privateKey) {
-		this(new HttpClientBasedRestCommunication(), privateKey);
+		this(new HttpClientBasedRestCommunication(null), privateKey);
 	}
-	
+	public Heidelpay(String privateKey, Locale locale) {
+		this(new HttpClientBasedRestCommunication(locale), privateKey);
+	}
+
 	/**
 	 * Creates an instance of the {@code Heidelpay}-facade.
 	 * @param restCommunication - an appropriate implementation of {@code HeidelpayRestCommunication}. If you are fine with apache's httpCLient you might choose {@code HttpClientBasedRestCommunication}.
@@ -62,7 +66,7 @@ public class Heidelpay {
 	 * Create a customer if it is not null. In case the customer is null it will
 	 * return null
 	 * 
-	 * @param customer
+	 * @param customer used customer for creation
 	 * @return Customer with id
 	 * @throws HttpCommunicationException
 	 */
@@ -167,7 +171,7 @@ public class Heidelpay {
 	 */
 	public Authorization authorize(BigDecimal amount, Currency currency, String typeId, String customerId)
 			throws HttpCommunicationException {
-		return authorize(amount, currency, typeId, (URL) null, customerId);
+		return authorize(amount, currency, typeId, null, customerId);
 	}
 
 	/**
@@ -182,7 +186,7 @@ public class Heidelpay {
 	 */
 	public Authorization authorize(BigDecimal amount, Currency currency, String typeId)
 			throws HttpCommunicationException {
-		return authorize(amount, currency, typeId, (URL) null, (String) null);
+		return authorize(amount, currency, typeId, null, (String) null);
 	}
 
 	/**
@@ -215,7 +219,7 @@ public class Heidelpay {
 	 */
 	public Authorization authorize(BigDecimal amount, Currency currency, String typeId, URL returnUrl, Boolean card3ds)
 			throws HttpCommunicationException {
-		return authorize(amount, currency, typeId, returnUrl, (String) null, card3ds);
+		return authorize(amount, currency, typeId, returnUrl, null, card3ds);
 	}
 	/**
 	 * Authorize call for redirect payments with returnUrl and a customer. This is
@@ -246,7 +250,7 @@ public class Heidelpay {
 	 */
 	public Authorization authorize(BigDecimal amount, Currency currency, PaymentType paymentType)
 			throws HttpCommunicationException {
-		return authorize(amount, currency, paymentType, (URL) null);
+		return authorize(amount, currency, paymentType, null);
 	}
 
 	/**
@@ -262,7 +266,7 @@ public class Heidelpay {
 	 */
 	public Authorization authorize(BigDecimal amount, Currency currency, PaymentType paymentType, URL returnUrl)
 			throws HttpCommunicationException {
-		return authorize(amount, currency, paymentType, returnUrl, (Customer) null, null);
+		return authorize(amount, currency, paymentType, returnUrl, null, null);
 	}
 
 	/**
@@ -278,7 +282,7 @@ public class Heidelpay {
 	 */
 	public Authorization authorize(BigDecimal amount, Currency currency, PaymentType paymentType, URL returnUrl, Boolean card3ds)
 			throws HttpCommunicationException {
-		return authorize(amount, currency, paymentType, returnUrl, (Customer) null, card3ds);
+		return authorize(amount, currency, paymentType, returnUrl, null, card3ds);
 	}
 
 	/**
@@ -291,7 +295,6 @@ public class Heidelpay {
 	 * @param paymentType
 	 * @param returnUrl
 	 * @param customer
-	 * @param card3ds
 	 * @return Authorization with paymentId and authorize id
 	 * @throws HttpCommunicationException
 	 */
@@ -394,7 +397,7 @@ public class Heidelpay {
 	 */
 	public Charge charge(BigDecimal amount, Currency currency, String typeId, String customerId)
 			throws HttpCommunicationException {
-		return charge(amount, currency, typeId, (URL) null, customerId);
+		return charge(amount, currency, typeId, null, customerId);
 	}
 
 	/**
@@ -408,7 +411,7 @@ public class Heidelpay {
 	 */
 	public Charge charge(BigDecimal amount, Currency currency, PaymentType paymentType)
 			throws HttpCommunicationException {
-		return charge(amount, currency, createPaymentType(paymentType).getId(), (URL) null, (String) null);
+		return charge(amount, currency, createPaymentType(paymentType).getId(), null, (String) null);
 	}
 
 	/**
@@ -440,7 +443,7 @@ public class Heidelpay {
 	 */
 	public Charge charge(BigDecimal amount, Currency currency, String typeId, URL returnUrl, Boolean card3ds)
 			throws HttpCommunicationException {
-		return charge(amount, currency, typeId, returnUrl, (String) null, card3ds);
+		return charge(amount, currency, typeId, returnUrl, null, card3ds);
 	}
 
 	/**
@@ -681,7 +684,7 @@ public class Heidelpay {
 	 * @throws HttpCommunicationException
 	 */
 	public Shipment shipment(String paymentId) throws HttpCommunicationException {
-		return paymentService.shipment(paymentId, (String)null);
+		return paymentService.shipment(paymentId, null);
 	}
 
 	/**

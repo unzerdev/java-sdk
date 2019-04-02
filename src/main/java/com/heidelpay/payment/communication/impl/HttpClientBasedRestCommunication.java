@@ -21,6 +21,7 @@ package com.heidelpay.payment.communication.impl;
  */
 
 import java.io.IOException;
+import java.util.Locale;
 
 import org.apache.http.ParseException;
 import org.apache.http.client.methods.CloseableHttpResponse;
@@ -43,6 +44,14 @@ import com.heidelpay.payment.communication.HttpCommunicationException;
 public class HttpClientBasedRestCommunication extends AbstractHeidelpayRestCommunication {
 
 	private final static Logger logger = Logger.getLogger(AbstractHeidelpayRestCommunication.class);
+
+	public HttpClientBasedRestCommunication() {
+		super(null);
+	}
+
+	public HttpClientBasedRestCommunication(Locale locale) {
+		super(locale);
+	}
 
 	@Override
 	protected HeidelpayHttpRequest createRequest(String url, HeidelpayHttpMethod method) {
@@ -80,7 +89,7 @@ public class HttpClientBasedRestCommunication extends AbstractHeidelpayRestCommu
 					"Error communicating to " + request.getURI() + ": Detail: " + e.getMessage());
 		} catch (ParseException e) {
 			throw new HttpCommunicationException(
-					"Error communicating to " + request.getURI() + ": Detail: " + e.getMessage());
+							"Error communicating to " + request.getURI() + ": Detail: " + e.getMessage());
 		} finally {
 			if (response != null) {
 				try {

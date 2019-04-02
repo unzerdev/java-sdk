@@ -38,7 +38,7 @@ public class InvoiceTest extends AbstractPaymentTest {
 
 	@Test
 	public void testCreateInvoiceManatoryType() throws HttpCommunicationException {
-		Invoice invoice = (Invoice) getHeidelpay().createPaymentType(getInvoice());
+		Invoice invoice = getHeidelpay().createPaymentType(getInvoice());
 		assertNotNull(invoice.getId());
 	}
 
@@ -60,8 +60,7 @@ public class InvoiceTest extends AbstractPaymentTest {
 
 	
 	private Invoice getInvoice() {
-		Invoice invoice = new Invoice();
-		return invoice;
+		return new Invoice();
 	}
 
 

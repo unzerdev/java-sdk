@@ -21,9 +21,6 @@ package com.heidelpay.payment;
  */
 
 import java.math.BigDecimal;
-import java.net.URL;
-import java.util.Currency;
-import java.util.List;
 
 import com.heidelpay.payment.communication.HttpCommunicationException;
 
@@ -35,29 +32,7 @@ import com.heidelpay.payment.communication.HttpCommunicationException;
  * @author rene.felder
  *
  */
-public class Authorization extends AbstractPayment {
-	public enum Status {SUCCESS, PENDING, ERRROR};
-
-	private BigDecimal amount;
-	private Currency currency;
-	private URL returnUrl;
-	private Boolean card3ds;
-	
-	private String orderId;
-	private String typeId;
-	private String customerId;
-	private String metadataId;
-	private String paymentId;
-	private String riskId;
-	private String basketId;
-
-	private Status status;
-
-	private URL redirectUrl;
-
-	private Processing processing = new Processing();
-	
-	private List<Cancel> cancelList;
+public class Authorization extends AbstractInitPayment {
 
 	public Authorization() {
 		super();
@@ -67,87 +42,6 @@ public class Authorization extends AbstractPayment {
 		super(heidelpay);
 	}
 
-	public BigDecimal getAmount() {
-		return amount;
-	}
-
-	public Authorization setAmount(BigDecimal amount) {
-		this.amount = amount;
-		return this;
-	}
-
-	public Currency getCurrency() {
-		return currency;
-	}
-
-	public Authorization setCurrency(Currency currency) {
-		this.currency = currency;
-		return this;
-	}
-
-	public URL getReturnUrl() {
-		return returnUrl;
-	}
-
-	public Authorization setReturnUrl(URL returnUrl) {
-		this.returnUrl = returnUrl;
-		return this;
-	}
-	public String getTypeId() {
-		return typeId;
-	}
-
-	public Authorization setTypeId(String typeId) {
-		this.typeId = typeId;
-		return this;
-	}
-
-	public String getCustomerId() {
-		return customerId;
-	}
-
-	public Authorization setCustomerId(String customerId) {
-		this.customerId = customerId;
-		return this;
-	}
-
-	public String getMetadataId() {
-		return metadataId;
-	}
-
-	public Authorization setMetadataId(String metadataId) {
-		this.metadataId = metadataId;
-		return this;
-	}
-
-	public String getPaymentId() {
-		return paymentId;
-	}
-
-	public Authorization setPaymentId(String paymentId) {
-		this.paymentId = paymentId;
-		return this;
-	}
-
-	public String getRiskId() {
-		return riskId;
-	}
-
-	public Authorization setRiskId(String riskId) {
-		this.riskId = riskId;
-		return this;
-	}
-
-	public Processing getProcessing() {
-		return processing;
-	}
-
-	public Authorization setProcessing(Processing processing) {
-		this.processing = processing;
-		return this;
-	}
-
-
 	public Charge charge() throws HttpCommunicationException {
 		return getHeidelpay().chargeAuthorization(getPayment().getId());
 	}
@@ -156,10 +50,12 @@ public class Authorization extends AbstractPayment {
 		return getHeidelpay().chargeAuthorization(getPayment().getId(), amount);
 	}
 
+	@Override
 	public Cancel cancel() throws HttpCommunicationException {
 		return getHeidelpay().cancelAuthorization(getPayment().getId());
 	}
 
+	@Override
 	public Cancel cancel(BigDecimal amount) throws HttpCommunicationException {
 		return getHeidelpay().cancelAuthorization(getPayment().getId(), amount);
 	}
@@ -167,58 +63,6 @@ public class Authorization extends AbstractPayment {
 	@Override
 	public String getTypeUrl() {
 		return "payments/<paymentId>/authorize";
-	}
-
-	public URL getRedirectUrl() {
-		return redirectUrl;
-	}
-
-	public void setRedirectUrl(URL redirectUrl) {
-		this.redirectUrl = redirectUrl;
-	}
-
-	public List<Cancel> getCancelList() {
-		return cancelList;
-	}
-
-	public void setCancelList(List<Cancel> cancelList) {
-		this.cancelList = cancelList;
-	}
-
-	public String getOrderId() {
-		return orderId;
-	}
-
-	public Authorization setOrderId(String orderId) {
-		this.orderId = orderId;
-		return this;
-	}
-
-	public String getBasketId() {
-		return basketId;
-	}
-
-	public Authorization setBasketId(String basketId) {
-		this.basketId = basketId;
-		return this;
-	}
-
-	public Status getStatus() {
-		return status;
-	}
-
-	public Authorization setStatus(Status status) {
-		this.status = status;
-		return this;
-	}
-
-	public Boolean getCard3ds() {
-		return card3ds;
-	}
-
-	public Authorization setCard3ds(Boolean card3ds) {
-		this.card3ds = card3ds;
-		return this;
 	}
 
 }
