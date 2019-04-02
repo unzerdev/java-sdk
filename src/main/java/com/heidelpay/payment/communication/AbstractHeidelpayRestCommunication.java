@@ -57,7 +57,6 @@ public abstract class AbstractHeidelpayRestCommunication implements HeidelpayRes
 	private static final String CONTENT_TYPE_JSON = "application/json; charset=UTF-8";
 	private static final String CONTENT_TYPE = "Content-Type";
 	private static final String ACCEPT_LANGUAGE = "Accept-Language";
-	private static final Locale ACCEPT_LANGUAGE_DEFAULT_VALUE = Locale.ENGLISH;
 
 	private Locale locale;
 
@@ -189,9 +188,7 @@ public abstract class AbstractHeidelpayRestCommunication implements HeidelpayRes
 	}
 
 	private void addAcceptLanguageHeader(HeidelpayHttpRequest request) throws PaymentException {
-		if(this.locale == null) {
-			request.addHeader(ACCEPT_LANGUAGE, ACCEPT_LANGUAGE_DEFAULT_VALUE.getLanguage());
-		} else {
+		if(this.locale != null) {
 			request.addHeader(ACCEPT_LANGUAGE, this.locale.getLanguage());
 		}
 	}
@@ -223,7 +220,7 @@ public abstract class AbstractHeidelpayRestCommunication implements HeidelpayRes
 		throw new PaymentException(error.getUrl(), response.getStatusCode(), error.getTimestamp(), error.getId(), error.getErrors());
 	}
 
-	protected boolean isError(HeidelpayHttpResponse response) {
+	private boolean isError(HeidelpayHttpResponse response) {
 		return response.getStatusCode() > 201 || response.getStatusCode() < 200;
 	}
 
