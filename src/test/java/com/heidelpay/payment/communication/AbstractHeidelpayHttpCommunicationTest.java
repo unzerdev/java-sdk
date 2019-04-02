@@ -162,7 +162,7 @@ public class AbstractHeidelpayHttpCommunicationTest {
 	}
 
 	private void assertAuthorizationHeader(MockHeidelpayHttpRequest request) {
-		assertEquals("Basic " + new String(Base64.getEncoder().encode( new String(privateKey + ":").getBytes())), request.headerMap.get("Authorization"));
+		assertEquals("Basic " + new String(Base64.getEncoder().encode( (privateKey + ":").getBytes())), request.headerMap.get("Authorization"));
 	}
 	
 	private void assertContentTypeHeader(MockHeidelpayHttpRequest request) {

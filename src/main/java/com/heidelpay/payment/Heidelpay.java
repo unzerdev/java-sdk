@@ -23,6 +23,7 @@ package com.heidelpay.payment;
 import java.math.BigDecimal;
 import java.net.URL;
 import java.util.Currency;
+import java.util.Locale;
 
 import com.heidelpay.payment.communication.HeidelpayRestCommunication;
 import com.heidelpay.payment.communication.HttpCommunicationException;
@@ -44,9 +45,12 @@ public class Heidelpay {
 	private PaymentService paymentService;
 
 	public Heidelpay(String privateKey) {
-		this(new HttpClientBasedRestCommunication(), privateKey);
+		this(new HttpClientBasedRestCommunication(null), privateKey);
 	}
-	
+	public Heidelpay(String privateKey, Locale locale) {
+		this(new HttpClientBasedRestCommunication(locale), privateKey);
+	}
+
 	/**
 	 * Creates an instance of the {@code Heidelpay}-facade.
 	 * @param restCommunication - an appropriate implementation of {@code HeidelpayRestCommunication}. If you are fine with apache's httpCLient you might choose {@code HttpClientBasedRestCommunication}.
