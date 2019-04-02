@@ -40,7 +40,7 @@ public class Metadata implements PaymentType {
 	}
 	
 	private String id;
-	private Map<String, String> metadataMap = new LinkedHashMap<>();
+	private Map<String, String> metadataMap;
 	private Heidelpay heidelpay;
 
 	
@@ -55,10 +55,6 @@ public class Metadata implements PaymentType {
 	public void setId(String id) {
 		this.id = id;
 	}
-
-	private String sdkVersion;
-	private String sdkType;
-
 
 	@Override
 	public String getTypeUrl() {

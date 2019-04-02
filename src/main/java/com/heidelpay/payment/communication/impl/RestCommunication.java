@@ -125,9 +125,12 @@ public class RestCommunication implements HeidelpayRestCommunication {
 						error.getErrors());
 			}
 			return content;
-		} catch (IOException | ParseException e) {
+		} catch (IOException e) {
 			throw new HttpCommunicationException(
 					"Error communicating to " + httpPost.getURI() + ": Detail: " + e.getMessage());
+		} catch (ParseException e) {
+			throw new HttpCommunicationException(
+							"Error communicating to " + httpPost.getURI() + ": Detail: " + e.getMessage());
 		} finally {
 			if (response != null) {
 				try {
