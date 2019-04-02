@@ -84,9 +84,12 @@ public class HttpClientBasedRestCommunication extends AbstractHeidelpayRestCommu
 			response = getHttpClient().execute(((HttpClientBasedHttpRequest) request).getRequest());
 			return new HeidelpayHttpResponse(EntityUtils.toString(response.getEntity()),
 					response.getStatusLine().getStatusCode());
-		} catch (IOException | ParseException e) {
+		} catch (IOException e) {
 			throw new HttpCommunicationException(
 					"Error communicating to " + request.getURI() + ": Detail: " + e.getMessage());
+		} catch (ParseException e) {
+			throw new HttpCommunicationException(
+							"Error communicating to " + request.getURI() + ": Detail: " + e.getMessage());
 		} finally {
 			if (response != null) {
 				try {

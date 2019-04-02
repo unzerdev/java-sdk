@@ -188,7 +188,7 @@ public class AbstractHeidelpayHttpCommunicationTest {
 	
 	private Map<String, String> sampleData() {
 
-		Map<String, String> data = new HashMap<>();
+		Map<String, String> data = new HashMap<String, String>();
 		data.put("firstname", "Mary Foo");
 		data.put("lastname", "Bar");
 

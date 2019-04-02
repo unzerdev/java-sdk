@@ -321,7 +321,7 @@ public class PaymentService {
 			throws HttpCommunicationException {
 		if (jsonChargesTransactionList == null || jsonChargesTransactionList.size() == 0)
 			return null;
-		List<Charge> chargesList = new ArrayList<>();
+		List<Charge> chargesList = new ArrayList<Charge>();
 		for (JsonTransaction jsonTransaction : jsonChargesTransactionList) {
 			Charge charge = fetchCharge(payment, new Charge(heidelpay), jsonTransaction.getUrl());
 			charge.setCancelList(getCancelListForCharge(charge.getId(), payment.getCancelList()));
@@ -335,7 +335,7 @@ public class PaymentService {
 	private List<Cancel> getCancelListForAuthorization(List<Cancel> cancelList) {
 		if (cancelList == null)
 			return null;
-		List<Cancel> authorizationCancelList = new ArrayList<>();
+		List<Cancel> authorizationCancelList = new ArrayList<Cancel>();
 		for (Cancel cancel : cancelList) {
 			if (TRANSACTION_TYPE_CANCEL_AUTHORIZE.equalsIgnoreCase(cancel.getType())) {
 				authorizationCancelList.add(cancel);
@@ -348,7 +348,7 @@ public class PaymentService {
 	private List<Cancel> getCancelListForCharge(String chargeId, List<Cancel> cancelList) {
 		if (cancelList == null)
 			return null;
-		List<Cancel> chargeCancelList = new ArrayList<>();
+		List<Cancel> chargeCancelList = new ArrayList<Cancel>();
 		for (Cancel cancel : cancelList) {
 			if (TRANSACTION_TYPE_CANCEL_CHARGE.equalsIgnoreCase(cancel.getType())
 					&& containsChargeId(cancel.getResourceUrl(), chargeId)) {
@@ -375,7 +375,7 @@ public class PaymentService {
 			throws HttpCommunicationException {
 		if (jsonChargesTransactionList == null || jsonChargesTransactionList.size() == 0)
 			return null;
-		List<Cancel> cancelList = new ArrayList<>();
+		List<Cancel> cancelList = new ArrayList<Cancel>();
 		for (JsonTransaction jsonTransaction : jsonChargesTransactionList) {
 			Cancel cancel = fetchCancel(payment, new Cancel(heidelpay), jsonTransaction.getUrl());
 			cancel.setType(jsonTransaction.getType());
@@ -403,7 +403,7 @@ public class PaymentService {
 	}
 
 	private List<JsonTransaction> getChargesFromTransactions(List<JsonTransaction> transactions) {
-		List<JsonTransaction> chargesList = new ArrayList<>();
+		List<JsonTransaction> chargesList = new ArrayList<JsonTransaction>();
 		for (JsonTransaction jsonTransaction : transactions) {
 			if (TRANSACTION_TYPE_CHARGE.equalsIgnoreCase(jsonTransaction.getType())) {
 				chargesList.add(jsonTransaction);
@@ -413,7 +413,7 @@ public class PaymentService {
 	}
 
 	private List<JsonTransaction> getCancelsFromTransactions(List<JsonTransaction> transactions) {
-		List<JsonTransaction> cancelsList = new ArrayList<>();
+		List<JsonTransaction> cancelsList = new ArrayList<JsonTransaction>();
 		for (JsonTransaction jsonTransaction : transactions) {
 			if (TRANSACTION_TYPE_CANCEL_AUTHORIZE.equalsIgnoreCase(jsonTransaction.getType())
 					|| TRANSACTION_TYPE_CANCEL_CHARGE.equalsIgnoreCase(jsonTransaction.getType())) {

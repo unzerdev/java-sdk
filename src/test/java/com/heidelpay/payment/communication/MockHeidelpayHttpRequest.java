@@ -27,13 +27,12 @@ import java.util.Map;
 
 public class MockHeidelpayHttpRequest implements HeidelpayHttpRequest {
 
-	Map<String, String> headerMap = new HashMap<>();
-	String uri;
-	HeidelpayHttpMethod method;
+	Map<String, String> headerMap = new HashMap<String, String>();
+	private String uri;
+	private HeidelpayHttpMethod method;
 	String content, contentEncoding;
-	int status;
-	
-	public MockHeidelpayHttpRequest(String uri, HeidelpayHttpMethod method) {
+
+	MockHeidelpayHttpRequest(String uri, HeidelpayHttpMethod method) {
 		this.uri = uri;
 		this.method = method;
 	}
