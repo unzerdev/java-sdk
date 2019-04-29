@@ -53,7 +53,7 @@ public abstract class AbstractHeidelpayRestCommunication implements HeidelpayRes
 	private static final String USER_AGENT = "User-Agent";
 	private static final String AUTHORIZATION = "Authorization";
 	private static final String BASIC = "Basic ";
-	static final String USER_AGENT_PREFIX = "heidelpay-Java-";
+	static final String USER_AGENT_PREFIX = "HeidelpayJava";
 	private static final String CONTENT_TYPE_JSON = "application/json; charset=UTF-8";
 	private static final String CONTENT_TYPE = "Content-Type";
 	private static final String ACCEPT_LANGUAGE = "Accept-Language";
@@ -150,7 +150,6 @@ public abstract class AbstractHeidelpayRestCommunication implements HeidelpayRes
 		if (data == null) {
 			throw new IllegalArgumentException("Cannot create a http post request with null params");
 		}
-		setContentType(request);
 
 		String json = new JsonParser<String>().toJson(data);
 		logRequestBody(json);
@@ -170,7 +169,7 @@ public abstract class AbstractHeidelpayRestCommunication implements HeidelpayRes
 	}
 
 	private void addUserAgent(HeidelpayHttpRequest request) {
-		request.addHeader(USER_AGENT, USER_AGENT_PREFIX + SDKInfo.getVersion() + " - " + getClass().getCanonicalName());
+		request.addHeader(USER_AGENT, USER_AGENT_PREFIX + " - " + SDKInfo.getVersion());
 	}
 
 	private void addAuthentication(String privateKey, HeidelpayHttpRequest request) throws PaymentException {
@@ -198,7 +197,8 @@ public abstract class AbstractHeidelpayRestCommunication implements HeidelpayRes
 		addUserAgent(request);
 		addAuthentication(privateKey, request);
 		addAcceptLanguageHeader(request);
-		
+		setContentType(request);
+
 		logRequest(request);
 		
 		HeidelpayHttpResponse response = doExecute(request);

@@ -80,7 +80,7 @@ public class ErrorTest extends AbstractPaymentTest {
         } catch (PaymentException e) {
             assertNotNull(e.getPaymentErrorList());
             assertTrue(e.getPaymentErrorList().size() > 0);
-            assertEquals("API.710.000.005", e.getPaymentErrorList().get(0).getCode());
+            assertEquals("API.710.000.003", e.getPaymentErrorList().get(0).getCode());
             assertEquals(
                     "You do not have the permission to access this resource. Please contact the owner of the shop.",
                     e.getPaymentErrorList().get(0).getCustomerMessage());
