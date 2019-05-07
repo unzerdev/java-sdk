@@ -85,10 +85,11 @@ public class ErrorTestDE extends AbstractPaymentTest {
         } catch (PaymentException e) {
             assertNotNull(e.getPaymentErrorList());
             assertTrue(e.getPaymentErrorList().size() > 0);
-            assertEquals("API.710.300.003", e.getPaymentErrorList().get(0).getCode());
-            assertEquals("You do not have the permission to access the paymentmethod with the id " + card.getId() + ".",
+
+            assertEquals("API.710.100.001", e.getPaymentErrorList().get(0).getCode());
+            assertEquals("The given payment method " + card.getId() + " is not found",
                     e.getPaymentErrorList().get(0).getMerchantMessage());
-            assertEquals("Sie sind nicht zum Zugriff auf diese Ressource berechtigt. Wenden Sie sich für weitere Informationen bitte an uns.",
+            assertEquals("Ungültige Zahlungsmethode. Wenden Sie sich für weitere Informationen bitte an uns.",
                     e.getPaymentErrorList().get(0).getCustomerMessage());
         }
     }
@@ -155,7 +156,7 @@ public class ErrorTestDE extends AbstractPaymentTest {
         }
     }
 
-
+    @Ignore("[AHC-1471] Only one error shown if first and last name are too long")
     @Test
     public void testCreateInvalidCustomer() throws HttpCommunicationException, ParseException {
         try {
