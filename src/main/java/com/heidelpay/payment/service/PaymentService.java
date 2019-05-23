@@ -40,6 +40,7 @@ import com.heidelpay.payment.communication.HeidelpayRestCommunication;
 import com.heidelpay.payment.communication.HttpCommunicationException;
 import com.heidelpay.payment.communication.JsonParser;
 import com.heidelpay.payment.communication.impl.RestCommunication;
+import com.heidelpay.payment.communication.json.JsonApplepay;
 import com.heidelpay.payment.communication.json.JsonAuthorization;
 import com.heidelpay.payment.communication.json.JsonCancel;
 import com.heidelpay.payment.communication.json.JsonCard;
@@ -52,6 +53,8 @@ import com.heidelpay.payment.communication.json.JsonShipment;
 import com.heidelpay.payment.communication.json.JsonTransaction;
 import com.heidelpay.payment.communication.mapper.JsonToBusinessClassMapper;
 import com.heidelpay.payment.paymenttypes.AbstractPaymentType;
+import com.heidelpay.payment.paymenttypes.Alipay;
+import com.heidelpay.payment.paymenttypes.Applepay;
 import com.heidelpay.payment.paymenttypes.Card;
 import com.heidelpay.payment.paymenttypes.Eps;
 import com.heidelpay.payment.paymenttypes.Giropay;
@@ -67,6 +70,7 @@ import com.heidelpay.payment.paymenttypes.Przelewy24;
 import com.heidelpay.payment.paymenttypes.SepaDirectDebit;
 import com.heidelpay.payment.paymenttypes.SepaDirectDebitGuaranteed;
 import com.heidelpay.payment.paymenttypes.Sofort;
+import com.heidelpay.payment.paymenttypes.Wechatpay;
 
 public class PaymentService {
 	private static final String TRANSACTION_TYPE_AUTHORIZATION = "authorize";
@@ -466,6 +470,12 @@ public class PaymentService {
 			return new JsonIdObject();
 		} else if ("pis".equalsIgnoreCase(paymentType)) {
 			return new JsonIdObject();
+		} else if ("ali".equalsIgnoreCase(paymentType)) {
+			return new JsonIdObject();
+		} else if ("wcp".equalsIgnoreCase(paymentType)) {
+			return new JsonIdObject();
+		} else if ("apl".equalsIgnoreCase(paymentType)) {
+			return new JsonApplepay();
 		} else {
 			throw new PaymentException("Type '" + typeId + "' is currently now supported by the SDK");
 		}
@@ -505,6 +515,12 @@ public class PaymentService {
 			return new Sofort();
 		} else if ("pis".equalsIgnoreCase(paymentType)) {
 			return new Pis();
+		} else if ("ali".equalsIgnoreCase(paymentType)) {
+			return new Alipay();
+		} else if ("wcp".equalsIgnoreCase(paymentType)) {
+			return new Wechatpay();
+		} else if ("apl".equalsIgnoreCase(paymentType)) {
+			return new Applepay();
 		} else {
 			throw new PaymentException("Type '" + typeId + "' is currently now supported by the SDK");
 		}
