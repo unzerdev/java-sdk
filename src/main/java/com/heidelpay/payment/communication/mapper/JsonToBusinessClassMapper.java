@@ -4,6 +4,7 @@ import com.heidelpay.payment.AbstractInitPayment;
 import com.heidelpay.payment.Cancel;
 import com.heidelpay.payment.Charge;
 import com.heidelpay.payment.Payment;
+import com.heidelpay.payment.Paypage;
 import com.heidelpay.payment.Processing;
 import com.heidelpay.payment.Shipment;
 import com.heidelpay.payment.UnsupportedPaymentTypeException;
@@ -35,6 +36,7 @@ import com.heidelpay.payment.communication.json.JsonIdeal;
 import com.heidelpay.payment.communication.json.JsonInitPayment;
 import com.heidelpay.payment.communication.json.JsonObject;
 import com.heidelpay.payment.communication.json.JsonPayment;
+import com.heidelpay.payment.communication.json.JsonPaypage;
 import com.heidelpay.payment.communication.json.JsonProcessing;
 import com.heidelpay.payment.communication.json.JsonResources;
 import com.heidelpay.payment.communication.json.JsonSepaDirectDebit;
@@ -83,6 +85,30 @@ public class JsonToBusinessClassMapper {
 		json.setAmount(cancel.getAmount());
 		return json;
 	}
+	
+	public JsonObject map(Paypage paypage) {
+		JsonPaypage json = new JsonPaypage();
+		json.setAmount(paypage.getAmount());
+		json.setBasketId(paypage.getBasketId());
+		json.setContactUrl(paypage.getContactUrl());
+		json.setCurrency(paypage.getCurrency());
+		json.setCustomerId(paypage.getCustomerId());
+		json.setDescriptionMain(paypage.getDescriptionMain());
+		json.setDescriptionSmall(paypage.getDescriptionSmall());
+		json.setFullPageImage(paypage.getFullPageImage());
+		json.setHelpUrl(paypage.getHelpUrl());
+		json.setId(paypage.getId());
+		json.setImpressumUrl(paypage.getImpressumUrl());
+		json.setLogoImage(paypage.getLogoImage());
+		json.setMetadataId(paypage.getMetadataId());
+		json.setOrderId(paypage.getOrderId());
+		json.setPaymentId(paypage.getPaymentId());
+		json.setPrivacyPolicyUrl(paypage.getPrivacyPolicyUrl());
+		json.setReturnUrl(paypage.getReturnUrl());
+		json.setShopName(paypage.getShopName());
+		json.setTermsAndConditionUrl(paypage.getTermsAndConditionUrl());
+		return json;
+	}
 
 	private JsonResources getResources(AbstractInitPayment abstractInitPayment) {
 		JsonResources json = new JsonResources();
@@ -94,6 +120,31 @@ public class JsonToBusinessClassMapper {
 		return json;
 	}
 	
+	public Paypage mapToBusinessObject(Paypage paypage, JsonPaypage json) {
+		paypage.setAmount(json.getAmount());
+		paypage.setContactUrl(json.getContactUrl());
+		paypage.setCurrency(json.getCurrency());
+		paypage.setDescriptionMain(json.getDescriptionMain());
+		paypage.setDescriptionSmall(json.getDescriptionSmall());
+		paypage.setFullPageImage(json.getFullPageImage());
+		paypage.setHelpUrl(json.getHelpUrl());
+		paypage.setId(json.getId());
+		paypage.setImpressumUrl(json.getImpressumUrl());
+		paypage.setLogoImage(json.getLogoImage());
+		paypage.setOrderId(json.getOrderId());
+		paypage.setPrivacyPolicyUrl(json.getPrivacyPolicyUrl());
+		paypage.setReturnUrl(json.getReturnUrl());
+		paypage.setShopName(json.getShopName());
+		paypage.setTermsAndConditionUrl(json.getTermsAndConditionUrl());
+
+		if (json.getResources() != null) {
+			paypage.setBasketId(json.getResources().getBasketId());
+			paypage.setCustomerId(json.getResources().getCustomerId());
+			paypage.setMetadataId(json.getResources().getMetadataId());
+			paypage.setPaymentId(json.getResources().getPaymentId());
+		}
+		return paypage;
+	}
 	public AbstractInitPayment mapToBusinessObject(AbstractInitPayment abstractInitPayment, JsonInitPayment json) {
 		abstractInitPayment.setId(json.getId());
 		abstractInitPayment.setAmount(json.getAmount());

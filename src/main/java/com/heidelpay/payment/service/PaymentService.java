@@ -40,7 +40,6 @@ import com.heidelpay.payment.communication.HeidelpayRestCommunication;
 import com.heidelpay.payment.communication.HttpCommunicationException;
 import com.heidelpay.payment.communication.JsonParser;
 import com.heidelpay.payment.communication.impl.RestCommunication;
-import com.heidelpay.payment.communication.json.JsonApplepay;
 import com.heidelpay.payment.communication.json.JsonApplepayResponse;
 import com.heidelpay.payment.communication.json.JsonAuthorization;
 import com.heidelpay.payment.communication.json.JsonCancel;
