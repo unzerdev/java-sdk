@@ -41,6 +41,7 @@ import com.heidelpay.payment.communication.HttpCommunicationException;
 import com.heidelpay.payment.communication.JsonParser;
 import com.heidelpay.payment.communication.impl.RestCommunication;
 import com.heidelpay.payment.communication.json.JsonApplepay;
+import com.heidelpay.payment.communication.json.JsonApplepayResponse;
 import com.heidelpay.payment.communication.json.JsonAuthorization;
 import com.heidelpay.payment.communication.json.JsonCancel;
 import com.heidelpay.payment.communication.json.JsonCard;
@@ -475,7 +476,7 @@ public class PaymentService {
 		} else if ("wcp".equalsIgnoreCase(paymentType)) {
 			return new JsonIdObject();
 		} else if ("apl".equalsIgnoreCase(paymentType)) {
-			return new JsonApplepay();
+			return new JsonApplepayResponse();
 		} else {
 			throw new PaymentException("Type '" + typeId + "' is currently now supported by the SDK");
 		}

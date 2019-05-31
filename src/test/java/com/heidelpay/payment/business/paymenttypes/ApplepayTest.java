@@ -1,30 +1,17 @@
 package com.heidelpay.payment.business.paymenttypes;
 
-/*-
- * #%L
- * Heidelpay Java SDK
- * %%
- * Copyright (C) 2018 Heidelpay GmbH
- * %%
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- * 
- *      http://www.apache.org/licenses/LICENSE-2.0
- * 
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- * #L%
- */
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
-import org.junit.Ignore;
+import java.math.BigDecimal;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.Currency;
+
 import org.junit.Test;
 
+import com.heidelpay.payment.Authorization;
+import com.heidelpay.payment.Charge;
 import com.heidelpay.payment.business.AbstractPaymentTest;
 import com.heidelpay.payment.communication.HttpCommunicationException;
 import com.heidelpay.payment.paymenttypes.Applepay;
@@ -34,8 +21,56 @@ public class ApplepayTest extends AbstractPaymentTest {
 
 	
 	@Test
-	@Ignore
 	public void testCreateApplepayType() throws HttpCommunicationException {
+		Applepay applepay = getApplePay();
+		
+		Applepay response = getHeidelpay().createPaymentType(applepay);
+		assertNotNull(response.getId());
+		assertNotNull(response.getExpiryDate());
+		assertNotNull(response.getNumber());
+		assertEquals("520424******1982", response.getNumber());
+		assertEquals("07/2019", response.getExpiryDate());
+		
+	}
+
+	@Test
+	public void testAuthorizeApplePayType() throws HttpCommunicationException, MalformedURLException {
+		Applepay applepay = getHeidelpay().createPaymentType(getApplePay());
+		Authorization authorization = applepay.authorize(BigDecimal.ONE, Currency.getInstance("EUR"), new URL("https://www.meinShop.de"));
+		assertNotNull(authorization);
+		assertNotNull(authorization.getId());
+		assertEquals(Authorization.Status.SUCCESS, authorization.getStatus());
+	}
+
+	@Test
+	public void testAuthorizeApplePayTypeId() throws HttpCommunicationException, MalformedURLException {
+		Applepay applepay = getHeidelpay().createPaymentType(getApplePay());
+		Authorization authorization = getHeidelpay().authorize(BigDecimal.ONE, Currency.getInstance("EUR"), applepay.getId(), new URL("https://www.meinShop.de"));
+		assertNotNull(authorization);
+		assertNotNull(authorization.getId());
+		assertEquals(Authorization.Status.SUCCESS, authorization.getStatus());
+	}
+
+	@Test
+	public void testChargeApplePayType() throws HttpCommunicationException, MalformedURLException {
+		Applepay applepay = getHeidelpay().createPaymentType(getApplePay());
+		Charge charge = applepay.charge(BigDecimal.ONE, Currency.getInstance("EUR"), new URL("https://www.meinShop.de"));
+		assertNotNull(charge);
+		assertNotNull(charge.getId());
+		assertEquals(Authorization.Status.SUCCESS, charge.getStatus());
+	}
+
+	@Test
+	public void testChargeApplePayTypeId() throws HttpCommunicationException, MalformedURLException {
+		Applepay applepay = getHeidelpay().createPaymentType(getApplePay());
+		Charge charge = getHeidelpay().charge(BigDecimal.ONE, Currency.getInstance("EUR"), applepay.getId(), new URL("https://www.meinShop.de"));
+		assertNotNull(charge);
+		assertNotNull(charge.getId());
+		assertEquals(Authorization.Status.SUCCESS, charge.getStatus());
+	}
+
+
+	private Applepay getApplePay() {
 		Applepay applepay = new Applepay();
 		applepay.setVersion("EC_v1");
 		applepay.setData("CDNa1nRTdo4G7efZwAnmWFXHe8AddpxKPQtSVUl/7RBweAeJkqFD49rr4IxeeWfgNsbTEabKaUEkGxut9Rr8vJxNJ0OVDuZRQLueJFFFwTAxBIwqRCxGWqOEdP7WfPGoYibOG43r2kj0MjMDtkD7tVt+wZwLQeaLSprXJzvHVphtuZz/NH0Bl7U2TWy4wB3qvSbUSqqqPsF84sOwCKTvLYbN+yEKOT5dLcSKOiY9v3XasaqjEXLSn5FjHW49nFrg4W2M57LD7LlhHd15ihPBxoTBZBaA37N/23APUdPyv25qPy1QojUehYHGJAmEV0bKIf4kY/uBcGNMbPtmYTveq5MJVrEXcQFll1EOR3daQEi+jAH84ZYBvdpANF6KXas6E/Tf36+hXKDfA2p1");
@@ -45,9 +80,7 @@ public class ApplepayTest extends AbstractPaymentTest {
 		header.setPublicKeyHash("M2yzlpBsH3GwH5jTV9GgKC7bAUdeIOIfjwQhoKjg5+s=");
 		header.setTransactionId("d518ad5c087011e44149b4e74c6a7021ab24cf3d01887efde7694f6a04bda238");
 		applepay.setHeader(header);
-		
-		Applepay response = getHeidelpay().createPaymentType(applepay);
-		assertNotNull(response.getId());
-		assertEquals(applepay.getVersion(), response.getVersion());
+		return applepay;
 	}
+	
 }
