@@ -1,7 +1,13 @@
 package com.heidelpay.payment.communication.mapper;
 
-import com.heidelpay.payment.*;
-
+import com.heidelpay.payment.AbstractInitPayment;
+import com.heidelpay.payment.Cancel;
+import com.heidelpay.payment.Charge;
+import com.heidelpay.payment.Payment;
+import com.heidelpay.payment.Processing;
+import com.heidelpay.payment.Shipment;
+import com.heidelpay.payment.UnsupportedPaymentTypeException;
+import com.heidelpay.payment.communication.json.JsonApplepay;
 /*-
  * #%L
  * Heidelpay Java SDK
@@ -21,7 +27,22 @@ import com.heidelpay.payment.*;
  * limitations under the License.
  * #L%
  */
-import com.heidelpay.payment.communication.json.*;
+import com.heidelpay.payment.communication.json.JsonCancel;
+import com.heidelpay.payment.communication.json.JsonCard;
+import com.heidelpay.payment.communication.json.JsonCharge;
+import com.heidelpay.payment.communication.json.JsonIdObject;
+import com.heidelpay.payment.communication.json.JsonIdeal;
+import com.heidelpay.payment.communication.json.JsonInitPayment;
+import com.heidelpay.payment.communication.json.JsonObject;
+import com.heidelpay.payment.communication.json.JsonPayment;
+import com.heidelpay.payment.communication.json.JsonProcessing;
+import com.heidelpay.payment.communication.json.JsonResources;
+import com.heidelpay.payment.communication.json.JsonSepaDirectDebit;
+import com.heidelpay.payment.communication.json.JsonShipment;
+import com.heidelpay.payment.communication.json.JsonState;
+import com.heidelpay.payment.paymenttypes.Alipay;
+import com.heidelpay.payment.paymenttypes.Applepay;
+import com.heidelpay.payment.paymenttypes.ApplepayHeader;
 import com.heidelpay.payment.paymenttypes.Card;
 import com.heidelpay.payment.paymenttypes.Eps;
 import com.heidelpay.payment.paymenttypes.Giropay;
@@ -37,6 +58,7 @@ import com.heidelpay.payment.paymenttypes.Przelewy24;
 import com.heidelpay.payment.paymenttypes.SepaDirectDebit;
 import com.heidelpay.payment.paymenttypes.SepaDirectDebitGuaranteed;
 import com.heidelpay.payment.paymenttypes.Sofort;
+import com.heidelpay.payment.paymenttypes.Wechatpay;
 
 public class JsonToBusinessClassMapper {
 
@@ -188,6 +210,12 @@ public class JsonToBusinessClassMapper {
 			return map((Sofort) paymentType, jsonPaymentType);
 		} else if (paymentType instanceof Pis) {
 			return map((Pis) paymentType, jsonPaymentType);
+		} else if (paymentType instanceof Alipay) {
+			return map((Alipay) paymentType, jsonPaymentType);
+		} else if (paymentType instanceof Wechatpay) {
+			return map((Wechatpay) paymentType, jsonPaymentType);
+		} else if (paymentType instanceof Applepay) {
+			return map((Applepay) paymentType, (JsonApplepay) jsonPaymentType);
 		} else {
 			throw new UnsupportedPaymentTypeException(
 					"Type '" + paymentType.getClass().getName() + "' is currently now supported by the SDK");
@@ -201,6 +229,19 @@ public class JsonToBusinessClassMapper {
 		card.setId(jsonCard.getId());
 		card.set3ds(jsonCard.get3ds());
 		return card;
+	}
+
+	private PaymentType map(Applepay applepay, JsonApplepay jsonApplePay) {
+		applepay.setId(jsonApplePay.getId());
+		applepay.setVersion(jsonApplePay.getVersion());
+		applepay.setData(jsonApplePay.getData());
+		applepay.setSignature(jsonApplePay.getSignature());
+		ApplepayHeader header = new ApplepayHeader();
+		header.setEphemeralPublicKey(jsonApplePay.getHeader().getEphemeralPublicKey());
+		header.setPublicKeyHash(jsonApplePay.getHeader().getPublicKeyHash());
+		header.setTransactionId(jsonApplePay.getHeader().getTransactionId());
+		applepay.setHeader(header);
+		return applepay;
 	}
 
 	private PaymentType map(SepaDirectDebit sdd, JsonSepaDirectDebit jsonSdd) {
@@ -258,6 +299,16 @@ public class JsonToBusinessClassMapper {
 		return p24;
 	}
 	
+	private PaymentType map(Alipay alipay, JsonIdObject jsonId) {
+		alipay.setId(jsonId.getId());
+		return alipay;
+	}
+
+	private PaymentType map(Wechatpay wechatpay, JsonIdObject jsonId) {
+		wechatpay.setId(jsonId.getId());
+		return wechatpay;
+	}
+
 	private PaymentType map(Sofort sofort, JsonIdObject jsonId) {
 		sofort.setId(jsonId.getId());
 		return sofort;
