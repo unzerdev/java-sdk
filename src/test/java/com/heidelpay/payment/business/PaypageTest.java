@@ -51,6 +51,7 @@ public class PaypageTest extends AbstractSeleniumTest {
 	}
 
 	@Test
+	@Ignore
 	public void testCardPaypageWith3DS() throws MalformedURLException, HttpCommunicationException {
 		Paypage paypage = getHeidelpay().paypage(getPaypage3DS());
 		assertNotNull(paypage);
@@ -67,7 +68,6 @@ public class PaypageTest extends AbstractSeleniumTest {
 		pay(driver, "https://payment.heidelpay.com/v1/redirect/3ds/");
 
 		close();
-
 	}
 
 	@Test
@@ -99,7 +99,6 @@ public class PaypageTest extends AbstractSeleniumTest {
 	}
 
 	@Test
-	@Ignore
 	public void testEPSPaypage() throws MalformedURLException, HttpCommunicationException {
 		Paypage paypage = getHeidelpay().paypage(getPaypage3DS());
 		assertNotNull(paypage);
