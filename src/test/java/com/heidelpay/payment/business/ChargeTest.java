@@ -114,7 +114,7 @@ public class ChargeTest extends AbstractPaymentTest {
 		Charge charge = getHeidelpay().charge(BigDecimal.ONE, Currency.getInstance("EUR"), new Sofort(), new URL("https://www.google.at"));
 		assertNotNull(charge.getRedirectUrl());
 		assertNotNull(charge);
-		assertEquals("COR.000.200.000", charge.getMessage().getCode());
+		assertEquals("COR.000.100.112", charge.getMessage().getCode());
 		assertNotNull(charge.getMessage().getCustomer());
 		assertNotNull(charge.getId());
 		assertNotNull(charge.getPayment());
