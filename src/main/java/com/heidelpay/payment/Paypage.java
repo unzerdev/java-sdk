@@ -31,6 +31,8 @@ public class Paypage extends AbstractPayment {
 
 	private Status status;
 	
+	private String redirectUrl;
+	
 	public Paypage() {
 	}
 	
@@ -159,6 +161,14 @@ public class Paypage extends AbstractPayment {
 	}
 	public void setStatus(Status status) {
 		this.status = status;
+	}
+
+	public String getRedirectUrl() {
+		return redirectUrl;
+	}
+
+	public void setRedirectUrl(String redirectUrl) {
+		this.redirectUrl = redirectUrl;
 	}
 
 

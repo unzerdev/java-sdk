@@ -136,6 +136,7 @@ public class JsonToBusinessClassMapper {
 		paypage.setReturnUrl(json.getReturnUrl());
 		paypage.setShopName(json.getShopName());
 		paypage.setTermsAndConditionUrl(json.getTermsAndConditionUrl());
+		paypage.setRedirectUrl(json.getRedirectUrl());
 
 		if (json.getResources() != null) {
 			paypage.setBasketId(json.getResources().getBasketId());

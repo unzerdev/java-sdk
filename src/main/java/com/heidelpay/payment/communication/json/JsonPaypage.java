@@ -50,6 +50,7 @@ public class JsonPaypage implements JsonObject {
 	private String basketId;
 	
 	private JsonResources resources;
+	private String redirectUrl;
 
 
 	public String getId() {
@@ -218,6 +219,14 @@ public class JsonPaypage implements JsonObject {
 
 	public void setResources(JsonResources resources) {
 		this.resources = resources;
+	}
+
+	public String getRedirectUrl() {
+		return redirectUrl;
+	}
+
+	public void setRedirectUrl(String redirectUrl) {
+		this.redirectUrl = redirectUrl;
 	}
 
 
