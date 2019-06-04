@@ -41,6 +41,11 @@ public class Applepay extends AbstractPaymentType implements PaymentType {
 	private String signature;
 	private ApplepayHeader header;
 
+	private String number;
+	private String expiryDate;
+	private String currencyCode;
+	private BigDecimal transactionAmount;
+	
 	@Override
 	public String getTypeUrl() {
 		return "types/applepay";
@@ -90,6 +95,38 @@ public class Applepay extends AbstractPaymentType implements PaymentType {
 
 	public void setHeader(ApplepayHeader header) {
 		this.header = header;
+	}
+
+	public String getCurrencyCode() {
+		return currencyCode;
+	}
+
+	public void setCurrencyCode(String currencyCode) {
+		this.currencyCode = currencyCode;
+	}
+
+	public BigDecimal getTransactionAmount() {
+		return transactionAmount;
+	}
+
+	public void setTransactionAmount(BigDecimal transactionAmount) {
+		this.transactionAmount = transactionAmount;
+	}
+
+	public String getNumber() {
+		return number;
+	}
+
+	public void setNumber(String number) {
+		this.number = number;
+	}
+
+	public String getExpiryDate() {
+		return expiryDate;
+	}
+
+	public void setExpiryDate(String expiryDate) {
+		this.expiryDate = expiryDate;
 	}
 
 }

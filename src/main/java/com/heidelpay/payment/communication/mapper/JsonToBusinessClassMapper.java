@@ -7,7 +7,7 @@ import com.heidelpay.payment.Payment;
 import com.heidelpay.payment.Processing;
 import com.heidelpay.payment.Shipment;
 import com.heidelpay.payment.UnsupportedPaymentTypeException;
-import com.heidelpay.payment.communication.json.JsonApplepay;
+import com.heidelpay.payment.communication.json.JsonApplepayResponse;
 /*-
  * #%L
  * Heidelpay Java SDK
@@ -42,7 +42,6 @@ import com.heidelpay.payment.communication.json.JsonShipment;
 import com.heidelpay.payment.communication.json.JsonState;
 import com.heidelpay.payment.paymenttypes.Alipay;
 import com.heidelpay.payment.paymenttypes.Applepay;
-import com.heidelpay.payment.paymenttypes.ApplepayHeader;
 import com.heidelpay.payment.paymenttypes.Card;
 import com.heidelpay.payment.paymenttypes.Eps;
 import com.heidelpay.payment.paymenttypes.Giropay;
@@ -215,7 +214,7 @@ public class JsonToBusinessClassMapper {
 		} else if (paymentType instanceof Wechatpay) {
 			return map((Wechatpay) paymentType, jsonPaymentType);
 		} else if (paymentType instanceof Applepay) {
-			return map((Applepay) paymentType, (JsonApplepay) jsonPaymentType);
+			return map((Applepay) paymentType, (JsonApplepayResponse) jsonPaymentType);
 		} else {
 			throw new UnsupportedPaymentTypeException(
 					"Type '" + paymentType.getClass().getName() + "' is currently now supported by the SDK");
@@ -231,16 +230,12 @@ public class JsonToBusinessClassMapper {
 		return card;
 	}
 
-	private PaymentType map(Applepay applepay, JsonApplepay jsonApplePay) {
+	private PaymentType map(Applepay applepay, JsonApplepayResponse jsonApplePay) {
 		applepay.setId(jsonApplePay.getId());
-		applepay.setVersion(jsonApplePay.getVersion());
-		applepay.setData(jsonApplePay.getData());
-		applepay.setSignature(jsonApplePay.getSignature());
-		ApplepayHeader header = new ApplepayHeader();
-		header.setEphemeralPublicKey(jsonApplePay.getHeader().getEphemeralPublicKey());
-		header.setPublicKeyHash(jsonApplePay.getHeader().getPublicKeyHash());
-		header.setTransactionId(jsonApplePay.getHeader().getTransactionId());
-		applepay.setHeader(header);
+		applepay.setExpiryDate(jsonApplePay.getApplicationExpirationDate());
+		applepay.setNumber(jsonApplePay.getApplicationPrimaryAccountNumber());
+		applepay.setCurrencyCode(jsonApplePay.getCurrencyCode());
+		applepay.setTransactionAmount(jsonApplePay.getTransactionAmount());
 		return applepay;
 	}
 
