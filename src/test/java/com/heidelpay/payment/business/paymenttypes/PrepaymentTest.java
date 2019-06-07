@@ -50,6 +50,7 @@ public class PrepaymentTest extends AbstractPaymentTest {
 		assertNotNull(charge);
 		assertNotNull(charge.getId());
 		assertNotNull(charge.getProcessing());
+		assertNotNull(charge.getProcessing().geti)
 	}
 
 	@Test
