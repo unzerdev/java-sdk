@@ -42,13 +42,19 @@ public class Customer extends AbstractPayment {
 	private String mobile;
 	private Address billingAddress;
 	private Address shippingAddress;
+	private String company;
 	
-	
+	private CustomerCompanyData companyData;
 
 	public Customer(String firstname, String lastname) {
 		super();
 		this.firstname = firstname;
 		this.lastname = lastname;
+	}
+
+	public Customer(String company) {
+		super();
+		this.setCompany(company);
 	}
 
 	public String getFirstname() {
@@ -145,5 +151,21 @@ public class Customer extends AbstractPayment {
 		this.shippingAddress = shippingAddress;
 		return this;
 	}
-	
+
+	public void setCompanyData(CustomerCompanyData companyData) {
+		this.companyData = companyData;
+	}
+
+	public CustomerCompanyData getCompanyData() {
+		return companyData;
+	}
+
+	public String getCompany() {
+		return company;
+	}
+
+	public void setCompany(String company) {
+		this.company = company;
+	}
+
 }

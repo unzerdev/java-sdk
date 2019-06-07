@@ -33,8 +33,10 @@ import com.heidelpay.payment.Address;
 import com.heidelpay.payment.Authorization;
 import com.heidelpay.payment.Basket;
 import com.heidelpay.payment.BasketItem;
+import com.heidelpay.payment.CustomerCompanyData;
 import com.heidelpay.payment.Cancel;
 import com.heidelpay.payment.Charge;
+import com.heidelpay.payment.CommercialSector;
 import com.heidelpay.payment.Customer;
 import com.heidelpay.payment.Customer.Salutation;
 import com.heidelpay.payment.Heidelpay;
@@ -154,6 +156,9 @@ public class AbstractPaymentTest {
 	protected Customer getMinimumCustomer() {
 		return new Customer("Rene", "Felder"); 
 	}
+	protected Customer getMinimumRegisteredCustomer() {
+		return new Customer("Heidelpay GmbH"); 
+	}
 
 	protected Customer getMaximumCustomerSameAddress(String customerId) throws ParseException {
 		Customer customer = new Customer("Rene", "Felder");
@@ -180,6 +185,48 @@ public class AbstractPaymentTest {
 		.setShippingAddress(getAddress("Schubert", "Vangerowstraße 18", "Heidelberg", "BW", "69115", "DE"));
 		return customer;
 	}
+	
+	protected Customer getRegisterdMinimumBusinessCustomer() {
+		Customer customer = getMinimumRegisteredCustomer();
+		customer.setBillingAddress(getAddress());
+		customer.setCompanyData(getRegisteredCompanyData());
+		return customer;
+	}
+	protected Customer getRegisterdMaximumBusinessCustomer(String customerId) throws ParseException {
+		Customer customer = getMaximumCustomer(customerId);
+		customer.setCompany("Heidelpay GmbH");
+		getUnregisteredCompanyData();
+		customer.setCompanyData(getRegisteredCompanyData());
+		return customer;
+	}
+
+	protected Customer getUnRegisterdMinimumBusinessCustomer() throws ParseException {
+		Customer customer = getMinimumCustomer();
+		customer.setBillingAddress(getAddress());
+		
+		customer.setCompanyData(getUnregisteredCompanyData());
+		return customer;
+	}
+	
+	protected Customer getUnRegisterdMaximumBusinessCustomer() throws ParseException {
+		Customer customer = getMaximumCustomer(getRandomId());
+		customer.setCompanyData(getUnregisteredCompanyData());
+		return customer;
+	}
+
+	protected CustomerCompanyData getUnregisteredCompanyData() {
+		CustomerCompanyData business = new CustomerCompanyData();
+		business.setCommercialRegisterNumber("HRB337681 MANNHEIM");
+		return business;
+	}
+	protected CustomerCompanyData getRegisteredCompanyData() {
+		CustomerCompanyData customerBusinessData = new CustomerCompanyData();
+		customerBusinessData.setCommercialRegisterNumber("HRB337681 MANNHEIM");
+		return customerBusinessData;
+	}
+
+
+
 
 	protected Customer getFactoringOKCustomer(String customerId) throws ParseException {
 		Customer customer = new Customer("Maximilian", "Mustermann");
@@ -192,14 +239,14 @@ public class AbstractPaymentTest {
 		return customer;
 	}
 
-	private Address getFactoringOKAddress() {
+	protected Address getFactoringOKAddress() {
 		return getAddress("Maximilian Mustermann", "Hugo-Junkers-Str. 3", "Frankfurt am Main", "Frankfurt am Main", "60386", "DE");
 	}
 
-	private Address getAddress() {
+	protected Address getAddress() {
 		return getAddress("Mozart", "Grüngasse 16", "Vienna", "Vienna", "1010", "AT");
 	}
-	private Address getAddress(String name, String street, String city, String state, String zip, String country) {
+	protected Address getAddress(String name, String street, String city, String state, String zip, String country) {
 		Address address = new Address();
 		address
 		.setName(name)
@@ -263,6 +310,11 @@ public class AbstractPaymentTest {
 		assertEquals(initProcessing.getUniqueId(), processing.getUniqueId());
 	}
 
+	protected void assertBusinessCustomerEquals(CustomerCompanyData customerExpected, CustomerCompanyData customer) {
+		
+		assertEquals(customerExpected.getCommercialRegisterNumber(), customer.getCommercialRegisterNumber());
+		assertEquals(customerExpected.getCommercialSector(), customer.getCommercialSector());
+	}
 	protected void assertCustomerEquals(Customer customerExpected, Customer customer) {
 		assertEquals(customerExpected.getFirstname(), customer.getFirstname());
 		assertEquals(customerExpected.getLastname(), customer.getLastname());
@@ -271,8 +323,10 @@ public class AbstractPaymentTest {
 		assertEquals(customerExpected.getEmail(), customer.getEmail());
 		assertEquals(customerExpected.getMobile(), customer.getMobile());
 		assertEquals(customerExpected.getPhone(), customer.getPhone());
+		
 		assertAddressEquals(customerExpected.getBillingAddress(), customer.getBillingAddress());		
-		assertAddressEquals(customerExpected.getShippingAddress(), customer.getShippingAddress());		
+		assertAddressEquals(customerExpected.getShippingAddress(), customer.getShippingAddress());	
+		assertBusinessCustomerEquals(customerExpected.getCompanyData(), customer.getCompanyData());
 	}
 	protected void assertAddressEquals(Address addressExpected, Address address) {
 		if (addressExpected == null) return;

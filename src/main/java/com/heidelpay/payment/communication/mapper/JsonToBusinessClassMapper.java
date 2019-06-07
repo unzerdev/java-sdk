@@ -1,13 +1,17 @@
 package com.heidelpay.payment.communication.mapper;
 
 import com.heidelpay.payment.AbstractInitPayment;
+import com.heidelpay.payment.CustomerCompanyData;
 import com.heidelpay.payment.Cancel;
 import com.heidelpay.payment.Charge;
+import com.heidelpay.payment.CommercialSector;
+import com.heidelpay.payment.Customer;
 import com.heidelpay.payment.Payment;
 import com.heidelpay.payment.Paypage;
 import com.heidelpay.payment.Processing;
 import com.heidelpay.payment.Shipment;
 import com.heidelpay.payment.UnsupportedPaymentTypeException;
+import com.heidelpay.payment.communication.json.JSonCompanyInfo;
 import com.heidelpay.payment.communication.json.JsonApplepayResponse;
 /*-
  * #%L
@@ -31,6 +35,7 @@ import com.heidelpay.payment.communication.json.JsonApplepayResponse;
 import com.heidelpay.payment.communication.json.JsonCancel;
 import com.heidelpay.payment.communication.json.JsonCard;
 import com.heidelpay.payment.communication.json.JsonCharge;
+import com.heidelpay.payment.communication.json.JsonCustomer;
 import com.heidelpay.payment.communication.json.JsonIdObject;
 import com.heidelpay.payment.communication.json.JsonIdeal;
 import com.heidelpay.payment.communication.json.JsonInitPayment;
@@ -174,6 +179,79 @@ public class JsonToBusinessClassMapper {
 		setStatus(abstractInitPayment, json);
 		return abstractInitPayment;
 	}
+	private JSonCompanyInfo getCompanyInfo(CustomerCompanyData customer, String company) {
+		JSonCompanyInfo json =  new JSonCompanyInfo();
+		if (company != null) {
+			mapRegisteredCompany(customer, json);
+		} else {
+			mapUnregisteredCompany(customer, json);
+		}
+		return json;
+	}
+
+	private void mapUnregisteredCompany(CustomerCompanyData customer, JSonCompanyInfo json) {
+		json.setFunction("OWNER");
+		json.setRegistrationType("not_registered");
+		if (customer.getCommercialSector() != null) {
+			json.setCommercialSector(customer.getCommercialSector().toString());
+		}
+	}
+
+	private void mapRegisteredCompany(CustomerCompanyData customer, JSonCompanyInfo json) {
+		json.setRegistrationType("registered");
+		json.setCommercialRegisterNumber(customer.getCommercialRegisterNumber());
+	}
+
+	public JsonCustomer map(Customer customer) {
+		JsonCustomer json = new JsonCustomer();
+		json.setFirstname(customer.getFirstname());
+		json.setLastname(customer.getLastname());
+		json.setCompany(customer.getCompany());
+		json.setCustomerId(customer.getCustomerId());
+		json.setEmail(customer.getEmail());
+		json.setMobile(customer.getMobile());
+		json.setPhone(customer.getPhone());
+		json.setSalutation(customer.getSalutation());
+		json.setBirthDate(customer.getBirthDate());
+		
+		json.setBillingAddress(customer.getBillingAddress());
+		json.setShippingAddress(customer.getShippingAddress());
+		json.setCompanyInfo(getCompanyInfo(customer.getCompanyData(), customer.getCompany()));
+		return json;
+	}
+	
+
+	public Customer mapToBusinessObject(Customer customer, JsonCustomer json) {
+		customer.setId(json.getId());
+		customer.setFirstname(json.getFirstname());
+		customer.setLastname(json.getLastname());
+		customer.setCompany(json.getCompany());
+		customer.setCustomerId(json.getCustomerId());
+		customer.setEmail(json.getEmail());
+		customer.setMobile(json.getMobile());
+		customer.setPhone(json.getPhone());
+		customer.setSalutation(json.getSalutation());
+		customer.setBirthDate(json.getBirthDate());
+		
+		customer.setBillingAddress(json.getBillingAddress());
+		customer.setShippingAddress(json.getShippingAddress());
+		customer.setCompanyData(getCompanyInfo(json.getCompanyInfo()));
+		return customer;
+	}
+
+	private CustomerCompanyData getCompanyInfo(JSonCompanyInfo json) {
+		CustomerCompanyData company = new CustomerCompanyData();
+		company.setCommercialRegisterNumber(json.getCommercialRegisterNumber());
+		if (json.getCommercialSector() != null) {
+			company.setCommercialSector(CommercialSector.valueOf(json.getCommercialSector()));
+		}
+		if (json.getRegistrationType() != null) {
+			company.setRegistrationType(CustomerCompanyData.RegistrationType.valueOf(json.getRegistrationType().toUpperCase()));
+		}
+		return company;
+	}
+
+
 
 	private void setStatus(AbstractInitPayment abstractInitPayment, JsonInitPayment json) {
 		if (json.getIsSuccess()) {
@@ -374,4 +452,5 @@ public class JsonToBusinessClassMapper {
 		pis.setId(jsonId.getId());
 		return pis;
 	}
+
 }

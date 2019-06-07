@@ -45,6 +45,7 @@ import com.heidelpay.payment.communication.json.JsonAuthorization;
 import com.heidelpay.payment.communication.json.JsonCancel;
 import com.heidelpay.payment.communication.json.JsonCard;
 import com.heidelpay.payment.communication.json.JsonCharge;
+import com.heidelpay.payment.communication.json.JsonCustomer;
 import com.heidelpay.payment.communication.json.JsonIdObject;
 import com.heidelpay.payment.communication.json.JsonIdeal;
 import com.heidelpay.payment.communication.json.JsonPayment;
@@ -116,14 +117,20 @@ public class PaymentService {
 	}
 
 	public Customer createCustomer(Customer customer) throws HttpCommunicationException {
-		String response = restCommunication.httpPost(urlUtil.getRestUrl(customer), heidelpay.getPrivateKey(), customer);
-		Customer customerJson = new JsonParser<Customer>().fromJson(response, Customer.class);
-		customer.setHeidelpay(heidelpay);
-		customer.setId(customerJson.getId());
-		return customer;
-
+		String response = restCommunication.httpPost(urlUtil.getRestUrl(customer), heidelpay.getPrivateKey(), jsonToBusinessClassMapper.map(customer));
+		JsonIdObject jsonId = new JsonParser<Customer>().fromJson(response, JsonIdObject.class);
+		return fetchCustomer(jsonId.getId());
 	}
 
+	public Customer fetchCustomer(String customerId) throws HttpCommunicationException {
+		Customer customer = new Customer("", "");
+		customer.setId(customerId);
+		String response = restCommunication.httpGet(urlUtil.getHttpGetUrl(customer, customer.getId()),
+				heidelpay.getPrivateKey());
+		JsonCustomer json = new JsonParser<Customer>().fromJson(response, JsonCustomer.class);
+		return jsonToBusinessClassMapper.mapToBusinessObject(new Customer("", ""), json);
+	}
+	
 	public Customer updateCustomer(String id, Customer customer) throws HttpCommunicationException {
 		restCommunication.httpPut(urlUtil.getHttpGetUrl(customer, id), heidelpay.getPrivateKey(), customer);
 		return fetchCustomer(id);
@@ -264,14 +271,6 @@ public class PaymentService {
 				fetchAuthorization(payment, getAuthorizationFromTransactions(jsonPayment.getTransactions())));
 		payment.setChargesList(fetchChargeList(payment, getChargesFromTransactions(jsonPayment.getTransactions())));
 		return payment;
-	}
-
-	public Customer fetchCustomer(String customerId) throws HttpCommunicationException {
-		Customer customer = new Customer("", "");
-		customer.setId(customerId);
-		String response = restCommunication.httpGet(urlUtil.getHttpGetUrl(customer, customer.getId()),
-				heidelpay.getPrivateKey());
-		return new JsonParser<Customer>().fromJson(response, Customer.class);
 	}
 
 	public void deleteCustomer(String customerId) throws HttpCommunicationException {
