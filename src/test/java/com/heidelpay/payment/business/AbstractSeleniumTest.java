@@ -1,12 +1,14 @@
 package com.heidelpay.payment.business;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 import java.math.BigDecimal;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.text.ParseException;
 import java.util.Currency;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -14,8 +16,8 @@ import java.util.Map;
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
 import org.openqa.selenium.WebDriver.TargetLocator;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.remote.RemoteWebDriver;
@@ -23,6 +25,7 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import com.heidelpay.payment.Paypage;
+import com.heidelpay.payment.communication.HttpCommunicationException;
 
 public class AbstractSeleniumTest extends AbstractPaymentTest {
 
@@ -93,7 +96,7 @@ public class AbstractSeleniumTest extends AbstractPaymentTest {
 	protected void pay(WebDriver driver, String expectedUrl) {
 		WebElement pay = driver.findElement(By.xpath("//*[contains(text(), 'Pay € 1.00')]"));
 		pay.click();
-		WebDriverWait wait = new WebDriverWait(driver, 5);
+		WebDriverWait wait = new WebDriverWait(driver, 15);
 		wait.until(ExpectedConditions.urlContains(expectedUrl));
 		assertContains(expectedUrl, driver.getCurrentUrl());		
 	}
@@ -165,6 +168,17 @@ public class AbstractSeleniumTest extends AbstractPaymentTest {
 		paypage.setAmount(BigDecimal.ONE);
 		paypage.setCurrency(Currency.getInstance("EUR"));
 		paypage.setReturnUrl(new URL(getReturnUrl()));
+		return paypage;
+	}
+
+	protected Paypage getMinimumWithReferencesPaypage() throws MalformedURLException, HttpCommunicationException, ParseException {
+		Paypage paypage = new Paypage();
+		paypage.setAmount(BigDecimal.ONE);
+		paypage.setCurrency(Currency.getInstance("EUR"));
+		paypage.setReturnUrl(new URL(getReturnUrl()));
+		paypage.setCustomerId(getHeidelpay().createCustomer(getMaximumCustomer(getRandomId())).getId());
+		paypage.setBasketId(getHeidelpay().createBasket(getMaxTestBasket()).getId());
+		paypage.setMetadataId(getHeidelpay().createMetadata(getTestMetadata()).getId());
 		return paypage;
 	}
 

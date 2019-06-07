@@ -4,6 +4,7 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import java.net.MalformedURLException;
+import java.text.ParseException;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.openqa.selenium.By;
@@ -11,6 +12,8 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
+
+import com.heidelpay.payment.PaymentException;
 import com.heidelpay.payment.Paypage;
 import com.heidelpay.payment.communication.HttpCommunicationException;
 
@@ -96,7 +99,7 @@ public class PaypageTest extends AbstractSeleniumTest {
 	@Test
 	@Ignore
 	public void testCardPaypageWith3DS() throws MalformedURLException, HttpCommunicationException {
-		Paypage paypage = getHeidelpay().paypage(getPaypage3DS());
+		Paypage paypage = getHeidelpay().paypage(getMinimumPaypage());
 		assertNotNull(paypage);
 		assertNotNull(paypage.getId());
 		assertNotNull(paypage.getRedirectUrl());
@@ -115,7 +118,7 @@ public class PaypageTest extends AbstractSeleniumTest {
 
 	@Test
 	public void testSofortPaypage() throws MalformedURLException, HttpCommunicationException {
-		Paypage paypage = getHeidelpay().paypage(getPaypage3DS());
+		Paypage paypage = getHeidelpay().paypage(getMinimumPaypage());
 		assertNotNull(paypage);
 		assertNotNull(paypage.getId());
 		assertNotNull(paypage.getRedirectUrl());
@@ -129,7 +132,7 @@ public class PaypageTest extends AbstractSeleniumTest {
 
 	@Test
 	public void testGiropayPaypage() throws MalformedURLException, HttpCommunicationException {
-		Paypage paypage = getHeidelpay().paypage(getPaypage3DS());
+		Paypage paypage = getHeidelpay().paypage(getMinimumPaypage());
 		assertNotNull(paypage);
 		assertNotNull(paypage.getId());
 		assertNotNull(paypage.getRedirectUrl());
@@ -143,7 +146,7 @@ public class PaypageTest extends AbstractSeleniumTest {
 
 	@Test
 	public void testSDDGuaranteedPaypage() throws MalformedURLException, HttpCommunicationException {
-		Paypage paypage = getHeidelpay().paypage(getPaypage3DS());
+		Paypage paypage = getHeidelpay().paypage(getMinimumPaypage());
 		assertNotNull(paypage);
 		assertNotNull(paypage.getId());
 		assertNotNull(paypage.getRedirectUrl());
@@ -156,8 +159,8 @@ public class PaypageTest extends AbstractSeleniumTest {
 	}
 
 	@Test
-	public void testInvoiceFactoringPaypage() throws MalformedURLException, HttpCommunicationException {
-		Paypage paypage = getHeidelpay().paypage(getPaypage3DS());
+	public void testInvoiceFactoringWithCustomerReferencePaypage() throws MalformedURLException, HttpCommunicationException, PaymentException, ParseException {
+		Paypage paypage = getHeidelpay().paypage(getMinimumWithReferencesPaypage());
 		assertNotNull(paypage);
 		assertNotNull(paypage.getId());
 		assertNotNull(paypage.getRedirectUrl());
@@ -171,21 +174,21 @@ public class PaypageTest extends AbstractSeleniumTest {
 
 	@Test
 	public void testPaypalPaypage() throws MalformedURLException, HttpCommunicationException {
-		Paypage paypage = getHeidelpay().paypage(getPaypage3DS());
+		Paypage paypage = getHeidelpay().paypage(getMinimumPaypage());
 		assertNotNull(paypage);
 		assertNotNull(paypage.getId());
 		assertNotNull(paypage.getRedirectUrl());
 
 		RemoteWebDriver driver = openUrl(paypage.getRedirectUrl());
 		choosePaymentMethod(driver, "payment-type-name-paypal");
-		pay(driver, getReturnUrl());
+		pay(driver, "https://www.sandbox.paypal.com/");
 
 		close();
 	}
 
 	@Test
 	public void testPrepaymentPaypage() throws MalformedURLException, HttpCommunicationException {
-		Paypage paypage = getHeidelpay().paypage(getPaypage3DS());
+		Paypage paypage = getHeidelpay().paypage(getMinimumPaypage());
 		assertNotNull(paypage);
 		assertNotNull(paypage.getId());
 		assertNotNull(paypage.getRedirectUrl());
@@ -199,21 +202,21 @@ public class PaypageTest extends AbstractSeleniumTest {
 
 	@Test
 	public void testPisPaypage() throws MalformedURLException, HttpCommunicationException {
-		Paypage paypage = getHeidelpay().paypage(getPaypage3DS());
+		Paypage paypage = getHeidelpay().paypage(getMinimumPaypage());
 		assertNotNull(paypage);
 		assertNotNull(paypage.getId());
 		assertNotNull(paypage.getRedirectUrl());
 
 		RemoteWebDriver driver = openUrl(paypage.getRedirectUrl());
 		choosePaymentMethod(driver, "payment-type-name-pis");
-		pay(driver, getReturnUrl());
+		pay(driver, "https://www.flexipay-direct.com/checkout");
 
 		close();
 	}
 
 	@Test
 	public void testIdealPaypage() throws MalformedURLException, HttpCommunicationException, InterruptedException {
-		Paypage paypage = getHeidelpay().paypage(getPaypage3DS());
+		Paypage paypage = getHeidelpay().paypage(getMinimumPaypage());
 		assertNotNull(paypage);
 		assertNotNull(paypage.getId());
 		assertNotNull(paypage.getRedirectUrl());
@@ -237,7 +240,7 @@ public class PaypageTest extends AbstractSeleniumTest {
 	@Test
 //	@Ignore
 	public void testEPSPaypage() throws MalformedURLException, HttpCommunicationException {
-		Paypage paypage = getHeidelpay().paypage(getPaypage3DS());
+		Paypage paypage = getHeidelpay().paypage(getMinimumPaypage());
 		assertNotNull(paypage);
 		assertNotNull(paypage.getId());
 		assertNotNull(paypage.getRedirectUrl());
