@@ -143,6 +143,94 @@ public class PaypageTest extends AbstractSeleniumTest {
 	}
 
 	@Test
+	public void testSDDGuaranteedPaypage() throws MalformedURLException, HttpCommunicationException {
+		Paypage paypage = getHeidelpay().paypage(getPaypage3DS());
+		assertNotNull(paypage);
+		assertNotNull(paypage.getId());
+		assertNotNull(paypage.getRedirectUrl());
+
+		RemoteWebDriver driver = openUrl(paypage.getRedirectUrl());
+		choosePaymentMethod(driver, "payment-type-name-sepa-direct-debit-guaranteed");
+		pay(driver, getReturnUrl());
+
+		close();
+	}
+
+	@Test
+	public void testInvoiceFactoringPaypage() throws MalformedURLException, HttpCommunicationException {
+		Paypage paypage = getHeidelpay().paypage(getPaypage3DS());
+		assertNotNull(paypage);
+		assertNotNull(paypage.getId());
+		assertNotNull(paypage.getRedirectUrl());
+
+		RemoteWebDriver driver = openUrl(paypage.getRedirectUrl());
+		choosePaymentMethod(driver, "payment-type-name-invoice-factoring");
+		pay(driver, getReturnUrl());
+
+		close();
+	}
+
+	@Test
+	public void testPaypalPaypage() throws MalformedURLException, HttpCommunicationException {
+		Paypage paypage = getHeidelpay().paypage(getPaypage3DS());
+		assertNotNull(paypage);
+		assertNotNull(paypage.getId());
+		assertNotNull(paypage.getRedirectUrl());
+
+		RemoteWebDriver driver = openUrl(paypage.getRedirectUrl());
+		choosePaymentMethod(driver, "payment-type-name-paypal");
+		pay(driver, getReturnUrl());
+
+		close();
+	}
+
+	@Test
+	public void testPrepaymentPaypage() throws MalformedURLException, HttpCommunicationException {
+		Paypage paypage = getHeidelpay().paypage(getPaypage3DS());
+		assertNotNull(paypage);
+		assertNotNull(paypage.getId());
+		assertNotNull(paypage.getRedirectUrl());
+
+		RemoteWebDriver driver = openUrl(paypage.getRedirectUrl());
+		choosePaymentMethod(driver, "payment-type-name-prepayment");
+		pay(driver, getReturnUrl());
+
+		close();
+	}
+
+	@Test
+	public void testPisPaypage() throws MalformedURLException, HttpCommunicationException {
+		Paypage paypage = getHeidelpay().paypage(getPaypage3DS());
+		assertNotNull(paypage);
+		assertNotNull(paypage.getId());
+		assertNotNull(paypage.getRedirectUrl());
+
+		RemoteWebDriver driver = openUrl(paypage.getRedirectUrl());
+		choosePaymentMethod(driver, "payment-type-name-pis");
+		pay(driver, getReturnUrl());
+
+		close();
+	}
+
+	@Test
+	public void testIdealPaypage() throws MalformedURLException, HttpCommunicationException {
+		Paypage paypage = getHeidelpay().paypage(getPaypage3DS());
+		assertNotNull(paypage);
+		assertNotNull(paypage.getId());
+		assertNotNull(paypage.getRedirectUrl());
+
+		RemoteWebDriver driver = openUrl(paypage.getRedirectUrl());
+		choosePaymentMethod(driver, "payment-type-name-ideal");
+
+		WebElement dropdown = driver.findElement(By.xpath("//div[contains(text(),'Test Issuer Simulation V3 - ING')]"));
+		dropdown.click();
+		
+		pay(driver, getReturnUrl());
+
+		close();
+	}
+
+	@Test
 	@Ignore
 	public void testEPSPaypage() throws MalformedURLException, HttpCommunicationException {
 		Paypage paypage = getHeidelpay().paypage(getPaypage3DS());
