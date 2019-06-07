@@ -44,10 +44,6 @@ public class JsonPaypage implements JsonObject {
 	private URL contactUrl;
 
 	private String orderId;
-	private String customerId;
-	private String metadataId;
-	private String paymentId;
-	private String basketId;
 	
 	private JsonResources resources;
 	private String redirectUrl;
@@ -179,38 +175,6 @@ public class JsonPaypage implements JsonObject {
 
 	public void setOrderId(String orderId) {
 		this.orderId = orderId;
-	}
-
-	public String getCustomerId() {
-		return customerId;
-	}
-
-	public void setCustomerId(String customerId) {
-		this.customerId = customerId;
-	}
-
-	public String getMetadataId() {
-		return metadataId;
-	}
-
-	public void setMetadataId(String metadataId) {
-		this.metadataId = metadataId;
-	}
-
-	public String getPaymentId() {
-		return paymentId;
-	}
-
-	public void setPaymentId(String paymentId) {
-		this.paymentId = paymentId;
-	}
-
-	public String getBasketId() {
-		return basketId;
-	}
-
-	public void setBasketId(String basketId) {
-		this.basketId = basketId;
 	}
 
 	public JsonResources getResources() {

@@ -94,7 +94,10 @@ public class AbstractSeleniumTest extends AbstractPaymentTest {
 		
 
 	protected void pay(WebDriver driver, String expectedUrl) {
-		WebElement pay = driver.findElement(By.xpath("//*[contains(text(), 'Pay € 1.00')]"));
+		pay(driver, expectedUrl, "Pay € 1.00");
+	}
+	protected void pay(WebDriver driver, String expectedUrl, String buttonText) {
+		WebElement pay = driver.findElement(By.xpath("//*[contains(text(), '" + buttonText + "')]"));
 		pay.click();
 		WebDriverWait wait = new WebDriverWait(driver, 15);
 		wait.until(ExpectedConditions.urlContains(expectedUrl));
@@ -109,6 +112,15 @@ public class AbstractSeleniumTest extends AbstractPaymentTest {
 		driver.switchTo().defaultContent();
 	}
 	
+
+	protected boolean isLabelPresent(RemoteWebDriver driver, String label) {
+		WebElement element = driver.findElement(By.xpath("//label[contains(text(), '" + label + "')]"));
+		return element != null;
+	}
+	protected boolean isDivTextPresent(RemoteWebDriver driver, String text) {
+		WebElement element = driver.findElement(By.xpath("//*[contains(text(), '" + text + "')]"));
+		return element != null;
+	}
 	protected boolean isAltTagPresent(RemoteWebDriver driver, String altText) {
 		try {
 			return driver.findElement(By.xpath("//img[@alt='" + altText + "']")) != null;
@@ -146,6 +158,16 @@ public class AbstractSeleniumTest extends AbstractPaymentTest {
 		assertTrue(currentUrl.contains(expectedUrl));
 	}
 
+	protected WebElement getWebElementByXpath(WebDriver driver, String xpath) {
+		WebElement element = driver.findElement(By.xpath(xpath));
+		return element;
+	}
+
+	protected void sendDataByXpath(WebDriver driver, String xpath, String data) {
+		WebElement element = driver.findElement(By.xpath(xpath));
+		element.sendKeys(data);
+
+	}
 	protected void sendDataByName(WebDriver driver, String name, String data) {
 		WebElement element = driver.findElement(By.name(name));
 		element.sendKeys(data);
@@ -158,8 +180,11 @@ public class AbstractSeleniumTest extends AbstractPaymentTest {
 
 	protected void choosePaymentMethod(WebDriver driver, String id) {
 		WebElement sdd = driver.findElement(By.id(id));
-		assertNotNull(sdd);
+		WebDriverWait wait = new WebDriverWait(driver, 5);
+        wait.until(ExpectedConditions.elementToBeClickable(sdd));
+        assertNotNull(sdd);
 		sdd.click();
+		
 	}
 
 	// TODO: QUESTION: Why is returnUrl mandatory. In case of embedded Paypage it may not be needed
@@ -171,12 +196,12 @@ public class AbstractSeleniumTest extends AbstractPaymentTest {
 		return paypage;
 	}
 
-	protected Paypage getMinimumWithReferencesPaypage() throws MalformedURLException, HttpCommunicationException, ParseException {
+	protected Paypage getMinimumWithReferencesPaypage(String amount) throws MalformedURLException, HttpCommunicationException, ParseException {
 		Paypage paypage = new Paypage();
-		paypage.setAmount(BigDecimal.ONE);
+		paypage.setAmount(new BigDecimal(amount));
 		paypage.setCurrency(Currency.getInstance("EUR"));
 		paypage.setReturnUrl(new URL(getReturnUrl()));
-		paypage.setCustomerId(getHeidelpay().createCustomer(getMaximumCustomer(getRandomId())).getId());
+		paypage.setCustomerId(getHeidelpay().createCustomer(getMaximumCustomerSameAddress(getRandomId())).getId());
 		paypage.setBasketId(getHeidelpay().createBasket(getMaxTestBasket()).getId());
 		paypage.setMetadataId(getHeidelpay().createMetadata(getTestMetadata()).getId());
 		return paypage;
@@ -248,5 +273,12 @@ public class AbstractSeleniumTest extends AbstractPaymentTest {
 	}
 
 
+	protected void selectDropDown(RemoteWebDriver driver, String paymentMethod) throws InterruptedException {
+		Thread.sleep(1000);
+		WebElement dropdown = driver.findElement(By.xpath("//div[@class='field " + paymentMethod + " sixteen wide']//div[@class='heidelpayChoices__inner']"));
+		WebDriverWait wait = new WebDriverWait(driver, 5);
+        wait.until(ExpectedConditions.visibilityOf(dropdown));
+        dropdown.click();
+	}
 
 }

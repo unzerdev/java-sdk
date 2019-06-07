@@ -27,6 +27,7 @@ public class Paypage implements PaymentType {
 	private URL contactUrl;
 
 	private String orderId;
+	
 	private String customerId;
 	private String metadataId;
 	private String paymentId;

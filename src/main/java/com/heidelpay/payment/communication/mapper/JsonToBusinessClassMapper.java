@@ -89,10 +89,8 @@ public class JsonToBusinessClassMapper {
 	public JsonObject map(Paypage paypage) {
 		JsonPaypage json = new JsonPaypage();
 		json.setAmount(paypage.getAmount());
-		json.setBasketId(paypage.getBasketId());
 		json.setContactUrl(paypage.getContactUrl());
 		json.setCurrency(paypage.getCurrency());
-		json.setCustomerId(paypage.getCustomerId());
 		json.setDescriptionMain(paypage.getDescriptionMain());
 		json.setDescriptionSmall(paypage.getDescriptionSmall());
 		json.setFullPageImage(paypage.getFullPageImage());
@@ -100,13 +98,12 @@ public class JsonToBusinessClassMapper {
 		json.setId(paypage.getId());
 		json.setImpressumUrl(paypage.getImpressumUrl());
 		json.setLogoImage(paypage.getLogoImage());
-		json.setMetadataId(paypage.getMetadataId());
 		json.setOrderId(paypage.getOrderId());
-		json.setPaymentId(paypage.getPaymentId());
 		json.setPrivacyPolicyUrl(paypage.getPrivacyPolicyUrl());
 		json.setReturnUrl(paypage.getReturnUrl());
 		json.setShopName(paypage.getShopName());
 		json.setTermsAndConditionUrl(paypage.getTermsAndConditionUrl());
+		json.setResources(getResources(paypage));
 		return json;
 	}
 
@@ -120,6 +117,14 @@ public class JsonToBusinessClassMapper {
 		return json;
 	}
 	
+	private JsonResources getResources(Paypage paypage) {
+		JsonResources json = new JsonResources();
+		json.setCustomerId(paypage.getCustomerId());
+		json.setMetadataId(paypage.getMetadataId());
+		json.setBasketId(paypage.getBasketId());
+		return json;
+	}
+
 	public Paypage mapToBusinessObject(Paypage paypage, JsonPaypage json) {
 		paypage.setAmount(json.getAmount());
 		paypage.setContactUrl(json.getContactUrl());
