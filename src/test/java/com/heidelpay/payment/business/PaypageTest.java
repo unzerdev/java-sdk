@@ -1,6 +1,8 @@
 package com.heidelpay.payment.business;
 
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 import java.net.MalformedURLException;
 
@@ -24,6 +26,47 @@ public class PaypageTest extends AbstractSeleniumTest {
 
 		RemoteWebDriver driver = openUrl(paypage.getRedirectUrl());
 		choosePaymentMethod(driver, "payment-type-name-sepa-direct-debit");
+
+		assertFalse(isAltTagPresent(driver, "logo"));
+		assertFalse(isH1TagPresent(driver, getMaximumPaypage().getDescriptionMain())); 		// DescriptionMain
+
+		assertFalse(isHrefTagPresent(driver, getMaximumPaypage().getContactUrl()));
+		assertFalse(isHrefTagPresent(driver, getMaximumPaypage().getHelpUrl()));
+		assertFalse(isHrefTagPresent(driver, getMaximumPaypage().getImpressumUrl()));
+		assertFalse(isHrefTagPresent(driver, getMaximumPaypage().getPrivacyPolicyUrl()));
+		assertFalse(isHrefTagPresent(driver, getMaximumPaypage().getTermsAndConditionUrl()));
+
+		sendDataByName(driver, "iban", "DE89370400440532013000");
+		pay(driver, getReturnUrl());
+
+		close();
+	}
+
+	@Test
+	public void testMaximumPaypage() throws MalformedURLException, HttpCommunicationException {
+		Paypage paypage = getHeidelpay().paypage(getMaximumPaypage());
+		assertNotNull(paypage);
+		assertNotNull(paypage.getId());
+		assertNotNull(paypage.getRedirectUrl());
+
+		RemoteWebDriver driver = openUrl(paypage.getRedirectUrl());
+		choosePaymentMethod(driver, "payment-type-name-sepa-direct-debit");
+		
+		assertTrue(isAltTagPresent(driver, "logo")); 				// Logo Image
+		assertTrue(isStyleTagPresent(driver, "background-image"));  // Full page image
+//		assertTrue(isAltTagPresent(driver, "basketImage")); 		// Basket Image Basket image is not implemented yet
+
+		assertTrue(isH1TagPresent(driver, getMaximumPaypage().getDescriptionMain())); 		// DescriptionMain
+		
+//		assertTrue(isH1TagPresent(driver, getMaximumPaypage().getShopName())); 				// ShopName Bug https://heidelpay.atlassian.net/browse/AHC-1620
+//		assertTrue(isH1TagPresent(driver, getMaximumPaypage().getDescriptionSmall())); 		// DescriptionSmall Bug https://heidelpay.atlassian.net/browse/AHC-1636
+
+		assertTrue(isHrefTagPresent(driver, getMaximumPaypage().getContactUrl()));
+		assertTrue(isHrefTagPresent(driver, getMaximumPaypage().getHelpUrl()));
+		assertTrue(isHrefTagPresent(driver, getMaximumPaypage().getImpressumUrl()));
+		assertTrue(isHrefTagPresent(driver, getMaximumPaypage().getPrivacyPolicyUrl()));
+		assertTrue(isHrefTagPresent(driver, getMaximumPaypage().getTermsAndConditionUrl()));
+
 		sendDataByName(driver, "iban", "DE89370400440532013000");
 		pay(driver, getReturnUrl());
 
@@ -50,6 +93,7 @@ public class PaypageTest extends AbstractSeleniumTest {
 
 	}
 
+	// Not possible to specify card3ds=true
 	@Test
 	@Ignore
 	public void testCardPaypageWith3DS() throws MalformedURLException, HttpCommunicationException {
@@ -99,6 +143,7 @@ public class PaypageTest extends AbstractSeleniumTest {
 	}
 
 	@Test
+	@Ignore
 	public void testEPSPaypage() throws MalformedURLException, HttpCommunicationException {
 		Paypage paypage = getHeidelpay().paypage(getPaypage3DS());
 		assertNotNull(paypage);
@@ -108,10 +153,8 @@ public class PaypageTest extends AbstractSeleniumTest {
 		RemoteWebDriver driver = openUrl(paypage.getRedirectUrl());
 		choosePaymentMethod(driver, "payment-type-name-eps");
 
-		driver.findElement(By.id("eps-element")).click();
-		WebElement dropdown = driver.findElement(By.xpath("//*[contains(@id, 'heidelpay-eps-input')]"));
-		dropdown.findElement(By.xpath("//option[. = 'Erste Bank und Sparkassen']")).click();
-
+		WebElement dropdown = driver.findElement(By.xpath("//div[@data-value='GIBAATWGXXX']"));
+		dropdown.click();
 		pay(driver, "https://giropay.starfinanz.de/ftgbank/bankselection");
 
 		close();

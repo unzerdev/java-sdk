@@ -4,9 +4,12 @@ import java.math.BigDecimal;
 import java.net.URL;
 import java.util.Currency;
 
-public class Paypage extends AbstractPayment {
+import com.heidelpay.payment.paymenttypes.PaymentType;
+
+public class Paypage implements PaymentType {
 	public enum Status {SUCCESS, PENDING, ERRROR}
 
+	private String id;
 	private BigDecimal amount;
 	private Currency currency;
 	private URL returnUrl;
@@ -169,6 +172,14 @@ public class Paypage extends AbstractPayment {
 
 	public void setRedirectUrl(String redirectUrl) {
 		this.redirectUrl = redirectUrl;
+	}
+
+	public String getId() {
+		return id;
+	}
+
+	public void setId(String id) {
+		this.id = id;
 	}
 
 

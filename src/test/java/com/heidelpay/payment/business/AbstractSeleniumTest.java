@@ -106,6 +106,39 @@ public class AbstractSeleniumTest extends AbstractPaymentTest {
 		driver.switchTo().defaultContent();
 	}
 	
+	protected boolean isAltTagPresent(RemoteWebDriver driver, String altText) {
+		try {
+			return driver.findElement(By.xpath("//img[@alt='" + altText + "']")) != null;
+		} catch (NoSuchElementException e) {
+			return false;
+		}
+	}
+	protected boolean isStyleTagPresent(RemoteWebDriver driver, String altText) {
+		try {
+			return driver.findElement(By.xpath("//div[contains(@style, '" + altText + "')]")) != null;
+		} catch (NoSuchElementException e) {
+			System.out.println(e);
+			return false;
+		}
+	}
+	protected boolean isHrefTagPresent(RemoteWebDriver driver, URL href) {
+		try {
+			return driver.findElement(By.xpath("//a[@href='" + href.toString() + "']")) != null;
+		} catch (NoSuchElementException e) {
+			System.out.println(e);
+			return false;
+		}
+	}
+
+	protected boolean isH1TagPresent(RemoteWebDriver driver, String text) {
+		try {
+			return driver.findElement(By.xpath("//h1[contains(text(), '" + text + "')]")) != null;
+		} catch (NoSuchElementException e) {
+			System.out.println(e);
+			return false;
+		}
+	}
+
 	private void assertContains(String expectedUrl, String currentUrl) {
 		assertTrue(currentUrl.contains(expectedUrl));
 	}
@@ -135,7 +168,30 @@ public class AbstractSeleniumTest extends AbstractPaymentTest {
 		return paypage;
 	}
 
-	// TODO: Currently not possible
+	protected Paypage getMaximumPaypage() throws MalformedURLException {
+		Paypage paypage = new Paypage();
+		paypage.setAmount(BigDecimal.ONE);
+		paypage.setCurrency(Currency.getInstance("EUR"));
+		paypage.setReturnUrl(new URL(getReturnUrl()));
+		paypage.setDescriptionMain("Donation for Heidelpay Development team");
+		paypage.setDescriptionSmall("From Developers to Developers");
+		paypage.setShopName("Heidelpay Demo Shop");
+
+		paypage.setFullPageImage("https://www.heidelpay.com/fileadmin/content/header-Imges-neu/Header_Phone_12.jpg");
+		paypage.setLogoImage("https://www.heidelpay.com/typo3conf/ext/heidelpay_site/Resources/Public/Images/Heidelpay-Logo_mitUnterzeile-orange.svg");
+		paypage.setBasketImage("https://www.heidelpay.com/fileadmin/content/content-images-neu/icons/svg-Icons/alles-in-einem_001.svg");
+
+		paypage.setContactUrl(new URL("mailto:rene.felder@heidelpay.com"));
+		paypage.setHelpUrl(new URL("https://www.heidelpay.com/de/support/"));
+		paypage.setImpressumUrl(new URL("https://www.heidelpay.com/de/impressum/"));
+		paypage.setPrivacyPolicyUrl(new URL("https://www.heidelpay.com/de/datenschutz/"));
+		paypage.setTermsAndConditionUrl(new URL("https://www.heidelpay.com/de/datenschutz/"));
+
+		paypage.setOrderId(getRandomId());
+		return paypage;
+	}
+
+	// TODO: Currently not possible as card3ds flag is missing
 	protected Paypage getPaypage3DS() throws MalformedURLException {
 		Paypage paypage = new Paypage();
 		paypage.setAmount(BigDecimal.ONE);
@@ -167,6 +223,7 @@ public class AbstractSeleniumTest extends AbstractPaymentTest {
 			; // That is what we expect
 		}
 	}
+
 
 	protected Map<String, String> getFormParameterMap(String parReq, String termUrl, String md) {
 		Map<String, String> formParameterMap = new LinkedHashMap<String, String>();
