@@ -206,6 +206,10 @@ public class JsonToBusinessClassMapper {
 		Processing processing = new Processing();
 		processing.setUniqueId(json.getUniqueId());
 		processing.setShortId(json.getShortId());
+		processing.setBic(json.getBic());
+		processing.setDescriptor(json.getDescriptor());
+		processing.setHolder(json.getHolder());
+		processing.setIban(json.getIban());
 		return processing;
 	}
 
