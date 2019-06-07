@@ -3,15 +3,14 @@ package com.heidelpay.payment.business;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
-
 import java.net.MalformedURLException;
-
 import org.junit.Ignore;
 import org.junit.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.remote.RemoteWebDriver;
-
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import com.heidelpay.payment.Paypage;
 import com.heidelpay.payment.communication.HttpCommunicationException;
 
@@ -213,17 +212,22 @@ public class PaypageTest extends AbstractSeleniumTest {
 	}
 
 	@Test
-	public void testIdealPaypage() throws MalformedURLException, HttpCommunicationException {
+	public void testIdealPaypage() throws MalformedURLException, HttpCommunicationException, InterruptedException {
 		Paypage paypage = getHeidelpay().paypage(getPaypage3DS());
 		assertNotNull(paypage);
 		assertNotNull(paypage.getId());
 		assertNotNull(paypage.getRedirectUrl());
-
 		RemoteWebDriver driver = openUrl(paypage.getRedirectUrl());
-		choosePaymentMethod(driver, "payment-type-name-ideal");
+		
 
-		WebElement dropdown = driver.findElement(By.xpath("//div[contains(text(),'Test Issuer Simulation V3 - ING')]"));
+		choosePaymentMethod(driver, "payment-type-name-ideal");
+		WebElement dropdown = driver.findElement(By.xpath("//div[@class='field ideal sixteen wide']//div[@class='heidelpayChoices__inner']"));
+		WebDriverWait wait = new WebDriverWait(driver, 5);
+        wait.until(ExpectedConditions.elementToBeClickable(dropdown));
 		dropdown.click();
+		WebElement item = driver.findElement(By.xpath("//div[contains(text(),'Test Issuer Simulation V3 - ING')]"));
+		wait.until(ExpectedConditions.elementToBeClickable(item));
+		item.click();
 		
 		pay(driver, getReturnUrl());
 
@@ -231,7 +235,7 @@ public class PaypageTest extends AbstractSeleniumTest {
 	}
 
 	@Test
-	@Ignore
+//	@Ignore
 	public void testEPSPaypage() throws MalformedURLException, HttpCommunicationException {
 		Paypage paypage = getHeidelpay().paypage(getPaypage3DS());
 		assertNotNull(paypage);
@@ -240,9 +244,12 @@ public class PaypageTest extends AbstractSeleniumTest {
 
 		RemoteWebDriver driver = openUrl(paypage.getRedirectUrl());
 		choosePaymentMethod(driver, "payment-type-name-eps");
-
-		WebElement dropdown = driver.findElement(By.xpath("//div[@data-value='GIBAATWGXXX']"));
-		dropdown.click();
+		WebElement dropdown = driver.findElement(By.xpath("//div[@class='field eps sixteen wide']//div[@class='heidelpayChoices__inner']"));
+        WebDriverWait wait = new WebDriverWait(driver, 5);
+        wait.until(ExpectedConditions.elementToBeClickable(dropdown));
+        dropdown.click();
+		WebElement item = driver.findElement(By.xpath("//div[@data-value='GIBAATWGXXX']"));
+		item.click();
 		pay(driver, "https://giropay.starfinanz.de/ftgbank/bankselection");
 
 		close();
