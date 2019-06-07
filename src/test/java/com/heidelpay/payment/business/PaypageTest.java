@@ -147,7 +147,7 @@ public class PaypageTest extends AbstractSeleniumTest {
 	@Test
 	@Ignore("Works in Debug mode but not in run mode?")
 	public void testSDDGuaranteedWithCustomerReferencePaypage() throws MalformedURLException, HttpCommunicationException, PaymentException, ParseException {
-		Paypage paypage = getHeidelpay().paypage(getMinimumWithReferencesPaypage("500.50"));
+		Paypage paypage = getHeidelpay().paypage(getMinimumWithReferencesPaypage("866.49"));
 		assertNotNull(paypage);
 		assertNotNull(paypage.getId());
 		assertNotNull(paypage.getRedirectUrl());
@@ -157,7 +157,7 @@ public class PaypageTest extends AbstractSeleniumTest {
 
 		sendDataByXpath(driver, "//div[@id='sepa-direct-debit-guaranteed']/div/div/div/input", "DE89370400440532013000");
 
-		pay(driver, getReturnUrl(), "Pay € 500.50");
+		pay(driver, getReturnUrl(), "Pay € 866.49");
 
 		close();
 	}
@@ -205,7 +205,7 @@ public class PaypageTest extends AbstractSeleniumTest {
 	@Test
 	@Ignore("Works in Debug mode but not in run mode?")
 	public void testInvoiceFactoringWithCustomerReferencePaypage() throws MalformedURLException, HttpCommunicationException, PaymentException, ParseException, InterruptedException {
-		Paypage paypage = getHeidelpay().paypage(getMinimumWithReferencesPaypage("500.50"));
+		Paypage paypage = getHeidelpay().paypage(getMinimumWithReferencesPaypage("866.49"));
 		assertNotNull(paypage);
 		assertNotNull(paypage.getId());
 		assertNotNull(paypage.getRedirectUrl());
@@ -213,7 +213,7 @@ public class PaypageTest extends AbstractSeleniumTest {
 		RemoteWebDriver driver = openUrl(paypage.getRedirectUrl());
 		choosePaymentMethod(driver, "payment-type-name-invoice-factoring");
         
-		pay(driver, getReturnUrl(), "Pay € 500.50");
+		pay(driver, getReturnUrl(), "Pay € 866.49");
 
 		close();
 	}

@@ -323,12 +323,13 @@ public class AbstractPaymentTest {
 
 	protected Basket getMaxTestBasket() {
 		Basket basket = new Basket();
-		basket.setAmountTotal(new BigDecimal(500.5));
+		basket.setAmountTotal(new BigDecimal(866.49));
 		basket.setAmountTotalDiscount(BigDecimal.TEN);
 		basket.setCurrencyCode(Currency.getInstance("EUR"));
 		basket.setNote("Mistery shopping");
 		basket.setOrderId(getRandomId());
-		basket.addBasketItem(getMaxTestBasketItem());
+		basket.addBasketItem(getMaxTestBasketItem1());
+		basket.addBasketItem(getMaxTestBasketItem2());
 		return basket;
 	}
 
@@ -340,7 +341,7 @@ public class AbstractPaymentTest {
 				.addBasketItem(getMinTestBasketItem());
 		return basket;
 	}
-	private BasketItem getMaxTestBasketItem() {
+	private BasketItem getMaxTestBasketItem1() {
 		BasketItem basketItem = new BasketItem();
 		basketItem.setBasketItemReferenceId("Artikelnummer4711");
 		basketItem.setAmountDiscount(BigDecimal.ONE);
@@ -352,9 +353,33 @@ public class AbstractPaymentTest {
 		basketItem.setTitle("Apple iPhone");
 		basketItem.setUnit("Pc.");
 		basketItem.setVat(19);
-		
+		basketItem.setSubTitle("XS in Red");
+		try {
+			basketItem.setImageUrl(new URL("https://www.apple.com/v/iphone-xs/d/images/overview/hero_top_device_large_2x.jpg"));
+		} catch (MalformedURLException e) {
+		}
 		return basketItem;
 	}
+	private BasketItem getMaxTestBasketItem2() {
+		BasketItem basketItem = new BasketItem();
+		basketItem.setBasketItemReferenceId("Artikelnummer4712");
+		basketItem.setAmountDiscount(BigDecimal.ONE);
+		basketItem.setAmountGross(new BigDecimal(365.99));
+		basketItem.setAmountNet(new BigDecimal(101.66));
+		basketItem.setAmountPerUnit(new BigDecimal(121.99));
+		basketItem.setAmountVat(new BigDecimal(20.33));
+		basketItem.setQuantity(3);
+		basketItem.setTitle("Apple iPad Air");
+		basketItem.setUnit("Pc.");
+		basketItem.setVat(20);
+		basketItem.setSubTitle("Nicht nur Pros brauchen Power.");
+		try {
+			basketItem.setImageUrl(new URL("https://www.apple.com/de/ipad-air/images/overview/hero__gmn7i7gbziqa_large_2x.jpg"));
+		} catch (MalformedURLException e) {
+		}
+		return basketItem;
+	}
+
 	private BasketItem getMinTestBasketItem() {
 		BasketItem basketItem = new BasketItem()
 				.setBasketItemReferenceId("Artikelnummer4711")
