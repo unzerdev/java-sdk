@@ -41,7 +41,7 @@ public class ChargeTest extends AbstractPaymentTest {
 	
 	@Test
 	public void testChargeWithTypeId() throws MalformedURLException, HttpCommunicationException {
-		Charge charge = getHeidelpay().charge(BigDecimal.ONE, Currency.getInstance("EUR"), createPaymentTypeCard().getId(), new URL("https://www.google.at"), false);
+		Charge charge = getHeidelpay().charge(BigDecimal.ONE, Currency.getInstance("EUR"), createPaymentTypeCard().getId(), new URL("https://integration.splitit.com//gateways/Proxy/Execute?publicToken=9e517919-9e3d-4d5f-825e-99f7712eefd1"), false);
 		assertNotNull(charge);
 		assertNotNull(charge.getId());
 		assertEquals("COR.000.100.112", charge.getMessage().getCode());
@@ -114,7 +114,7 @@ public class ChargeTest extends AbstractPaymentTest {
 		Charge charge = getHeidelpay().charge(BigDecimal.ONE, Currency.getInstance("EUR"), new Sofort(), new URL("https://www.google.at"));
 		assertNotNull(charge.getRedirectUrl());
 		assertNotNull(charge);
-		assertEquals("COR.000.200.000", charge.getMessage().getCode());
+		assertEquals("COR.000.100.112", charge.getMessage().getCode());
 		assertNotNull(charge.getMessage().getCustomer());
 		assertNotNull(charge.getId());
 		assertNotNull(charge.getPayment());

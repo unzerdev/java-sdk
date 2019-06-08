@@ -40,10 +40,12 @@ import com.heidelpay.payment.communication.HeidelpayRestCommunication;
 import com.heidelpay.payment.communication.HttpCommunicationException;
 import com.heidelpay.payment.communication.JsonParser;
 import com.heidelpay.payment.communication.impl.RestCommunication;
+import com.heidelpay.payment.communication.json.JsonApplepayResponse;
 import com.heidelpay.payment.communication.json.JsonAuthorization;
 import com.heidelpay.payment.communication.json.JsonCancel;
 import com.heidelpay.payment.communication.json.JsonCard;
 import com.heidelpay.payment.communication.json.JsonCharge;
+import com.heidelpay.payment.communication.json.JsonCustomer;
 import com.heidelpay.payment.communication.json.JsonIdObject;
 import com.heidelpay.payment.communication.json.JsonIdeal;
 import com.heidelpay.payment.communication.json.JsonPayment;
@@ -52,6 +54,8 @@ import com.heidelpay.payment.communication.json.JsonShipment;
 import com.heidelpay.payment.communication.json.JsonTransaction;
 import com.heidelpay.payment.communication.mapper.JsonToBusinessClassMapper;
 import com.heidelpay.payment.paymenttypes.AbstractPaymentType;
+import com.heidelpay.payment.paymenttypes.Alipay;
+import com.heidelpay.payment.paymenttypes.Applepay;
 import com.heidelpay.payment.paymenttypes.Card;
 import com.heidelpay.payment.paymenttypes.Eps;
 import com.heidelpay.payment.paymenttypes.Giropay;
@@ -67,6 +71,7 @@ import com.heidelpay.payment.paymenttypes.Przelewy24;
 import com.heidelpay.payment.paymenttypes.SepaDirectDebit;
 import com.heidelpay.payment.paymenttypes.SepaDirectDebitGuaranteed;
 import com.heidelpay.payment.paymenttypes.Sofort;
+import com.heidelpay.payment.paymenttypes.Wechatpay;
 
 public class PaymentService {
 	private static final String TRANSACTION_TYPE_AUTHORIZATION = "authorize";
@@ -112,14 +117,20 @@ public class PaymentService {
 	}
 
 	public Customer createCustomer(Customer customer) throws HttpCommunicationException {
-		String response = restCommunication.httpPost(urlUtil.getRestUrl(customer), heidelpay.getPrivateKey(), customer);
-		Customer customerJson = new JsonParser<Customer>().fromJson(response, Customer.class);
-		customer.setHeidelpay(heidelpay);
-		customer.setId(customerJson.getId());
-		return customer;
-
+		String response = restCommunication.httpPost(urlUtil.getRestUrl(customer), heidelpay.getPrivateKey(), jsonToBusinessClassMapper.map(customer));
+		JsonIdObject jsonId = new JsonParser<Customer>().fromJson(response, JsonIdObject.class);
+		return fetchCustomer(jsonId.getId());
 	}
 
+	public Customer fetchCustomer(String customerId) throws HttpCommunicationException {
+		Customer customer = new Customer("", "");
+		customer.setId(customerId);
+		String response = restCommunication.httpGet(urlUtil.getHttpGetUrl(customer, customer.getId()),
+				heidelpay.getPrivateKey());
+		JsonCustomer json = new JsonParser<Customer>().fromJson(response, JsonCustomer.class);
+		return jsonToBusinessClassMapper.mapToBusinessObject(new Customer("", ""), json);
+	}
+	
 	public Customer updateCustomer(String id, Customer customer) throws HttpCommunicationException {
 		restCommunication.httpPut(urlUtil.getHttpGetUrl(customer, id), heidelpay.getPrivateKey(), customer);
 		return fetchCustomer(id);
@@ -260,14 +271,6 @@ public class PaymentService {
 				fetchAuthorization(payment, getAuthorizationFromTransactions(jsonPayment.getTransactions())));
 		payment.setChargesList(fetchChargeList(payment, getChargesFromTransactions(jsonPayment.getTransactions())));
 		return payment;
-	}
-
-	public Customer fetchCustomer(String customerId) throws HttpCommunicationException {
-		Customer customer = new Customer("", "");
-		customer.setId(customerId);
-		String response = restCommunication.httpGet(urlUtil.getHttpGetUrl(customer, customer.getId()),
-				heidelpay.getPrivateKey());
-		return new JsonParser<Customer>().fromJson(response, Customer.class);
 	}
 
 	public void deleteCustomer(String customerId) throws HttpCommunicationException {
@@ -466,6 +469,12 @@ public class PaymentService {
 			return new JsonIdObject();
 		} else if ("pis".equalsIgnoreCase(paymentType)) {
 			return new JsonIdObject();
+		} else if ("ali".equalsIgnoreCase(paymentType)) {
+			return new JsonIdObject();
+		} else if ("wcp".equalsIgnoreCase(paymentType)) {
+			return new JsonIdObject();
+		} else if ("apl".equalsIgnoreCase(paymentType)) {
+			return new JsonApplepayResponse();
 		} else {
 			throw new PaymentException("Type '" + typeId + "' is currently now supported by the SDK");
 		}
@@ -505,6 +514,12 @@ public class PaymentService {
 			return new Sofort();
 		} else if ("pis".equalsIgnoreCase(paymentType)) {
 			return new Pis();
+		} else if ("ali".equalsIgnoreCase(paymentType)) {
+			return new Alipay();
+		} else if ("wcp".equalsIgnoreCase(paymentType)) {
+			return new Wechatpay();
+		} else if ("apl".equalsIgnoreCase(paymentType)) {
+			return new Applepay();
 		} else {
 			throw new PaymentException("Type '" + typeId + "' is currently now supported by the SDK");
 		}

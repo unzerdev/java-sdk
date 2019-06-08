@@ -30,6 +30,7 @@ import com.heidelpay.payment.communication.HttpCommunicationException;
 import com.heidelpay.payment.communication.impl.HttpClientBasedRestCommunication;
 import com.heidelpay.payment.paymenttypes.PaymentType;
 import com.heidelpay.payment.service.PaymentService;
+import com.heidelpay.payment.service.PaypageService;
 
 /**
  * {@code Heidelpay} is a facade to the Heidelpay REST Api. The facade is
@@ -43,6 +44,7 @@ import com.heidelpay.payment.service.PaymentService;
 public class Heidelpay {
 	private String privateKey;
 	private PaymentService paymentService;
+	private PaypageService paypageService;
 
 	public Heidelpay(String privateKey) {
 		this(new HttpClientBasedRestCommunication(null), privateKey);
@@ -60,6 +62,7 @@ public class Heidelpay {
 		super();
 		this.privateKey = privateKey;
 		this.paymentService = new PaymentService(this, restCommunication);
+		this.paypageService = new PaypageService(this, restCommunication);
 	}
 
 	/**
@@ -784,6 +787,10 @@ public class Heidelpay {
 		return privateKey;
 	}
 
+	public Paypage paypage (Paypage paypage) throws PaymentException, HttpCommunicationException {
+		return paypageService.initialize(paypage);
+	}
+	
 	private Charge getCharge(BigDecimal amount, Currency currency, String typeId, URL returnUrl, String customerId, String basketId, Boolean card3ds) {
 		Charge charge = new Charge();
 		charge

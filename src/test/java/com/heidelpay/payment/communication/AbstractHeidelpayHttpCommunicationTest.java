@@ -27,7 +27,6 @@ import java.util.Base64;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.junit.Ignore;
 import org.junit.Test;
 
 import com.heidelpay.payment.PaymentError;
@@ -144,7 +143,6 @@ public class AbstractHeidelpayHttpCommunicationTest {
 	}
 
 	@Test
-	@Ignore
 	public void testAuthAndUserAgentHeaderAreSetOnDeleteRequest() throws PaymentException, HttpCommunicationException {
 		
 		MockHeidelpayRestCommunication rest = setupRest(validJsonResponse(), 200);
@@ -157,8 +155,7 @@ public class AbstractHeidelpayHttpCommunicationTest {
 	}
 
 	private void assertUserAgentHeader(MockHeidelpayHttpRequest request) {
-		assertEquals(AbstractHeidelpayRestCommunication.USER_AGENT_PREFIX + SDKInfo.getVersion() + " - "
-				+ MockHeidelpayRestCommunication.class.getCanonicalName(), request.headerMap.get("User-Agent"));
+		assertEquals(AbstractHeidelpayRestCommunication.USER_AGENT_PREFIX + " - " + SDKInfo.getVersion(), request.headerMap.get("User-Agent"));
 	}
 
 	private void assertAuthorizationHeader(MockHeidelpayHttpRequest request) {

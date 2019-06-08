@@ -37,7 +37,6 @@ public class ErrorTestDE extends AbstractPaymentTest {
 
     // The given key something is unknown or invalid.
     // The key 's-priv-123' is invalid
-    @Ignore //TODO probably a API problem with the encoding
     @Test
     public void testInvalidKey() throws MalformedURLException, HttpCommunicationException {
         try {
@@ -58,7 +57,6 @@ public class ErrorTestDE extends AbstractPaymentTest {
     // are using either invalid credentials
     // Card resources can only be created directly with a valid PCI certification.
     // Please contact Heidelpay to grant permission for PCI level SAQ-D or SAQ-A EP
-    @Ignore //TODO a wrong error code returned in DE
     @Test
     public void testPCILevelSaqA() throws HttpCommunicationException {
         try {
@@ -67,7 +65,7 @@ public class ErrorTestDE extends AbstractPaymentTest {
         } catch (PaymentException e) {
             assertNotNull(e.getPaymentErrorList());
             assertTrue(e.getPaymentErrorList().size() > 0);
-            assertEquals("API.710.000.005", e.getPaymentErrorList().get(0).getCode());
+            assertEquals("API.710.000.003", e.getPaymentErrorList().get(0).getCode());
             assertEquals(
                     "Sie sind nicht zum Zugriff auf diese Ressource berechtigt. Wenden Sie sich für weitere Informationen bitte an uns.",
                     e.getPaymentErrorList().get(0).getCustomerMessage());
@@ -87,10 +85,11 @@ public class ErrorTestDE extends AbstractPaymentTest {
         } catch (PaymentException e) {
             assertNotNull(e.getPaymentErrorList());
             assertTrue(e.getPaymentErrorList().size() > 0);
-            assertEquals("API.710.300.003", e.getPaymentErrorList().get(0).getCode());
-            assertEquals("You do not have the permission to access the paymentmethod with the id " + card.getId() + ".",
+
+            assertEquals("API.710.100.001", e.getPaymentErrorList().get(0).getCode());
+            assertEquals("The given payment method " + card.getId() + " is not found",
                     e.getPaymentErrorList().get(0).getMerchantMessage());
-            assertEquals("Sie sind nicht zum Zugriff auf diese Ressource berechtigt. Wenden Sie sich für weitere Informationen bitte an uns.",
+            assertEquals("Ungültige Zahlungsmethode. Wenden Sie sich für weitere Informationen bitte an uns.",
                     e.getPaymentErrorList().get(0).getCustomerMessage());
         }
     }
@@ -157,7 +156,7 @@ public class ErrorTestDE extends AbstractPaymentTest {
         }
     }
 
-
+    @Ignore("[AHC-1471] Only one error shown if first and last name are too long")
     @Test
     public void testCreateInvalidCustomer() throws HttpCommunicationException, ParseException {
         try {

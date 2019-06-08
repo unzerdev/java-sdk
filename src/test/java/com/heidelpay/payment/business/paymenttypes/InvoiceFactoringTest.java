@@ -28,7 +28,6 @@ import java.net.URL;
 import java.text.ParseException;
 import java.util.Currency;
 
-import org.junit.Ignore;
 import org.junit.Test;
 
 import com.heidelpay.payment.Basket;
@@ -55,9 +54,7 @@ public class InvoiceFactoringTest extends AbstractPaymentTest {
 		assertNotNull(charge.getPaymentId());
 	}
 
-	// TODO Currently a bug in Core system when communicating to Universum
 	@Test
-	@Ignore
 	public void testChargeTypeWithInvoiceId() throws HttpCommunicationException, MalformedURLException, ParseException {
 		InvoiceFactoring invoice = createInvoiceFactoring();
 		Charge charge = invoice.charge(BigDecimal.TEN, Currency.getInstance("EUR"), new URL("https://www.meinShop.de"), getFactoringOKCustomer(getRandomInvoiceId()), getMaxTestBasket(), getRandomInvoiceId());
@@ -80,9 +77,7 @@ public class InvoiceFactoringTest extends AbstractPaymentTest {
 		invoice.charge(BigDecimal.TEN, Currency.getInstance("EUR"), new URL("https://www.meinShop.de"), getMaximumCustomer(getRandomInvoiceId()), getMaxTestBasket());		
 	}
 
-	// TODO Currently a bug in Core system when communicating to Universum
 	@Test
-	@Ignore
 	public void testShipmentInvoiceFactoringTypeWithInvoiceId() throws HttpCommunicationException, MalformedURLException, ParseException {
 		Basket basket = getHeidelpay().createBasket(getMaxTestBasket());
 		assertNotNull(basket);

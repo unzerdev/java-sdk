@@ -1,7 +1,18 @@
 package com.heidelpay.payment.communication.mapper;
 
-import com.heidelpay.payment.*;
-
+import com.heidelpay.payment.AbstractInitPayment;
+import com.heidelpay.payment.CustomerCompanyData;
+import com.heidelpay.payment.Cancel;
+import com.heidelpay.payment.Charge;
+import com.heidelpay.payment.CommercialSector;
+import com.heidelpay.payment.Customer;
+import com.heidelpay.payment.Payment;
+import com.heidelpay.payment.Paypage;
+import com.heidelpay.payment.Processing;
+import com.heidelpay.payment.Shipment;
+import com.heidelpay.payment.UnsupportedPaymentTypeException;
+import com.heidelpay.payment.communication.json.JSonCompanyInfo;
+import com.heidelpay.payment.communication.json.JsonApplepayResponse;
 /*-
  * #%L
  * Heidelpay Java SDK
@@ -21,7 +32,23 @@ import com.heidelpay.payment.*;
  * limitations under the License.
  * #L%
  */
-import com.heidelpay.payment.communication.json.*;
+import com.heidelpay.payment.communication.json.JsonCancel;
+import com.heidelpay.payment.communication.json.JsonCard;
+import com.heidelpay.payment.communication.json.JsonCharge;
+import com.heidelpay.payment.communication.json.JsonCustomer;
+import com.heidelpay.payment.communication.json.JsonIdObject;
+import com.heidelpay.payment.communication.json.JsonIdeal;
+import com.heidelpay.payment.communication.json.JsonInitPayment;
+import com.heidelpay.payment.communication.json.JsonObject;
+import com.heidelpay.payment.communication.json.JsonPayment;
+import com.heidelpay.payment.communication.json.JsonPaypage;
+import com.heidelpay.payment.communication.json.JsonProcessing;
+import com.heidelpay.payment.communication.json.JsonResources;
+import com.heidelpay.payment.communication.json.JsonSepaDirectDebit;
+import com.heidelpay.payment.communication.json.JsonShipment;
+import com.heidelpay.payment.communication.json.JsonState;
+import com.heidelpay.payment.paymenttypes.Alipay;
+import com.heidelpay.payment.paymenttypes.Applepay;
 import com.heidelpay.payment.paymenttypes.Card;
 import com.heidelpay.payment.paymenttypes.Eps;
 import com.heidelpay.payment.paymenttypes.Giropay;
@@ -37,6 +64,7 @@ import com.heidelpay.payment.paymenttypes.Przelewy24;
 import com.heidelpay.payment.paymenttypes.SepaDirectDebit;
 import com.heidelpay.payment.paymenttypes.SepaDirectDebitGuaranteed;
 import com.heidelpay.payment.paymenttypes.Sofort;
+import com.heidelpay.payment.paymenttypes.Wechatpay;
 
 public class JsonToBusinessClassMapper {
 
@@ -62,6 +90,27 @@ public class JsonToBusinessClassMapper {
 		json.setAmount(cancel.getAmount());
 		return json;
 	}
+	
+	public JsonObject map(Paypage paypage) {
+		JsonPaypage json = new JsonPaypage();
+		json.setAmount(paypage.getAmount());
+		json.setContactUrl(paypage.getContactUrl());
+		json.setCurrency(paypage.getCurrency());
+		json.setDescriptionMain(paypage.getDescriptionMain());
+		json.setDescriptionSmall(paypage.getDescriptionSmall());
+		json.setFullPageImage(paypage.getFullPageImage());
+		json.setHelpUrl(paypage.getHelpUrl());
+		json.setId(paypage.getId());
+		json.setImpressumUrl(paypage.getImpressumUrl());
+		json.setLogoImage(paypage.getLogoImage());
+		json.setOrderId(paypage.getOrderId());
+		json.setPrivacyPolicyUrl(paypage.getPrivacyPolicyUrl());
+		json.setReturnUrl(paypage.getReturnUrl());
+		json.setShopName(paypage.getShopName());
+		json.setTermsAndConditionUrl(paypage.getTermsAndConditionUrl());
+		json.setResources(getResources(paypage));
+		return json;
+	}
 
 	private JsonResources getResources(AbstractInitPayment abstractInitPayment) {
 		JsonResources json = new JsonResources();
@@ -73,6 +122,40 @@ public class JsonToBusinessClassMapper {
 		return json;
 	}
 	
+	private JsonResources getResources(Paypage paypage) {
+		JsonResources json = new JsonResources();
+		json.setCustomerId(paypage.getCustomerId());
+		json.setMetadataId(paypage.getMetadataId());
+		json.setBasketId(paypage.getBasketId());
+		return json;
+	}
+
+	public Paypage mapToBusinessObject(Paypage paypage, JsonPaypage json) {
+		paypage.setAmount(json.getAmount());
+		paypage.setContactUrl(json.getContactUrl());
+		paypage.setCurrency(json.getCurrency());
+		paypage.setDescriptionMain(json.getDescriptionMain());
+		paypage.setDescriptionSmall(json.getDescriptionSmall());
+		paypage.setFullPageImage(json.getFullPageImage());
+		paypage.setHelpUrl(json.getHelpUrl());
+		paypage.setId(json.getId());
+		paypage.setImpressumUrl(json.getImpressumUrl());
+		paypage.setLogoImage(json.getLogoImage());
+		paypage.setOrderId(json.getOrderId());
+		paypage.setPrivacyPolicyUrl(json.getPrivacyPolicyUrl());
+		paypage.setReturnUrl(json.getReturnUrl());
+		paypage.setShopName(json.getShopName());
+		paypage.setTermsAndConditionUrl(json.getTermsAndConditionUrl());
+		paypage.setRedirectUrl(json.getRedirectUrl());
+
+		if (json.getResources() != null) {
+			paypage.setBasketId(json.getResources().getBasketId());
+			paypage.setCustomerId(json.getResources().getCustomerId());
+			paypage.setMetadataId(json.getResources().getMetadataId());
+			paypage.setPaymentId(json.getResources().getPaymentId());
+		}
+		return paypage;
+	}
 	public AbstractInitPayment mapToBusinessObject(AbstractInitPayment abstractInitPayment, JsonInitPayment json) {
 		abstractInitPayment.setId(json.getId());
 		abstractInitPayment.setAmount(json.getAmount());
@@ -95,6 +178,90 @@ public class JsonToBusinessClassMapper {
 
 		setStatus(abstractInitPayment, json);
 		return abstractInitPayment;
+	}
+	private JSonCompanyInfo getCompanyInfo(CustomerCompanyData customer, String company) {
+		if (customer == null) return null;
+		JSonCompanyInfo json =  new JSonCompanyInfo();
+		if (company != null) {
+			mapRegisteredCompany(customer, json);
+		} else {
+			mapUnregisteredCompany(customer, json);
+		}
+		return json;
+	}
+
+	private void mapUnregisteredCompany(CustomerCompanyData customer, JSonCompanyInfo json) {
+		json.setFunction("OWNER");
+		json.setRegistrationType("not_registered");
+		if (customer.getCommercialSector() != null) {
+			json.setCommercialSector(customer.getCommercialSector().toString());
+		}
+	}
+
+	private void mapRegisteredCompany(CustomerCompanyData customer, JSonCompanyInfo json) {
+		json.setRegistrationType("registered");
+		json.setCommercialRegisterNumber(customer.getCommercialRegisterNumber());
+	}
+
+	public JsonCustomer map(Customer customer) {
+		JsonCustomer json = new JsonCustomer();
+		json.setFirstname(customer.getFirstname());
+		json.setLastname(customer.getLastname());
+		json.setCompany(customer.getCompany());
+		json.setCustomerId(customer.getCustomerId());
+		json.setEmail(customer.getEmail());
+		json.setMobile(customer.getMobile());
+		json.setPhone(customer.getPhone());
+		json.setSalutation(customer.getSalutation());
+		json.setBirthDate(customer.getBirthDate());
+		
+		json.setBillingAddress(customer.getBillingAddress());
+		json.setShippingAddress(customer.getShippingAddress());
+		json.setCompanyInfo(getCompanyInfo(customer.getCompanyData(), customer.getCompany()));
+		return json;
+	}
+	
+
+	public Customer mapToBusinessObject(Customer customer, JsonCustomer json) {
+		customer.setId(json.getId());
+		customer.setFirstname(json.getFirstname());
+		customer.setLastname(json.getLastname());
+		customer.setCompany(json.getCompany());
+		customer.setCustomerId(json.getCustomerId());
+		customer.setEmail(json.getEmail());
+		customer.setMobile(json.getMobile());
+		customer.setPhone(json.getPhone());
+		customer.setSalutation(json.getSalutation());
+		customer.setBirthDate(json.getBirthDate());
+		
+		customer.setBillingAddress(json.getBillingAddress());
+		customer.setShippingAddress(json.getShippingAddress());
+		customer.setCompanyData(getCompanyInfo(json.getCompanyInfo()));
+		return customer;
+	}
+
+	private CustomerCompanyData getCompanyInfo(JSonCompanyInfo json) {
+		if (json == null) return null;
+		if (allFieldsNull(json)) return null;
+		CustomerCompanyData company = new CustomerCompanyData();
+		company.setCommercialRegisterNumber(json.getCommercialRegisterNumber());
+		if (json.getCommercialSector() != null) {
+			company.setCommercialSector(CommercialSector.valueOf(json.getCommercialSector()));
+		}
+		if (json.getRegistrationType() != null) {
+			company.setRegistrationType(CustomerCompanyData.RegistrationType.valueOf(json.getRegistrationType().toUpperCase()));
+		}
+		return company;
+	}
+
+
+
+	private boolean allFieldsNull(JSonCompanyInfo json) {
+		if (json.getCommercialRegisterNumber() != null) return false;
+		if (json.getCommercialSector() != null) return false;
+		if (json.getFunction() != null) return false;
+		if (json.getRegistrationType() != null) return false;
+		return true;
 	}
 
 	private void setStatus(AbstractInitPayment abstractInitPayment, JsonInitPayment json) {
@@ -128,6 +295,10 @@ public class JsonToBusinessClassMapper {
 		Processing processing = new Processing();
 		processing.setUniqueId(json.getUniqueId());
 		processing.setShortId(json.getShortId());
+		processing.setBic(json.getBic());
+		processing.setDescriptor(json.getDescriptor());
+		processing.setHolder(json.getHolder());
+		processing.setIban(json.getIban());
 		return processing;
 	}
 
@@ -188,6 +359,12 @@ public class JsonToBusinessClassMapper {
 			return map((Sofort) paymentType, jsonPaymentType);
 		} else if (paymentType instanceof Pis) {
 			return map((Pis) paymentType, jsonPaymentType);
+		} else if (paymentType instanceof Alipay) {
+			return map((Alipay) paymentType, jsonPaymentType);
+		} else if (paymentType instanceof Wechatpay) {
+			return map((Wechatpay) paymentType, jsonPaymentType);
+		} else if (paymentType instanceof Applepay) {
+			return map((Applepay) paymentType, (JsonApplepayResponse) jsonPaymentType);
 		} else {
 			throw new UnsupportedPaymentTypeException(
 					"Type '" + paymentType.getClass().getName() + "' is currently now supported by the SDK");
@@ -201,6 +378,15 @@ public class JsonToBusinessClassMapper {
 		card.setId(jsonCard.getId());
 		card.set3ds(jsonCard.get3ds());
 		return card;
+	}
+
+	private PaymentType map(Applepay applepay, JsonApplepayResponse jsonApplePay) {
+		applepay.setId(jsonApplePay.getId());
+		applepay.setExpiryDate(jsonApplePay.getApplicationExpirationDate());
+		applepay.setNumber(jsonApplePay.getApplicationPrimaryAccountNumber());
+		applepay.setCurrencyCode(jsonApplePay.getCurrencyCode());
+		applepay.setTransactionAmount(jsonApplePay.getTransactionAmount());
+		return applepay;
 	}
 
 	private PaymentType map(SepaDirectDebit sdd, JsonSepaDirectDebit jsonSdd) {
@@ -258,6 +444,16 @@ public class JsonToBusinessClassMapper {
 		return p24;
 	}
 	
+	private PaymentType map(Alipay alipay, JsonIdObject jsonId) {
+		alipay.setId(jsonId.getId());
+		return alipay;
+	}
+
+	private PaymentType map(Wechatpay wechatpay, JsonIdObject jsonId) {
+		wechatpay.setId(jsonId.getId());
+		return wechatpay;
+	}
+
 	private PaymentType map(Sofort sofort, JsonIdObject jsonId) {
 		sofort.setId(jsonId.getId());
 		return sofort;
@@ -267,4 +463,5 @@ public class JsonToBusinessClassMapper {
 		pis.setId(jsonId.getId());
 		return pis;
 	}
+
 }

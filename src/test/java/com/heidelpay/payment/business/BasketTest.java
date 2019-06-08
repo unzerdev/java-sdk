@@ -22,14 +22,12 @@ package com.heidelpay.payment.business;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.net.MalformedURLException;
 import java.util.List;
 
-import org.junit.Ignore;
 import org.junit.Test;
 
 import com.heidelpay.payment.Authorization;
@@ -43,7 +41,7 @@ import com.heidelpay.payment.communication.HttpCommunicationException;
 public class BasketTest extends AbstractPaymentTest {
 
 	@Test
-	public void testCreateFetchBasket() throws MalformedURLException, HttpCommunicationException {
+	public void testCreateFetchBasket() throws HttpCommunicationException {
 		Basket maxBasket = getMaxTestBasket();
 		Basket basket = getHeidelpay().createBasket(maxBasket);
 		Basket basketFetched = getHeidelpay().fetchBasket(basket.getId());
@@ -53,7 +51,7 @@ public class BasketTest extends AbstractPaymentTest {
 	}
 
 	@Test
-	public void testCreateFetchMinBasket() throws MalformedURLException, HttpCommunicationException {
+	public void testCreateFetchMinBasket() throws HttpCommunicationException {
 		Basket minBasket = getMinTestBasket();
 		Basket basket = getHeidelpay().createBasket(minBasket);
 		Basket basketFetched = getHeidelpay().fetchBasket(basket.getId());
@@ -63,7 +61,7 @@ public class BasketTest extends AbstractPaymentTest {
 	}
 
 	@Test
-	public void testUpdateBasket() throws MalformedURLException, HttpCommunicationException {
+	public void testUpdateBasket() throws HttpCommunicationException {
 		Basket minBasket = getMinTestBasket();
 		Basket basket = getHeidelpay().createBasket(minBasket);
 		Basket basketFetched = getHeidelpay().fetchBasket(basket.getId());
@@ -76,8 +74,7 @@ public class BasketTest extends AbstractPaymentTest {
 	}
 
 	@Test
-	@Ignore("Bug with same orderId: https://heidelpay.atlassian.net/browse/AHC-559")
-	public void testUpdateBasketWithFetched() throws MalformedURLException, HttpCommunicationException {
+	public void testUpdateBasketWithFetched() throws HttpCommunicationException {
 		Basket minBasket = getMinTestBasket();
 		Basket basket = getHeidelpay().createBasket(minBasket);
 		Basket basketFetched = getHeidelpay().fetchBasket(basket.getId());
@@ -136,7 +133,7 @@ public class BasketTest extends AbstractPaymentTest {
 		}
 		expected = expected.setScale(4, RoundingMode.HALF_UP);
 		actual = actual.setScale(4, RoundingMode.HALF_UP);
-		assertTrue( expected.compareTo(actual) == 0);
+		assertEquals(0, expected.compareTo(actual));
 	}
 
 
@@ -159,11 +156,14 @@ public class BasketTest extends AbstractPaymentTest {
 		assertEquals(expected.getTitle(), actual.getTitle());
 		assertEquals(expected.getUnit(), actual.getUnit());
 		assertNumberEquals(expected.getVat(), actual.getVat());
+		assertEquals(expected.getImageUrl(), actual.getImageUrl());
+		assertEquals(expected.getSubTitle(), actual.getSubTitle());
 	}
 
 	private void assertNumberEquals(Integer expected, Integer actual) {
-		if (expected == null) return;
-		else assertEquals(expected, actual);
+		if (expected != null) {
+			assertEquals(expected, actual);
+		}
 	}
 
 
