@@ -169,7 +169,6 @@ public class ErrorTest extends AbstractPaymentTest {
         }
     }
 
-    @Ignore("[AHC-1471] Only one error shown if first and last name are too long")
     @Test
     public void testCreateInvalidCustomer() throws HttpCommunicationException, ParseException {
         try {
