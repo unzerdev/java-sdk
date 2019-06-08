@@ -44,11 +44,16 @@ public class PrepaymentTest extends AbstractPaymentTest {
 	}
 
 	@Test
-	public void testChargeSddType() throws HttpCommunicationException, MalformedURLException {
+	public void testChargePrepaymentType() throws HttpCommunicationException, MalformedURLException {
 		Prepayment prepayment = getHeidelpay().createPaymentType(getPrepayment());
 		Charge charge = prepayment.charge(BigDecimal.ONE, Currency.getInstance("EUR"), new URL("https://www.meinShop.de"));		
 		assertNotNull(charge);
 		assertNotNull(charge.getId());
+		assertNotNull(charge.getProcessing());
+		assertNotNull(charge.getProcessing().getIban());
+		assertNotNull(charge.getProcessing().getBic());
+		assertNotNull(charge.getProcessing().getDescriptor());
+		assertNotNull(charge.getProcessing().getHolder());
 	}
 
 	@Test

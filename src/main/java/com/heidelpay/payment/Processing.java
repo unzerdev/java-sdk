@@ -23,6 +23,11 @@ package com.heidelpay.payment;
 public class Processing {
 	private String uniqueId;
 	private String shortId;
+	private String descriptor;
+	private String bic;
+	private String iban;
+	private String holder;
+	
 	public String getUniqueId() {
 		return uniqueId;
 	}
@@ -34,6 +39,30 @@ public class Processing {
 	}
 	public void setShortId(String shortId) {
 		this.shortId = shortId;
+	}
+	public String getDescriptor() {
+		return descriptor;
+	}
+	public void setDescriptor(String descriptor) {
+		this.descriptor = descriptor;
+	}
+	public String getBic() {
+		return bic;
+	}
+	public void setBic(String bic) {
+		this.bic = bic;
+	}
+	public String getIban() {
+		return iban;
+	}
+	public void setIban(String iban) {
+		this.iban = iban;
+	}
+	public String getHolder() {
+		return holder;
+	}
+	public void setHolder(String holder) {
+		this.holder = holder;
 	}
 	
 }

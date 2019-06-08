@@ -21,6 +21,7 @@ package com.heidelpay.payment;
  */
 
 import java.math.BigDecimal;
+import java.net.URL;
 
 public class BasketItem {
 
@@ -34,6 +35,8 @@ public class BasketItem {
 	private BigDecimal amountNet;
 	private String unit;
 	private String title;
+	private String subTitle;
+	private URL imageUrl;
 	
 	
 	public BasketItem() {
@@ -147,6 +150,26 @@ public class BasketItem {
 	public BasketItem setTitle(String title) {
 		this.title = title;
 		return this;
+	}
+
+
+	public String getSubTitle() {
+		return subTitle;
+	}
+
+
+	public void setSubTitle(String subTitle) {
+		this.subTitle = subTitle;
+	}
+
+
+	public URL getImageUrl() {
+		return imageUrl;
+	}
+
+
+	public void setImageUrl(URL imageUrl) {
+		this.imageUrl = imageUrl;
 	}
 
 }

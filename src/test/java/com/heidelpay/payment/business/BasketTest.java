@@ -156,6 +156,8 @@ public class BasketTest extends AbstractPaymentTest {
 		assertEquals(expected.getTitle(), actual.getTitle());
 		assertEquals(expected.getUnit(), actual.getUnit());
 		assertNumberEquals(expected.getVat(), actual.getVat());
+		assertEquals(expected.getImageUrl(), actual.getImageUrl());
+		assertEquals(expected.getSubTitle(), actual.getSubTitle());
 	}
 
 	private void assertNumberEquals(Integer expected, Integer actual) {
