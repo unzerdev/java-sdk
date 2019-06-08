@@ -180,6 +180,7 @@ public class JsonToBusinessClassMapper {
 		return abstractInitPayment;
 	}
 	private JSonCompanyInfo getCompanyInfo(CustomerCompanyData customer, String company) {
+		if (customer == null) return null;
 		JSonCompanyInfo json =  new JSonCompanyInfo();
 		if (company != null) {
 			mapRegisteredCompany(customer, json);
@@ -240,6 +241,8 @@ public class JsonToBusinessClassMapper {
 	}
 
 	private CustomerCompanyData getCompanyInfo(JSonCompanyInfo json) {
+		if (json == null) return null;
+		if (allFieldsNull(json)) return null;
 		CustomerCompanyData company = new CustomerCompanyData();
 		company.setCommercialRegisterNumber(json.getCommercialRegisterNumber());
 		if (json.getCommercialSector() != null) {
@@ -252,6 +255,14 @@ public class JsonToBusinessClassMapper {
 	}
 
 
+
+	private boolean allFieldsNull(JSonCompanyInfo json) {
+		if (json.getCommercialRegisterNumber() != null) return false;
+		if (json.getCommercialSector() != null) return false;
+		if (json.getFunction() != null) return false;
+		if (json.getRegistrationType() != null) return false;
+		return true;
+	}
 
 	private void setStatus(AbstractInitPayment abstractInitPayment, JsonInitPayment json) {
 		if (json.getIsSuccess()) {
