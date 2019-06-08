@@ -311,7 +311,7 @@ public class AbstractPaymentTest {
 	}
 
 	protected void assertBusinessCustomerEquals(CustomerCompanyData customerExpected, CustomerCompanyData customer) {
-		
+		if (customerExpected == null && customer == null) return;
 		assertEquals(customerExpected.getCommercialRegisterNumber(), customer.getCommercialRegisterNumber());
 		assertEquals(customerExpected.getCommercialSector(), customer.getCommercialSector());
 	}
