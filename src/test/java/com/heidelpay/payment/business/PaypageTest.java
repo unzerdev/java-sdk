@@ -17,6 +17,7 @@ import com.heidelpay.payment.PaymentException;
 import com.heidelpay.payment.Paypage;
 import com.heidelpay.payment.communication.HttpCommunicationException;
 
+@Ignore("Selenium Tests do not work in Bamboo. Execute them manually")
 public class PaypageTest extends AbstractSeleniumTest {
 
 	@Test
