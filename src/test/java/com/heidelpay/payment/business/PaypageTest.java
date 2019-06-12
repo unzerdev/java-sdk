@@ -1,5 +1,25 @@
 package com.heidelpay.payment.business;
 
+/*-
+ * #%L
+ * Heidelpay Java SDK
+ * %%
+ * Copyright (C) 2018 - 2019 Heidelpay GmbH
+ * %%
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * 
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ * #L%
+ */
+
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
@@ -17,7 +37,7 @@ import com.heidelpay.payment.PaymentException;
 import com.heidelpay.payment.Paypage;
 import com.heidelpay.payment.communication.HttpCommunicationException;
 
-@Ignore("Selenium Tests do not work in Bamboo. Execute them manually")
+//@Ignore("Selenium Tests do not work in Bamboo. Execute them manually")
 public class PaypageTest extends AbstractSeleniumTest {
 
 	@Test
@@ -163,8 +183,8 @@ public class PaypageTest extends AbstractSeleniumTest {
 		close();
 	}
 
+//	@Ignore("Does not work, Bug Ticket: https://heidelpay.atlassian.net/browse/AHC-1642")
 	@Test
-	@Ignore("Does not work, Bug Ticket: https://heidelpay.atlassian.net/browse/AHC-1642")
 	public void testSDDGuaranteedWithoutCustomerReferencePaypage() throws MalformedURLException, HttpCommunicationException, PaymentException, ParseException, InterruptedException {
 		Paypage paypage = getHeidelpay().paypage(getMinimumPaypage());
 		assertNotNull(paypage);
@@ -187,15 +207,15 @@ public class PaypageTest extends AbstractSeleniumTest {
 
 		getWebElementByXpath(driver, "//div[@id='customer-sepa-direct-debit-guaranteed']//input[@name='salutation' and @value='mr']").click();
 		sendDataByXpath(driver, "//div[@id='sepa-direct-debit-guaranteed']/div/div/div/input", "DE89370400440532013000");
-		sendDataByXpath(driver, "//div[@id='customer-sepa-direct-debit-guaranteed']//input[@name='firstname']", "Rene");
-		sendDataByXpath(driver, "//div[@id='customer-sepa-direct-debit-guaranteed']//input[@name='lastname']", "Felder");
-		sendDataByXpath(driver, "//div[@id='customer-sepa-direct-debit-guaranteed']//input[@name='birthDate']", "1850-12-24");
-		sendDataByXpath(driver, "//div[@id='customer-sepa-direct-debit-guaranteed']//input[@name='street']", "Rathausplatz 1");
-		sendDataByXpath(driver, "//div[@id='customer-sepa-direct-debit-guaranteed']//input[@name='zip']", "11001");
-		sendDataByXpath(driver, "//div[@id='customer-sepa-direct-debit-guaranteed']//input[@name='state']", "Vienna");
-		sendDataByXpath(driver, "//div[@id='customer-sepa-direct-debit-guaranteed']//input[@name='zip']", "1100");
-		sendDataByXpath(driver, "//div[@id='customer-sepa-direct-debit-guaranteed']//input[@name='city']", "Vienna");
-		sendDataByXpath(driver, "//div[@id='customer-sepa-direct-debit-guaranteed']//input[@name='zip']", "1100");
+		sendDataByXpath(driver, "//div[@id='customer-sepa-direct-debit-guaranteed']//input[@name='firstname']", "Peter");
+		sendDataByXpath(driver, "//div[@id='customer-sepa-direct-debit-guaranteed']//input[@name='lastname']", "Universum");
+		sendDataByXpath(driver, "//div[@id='customer-sepa-direct-debit-guaranteed']//input[@name='birthDate']", "1974-12-24");
+		sendDataByXpath(driver, "//div[@id='customer-sepa-direct-debit-guaranteed']//input[@name='street']", "Hugo-Junkers-Str. 5");
+		sendDataByXpath(driver, "//div[@id='customer-sepa-direct-debit-guaranteed']//input[@name='zip']", "60386");
+		sendDataByXpath(driver, "//div[@id='customer-sepa-direct-debit-guaranteed']//input[@name='state']", "DE-BO");
+		sendDataByXpath(driver, "//div[@id='customer-sepa-direct-debit-guaranteed']//input[@name='zip']", "60386");
+		sendDataByXpath(driver, "//div[@id='customer-sepa-direct-debit-guaranteed']//input[@name='city']", "Frankfurt am Main");
+		sendDataByXpath(driver, "//div[@id='customer-sepa-direct-debit-guaranteed']//input[@name='zip']", "60386");
 
 
 		pay(driver, getReturnUrl(), "Pay € 1.00");
