@@ -23,6 +23,12 @@ package com.heidelpay.payment.business.paymenttypes;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
+import java.math.BigDecimal;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.text.ParseException;
+import java.util.Currency;
+
 import org.junit.Test;
 
 import com.heidelpay.payment.business.AbstractPaymentTest;
@@ -54,6 +60,12 @@ public class SepaDirectDebitGuaranteedTest extends AbstractPaymentTest {
 		assertSddEquals(sdd, fetchedSdd);
 	}
 
+	@Test
+	public void testChargeSepaDirectDebitGuaranteedType() throws HttpCommunicationException, MalformedURLException, ParseException {
+		SepaDirectDebitGuaranteed sdd = getHeidelpay().createPaymentType(getSepaDirectDebitGuaranteed());
+		assertNotNull(sdd.getId());
+		sdd.charge(BigDecimal.TEN, Currency.getInstance("EUR"), new URL("https://www.heidelpay.com"), getMaximumCustomerSameAddress(getRandomId()));
+	}
 	
 	private void assertSddEquals(SepaDirectDebitGuaranteed sddOriginal, SepaDirectDebitGuaranteed sddCreated) {
 		assertNotNull(sddCreated.getId());

@@ -24,6 +24,7 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
+import java.math.BigDecimal;
 import java.net.MalformedURLException;
 import java.text.ParseException;
 
@@ -37,7 +38,7 @@ import com.heidelpay.payment.PaymentException;
 import com.heidelpay.payment.Paypage;
 import com.heidelpay.payment.communication.HttpCommunicationException;
 
-//@Ignore("Selenium Tests do not work in Bamboo. Execute them manually")
+@Ignore("Selenium Tests do not work in Bamboo. Execute them manually")
 public class PaypageTest extends AbstractSeleniumTest {
 
 	@Test
@@ -183,10 +184,9 @@ public class PaypageTest extends AbstractSeleniumTest {
 		close();
 	}
 
-//	@Ignore("Does not work, Bug Ticket: https://heidelpay.atlassian.net/browse/AHC-1642")
 	@Test
 	public void testSDDGuaranteedWithoutCustomerReferencePaypage() throws MalformedURLException, HttpCommunicationException, PaymentException, ParseException, InterruptedException {
-		Paypage paypage = getHeidelpay().paypage(getMinimumPaypage());
+		Paypage paypage = getHeidelpay().paypage(getMinimumPaypage(BigDecimal.TEN));
 		assertNotNull(paypage);
 		assertNotNull(paypage.getId());
 		assertNotNull(paypage.getRedirectUrl());
@@ -205,6 +205,7 @@ public class PaypageTest extends AbstractSeleniumTest {
 		assertTrue(isLabelPresent(driver, "City"));
 		assertTrue(isLabelPresent(driver, "Country"));
 
+		Thread.sleep(1000);
 		getWebElementByXpath(driver, "//div[@id='customer-sepa-direct-debit-guaranteed']//input[@name='salutation' and @value='mr']").click();
 		sendDataByXpath(driver, "//div[@id='sepa-direct-debit-guaranteed']/div/div/div/input", "DE89370400440532013000");
 		sendDataByXpath(driver, "//div[@id='customer-sepa-direct-debit-guaranteed']//input[@name='firstname']", "Peter");
@@ -218,7 +219,7 @@ public class PaypageTest extends AbstractSeleniumTest {
 		sendDataByXpath(driver, "//div[@id='customer-sepa-direct-debit-guaranteed']//input[@name='zip']", "60386");
 
 
-		pay(driver, getReturnUrl(), "Pay € 1.00");
+		pay(driver, getReturnUrl(), "Pay € 10.00");
 
 		close();
 	}
