@@ -132,7 +132,7 @@ public class PaymentService {
 	}
 	
 	public Customer updateCustomer(String id, Customer customer) throws HttpCommunicationException {
-		restCommunication.httpPut(urlUtil.getHttpGetUrl(customer, id), heidelpay.getPrivateKey(), customer);
+		restCommunication.httpPut(urlUtil.getHttpGetUrl(customer, id), heidelpay.getPrivateKey(), jsonToBusinessClassMapper.map(customer));
 		return fetchCustomer(id);
 	}
 
