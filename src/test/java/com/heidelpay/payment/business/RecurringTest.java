@@ -27,6 +27,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.text.ParseException;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
 import com.heidelpay.payment.Customer;
@@ -50,6 +51,7 @@ public class RecurringTest extends AbstractPaymentTest {
 	}
 
 	@Test
+	@Ignore ("Recurring with customerId does not work. Bugticket: https://heidelpay.atlassian.net/browse/AHC-1694")
 	public void testRecurringCardWitCustomerWithCustomerId() throws MalformedURLException, HttpCommunicationException, ParseException {
 		Customer customer = getHeidelpay().createCustomer(getMaximumCustomer(getRandomId()));
 		Recurring recurring = getHeidelpay().recurring(createPaymentTypeCard().getId(), customer.getCustomerId(), new URL("https://www.heidelpay.com"));
