@@ -35,6 +35,7 @@ import com.heidelpay.payment.Heidelpay;
 import com.heidelpay.payment.Metadata;
 import com.heidelpay.payment.Payment;
 import com.heidelpay.payment.PaymentException;
+import com.heidelpay.payment.Recurring;
 import com.heidelpay.payment.Shipment;
 import com.heidelpay.payment.communication.HeidelpayRestCommunication;
 import com.heidelpay.payment.communication.HttpCommunicationException;
@@ -49,6 +50,7 @@ import com.heidelpay.payment.communication.json.JsonCustomer;
 import com.heidelpay.payment.communication.json.JsonIdObject;
 import com.heidelpay.payment.communication.json.JsonIdeal;
 import com.heidelpay.payment.communication.json.JsonPayment;
+import com.heidelpay.payment.communication.json.JsonRecurring;
 import com.heidelpay.payment.communication.json.JsonSepaDirectDebit;
 import com.heidelpay.payment.communication.json.JsonShipment;
 import com.heidelpay.payment.communication.json.JsonTransaction;
@@ -259,6 +261,17 @@ public class PaymentService {
 		return charge;
 	}
 
+	public Recurring recurring(Recurring recurring) throws PaymentException, HttpCommunicationException {
+		String url = urlUtil.getRecurringUrl(recurring);
+		String response = restCommunication.httpPost(url, heidelpay.getPrivateKey(), jsonToBusinessClassMapper.map(recurring));
+		JsonRecurring json = new JsonParser<JsonRecurring>().fromJson(response, JsonRecurring.class);
+		recurring = (Recurring) jsonToBusinessClassMapper.mapToBusinessObject(recurring, json);
+		recurring.setHeidelpay(heidelpay);
+		return recurring;
+		
+	}
+
+
 	public Payment fetchPayment(String paymentId) throws HttpCommunicationException {
 		Payment payment = new Payment(heidelpay);
 		payment.setId(paymentId);
@@ -308,6 +321,7 @@ public class PaymentService {
 	public Cancel fetchCancel(String paymentId, String chargeId, String cancelId) throws HttpCommunicationException {
 		return fetchPayment(paymentId).getCharge(chargeId).getCancel(cancelId);
 	}
+	
 
 	private Authorization fetchAuthorization(Payment payment, Authorization authorization, URL url)
 			throws HttpCommunicationException {
@@ -528,6 +542,7 @@ public class PaymentService {
 	private String getTypeIdentifier(String typeId) {
 		return typeId.substring(2, 5);
 	}
+
 
 
 }

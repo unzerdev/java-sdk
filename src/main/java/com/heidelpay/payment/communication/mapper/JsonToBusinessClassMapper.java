@@ -9,6 +9,7 @@ import com.heidelpay.payment.Customer;
 import com.heidelpay.payment.Payment;
 import com.heidelpay.payment.Paypage;
 import com.heidelpay.payment.Processing;
+import com.heidelpay.payment.Recurring;
 import com.heidelpay.payment.Shipment;
 import com.heidelpay.payment.UnsupportedPaymentTypeException;
 import com.heidelpay.payment.communication.json.JSonCompanyInfo;
@@ -43,6 +44,7 @@ import com.heidelpay.payment.communication.json.JsonObject;
 import com.heidelpay.payment.communication.json.JsonPayment;
 import com.heidelpay.payment.communication.json.JsonPaypage;
 import com.heidelpay.payment.communication.json.JsonProcessing;
+import com.heidelpay.payment.communication.json.JsonRecurring;
 import com.heidelpay.payment.communication.json.JsonResources;
 import com.heidelpay.payment.communication.json.JsonSepaDirectDebit;
 import com.heidelpay.payment.communication.json.JsonShipment;
@@ -85,6 +87,12 @@ public class JsonToBusinessClassMapper {
 		return json;
 	}
 
+	public JsonObject map(Recurring recurring) {
+		JsonRecurring json = new JsonRecurring();
+		json.setReturnUrl(recurring.getReturnUrl());
+		json.setResources(getResources(recurring));
+		return json;
+	}
 	public JsonObject map(Cancel cancel) {
 		JsonCharge json = new JsonCharge();
 		json.setAmount(cancel.getAmount());
@@ -122,6 +130,13 @@ public class JsonToBusinessClassMapper {
 		return json;
 	}
 	
+	private JsonResources getResources(Recurring recurring) {
+		JsonResources json = new JsonResources();
+		json.setCustomerId(recurring.getCustomerId());
+		json.setMetadataId(recurring.getMetadataId());
+		return json;
+	}
+
 	private JsonResources getResources(Paypage paypage) {
 		JsonResources json = new JsonResources();
 		json.setCustomerId(paypage.getCustomerId());
@@ -155,6 +170,19 @@ public class JsonToBusinessClassMapper {
 			paypage.setPaymentId(json.getResources().getPaymentId());
 		}
 		return paypage;
+	}
+	public Recurring mapToBusinessObject(Recurring recurring, JsonRecurring json) {
+		recurring.setDate(json.getDate());
+		recurring.setMessage(json.getMessage());
+		if (json.getResources() != null) {
+			recurring.setMetadataId(json.getResources().getMetadataId());
+			recurring.setCustomerId(json.getResources().getCustomerId());
+		}
+		recurring.setProcessing(getProcessing(json.getProcessing()));
+		recurring.setRedirectUrl(json.getRedirectUrl());
+		recurring.setReturnUrl(json.getReturnUrl());
+		setStatus(recurring, json);
+		return recurring;
 	}
 	public AbstractInitPayment mapToBusinessObject(AbstractInitPayment abstractInitPayment, JsonInitPayment json) {
 		abstractInitPayment.setId(json.getId());
@@ -271,6 +299,16 @@ public class JsonToBusinessClassMapper {
 			abstractInitPayment.setStatus(com.heidelpay.payment.AbstractInitPayment.Status.PENDING);
 		} else if (json.getIsError()) {
 			abstractInitPayment.setStatus(com.heidelpay.payment.AbstractInitPayment.Status.ERRROR);
+		}
+	
+	}
+	private void setStatus(Recurring recurring, JsonRecurring json) {
+		if (json.getIsSuccess()) {
+			recurring.setStatus(com.heidelpay.payment.Recurring.Status.SUCCESS);
+		} else if (json.getIsPending()) {
+			recurring.setStatus(com.heidelpay.payment.Recurring.Status.PENDING);
+		} else if (json.getIsError()) {
+			recurring.setStatus(com.heidelpay.payment.Recurring.Status.ERRROR);
 		}
 	
 	}
@@ -463,5 +501,7 @@ public class JsonToBusinessClassMapper {
 		pis.setId(jsonId.getId());
 		return pis;
 	}
+
+
 
 }
