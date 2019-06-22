@@ -50,12 +50,10 @@ public class Authorization extends AbstractInitPayment {
 		return getHeidelpay().chargeAuthorization(getPayment().getId(), amount);
 	}
 
-	@Override
 	public Cancel cancel() throws HttpCommunicationException {
 		return getHeidelpay().cancelAuthorization(getPayment().getId());
 	}
 
-	@Override
 	public Cancel cancel(BigDecimal amount) throws HttpCommunicationException {
 		return getHeidelpay().cancelAuthorization(getPayment().getId(), amount);
 	}

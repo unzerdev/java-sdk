@@ -606,6 +606,32 @@ public class Heidelpay {
 	}
 
 	/**
+	 * Pay out money to the customer. 
+	 * @param amount
+	 * @param currency
+	 * @param typeId
+	 * @param returnUrl
+	 * @return
+	 * @throws HttpCommunicationException 
+	 */
+	public Payout payout(BigDecimal amount, Currency currency, String typeId, URL returnUrl) throws HttpCommunicationException {
+		return payout(getPayout(amount, currency, typeId, returnUrl));
+	}
+
+	public Payout payout(Payout payout) throws HttpCommunicationException {
+		return paymentService.payout(payout);
+	}
+
+
+	private Payout getPayout(BigDecimal amount, Currency currency, String typeId, URL returnUrl) {
+		Payout payout = new Payout();
+		payout.setAmount(amount);
+		payout.setCurrency(currency);
+		payout.setTypeId(typeId);
+		payout.setReturnUrl(returnUrl);
+		return payout;
+	}
+	/**
 	 * Charge the full amount that was authorized
 	 * 
 	 * @param paymentId
@@ -710,6 +736,16 @@ public class Heidelpay {
 	 */
 	public Payment fetchPayment(String paymentId) throws HttpCommunicationException {
 		return paymentService.fetchPayment(paymentId);
+	}
+
+	/**
+	 * Load the Payout Object
+	 * @param id
+	 * @return
+	 * @throws HttpCommunicationException 
+	 */
+	public Payout fetchPayout(String paymentId, String payoutId) throws HttpCommunicationException {
+		return paymentService.fetchPayout(paymentId, payoutId);
 	}
 
 	/**
@@ -849,6 +885,5 @@ public class Heidelpay {
 		.setCard3ds(card3ds);
 		return authorization;
 	}
-
 
 }

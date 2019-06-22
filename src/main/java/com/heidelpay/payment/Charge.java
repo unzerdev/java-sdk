@@ -52,12 +52,10 @@ public class Charge extends AbstractInitPayment {
 		return this;
 	}
 
-	@Override
 	public Cancel cancel() throws HttpCommunicationException {
 		return getHeidelpay().cancelCharge(getPayment().getId(), getId());
 	}
 
-	@Override
 	public Cancel cancel(BigDecimal amount) throws HttpCommunicationException {
 		return getHeidelpay().cancelCharge(getPayment().getId(), getId(), amount);
 	}
