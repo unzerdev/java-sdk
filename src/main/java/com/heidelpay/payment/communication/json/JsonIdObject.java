@@ -22,7 +22,7 @@ package com.heidelpay.payment.communication.json;
 
 public class JsonIdObject implements JsonObject {
 	private String id;
-	private String recurring;
+	private Boolean recurring;
 
 	public String getId() {
 		return id;
@@ -32,11 +32,13 @@ public class JsonIdObject implements JsonObject {
 		this.id = id;
 	}
 
-	public String getRecurring() {
+	public Boolean getRecurring() {
 		return recurring;
 	}
 
-	public void setRecurring(String recurring) {
+	public void setRecurring(Boolean recurring) {
 		this.recurring = recurring;
 	}
+
+
 }

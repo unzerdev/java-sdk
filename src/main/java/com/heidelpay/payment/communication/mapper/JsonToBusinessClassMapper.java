@@ -415,6 +415,7 @@ public class JsonToBusinessClassMapper {
 		card.setNumber(jsonCard.getNumber());
 		card.setId(jsonCard.getId());
 		card.set3ds(jsonCard.get3ds());
+		card.setRecurring(jsonCard.getRecurring());
 		return card;
 	}
 
@@ -424,6 +425,7 @@ public class JsonToBusinessClassMapper {
 		applepay.setNumber(jsonApplePay.getApplicationPrimaryAccountNumber());
 		applepay.setCurrencyCode(jsonApplePay.getCurrencyCode());
 		applepay.setTransactionAmount(jsonApplePay.getTransactionAmount());
+		applepay.setRecurring(jsonApplePay.getRecurring());
 		return applepay;
 	}
 
@@ -432,73 +434,87 @@ public class JsonToBusinessClassMapper {
 		sdd.setBic(jsonSdd.getBic());
 		sdd.setIban(jsonSdd.getIban());
 		sdd.setHolder(jsonSdd.getHolder());
+		sdd.setRecurring(jsonSdd.getRecurring());
 		return sdd;
 	}
 
 	private PaymentType map(Eps eps, JsonIdObject jsonId) {
 		eps.setId(jsonId.getId());
+		eps.setRecurring(jsonId.getRecurring());
 		return eps;
 	}
 
 	private PaymentType map(Giropay giropay, JsonIdObject jsonId) {
 		giropay.setId(jsonId.getId());
+		giropay.setRecurring(jsonId.getRecurring());
 		return giropay;
 	}
 	
 	private PaymentType map(Ideal ideal, JsonIdeal jsonIdeal) {
 		ideal.setId(jsonIdeal.getId());
 		ideal.setBic(jsonIdeal.getBankName());
+		ideal.setRecurring(jsonIdeal.getRecurring());
 		return ideal;
 	}
 	
 	private PaymentType map(Invoice invoice, JsonIdObject jsonId) {
 		invoice.setId(jsonId.getId());
+		invoice.setRecurring(jsonId.getRecurring());
 		return invoice;
 	}
 	
 	private PaymentType map(InvoiceGuaranteed invoice, JsonIdObject jsonId) {
 		invoice.setId(jsonId.getId());
+		invoice.setRecurring(jsonId.getRecurring());
 		return invoice;
 	}
 	
 	private PaymentType map(InvoiceFactoring invoice, JsonIdObject jsonId) {
 		invoice.setId(jsonId.getId());
+		invoice.setRecurring(jsonId.getRecurring());
 		return invoice;
 	}
 
 
 	private PaymentType map(Paypal paypal, JsonIdObject jsonId) {
 		paypal.setId(jsonId.getId());
+		paypal.setRecurring(jsonId.getRecurring());
 		return paypal;
 	}
 	
 	private PaymentType map(Prepayment prepayment, JsonIdObject jsonId) {
 		prepayment.setId(jsonId.getId());
+		prepayment.setRecurring(jsonId.getRecurring());
 		return prepayment;
 	}
 	
 	private PaymentType map(Przelewy24 p24, JsonIdObject jsonId) {
 		p24.setId(jsonId.getId());
+		p24.setRecurring(jsonId.getRecurring());
 		return p24;
 	}
 	
 	private PaymentType map(Alipay alipay, JsonIdObject jsonId) {
 		alipay.setId(jsonId.getId());
+		alipay.setRecurring(jsonId.getRecurring());
 		return alipay;
 	}
 
 	private PaymentType map(Wechatpay wechatpay, JsonIdObject jsonId) {
 		wechatpay.setId(jsonId.getId());
+		wechatpay.setRecurring(jsonId.getRecurring());
 		return wechatpay;
 	}
 
 	private PaymentType map(Sofort sofort, JsonIdObject jsonId) {
 		sofort.setId(jsonId.getId());
+		sofort.setRecurring(jsonId.getRecurring());
 		return sofort;
 	}
 	
 	private PaymentType map(Pis pis, JsonIdObject jsonId) {
 		pis.setId(jsonId.getId());
+		pis.setRecurring(jsonId.getRecurring());
 		return pis;
 	}
 

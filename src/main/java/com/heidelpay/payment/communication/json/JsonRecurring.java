@@ -14,7 +14,7 @@ public class JsonRecurring extends JsonIdObject implements JsonObject {
 	
 	private JsonResources resources; 
 	private JsonProcessing processing = new JsonProcessing();
-	private URL redirectUrl;
+	private String redirectUrl;
 
 	public JsonRecurring() {
 		super();
@@ -63,14 +63,6 @@ public class JsonRecurring extends JsonIdObject implements JsonObject {
 		this.date = date;
 	}
 
-	public URL getRedirectUrl() {
-		return redirectUrl;
-	}
-
-	public void setRedirectUrl(URL redirectUrl) {
-		this.redirectUrl = redirectUrl;
-	}
-
 	public Boolean getIsSuccess() {
 		return isSuccess;
 	}
@@ -93,6 +85,14 @@ public class JsonRecurring extends JsonIdObject implements JsonObject {
 
 	public void setIsError(Boolean isError) {
 		this.isError = isError;
+	}
+
+	public String getRedirectUrl() {
+		return redirectUrl;
+	}
+
+	public void setRedirectUrl(String redirectUrl) {
+		this.redirectUrl = redirectUrl;
 	}
 
 }

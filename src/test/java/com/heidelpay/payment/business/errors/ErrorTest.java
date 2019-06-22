@@ -22,13 +22,13 @@ package com.heidelpay.payment.business.errors;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 
 import java.net.MalformedURLException;
 import java.text.ParseException;
 import java.util.List;
 
-import org.junit.Ignore;
 import org.junit.Test;
 
 import com.heidelpay.payment.Authorization;

@@ -20,7 +20,7 @@ public class Recurring extends AbstractPayment implements PaymentType {
 	private String customerId;
 	private String metadataId;
 
-	private URL redirectUrl;
+	private String redirectUrl;
 
 	private Processing processing = new Processing();
 
@@ -41,12 +41,6 @@ public class Recurring extends AbstractPayment implements PaymentType {
 	}
 	public void setStatus(Status status) {
 		this.status = status;
-	}
-	public URL getRedirectUrl() {
-		return redirectUrl;
-	}
-	public void setRedirectUrl(URL redirectUrl) {
-		this.redirectUrl = redirectUrl;
 	}
 	public Processing getProcessing() {
 		return processing;
@@ -71,6 +65,12 @@ public class Recurring extends AbstractPayment implements PaymentType {
 	}
 	public void setReturnUrl(URL returnUrl) {
 		this.returnUrl = returnUrl;
+	}
+	public String getRedirectUrl() {
+		return redirectUrl;
+	}
+	public void setRedirectUrl(String redirectUrl) {
+		this.redirectUrl = redirectUrl;
 	}
 
 }
