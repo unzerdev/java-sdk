@@ -783,14 +783,41 @@ public class Heidelpay {
 		return paymentService.fetchPaymentType(typeId);
 	}
 
-	public String getPrivateKey() {
-		return privateKey;
-	}
-
+	/**
+	 * Initiates a paypage and returns the redirectUrl and an id to the paypage. The id will be 
+	 * used for embedded paypage within Javascript components, the redirectUrl will be used
+	 * for hosted paypage to redirect customer to this url.
+	 * @param paypage
+	 * @return
+	 * @throws PaymentException
+	 * @throws HttpCommunicationException
+	 */
 	public Paypage paypage (Paypage paypage) throws PaymentException, HttpCommunicationException {
 		return paypageService.initialize(paypage);
 	}
 	
+	public Recurring recurring(String typeId, String customerId, String metadataId, URL returnUrl) throws PaymentException, HttpCommunicationException {
+		return paymentService.recurring(getRecurring(typeId, customerId, metadataId, returnUrl));
+	}
+	public Recurring recurring(String typeId, String customerId, URL returnUrl) throws PaymentException, HttpCommunicationException {
+		return recurring(typeId, customerId, null, returnUrl);
+	}
+	
+	public Recurring recurring(String typeId, URL returnUrl) throws PaymentException, HttpCommunicationException {
+		return recurring(typeId, null, returnUrl);
+	}
+	private Recurring getRecurring(String typeId, String customerId, String metadataId, URL returnUrl) {
+		Recurring recurring = new Recurring();
+		recurring.setCustomerId(customerId);
+		recurring.setType(typeId);
+		recurring.setReturnUrl(returnUrl);
+		recurring.setMetadataId(metadataId);
+		return recurring;
+	}
+	public String getPrivateKey() {
+		return privateKey;
+	}
+
 	private Charge getCharge(BigDecimal amount, Currency currency, String typeId, URL returnUrl, String customerId, String basketId, Boolean card3ds) {
 		Charge charge = new Charge();
 		charge

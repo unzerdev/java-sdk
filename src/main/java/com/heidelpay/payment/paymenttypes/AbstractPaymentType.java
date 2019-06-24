@@ -24,6 +24,7 @@ import com.heidelpay.payment.Heidelpay;
 
 public abstract class AbstractPaymentType implements PaymentType {
 	private String id;
+	private Boolean recurring;
 	
 	private transient Heidelpay heidelpay;
 	
@@ -52,6 +53,14 @@ public abstract class AbstractPaymentType implements PaymentType {
 
 	public void setHeidelpay(Heidelpay heidelpay) {
 		this.heidelpay = heidelpay;
+	}
+
+	public Boolean getRecurring() {
+		return recurring;
+	}
+
+	public void setRecurring(Boolean recurring) {
+		this.recurring = recurring;
 	}
 
 	// Currently returnUrl is mandatory	
