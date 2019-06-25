@@ -30,7 +30,7 @@ import java.util.Date;
  *
  */
 public class Customer extends AbstractPayment {
-	public enum Salutation {mr, ms, mrs, unknown};
+	public enum Salutation {mr, mrs, unknown};
 
 	private String firstname;
 	private String lastname;
