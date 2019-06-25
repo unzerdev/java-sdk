@@ -1,5 +1,7 @@
 package com.heidelpay.payment.service;
 
+import java.math.BigDecimal;
+
 /*-
  * #%L
  * Heidelpay Java SDK
@@ -22,6 +24,12 @@ package com.heidelpay.payment.service;
 
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
+import java.text.SimpleDateFormat;
+import java.util.Currency;
+import java.util.Date;
+import java.util.Locale;
 
 import org.apache.log4j.Logger;
 
@@ -118,6 +126,29 @@ public class UrlUtil {
 		if (buffer.charAt(buffer.length()-1) != '/') {
 			buffer.append("/");
 		}
+	}
+
+	public String getHirePurchaseRateUrl(BigDecimal amount, Currency currency, BigDecimal effectiveInterestRate, Date orderDate) {
+		StringBuffer buffer = new StringBuffer();
+		buffer.append(getRestUrl());
+		buffer.append("types/hire-purchase-direct-debit/plans?");
+		buffer.append("amount=").append(getBigDecimal(amount)).append("&");
+		buffer.append("currency=").append(currency.getCurrencyCode()).append("&");
+		buffer.append("effectiveInterest=").append(getBigDecimal(effectiveInterestRate)).append("&");
+		buffer.append("orderDate=").append(getDate(orderDate));
+		return buffer.toString();
+	}
+
+	private String getDate(Date date) {
+		return new SimpleDateFormat("yyyy-MM-dd").format(date);
+	}
+
+	private String getBigDecimal(BigDecimal decimal) {
+		NumberFormat df = NumberFormat.getNumberInstance(Locale.ENGLISH);
+		df.setMaximumFractionDigits(4);
+		df.setMinimumFractionDigits(0);
+		df.setGroupingUsed(false);
+		return df.format(decimal);
 	}
 
 }

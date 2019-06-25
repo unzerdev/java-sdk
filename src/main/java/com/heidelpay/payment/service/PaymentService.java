@@ -23,10 +23,11 @@ package com.heidelpay.payment.service;
 import java.math.BigDecimal;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Currency;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
-import com.google.gson.JsonObject;
 import com.heidelpay.payment.Authorization;
 import com.heidelpay.payment.Basket;
 import com.heidelpay.payment.Cancel;
@@ -39,6 +40,7 @@ import com.heidelpay.payment.PaymentException;
 import com.heidelpay.payment.Payout;
 import com.heidelpay.payment.Recurring;
 import com.heidelpay.payment.Shipment;
+import com.heidelpay.payment.business.paymenttypes.HirePurchaseRatePlan;
 import com.heidelpay.payment.communication.HeidelpayRestCommunication;
 import com.heidelpay.payment.communication.HttpCommunicationException;
 import com.heidelpay.payment.communication.JsonParser;
@@ -49,6 +51,7 @@ import com.heidelpay.payment.communication.json.JsonCancel;
 import com.heidelpay.payment.communication.json.JsonCard;
 import com.heidelpay.payment.communication.json.JsonCharge;
 import com.heidelpay.payment.communication.json.JsonCustomer;
+import com.heidelpay.payment.communication.json.JsonHirePurchaseRatePlanList;
 import com.heidelpay.payment.communication.json.JsonIdObject;
 import com.heidelpay.payment.communication.json.JsonIdeal;
 import com.heidelpay.payment.communication.json.JsonPayment;
@@ -113,6 +116,12 @@ public class PaymentService {
 		super();
 		this.heidelpay = heidelpay;
 		this.restCommunication = restCommunication;
+	}
+
+	public List<HirePurchaseRatePlan> hirePurchasePlan(BigDecimal amount, Currency currency, BigDecimal effectiveInterestRate, Date orderDate) throws PaymentException, HttpCommunicationException {
+		String response = restCommunication.httpGet(urlUtil.getHirePurchaseRateUrl(amount, currency, effectiveInterestRate, orderDate), heidelpay.getPrivateKey());
+		JsonHirePurchaseRatePlanList json = new JsonParser<Customer>().fromJson(response, JsonHirePurchaseRatePlanList.class);
+		return json.getEntity();
 	}
 
 	public <T extends PaymentType> T createPaymentType(T paymentType) throws HttpCommunicationException {

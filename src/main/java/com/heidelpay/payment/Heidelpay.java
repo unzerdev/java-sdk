@@ -23,8 +23,11 @@ package com.heidelpay.payment;
 import java.math.BigDecimal;
 import java.net.URL;
 import java.util.Currency;
+import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 
+import com.heidelpay.payment.business.paymenttypes.HirePurchaseRatePlan;
 import com.heidelpay.payment.communication.HeidelpayRestCommunication;
 import com.heidelpay.payment.communication.HttpCommunicationException;
 import com.heidelpay.payment.communication.impl.HttpClientBasedRestCommunication;
@@ -842,6 +845,8 @@ public class Heidelpay {
 	public Recurring recurring(String typeId, URL returnUrl) throws PaymentException, HttpCommunicationException {
 		return recurring(typeId, null, returnUrl);
 	}
+	
+	
 	private Recurring getRecurring(String typeId, String customerId, String metadataId, URL returnUrl) {
 		Recurring recurring = new Recurring();
 		recurring.setCustomerId(customerId);
@@ -850,6 +855,12 @@ public class Heidelpay {
 		recurring.setMetadataId(metadataId);
 		return recurring;
 	}
+	
+	public List<HirePurchaseRatePlan> hirePurchaseRates(BigDecimal amount, Currency currency, BigDecimal effectiveInterestRate, Date orderDate) throws PaymentException, HttpCommunicationException {
+		return paymentService.hirePurchasePlan(amount, currency, effectiveInterestRate, orderDate);
+	}
+
+
 	public String getPrivateKey() {
 		return privateKey;
 	}
@@ -885,5 +896,4 @@ public class Heidelpay {
 		.setCard3ds(card3ds);
 		return authorization;
 	}
-
 }
