@@ -208,6 +208,32 @@ public class AbstractPaymentTest {
 		.setShippingAddress(getAddress("Schubert", "Vangerowstraße 18", "Heidelberg", "BW", "69115", "DE"));
 		return customer;
 	}
+
+	protected Customer getMaximumMrsCustomer(String customerId) throws ParseException {
+		Customer customer = new Customer("Anna", "Sadriu");
+		customer
+						.setCustomerId(customerId)
+						.setSalutation(Salutation.mrs)
+						.setEmail("info@heidelpay.com")
+						.setMobile("+43676123456")
+						.setBirthDate(getDate("08.05.1986"))
+						.setBillingAddress(getAddress())
+						.setShippingAddress(getAddress("Schubert", "Vangerowstraße 18", "Heidelberg", "BW", "69115", "DE"));
+		return customer;
+	}
+
+	protected Customer getMaximumUnknownCustomer(String customerId) throws ParseException {
+		Customer customer = new Customer("XXX", "YYY");
+		customer
+						.setCustomerId(customerId)
+						.setSalutation(Salutation.unknown)
+						.setEmail("info@heidelpay.com")
+						.setMobile("+43676123456")
+						.setBirthDate(getDate("01.01.1999"))
+						.setBillingAddress(getAddress())
+						.setShippingAddress(getAddress("Schubert", "Vangerowstraße 18", "Heidelberg", "BW", "69115", "DE"));
+		return customer;
+	}
 	
 	protected Customer getRegisterdMinimumBusinessCustomer() {
 		Customer customer = getMinimumRegisteredCustomer();
@@ -402,6 +428,7 @@ public class AbstractPaymentTest {
 		Basket basket = new Basket();
 		basket.setAmountTotal(new BigDecimal(866.49));
 		basket.setAmountTotalDiscount(BigDecimal.TEN);
+		basket.setAmountTotalVat(new BigDecimal(144.42));
 		basket.setCurrencyCode(Currency.getInstance("EUR"));
 		basket.setNote("Mistery shopping");
 		basket.setOrderId(getRandomId());
