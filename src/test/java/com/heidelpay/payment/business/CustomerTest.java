@@ -51,6 +51,24 @@ public class CustomerTest extends AbstractPaymentTest {
 		assertNotNull(customer.getId());
 		assertCustomerEquals(maxCustomer, customer);
 	}
+
+	@Test
+	public void testCreateMaximumMrsCustomer() throws HttpCommunicationException, ParseException {
+		Customer maxMrsCustomer = getMaximumMrsCustomer(getRandomId());
+		Customer customer = getHeidelpay().createCustomer(maxMrsCustomer);
+		assertNotNull(customer);
+		assertNotNull(customer.getId());
+		assertCustomerEquals(maxMrsCustomer, customer);
+	}
+
+	@Test
+	public void testCreateMaximumUnknownCustomer() throws HttpCommunicationException, ParseException {
+		Customer unknownMrsCustomer = getMaximumUnknownCustomer(getRandomId());
+		Customer customer = getHeidelpay().createCustomer(unknownMrsCustomer);
+		assertNotNull(customer);
+		assertNotNull(customer.getId());
+		assertCustomerEquals(unknownMrsCustomer, customer);
+	}
 	
 	@Test
 	public void testFetchCustomerMinimum() throws HttpCommunicationException, ParseException {
