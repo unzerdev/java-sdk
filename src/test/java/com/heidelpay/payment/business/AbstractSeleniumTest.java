@@ -209,8 +209,11 @@ public class AbstractSeleniumTest extends AbstractPaymentTest {
 
 	// TODO: QUESTION: Why is returnUrl mandatory. In case of embedded Paypage it may not be needed
 	protected Paypage getMinimumPaypage() throws MalformedURLException {
+		return getMinimumPaypage(BigDecimal.ONE);
+	}
+	protected Paypage getMinimumPaypage(BigDecimal amount) throws MalformedURLException {
 		Paypage paypage = new Paypage();
-		paypage.setAmount(BigDecimal.ONE);
+		paypage.setAmount(amount);
 		paypage.setCurrency(Currency.getInstance("EUR"));
 		paypage.setReturnUrl(new URL(getReturnUrl()));
 		return paypage;

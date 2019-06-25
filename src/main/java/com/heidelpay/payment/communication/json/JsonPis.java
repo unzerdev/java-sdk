@@ -20,25 +20,27 @@ package com.heidelpay.payment.communication.json;
  * #L%
  */
 
-public class JsonIdObject implements JsonObject {
-	private String id;
-	private Boolean recurring;
-
-	public String getId() {
-		return id;
+public class JsonPis extends JsonIdObject implements JsonObject {
+	private String iban;
+	private String bic;
+	private String holder;
+	public String getIban() {
+		return iban;
 	}
-
-	public void setId(String id) {
-		this.id = id;
+	public void setIban(String iban) {
+		this.iban = iban;
 	}
-
-	public Boolean getRecurring() {
-		return recurring;
+	public String getBic() {
+		return bic;
 	}
-
-	public void setRecurring(Boolean recurring) {
-		this.recurring = recurring;
+	public void setBic(String bic) {
+		this.bic = bic;
 	}
-
-
+	public String getHolder() {
+		return holder;
+	}
+	public void setHolder(String holder) {
+		this.holder = holder;
+	}
+	
 }

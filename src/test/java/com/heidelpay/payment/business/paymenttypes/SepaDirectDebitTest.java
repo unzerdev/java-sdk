@@ -57,7 +57,7 @@ public class SepaDirectDebitTest extends AbstractPaymentTest {
 
 	@Test
 	public void testChargeSepaDirectDebitType() throws HttpCommunicationException, MalformedURLException {
-		SepaDirectDebit sdd = getHeidelpay().createPaymentType(getSepaDirectDebit());
+		SepaDirectDebit sdd = createPaymentTypeSepaDirectDebit();
 		Charge charge = sdd.charge(BigDecimal.ONE, Currency.getInstance("EUR"), new URL("https://www.google.at"));
 		assertNotNull(charge);
 		assertNotNull(charge.getId());
@@ -65,7 +65,7 @@ public class SepaDirectDebitTest extends AbstractPaymentTest {
 
 	@Test
 	public void testFetchSepaDirectDebitType() throws HttpCommunicationException {
-		SepaDirectDebit sdd = getHeidelpay().createPaymentType(getSepaDirectDebit());
+		SepaDirectDebit sdd = createPaymentTypeSepaDirectDebit();
 		assertNotNull(sdd.getId());
 		SepaDirectDebit fetchedSdd = (SepaDirectDebit) getHeidelpay().fetchPaymentType(sdd.getId());
 		assertNotNull(fetchedSdd.getId());
@@ -84,7 +84,7 @@ public class SepaDirectDebitTest extends AbstractPaymentTest {
 
 	@Test
 	public void testCancelSepaDirectDebitType() throws HttpCommunicationException, MalformedURLException {
-		SepaDirectDebit sdd = getHeidelpay().createPaymentType(getSepaDirectDebit());
+		SepaDirectDebit sdd = createPaymentTypeSepaDirectDebit();
 		Charge charge = sdd.charge(BigDecimal.ONE, Currency.getInstance("EUR"), new URL("https://www.google.at"));
 		assertNotNull(charge);
 		assertNotNull(charge.getId());
@@ -93,21 +93,12 @@ public class SepaDirectDebitTest extends AbstractPaymentTest {
 		assertNotNull(cancel);
 		assertNotNull(cancel.getId());
 	}
-	
+
 	private void assertSddEquals(SepaDirectDebit sddOriginal, SepaDirectDebit sddCreated) {
 		assertNotNull(sddCreated.getId());
 		assertEquals(sddOriginal.getBic(), sddCreated.getBic());
 		assertEquals(sddOriginal.getHolder(), sddCreated.getHolder());
 		assertEquals(maskIban(sddOriginal.getIban()), sddCreated.getIban());
 	}
-
-
-	private SepaDirectDebit getSepaDirectDebit() {
-		SepaDirectDebit sdd = new SepaDirectDebit("DE89370400440532013000");
-		sdd.setBic("COBADEFFXXX");
-		sdd.setHolder("Rene Felder");
-		return sdd;
-	}
-
 
 }

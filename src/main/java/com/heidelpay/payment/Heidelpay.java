@@ -606,6 +606,32 @@ public class Heidelpay {
 	}
 
 	/**
+	 * Pay out money to the customer. 
+	 * @param amount
+	 * @param currency
+	 * @param typeId
+	 * @param returnUrl
+	 * @return
+	 * @throws HttpCommunicationException 
+	 */
+	public Payout payout(BigDecimal amount, Currency currency, String typeId, URL returnUrl) throws HttpCommunicationException {
+		return payout(getPayout(amount, currency, typeId, returnUrl));
+	}
+
+	public Payout payout(Payout payout) throws HttpCommunicationException {
+		return paymentService.payout(payout);
+	}
+
+
+	private Payout getPayout(BigDecimal amount, Currency currency, String typeId, URL returnUrl) {
+		Payout payout = new Payout();
+		payout.setAmount(amount);
+		payout.setCurrency(currency);
+		payout.setTypeId(typeId);
+		payout.setReturnUrl(returnUrl);
+		return payout;
+	}
+	/**
 	 * Charge the full amount that was authorized
 	 * 
 	 * @param paymentId
@@ -713,6 +739,16 @@ public class Heidelpay {
 	}
 
 	/**
+	 * Load the Payout Object
+	 * @param id
+	 * @return
+	 * @throws HttpCommunicationException 
+	 */
+	public Payout fetchPayout(String paymentId, String payoutId) throws HttpCommunicationException {
+		return paymentService.fetchPayout(paymentId, payoutId);
+	}
+
+	/**
 	 * Load the Authorization for the given paymentId. As there is only one
 	 * Authorization for a Payment the Authorization id is not needed.
 	 * 
@@ -783,14 +819,41 @@ public class Heidelpay {
 		return paymentService.fetchPaymentType(typeId);
 	}
 
-	public String getPrivateKey() {
-		return privateKey;
-	}
-
+	/**
+	 * Initiates a paypage and returns the redirectUrl and an id to the paypage. The id will be 
+	 * used for embedded paypage within Javascript components, the redirectUrl will be used
+	 * for hosted paypage to redirect customer to this url.
+	 * @param paypage
+	 * @return
+	 * @throws PaymentException
+	 * @throws HttpCommunicationException
+	 */
 	public Paypage paypage (Paypage paypage) throws PaymentException, HttpCommunicationException {
 		return paypageService.initialize(paypage);
 	}
 	
+	public Recurring recurring(String typeId, String customerId, String metadataId, URL returnUrl) throws PaymentException, HttpCommunicationException {
+		return paymentService.recurring(getRecurring(typeId, customerId, metadataId, returnUrl));
+	}
+	public Recurring recurring(String typeId, String customerId, URL returnUrl) throws PaymentException, HttpCommunicationException {
+		return recurring(typeId, customerId, null, returnUrl);
+	}
+	
+	public Recurring recurring(String typeId, URL returnUrl) throws PaymentException, HttpCommunicationException {
+		return recurring(typeId, null, returnUrl);
+	}
+	private Recurring getRecurring(String typeId, String customerId, String metadataId, URL returnUrl) {
+		Recurring recurring = new Recurring();
+		recurring.setCustomerId(customerId);
+		recurring.setType(typeId);
+		recurring.setReturnUrl(returnUrl);
+		recurring.setMetadataId(metadataId);
+		return recurring;
+	}
+	public String getPrivateKey() {
+		return privateKey;
+	}
+
 	private Charge getCharge(BigDecimal amount, Currency currency, String typeId, URL returnUrl, String customerId, String basketId, Boolean card3ds) {
 		Charge charge = new Charge();
 		charge
@@ -822,6 +885,5 @@ public class Heidelpay {
 		.setCard3ds(card3ds);
 		return authorization;
 	}
-
 
 }

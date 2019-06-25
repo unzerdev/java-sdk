@@ -25,6 +25,7 @@ import java.net.URL;
 
 import org.apache.log4j.Logger;
 
+import com.heidelpay.payment.Recurring;
 import com.heidelpay.payment.paymenttypes.PaymentType;
 
 public class UrlUtil {
@@ -32,7 +33,11 @@ public class UrlUtil {
 
 	private static final String PLACEHOLDER_PAYMENT_ID = "<paymentId>";
 
+	private static final String PLACEHOLDER_TYPE_ID = "<typeId>";
+
 	private static final String REFUND_URL = "payments/<paymentId>/charges/<chargeId>/cancels";
+
+	private static final String RECURRING_URL = "types/<typeId>/recurring";
 
 	public final static Logger logger = Logger.getLogger(UrlUtil.class);
 
@@ -77,6 +82,15 @@ public class UrlUtil {
 		appendSlashIfNeeded(buffer);
 		buffer.append(id);
 		return  buffer.toString();
+	}
+	public String getRecurringUrl(Recurring recurring) {
+		StringBuffer buffer = new StringBuffer();
+		buffer.append(getRestUrl());
+		appendSlashIfNeeded(buffer);
+		buffer.append(RECURRING_URL);
+		String result = buffer.toString();
+		result = result.replaceAll(PLACEHOLDER_TYPE_ID, recurring.getType());
+		return result;
 	}
 	public String getRestUrl(PaymentType paymentType) {
 		return getRestUrlInternal(paymentType).replaceAll("<paymentId>/", "");

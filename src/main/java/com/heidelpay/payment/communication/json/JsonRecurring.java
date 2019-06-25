@@ -4,7 +4,7 @@ package com.heidelpay.payment.communication.json;
  * #%L
  * Heidelpay Java SDK
  * %%
- * Copyright (C) 2018 Heidelpay GmbH
+ * Copyright (C) 2018 - 2019 Heidelpay GmbH
  * %%
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,57 +20,31 @@ package com.heidelpay.payment.communication.json;
  * #L%
  */
 
-import java.math.BigDecimal;
 import java.net.URL;
-import java.util.Currency;
 import java.util.Date;
 
-public class JsonInitPayment extends JsonIdObject implements JsonObject {
+public class JsonRecurring extends JsonIdObject implements JsonObject {
 	private Boolean isSuccess;
 	private Boolean isPending;
 	private Boolean isError;
 	private JsonMessage message;
-	private Date date;
+	private Date date;	
 
-	private String orderId;
-	private BigDecimal amount;
-	private Currency currency;
 	private URL returnUrl;
-	private URL redirectUrl;
-	private Boolean card3ds;
-	private String paymentReference;
-
-
-	private JsonResources resources;
+	
+	private JsonResources resources; 
 	private JsonProcessing processing = new JsonProcessing();
+	private String redirectUrl;
 
-	public JsonInitPayment() {
+	public JsonRecurring() {
 		super();
-	}
-
-	public BigDecimal getAmount() {
-		return amount;
-	}
-
-	public JsonInitPayment setAmount(BigDecimal amount) {
-		this.amount = amount;
-		return this;
-	}
-
-	public Currency getCurrency() {
-		return currency;
-	}
-
-	public JsonInitPayment setCurrency(Currency currency) {
-		this.currency = currency;
-		return this;
 	}
 
 	public URL getReturnUrl() {
 		return returnUrl;
 	}
 
-	public JsonInitPayment setReturnUrl(URL returnUrl) {
+	public JsonRecurring setReturnUrl(URL returnUrl) {
 		this.returnUrl = returnUrl;
 		return this;
 	}
@@ -79,7 +53,7 @@ public class JsonInitPayment extends JsonIdObject implements JsonObject {
 		return processing;
 	}
 
-	public JsonInitPayment setProcessing(JsonProcessing processing) {
+	public JsonRecurring setProcessing(JsonProcessing processing) {
 		this.processing = processing;
 		return this;
 	}
@@ -109,22 +83,6 @@ public class JsonInitPayment extends JsonIdObject implements JsonObject {
 		this.date = date;
 	}
 
-	public URL getRedirectUrl() {
-		return redirectUrl;
-	}
-
-	public void setRedirectUrl(URL redirectUrl) {
-		this.redirectUrl = redirectUrl;
-	}
-
-	public String getOrderId() {
-		return orderId;
-	}
-
-	public void setOrderId(String orderId) {
-		this.orderId = orderId;
-	}
-
 	public Boolean getIsSuccess() {
 		return isSuccess;
 	}
@@ -149,20 +107,12 @@ public class JsonInitPayment extends JsonIdObject implements JsonObject {
 		this.isError = isError;
 	}
 
-	public Boolean getCard3ds() {
-		return card3ds;
+	public String getRedirectUrl() {
+		return redirectUrl;
 	}
 
-	public void setCard3ds(Boolean card3ds) {
-		this.card3ds = card3ds;
-	}
-
-	public String getPaymentReference() {
-		return paymentReference;
-	}
-
-	public void setPaymentReference(String paymentReference) {
-		this.paymentReference = paymentReference;
+	public void setRedirectUrl(String redirectUrl) {
+		this.redirectUrl = redirectUrl;
 	}
 
 }

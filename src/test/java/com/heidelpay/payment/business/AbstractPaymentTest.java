@@ -27,18 +27,21 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.Currency;
+import java.util.Date;
+import java.util.Locale;
+import java.util.Map;
+import java.util.UUID;
 
 import com.heidelpay.payment.Address;
 import com.heidelpay.payment.Authorization;
 import com.heidelpay.payment.Basket;
 import com.heidelpay.payment.BasketItem;
-import com.heidelpay.payment.CustomerCompanyData;
 import com.heidelpay.payment.Cancel;
 import com.heidelpay.payment.Charge;
-import com.heidelpay.payment.CommercialSector;
 import com.heidelpay.payment.Customer;
 import com.heidelpay.payment.Customer.Salutation;
+import com.heidelpay.payment.CustomerCompanyData;
 import com.heidelpay.payment.Heidelpay;
 import com.heidelpay.payment.Metadata;
 import com.heidelpay.payment.PaymentException;
@@ -47,6 +50,7 @@ import com.heidelpay.payment.communication.HttpCommunicationException;
 import com.heidelpay.payment.communication.impl.HttpClientBasedRestCommunication;
 import com.heidelpay.payment.paymenttypes.Card;
 import com.heidelpay.payment.paymenttypes.InvoiceGuaranteed;
+import com.heidelpay.payment.paymenttypes.SepaDirectDebit;
 
 public class AbstractPaymentTest {
 
@@ -121,7 +125,10 @@ public class AbstractPaymentTest {
 	}
 	
 	protected Card createPaymentTypeCard() throws HttpCommunicationException {
-		Card card = getPaymentTypeCard();
+		return createPaymentTypeCard("4444333322221111");
+	}
+	protected Card createPaymentTypeCard(String cardnumber) throws HttpCommunicationException {
+		Card card = getPaymentTypeCard(cardnumber);
 		card = (Card)getHeidelpay().createPaymentType(card);
 		return card;
 	}
@@ -132,10 +139,26 @@ public class AbstractPaymentTest {
 	}
 
 	protected Card getPaymentTypeCard() {
-		Card card = new Card("4444333322221111", "03/20");
+		return getPaymentTypeCard("4444333322221111");
+	}
+	protected Card getPaymentTypeCard(String cardnumber) {
+		Card card = new Card(cardnumber, "03/20");
 		card.setCvc("123");
 		return card;
 	}
+
+	protected SepaDirectDebit createPaymentTypeSepaDirectDebit() throws HttpCommunicationException {
+		SepaDirectDebit sdd = getHeidelpay().createPaymentType(getSepaDirectDebit());
+		return sdd;
+	}
+	
+	protected SepaDirectDebit getSepaDirectDebit() {
+		SepaDirectDebit sdd = new SepaDirectDebit("DE89370400440532013000");
+		sdd.setBic("COBADEFFXXX");
+		sdd.setHolder("Rene Felder");
+		return sdd;
+	}
+
 
 	protected String getRandomId() {
 		return UUID.randomUUID().toString();
@@ -183,6 +206,32 @@ public class AbstractPaymentTest {
 		.setBirthDate(getDate("03.10.1974"))
 		.setBillingAddress(getAddress())
 		.setShippingAddress(getAddress("Schubert", "Vangerowstraße 18", "Heidelberg", "BW", "69115", "DE"));
+		return customer;
+	}
+
+	protected Customer getMaximumMrsCustomer(String customerId) throws ParseException {
+		Customer customer = new Customer("Anna", "Sadriu");
+		customer
+						.setCustomerId(customerId)
+						.setSalutation(Salutation.mrs)
+						.setEmail("info@heidelpay.com")
+						.setMobile("+43676123456")
+						.setBirthDate(getDate("08.05.1986"))
+						.setBillingAddress(getAddress())
+						.setShippingAddress(getAddress("Schubert", "Vangerowstraße 18", "Heidelberg", "BW", "69115", "DE"));
+		return customer;
+	}
+
+	protected Customer getMaximumUnknownCustomer(String customerId) throws ParseException {
+		Customer customer = new Customer("XXX", "YYY");
+		customer
+						.setCustomerId(customerId)
+						.setSalutation(Salutation.unknown)
+						.setEmail("info@heidelpay.com")
+						.setMobile("+43676123456")
+						.setBirthDate(getDate("01.01.1999"))
+						.setBillingAddress(getAddress())
+						.setShippingAddress(getAddress("Schubert", "Vangerowstraße 18", "Heidelberg", "BW", "69115", "DE"));
 		return customer;
 	}
 	
@@ -379,6 +428,7 @@ public class AbstractPaymentTest {
 		Basket basket = new Basket();
 		basket.setAmountTotal(new BigDecimal(866.49));
 		basket.setAmountTotalDiscount(BigDecimal.TEN);
+		basket.setAmountTotalVat(new BigDecimal(144.42));
 		basket.setCurrencyCode(Currency.getInstance("EUR"));
 		basket.setNote("Mistery shopping");
 		basket.setOrderId(getRandomId());

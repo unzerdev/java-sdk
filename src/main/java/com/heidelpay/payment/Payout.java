@@ -1,10 +1,10 @@
-package com.heidelpay.payment.communication.json;
+package com.heidelpay.payment;
 
 /*-
  * #%L
  * Heidelpay Java SDK
  * %%
- * Copyright (C) 2018 Heidelpay GmbH
+ * Copyright (C) 2018 - 2019 Heidelpay GmbH
  * %%
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,25 +20,18 @@ package com.heidelpay.payment.communication.json;
  * #L%
  */
 
-public class JsonIdObject implements JsonObject {
-	private String id;
-	private Boolean recurring;
+public class Payout extends AbstractInitPayment {
 
-	public String getId() {
-		return id;
+	public Payout() {
 	}
 
-	public void setId(String id) {
-		this.id = id;
+	public Payout(Heidelpay heidelpay) {
+		super(heidelpay);
 	}
 
-	public Boolean getRecurring() {
-		return recurring;
+	@Override
+	public String getTypeUrl() {
+		return "payments/<paymentId>/payouts";
 	}
-
-	public void setRecurring(Boolean recurring) {
-		this.recurring = recurring;
-	}
-
 
 }
