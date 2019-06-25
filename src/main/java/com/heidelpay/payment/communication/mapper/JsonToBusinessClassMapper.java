@@ -45,6 +45,7 @@ import com.heidelpay.payment.communication.json.JsonObject;
 import com.heidelpay.payment.communication.json.JsonPayment;
 import com.heidelpay.payment.communication.json.JsonPayout;
 import com.heidelpay.payment.communication.json.JsonPaypage;
+import com.heidelpay.payment.communication.json.JsonPis;
 import com.heidelpay.payment.communication.json.JsonProcessing;
 import com.heidelpay.payment.communication.json.JsonRecurring;
 import com.heidelpay.payment.communication.json.JsonResources;
@@ -400,7 +401,7 @@ public class JsonToBusinessClassMapper {
 		} else if (paymentType instanceof Sofort) {
 			return map((Sofort) paymentType, jsonPaymentType);
 		} else if (paymentType instanceof Pis) {
-			return map((Pis) paymentType, jsonPaymentType);
+			return map((Pis) paymentType, (JsonPis)jsonPaymentType);
 		} else if (paymentType instanceof Alipay) {
 			return map((Alipay) paymentType, jsonPaymentType);
 		} else if (paymentType instanceof Wechatpay) {
@@ -516,9 +517,12 @@ public class JsonToBusinessClassMapper {
 		return sofort;
 	}
 	
-	private PaymentType map(Pis pis, JsonIdObject jsonId) {
-		pis.setId(jsonId.getId());
-		pis.setRecurring(jsonId.getRecurring());
+	private PaymentType map(Pis pis, JsonPis jsonPis) {
+		pis.setId(jsonPis.getId());
+		pis.setRecurring(jsonPis.getRecurring());
+		pis.setBic(jsonPis.getBic());
+		pis.setIban(jsonPis.getIban());
+		pis.setHolder(jsonPis.getHolder());
 		return pis;
 	}
 

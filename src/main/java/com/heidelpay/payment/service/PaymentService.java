@@ -53,6 +53,7 @@ import com.heidelpay.payment.communication.json.JsonIdObject;
 import com.heidelpay.payment.communication.json.JsonIdeal;
 import com.heidelpay.payment.communication.json.JsonPayment;
 import com.heidelpay.payment.communication.json.JsonPayout;
+import com.heidelpay.payment.communication.json.JsonPis;
 import com.heidelpay.payment.communication.json.JsonRecurring;
 import com.heidelpay.payment.communication.json.JsonSepaDirectDebit;
 import com.heidelpay.payment.communication.json.JsonShipment;
@@ -318,11 +319,9 @@ public class PaymentService {
 	public <T extends PaymentType> T fetchPaymentType(String typeId) throws HttpCommunicationException {
 		AbstractPaymentType paymentType = getPaymentTypeFromTypeId(typeId);
 		paymentType.setHeidelpay(heidelpay);
-		String response = restCommunication.httpGet(urlUtil.getHttpGetUrl(paymentType, typeId),
-				heidelpay.getPrivateKey());
+		String response = restCommunication.httpGet(urlUtil.getHttpGetUrl(paymentType, typeId), heidelpay.getPrivateKey());
 		// workaround for Bug AHC-265
-		JsonIdObject jsonPaymentType;
-		jsonPaymentType = new JsonParser<JsonIdObject>().fromJson(response, getJsonObjectFromTypeId(typeId).getClass());
+		JsonIdObject jsonPaymentType = new JsonParser<JsonIdObject>().fromJson(response, getJsonObjectFromTypeId(typeId).getClass());
 		return (T) jsonToBusinessClassMapper.mapToBusinessObject(paymentType, jsonPaymentType);
 	}
 
@@ -543,7 +542,7 @@ public class PaymentService {
 		} else if ("sft".equalsIgnoreCase(paymentType)) {
 			return new JsonIdObject();
 		} else if ("pis".equalsIgnoreCase(paymentType)) {
-			return new JsonIdObject();
+			return new JsonPis();
 		} else if ("ali".equalsIgnoreCase(paymentType)) {
 			return new JsonIdObject();
 		} else if ("wcp".equalsIgnoreCase(paymentType)) {

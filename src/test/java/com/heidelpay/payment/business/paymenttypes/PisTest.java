@@ -44,6 +44,20 @@ public class PisTest extends AbstractPaymentTest {
 	}
 
 	@Test
+	public void testCreatePisWithIbanBic() throws HttpCommunicationException {
+		Pis pis = new Pis("DE69545100670661762678", "SPFKAT2BXXX");
+		pis = getHeidelpay().createPaymentType(pis);
+		assertNotNull(pis.getId());
+		assertNotNull(pis.getIban());
+		assertNotNull(pis.getBic());
+
+		Pis fetchedPis = (Pis)getHeidelpay().fetchPaymentType(pis.getId());
+		assertNotNull(fetchedPis.getId());
+		assertNotNull(fetchedPis.getIban());
+		assertNotNull(fetchedPis.getBic());
+	}
+
+	@Test
 	public void testAuthorizeType() throws HttpCommunicationException, MalformedURLException {
 		Pis pis = getHeidelpay().createPaymentType(new Pis());
 		Charge charge = pis.charge(BigDecimal.ONE, Currency.getInstance("EUR"), new URL("https://www.meinShop.de"));
@@ -60,4 +74,12 @@ public class PisTest extends AbstractPaymentTest {
 		assertNotNull(fetchedPis.getId());
 	}
 
+	@Test
+	public void testFetchPisTypeWithHolderBicIban() throws HttpCommunicationException {
+		Pis fetchedPis = (Pis)getHeidelpay().fetchPaymentType("s-pis-tqiu0stu41qm");
+		assertNotNull(fetchedPis.getId());
+		assertNotNull(fetchedPis.getIban());
+		assertNotNull(fetchedPis.getBic());
+		assertNotNull(fetchedPis.getHolder());
+	}
 }
