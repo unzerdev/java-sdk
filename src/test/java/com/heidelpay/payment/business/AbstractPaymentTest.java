@@ -402,6 +402,7 @@ public class AbstractPaymentTest {
 		Basket basket = new Basket();
 		basket.setAmountTotal(new BigDecimal(866.49));
 		basket.setAmountTotalDiscount(BigDecimal.TEN);
+		basket.setAmountTotalVat(new BigDecimal(144.42));
 		basket.setCurrencyCode(Currency.getInstance("EUR"));
 		basket.setNote("Mistery shopping");
 		basket.setOrderId(getRandomId());
