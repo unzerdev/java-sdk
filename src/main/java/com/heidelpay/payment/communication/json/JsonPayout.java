@@ -22,8 +22,6 @@ package com.heidelpay.payment.communication.json;
 
 public class JsonPayout extends JsonInitPayment implements JsonObject {
 	
-	private String invoiceId;
-
 	public JsonPayout() {
 		super();
 	}
@@ -45,14 +43,6 @@ public class JsonPayout extends JsonInitPayment implements JsonObject {
 		this.setRedirectUrl(json.getRedirectUrl());
 		this.setId(json.getId());
 		this.setPaymentReference(json.getPaymentReference());
-	}
-
-	public String getInvoiceId() {
-		return invoiceId;
-	}
-
-	public void setInvoiceId(String invoiceId) {
-		this.invoiceId = invoiceId;
 	}
 
 }

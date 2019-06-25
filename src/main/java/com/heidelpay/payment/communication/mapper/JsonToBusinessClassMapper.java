@@ -85,9 +85,6 @@ public class JsonToBusinessClassMapper {
 		if(abstractInitPayment instanceof Charge) {
 			json = new JsonCharge(json);
 			((JsonCharge) json).setInvoiceId(((Charge) abstractInitPayment).getInvoiceId());
-		} else if (abstractInitPayment instanceof Payout) {
-			json = new JsonPayout(json);
-			((JsonPayout) json).setInvoiceId(((Payout) abstractInitPayment).getInvoiceId());			
 		}
 
 		return json;

@@ -1,8 +1,26 @@
 package com.heidelpay.payment;
 
-public class Payout extends AbstractInitPayment {
+/*-
+ * #%L
+ * Heidelpay Java SDK
+ * %%
+ * Copyright (C) 2018 - 2019 Heidelpay GmbH
+ * %%
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * 
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ * #L%
+ */
 
-	private String invoiceId;
+public class Payout extends AbstractInitPayment {
 
 	public Payout() {
 	}
@@ -14,14 +32,6 @@ public class Payout extends AbstractInitPayment {
 	@Override
 	public String getTypeUrl() {
 		return "payments/<paymentId>/payouts";
-	}
-
-	public String getInvoiceId() {
-		return invoiceId;
-	}
-
-	public void setInvoiceId(String invoiceId) {
-		this.invoiceId = invoiceId;
 	}
 
 }

@@ -434,7 +434,6 @@ public class PaymentService {
 		String response = restCommunication.httpGet(url.toString(), heidelpay.getPrivateKey());
 		JsonPayout jsonPayout = new JsonParser<JsonPayout>().fromJson(response, JsonPayout.class);
 		payout = (Payout) jsonToBusinessClassMapper.mapToBusinessObject(payout, jsonPayout);
-		payout.setInvoiceId(jsonPayout.getInvoiceId());
 		payout.setPayment(payment);
 		payout.setResourceUrl(url);
 		return payout;

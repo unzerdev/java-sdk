@@ -1,5 +1,25 @@
 package com.heidelpay.payment.business;
 
+/*-
+ * #%L
+ * Heidelpay Java SDK
+ * %%
+ * Copyright (C) 2018 - 2019 Heidelpay GmbH
+ * %%
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * 
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ * #L%
+ */
+
 import static org.junit.Assert.*;
 
 import java.math.BigDecimal;
@@ -19,7 +39,7 @@ import com.heidelpay.payment.paymenttypes.Card;
 public class PayoutTest extends AbstractPaymentTest {
 
 	@Test
-	public void testPayoutCardMinimal() throws MalformedURLException, HttpCommunicationException, ParseException {
+	public void testPayoutCardMinimal() throws MalformedURLException, HttpCommunicationException {
 		Card card = createPaymentTypeCard();
 		Payout payout = getHeidelpay().payout(BigDecimal.ONE, Currency.getInstance("EUR"), card.getId(), new URL("https://www.heidelpay.com"));
 		assertNotNull(payout);
@@ -48,7 +68,6 @@ public class PayoutTest extends AbstractPaymentTest {
 		// Date from fetch is different than date from payout: https://heidelpay.atlassian.net/browse/AHC-1727
 //		assertEquals(payout.getDate(), payoutFetched.getDate());
 		assertEquals(payout.getId(), payoutFetched.getId());
-		assertEquals(payout.getInvoiceId(), payoutFetched.getInvoiceId());
 		assertEquals(payout.getMetadataId(), payoutFetched.getMetadataId());
 		assertEquals(payout.getOrderId(), payoutFetched.getOrderId());
 		assertEquals(payout.getPaymentId(), payoutFetched.getPaymentId());
@@ -66,7 +85,6 @@ public class PayoutTest extends AbstractPaymentTest {
 		payout.setOrderId(getRandomId());
 		payout.setPaymentReference("My Payment Reference");
 		payout.setReturnUrl(new URL("https://www.heidelpay.com"));
-//		payout.setInvoiceId("Invoice 1");
 		payout.setTypeId(typeId);
 		payout.setBasketId(createBasket().getId());
 		payout.setCustomerId(createMaximumCustomerSameAddress().getId());
@@ -76,7 +94,6 @@ public class PayoutTest extends AbstractPaymentTest {
 
 	private Basket createBasket() throws PaymentException, HttpCommunicationException {
 		Basket maxBasket = getMaxTestBasket();
-		Basket basket = getHeidelpay().createBasket(maxBasket);
-		return basket;
+		return getHeidelpay().createBasket(maxBasket);
 	}
 }
