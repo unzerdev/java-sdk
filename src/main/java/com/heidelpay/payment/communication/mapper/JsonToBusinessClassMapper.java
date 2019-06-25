@@ -1,12 +1,13 @@
 package com.heidelpay.payment.communication.mapper;
 
 import com.heidelpay.payment.AbstractInitPayment;
-import com.heidelpay.payment.CustomerCompanyData;
 import com.heidelpay.payment.Cancel;
 import com.heidelpay.payment.Charge;
 import com.heidelpay.payment.CommercialSector;
 import com.heidelpay.payment.Customer;
+import com.heidelpay.payment.CustomerCompanyData;
 import com.heidelpay.payment.Payment;
+import com.heidelpay.payment.Payout;
 import com.heidelpay.payment.Paypage;
 import com.heidelpay.payment.Processing;
 import com.heidelpay.payment.Recurring;
@@ -42,6 +43,7 @@ import com.heidelpay.payment.communication.json.JsonIdeal;
 import com.heidelpay.payment.communication.json.JsonInitPayment;
 import com.heidelpay.payment.communication.json.JsonObject;
 import com.heidelpay.payment.communication.json.JsonPayment;
+import com.heidelpay.payment.communication.json.JsonPayout;
 import com.heidelpay.payment.communication.json.JsonPaypage;
 import com.heidelpay.payment.communication.json.JsonProcessing;
 import com.heidelpay.payment.communication.json.JsonRecurring;
@@ -78,6 +80,7 @@ public class JsonToBusinessClassMapper {
 		json.setOrderId(abstractInitPayment.getOrderId());
 		json.setResources(getResources(abstractInitPayment));
 		json.setCard3ds(abstractInitPayment.getCard3ds());
+		json.setPaymentReference(abstractInitPayment.getPaymentReference());
 
 		if(abstractInitPayment instanceof Charge) {
 			json = new JsonCharge(json);
@@ -190,6 +193,7 @@ public class JsonToBusinessClassMapper {
 		abstractInitPayment.setCurrency(json.getCurrency());
 		abstractInitPayment.setOrderId(json.getOrderId());
 		abstractInitPayment.setCard3ds(json.getCard3ds());
+		abstractInitPayment.setPaymentReference(json.getPaymentReference());
 		if (json.getResources() != null) {
 			abstractInitPayment.setCustomerId(json.getResources().getCustomerId());
 			abstractInitPayment.setMetadataId(json.getResources().getMetadataId());

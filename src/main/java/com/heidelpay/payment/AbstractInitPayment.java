@@ -4,7 +4,7 @@ package com.heidelpay.payment;
  * #%L
  * Heidelpay Java SDK
  * %%
- * Copyright (C) 2018 Heidelpay GmbH
+ * Copyright (C) 2018 - 2019 Heidelpay GmbH
  * %%
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,8 +19,6 @@ package com.heidelpay.payment;
  * limitations under the License.
  * #L%
  */
-
-import com.heidelpay.payment.communication.HttpCommunicationException;
 
 import java.math.BigDecimal;
 import java.net.URL;
@@ -50,6 +48,7 @@ public abstract class AbstractInitPayment extends AbstractPayment {
 	private String paymentId;
 	private String riskId;
 	private String basketId;
+	private String paymentReference;
 
 	private Status status;
 
@@ -210,10 +209,14 @@ public abstract class AbstractInitPayment extends AbstractPayment {
 		return null;
 	}
 
-	public abstract Cancel cancel() throws HttpCommunicationException;
-
-	public abstract Cancel cancel(BigDecimal amount) throws HttpCommunicationException;
-
 	public abstract String getTypeUrl();
+
+	public String getPaymentReference() {
+		return paymentReference;
+	}
+
+	public void setPaymentReference(String paymentReference) {
+		this.paymentReference = paymentReference;
+	}
 
 }

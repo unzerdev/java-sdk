@@ -38,6 +38,8 @@ public class JsonInitPayment extends JsonIdObject implements JsonObject {
 	private URL returnUrl;
 	private URL redirectUrl;
 	private Boolean card3ds;
+	private String paymentReference;
+
 
 	private JsonResources resources;
 	private JsonProcessing processing = new JsonProcessing();
@@ -153,6 +155,14 @@ public class JsonInitPayment extends JsonIdObject implements JsonObject {
 
 	public void setCard3ds(Boolean card3ds) {
 		this.card3ds = card3ds;
+	}
+
+	public String getPaymentReference() {
+		return paymentReference;
+	}
+
+	public void setPaymentReference(String paymentReference) {
+		this.paymentReference = paymentReference;
 	}
 
 }

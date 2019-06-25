@@ -64,6 +64,7 @@ public class Payment extends AbstractPayment {
 	private Authorization authorization;
 	private List<Charge> chargesList;
 	private List<Cancel> cancelList;
+	private List<Payout> payoutList;
 
 	public Payment(Heidelpay heidelpay) {
 		super(heidelpay);
@@ -143,6 +144,17 @@ public class Payment extends AbstractPayment {
 	public Charge getCharge(int index) {
 		return getChargesList().get(index);
 	}
+
+	public Payout getPayout(String payoutId) {
+		if (payoutList == null) return null;
+		for (Payout payout : payoutList) {
+			if (payoutId.equalsIgnoreCase(payout.getId())) {
+				return payout;
+			}
+		}
+		return null;
+	}
+
 	public List<Cancel> getCancelList() {
 		return cancelList;
 	}
@@ -314,6 +326,14 @@ public class Payment extends AbstractPayment {
 
 	public void setBasket(Basket basket) {
 		this.basket = basket;
+	}
+
+	public List<Payout> getPayoutList() {
+		return payoutList;
+	}
+
+	public void setPayoutList(List<Payout> payoutList) {
+		this.payoutList = payoutList;
 	}
 
 }
