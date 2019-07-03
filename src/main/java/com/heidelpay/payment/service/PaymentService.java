@@ -51,6 +51,7 @@ import com.heidelpay.payment.communication.json.JsonCancel;
 import com.heidelpay.payment.communication.json.JsonCard;
 import com.heidelpay.payment.communication.json.JsonCharge;
 import com.heidelpay.payment.communication.json.JsonCustomer;
+import com.heidelpay.payment.communication.json.JsonHirePurchaseRatePlan;
 import com.heidelpay.payment.communication.json.JsonHirePurchaseRatePlanList;
 import com.heidelpay.payment.communication.json.JsonIdObject;
 import com.heidelpay.payment.communication.json.JsonIdeal;
@@ -129,6 +130,20 @@ public class PaymentService {
 				paymentType);
 		JsonIdObject jsonResponse = new JsonParser<JsonIdObject>().fromJson(response, JsonIdObject.class);
 		return fetchPaymentType(jsonResponse.getId());
+	}
+
+	public <T extends PaymentType> T updatePaymentType(T paymentType) throws PaymentException, HttpCommunicationException {
+		String url = urlUtil.getRestUrl(paymentType);
+		url = addId(url, paymentType.getId());
+		String response = restCommunication.httpPut(url, heidelpay.getPrivateKey(),
+				paymentType);
+		JsonIdObject jsonResponse = new JsonParser<JsonIdObject>().fromJson(response, JsonIdObject.class);
+		return fetchPaymentType(jsonResponse.getId());
+	}
+
+	private String addId(String url, String id) {
+		if (!url.endsWith("/")) url += "/";
+		return url + id;
 	}
 
 	public Customer createCustomer(Customer customer) throws HttpCommunicationException {
@@ -560,6 +575,8 @@ public class PaymentService {
 			return new JsonIdObject();
 		} else if ("apl".equalsIgnoreCase(paymentType)) {
 			return new JsonApplepayResponse();
+		} else if ("hdd".equalsIgnoreCase(paymentType)) {
+			return new JsonHirePurchaseRatePlan();
 		} else {
 			throw new PaymentException("Type '" + typeId + "' is currently now supported by the SDK");
 		}
@@ -605,6 +622,8 @@ public class PaymentService {
 			return new Wechatpay();
 		} else if ("apl".equalsIgnoreCase(paymentType)) {
 			return new Applepay();
+		} else if ("hdd".equalsIgnoreCase(paymentType)) {
+			return new HirePurchaseRatePlan();
 		} else {
 			throw new PaymentException("Type '" + typeId + "' is currently now supported by the SDK");
 		}
@@ -613,6 +632,7 @@ public class PaymentService {
 	private String getTypeIdentifier(String typeId) {
 		return typeId.substring(2, 5);
 	}
+
 
 
 }

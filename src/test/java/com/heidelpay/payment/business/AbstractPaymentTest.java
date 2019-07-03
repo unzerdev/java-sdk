@@ -168,6 +168,10 @@ public class AbstractPaymentTest {
 		return getHeidelpay().createCustomer(getMaximumCustomer(getRandomId()));
 	}
 
+	protected Basket createBasket() throws HttpCommunicationException, ParseException {
+		return getHeidelpay().createBasket(getMaxTestBasket());
+	}
+
 	protected Customer createFactoringOKCustomer() throws HttpCommunicationException, ParseException {
 		return getHeidelpay().createCustomer(getFactoringOKCustomer(getRandomId()));
 	}
@@ -366,6 +370,14 @@ public class AbstractPaymentTest {
 		assertEquals(cancelInit.getId(), cancel.getId());
 		assertEquals(cancelInit.getTypeUrl(), cancel.getTypeUrl());
 	}
+
+	protected void assertNumberEquals(BigDecimal expected, BigDecimal actual) {
+		if (expected == null && actual == null) return;
+		if (expected == null && actual != null) throw new AssertionError("expected is null, but actual is not");
+		if (expected != null && actual == null) throw new AssertionError("expected is not null, but actual is null");
+		if (expected.compareTo(actual) != 0) throw new AssertionError("expected: " + expected + ", actual: " + actual);
+	}
+
 
 
 	protected BigDecimal getBigDecimal(String number) {

@@ -164,6 +164,16 @@ public class Heidelpay {
 		}
 	}
 
+	public <T extends PaymentType> T updatePaymentType(T paymentType) throws PaymentException, HttpCommunicationException {
+		if (paymentType != null && paymentType.getId() == null) {
+			return paymentService.createPaymentType(paymentType);
+		} else if (paymentType != null && paymentType.getId() != null) {
+			return paymentService.updatePaymentType(paymentType);
+		} else {
+			return null;
+		}
+	}
+	
 	/**
 	 * Authorize call with customerId and typeId. This is used if the type is
 	 * created using the Javascript SDK or the Mobile SDK
@@ -896,4 +906,5 @@ public class Heidelpay {
 		.setCard3ds(card3ds);
 		return authorization;
 	}
+
 }

@@ -1,27 +1,19 @@
-package com.heidelpay.payment.business.paymenttypes;
+package com.heidelpay.payment.communication.json;
 
 import java.math.BigDecimal;
-import java.net.URL;
 import java.util.ArrayList;
-import java.util.Currency;
 import java.util.Date;
 import java.util.List;
 
 import com.google.gson.annotations.SerializedName;
-import com.heidelpay.payment.Authorization;
-import com.heidelpay.payment.Basket;
-import com.heidelpay.payment.Customer;
-import com.heidelpay.payment.communication.HttpCommunicationException;
-import com.heidelpay.payment.communication.json.JsonObject;
-import com.heidelpay.payment.paymenttypes.AbstractPaymentType;
-import com.heidelpay.payment.paymenttypes.PaymentType;
+import com.heidelpay.payment.business.paymenttypes.HirePurchaseRate;
 
-public class HirePurchaseRatePlan extends AbstractPaymentType implements PaymentType, JsonObject {
+public class JsonHirePurchaseRatePlan extends JsonIdObject implements JsonObject {
 
 	
 	private String iban;
 	private String bic;
-	private String accountHolder;
+	private String holder;
 	private Date invoiceDate;
 	private Date invoiceDueDate;
 
@@ -39,6 +31,7 @@ public class HirePurchaseRatePlan extends AbstractPaymentType implements Payment
 	private BigDecimal monthlyRate;
 	private BigDecimal lastRate;
 	private List<HirePurchaseRate> rateList = new ArrayList<HirePurchaseRate>();
+	
 	public int getNumberOfRates() {
 		return numberOfRates;
 	}
@@ -111,10 +104,6 @@ public class HirePurchaseRatePlan extends AbstractPaymentType implements Payment
 	public void setRateList(List<HirePurchaseRate> rateList) {
 		this.rateList = rateList;
 	}
-	@Override
-	public String getTypeUrl() {
-		return "types/hire-purchase-direct-debit";
-	}
 	public String getIban() {
 		return iban;
 	}
@@ -127,11 +116,11 @@ public class HirePurchaseRatePlan extends AbstractPaymentType implements Payment
 	public void setBic(String bic) {
 		this.bic = bic;
 	}
-	public String getAccountHolder() {
-		return accountHolder;
+	public String getHolder() {
+		return holder;
 	}
-	public void setAccountHolder(String accountHolder) {
-		this.accountHolder = accountHolder;
+	public void setHolder(String holder) {
+		this.holder = holder;
 	}
 	public Date getInvoiceDate() {
 		return invoiceDate;
@@ -145,20 +134,4 @@ public class HirePurchaseRatePlan extends AbstractPaymentType implements Payment
 	public void setInvoiceDueDate(Date invoiceDueDate) {
 		this.invoiceDueDate = invoiceDueDate;
 	}
-	
-	public Authorization authorize(BigDecimal amount, Currency currency, URL returnUrl, String customerId, String basketId, BigDecimal effectiveInterestRate) throws HttpCommunicationException {
-		return getHeidelpay().authorize(getAuthorization(amount, currency, returnUrl, customerId, basketId, effectiveInterestRate));
-	}
-	private Authorization getAuthorization(BigDecimal amount, Currency currency, URL returnUrl, String customerId, String basketId, BigDecimal effectiveInterestRate) {
-		Authorization authorization = new Authorization();
-		authorization.setAmount(amount);
-		authorization.setCurrency(currency);
-		authorization.setReturnUrl(returnUrl);
-		authorization.setCustomerId(customerId);
-		authorization.setBasketId(basketId);
-		authorization.setTypeId(this.getId());
-		authorization.setEffectiveInterestRate(effectiveInterestRate);
-		return authorization;
-	}
-
 }

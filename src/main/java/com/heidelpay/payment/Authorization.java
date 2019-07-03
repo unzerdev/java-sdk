@@ -34,6 +34,8 @@ import com.heidelpay.payment.communication.HttpCommunicationException;
  */
 public class Authorization extends AbstractInitPayment {
 
+	private BigDecimal effectiveInterestRate;
+	
 	public Authorization() {
 		super();
 	}
@@ -61,6 +63,14 @@ public class Authorization extends AbstractInitPayment {
 	@Override
 	public String getTypeUrl() {
 		return "payments/<paymentId>/authorize";
+	}
+
+	public BigDecimal getEffectiveInterestRate() {
+		return effectiveInterestRate;
+	}
+
+	public void setEffectiveInterestRate(BigDecimal effectiveInterestRate) {
+		this.effectiveInterestRate = effectiveInterestRate;
 	}
 
 }

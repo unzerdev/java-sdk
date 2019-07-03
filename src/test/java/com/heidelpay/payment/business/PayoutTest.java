@@ -74,9 +74,4 @@ public class PayoutTest extends AbstractPaymentTest {
 		return payout;
 	}
 
-	private Basket createBasket() throws PaymentException, HttpCommunicationException {
-		Basket maxBasket = getMaxTestBasket();
-		Basket basket = getHeidelpay().createBasket(maxBasket);
-		return basket;
-	}
 }

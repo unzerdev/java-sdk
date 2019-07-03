@@ -39,6 +39,7 @@ public class JsonInitPayment extends JsonIdObject implements JsonObject {
 	private URL redirectUrl;
 	private Boolean card3ds;
 	private String paymentReference;
+	private BigDecimal effectiveInterestRate;
 
 
 	private JsonResources resources;
@@ -163,6 +164,14 @@ public class JsonInitPayment extends JsonIdObject implements JsonObject {
 
 	public void setPaymentReference(String paymentReference) {
 		this.paymentReference = paymentReference;
+	}
+
+	public BigDecimal getEffectiveInterestRate() {
+		return effectiveInterestRate;
+	}
+
+	public void setEffectiveInterestRate(BigDecimal effectiveInterestRate) {
+		this.effectiveInterestRate = effectiveInterestRate;
 	}
 
 }
