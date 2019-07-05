@@ -22,14 +22,19 @@ package com.heidelpay.payment;
 
 import java.math.BigDecimal;
 
+import com.heidelpay.payment.AbstractInitPayment.Status;
+
 /**
  * Business object for Cancelations
  * @author rene.felder
  *
  */
 public class Cancel extends AbstractPayment {
+	public enum Status {SUCCESS, PENDING, ERRROR}
+	
 	private BigDecimal amount;
 	private Processing processing = new Processing();
+	private Status status;
 
 	public Cancel() {
 		super();
@@ -58,6 +63,12 @@ public class Cancel extends AbstractPayment {
 	@Override
 	public String getTypeUrl() {
 		return "payments/<paymentId>/authorize/cancels";
+	}
+	public Status getStatus() {
+		return status;
+	}
+	public void setStatus(Status status) {
+		this.status = status;
 	}
 
 

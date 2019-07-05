@@ -1,5 +1,7 @@
 package com.heidelpay.payment.communication.json;
 
+import com.google.gson.annotations.SerializedName;
+
 /*-
  * #%L
  * Heidelpay Java SDK
@@ -27,7 +29,10 @@ public class JsonProcessing {
 	private String bic;
 	private String iban;
 	private String holder;
-	
+	@SerializedName("PDFLink")
+	private String pdfLink;
+	private String externalOrderId;
+
 	public String getUniqueId() {
 		return uniqueId;
 	}
@@ -63,5 +68,17 @@ public class JsonProcessing {
 	}
 	public void setHolder(String holder) {
 		this.holder = holder;
+	}
+	public String getPdfLink() {
+		return pdfLink;
+	}
+	public void setPdfLink(String pdfLink) {
+		this.pdfLink = pdfLink;
+	}
+	public String getExternalOrderId() {
+		return externalOrderId;
+	}
+	public void setExternalOrderId(String externalOrderId) {
+		this.externalOrderId = externalOrderId;
 	}
 }

@@ -31,6 +31,7 @@ public class Basket implements PaymentType {
 
 	private String id;
 	private BigDecimal amountTotal;
+	private BigDecimal amountTotalVat;
 	private BigDecimal amountTotalDiscount;
 	private Currency currencyCode;
 	private String orderId;
@@ -113,6 +114,14 @@ public class Basket implements PaymentType {
 	public Basket setId(String id) {
 		this.id = id;
 		return this;
+	}
+
+	public BigDecimal getAmountTotalVat() {
+		return amountTotalVat;
+	}
+
+	public void setAmountTotalVat(BigDecimal amountTotalVat) {
+		this.amountTotalVat = amountTotalVat;
 	}
 
 }

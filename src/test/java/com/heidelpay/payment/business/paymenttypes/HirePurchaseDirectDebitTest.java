@@ -23,6 +23,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.text.ParseException;
@@ -34,6 +35,10 @@ import java.util.List;
 import org.apache.commons.lang3.time.DateUtils;
 import org.junit.Test;
 
+import com.heidelpay.payment.Authorization;
+import com.heidelpay.payment.Cancel;
+import com.heidelpay.payment.Charge;
+import com.heidelpay.payment.Shipment;
 import com.heidelpay.payment.business.AbstractPaymentTest;
 import com.heidelpay.payment.communication.HttpCommunicationException;
 
@@ -51,15 +56,8 @@ public class HirePurchaseDirectDebitTest extends AbstractPaymentTest {
 
 	@Test
 	public void testCreateHirePurchaseTypeWithIbanInvoiceDate() throws HttpCommunicationException, ParseException {
-		BigDecimal effectiveInterestRate = BigDecimal.valueOf(5.5);
-		Date orderDate = getDate("21.06.2019");
-		List<HirePurchaseRatePlan> rateList = getHeidelpay().hirePurchaseRates(BigDecimal.TEN, Currency.getInstance("EUR"), effectiveInterestRate, orderDate);
-		HirePurchaseRatePlan ratePlan = rateList.get(0);
-		ratePlan.setIban("DE46940594210000012345");
-		ratePlan.setBic("COBADEFFXXX");
-		ratePlan.setAccountHolder("Rene Felder");
-		ratePlan.setInvoiceDate(DateUtils.addDays(new Date(), -1));
-		ratePlan.setInvoiceDueDate(DateUtils.addDays(new Date(), 10));
+		HirePurchaseRatePlan ratePlan = getHirePurchaseRatePlan();
+		addIbanInvoiceParameter(ratePlan);
 		HirePurchaseRatePlan ratePlanReturned = getHeidelpay().createPaymentType(ratePlan);
 		assertNotNull(ratePlanReturned);
 		assertRatePlan(ratePlan, ratePlanReturned);
@@ -67,19 +65,12 @@ public class HirePurchaseDirectDebitTest extends AbstractPaymentTest {
 	
 	@Test
 	public void testCreateHirePurchaseTypeIbanLater() throws HttpCommunicationException, ParseException {
-		BigDecimal effectiveInterestRate = BigDecimal.valueOf(5.5);
-		Date orderDate = getDate("21.06.2019");
-		List<HirePurchaseRatePlan> rateList = getHeidelpay().hirePurchaseRates(BigDecimal.TEN, Currency.getInstance("EUR"), effectiveInterestRate, orderDate);
-		HirePurchaseRatePlan ratePlan = rateList.get(0);
+		HirePurchaseRatePlan ratePlan = getHirePurchaseRatePlan();
 		HirePurchaseRatePlan ratePlanReturned = getHeidelpay().createPaymentType(ratePlan);
 		assertNotNull(ratePlanReturned);
 		assertRatePlan(ratePlan, ratePlanReturned);
 		
-		ratePlanReturned.setIban("DE46940594210000012345");
-		ratePlanReturned.setBic("COBADEFFXXX");
-		ratePlanReturned.setAccountHolder("Rene Felder");
-		ratePlanReturned.setInvoiceDate(DateUtils.addDays(new Date(), -1));
-		ratePlanReturned.setInvoiceDueDate(DateUtils.addDays(new Date(), 10));
+		addIbanInvoiceParameter(ratePlanReturned);
 		HirePurchaseRatePlan updatedPlan = getHeidelpay().updatePaymentType(ratePlanReturned);
 		
 		assertNotNull(updatedPlan);
@@ -87,21 +78,188 @@ public class HirePurchaseDirectDebitTest extends AbstractPaymentTest {
 	}
 	
 	@Test
-	public void testAuthorizeViaType() throws HttpCommunicationException, ParseException, MalformedURLException {
-		BigDecimal effectiveInterestRate = BigDecimal.valueOf(5.5);
-		Date orderDate = getDate("21.06.2019");
-		List<HirePurchaseRatePlan> rateList = getHeidelpay().hirePurchaseRates(BigDecimal.TEN, Currency.getInstance("EUR"), effectiveInterestRate, orderDate);
-		HirePurchaseRatePlan ratePlan = rateList.get(0);
-		ratePlan.setIban("DE46940594210000012345");
-		ratePlan.setBic("COBADEFFXXX");
-		ratePlan.setAccountHolder("Rene Felder");
-		ratePlan.setInvoiceDate(DateUtils.addDays(new Date(), -1));
-		ratePlan.setInvoiceDueDate(DateUtils.addDays(new Date(), 10));
+	public void testAuthorizeViaTypeWithIban() throws HttpCommunicationException, ParseException, MalformedURLException {
+		HirePurchaseRatePlan ratePlan = getHirePurchaseRatePlan();
+		addIbanInvoiceParameter(ratePlan);
+		HirePurchaseRatePlan ratePlanReturned = createHirePurchaseType(ratePlan);
+		assertNotNull(ratePlanReturned);
+		assertRatePlan(ratePlan, ratePlanReturned);
+		
+		Authorization authorization = ratePlanReturned.authorize(new BigDecimal(866.49), Currency.getInstance("EUR"), new URL("https://www.heidelpay.com"), createMaximumCustomerSameAddress().getId(), createBasket().getId(), ratePlan.getEffectiveInterestRate());
+		assertValidAuthorize(ratePlan, authorization);
+	}
+
+	@Test
+	public void testAuthorizeViaHeidelpayTypeIdWithIban() throws HttpCommunicationException, ParseException, MalformedURLException {
+		HirePurchaseRatePlan ratePlan = getHirePurchaseRatePlan();
+		addIbanInvoiceParameter(ratePlan);
+		HirePurchaseRatePlan ratePlanReturned = createHirePurchaseType(ratePlan);
+		assertNotNull(ratePlanReturned);
+		assertRatePlan(ratePlan, ratePlanReturned);
+		
+		Authorization authorization = getHeidelpay().authorize(getAuthorization(ratePlanReturned.getId(), createMaximumCustomerSameAddress().getId(), createBasket().getId(), ratePlan.getEffectiveInterestRate()));
+		assertValidAuthorize(ratePlan, authorization);
+	}
+	
+	@Test
+	public void testChargeViaAuthorize() throws HttpCommunicationException, ParseException, MalformedURLException {
+		HirePurchaseRatePlan ratePlan = createHirePurchaseType(getHirePurchaseRatePlan());
 		HirePurchaseRatePlan ratePlanReturned = getHeidelpay().createPaymentType(ratePlan);
 		assertNotNull(ratePlanReturned);
 		assertRatePlan(ratePlan, ratePlanReturned);
 		
-		ratePlanReturned.authorize(BigDecimal.TEN, Currency.getInstance("EUR"), new URL("https://www.heidelpay.com"), createMaximumCustomerSameAddress().getId(), createBasket().getId(), ratePlan.getEffectiveInterestRate());
+		Authorization authorization = ratePlanReturned.authorize(new BigDecimal(866.49), Currency.getInstance("EUR"), new URL("https://www.heidelpay.com"), createMaximumCustomerSameAddress().getId(), createBasket().getId(), ratePlan.getEffectiveInterestRate());
+		assertValidAuthorize(ratePlan, authorization);
+		
+		Charge charge = authorization.charge();
+		assertValidCharge(charge);
+	}
+
+	@Test
+	public void testFullCancellationBeforeShipment() throws HttpCommunicationException, ParseException, MalformedURLException {
+		HirePurchaseRatePlan ratePlan = createHirePurchaseType(getHirePurchaseRatePlan());
+		HirePurchaseRatePlan ratePlanReturned = getHeidelpay().createPaymentType(ratePlan);
+		assertNotNull(ratePlanReturned);
+		assertRatePlan(ratePlan, ratePlanReturned);
+		
+		Authorization authorization = ratePlanReturned.authorize(new BigDecimal(866.49), Currency.getInstance("EUR"), new URL("https://www.heidelpay.com"), createMaximumCustomerSameAddress().getId(), createBasket().getId(), ratePlan.getEffectiveInterestRate());
+		assertValidAuthorize(ratePlan, authorization);
+		
+		Charge charge = authorization.charge();
+		assertValidCharge(charge);
+		
+		Cancel cancel = charge.cancel();
+		assertValidCancel(cancel, BigDecimal.TEN);
+	}
+
+	@Test
+	public void testPartialCancellationBeforeShipment() throws HttpCommunicationException, ParseException, MalformedURLException {
+		HirePurchaseRatePlan ratePlan = createHirePurchaseType(getHirePurchaseRatePlan());
+		HirePurchaseRatePlan ratePlanReturned = getHeidelpay().createPaymentType(ratePlan);
+		assertNotNull(ratePlanReturned);
+		assertRatePlan(ratePlan, ratePlanReturned);
+		
+		Authorization authorization = ratePlanReturned.authorize(new BigDecimal(866.49), Currency.getInstance("EUR"), new URL("https://www.heidelpay.com"), createMaximumCustomerSameAddress().getId(), createBasket().getId(), ratePlan.getEffectiveInterestRate());
+		assertValidAuthorize(ratePlan, authorization);
+		
+		Charge charge = authorization.charge();
+		assertValidCharge(charge);
+		
+		Cancel cancel = charge.cancel(BigDecimal.ONE);
+		assertValidCancel(cancel, BigDecimal.ONE);
+	}
+
+	@Test
+	public void testShipment() throws HttpCommunicationException, ParseException, MalformedURLException {
+		HirePurchaseRatePlan ratePlan = getHirePurchaseRatePlan();
+		addIbanInvoiceParameter(ratePlan);
+		HirePurchaseRatePlan ratePlanReturned = getHeidelpay().createPaymentType(ratePlan);
+		assertNotNull(ratePlanReturned);
+		assertRatePlan(ratePlan, ratePlanReturned);
+		
+		Authorization authorization = ratePlanReturned.authorize(new BigDecimal(866.49), Currency.getInstance("EUR"), new URL("https://www.heidelpay.com"), createMaximumCustomerSameAddress().getId(), createBasket().getId(), ratePlan.getEffectiveInterestRate());
+		assertValidAuthorize(ratePlan, authorization);
+		
+		Charge charge = authorization.charge();
+		assertValidCharge(charge);
+		
+		Shipment shipment = getHeidelpay().shipment(charge.getPaymentId());
+		assertValidShipment(shipment);		
+	}
+
+	@Test
+	public void testFullCancelAfterShipment() throws HttpCommunicationException, ParseException, MalformedURLException {
+		HirePurchaseRatePlan ratePlan = getHirePurchaseRatePlan();
+		addIbanInvoiceParameter(ratePlan);
+		HirePurchaseRatePlan ratePlanReturned = getHeidelpay().createPaymentType(ratePlan);
+		assertNotNull(ratePlanReturned);
+		assertRatePlan(ratePlan, ratePlanReturned);
+		
+		Authorization authorization = ratePlanReturned.authorize(new BigDecimal(866.49), Currency.getInstance("EUR"), new URL("https://www.heidelpay.com"), createMaximumCustomerSameAddress().getId(), createBasket().getId(), ratePlan.getEffectiveInterestRate());
+		assertValidAuthorize(ratePlan, authorization);
+		
+		Charge charge = authorization.charge();
+		assertValidCharge(charge);
+		
+		Shipment shipment = getHeidelpay().shipment(charge.getPaymentId());
+		assertValidShipment(shipment);		
+
+		Cancel cancel = charge.cancel();
+		assertValidCancel(cancel, getAmount());
+	}
+
+	private void assertValidShipment(Shipment shipment) {
+		assertNotNull(shipment);
+	}
+	
+	private void assertValidCancel(Cancel cancel, BigDecimal cancellationAmount) {
+		assertNotNull(cancel);
+		assertNotNull(cancel.getProcessing().getUniqueId());
+		assertNotNull(cancel.getProcessing().getShortId());
+		assertNumberEquals(cancellationAmount, cancel.getAmount());
+		assertEquals(Cancel.Status.SUCCESS, cancel.getStatus());
+	}
+	
+	private void assertValidCharge(Charge charge) {
+		assertNotNull(charge);
+		assertNotNull(charge.getProcessing().getExternalOrderId());
+		assertNotNull(charge.getProcessing().getUniqueId());
+		assertNotNull(charge.getProcessing().getShortId());
+		assertNumberEquals(getAmount(), charge.getAmount());
+		assertEquals(Charge.Status.SUCCESS, charge.getStatus());
+	}
+
+	
+	protected Authorization getAuthorization(String typeId, String customerId, String basketId, BigDecimal effectiveInterestRate) throws MalformedURLException {
+		Authorization authorization = new Authorization();
+		authorization
+		.setAmount(getAmount())
+		.setCurrency(Currency.getInstance("EUR"))
+		.setTypeId(typeId)
+		.setReturnUrl(new URL("https://www.heidelpay.com"))
+		.setCustomerId(customerId)
+		.setBasketId(basketId);
+		authorization.setEffectiveInterestRate(effectiveInterestRate);
+		return authorization;
+	}
+
+	private BigDecimal getAmount() {
+		BigDecimal amount = new BigDecimal(866.4900);
+		return amount.setScale(2, RoundingMode.HALF_UP);
+	}	
+	private HirePurchaseRatePlan createHirePurchaseType(HirePurchaseRatePlan ratePlan) throws ParseException, HttpCommunicationException {
+		return getHeidelpay().createPaymentType(ratePlan);
+	}
+
+	private void addIbanInvoiceParameter(HirePurchaseRatePlan ratePlan) {
+		ratePlan.setIban("DE46940594210000012345");
+		ratePlan.setBic("COBADEFFXXX");
+		ratePlan.setAccountHolder("Rene Felder");
+		ratePlan.setInvoiceDate(DateUtils.addDays(new Date(), 0));
+		ratePlan.setInvoiceDueDate(DateUtils.addDays(new Date(), 10));
+	}
+
+	private HirePurchaseRatePlan getHirePurchaseRatePlan() throws ParseException, HttpCommunicationException {
+		BigDecimal effectiveInterestRate = BigDecimal.valueOf(5.5);
+		Date orderDate = getDate("21.06.2019");
+		List<HirePurchaseRatePlan> rateList = getHeidelpay().hirePurchaseRates(BigDecimal.TEN, Currency.getInstance("EUR"), effectiveInterestRate, orderDate);
+		HirePurchaseRatePlan ratePlan = rateList.get(0);
+		return ratePlan;
+	}
+
+	private void assertValidAuthorize(HirePurchaseRatePlan ratePlan, Authorization authorization) {
+		assertNotNull(authorization);
+		assertNumberEquals(getAmount(), authorization.getAmount());
+		assertEquals(Authorization.Status.SUCCESS, authorization.getStatus());
+		assertNumberEquals(ratePlan.getEffectiveInterestRate(), authorization.getEffectiveInterestRate());
+		assertNotNull(authorization.getProcessing().getPdfLink());
+		assertNotNull(authorization.getProcessing().getExternalOrderId());
+		assertNotNull(authorization.getProcessing().getExternalOrderId());
+
+		assertNotNull(authorization.getPaymentId());
+		assertNotNull(authorization.getCustomerId());
+		assertNotNull(authorization.getBasketId());
+		assertNotNull(authorization.getTypeId());
 	}
 	
 	

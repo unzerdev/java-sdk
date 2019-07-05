@@ -314,8 +314,16 @@ public class JsonToBusinessClassMapper {
 			abstractInitPayment.setStatus(com.heidelpay.payment.AbstractInitPayment.Status.PENDING);
 		} else if (json.getIsError()) {
 			abstractInitPayment.setStatus(com.heidelpay.payment.AbstractInitPayment.Status.ERRROR);
-		}
-	
+		}	
+	}
+	private void setStatus(Cancel cancel, JsonCancel json) {
+		if (json.getIsSuccess()) {
+			cancel.setStatus(Cancel.Status.SUCCESS);
+		} else if (json.getIsPending()) {
+			cancel.setStatus(Cancel.Status.PENDING);
+		} else if (json.getIsError()) {
+			cancel.setStatus(Cancel.Status.ERRROR);
+		}	
 	}
 	private void setStatus(Recurring recurring, JsonRecurring json) {
 		if (json.getIsSuccess()) {
@@ -334,6 +342,7 @@ public class JsonToBusinessClassMapper {
 		cancel.setProcessing(getProcessing(json.getProcessing()));
 		cancel.setMessage(json.getMessage());
 		cancel.setDate(json.getDate());
+		setStatus(cancel, json);
 		return cancel;
 	}
 
@@ -352,6 +361,8 @@ public class JsonToBusinessClassMapper {
 		processing.setDescriptor(json.getDescriptor());
 		processing.setHolder(json.getHolder());
 		processing.setIban(json.getIban());
+		processing.setPdfLink(json.getPdfLink());
+		processing.setExternalOrderId(json.getExternalOrderId());
 		return processing;
 	}
 

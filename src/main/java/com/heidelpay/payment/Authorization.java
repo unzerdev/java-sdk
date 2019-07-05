@@ -69,8 +69,9 @@ public class Authorization extends AbstractInitPayment {
 		return effectiveInterestRate;
 	}
 
-	public void setEffectiveInterestRate(BigDecimal effectiveInterestRate) {
+	public Authorization setEffectiveInterestRate(BigDecimal effectiveInterestRate) {
 		this.effectiveInterestRate = effectiveInterestRate;
+		return this;
 	}
 
 }

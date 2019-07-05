@@ -9,8 +9,6 @@ import java.util.List;
 
 import com.google.gson.annotations.SerializedName;
 import com.heidelpay.payment.Authorization;
-import com.heidelpay.payment.Basket;
-import com.heidelpay.payment.Customer;
 import com.heidelpay.payment.communication.HttpCommunicationException;
 import com.heidelpay.payment.communication.json.JsonObject;
 import com.heidelpay.payment.paymenttypes.AbstractPaymentType;

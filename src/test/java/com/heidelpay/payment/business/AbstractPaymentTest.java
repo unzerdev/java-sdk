@@ -23,6 +23,7 @@ package com.heidelpay.payment.business;
 import static org.junit.Assert.assertEquals;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.text.ParseException;
@@ -413,6 +414,7 @@ public class AbstractPaymentTest {
 	protected Basket getMaxTestBasket() {
 		Basket basket = new Basket();
 		basket.setAmountTotal(new BigDecimal(866.49));
+		basket.setAmountTotalVat(new BigDecimal(866.49*0.2).setScale(2, RoundingMode.HALF_UP));
 		basket.setAmountTotalDiscount(BigDecimal.TEN);
 		basket.setCurrencyCode(Currency.getInstance("EUR"));
 		basket.setNote("Mistery shopping");
@@ -454,9 +456,9 @@ public class AbstractPaymentTest {
 		basketItem.setBasketItemReferenceId("Artikelnummer4712");
 		basketItem.setAmountDiscount(BigDecimal.ONE);
 		basketItem.setAmountGross(new BigDecimal(365.99));
-		basketItem.setAmountNet(new BigDecimal(101.66));
-		basketItem.setAmountPerUnit(new BigDecimal(121.99));
-		basketItem.setAmountVat(new BigDecimal(20.33));
+		basketItem.setAmountNet(new BigDecimal(307.55));
+		basketItem.setAmountPerUnit(new BigDecimal(223.66));
+		basketItem.setAmountVat(new BigDecimal(58.44));
 		basketItem.setQuantity(3);
 		basketItem.setTitle("Apple iPad Air");
 		basketItem.setUnit("Pc.");

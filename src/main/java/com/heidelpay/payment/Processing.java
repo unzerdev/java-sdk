@@ -27,6 +27,8 @@ public class Processing {
 	private String bic;
 	private String iban;
 	private String holder;
+	private String pdfLink;
+	private String externalOrderId;
 	
 	public String getUniqueId() {
 		return uniqueId;
@@ -63,6 +65,18 @@ public class Processing {
 	}
 	public void setHolder(String holder) {
 		this.holder = holder;
+	}
+	public String getPdfLink() {
+		return pdfLink;
+	}
+	public void setPdfLink(String pdfLink) {
+		this.pdfLink = pdfLink;
+	}
+	public String getExternalOrderId() {
+		return externalOrderId;
+	}
+	public void setExternalOrderId(String externalOrderId) {
+		this.externalOrderId = externalOrderId;
 	}
 	
 }
