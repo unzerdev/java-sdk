@@ -51,6 +51,12 @@ public class UrlUtil {
 
 	private PropertiesUtil properties = new PropertiesUtil();
 
+	private String endPoint;
+
+	public UrlUtil (String endPoint) {
+		this.endPoint = endPoint;
+	}
+
 	public URL getUrl(String url) {
 		try {
 			return new URL(url);
@@ -111,15 +117,19 @@ public class UrlUtil {
 		return buffer.toString();
 	}
 	public String getRestUrl() {
-		StringBuffer buffer = new StringBuffer();
-		buffer.append(properties.getString(PropertiesUtil.REST_ENDPOINT));
-		if (buffer.length() == 0) {
-			throw new RuntimeException("Properties file heidelpay.properties is empty");
+		if(endPoint != null && !endPoint.isEmpty()) {
+			return endPoint;
+		} else {
+			StringBuffer buffer = new StringBuffer();
+			buffer.append(properties.getString(PropertiesUtil.REST_ENDPOINT));
+			if (buffer.length() == 0) {
+				throw new RuntimeException("Properties file heidelpay.properties is empty");
+			}
+			appendSlashIfNeeded(buffer);
+			buffer.append(properties.getString(PropertiesUtil.REST_VERSION));
+			appendSlashIfNeeded(buffer);
+			return buffer.toString();
 		}
-		appendSlashIfNeeded(buffer);
-		buffer.append(properties.getString(PropertiesUtil.REST_VERSION));
-		appendSlashIfNeeded(buffer);
-		return buffer.toString();
 	}
 
 	private void appendSlashIfNeeded(StringBuffer buffer) {

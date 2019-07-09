@@ -33,7 +33,7 @@ import com.heidelpay.payment.communication.mapper.JsonToBusinessClassMapper;
 public class PaypageService {
 	private HeidelpayRestCommunication restCommunication;
 
-	private UrlUtil urlUtil = new UrlUtil();
+	private UrlUtil urlUtil;
 	private JsonToBusinessClassMapper jsonToBusinessClassMapper = new JsonToBusinessClassMapper();
 	private Heidelpay heidelpay;
 
@@ -58,6 +58,7 @@ public class PaypageService {
 	public PaypageService(Heidelpay heidelpay, HeidelpayRestCommunication restCommunication) {
 		super();
 		this.heidelpay = heidelpay;
+		this.urlUtil = new UrlUtil(heidelpay.getEndPoint());
 		this.restCommunication = restCommunication;
 	}
 

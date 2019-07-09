@@ -51,6 +51,7 @@ import com.heidelpay.payment.communication.json.JsonObject;
 import com.heidelpay.payment.communication.json.JsonPayment;
 import com.heidelpay.payment.communication.json.JsonPayout;
 import com.heidelpay.payment.communication.json.JsonPaypage;
+import com.heidelpay.payment.communication.json.JsonPis;
 import com.heidelpay.payment.communication.json.JsonProcessing;
 import com.heidelpay.payment.communication.json.JsonRecurring;
 import com.heidelpay.payment.communication.json.JsonResources;
@@ -93,7 +94,7 @@ public class JsonToBusinessClassMapper {
 			((JsonCharge) json).setInvoiceId(((Charge) abstractInitPayment).getInvoiceId());
 		} else if (abstractInitPayment instanceof Payout) {
 			json = new JsonPayout(json);
-			((JsonPayout) json).setInvoiceId(((Payout) abstractInitPayment).getInvoiceId());			
+			((JsonPayout) json).setInvoiceId(((Payout) abstractInitPayment).getInvoiceId());
 		} else if(abstractInitPayment instanceof Authorization) {
 			json = new JsonAuthorization(json);
 			((JsonAuthorization) json).setEffectiveInterestRate(((Authorization) abstractInitPayment).getEffectiveInterestRate());
@@ -314,7 +315,7 @@ public class JsonToBusinessClassMapper {
 			abstractInitPayment.setStatus(com.heidelpay.payment.AbstractInitPayment.Status.PENDING);
 		} else if (json.getIsError()) {
 			abstractInitPayment.setStatus(com.heidelpay.payment.AbstractInitPayment.Status.ERRROR);
-		}	
+		}
 	}
 	private void setStatus(Cancel cancel, JsonCancel json) {
 		if (json.getIsSuccess()) {
@@ -323,7 +324,7 @@ public class JsonToBusinessClassMapper {
 			cancel.setStatus(Cancel.Status.PENDING);
 		} else if (json.getIsError()) {
 			cancel.setStatus(Cancel.Status.ERRROR);
-		}	
+		}
 	}
 	private void setStatus(Recurring recurring, JsonRecurring json) {
 		if (json.getIsSuccess()) {
@@ -422,7 +423,7 @@ public class JsonToBusinessClassMapper {
 		} else if (paymentType instanceof Sofort) {
 			return map((Sofort) paymentType, jsonPaymentType);
 		} else if (paymentType instanceof Pis) {
-			return map((Pis) paymentType, jsonPaymentType);
+			return map((Pis) paymentType, (JsonPis)jsonPaymentType);
 		} else if (paymentType instanceof Alipay) {
 			return map((Alipay) paymentType, jsonPaymentType);
 		} else if (paymentType instanceof Wechatpay) {
@@ -563,9 +564,12 @@ public class JsonToBusinessClassMapper {
 		return sofort;
 	}
 	
-	private PaymentType map(Pis pis, JsonIdObject jsonId) {
-		pis.setId(jsonId.getId());
-		pis.setRecurring(jsonId.getRecurring());
+	private PaymentType map(Pis pis, JsonPis jsonPis) {
+		pis.setId(jsonPis.getId());
+		pis.setRecurring(jsonPis.getRecurring());
+		pis.setBic(jsonPis.getBic());
+		pis.setIban(jsonPis.getIban());
+		pis.setHolder(jsonPis.getHolder());
 		return pis;
 	}
 

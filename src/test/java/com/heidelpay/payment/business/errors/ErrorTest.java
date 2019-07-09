@@ -83,7 +83,7 @@ public class ErrorTest extends AbstractPaymentTest {
             assertTrue(e.getPaymentErrorList().size() > 0);
             assertEquals("API.710.000.003", e.getPaymentErrorList().get(0).getCode());
             assertEquals(
-                    "You do not have the permission to access this resource. Please contact the owner of the shop.",
+                    "You do not have permission to access this resource. Please contact the owner of the shop.",
                     e.getPaymentErrorList().get(0).getCustomerMessage());
         }
     }
@@ -102,7 +102,7 @@ public class ErrorTest extends AbstractPaymentTest {
             assertNotNull(e.getPaymentErrorList());
             assertTrue(e.getPaymentErrorList().size() > 0);
             assertEquals("API.710.100.001", e.getPaymentErrorList().get(0).getCode());
-            assertEquals("The given payment method " + card.getId() + " is not found",
+            assertEquals("The given payment method " + card.getId() + " is not found.",
                     e.getPaymentErrorList().get(0).getMerchantMessage());
         }
     }
@@ -119,7 +119,7 @@ public class ErrorTest extends AbstractPaymentTest {
             assertNotNull(e.getPaymentErrorList());
             assertTrue(e.getPaymentErrorList().size() > 0);
             assertEquals("API.320.100.203", e.getPaymentErrorList().get(0).getCode());
-            assertEquals("Return URL is missing", e.getPaymentErrorList().get(0).getMerchantMessage());
+            assertEquals("Return URL is missing.", e.getPaymentErrorList().get(0).getMerchantMessage());
         }
     }
 
@@ -131,7 +131,7 @@ public class ErrorTest extends AbstractPaymentTest {
             assertNotNull(e.getPaymentErrorList());
             assertTrue(e.getPaymentErrorList().size() > 0);
             assertEquals("API.320.200.143", e.getPaymentErrorList().get(0).getCode());
-            assertEquals("Resources type id is missing", e.getPaymentErrorList().get(0).getMerchantMessage());
+            assertEquals("Resources type id is missing.", e.getPaymentErrorList().get(0).getMerchantMessage());
         }
     }
 
@@ -165,7 +165,7 @@ public class ErrorTest extends AbstractPaymentTest {
             assertNotNull(e.getPaymentErrorList());
             assertTrue(e.getPaymentErrorList().size() > 0);
             assertEquals("API.410.200.013", getCode("API.410.200.013", e.getPaymentErrorList()));
-            assertEquals("Email max has invalid format", getMerchantMessage("API.410.200.013", e.getPaymentErrorList()));
+            assertEquals("Email max has invalid format.", getMerchantMessage("API.410.200.013", e.getPaymentErrorList()));
         }
     }
 
@@ -183,13 +183,13 @@ public class ErrorTest extends AbstractPaymentTest {
             assertNotNull(e.getPaymentErrorList());
             assertEquals(4, e.getPaymentErrorList().size());
             assertEquals("API.410.200.005", getCode("API.410.200.005", e.getPaymentErrorList()));
-            assertEquals("First name This is a very long first name because someone put the wrong content into the field has invalid length", getMerchantMessage("API.410.200.005", e.getPaymentErrorList()));
+            assertEquals("First name This is a very long first name because someone put the wrong content into the field has invalid length.", getMerchantMessage("API.410.200.005", e.getPaymentErrorList()));
             assertEquals("API.410.200.002", getCode("API.410.200.002", e.getPaymentErrorList()));
-            assertEquals("Last name This is a very long last name because someone put the wrong content into the field has invalid length", getMerchantMessage("API.410.200.002", e.getPaymentErrorList()));
+            assertEquals("Last name This is a very long last name because someone put the wrong content into the field has invalid length.", getMerchantMessage("API.410.200.002", e.getPaymentErrorList()));
             assertEquals("API.410.200.015", getCode("API.410.200.015", e.getPaymentErrorList()));
-            assertEquals("Phone xxx has invalid format", getMerchantMessage("API.410.200.015", e.getPaymentErrorList()));
+            assertEquals("Phone xxx has invalid format.", getMerchantMessage("API.410.200.015", e.getPaymentErrorList()));
             assertEquals("API.410.200.013", getCode("API.410.200.013", e.getPaymentErrorList()));
-            assertEquals("Email max has invalid format", getMerchantMessage("API.410.200.013", e.getPaymentErrorList()));
+            assertEquals("Email max has invalid format.", getMerchantMessage("API.410.200.013", e.getPaymentErrorList()));
         }
     }
 

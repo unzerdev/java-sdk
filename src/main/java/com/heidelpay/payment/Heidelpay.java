@@ -46,14 +46,18 @@ import com.heidelpay.payment.service.PaypageService;
  */
 public class Heidelpay {
 	private String privateKey;
+	private String endPoint;
 	private PaymentService paymentService;
 	private PaypageService paypageService;
 
 	public Heidelpay(String privateKey) {
-		this(new HttpClientBasedRestCommunication(null), privateKey);
+		this(new HttpClientBasedRestCommunication(null), privateKey, null);
 	}
 	public Heidelpay(String privateKey, Locale locale) {
-		this(new HttpClientBasedRestCommunication(locale), privateKey);
+		this(new HttpClientBasedRestCommunication(locale), privateKey, null);
+	}
+	public Heidelpay(String privateKey, Locale locale, String endPoint) {
+		this(new HttpClientBasedRestCommunication(locale), privateKey, endPoint);
 	}
 
 	/**
@@ -64,6 +68,21 @@ public class Heidelpay {
 	public Heidelpay(HeidelpayRestCommunication restCommunication, String privateKey) {
 		super();
 		this.privateKey = privateKey;
+		this.endPoint = null;
+		this.paymentService = new PaymentService(this, restCommunication);
+		this.paypageService = new PaypageService(this, restCommunication);
+	}
+
+	/**
+	 * Creates an instance of the {@code Heidelpay}-facade.
+	 * @param restCommunication - an appropriate implementation of {@code HeidelpayRestCommunication}. If you are fine with apache's httpCLient you might choose {@code HttpClientBasedRestCommunication}.
+	 * @param privateKey - your private key as generated within the heidelpay Intelligence Platform (hIP)
+	 * @param endPoint - the endPoint for the outgoing connection, in case of null, the value of heidelpay.properties will be considered
+	 */
+	public Heidelpay(HeidelpayRestCommunication restCommunication, String privateKey, String endPoint) {
+		super();
+		this.privateKey = privateKey;
+		this.endPoint = endPoint;
 		this.paymentService = new PaymentService(this, restCommunication);
 		this.paypageService = new PaypageService(this, restCommunication);
 	}
@@ -753,7 +772,8 @@ public class Heidelpay {
 
 	/**
 	 * Load the Payout Object
-	 * @param id
+	 * @param paymentId
+	 * @param payoutId
 	 * @return
 	 * @throws HttpCommunicationException 
 	 */
@@ -873,6 +893,10 @@ public class Heidelpay {
 
 	public String getPrivateKey() {
 		return privateKey;
+	}
+
+	public String getEndPoint() {
+		return endPoint;
 	}
 
 	private Charge getCharge(BigDecimal amount, Currency currency, String typeId, URL returnUrl, String customerId, String basketId, Boolean card3ds) {

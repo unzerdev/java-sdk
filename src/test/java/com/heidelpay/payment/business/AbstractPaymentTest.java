@@ -55,6 +55,10 @@ import com.heidelpay.payment.paymenttypes.SepaDirectDebit;
 
 public class AbstractPaymentTest {
 
+	public Heidelpay getHeidelpayWithEndPoint(String endPoint) {
+		return new Heidelpay("s-priv-2a102ZMq3gV4I3zJ888J7RR6u75oqK3n", null, endPoint);
+	}
+
 	public Heidelpay getHeidelpay() {
 		return new Heidelpay("s-priv-2a102ZMq3gV4I3zJ888J7RR6u75oqK3n");
 //		return new Heidelpay("s-priv-6S59Dt6Q9mJYj8X5qpcxSpA3XLXUw4Zf");
@@ -162,7 +166,7 @@ public class AbstractPaymentTest {
 
 
 	protected String getRandomId() {
-		return UUID.randomUUID().toString();
+		return UUID.randomUUID().toString().substring(0, 8);
 	}
 
 	protected Customer createMaximumCustomer() throws HttpCommunicationException, ParseException {
@@ -211,6 +215,32 @@ public class AbstractPaymentTest {
 		.setBirthDate(getDate("03.10.1974"))
 		.setBillingAddress(getAddress())
 		.setShippingAddress(getAddress("Schubert", "Vangerowstraße 18", "Heidelberg", "BW", "69115", "DE"));
+		return customer;
+	}
+
+	protected Customer getMaximumMrsCustomer(String customerId) throws ParseException {
+		Customer customer = new Customer("Anna", "Sadriu");
+		customer
+						.setCustomerId(customerId)
+						.setSalutation(Salutation.mrs)
+						.setEmail("info@heidelpay.com")
+						.setMobile("+43676123456")
+						.setBirthDate(getDate("08.05.1986"))
+						.setBillingAddress(getAddress())
+						.setShippingAddress(getAddress("Schubert", "Vangerowstraße 18", "Heidelberg", "BW", "69115", "DE"));
+		return customer;
+	}
+
+	protected Customer getMaximumUnknownCustomer(String customerId) throws ParseException {
+		Customer customer = new Customer("XXX", "YYY");
+		customer
+						.setCustomerId(customerId)
+						.setSalutation(Salutation.unknown)
+						.setEmail("info@heidelpay.com")
+						.setMobile("+43676123456")
+						.setBirthDate(getDate("01.01.1999"))
+						.setBillingAddress(getAddress())
+						.setShippingAddress(getAddress("Schubert", "Vangerowstraße 18", "Heidelberg", "BW", "69115", "DE"));
 		return customer;
 	}
 	
@@ -416,6 +446,7 @@ public class AbstractPaymentTest {
 		basket.setAmountTotal(new BigDecimal(866.49));
 		basket.setAmountTotalVat(new BigDecimal(866.49*0.2).setScale(2, RoundingMode.HALF_UP));
 		basket.setAmountTotalDiscount(BigDecimal.TEN);
+		basket.setAmountTotalVat(new BigDecimal(144.42));
 		basket.setCurrencyCode(Currency.getInstance("EUR"));
 		basket.setNote("Mistery shopping");
 		basket.setOrderId(getRandomId());

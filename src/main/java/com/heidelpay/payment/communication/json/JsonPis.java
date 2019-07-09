@@ -1,10 +1,10 @@
-package com.heidelpay.payment;
+package com.heidelpay.payment.communication.json;
 
 /*-
  * #%L
  * Heidelpay Java SDK
  * %%
- * Copyright (C) 2018 - 2019 Heidelpay GmbH
+ * Copyright (C) 2018 Heidelpay GmbH
  * %%
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,18 +20,27 @@ package com.heidelpay.payment;
  * #L%
  */
 
-public class Payout extends AbstractInitPayment {
-
-	public Payout() {
+public class JsonPis extends JsonIdObject implements JsonObject {
+	private String iban;
+	private String bic;
+	private String holder;
+	public String getIban() {
+		return iban;
 	}
-
-	public Payout(Heidelpay heidelpay) {
-		super(heidelpay);
+	public void setIban(String iban) {
+		this.iban = iban;
 	}
-
-	@Override
-	public String getTypeUrl() {
-		return "payments/<paymentId>/payouts";
+	public String getBic() {
+		return bic;
 	}
-
+	public void setBic(String bic) {
+		this.bic = bic;
+	}
+	public String getHolder() {
+		return holder;
+	}
+	public void setHolder(String holder) {
+		this.holder = holder;
+	}
+	
 }
