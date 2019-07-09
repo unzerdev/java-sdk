@@ -88,7 +88,7 @@ public class PaymentService {
 
 	private HeidelpayRestCommunication restCommunication;
 
-	private UrlUtil urlUtil = new UrlUtil();
+	private UrlUtil urlUtil;
 	private JsonToBusinessClassMapper jsonToBusinessClassMapper = new JsonToBusinessClassMapper();
 	private Heidelpay heidelpay;
 
@@ -113,6 +113,7 @@ public class PaymentService {
 	public PaymentService(Heidelpay heidelpay, HeidelpayRestCommunication restCommunication) {
 		super();
 		this.heidelpay = heidelpay;
+		this.urlUtil = new UrlUtil(heidelpay.getEndPoint());
 		this.restCommunication = restCommunication;
 	}
 

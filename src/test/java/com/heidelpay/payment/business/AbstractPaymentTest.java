@@ -54,6 +54,10 @@ import com.heidelpay.payment.paymenttypes.SepaDirectDebit;
 
 public class AbstractPaymentTest {
 
+	public Heidelpay getHeidelpayWithEndPoint(String endPoint) {
+		return new Heidelpay("s-priv-2a102ZMq3gV4I3zJ888J7RR6u75oqK3n", null, endPoint);
+	}
+
 	public Heidelpay getHeidelpay() {
 		return new Heidelpay("s-priv-2a102ZMq3gV4I3zJ888J7RR6u75oqK3n");
 //		return new Heidelpay("s-priv-6S59Dt6Q9mJYj8X5qpcxSpA3XLXUw4Zf");
@@ -161,7 +165,7 @@ public class AbstractPaymentTest {
 
 
 	protected String getRandomId() {
-		return UUID.randomUUID().toString();
+		return UUID.randomUUID().toString().substring(0, 8);
 	}
 
 	protected Customer createMaximumCustomer() throws HttpCommunicationException, ParseException {
