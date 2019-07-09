@@ -165,7 +165,7 @@ public class AbstractPaymentTest {
 
 
 	protected String getRandomId() {
-		return UUID.randomUUID().toString();
+		return UUID.randomUUID().toString().substring(0, 8);
 	}
 
 	protected Customer createMaximumCustomer() throws HttpCommunicationException, ParseException {
