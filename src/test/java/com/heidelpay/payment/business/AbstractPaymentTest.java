@@ -56,7 +56,6 @@ public class AbstractPaymentTest {
 
 	public Heidelpay getHeidelpayWithEndPoint(String endPoint) {
 		return new Heidelpay("s-priv-2a102ZMq3gV4I3zJ888J7RR6u75oqK3n", null, endPoint);
-//		return new Heidelpay("s-priv-6S59Dt6Q9mJYj8X5qpcxSpA3XLXUw4Zf");
 	}
 
 	public Heidelpay getHeidelpay() {
