@@ -27,6 +27,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.text.ParseException;
 import java.util.Currency;
+import java.util.Date;
 
 import org.junit.Test;
 
@@ -60,7 +61,7 @@ public class InvoiceGuaranteedTest extends AbstractPaymentTest {
 	@Test
 	public void testShipmentInvoiceGuaranteedType() throws HttpCommunicationException, MalformedURLException, ParseException {
 		Charge charge = getHeidelpay().charge(BigDecimal.TEN, Currency.getInstance("EUR"), new InvoiceGuaranteed(), new URL("https://www.meinShop.de"), getMaximumCustomerSameAddress(getRandomId()));
-		Shipment shipment = getHeidelpay().shipment(charge.getPaymentId());
+		Shipment shipment = getHeidelpay().shipment(charge.getPaymentId(), new Date().getTime() + "");
 		assertNotNull(shipment);
 		assertNotNull(shipment.getId());
 	}
