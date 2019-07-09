@@ -1,7 +1,5 @@
 package com.heidelpay.payment.communication.mapper;
 
-import javax.security.sasl.AuthorizeCallback;
-
 import com.heidelpay.payment.AbstractInitPayment;
 import com.heidelpay.payment.Authorization;
 import com.heidelpay.payment.Cancel;
@@ -94,7 +92,6 @@ public class JsonToBusinessClassMapper {
 			((JsonCharge) json).setInvoiceId(((Charge) abstractInitPayment).getInvoiceId());
 		} else if (abstractInitPayment instanceof Payout) {
 			json = new JsonPayout(json);
-			((JsonPayout) json).setInvoiceId(((Payout) abstractInitPayment).getInvoiceId());
 		} else if(abstractInitPayment instanceof Authorization) {
 			json = new JsonAuthorization(json);
 			((JsonAuthorization) json).setEffectiveInterestRate(((Authorization) abstractInitPayment).getEffectiveInterestRate());
@@ -318,11 +315,11 @@ public class JsonToBusinessClassMapper {
 		}
 	}
 	private void setStatus(Cancel cancel, JsonCancel json) {
-		if (json.getIsSuccess()) {
+		if (json.isSuccess()) {
 			cancel.setStatus(Cancel.Status.SUCCESS);
-		} else if (json.getIsPending()) {
+		} else if (json.isPending()) {
 			cancel.setStatus(Cancel.Status.PENDING);
-		} else if (json.getIsError()) {
+		} else if (json.isError()) {
 			cancel.setStatus(Cancel.Status.ERRROR);
 		}
 	}

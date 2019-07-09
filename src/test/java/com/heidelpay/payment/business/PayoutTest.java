@@ -86,14 +86,9 @@ public class PayoutTest extends AbstractPaymentTest {
 		payout.setPaymentReference("My Payment Reference");
 		payout.setReturnUrl(new URL("https://www.heidelpay.com"));
 		payout.setTypeId(typeId);
-		payout.setBasketId(createBasket().getId());
+		payout.setBasketId(getHeidelpay().createBasket(getMaxTestBasket()).getId());
 		payout.setCustomerId(createMaximumCustomerSameAddress().getId());
 		payout.setMetadataId(createTestMetadata().getId());
 		return payout;
-	}
-
-	private Basket createBasket() throws PaymentException, HttpCommunicationException {
-		Basket maxBasket = getMaxTestBasket();
-		return getHeidelpay().createBasket(maxBasket);
 	}
 }

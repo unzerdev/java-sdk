@@ -104,7 +104,7 @@ public class JsonCancel extends JsonIdObject implements JsonObject {
 		this.date = date;
 	}
 
-	public Boolean getIsSuccess() {
+	public Boolean isSuccess() {
 		return isSuccess;
 	}
 
@@ -112,7 +112,7 @@ public class JsonCancel extends JsonIdObject implements JsonObject {
 		this.isSuccess = isSuccess;
 	}
 
-	public Boolean getIsPending() {
+	public Boolean isPending() {
 		return isPending;
 	}
 
@@ -120,7 +120,7 @@ public class JsonCancel extends JsonIdObject implements JsonObject {
 		this.isPending = isPending;
 	}
 
-	public Boolean getIsError() {
+	public Boolean isError() {
 		return isError;
 	}
 
