@@ -23,10 +23,11 @@ package com.heidelpay.payment.service;
 import java.math.BigDecimal;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Currency;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
-import com.google.gson.JsonObject;
 import com.heidelpay.payment.Authorization;
 import com.heidelpay.payment.Basket;
 import com.heidelpay.payment.Cancel;
@@ -39,6 +40,7 @@ import com.heidelpay.payment.PaymentException;
 import com.heidelpay.payment.Payout;
 import com.heidelpay.payment.Recurring;
 import com.heidelpay.payment.Shipment;
+import com.heidelpay.payment.business.paymenttypes.HirePurchaseRatePlan;
 import com.heidelpay.payment.communication.HeidelpayRestCommunication;
 import com.heidelpay.payment.communication.HttpCommunicationException;
 import com.heidelpay.payment.communication.JsonParser;
@@ -49,6 +51,8 @@ import com.heidelpay.payment.communication.json.JsonCancel;
 import com.heidelpay.payment.communication.json.JsonCard;
 import com.heidelpay.payment.communication.json.JsonCharge;
 import com.heidelpay.payment.communication.json.JsonCustomer;
+import com.heidelpay.payment.communication.json.JsonHirePurchaseRatePlan;
+import com.heidelpay.payment.communication.json.JsonHirePurchaseRatePlanList;
 import com.heidelpay.payment.communication.json.JsonIdObject;
 import com.heidelpay.payment.communication.json.JsonIdeal;
 import com.heidelpay.payment.communication.json.JsonPayment;
@@ -117,11 +121,31 @@ public class PaymentService {
 		this.restCommunication = restCommunication;
 	}
 
+	public List<HirePurchaseRatePlan> hirePurchasePlan(BigDecimal amount, Currency currency, BigDecimal effectiveInterestRate, Date orderDate) throws PaymentException, HttpCommunicationException {
+		String response = restCommunication.httpGet(urlUtil.getHirePurchaseRateUrl(amount, currency, effectiveInterestRate, orderDate), heidelpay.getPrivateKey());
+		JsonHirePurchaseRatePlanList json = new JsonParser<Customer>().fromJson(response, JsonHirePurchaseRatePlanList.class);
+		return json.getEntity();
+	}
+
 	public <T extends PaymentType> T createPaymentType(T paymentType) throws HttpCommunicationException {
 		String response = restCommunication.httpPost(urlUtil.getRestUrl(paymentType), heidelpay.getPrivateKey(),
 				paymentType);
 		JsonIdObject jsonResponse = new JsonParser<JsonIdObject>().fromJson(response, JsonIdObject.class);
 		return fetchPaymentType(jsonResponse.getId());
+	}
+
+	public <T extends PaymentType> T updatePaymentType(T paymentType) throws PaymentException, HttpCommunicationException {
+		String url = urlUtil.getRestUrl(paymentType);
+		url = addId(url, paymentType.getId());
+		String response = restCommunication.httpPut(url, heidelpay.getPrivateKey(),
+				paymentType);
+		JsonIdObject jsonResponse = new JsonParser<JsonIdObject>().fromJson(response, JsonIdObject.class);
+		return fetchPaymentType(jsonResponse.getId());
+	}
+
+	private String addId(String url, String id) {
+		if (!url.endsWith("/")) url += "/";
+		return url + id;
 	}
 
 	public Customer createCustomer(Customer customer) throws HttpCommunicationException {
@@ -550,6 +574,8 @@ public class PaymentService {
 			return new JsonIdObject();
 		} else if ("apl".equalsIgnoreCase(paymentType)) {
 			return new JsonApplepayResponse();
+		} else if ("hdd".equalsIgnoreCase(paymentType)) {
+			return new JsonHirePurchaseRatePlan();
 		} else {
 			throw new PaymentException("Type '" + typeId + "' is currently now supported by the SDK");
 		}
@@ -595,6 +621,8 @@ public class PaymentService {
 			return new Wechatpay();
 		} else if ("apl".equalsIgnoreCase(paymentType)) {
 			return new Applepay();
+		} else if ("hdd".equalsIgnoreCase(paymentType)) {
+			return new HirePurchaseRatePlan();
 		} else {
 			throw new PaymentException("Type '" + typeId + "' is currently now supported by the SDK");
 		}
@@ -603,6 +631,7 @@ public class PaymentService {
 	private String getTypeIdentifier(String typeId) {
 		return typeId.substring(2, 5);
 	}
+
 
 
 }
