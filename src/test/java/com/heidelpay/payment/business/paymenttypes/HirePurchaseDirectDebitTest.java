@@ -129,7 +129,7 @@ public class HirePurchaseDirectDebitTest extends AbstractPaymentTest {
 		assertValidCharge(charge);
 		
 		Cancel cancel = charge.cancel();
-		assertValidCancel(cancel, BigDecimal.TEN);
+		assertValidCancel(cancel, getAmount());
 	}
 
 	@Test
