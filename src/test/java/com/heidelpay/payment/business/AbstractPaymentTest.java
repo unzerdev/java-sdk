@@ -23,6 +23,7 @@ package com.heidelpay.payment.business;
 import static org.junit.Assert.assertEquals;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.text.ParseException;
@@ -170,6 +171,10 @@ public class AbstractPaymentTest {
 
 	protected Customer createMaximumCustomer() throws HttpCommunicationException, ParseException {
 		return getHeidelpay().createCustomer(getMaximumCustomer(getRandomId()));
+	}
+
+	protected Basket createBasket() throws HttpCommunicationException, ParseException {
+		return getHeidelpay().createBasket(getMaxTestBasket());
 	}
 
 	protected Customer createFactoringOKCustomer() throws HttpCommunicationException, ParseException {
@@ -397,6 +402,14 @@ public class AbstractPaymentTest {
 		assertEquals(cancelInit.getTypeUrl(), cancel.getTypeUrl());
 	}
 
+	protected void assertNumberEquals(BigDecimal expected, BigDecimal actual) {
+		if (expected == null && actual == null) return;
+		if (expected == null && actual != null) throw new AssertionError("expected is null, but actual is not");
+		if (expected != null && actual == null) throw new AssertionError("expected is not null, but actual is null");
+		if (expected.compareTo(actual) != 0) throw new AssertionError("expected: " + expected + ", actual: " + actual);
+	}
+
+
 
 	protected BigDecimal getBigDecimal(String number) {
 		BigDecimal bigDecimal = new BigDecimal(number);
@@ -431,6 +444,7 @@ public class AbstractPaymentTest {
 	protected Basket getMaxTestBasket() {
 		Basket basket = new Basket();
 		basket.setAmountTotal(new BigDecimal(866.49));
+		basket.setAmountTotalVat(new BigDecimal(866.49*0.2).setScale(2, RoundingMode.HALF_UP));
 		basket.setAmountTotalDiscount(BigDecimal.TEN);
 		basket.setAmountTotalVat(new BigDecimal(144.42));
 		basket.setCurrencyCode(Currency.getInstance("EUR"));
@@ -473,9 +487,9 @@ public class AbstractPaymentTest {
 		basketItem.setBasketItemReferenceId("Artikelnummer4712");
 		basketItem.setAmountDiscount(BigDecimal.ONE);
 		basketItem.setAmountGross(new BigDecimal(365.99));
-		basketItem.setAmountNet(new BigDecimal(101.66));
-		basketItem.setAmountPerUnit(new BigDecimal(121.99));
-		basketItem.setAmountVat(new BigDecimal(20.33));
+		basketItem.setAmountNet(new BigDecimal(307.55));
+		basketItem.setAmountPerUnit(new BigDecimal(223.66));
+		basketItem.setAmountVat(new BigDecimal(58.44));
 		basketItem.setQuantity(3);
 		basketItem.setTitle("Apple iPad Air");
 		basketItem.setUnit("Pc.");
