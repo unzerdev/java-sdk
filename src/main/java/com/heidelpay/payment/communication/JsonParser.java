@@ -53,7 +53,7 @@ public class JsonParser<T> {
 	private Gson gson;
 
 	public JsonParser() {
-		gson = new GsonBuilder().setPrettyPrinting().registerTypeAdapter(Date.class, new JsonDateConverter())
+		gson = new GsonBuilder().setPrettyPrinting().registerTypeAdapter(Date.class, new JsonDateTimeConverter())
 				.registerTypeAdapter(String.class, new JsonStringConverter())
 				.registerTypeAdapter(BigDecimal.class, new JsonBigDecimalConverter())
 				.registerTypeAdapter(URL.class, new JsonURLConverter())

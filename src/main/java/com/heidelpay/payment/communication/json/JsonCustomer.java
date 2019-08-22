@@ -22,8 +22,10 @@ package com.heidelpay.payment.communication.json;
 
 import java.util.Date;
 
+import com.google.gson.annotations.JsonAdapter;
 import com.heidelpay.payment.Address;
 import com.heidelpay.payment.Customer.Salutation;
+import com.heidelpay.payment.communication.JsonDateConverter;
 
 public class JsonCustomer extends JsonIdObject implements JsonObject {
 	private String firstname;
@@ -31,6 +33,8 @@ public class JsonCustomer extends JsonIdObject implements JsonObject {
 	private String company;
 	private Salutation salutation;
 	private String customerId;
+	
+	@JsonAdapter(JsonDateConverter.class)
 	private Date birthDate;
 	private String email;
 	private String phone;

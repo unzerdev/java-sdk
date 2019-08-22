@@ -33,7 +33,7 @@ import com.google.gson.JsonPrimitive;
 import com.google.gson.JsonSerializationContext;
 import com.google.gson.JsonSerializer;
 
-public class JsonDateConverter
+public class JsonDateTimeConverter
 		implements JsonDeserializer<Date>, JsonSerializer<Date> {
 
 	@Override
@@ -56,7 +56,7 @@ public class JsonDateConverter
 
 	@Override
 	public JsonElement serialize(Date src, Type typeOfSrc, JsonSerializationContext context) {
-		return new JsonPrimitive(new SimpleDateFormat("yyyy-MM-dd").format(src));
+		return new JsonPrimitive(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(src));
 	}
 
 }
