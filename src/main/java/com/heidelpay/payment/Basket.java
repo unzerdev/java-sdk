@@ -30,7 +30,7 @@ import com.heidelpay.payment.paymenttypes.PaymentType;
 public class Basket implements PaymentType {
 
 	private String id;
-	private BigDecimal amountTotal;
+	private BigDecimal amountTotalGross;
 	private BigDecimal amountTotalVat;
 	private BigDecimal amountTotalDiscount;
 	private Currency currencyCode;
@@ -38,15 +38,6 @@ public class Basket implements PaymentType {
 	private String note;
 	private List<BasketItem> basketItems = new ArrayList<BasketItem>();
 	
-	
-	public BigDecimal getAmountTotal() {
-		return amountTotal;
-	}
-
-	public Basket setAmountTotal(BigDecimal amountTotal) {
-		this.amountTotal = amountTotal;
-		return this;
-	}
 
 	public BigDecimal getAmountTotalDiscount() {
 		return amountTotalDiscount;
@@ -122,6 +113,15 @@ public class Basket implements PaymentType {
 
 	public void setAmountTotalVat(BigDecimal amountTotalVat) {
 		this.amountTotalVat = amountTotalVat;
+	}
+
+	public BigDecimal getAmountTotalGross() {
+		return amountTotalGross;
+	}
+
+	public Basket setAmountTotalGross(BigDecimal amountTotalGross) {
+		this.amountTotalGross = amountTotalGross;
+		return this;
 	}
 
 }
