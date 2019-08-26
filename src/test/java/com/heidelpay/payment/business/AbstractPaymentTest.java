@@ -443,7 +443,7 @@ public class AbstractPaymentTest {
 
 	protected Basket getMaxTestBasket() {
 		Basket basket = new Basket();
-		basket.setAmountTotal(new BigDecimal(866.49));
+		basket.setAmountTotalGross(new BigDecimal(866.49));
 		basket.setAmountTotalVat(new BigDecimal(866.49*0.2).setScale(2, RoundingMode.HALF_UP));
 		basket.setAmountTotalDiscount(BigDecimal.TEN);
 		basket.setAmountTotalVat(new BigDecimal(144.42));
@@ -457,7 +457,7 @@ public class AbstractPaymentTest {
 
 	protected Basket getMinTestBasket() {
 		Basket basket = new Basket()
-				.setAmountTotal(new BigDecimal(500.5))
+				.setAmountTotalGross(new BigDecimal(500.5))
 				.setCurrencyCode(Currency.getInstance("EUR"))
 				.setOrderId(getRandomId())
 				.addBasketItem(getMinTestBasketItem());

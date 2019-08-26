@@ -436,7 +436,7 @@ public class JsonToBusinessClassMapper {
 	}
 
 	private HirePurchaseRatePlan map(HirePurchaseRatePlan paymentType, JsonHirePurchaseRatePlan jsonPaymentType) {
-		paymentType.setAccountHolder(jsonPaymentType.getHolder());
+		paymentType.setAccountHolder(jsonPaymentType.getAccountHolder());
 		paymentType.setBic(jsonPaymentType.getBic());
 		paymentType.setEffectiveInterestRate(jsonPaymentType.getEffectiveInterestRate());
 		paymentType.setFeeFirstRate(jsonPaymentType.getFeeFirstRate());

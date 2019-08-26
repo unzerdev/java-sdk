@@ -25,20 +25,26 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import com.google.gson.annotations.JsonAdapter;
 import com.google.gson.annotations.SerializedName;
 import com.heidelpay.payment.business.paymenttypes.HirePurchaseRate;
+import com.heidelpay.payment.communication.JsonDateConverter;
 
 public class JsonHirePurchaseRatePlan extends JsonIdObject implements JsonObject {
 
 	
 	private String iban;
 	private String bic;
-	private String holder;
+	private String accountHolder;
+	@JsonAdapter(JsonDateConverter.class)
 	private Date invoiceDate;
+	@JsonAdapter(JsonDateConverter.class)
 	private Date invoiceDueDate;
 
 	private int numberOfRates;	
+
 	@SerializedName("dayOfPurchase")
+	@JsonAdapter(JsonDateConverter.class)
 	private Date orderDate;
 	
 	private BigDecimal totalPurchaseAmount;
@@ -136,12 +142,6 @@ public class JsonHirePurchaseRatePlan extends JsonIdObject implements JsonObject
 	public void setBic(String bic) {
 		this.bic = bic;
 	}
-	public String getHolder() {
-		return holder;
-	}
-	public void setHolder(String holder) {
-		this.holder = holder;
-	}
 	public Date getInvoiceDate() {
 		return invoiceDate;
 	}
@@ -153,5 +153,11 @@ public class JsonHirePurchaseRatePlan extends JsonIdObject implements JsonObject
 	}
 	public void setInvoiceDueDate(Date invoiceDueDate) {
 		this.invoiceDueDate = invoiceDueDate;
+	}
+	public String getAccountHolder() {
+		return accountHolder;
+	}
+	public void setAccountHolder(String accountHolder) {
+		this.accountHolder = accountHolder;
 	}
 }

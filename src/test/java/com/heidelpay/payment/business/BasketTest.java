@@ -117,7 +117,7 @@ public class BasketTest extends AbstractPaymentTest {
 
 
 	private void assertBasketEquals(Basket expected, Basket actual) {
-		assertBigDecimalEquals(expected.getAmountTotal(), actual.getAmountTotal());
+		assertBigDecimalEquals(expected.getAmountTotalGross(), actual.getAmountTotalGross());
 		assertBigDecimalEquals(expected.getAmountTotalDiscount(), actual.getAmountTotalDiscount());
 		assertBigDecimalEquals(expected.getAmountTotalVat(), actual.getAmountTotalVat());
 		assertEquals(expected.getCurrencyCode(), actual.getCurrencyCode());

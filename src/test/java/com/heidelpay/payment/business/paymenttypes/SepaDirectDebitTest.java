@@ -98,7 +98,7 @@ public class SepaDirectDebitTest extends AbstractPaymentTest {
 		assertNotNull(sddCreated.getId());
 		assertEquals(sddOriginal.getBic(), sddCreated.getBic());
 		assertEquals(sddOriginal.getHolder(), sddCreated.getHolder());
-		assertEquals(maskIban(sddOriginal.getIban()), sddCreated.getIban());
+		assertEquals(sddOriginal.getIban(), sddCreated.getIban());
 	}
 
 }

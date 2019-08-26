@@ -27,9 +27,11 @@ import java.util.Currency;
 import java.util.Date;
 import java.util.List;
 
+import com.google.gson.annotations.JsonAdapter;
 import com.google.gson.annotations.SerializedName;
 import com.heidelpay.payment.Authorization;
 import com.heidelpay.payment.communication.HttpCommunicationException;
+import com.heidelpay.payment.communication.JsonDateConverter;
 import com.heidelpay.payment.communication.json.JsonObject;
 import com.heidelpay.payment.paymenttypes.AbstractPaymentType;
 import com.heidelpay.payment.paymenttypes.PaymentType;
@@ -40,11 +42,14 @@ public class HirePurchaseRatePlan extends AbstractPaymentType implements Payment
 	private String iban;
 	private String bic;
 	private String accountHolder;
+	@JsonAdapter(JsonDateConverter.class)
 	private Date invoiceDate;
+	@JsonAdapter(JsonDateConverter.class)
 	private Date invoiceDueDate;
 
 	private int numberOfRates;	
 	@SerializedName("dayOfPurchase")
+	@JsonAdapter(JsonDateConverter.class)
 	private Date orderDate;
 	
 	private BigDecimal totalPurchaseAmount;
