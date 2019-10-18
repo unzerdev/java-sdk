@@ -1,0 +1,44 @@
+target/
+!.mvn/wrapper/maven-wrapper.jar
+
+### maven ###
+.mvn/
+mvnm.*
+
+### Gradle ###
+.gradle/
+
+### STS ###
+.apt_generated
+.classpath
+.factorypath
+.project
+.settings
+.springBeans
+
+### IntelliJ IDEA ###
+.idea
+*.iws
+*.iml
+*.ipr
+
+### NetBeans ###
+nbproject/private/
+build/
+nbbuild/
+dist/
+nbdist/
+.nb-gradle/
+mvnw
+mvnw.cmd
+db/papi_db.script
+db/papi_db.properties
+db/papi_db.lck
+db/papi_db.log
+db/papi_database.mv.db
+/db/
+/logging.log
+/logs/
+/log/
+/sns_auto_gen_folder/
+docs/node_modules/
