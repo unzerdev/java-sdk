@@ -476,6 +476,7 @@ public class AbstractPaymentTest {
 		basketItem.setUnit("Pc.");
 		basketItem.setVat(19);
 		basketItem.setSubTitle("XS in Red");
+		basketItem.setType("goods");
 		try {
 			basketItem.setImageUrl(new URL("https://www.apple.com/v/iphone-xs/d/images/overview/hero_top_device_large_2x.jpg"));
 		} catch (MalformedURLException e) {
@@ -495,6 +496,7 @@ public class AbstractPaymentTest {
 		basketItem.setUnit("Pc.");
 		basketItem.setVat(20);
 		basketItem.setSubTitle("Nicht nur Pros brauchen Power.");
+		basketItem.setType("goods");
 		try {
 			basketItem.setImageUrl(new URL("https://www.apple.com/de/ipad-air/images/overview/hero__gmn7i7gbziqa_large_2x.jpg"));
 		} catch (MalformedURLException e) {
