@@ -70,4 +70,12 @@ public class ChargeAfterAuthorizationTest extends AbstractPaymentTest {
 		assertNotNull(charge.getId());
 	}
 
+	@Test
+	public void chargeAfterAuthorizationWithPaymentReference() throws HttpCommunicationException, MalformedURLException {
+		Authorization authorize = getHeidelpay().authorize(getAuthorization(createPaymentTypeCard().getId(), false));
+		Charge charge = authorize.charge(new BigDecimal(1.0), "pmt-ref");
+		assertNotNull(charge);
+		assertNotNull(charge.getId());
+		assertEquals("pmt-ref", charge.getPaymentReference());
+	}
 }

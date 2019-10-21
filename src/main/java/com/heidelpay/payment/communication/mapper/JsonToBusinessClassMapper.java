@@ -110,6 +110,7 @@ public class JsonToBusinessClassMapper {
 	public JsonObject map(Cancel cancel) {
 		JsonCharge json = new JsonCharge();
 		json.setAmount(cancel.getAmount());
+		json.setPaymentReference(cancel.getPaymentReference());
 		return json;
 	}
 	
@@ -341,6 +342,7 @@ public class JsonToBusinessClassMapper {
 		cancel.setProcessing(getProcessing(json.getProcessing()));
 		cancel.setMessage(json.getMessage());
 		cancel.setDate(json.getDate());
+		cancel.setPaymentReference(json.getPaymentReference());
 		setStatus(cancel, json);
 		return cancel;
 	}

@@ -19,6 +19,7 @@ package com.heidelpay.payment.business;
  * limitations under the License.
  * #L%
  */
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
 import java.math.BigDecimal;
@@ -77,6 +78,40 @@ public class CancelAfterChargeTest extends AbstractPaymentTest {
 		Cancel cancel = getHeidelpay().fetchCancel(initCharge.getPaymentId(), charge.getId(), cancelExecuted.getId());
 		assertNotNull(cancel);
 	}
-	
-	
+
+	@Test
+	public void testCancelAfterChargeChargeWithPaymentReference() throws MalformedURLException, HttpCommunicationException {
+		Charge initCharge = getHeidelpay().charge(BigDecimal.ONE, Currency.getInstance("EUR"), createPaymentTypeCard().getId(), new URL("https://www.google.at"), false);
+		Cancel cancelReq = new Cancel();
+		cancelReq.setPaymentReference("pmt-ref");
+		Cancel cancelInit = initCharge.cancel(cancelReq);
+		assertEquals("COR.000.100.112", cancelInit.getMessage().getCode());
+		assertNotNull(cancelInit.getMessage().getCustomer());
+		assertEquals("pmt-ref", cancelInit.getPaymentReference());
+		Cancel cancel = cancelInit.getPayment().getCharge(initCharge.getId()).getCancel(cancelInit.getId());
+		assertNotNull(cancel);
+		assertNotNull(cancel.getId());
+		assertCancelEquals(cancelInit, cancel);
+		assertEquals("pmt-ref", cancel.getPaymentReference());
+	}
+
+	@Test
+	public void testCancelAfterChargeChargeWithCancelObject() throws MalformedURLException, HttpCommunicationException {
+		Charge initCharge = getHeidelpay().charge(BigDecimal.ONE, Currency.getInstance("EUR"), createPaymentTypeCard().getId(), new URL("https://www.google.at"), false);
+		Cancel cancelReq = new Cancel();
+		cancelReq.setPaymentReference("pmt-ref");
+		cancelReq.setAmount(new BigDecimal(1.0));
+		Cancel cancelInit = initCharge.cancel(cancelReq);
+		assertEquals("COR.000.100.112", cancelInit.getMessage().getCode());
+		assertNotNull(cancelInit.getMessage().getCustomer());
+		assertEquals("pmt-ref", cancelInit.getPaymentReference());
+		assertEquals(new BigDecimal(1.0000).setScale(4), cancelInit.getAmount());
+		Cancel cancel = cancelInit.getPayment().getCharge(initCharge.getId()).getCancel(cancelInit.getId());
+		assertNotNull(cancel);
+		assertNotNull(cancel.getId());
+		assertCancelEquals(cancelInit, cancel);
+		assertEquals("pmt-ref", cancel.getPaymentReference());
+		assertEquals(new BigDecimal(1.0000).setScale(4), cancel.getAmount());
+	}
+
 }

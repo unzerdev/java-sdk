@@ -33,6 +33,7 @@ import java.util.Date;
 import java.util.List;
 
 import org.apache.commons.lang3.time.DateUtils;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import com.heidelpay.payment.Authorization;
@@ -144,8 +145,13 @@ public class HirePurchaseDirectDebitTest extends AbstractPaymentTest {
 		
 		Charge charge = authorization.charge();
 		assertValidCharge(charge);
-		
-		Cancel cancel = charge.cancel(BigDecimal.ONE);
+
+		Cancel cancelReq = new Cancel();
+		cancelReq.setAmountGross(BigDecimal.TEN);
+		cancelReq.setAmountNet(BigDecimal.TEN);
+		cancelReq.setAmountVat(BigDecimal.TEN);
+		Cancel cancel = charge.cancel(cancelReq);
+
 		assertValidCancel(cancel, getBigDecimalTwoDigits(856.49));
 	}
 

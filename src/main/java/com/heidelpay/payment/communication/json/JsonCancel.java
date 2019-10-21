@@ -30,7 +30,8 @@ public class JsonCancel extends JsonIdObject implements JsonObject {
 	private Boolean isPending;
 	private Boolean isError;
 	private JsonMessage message;
-	private Date date;	
+	private Date date;
+	private String paymentReference;
 	
 	private BigDecimal amount;
 	private Currency currency;
@@ -128,4 +129,11 @@ public class JsonCancel extends JsonIdObject implements JsonObject {
 		this.isError = isError;
 	}
 
+	public String getPaymentReference() {
+		return paymentReference;
+	}
+
+	public void setPaymentReference(String paymentReference) {
+		this.paymentReference = paymentReference;
+	}
 }

@@ -35,6 +35,11 @@ public class Cancel extends AbstractPayment {
 	private BigDecimal amount;
 	private Processing processing = new Processing();
 	private Status status;
+	private String paymentReference;
+
+	private BigDecimal amountGross;
+	private BigDecimal amountNet;
+	private BigDecimal amountVat;
 
 	public Cancel() {
 		super();
@@ -71,5 +76,35 @@ public class Cancel extends AbstractPayment {
 		this.status = status;
 	}
 
+	public String getPaymentReference() {
+		return paymentReference;
+	}
 
+	public void setPaymentReference(String paymentReference) {
+		this.paymentReference = paymentReference;
+	}
+
+	public BigDecimal getAmountGross() {
+		return amountGross;
+	}
+
+	public void setAmountGross(BigDecimal amountGross) {
+		this.amountGross = amountGross;
+	}
+
+	public BigDecimal getAmountNet() {
+		return amountNet;
+	}
+
+	public void setAmountNet(BigDecimal amountNet) {
+		this.amountNet = amountNet;
+	}
+
+	public BigDecimal getAmountVat() {
+		return amountVat;
+	}
+
+	public void setAmountVat(BigDecimal amountVat) {
+		this.amountVat = amountVat;
+	}
 }
