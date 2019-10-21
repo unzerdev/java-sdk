@@ -23,13 +23,13 @@ package com.heidelpay.payment.business;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
-
+import static org.junit.Assert.fail;import static org.junit.Assume.assumeNoException;
 import java.math.BigDecimal;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.text.ParseException;
 import java.util.Currency;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -235,20 +235,23 @@ public class AbstractSeleniumTest extends AbstractPaymentTest {
 		paypage.setAmount(BigDecimal.ONE);
 		paypage.setCurrency(Currency.getInstance("EUR"));
 		paypage.setReturnUrl(new URL(getReturnUrl()));
-		paypage.setDescriptionMain("Donation for Heidelpay Development team");
-		paypage.setDescriptionSmall("From Developers to Developers");
 		paypage.setShopName("Heidelpay Demo Shop");
+		paypage.setShopDescription("Heidelpay Demo Shop Description");
+		paypage.setTagline("Heidelpay Tagline");
+		paypage.setTermsAndConditionUrl(new URL("https://www.heidelpay.com/en/privacy-statement/"));
+		paypage.setPrivacyPolicyUrl(new URL("https://www.heidelpay.com/en/privacy-statement/"));
+		paypage.setCss(getCssMap());
 
-		paypage.setFullPageImage("https://www.heidelpay.com/fileadmin/content/header-Imges-neu/Header_Phone_12.jpg");
 		paypage.setLogoImage("https://www.heidelpay.com/typo3conf/ext/heidelpay_site/Resources/Public/Images/Heidelpay-Logo_mitUnterzeile-orange.svg");
-		paypage.setBasketImage("https://www.heidelpay.com/fileadmin/content/content-images-neu/icons/svg-Icons/alles-in-einem_001.svg");
+		paypage.setFullPageImage("https://www.heidelpay.com/fileadmin/content/header-Imges-neu/Header_Phone_12.jpg");
 
 		paypage.setContactUrl(new URL("mailto:rene.felder@heidelpay.com"));
 		paypage.setHelpUrl(new URL("https://www.heidelpay.com/de/support/"));
-		paypage.setImpressumUrl(new URL("https://www.heidelpay.com/de/impressum/"));
+		paypage.setImprintUrl(new URL("https://www.heidelpay.com/de/imprint/"));
 		paypage.setPrivacyPolicyUrl(new URL("https://www.heidelpay.com/de/datenschutz/"));
 		paypage.setTermsAndConditionUrl(new URL("https://www.heidelpay.com/de/datenschutz/"));
 
+		paypage.setInvoiceId(getRandomId());
 		paypage.setOrderId(getRandomId());
 		return paypage;
 	}
@@ -286,7 +289,6 @@ public class AbstractSeleniumTest extends AbstractPaymentTest {
 		}
 	}
 
-
 	protected Map<String, String> getFormParameterMap(String parReq, String termUrl, String md) {
 		Map<String, String> formParameterMap = new LinkedHashMap<String, String>();
 		formParameterMap.put("PaReq", parReq);
@@ -295,7 +297,17 @@ public class AbstractSeleniumTest extends AbstractPaymentTest {
 		return formParameterMap;
 	}
 
-
+	protected Map<String, String> getCssMap() {
+		Map<String, String> cssMap = new HashMap<String, String>();
+		cssMap.put("shopDescription", "color: blue; font-size: 30px");
+		cssMap.put("tagline", "color: blue; font-size: 30px");
+		cssMap.put("header", "background-color: white");
+		cssMap.put("shopName", "color: blue; font-size: 30px");
+		cssMap.put("contactUrl", "color: blue; font-size: 30px");
+		cssMap.put("helpUrl", "color: blue; font-size: 30px");
+		return cssMap;
+	}
+	
 	protected void selectDropDown(RemoteWebDriver driver, String paymentMethod) throws InterruptedException {
 		Thread.sleep(1000);
 		WebElement dropdown = driver.findElement(By.xpath("//div[@class='field " + paymentMethod + " sixteen wide']//div[@class='heidelpayChoices__inner']"));

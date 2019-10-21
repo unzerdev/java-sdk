@@ -3,6 +3,7 @@ package com.heidelpay.payment.communication.json;
 import java.math.BigDecimal;
 import java.net.URL;
 import java.util.Currency;
+import java.util.Map;
 
 /*-
  * #%L
@@ -30,24 +31,35 @@ public class JsonPaypage implements JsonObject {
 	private BigDecimal amount;
 	private Currency currency;
 	private URL returnUrl;
-
 	private String logoImage;
+	@Deprecated
 	private String basketImage;
 	private String fullPageImage;
 	private String shopName;
+	@Deprecated
 	private String descriptionMain;
+	@Deprecated
 	private String descriptionSmall;
+	private String shopDescription;
+	private String tagline;
+	private Map<String, String> css;
 	private URL termsAndConditionUrl;
 	private URL privacyPolicyUrl;
+	@Deprecated
 	private URL impressumUrl;
+	private URL imprintUrl;
 	private URL helpUrl;
 	private URL contactUrl;
-
+	private String invoiceId;
 	private String orderId;
-	
+	private String card3ds;
+	private String billingAddressRequired = "false";
+	private String shippingAddressRequired = "false";
+	private Map<String, String> additionalAttributes;
 	private JsonResources resources;
 	private String redirectUrl;
-
+	private String action;
+	private String[] excludeTypes;
 
 	public String getId() {
 		return id;
@@ -88,15 +100,14 @@ public class JsonPaypage implements JsonObject {
 	public void setLogoImage(String logoImage) {
 		this.logoImage = logoImage;
 	}
-
+	@Deprecated
 	public String getBasketImage() {
 		return basketImage;
 	}
-
+	@Deprecated
 	public void setBasketImage(String basketImage) {
 		this.basketImage = basketImage;
 	}
-
 	public String getFullPageImage() {
 		return fullPageImage;
 	}
@@ -112,23 +123,22 @@ public class JsonPaypage implements JsonObject {
 	public void setShopName(String shopName) {
 		this.shopName = shopName;
 	}
-
+	@Deprecated
 	public String getDescriptionMain() {
 		return descriptionMain;
 	}
-
+	@Deprecated
 	public void setDescriptionMain(String descriptionMain) {
 		this.descriptionMain = descriptionMain;
 	}
-
+	@Deprecated
 	public String getDescriptionSmall() {
 		return descriptionSmall;
 	}
-
+	@Deprecated
 	public void setDescriptionSmall(String descriptionSmall) {
 		this.descriptionSmall = descriptionSmall;
 	}
-
 	public URL getTermsAndConditionUrl() {
 		return termsAndConditionUrl;
 	}
@@ -144,11 +154,11 @@ public class JsonPaypage implements JsonObject {
 	public void setPrivacyPolicyUrl(URL privacyPolicyUrl) {
 		this.privacyPolicyUrl = privacyPolicyUrl;
 	}
-
+	@Deprecated
 	public URL getImpressumUrl() {
 		return impressumUrl;
 	}
-
+	@Deprecated
 	public void setImpressumUrl(URL impressumUrl) {
 		this.impressumUrl = impressumUrl;
 	}
@@ -193,5 +203,159 @@ public class JsonPaypage implements JsonObject {
 		this.redirectUrl = redirectUrl;
 	}
 
+	/**
+	 * @return the shopDescription
+	 */
+	public String getShopDescription() {
+		return shopDescription;
+	}
 
+	/**
+	 * @param shopDescription the shopDescription to set
+	 */
+	public void setShopDescription(String shopDescription) {
+		this.shopDescription = shopDescription;
+	}
+
+	/**
+	 * @return the tagline
+	 */
+	public String getTagline() {
+		return tagline;
+	}
+
+	/**
+	 * @param tagline the tagline to set
+	 */
+	public void setTagline(String tagline) {
+		this.tagline = tagline;
+	}
+
+	/**
+	 * @return the imprintUrl
+	 */
+	public URL getImprintUrl() {
+		return imprintUrl;
+	}
+
+	/**
+	 * @param imprintUrl the imprintUrl to set
+	 */
+	public void setImprintUrl(URL imprintUrl) {
+		this.imprintUrl = imprintUrl;
+	}
+
+	/**
+	 * @return the invoiceId
+	 */
+	public String getInvoiceId() {
+		return invoiceId;
+	}
+
+	/**
+	 * @param invoiceId the invoiceId to set
+	 */
+	public void setInvoiceId(String invoiceId) {
+		this.invoiceId = invoiceId;
+	}
+
+	/**
+	 * @return the card3ds
+	 */
+	public String getCard3ds() {
+		return card3ds;
+	}
+
+	/**
+	 * @param card3ds the card3ds to set
+	 */
+	public void setCard3ds(String card3ds) {
+		this.card3ds = card3ds;
+	}
+
+	/**
+	 * @return the billingAddressRequired
+	 */
+	public String getBillingAddressRequired() {
+		return billingAddressRequired;
+	}
+
+	/**
+	 * @param billingAddressRequired the billingAddressRequired to set
+	 */
+	public void setBillingAddressRequired(String billingAddressRequired) {
+		this.billingAddressRequired = billingAddressRequired;
+	}
+
+	/**
+	 * @return the shippingAddressRequired
+	 */
+	public String getShippingAddressRequired() {
+		return shippingAddressRequired;
+	}
+
+	/**
+	 * @param shippingAddressRequired the shippingAddressRequired to set
+	 */
+	public void setShippingAddressRequired(String shippingAddressRequired) {
+		this.shippingAddressRequired = shippingAddressRequired;
+	}
+
+	/**
+	 * @return the additionalAttributes
+	 */
+	public Map<String, String> getAdditionalAttributes() {
+		return additionalAttributes;
+	}
+
+	/**
+	 * @param additionalAttributes the additionalAttributes to set
+	 */
+	public void setAdditionalAttributes(Map<String, String> additionalAttributes) {
+		this.additionalAttributes = additionalAttributes;
+	}
+
+	/**
+	 * @return the action
+	 */
+	public String getAction() {
+		return action;
+	}
+
+	/**
+	 * @param action the action to set
+	 */
+	public void setAction(String action) {
+		this.action = action;
+	}
+
+	/**
+	 * @return the excludeTypes
+	 */
+	public String[] getExcludeTypes() {
+		return excludeTypes;
+	}
+
+	/**
+	 * @param excludeTypes the excludeTypes to set
+	 */
+	public void setExcludeTypes(String[] excludeTypes) {
+		this.excludeTypes = excludeTypes;
+	}
+
+	/**
+	 * @return the css
+	 */
+	public Map<String, String> getCss() {
+		return css;
+	}
+
+	/**
+	 * @param css the css to set
+	 */
+	public void setCss(Map<String, String> css) {
+		this.css = css;
+	}
+
+	
 }
