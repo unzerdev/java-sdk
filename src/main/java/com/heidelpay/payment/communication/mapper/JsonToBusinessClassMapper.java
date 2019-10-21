@@ -39,6 +39,7 @@ import com.heidelpay.payment.communication.json.JsonAuthorization;
  */
 import com.heidelpay.payment.communication.json.JsonCancel;
 import com.heidelpay.payment.communication.json.JsonCard;
+import com.heidelpay.payment.communication.json.JsonCardDetails;
 import com.heidelpay.payment.communication.json.JsonCharge;
 import com.heidelpay.payment.communication.json.JsonCustomer;
 import com.heidelpay.payment.communication.json.JsonHirePurchaseRatePlan;
@@ -59,6 +60,7 @@ import com.heidelpay.payment.communication.json.JsonState;
 import com.heidelpay.payment.paymenttypes.Alipay;
 import com.heidelpay.payment.paymenttypes.Applepay;
 import com.heidelpay.payment.paymenttypes.Card;
+import com.heidelpay.payment.paymenttypes.CardDetails;
 import com.heidelpay.payment.paymenttypes.Eps;
 import com.heidelpay.payment.paymenttypes.Giropay;
 import com.heidelpay.payment.paymenttypes.Ideal;
@@ -94,7 +96,7 @@ public class JsonToBusinessClassMapper {
 			json = new JsonPayout(json);
 		} else if(abstractInitPayment instanceof Authorization) {
 			json = new JsonAuthorization(json);
-			((JsonAuthorization) json).setEffectiveInterestRate(((Authorization) abstractInitPayment).getEffectiveInterestRate());
+			json.setEffectiveInterestRate(((Authorization) abstractInitPayment).getEffectiveInterestRate());
 		}
 		return json;
 	}
@@ -301,8 +303,7 @@ public class JsonToBusinessClassMapper {
 		if (json.getCommercialRegisterNumber() != null) return false;
 		if (json.getCommercialSector() != null) return false;
 		if (json.getFunction() != null) return false;
-		if (json.getRegistrationType() != null) return false;
-		return true;
+		return json.getRegistrationType() == null;
 	}
 
 	private void setStatus(AbstractInitPayment abstractInitPayment, JsonInitPayment json) {
@@ -465,7 +466,24 @@ public class JsonToBusinessClassMapper {
 		card.setId(jsonCard.getId());
 		card.set3ds(jsonCard.get3ds());
 		card.setRecurring(jsonCard.getRecurring());
+		card.setBrand(jsonCard.getBrand());
+		card.setMethod(jsonCard.getMethod());
+		card.setCardHolder(jsonCard.getCardHolder());
+		CardDetails cardDetails = mapCardDetails(jsonCard.getCardDetails());
+		card.setCardDetails(cardDetails);
 		return card;
+	}
+
+	private CardDetails mapCardDetails(JsonCardDetails jsonCardDetails) {
+		CardDetails cardDetails = new CardDetails();
+		cardDetails.setAccount(jsonCardDetails.getAccount());
+		cardDetails.setCardType(jsonCardDetails.getCardType());
+		cardDetails.setCountryIsoA2(jsonCardDetails.getCountryIsoA2());
+		cardDetails.setCountryName(jsonCardDetails.getCountryName());
+		cardDetails.setIssuerName(jsonCardDetails.getIssuerName());
+		cardDetails.setIssuerPhoneNumber(jsonCardDetails.getIssuerPhoneNumber());
+		cardDetails.setIssuerUrl(jsonCardDetails.getIssuerUrl());
+		return cardDetails;
 	}
 
 	private PaymentType map(Applepay applepay, JsonApplepayResponse jsonApplePay) {

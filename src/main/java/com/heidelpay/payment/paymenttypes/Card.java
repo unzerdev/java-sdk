@@ -44,6 +44,9 @@ public class Card extends AbstractPaymentType implements PaymentType {
 	private String brand;
 	@SerializedName("3ds")
 	private Boolean threeDs;
+	private String method;
+	private String cardHolder;
+	private CardDetails cardDetails;
 	
 	public Card(String number, String expiryDate) {
 		super();
@@ -107,4 +110,28 @@ public class Card extends AbstractPaymentType implements PaymentType {
 		this.threeDs = threeDs;
 	}
 
+
+	public String getMethod() {
+		return method;
+	}
+
+	public void setMethod(String method) {
+		this.method = method;
+	}
+
+	public String getCardHolder() {
+		return cardHolder;
+	}
+
+	public void setCardHolder(String cardHolder) {
+		this.cardHolder = cardHolder;
+	}
+
+	public CardDetails getCardDetails() {
+		return cardDetails;
+	}
+
+	public void setCardDetails(CardDetails cardDetails) {
+		this.cardDetails = cardDetails;
+	}
 }
