@@ -113,22 +113,30 @@ public class JsonToBusinessClassMapper {
 	
 	public JsonObject map(Paypage paypage) {
 		JsonPaypage json = new JsonPaypage();
-		json.setAmount(paypage.getAmount());
-		json.setContactUrl(paypage.getContactUrl());
-		json.setCurrency(paypage.getCurrency());
-		json.setDescriptionMain(paypage.getDescriptionMain());
-		json.setDescriptionSmall(paypage.getDescriptionSmall());
-		json.setFullPageImage(paypage.getFullPageImage());
-		json.setHelpUrl(paypage.getHelpUrl());
 		json.setId(paypage.getId());
-		json.setImpressumUrl(paypage.getImpressumUrl());
-		json.setLogoImage(paypage.getLogoImage());
-		json.setOrderId(paypage.getOrderId());
-		json.setPrivacyPolicyUrl(paypage.getPrivacyPolicyUrl());
+		json.setAmount(paypage.getAmount());
+		json.setCurrency(paypage.getCurrency());
 		json.setReturnUrl(paypage.getReturnUrl());
+		json.setLogoImage(paypage.getLogoImage());
+		json.setFullPageImage(paypage.getFullPageImage());
 		json.setShopName(paypage.getShopName());
+		json.setShopDescription(paypage.getShopDescription());
+		json.setTagline(paypage.getTagline());
+		json.setCss(paypage.getCss());
 		json.setTermsAndConditionUrl(paypage.getTermsAndConditionUrl());
+		json.setPrivacyPolicyUrl(paypage.getPrivacyPolicyUrl());
+		json.setImpressumUrl(paypage.getImpressumUrl());
+		json.setImprintUrl(paypage.getImprintUrl());
+		json.setHelpUrl(paypage.getHelpUrl());
+		json.setContactUrl(paypage.getContactUrl());
+		json.setInvoiceId(paypage.getInvoiceId());
+		json.setOrderId(paypage.getOrderId());
+		json.setCard3ds(paypage.getCard3ds());
+		json.setBillingAddressRequired(paypage.getBillingAddressRequired());
+		json.setShippingAddressRequired(paypage.getShippingAddressRequired());
+		json.setAdditionalAttributes(paypage.getAdditionalAttributes());
 		json.setResources(getResources(paypage));
+		json.setExcludeTypes(paypage.getExcludeTypes());
 		return json;
 	}
 
@@ -158,24 +166,33 @@ public class JsonToBusinessClassMapper {
 	}
 
 	public Paypage mapToBusinessObject(Paypage paypage, JsonPaypage json) {
-		paypage.setAmount(json.getAmount());
-		paypage.setContactUrl(json.getContactUrl());
-		paypage.setCurrency(json.getCurrency());
-		paypage.setDescriptionMain(json.getDescriptionMain());
-		paypage.setDescriptionSmall(json.getDescriptionSmall());
-		paypage.setFullPageImage(json.getFullPageImage());
-		paypage.setHelpUrl(json.getHelpUrl());
 		paypage.setId(json.getId());
-		paypage.setImpressumUrl(json.getImpressumUrl());
-		paypage.setLogoImage(json.getLogoImage());
-		paypage.setOrderId(json.getOrderId());
-		paypage.setPrivacyPolicyUrl(json.getPrivacyPolicyUrl());
+		paypage.setAmount(json.getAmount());
+		paypage.setCurrency(json.getCurrency());
 		paypage.setReturnUrl(json.getReturnUrl());
+		paypage.setLogoImage(json.getLogoImage());
+		paypage.setFullPageImage(json.getFullPageImage());
 		paypage.setShopName(json.getShopName());
+		paypage.setShopDescription(json.getShopDescription());
+		paypage.setTagline(json.getTagline());
+		paypage.setCss(json.getCss());
 		paypage.setTermsAndConditionUrl(json.getTermsAndConditionUrl());
+		paypage.setPrivacyPolicyUrl(json.getPrivacyPolicyUrl());
+		paypage.setImpressumUrl(json.getImpressumUrl());
+		paypage.setImprintUrl(json.getImprintUrl());
+		paypage.setHelpUrl(json.getHelpUrl());
+		paypage.setContactUrl(json.getContactUrl());
+		paypage.setInvoiceId(json.getInvoiceId());
+		paypage.setOrderId(json.getOrderId());
+		paypage.setCard3ds(json.getCard3ds());
+		paypage.setBillingAddressRequired(json.getBillingAddressRequired());
+		paypage.setShippingAddressRequired(json.getShippingAddressRequired());
+		paypage.setAdditionalAttributes(json.getAdditionalAttributes());
 		paypage.setRedirectUrl(json.getRedirectUrl());
+		paypage.setAction(json.getAction());
+		paypage.setExcludeTypes(json.getExcludeTypes());
 
-		if (json.getResources() != null) {
+		if(json.getResources() != null) {
 			paypage.setBasketId(json.getResources().getBasketId());
 			paypage.setCustomerId(json.getResources().getCustomerId());
 			paypage.setMetadataId(json.getResources().getMetadataId());
