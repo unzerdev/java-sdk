@@ -20,6 +20,8 @@ package com.heidelpay.payment.paymenttypes;
  * #L%
  */
 
+import com.heidelpay.payment.Basket;
+import com.heidelpay.payment.PaymentException;
 import java.math.BigDecimal;
 import java.net.URL;
 import java.util.Currency;
@@ -45,6 +47,22 @@ public class InvoiceGuaranteed extends AbstractPaymentType implements PaymentTyp
 	}
 	public Charge charge(BigDecimal amount, Currency currency, URL returnUrl, Customer customer) throws HttpCommunicationException {
 		return getHeidelpay().charge(amount, currency, this, returnUrl, customer);
+	}
+
+	public Charge charge(BigDecimal amount, Currency currency, URL returnUrl, Customer customer, Basket basket, String invoiceId) throws HttpCommunicationException {
+		return getHeidelpay().charge(getCharge(amount, currency, this, returnUrl, customer, basket, invoiceId));
+	}
+
+	private Charge getCharge(BigDecimal amount, Currency currency, InvoiceGuaranteed invoiceGuaranteed, URL returnUrl,
+			Customer customer, Basket basket, String invoiceId) throws HttpCommunicationException, PaymentException {
+		return ((Charge) new Charge()
+				.setAmount(amount)
+				.setCurrency(currency)
+				.setTypeId(getHeidelpay().createPaymentType(invoiceGuaranteed).getId())
+				.setReturnUrl(returnUrl)
+				.setCustomerId(getHeidelpay().createCustomerIfPresent(customer).getId())
+				.setBasketId(getHeidelpay().createBasket(basket).getId()))
+				.setInvoiceId(invoiceId);
 	}
 
 }

@@ -20,8 +20,10 @@ package com.heidelpay.payment.business.paymenttypes;
  * #L%
  */
 
+import static junit.framework.TestCase.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
+import com.heidelpay.payment.Basket;
 import java.math.BigDecimal;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -39,6 +41,20 @@ import com.heidelpay.payment.communication.HttpCommunicationException;
 import com.heidelpay.payment.paymenttypes.InvoiceGuaranteed;
 
 public class InvoiceGuaranteedTest extends AbstractPaymentTest {
+
+	@Test
+	public void testChargeTypeWithInvoiceId()
+			throws HttpCommunicationException, MalformedURLException, ParseException {
+		InvoiceGuaranteed invoice = getHeidelpay().createPaymentType(getInvoiceGuaranteed());
+		Basket basket = getMinTestBasket();
+		String invoiceId = getRandomInvoiceId();
+		Charge charge = invoice.charge(basket.getAmountTotalGross(), Currency.getInstance("EUR"),
+				new URL("https://www.meinShop.de"), getMaximumCustomerSameAddress(getRandomId()), basket,
+				invoiceId);
+		assertNotNull(charge);
+		assertNotNull(charge.getPaymentId());
+		assertEquals(invoiceId, charge.getInvoiceId());
+	}
 
 	@Test
 	public void testCreateInvoiceGuaranteedManatoryType() throws HttpCommunicationException {
@@ -61,9 +77,11 @@ public class InvoiceGuaranteedTest extends AbstractPaymentTest {
 	@Test
 	public void testShipmentInvoiceGuaranteedType() throws HttpCommunicationException, MalformedURLException, ParseException {
 		Charge charge = getHeidelpay().charge(BigDecimal.TEN, Currency.getInstance("EUR"), new InvoiceGuaranteed(), new URL("https://www.meinShop.de"), getMaximumCustomerSameAddress(getRandomId()));
-		Shipment shipment = getHeidelpay().shipment(charge.getPaymentId(), new Date().getTime() + "");
+		String invoiceId = new Date().getTime() + "";
+		Shipment shipment = getHeidelpay().shipment(charge.getPaymentId(), invoiceId);
 		assertNotNull(shipment);
 		assertNotNull(shipment.getId());
+		assertEquals(invoiceId, shipment.getInvoiceId());
 	}
 
 	@Test
