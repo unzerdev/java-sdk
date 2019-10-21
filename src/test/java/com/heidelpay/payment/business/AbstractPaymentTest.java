@@ -55,6 +55,10 @@ import com.heidelpay.payment.paymenttypes.SepaDirectDebit;
 
 public class AbstractPaymentTest {
 
+	protected String getRandomInvoiceId() {
+		return getRandomId().substring(0, 5);
+	}
+
 	public Heidelpay getHeidelpayWithEndPoint(String endPoint) {
 		return new Heidelpay("s-priv-2a102ZMq3gV4I3zJ888J7RR6u75oqK3n", null, endPoint);
 	}

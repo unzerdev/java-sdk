@@ -20,7 +20,15 @@ package com.heidelpay.payment.paymenttypes;
  * #L%
  */
 
+import com.heidelpay.payment.Basket;
+import com.heidelpay.payment.Charge;
+import com.heidelpay.payment.Customer;
 import com.heidelpay.payment.Heidelpay;
+import com.heidelpay.payment.PaymentException;
+import com.heidelpay.payment.communication.HttpCommunicationException;
+import java.math.BigDecimal;
+import java.net.URL;
+import java.util.Currency;
 
 public abstract class AbstractPaymentType implements PaymentType {
 	private String id;

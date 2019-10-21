@@ -65,10 +65,6 @@ public class InvoiceFactoringTest extends AbstractPaymentTest {
 		getHeidelpay().shipment(charge.getPaymentId());
 	}
 
-	private String getRandomInvoiceId() {
-		return getRandomId().substring(0, 5);
-	}
-
 	private InvoiceFactoring createInvoiceFactoring() throws HttpCommunicationException {
 		return getHeidelpay().createPaymentType(getInvoiceFactoring());
 	}
