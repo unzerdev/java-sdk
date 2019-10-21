@@ -188,4 +188,26 @@ public class AuthorizationTest extends AbstractPaymentTest {
 //		assertTrue(authorization.getCard3ds());
 	}
 
+	@Test
+	public void testAuthorizeWithPaymentReference() throws MalformedURLException, HttpCommunicationException {
+		Authorization authorization = getAuthorization(createPaymentTypeCard().getId());
+		authorization.setPaymentReference("pmt-ref");
+		Authorization authorize = getHeidelpay().authorize(authorization);
+		assertNotNull(authorize);
+		assertNotNull(authorize.getId());
+		assertEquals("pmt-ref", authorize.getPaymentReference());
+	}
+
+	@Test
+	public void testAuthorizeWithAuthorizeObject() throws MalformedURLException, HttpCommunicationException {
+		Authorization authorization = getAuthorization(createPaymentTypeCard().getId());
+		authorization.setPaymentReference("pmt-ref");
+		authorization.setAmount(new BigDecimal(1.0));
+		Authorization authorize = getHeidelpay().authorize(authorization);
+		assertNotNull(authorize);
+		assertNotNull(authorize.getId());
+		assertEquals("pmt-ref", authorize.getPaymentReference());
+		assertEquals(new BigDecimal(1.0000).setScale(4), authorize.getAmount());
+	}
+
 }

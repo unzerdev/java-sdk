@@ -28,6 +28,10 @@ public class JsonCard extends JsonIdObject implements JsonObject {
 	private String expiryDate;
 	@SerializedName("3ds")
 	private Boolean threeDs;
+	private String brand;
+	private String method;
+	private String cardHolder;
+	private JsonCardDetails cardDetails;
 	
 	public String getNumber() {
 		return number;
@@ -55,5 +59,37 @@ public class JsonCard extends JsonIdObject implements JsonObject {
 	}
 	public void set3ds(Boolean threeDs) {
 		this.threeDs = threeDs;
+	}
+
+	public String getMethod() {
+		return method;
+	}
+
+	public void setMethod(String method) {
+		this.method = method;
+	}
+
+	public String getCardHolder() {
+		return cardHolder;
+	}
+
+	public void setCardHolder(String cardHolder) {
+		this.cardHolder = cardHolder;
+	}
+
+	public JsonCardDetails getCardDetails() {
+		return cardDetails;
+	}
+
+	public void setCardDetails(JsonCardDetails cardDetails) {
+		this.cardDetails = cardDetails;
+	}
+
+	public String getBrand() {
+		return brand;
+	}
+
+	public void setBrand(String brand) {
+		this.brand = brand;
 	}
 }

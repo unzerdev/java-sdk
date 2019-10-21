@@ -230,34 +230,55 @@ public class PaymentService {
 
 	public Charge chargeAuthorization(String paymentId) throws HttpCommunicationException {
 		Charge charge = new Charge();
-		return charge(charge, urlUtil.getPaymentUrl(charge, paymentId));
+		return chargeAuthorization(paymentId, charge);
 	}
 
 	public Charge chargeAuthorization(String paymentId, BigDecimal amount) throws HttpCommunicationException {
 		Charge charge = new Charge();
 		charge.setAmount(amount);
+		return chargeAuthorization(paymentId, charge);
+	}
+
+	public Charge chargeAuthorization(String paymentId, BigDecimal amount, String paymentReference) throws HttpCommunicationException {
+		Charge charge = new Charge();
+		charge.setAmount(amount);
+		charge.setPaymentReference(paymentReference);
+		return chargeAuthorization(paymentId, charge);
+	}
+
+	private Charge chargeAuthorization(String paymentId, Charge charge) throws HttpCommunicationException {
 		return charge(charge, urlUtil.getPaymentUrl(charge, paymentId));
 	}
 
 	public Cancel cancelAuthorization(String paymentId) throws HttpCommunicationException {
 		Cancel cancel = new Cancel();
-		return cancel(cancel, urlUtil.getPaymentUrl(cancel, paymentId));
+		return cancelAuthorization(paymentId, cancel);
 	}
 
 	public Cancel cancelAuthorization(String paymentId, BigDecimal amount) throws HttpCommunicationException {
 		Cancel cancel = new Cancel();
 		cancel.setAmount(amount);
+		return cancelAuthorization(paymentId, cancel);
+	}
+
+	public Cancel cancelAuthorization(String paymentId, Cancel cancel)
+			throws HttpCommunicationException {
 		return cancel(cancel, urlUtil.getPaymentUrl(cancel, paymentId));
 	}
 
 	public Cancel cancelCharge(String paymentId, String chargeId) throws HttpCommunicationException {
 		Cancel cancel = new Cancel();
-		return cancel(cancel, urlUtil.getRefundUrl(paymentId, chargeId));
+		return cancelCharge(paymentId, chargeId, cancel);
 	}
 
 	public Cancel cancelCharge(String paymentId, String chargeId, BigDecimal amount) throws HttpCommunicationException {
 		Cancel cancel = new Cancel();
 		cancel.setAmount(amount);
+		return cancelCharge(paymentId, chargeId, cancel);
+	}
+
+	public Cancel cancelCharge(String paymentId, String chargeId, Cancel cancel)
+			throws HttpCommunicationException {
 		return cancel(cancel, urlUtil.getRefundUrl(paymentId, chargeId));
 	}
 

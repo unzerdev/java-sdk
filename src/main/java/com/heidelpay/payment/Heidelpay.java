@@ -664,7 +664,7 @@ public class Heidelpay {
 		return payout;
 	}
 	/**
-	 * Charge the full amount that was authorized
+	 * Charge (Capture) the full amount that was authorized
 	 * 
 	 * @param paymentId
 	 * @return Charge with id
@@ -675,7 +675,7 @@ public class Heidelpay {
 	}
 
 	/**
-	 * Charge partial amount of Authorization. As there is only one Authorization
+	 * Charge (Capture) partial amount of Authorization. As there is only one Authorization
 	 * for a Payment id you only need to provide a paymentId
 	 * 
 	 * @param paymentId
@@ -688,7 +688,20 @@ public class Heidelpay {
 	}
 
 	/**
-	 * Cancel the full Authorization. As there is only one Authorization for a
+	 * Charge (Capture) with amount and paymentReference
+	 *
+	 * @param paymentId
+	 * @param amount
+	 * @param paymentReference
+	 * @return Charge with id
+	 * @throws HttpCommunicationException
+	 */
+	public Charge chargeAuthorization(String paymentId, BigDecimal amount, String paymentReference) throws HttpCommunicationException {
+		return paymentService.chargeAuthorization(paymentId, amount, paymentReference);
+	}
+
+	/**
+	 * Cancel (Reverse) the full Authorization. As there is only one Authorization for a
 	 * Payment id you only need to provide a paymentId
 	 * 
 	 * @param paymentId
@@ -700,7 +713,7 @@ public class Heidelpay {
 	}
 
 	/**
-	 * Cancel partial amount of Authorization. As there is only one Authorization
+	 * Cancel (Reverse) partial amount of Authorization. As there is only one Authorization
 	 * for a Payment id you only need to provide a paymentId
 	 * 
 	 * @param paymentId
@@ -710,6 +723,17 @@ public class Heidelpay {
 	 */
 	public Cancel cancelAuthorization(String paymentId, BigDecimal amount) throws HttpCommunicationException {
 		return paymentService.cancelAuthorization(paymentId, amount);
+	}
+
+	/**
+	 * Cancel (Reverse) Authorize with Cancel object
+	 *
+	 * @param paymentId
+	 * @return Cancel with id
+	 * @throws HttpCommunicationException
+	 */
+	public Cancel cancelAuthorization(String paymentId, Cancel cancel) throws HttpCommunicationException {
+		return paymentService.cancelAuthorization(paymentId, cancel);
 	}
 
 	/**
@@ -725,7 +749,7 @@ public class Heidelpay {
 	}
 
 	/**
-	 * Cancel partial Charge
+	 * Cancel (Refund) partial Charge
 	 * 
 	 * @param paymentId
 	 * @param chargeId
@@ -735,6 +759,19 @@ public class Heidelpay {
 	 */
 	public Cancel cancelCharge(String paymentId, String chargeId, BigDecimal amount) throws HttpCommunicationException {
 		return paymentService.cancelCharge(paymentId, chargeId, amount);
+	}
+
+	/**
+	 * Cancel (Refund) charge with Cancel object
+	 *
+	 * @param paymentId
+	 * @param chargeId
+	 * @param cancel
+	 * @return
+	 * @throws HttpCommunicationException
+	 */
+	public Cancel cancelCharge(String paymentId, String chargeId, Cancel cancel) throws HttpCommunicationException {
+		return paymentService.cancelCharge(paymentId, chargeId, cancel);
 	}
 
 	/**
@@ -930,5 +967,4 @@ public class Heidelpay {
 		.setCard3ds(card3ds);
 		return authorization;
 	}
-
 }

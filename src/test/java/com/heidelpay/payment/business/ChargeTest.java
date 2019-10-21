@@ -21,6 +21,7 @@ package com.heidelpay.payment.business;
  */
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 
 import java.math.BigDecimal;
 import java.net.MalformedURLException;
@@ -173,5 +174,29 @@ public class ChargeTest extends AbstractPaymentTest {
 		assertEquals(Charge.Status.PENDING, charge.getStatus());
 		// TODO Bug in API, Ticket AHC-1197
 //		assertTrue(charge.getCard3ds());
+	}
+
+	@Test
+	public void testChargeWithPaymentReference() throws MalformedURLException, HttpCommunicationException {
+		String orderId = getRandomId();
+		Charge chargeObj = getCharge(orderId, true);
+		chargeObj.setPaymentReference("pmt-ref");
+		Charge charge = getHeidelpay().charge(chargeObj);
+		assertNotNull(charge);
+		assertNotNull(charge.getId());
+		assertEquals("pmt-ref", charge.getPaymentReference());
+	}
+
+	@Test
+	public void testChargeWithChargeObject() throws MalformedURLException, HttpCommunicationException {
+		String orderId = getRandomId();
+		Charge chargeObj = getCharge(orderId, true);
+		chargeObj.setPaymentReference("pmt-ref");
+		chargeObj.setAmount(new BigDecimal(1.0));
+		Charge charge = getHeidelpay().charge(chargeObj);
+		assertNotNull(charge);
+		assertNotNull(charge.getId());
+		assertEquals("pmt-ref", charge.getPaymentReference());
+		assertEquals(new BigDecimal(1.0000).setScale(4), charge.getAmount());
 	}
 }

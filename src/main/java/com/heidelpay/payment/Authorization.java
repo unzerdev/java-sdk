@@ -35,7 +35,7 @@ import com.heidelpay.payment.communication.HttpCommunicationException;
 public class Authorization extends AbstractInitPayment {
 
 	private BigDecimal effectiveInterestRate;
-	
+
 	public Authorization() {
 		super();
 	}
@@ -52,12 +52,20 @@ public class Authorization extends AbstractInitPayment {
 		return getHeidelpay().chargeAuthorization(getPayment().getId(), amount);
 	}
 
+	public Charge charge(BigDecimal amount, String paymentReference) throws HttpCommunicationException {
+		return getHeidelpay().chargeAuthorization(getPayment().getId(), amount, paymentReference);
+	}
+
 	public Cancel cancel() throws HttpCommunicationException {
 		return getHeidelpay().cancelAuthorization(getPayment().getId());
 	}
 
 	public Cancel cancel(BigDecimal amount) throws HttpCommunicationException {
 		return getHeidelpay().cancelAuthorization(getPayment().getId(), amount);
+	}
+
+	public Cancel cancel(Cancel cancel) throws HttpCommunicationException {
+		return getHeidelpay().cancelAuthorization(getPayment().getId(), cancel);
 	}
 
 	@Override
@@ -73,5 +81,4 @@ public class Authorization extends AbstractInitPayment {
 		this.effectiveInterestRate = effectiveInterestRate;
 		return this;
 	}
-
 }
