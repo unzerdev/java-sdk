@@ -55,6 +55,7 @@ public class PaypageTest extends AbstractSeleniumTest {
 		Paypage response = getHeidelpay().paypage(request);
 		assertNull(response.getImpressumUrl());
 		assertNull(response.getCard3ds());
+		assertNull(response.getCss());
 		
 		assertNotNull(response);
 		assertNotNull(response.getId());
@@ -80,8 +81,5 @@ public class PaypageTest extends AbstractSeleniumTest {
 		assertEquals(request.getBillingAddressRequired(), response.getBillingAddressRequired());
 		assertEquals(request.getShippingAddressRequired(), response.getShippingAddressRequired());
 		assertEquals("charge", response.getAction().toLowerCase());
-		
-		assertNotNull(response.getCss());
-		assertEquals(0, response.getCss().size());
 	}
 }
