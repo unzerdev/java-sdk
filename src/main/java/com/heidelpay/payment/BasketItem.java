@@ -37,7 +37,7 @@ public class BasketItem {
 	private String title;
 	private String subTitle;
 	private URL imageUrl;
-	
+	private String type;
 	
 	public BasketItem() {
 	}
@@ -172,4 +172,11 @@ public class BasketItem {
 		this.imageUrl = imageUrl;
 	}
 
+	public String getType() {
+		return type;
+	}
+
+	public void setType(String type) {
+		this.type = type;
+	}
 }
