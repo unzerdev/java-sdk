@@ -4,6 +4,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import java.net.MalformedURLException;
+import java.util.Arrays;
 import org.junit.Test;
 import com.heidelpay.payment.Paypage;
 import com.heidelpay.payment.communication.HttpCommunicationException;
@@ -40,6 +41,7 @@ public class PaypageTest extends AbstractSeleniumTest {
 		assertEquals(request.getOrderId(), response.getOrderId());
 		assertEquals(request.getBillingAddressRequired(), response.getBillingAddressRequired());
 		assertEquals(request.getShippingAddressRequired(), response.getShippingAddressRequired());
+		assertEquals(Arrays.toString(request.getExcludeTypes()), Arrays.toString(response.getExcludeTypes()));
 		assertEquals("charge", response.getAction().toLowerCase());
 		
 		for (String key : response.getCss().keySet()) {
@@ -55,8 +57,7 @@ public class PaypageTest extends AbstractSeleniumTest {
 		Paypage response = getHeidelpay().paypage(request);
 		assertNull(response.getImpressumUrl());
 		assertNull(response.getCard3ds());
-		assertNull(response.getCss());
-		
+
 		assertNotNull(response);
 		assertNotNull(response.getId());
 		assertNotNull(response.getRedirectUrl());
@@ -80,6 +81,7 @@ public class PaypageTest extends AbstractSeleniumTest {
 		assertEquals(request.getOrderId(), response.getOrderId());
 		assertEquals(request.getBillingAddressRequired(), response.getBillingAddressRequired());
 		assertEquals(request.getShippingAddressRequired(), response.getShippingAddressRequired());
+		assertEquals(Arrays.toString(request.getExcludeTypes()), Arrays.toString(response.getExcludeTypes()));
 		assertEquals("charge", response.getAction().toLowerCase());
 	}
 }

@@ -232,6 +232,8 @@ public class AbstractSeleniumTest extends AbstractPaymentTest {
 
 	protected Paypage getMaximumPaypage() throws MalformedURLException {
 		Paypage paypage = new Paypage();
+		String[] excludeTypes = {"paypal"};
+		paypage.setExcludeTypes(excludeTypes);
 		paypage.setAmount(BigDecimal.ONE);
 		paypage.setCurrency(Currency.getInstance("EUR"));
 		paypage.setReturnUrl(new URL(getReturnUrl()));
