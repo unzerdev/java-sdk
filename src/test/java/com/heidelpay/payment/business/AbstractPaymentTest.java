@@ -197,15 +197,17 @@ public class AbstractPaymentTest {
 	}
 
 	protected Customer getMaximumCustomerSameAddress(String customerId) throws ParseException {
-		Customer customer = new Customer("Rene", "Felder");
+		Customer customer = new Customer( "Peter", "Universum");
 		customer
 		.setCustomerId(customerId)
 		.setSalutation(Salutation.mr)
 		.setEmail("info@heidelpay.com")
 		.setMobile("+43676123456")
-		.setBirthDate(getDate("03.10.1974"))
+				.setPhone("+49 6221 64 71 100")
+				.setBirthDate(getDate("03.10.1974"))
 		.setBillingAddress(getAddress())
 		.setShippingAddress(getAddress());
+		customer.setCompany("heidelpay GmbH");
 		return customer;
 	}
 
@@ -306,7 +308,7 @@ public class AbstractPaymentTest {
 	}
 
 	protected Address getAddress() {
-		return getAddress("Mozart", "Grüngasse 16", "Vienna", "Vienna", "1010", "AT");
+		return getAddress("Peter Universum", "Hugo-Junkers-Str. 6", "Frankfurt am Main", "DE-BO", "60386", "DE");
 	}
 	protected Address getAddress(String name, String street, String city, String state, String zip, String country) {
 		Address address = new Address();
