@@ -24,7 +24,8 @@ import java.lang.reflect.Type;
 import java.net.MalformedURLException;
 import java.net.URL;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonDeserializer;
@@ -36,7 +37,7 @@ import com.google.gson.JsonSerializer;
 
 public class JsonURLConverter
 		implements JsonDeserializer<URL>, JsonSerializer<URL> {
-	public final static Logger logger = Logger.getLogger(JsonURLConverter.class);
+	public final static Logger logger = LogManager.getLogger(JsonURLConverter.class);
 
 	@Override
 	public URL deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context)

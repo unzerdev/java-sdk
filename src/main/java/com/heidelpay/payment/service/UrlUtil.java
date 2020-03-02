@@ -24,14 +24,14 @@ import java.math.BigDecimal;
 
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.Currency;
 import java.util.Date;
 import java.util.Locale;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import com.heidelpay.payment.Recurring;
 import com.heidelpay.payment.paymenttypes.PaymentType;
@@ -47,7 +47,7 @@ public class UrlUtil {
 
 	private static final String RECURRING_URL = "types/<typeId>/recurring";
 
-	public final static Logger logger = Logger.getLogger(UrlUtil.class);
+	public final static Logger logger = LogManager.getLogger(UrlUtil.class);
 
 	private PropertiesUtil properties = new PropertiesUtil();
 

@@ -29,7 +29,8 @@ import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import com.heidelpay.payment.communication.AbstractHeidelpayRestCommunication;
 import com.heidelpay.payment.communication.HeidelpayHttpRequest;
@@ -43,7 +44,7 @@ import com.heidelpay.payment.communication.HttpCommunicationException;
  */
 public class HttpClientBasedRestCommunication extends AbstractHeidelpayRestCommunication {
 
-	private final static Logger logger = Logger.getLogger(AbstractHeidelpayRestCommunication.class);
+	private final static Logger logger = LogManager.getLogger(AbstractHeidelpayRestCommunication.class);
 
 	public HttpClientBasedRestCommunication() {
 		super(null);

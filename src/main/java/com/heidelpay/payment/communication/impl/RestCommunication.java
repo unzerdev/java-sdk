@@ -27,13 +27,20 @@ import java.util.Objects;
 import org.apache.http.HttpEntity;
 import org.apache.http.ParseException;
 import org.apache.http.StatusLine;
-import org.apache.http.client.methods.*;
+import org.apache.http.client.methods.CloseableHttpResponse;
+import org.apache.http.client.methods.HttpDelete;
+import org.apache.http.client.methods.HttpEntityEnclosingRequestBase;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.client.methods.HttpPut;
+import org.apache.http.client.methods.HttpUriRequest;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import com.heidelpay.payment.PaymentException;
 import com.heidelpay.payment.communication.HeidelpayRestCommunication;
@@ -48,7 +55,7 @@ import com.heidelpay.payment.communication.json.JsonErrorObject;
  */
 public class RestCommunication implements HeidelpayRestCommunication {
 
-	private final static Logger logger = Logger.getLogger(RestCommunication.class);
+	private final static Logger logger = LogManager.getLogger(RestCommunication.class);
 
 	public String httpGet(String url, String privateKey) throws HttpCommunicationException {
 		HttpGet httpGet = getHttpGet(url);
