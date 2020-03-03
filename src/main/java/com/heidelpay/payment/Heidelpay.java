@@ -20,20 +20,20 @@ package com.heidelpay.payment;
  * #L%
  */
 
+import com.heidelpay.payment.business.paymenttypes.HirePurchaseRatePlan;
+import com.heidelpay.payment.communication.HeidelpayRestCommunication;
+import com.heidelpay.payment.communication.HttpCommunicationException;
+import com.heidelpay.payment.communication.impl.HttpClientBasedRestCommunication;
+import com.heidelpay.payment.paymenttypes.PaymentType;
+import com.heidelpay.payment.service.LinkpayService;
+import com.heidelpay.payment.service.PaymentService;
+import com.heidelpay.payment.service.PaypageService;
 import java.math.BigDecimal;
 import java.net.URL;
 import java.util.Currency;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
-
-import com.heidelpay.payment.business.paymenttypes.HirePurchaseRatePlan;
-import com.heidelpay.payment.communication.HeidelpayRestCommunication;
-import com.heidelpay.payment.communication.HttpCommunicationException;
-import com.heidelpay.payment.communication.impl.HttpClientBasedRestCommunication;
-import com.heidelpay.payment.paymenttypes.PaymentType;
-import com.heidelpay.payment.service.PaymentService;
-import com.heidelpay.payment.service.PaypageService;
 
 /**
  * {@code Heidelpay} is a facade to the Heidelpay REST Api. The facade is
@@ -49,6 +49,7 @@ public class Heidelpay {
 	private String endPoint;
 	private PaymentService paymentService;
 	private PaypageService paypageService;
+	private LinkpayService linkpayService;
 
 	public Heidelpay(String privateKey) {
 		this(new HttpClientBasedRestCommunication(null), privateKey, null);
@@ -71,6 +72,7 @@ public class Heidelpay {
 		this.endPoint = null;
 		this.paymentService = new PaymentService(this, restCommunication);
 		this.paypageService = new PaypageService(this, restCommunication);
+		this.linkpayService = new LinkpayService(this, restCommunication);
 	}
 
 	/**
@@ -85,6 +87,7 @@ public class Heidelpay {
 		this.endPoint = endPoint;
 		this.paymentService = new PaymentService(this, restCommunication);
 		this.paypageService = new PaypageService(this, restCommunication);
+		this.linkpayService = new LinkpayService(this, restCommunication);
 	}
 
 	/**
@@ -901,7 +904,11 @@ public class Heidelpay {
 	public Paypage paypage (Paypage paypage) throws PaymentException, HttpCommunicationException {
 		return paypageService.initialize(paypage);
 	}
-	
+
+	public Linkpay linkpay (Linkpay linkpay) throws PaymentException, HttpCommunicationException {
+		return linkpayService.initialize(linkpay);
+	}
+
 	public Recurring recurring(String typeId, String customerId, String metadataId, URL returnUrl) throws PaymentException, HttpCommunicationException {
 		return paymentService.recurring(getRecurring(typeId, customerId, metadataId, returnUrl));
 	}

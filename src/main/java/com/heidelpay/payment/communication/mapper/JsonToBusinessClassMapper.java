@@ -7,6 +7,7 @@ import com.heidelpay.payment.Charge;
 import com.heidelpay.payment.CommercialSector;
 import com.heidelpay.payment.Customer;
 import com.heidelpay.payment.CustomerCompanyData;
+import com.heidelpay.payment.Linkpay;
 import com.heidelpay.payment.Payment;
 import com.heidelpay.payment.Payout;
 import com.heidelpay.payment.Paypage;
@@ -18,25 +19,6 @@ import com.heidelpay.payment.business.paymenttypes.HirePurchaseRatePlan;
 import com.heidelpay.payment.communication.json.JSonCompanyInfo;
 import com.heidelpay.payment.communication.json.JsonApplepayResponse;
 import com.heidelpay.payment.communication.json.JsonAuthorization;
-/*-
- * #%L
- * Heidelpay Java SDK
- * %%
- * Copyright (C) 2018 Heidelpay GmbH
- * %%
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- * 
- *      http://www.apache.org/licenses/LICENSE-2.0
- * 
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- * #L%
- */
 import com.heidelpay.payment.communication.json.JsonCancel;
 import com.heidelpay.payment.communication.json.JsonCard;
 import com.heidelpay.payment.communication.json.JsonCardDetails;
@@ -46,6 +28,7 @@ import com.heidelpay.payment.communication.json.JsonHirePurchaseRatePlan;
 import com.heidelpay.payment.communication.json.JsonIdObject;
 import com.heidelpay.payment.communication.json.JsonIdeal;
 import com.heidelpay.payment.communication.json.JsonInitPayment;
+import com.heidelpay.payment.communication.json.JsonLinkpay;
 import com.heidelpay.payment.communication.json.JsonObject;
 import com.heidelpay.payment.communication.json.JsonPayment;
 import com.heidelpay.payment.communication.json.JsonPayout;
@@ -76,6 +59,26 @@ import com.heidelpay.payment.paymenttypes.SepaDirectDebit;
 import com.heidelpay.payment.paymenttypes.SepaDirectDebitGuaranteed;
 import com.heidelpay.payment.paymenttypes.Sofort;
 import com.heidelpay.payment.paymenttypes.Wechatpay;
+
+/*-
+ * #%L
+ * Heidelpay Java SDK
+ * %%
+ * Copyright (C) 2018 Heidelpay GmbH
+ * %%
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ * #L%
+ */
 
 public class JsonToBusinessClassMapper {
 
@@ -143,6 +146,45 @@ public class JsonToBusinessClassMapper {
 		return json;
 	}
 
+	public JsonObject map(Linkpay linkpay) {
+		JsonLinkpay json = new JsonLinkpay();
+		json.setId(linkpay.getId());
+		json.setAmount(linkpay.getAmount());
+		json.setCurrency(linkpay.getCurrency());
+		json.setReturnUrl(linkpay.getReturnUrl());
+		json.setLogoImage(linkpay.getLogoImage());
+		json.setFullPageImage(linkpay.getFullPageImage());
+		json.setShopName(linkpay.getShopName());
+		json.setTermsAndConditionUrl(linkpay.getTermsAndConditionUrl());
+		json.setPrivacyPolicyUrl(linkpay.getPrivacyPolicyUrl());
+		json.setHelpUrl(linkpay.getHelpUrl());
+		json.setContactUrl(linkpay.getContactUrl());
+		json.setOrderId(linkpay.getOrderId());
+		json.setResources(getResources(linkpay));
+		json.setShopDescription(linkpay.getShopDescription());
+		json.setTagline(linkpay.getTagline());
+		json.setImprintUrl(linkpay.getImprintUrl());
+		json.setInvoiceId(linkpay.getInvoiceId());
+		json.setCard3ds(linkpay.getCard3ds());
+		json.setBillingAddressRequired(linkpay.getBillingAddressRequired());
+		json.setShippingAddressRequired(linkpay.getShippingAddressRequired());
+		json.setAdditionalAttributes(linkpay.getAdditionalAttributes());
+		json.setAction(linkpay.getAction());
+		json.setExcludeTypes(linkpay.getExcludeTypes());
+		json.setCss(linkpay.getCss());
+		json.setAlias(linkpay.getAlias());
+		json.setExpires(linkpay.getExpires());
+		json.setIntention(linkpay.getIntention());
+		json.setPaymentReference(linkpay.getPaymentReference());
+		json.setOrderIdRequired(linkpay.getOrderIdRequired());
+		json.setInvoiceIdRequired(linkpay.getInvoiceIdRequired());
+		json.setOneTimeUse(linkpay.getOneTimeUse());
+		json.setSuccessfullyProcessed(linkpay.getSuccessfullyProcessed());
+		json.setRedirectUrl(linkpay.getRedirectUrl());
+		json.setVersion(linkpay.getVersion());
+		return json;
+	}
+
 	private JsonResources getResources(AbstractInitPayment abstractInitPayment) {
 		JsonResources json = new JsonResources();
 		json.setCustomerId(abstractInitPayment.getCustomerId());
@@ -166,6 +208,58 @@ public class JsonToBusinessClassMapper {
 		json.setMetadataId(paypage.getMetadataId());
 		json.setBasketId(paypage.getBasketId());
 		return json;
+	}
+
+	private JsonResources getResources(Linkpay linkpay) {
+		JsonResources json = new JsonResources();
+		json.setCustomerId(linkpay.getCustomerId());
+		json.setMetadataId(linkpay.getMetadataId());
+		json.setBasketId(linkpay.getBasketId());
+		return json;
+	}
+
+	public Linkpay mapToBusinessObject(Linkpay linkpay, JsonLinkpay json) {
+		linkpay.setId(json.getId());
+		linkpay.setAmount(json.getAmount());
+		linkpay.setCurrency(json.getCurrency());
+		linkpay.setReturnUrl(json.getReturnUrl());
+		linkpay.setLogoImage(json.getLogoImage());
+		linkpay.setFullPageImage(json.getFullPageImage());
+		linkpay.setShopName(json.getShopName());
+		linkpay.setShopDescription(json.getShopDescription());
+		linkpay.setTagline(json.getTagline());
+		linkpay.setCss(json.getCss());
+		linkpay.setAlias(json.getAlias());
+		linkpay.setTermsAndConditionUrl(json.getTermsAndConditionUrl());
+		linkpay.setPrivacyPolicyUrl(json.getPrivacyPolicyUrl());
+		linkpay.setImprintUrl(json.getImprintUrl());
+		linkpay.setHelpUrl(json.getHelpUrl());
+		linkpay.setContactUrl(json.getContactUrl());
+		linkpay.setVersion(json.getVersion());
+		linkpay.setRedirectUrl(json.getRedirectUrl());
+		linkpay.setAction(json.getAction());
+		linkpay.setCard3ds(json.getCard3ds());
+		linkpay.setExpires(json.getExpires());
+		linkpay.setOrderId(json.getOrderId());
+		linkpay.setInvoiceId(json.getInvoiceId());
+		linkpay.setBillingAddressRequired(json.getBillingAddressRequired());
+		linkpay.setShippingAddressRequired(json.getShippingAddressRequired());
+		linkpay.setAdditionalAttributes(json.getAdditionalAttributes());
+		linkpay.setIntention(json.getIntention());
+		linkpay.setOrderIdRequired(json.getOrderIdRequired());
+		linkpay.setInvoiceIdRequired(json.getInvoiceIdRequired());
+		linkpay.setOneTimeUse(json.getOneTimeUse());
+		linkpay.setSuccessfullyProcessed(json.getSuccessfullyProcessed());
+		linkpay.setExcludeTypes(json.getExcludeTypes());
+		linkpay.setPaymentReference(json.getPaymentReference());
+		if(json.getResources() != null) {
+			JsonResources jsonResources = json.getResources();
+			linkpay.setCustomerId(jsonResources.getCustomerId());
+			linkpay.setMetadataId(jsonResources.getMetadataId());
+			linkpay.setPaymentId(jsonResources.getPaymentId());
+			linkpay.setBasketId(jsonResources.getBasketId());
+		}
+		return linkpay;
 	}
 
 	public Paypage mapToBusinessObject(Paypage paypage, JsonPaypage json) {
