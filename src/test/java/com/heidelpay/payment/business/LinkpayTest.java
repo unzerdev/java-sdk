@@ -65,7 +65,7 @@ public class LinkpayTest extends AbstractSeleniumTest {
 		assertEquals(request.getOneTimeUse(), response.getOneTimeUse());
 		assertEquals(request.getIntention(), response.getIntention());
 		assertEquals("charge", response.getAction().toLowerCase());
-		
+
 		for (String key : response.getCss().keySet()) {
 			assertEquals(request.getCss().get(key), response.getCss().get(key));
 		}

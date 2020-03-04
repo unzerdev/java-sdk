@@ -23,11 +23,12 @@ package com.heidelpay.payment.business;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
+
+import com.heidelpay.payment.Paypage;
+import com.heidelpay.payment.communication.HttpCommunicationException;
 import java.net.MalformedURLException;
 import java.util.Arrays;
 import org.junit.Test;
-import com.heidelpay.payment.Paypage;
-import com.heidelpay.payment.communication.HttpCommunicationException;
 
 public class PaypageTest extends AbstractSeleniumTest {
 
@@ -63,7 +64,7 @@ public class PaypageTest extends AbstractSeleniumTest {
 		assertEquals(request.getShippingAddressRequired(), response.getShippingAddressRequired());
 		assertEquals(Arrays.toString(request.getExcludeTypes()), Arrays.toString(response.getExcludeTypes()));
 		assertEquals("charge", response.getAction().toLowerCase());
-		
+
 		for (String key : response.getCss().keySet()) {
 			assertEquals(request.getCss().get(key), response.getCss().get(key));
 		}

@@ -20,13 +20,14 @@ package com.heidelpay.payment;
  * #L%
  */
 
+import com.heidelpay.payment.paymenttypes.PaymentType;
 import java.math.BigDecimal;
 import java.net.URL;
 import java.util.Currency;
 import java.util.Map;
-import com.heidelpay.payment.paymenttypes.PaymentType;
 
 public class Paypage implements PaymentType {
+
 	public enum Status {SUCCESS, PENDING, ERRROR}
 
 	private String id;
@@ -68,7 +69,7 @@ public class Paypage implements PaymentType {
 	private String metadataId;
 	private String paymentId;
 	private String basketId;
-	
+
 	public Paypage() {
 		//default constructor
 	}

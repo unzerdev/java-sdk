@@ -20,9 +20,8 @@ package com.heidelpay.payment;
  * #L%
  */
 
-import java.net.URL;
-
 import com.heidelpay.payment.paymenttypes.PaymentType;
+import java.net.URL;
 
 /**
  * Business object for Charge. Amount, currency and typeId are mandatory parameter to 
@@ -33,6 +32,7 @@ import com.heidelpay.payment.paymenttypes.PaymentType;
  *
  */
 public class Recurring extends AbstractPayment implements PaymentType {
+
 	public enum Status {SUCCESS, PENDING, ERRROR}
 	private Status status;
 	

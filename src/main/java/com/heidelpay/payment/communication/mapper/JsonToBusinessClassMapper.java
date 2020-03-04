@@ -192,6 +192,7 @@ public class JsonToBusinessClassMapper {
 		json.setTypeId(abstractInitPayment.getTypeId());
 		json.setRiskId(abstractInitPayment.getRiskId());
 		json.setBasketId(abstractInitPayment.getBasketId());
+		json.setTraceId(abstractInitPayment.getTraceId());
 		return json;
 	}
 	
@@ -323,6 +324,7 @@ public class JsonToBusinessClassMapper {
 			abstractInitPayment.setPaymentId(json.getResources().getPaymentId());
 			abstractInitPayment.setRiskId(json.getResources().getRiskId());
 			abstractInitPayment.setTypeId(json.getResources().getTypeId());
+			abstractInitPayment.setTraceId(json.getResources().getTraceId());
 		}
 		abstractInitPayment.setReturnUrl(json.getReturnUrl());
 		abstractInitPayment.setProcessing(getProcessing(json.getProcessing()));

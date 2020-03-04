@@ -543,4 +543,5 @@ public class Linkpay implements PaymentType {
 	public void setBasketId(String basketId) {
 		this.basketId = basketId;
 	}
+
 }

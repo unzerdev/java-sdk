@@ -68,6 +68,7 @@ public class ChargeTest extends AbstractPaymentTest {
 		assertEquals("COR.000.100.112", charge.getMessage().getCode());
 		assertNotNull(charge.getMessage().getCustomer());
 		assertEquals(Charge.Status.SUCCESS, charge.getStatus());
+		assertNotNull(charge.getTraceId());
 	}
 
 	@Test

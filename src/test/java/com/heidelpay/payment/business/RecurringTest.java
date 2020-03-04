@@ -19,21 +19,10 @@ package com.heidelpay.payment.business;
  * limitations under the License.
  * #L%
  */
+
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
-
-import java.math.BigDecimal;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.text.ParseException;
-import java.util.Currency;
-
-import org.junit.Ignore;
-import org.junit.Test;
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebElement;
-import org.openqa.selenium.remote.RemoteWebDriver;
 
 import com.heidelpay.payment.Charge;
 import com.heidelpay.payment.Customer;
@@ -43,6 +32,16 @@ import com.heidelpay.payment.communication.HttpCommunicationException;
 import com.heidelpay.payment.paymenttypes.Card;
 import com.heidelpay.payment.paymenttypes.Paypal;
 import com.heidelpay.payment.paymenttypes.SepaDirectDebit;
+import java.math.BigDecimal;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.text.ParseException;
+import java.util.Currency;
+import org.junit.Ignore;
+import org.junit.Test;
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.remote.RemoteWebDriver;
 
 public class RecurringTest extends AbstractSeleniumTest {
 
@@ -105,8 +104,6 @@ public class RecurringTest extends AbstractSeleniumTest {
 		assertRecurring(recurring, Recurring.Status.PENDING);
 		assertNotNull(recurring.getRedirectUrl());
 	}
-
-	
 	
 	@Test
 	@Ignore("Does not work on Bamboo")
