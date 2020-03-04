@@ -22,18 +22,6 @@ package com.heidelpay.payment.business;
 
 import static org.junit.Assert.assertEquals;
 
-import java.math.BigDecimal;
-import java.math.RoundingMode;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Currency;
-import java.util.Date;
-import java.util.Locale;
-import java.util.Map;
-import java.util.UUID;
-
 import com.heidelpay.payment.Address;
 import com.heidelpay.payment.Authorization;
 import com.heidelpay.payment.Basket;
@@ -52,8 +40,19 @@ import com.heidelpay.payment.communication.impl.HttpClientBasedRestCommunication
 import com.heidelpay.payment.paymenttypes.Card;
 import com.heidelpay.payment.paymenttypes.InvoiceGuaranteed;
 import com.heidelpay.payment.paymenttypes.SepaDirectDebit;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Currency;
+import java.util.Date;
+import java.util.Locale;
+import java.util.Map;
+import java.util.UUID;
 
-public class AbstractPaymentTest {
+public abstract class AbstractPaymentTest {
 
 	protected String getRandomInvoiceId() {
 		return getRandomId().substring(0, 5);
@@ -111,7 +110,9 @@ public class AbstractPaymentTest {
 		return getCharge(null);
 	}
 	protected Charge getCharge(String orderId) throws MalformedURLException, HttpCommunicationException {
-		return getCharge(createPaymentTypeCard().getId(), null);
+		Charge charge = getCharge(createPaymentTypeCard().getId(), null);
+		charge.setOrderId(orderId);
+		return charge;
 	}
 	protected Charge getCharge(String orderId, Boolean card3ds) throws MalformedURLException, HttpCommunicationException {
 		return getCharge(createPaymentTypeCard().getId(), null, orderId, null, null, card3ds);

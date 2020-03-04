@@ -19,18 +19,9 @@ package com.heidelpay.payment.business;
  * limitations under the License.
  * #L%
  */
+
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-
-import java.math.BigDecimal;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.text.ParseException;
-import java.time.LocalDate;
-import java.util.Currency;
-
-import org.junit.Test;
 
 import com.heidelpay.payment.Charge;
 import com.heidelpay.payment.Customer;
@@ -38,6 +29,13 @@ import com.heidelpay.payment.Payment;
 import com.heidelpay.payment.communication.HttpCommunicationException;
 import com.heidelpay.payment.paymenttypes.Card;
 import com.heidelpay.payment.paymenttypes.Sofort;
+import java.math.BigDecimal;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.text.ParseException;
+import java.time.LocalDate;
+import java.util.Currency;
+import org.junit.Test;
 
 public class ChargeTest extends AbstractPaymentTest {
 
@@ -70,6 +68,21 @@ public class ChargeTest extends AbstractPaymentTest {
 		assertEquals("COR.000.100.112", charge.getMessage().getCode());
 		assertNotNull(charge.getMessage().getCustomer());
 		assertEquals(Charge.Status.SUCCESS, charge.getStatus());
+	}
+
+	@Test
+	public void testChargeWIthInvoiceAndOrderIdIsSuccess() throws MalformedURLException, HttpCommunicationException {
+		Charge requestCharge = getCharge("1234");
+		requestCharge.setCard3ds(Boolean.FALSE);
+		requestCharge.setInvoiceId("4567");
+		Charge charge = getHeidelpay().charge(requestCharge);
+		assertNotNull(charge);
+		assertNotNull(charge.getId());
+		assertEquals("COR.000.100.112", charge.getMessage().getCode());
+		assertNotNull(charge.getMessage().getCustomer());
+		assertEquals(Charge.Status.SUCCESS, charge.getStatus());
+		assertEquals(requestCharge.getInvoiceId(), charge.getInvoiceId());
+		assertEquals(requestCharge.getOrderId(), charge.getOrderId());
 	}
 
 	@Test

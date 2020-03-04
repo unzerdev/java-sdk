@@ -20,14 +20,6 @@ package com.heidelpay.payment.service;
  * #L%
  */
 
-import java.math.BigDecimal;
-import java.net.URL;
-import java.util.ArrayList;
-import java.util.Currency;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
-
 import com.heidelpay.payment.Authorization;
 import com.heidelpay.payment.Basket;
 import com.heidelpay.payment.Cancel;
@@ -82,6 +74,13 @@ import com.heidelpay.payment.paymenttypes.SepaDirectDebit;
 import com.heidelpay.payment.paymenttypes.SepaDirectDebitGuaranteed;
 import com.heidelpay.payment.paymenttypes.Sofort;
 import com.heidelpay.payment.paymenttypes.Wechatpay;
+import java.math.BigDecimal;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.Currency;
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
 
 public class PaymentService {
 	private static final String TRANSACTION_TYPE_AUTHORIZATION = "authorize";
@@ -282,8 +281,12 @@ public class PaymentService {
 		return cancel(cancel, urlUtil.getRefundUrl(paymentId, chargeId));
 	}
 
-	public Shipment shipment(String paymentId, String invoiceId) throws HttpCommunicationException {
-		return shipment(new Shipment(invoiceId), urlUtil.getPaymentUrl(new Shipment(), paymentId));
+	public Shipment shipment(String paymentId, String invoiceId, String orderId) throws HttpCommunicationException {
+		return shipment(new Shipment(invoiceId, orderId), urlUtil.getPaymentUrl(new Shipment(), paymentId));
+	}
+
+	public Shipment doShipment(Shipment shipment, String paymentId) throws HttpCommunicationException {
+		return shipment(shipment, urlUtil.getPaymentUrl(new Shipment(), paymentId));
 	}
 
 	private Shipment shipment(Shipment shipment, String url) throws HttpCommunicationException {
@@ -310,6 +313,7 @@ public class PaymentService {
 				jsonToBusinessClassMapper.map(charge));
 		JsonCharge jsonCharge = new JsonParser<JsonCharge>().fromJson(response, JsonCharge.class);
 		charge = (Charge) jsonToBusinessClassMapper.mapToBusinessObject(charge, jsonCharge);
+		charge.setInvoiceId(jsonCharge.getInvoiceId());
 		charge.setPayment(fetchPayment(jsonCharge.getResources().getPaymentId()));
 		charge.setPaymentId(jsonCharge.getResources().getPaymentId());
 		charge.setHeidelpay(heidelpay);

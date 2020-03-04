@@ -22,14 +22,6 @@ package com.heidelpay.payment.business.paymenttypes;
 
 import static org.junit.Assert.assertNotNull;
 
-import java.math.BigDecimal;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.text.ParseException;
-import java.util.Currency;
-
-import org.junit.Test;
-
 import com.heidelpay.payment.Basket;
 import com.heidelpay.payment.Charge;
 import com.heidelpay.payment.PaymentException;
@@ -37,6 +29,12 @@ import com.heidelpay.payment.Shipment;
 import com.heidelpay.payment.business.AbstractPaymentTest;
 import com.heidelpay.payment.communication.HttpCommunicationException;
 import com.heidelpay.payment.paymenttypes.InvoiceFactoring;
+import java.math.BigDecimal;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.text.ParseException;
+import java.util.Currency;
+import org.junit.Test;
 
 public class InvoiceFactoringTest extends AbstractPaymentTest {
 
@@ -80,9 +78,11 @@ public class InvoiceFactoringTest extends AbstractPaymentTest {
 		Basket basket = getHeidelpay().createBasket(getMaxTestBasket());
 		assertNotNull(basket);
 		Charge charge = getHeidelpay().charge(basket.getAmountTotalGross().subtract(basket.getAmountTotalDiscount()), Currency.getInstance("EUR"), createInvoiceFactoring().getId(), new URL("https://www.meinShop.de"), createFactoringOKCustomer().getId() , basket.getId(), false);
-		Shipment shipment = getHeidelpay().shipment(charge.getPaymentId(), getRandomInvoiceId());
+		Shipment shipment = getHeidelpay().shipment(charge.getPaymentId(), getRandomInvoiceId(), "3451");
 		assertNotNull(shipment);
 		assertNotNull(shipment.getId());
+		assertNotNull(shipment.getInvoiceId());
+		assertNotNull(shipment.getOrderId());
 	}
 
 	@Test

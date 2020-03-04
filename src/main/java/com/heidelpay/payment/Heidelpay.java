@@ -785,18 +785,36 @@ public class Heidelpay {
 	 * @throws HttpCommunicationException
 	 */
 	public Shipment shipment(String paymentId) throws HttpCommunicationException {
-		return paymentService.shipment(paymentId, null);
+		return paymentService.shipment(paymentId, null, null);
+	}
+
+	public Shipment shipment(Shipment shipment, String paymentId) throws HttpCommunicationException {
+		return paymentService.doShipment(shipment, paymentId);
 	}
 
 	/**
 	 * Inform about a shipment of goods and provide invoiceId. From this time the insurance start.
 	 * 
 	 * @param paymentId
+	 * @param invoiceId
 	 * @return Shipment with id
 	 * @throws HttpCommunicationException
 	 */
 	public Shipment shipment(String paymentId, String invoiceId) throws HttpCommunicationException {
-		return paymentService.shipment(paymentId, invoiceId);
+		return paymentService.shipment(paymentId, invoiceId, null);
+	}
+
+	/**
+	 * Inform about a shipment of goods and provide invoiceId. From this time the insurance start.
+	 *
+	 * @param paymentId
+	 * @param invoiceId
+	 * @param orderId
+	 * @return Shipment with id
+	 * @throws HttpCommunicationException
+	 */
+	public Shipment shipment(String paymentId, String invoiceId, String orderId) throws HttpCommunicationException {
+		return paymentService.shipment(paymentId, invoiceId, orderId);
 	}
 
 	/**
