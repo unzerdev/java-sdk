@@ -453,7 +453,7 @@ public abstract class AbstractPaymentTest {
 		basket.setAmountTotalGross(new BigDecimal(866.49));
 		basket.setAmountTotalVat(new BigDecimal(866.49*0.2).setScale(2, RoundingMode.HALF_UP));
 		basket.setAmountTotalDiscount(BigDecimal.TEN);
-		basket.setAmountTotalVat(new BigDecimal(144.42));
+		basket.setAmountTotalVat(new BigDecimal(142.41));
 		basket.setCurrencyCode(Currency.getInstance("EUR"));
 		basket.setNote("Mistery shopping");
 		basket.setOrderId(getRandomId());

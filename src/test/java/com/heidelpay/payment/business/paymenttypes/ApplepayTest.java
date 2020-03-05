@@ -23,23 +23,22 @@ package com.heidelpay.payment.business.paymenttypes;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
-import java.math.BigDecimal;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.util.Currency;
-
-import org.junit.Test;
-
 import com.heidelpay.payment.Authorization;
 import com.heidelpay.payment.Charge;
 import com.heidelpay.payment.business.AbstractPaymentTest;
 import com.heidelpay.payment.communication.HttpCommunicationException;
 import com.heidelpay.payment.paymenttypes.Applepay;
 import com.heidelpay.payment.paymenttypes.ApplepayHeader;
+import java.math.BigDecimal;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.Currency;
+import org.junit.Ignore;
+import org.junit.Test;
 
 public class ApplepayTest extends AbstractPaymentTest {
 
-	
+	@Ignore("missing key configuration for apple pay")
 	@Test
 	public void testCreateApplepayType() throws HttpCommunicationException {
 		Applepay applepay = getApplePay();
@@ -53,6 +52,7 @@ public class ApplepayTest extends AbstractPaymentTest {
 		
 	}
 
+	@Ignore("missing key configuration for apple pay")
 	@Test
 	public void testAuthorizeApplePayType() throws HttpCommunicationException, MalformedURLException {
 		Applepay applepay = getHeidelpay().createPaymentType(getApplePay());
@@ -62,6 +62,7 @@ public class ApplepayTest extends AbstractPaymentTest {
 		assertEquals(Authorization.Status.SUCCESS, authorization.getStatus());
 	}
 
+	@Ignore("missing key configuration for apple pay")
 	@Test
 	public void testAuthorizeApplePayTypeId() throws HttpCommunicationException, MalformedURLException {
 		Applepay applepay = getHeidelpay().createPaymentType(getApplePay());
@@ -71,6 +72,7 @@ public class ApplepayTest extends AbstractPaymentTest {
 		assertEquals(Authorization.Status.SUCCESS, authorization.getStatus());
 	}
 
+	@Ignore("missing key configuration for apple pay")
 	@Test
 	public void testChargeApplePayType() throws HttpCommunicationException, MalformedURLException {
 		Applepay applepay = getHeidelpay().createPaymentType(getApplePay());
@@ -80,6 +82,7 @@ public class ApplepayTest extends AbstractPaymentTest {
 		assertEquals(Authorization.Status.SUCCESS, charge.getStatus());
 	}
 
+	@Ignore("missing key configuration for apple pay")
 	@Test
 	public void testChargeApplePayTypeId() throws HttpCommunicationException, MalformedURLException {
 		Applepay applepay = getHeidelpay().createPaymentType(getApplePay());
