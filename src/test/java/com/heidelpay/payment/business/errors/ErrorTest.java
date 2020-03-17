@@ -124,14 +124,14 @@ public class ErrorTest extends AbstractPaymentTest {
     }
 
     @Test
-    public void testPaymentTypeIdMissing() throws MalformedURLException, HttpCommunicationException {
+    public void testPaymentTypeIdInvalid() throws MalformedURLException, HttpCommunicationException {
         try {
             getHeidelpay().authorize(getAuthorization(""));
         } catch (PaymentException e) {
             assertNotNull(e.getPaymentErrorList());
             assertTrue(e.getPaymentErrorList().size() > 0);
-            assertEquals("API.320.200.143", e.getPaymentErrorList().get(0).getCode());
-            assertEquals("Resources type id is missing.", e.getPaymentErrorList().get(0).getMerchantMessage());
+            assertEquals("API.320.200.163", e.getPaymentErrorList().get(0).getCode());
+            assertEquals("Resources type id is invalid.", e.getPaymentErrorList().get(0).getMerchantMessage());
         }
     }
 

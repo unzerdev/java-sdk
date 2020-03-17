@@ -87,28 +87,32 @@ public class BasketTest extends AbstractPaymentTest {
 	
 	@Test
 	public void testAuthorizationWithBasket() throws MalformedURLException, HttpCommunicationException {
-		String basketId = createMaxTestBasket().getId();
-		Authorization authorize = getHeidelpay().authorize(getAuthorization(createPaymentTypeCard().getId(), null, null, null, basketId));
+		Basket basket = createMaxTestBasket();
+		Authorization authorization = getAuthorization(createPaymentTypeCard().getId(), null, null, null, basket.getId());
+		authorization.setAmount(basket.getAmountTotalGross().subtract(basket.getAmountTotalDiscount()));
+		Authorization authorize = getHeidelpay().authorize(authorization);
 		Payment payment = getHeidelpay().fetchPayment(authorize.getPayment().getId());
 		assertNotNull(payment);
 		assertNotNull(payment.getId());
 		assertNotNull(payment.getAuthorization());
 		assertNotNull(payment.getAuthorization().getId());
-		assertEquals(basketId, payment.getBasketId());
-		assertEquals(basketId, payment.getAuthorization().getBasketId());
+		assertEquals(basket.getId(), payment.getBasketId());
+		assertEquals(basket.getId(), payment.getAuthorization().getBasketId());
 	}
 
 	@Test
 	public void testChargeWithBasket() throws MalformedURLException, HttpCommunicationException {
-		String basketId = createMaxTestBasket().getId();
-		Charge charge = getHeidelpay().charge(getCharge(createPaymentTypeCard().getId(), null, null, null, basketId));
+		Basket basket = createMaxTestBasket();
+		Charge chargeReq = getCharge(createPaymentTypeCard().getId(), null, null, null, basket.getId());
+		chargeReq.setAmount(basket.getAmountTotalGross().subtract(basket.getAmountTotalDiscount()));
+		Charge charge = getHeidelpay().charge(chargeReq);
 		Payment payment = getHeidelpay().fetchPayment(charge.getPayment().getId());
 		assertNotNull(payment);
 		assertNotNull(payment.getId());
 		assertNotNull(payment.getCharge(0));
 		assertNotNull(payment.getCharge(0).getId());
-		assertEquals(basketId, payment.getBasketId());
-		assertEquals(basketId, payment.getCharge(0).getBasketId());
+		assertEquals(basket.getId(), payment.getBasketId());
+		assertEquals(basket.getId(), payment.getCharge(0).getBasketId());
 	}
 
 	private Basket createMaxTestBasket() throws PaymentException, HttpCommunicationException {
@@ -159,6 +163,7 @@ public class BasketTest extends AbstractPaymentTest {
 		assertNumberEquals(expected.getVat(), actual.getVat());
 		assertEquals(expected.getImageUrl(), actual.getImageUrl());
 		assertEquals(expected.getSubTitle(), actual.getSubTitle());
+		assertEquals(expected.getType(), actual.getType());
 	}
 
 	private void assertNumberEquals(Integer expected, Integer actual) {

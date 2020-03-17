@@ -22,18 +22,6 @@ package com.heidelpay.payment.business;
 
 import static org.junit.Assert.assertEquals;
 
-import java.math.BigDecimal;
-import java.math.RoundingMode;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Currency;
-import java.util.Date;
-import java.util.Locale;
-import java.util.Map;
-import java.util.UUID;
-
 import com.heidelpay.payment.Address;
 import com.heidelpay.payment.Authorization;
 import com.heidelpay.payment.Basket;
@@ -52,8 +40,23 @@ import com.heidelpay.payment.communication.impl.HttpClientBasedRestCommunication
 import com.heidelpay.payment.paymenttypes.Card;
 import com.heidelpay.payment.paymenttypes.InvoiceGuaranteed;
 import com.heidelpay.payment.paymenttypes.SepaDirectDebit;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Currency;
+import java.util.Date;
+import java.util.Locale;
+import java.util.Map;
+import java.util.UUID;
 
-public class AbstractPaymentTest {
+public abstract class AbstractPaymentTest {
+
+	protected String getRandomInvoiceId() {
+		return getRandomId().substring(0, 5);
+	}
 
 	public Heidelpay getHeidelpayWithEndPoint(String endPoint) {
 		return new Heidelpay("s-priv-2a102ZMq3gV4I3zJ888J7RR6u75oqK3n", null, endPoint);
@@ -107,7 +110,9 @@ public class AbstractPaymentTest {
 		return getCharge(null);
 	}
 	protected Charge getCharge(String orderId) throws MalformedURLException, HttpCommunicationException {
-		return getCharge(createPaymentTypeCard().getId(), null);
+		Charge charge = getCharge(createPaymentTypeCard().getId(), null);
+		charge.setOrderId(orderId);
+		return charge;
 	}
 	protected Charge getCharge(String orderId, Boolean card3ds) throws MalformedURLException, HttpCommunicationException {
 		return getCharge(createPaymentTypeCard().getId(), null, orderId, null, null, card3ds);
@@ -193,15 +198,17 @@ public class AbstractPaymentTest {
 	}
 
 	protected Customer getMaximumCustomerSameAddress(String customerId) throws ParseException {
-		Customer customer = new Customer("Rene", "Felder");
+		Customer customer = new Customer( "Peter", "Universum");
 		customer
 		.setCustomerId(customerId)
 		.setSalutation(Salutation.mr)
 		.setEmail("info@heidelpay.com")
 		.setMobile("+43676123456")
-		.setBirthDate(getDate("03.10.1974"))
+				.setPhone("+49 6221 64 71 100")
+				.setBirthDate(getDate("03.10.1974"))
 		.setBillingAddress(getAddress())
 		.setShippingAddress(getAddress());
+		customer.setCompany("heidelpay GmbH");
 		return customer;
 	}
 
@@ -302,7 +309,7 @@ public class AbstractPaymentTest {
 	}
 
 	protected Address getAddress() {
-		return getAddress("Mozart", "Grüngasse 16", "Vienna", "Vienna", "1010", "AT");
+		return getAddress("Peter Universum", "Hugo-Junkers-Str. 6", "Frankfurt am Main", "DE-BO", "60386", "DE");
 	}
 	protected Address getAddress(String name, String street, String city, String state, String zip, String country) {
 		Address address = new Address();
@@ -446,7 +453,7 @@ public class AbstractPaymentTest {
 		basket.setAmountTotalGross(new BigDecimal(866.49));
 		basket.setAmountTotalVat(new BigDecimal(866.49*0.2).setScale(2, RoundingMode.HALF_UP));
 		basket.setAmountTotalDiscount(BigDecimal.TEN);
-		basket.setAmountTotalVat(new BigDecimal(144.42));
+		basket.setAmountTotalVat(new BigDecimal(142.41));
 		basket.setCurrencyCode(Currency.getInstance("EUR"));
 		basket.setNote("Mistery shopping");
 		basket.setOrderId(getRandomId());
@@ -476,6 +483,7 @@ public class AbstractPaymentTest {
 		basketItem.setUnit("Pc.");
 		basketItem.setVat(19);
 		basketItem.setSubTitle("XS in Red");
+		basketItem.setType("goods");
 		try {
 			basketItem.setImageUrl(new URL("https://www.apple.com/v/iphone-xs/d/images/overview/hero_top_device_large_2x.jpg"));
 		} catch (MalformedURLException e) {
@@ -495,6 +503,7 @@ public class AbstractPaymentTest {
 		basketItem.setUnit("Pc.");
 		basketItem.setVat(20);
 		basketItem.setSubTitle("Nicht nur Pros brauchen Power.");
+		basketItem.setType("goods");
 		try {
 			basketItem.setImageUrl(new URL("https://www.apple.com/de/ipad-air/images/overview/hero__gmn7i7gbziqa_large_2x.jpg"));
 		} catch (MalformedURLException e) {

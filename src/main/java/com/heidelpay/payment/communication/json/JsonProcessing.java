@@ -32,6 +32,7 @@ public class JsonProcessing {
 	@SerializedName("PDFLink")
 	private String pdfLink;
 	private String externalOrderId;
+	private String zgReferenceId;
 
 	public String getUniqueId() {
 		return uniqueId;
@@ -80,5 +81,13 @@ public class JsonProcessing {
 	}
 	public void setExternalOrderId(String externalOrderId) {
 		this.externalOrderId = externalOrderId;
+	}
+
+	public String getZgReferenceId() {
+		return zgReferenceId;
+	}
+
+	public void setZgReferenceId(String zgReferenceId) {
+		this.zgReferenceId = zgReferenceId;
 	}
 }

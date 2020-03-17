@@ -20,20 +20,20 @@ package com.heidelpay.payment;
  * #L%
  */
 
+import com.heidelpay.payment.business.paymenttypes.HirePurchaseRatePlan;
+import com.heidelpay.payment.communication.HeidelpayRestCommunication;
+import com.heidelpay.payment.communication.HttpCommunicationException;
+import com.heidelpay.payment.communication.impl.HttpClientBasedRestCommunication;
+import com.heidelpay.payment.paymenttypes.PaymentType;
+import com.heidelpay.payment.service.LinkpayService;
+import com.heidelpay.payment.service.PaymentService;
+import com.heidelpay.payment.service.PaypageService;
 import java.math.BigDecimal;
 import java.net.URL;
 import java.util.Currency;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
-
-import com.heidelpay.payment.business.paymenttypes.HirePurchaseRatePlan;
-import com.heidelpay.payment.communication.HeidelpayRestCommunication;
-import com.heidelpay.payment.communication.HttpCommunicationException;
-import com.heidelpay.payment.communication.impl.HttpClientBasedRestCommunication;
-import com.heidelpay.payment.paymenttypes.PaymentType;
-import com.heidelpay.payment.service.PaymentService;
-import com.heidelpay.payment.service.PaypageService;
 
 /**
  * {@code Heidelpay} is a facade to the Heidelpay REST Api. The facade is
@@ -49,6 +49,7 @@ public class Heidelpay {
 	private String endPoint;
 	private PaymentService paymentService;
 	private PaypageService paypageService;
+	private LinkpayService linkpayService;
 
 	public Heidelpay(String privateKey) {
 		this(new HttpClientBasedRestCommunication(null), privateKey, null);
@@ -71,6 +72,7 @@ public class Heidelpay {
 		this.endPoint = null;
 		this.paymentService = new PaymentService(this, restCommunication);
 		this.paypageService = new PaypageService(this, restCommunication);
+		this.linkpayService = new LinkpayService(this, restCommunication);
 	}
 
 	/**
@@ -85,6 +87,7 @@ public class Heidelpay {
 		this.endPoint = endPoint;
 		this.paymentService = new PaymentService(this, restCommunication);
 		this.paypageService = new PaypageService(this, restCommunication);
+		this.linkpayService = new LinkpayService(this, restCommunication);
 	}
 
 	/**
@@ -664,7 +667,7 @@ public class Heidelpay {
 		return payout;
 	}
 	/**
-	 * Charge the full amount that was authorized
+	 * Charge (Capture) the full amount that was authorized
 	 * 
 	 * @param paymentId
 	 * @return Charge with id
@@ -675,7 +678,7 @@ public class Heidelpay {
 	}
 
 	/**
-	 * Charge partial amount of Authorization. As there is only one Authorization
+	 * Charge (Capture) partial amount of Authorization. As there is only one Authorization
 	 * for a Payment id you only need to provide a paymentId
 	 * 
 	 * @param paymentId
@@ -688,7 +691,20 @@ public class Heidelpay {
 	}
 
 	/**
-	 * Cancel the full Authorization. As there is only one Authorization for a
+	 * Charge (Capture) with amount and paymentReference
+	 *
+	 * @param paymentId
+	 * @param amount
+	 * @param paymentReference
+	 * @return Charge with id
+	 * @throws HttpCommunicationException
+	 */
+	public Charge chargeAuthorization(String paymentId, BigDecimal amount, String paymentReference) throws HttpCommunicationException {
+		return paymentService.chargeAuthorization(paymentId, amount, paymentReference);
+	}
+
+	/**
+	 * Cancel (Reverse) the full Authorization. As there is only one Authorization for a
 	 * Payment id you only need to provide a paymentId
 	 * 
 	 * @param paymentId
@@ -700,7 +716,7 @@ public class Heidelpay {
 	}
 
 	/**
-	 * Cancel partial amount of Authorization. As there is only one Authorization
+	 * Cancel (Reverse) partial amount of Authorization. As there is only one Authorization
 	 * for a Payment id you only need to provide a paymentId
 	 * 
 	 * @param paymentId
@@ -710,6 +726,17 @@ public class Heidelpay {
 	 */
 	public Cancel cancelAuthorization(String paymentId, BigDecimal amount) throws HttpCommunicationException {
 		return paymentService.cancelAuthorization(paymentId, amount);
+	}
+
+	/**
+	 * Cancel (Reverse) Authorize with Cancel object
+	 *
+	 * @param paymentId
+	 * @return Cancel with id
+	 * @throws HttpCommunicationException
+	 */
+	public Cancel cancelAuthorization(String paymentId, Cancel cancel) throws HttpCommunicationException {
+		return paymentService.cancelAuthorization(paymentId, cancel);
 	}
 
 	/**
@@ -725,7 +752,7 @@ public class Heidelpay {
 	}
 
 	/**
-	 * Cancel partial Charge
+	 * Cancel (Refund) partial Charge
 	 * 
 	 * @param paymentId
 	 * @param chargeId
@@ -738,6 +765,19 @@ public class Heidelpay {
 	}
 
 	/**
+	 * Cancel (Refund) charge with Cancel object
+	 *
+	 * @param paymentId
+	 * @param chargeId
+	 * @param cancel
+	 * @return
+	 * @throws HttpCommunicationException
+	 */
+	public Cancel cancelCharge(String paymentId, String chargeId, Cancel cancel) throws HttpCommunicationException {
+		return paymentService.cancelCharge(paymentId, chargeId, cancel);
+	}
+
+	/**
 	 * Inform about a shipment of goods. From this time the insurance start.
 	 * 
 	 * @param paymentId
@@ -745,18 +785,36 @@ public class Heidelpay {
 	 * @throws HttpCommunicationException
 	 */
 	public Shipment shipment(String paymentId) throws HttpCommunicationException {
-		return paymentService.shipment(paymentId, null);
+		return paymentService.shipment(paymentId, null, null);
+	}
+
+	public Shipment shipment(Shipment shipment, String paymentId) throws HttpCommunicationException {
+		return paymentService.doShipment(shipment, paymentId);
 	}
 
 	/**
 	 * Inform about a shipment of goods and provide invoiceId. From this time the insurance start.
 	 * 
 	 * @param paymentId
+	 * @param invoiceId
 	 * @return Shipment with id
 	 * @throws HttpCommunicationException
 	 */
 	public Shipment shipment(String paymentId, String invoiceId) throws HttpCommunicationException {
-		return paymentService.shipment(paymentId, invoiceId);
+		return paymentService.shipment(paymentId, invoiceId, null);
+	}
+
+	/**
+	 * Inform about a shipment of goods and provide invoiceId. From this time the insurance start.
+	 *
+	 * @param paymentId
+	 * @param invoiceId
+	 * @param orderId
+	 * @return Shipment with id
+	 * @throws HttpCommunicationException
+	 */
+	public Shipment shipment(String paymentId, String invoiceId, String orderId) throws HttpCommunicationException {
+		return paymentService.shipment(paymentId, invoiceId, orderId);
 	}
 
 	/**
@@ -864,7 +922,11 @@ public class Heidelpay {
 	public Paypage paypage (Paypage paypage) throws PaymentException, HttpCommunicationException {
 		return paypageService.initialize(paypage);
 	}
-	
+
+	public Linkpay linkpay (Linkpay linkpay) throws PaymentException, HttpCommunicationException {
+		return linkpayService.initialize(linkpay);
+	}
+
 	public Recurring recurring(String typeId, String customerId, String metadataId, URL returnUrl) throws PaymentException, HttpCommunicationException {
 		return paymentService.recurring(getRecurring(typeId, customerId, metadataId, returnUrl));
 	}
@@ -930,5 +992,4 @@ public class Heidelpay {
 		.setCard3ds(card3ds);
 		return authorization;
 	}
-
 }

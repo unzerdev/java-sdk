@@ -60,6 +60,10 @@ public class Charge extends AbstractInitPayment {
 		return getHeidelpay().cancelCharge(getPayment().getId(), getId(), amount);
 	}
 
+	public Cancel cancel(Cancel cancel) throws HttpCommunicationException {
+		return getHeidelpay().cancelCharge(getPayment().getId(), getId(), cancel);
+	}
+
 	@Override
 	public String getTypeUrl() {
 		return "payments/<paymentId>/charges";

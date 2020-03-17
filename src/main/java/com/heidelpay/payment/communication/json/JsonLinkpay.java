@@ -25,41 +25,75 @@ import java.util.Map;
  * #L%
  */
 
-public class JsonPaypage implements JsonObject {
+public class JsonLinkpay implements JsonObject {
+
 	private String id;
-	
-	private BigDecimal amount;
-	private Currency currency;
-	private URL returnUrl;
-	private String logoImage;
-	@Deprecated
-	private String basketImage;
-	private String fullPageImage;
-	private String shopName;
-	@Deprecated
-	private String descriptionMain;
-	@Deprecated
-	private String descriptionSmall;
-	private String shopDescription;
-	private String tagline;
-	private Map<String, String> css;
-	private URL termsAndConditionUrl;
-	private URL privacyPolicyUrl;
-	@Deprecated
-	private URL impressumUrl;
-	private URL imprintUrl;
-	private URL helpUrl;
-	private URL contactUrl;
-	private String invoiceId;
-	private String orderId;
-	private String card3ds;
-	private String billingAddressRequired = "false";
-	private String shippingAddressRequired = "false";
-	private Map<String, String> additionalAttributes;
-	private JsonResources resources;
+
 	private String redirectUrl;
-	private String action;
+
+	private String version;
+
+	private String alias;
+
+	private String orderId;
+
+	private String invoiceId;
+
+	private BigDecimal amount;
+
+	private Currency currency;
+
+	private URL returnUrl;
+
+	private String logoImage;
+
+	private String fullPageImage;
+
+	private String shopName;
+
+	private String shopDescription;
+
+	private String tagline;
+
+	private Map<String, String> css;
+
+	private URL termsAndConditionUrl;
+
+	private URL privacyPolicyUrl;
+
+	private URL imprintUrl;
+
+	private URL helpUrl;
+
+	private URL contactUrl;
+
+	private String card3ds;
+
+	private String billingAddressRequired;
+
+	private String shippingAddressRequired;
+
+	private String expires;
+
+	private String intention;
+
+	private String paymentReference;
+
+	private Map<String, String> additionalAttributes;
+
+	private String orderIdRequired;
+
+	private String invoiceIdRequired;
+
+	private String oneTimeUse;
+
+	private String successfullyProcessed;
+
 	private String[] excludeTypes;
+
+	private JsonResources resources;
+
+	private String action;
 
 	public String getId() {
 		return id;
@@ -100,14 +134,6 @@ public class JsonPaypage implements JsonObject {
 	public void setLogoImage(String logoImage) {
 		this.logoImage = logoImage;
 	}
-	@Deprecated
-	public String getBasketImage() {
-		return basketImage;
-	}
-	@Deprecated
-	public void setBasketImage(String basketImage) {
-		this.basketImage = basketImage;
-	}
 	public String getFullPageImage() {
 		return fullPageImage;
 	}
@@ -123,22 +149,6 @@ public class JsonPaypage implements JsonObject {
 	public void setShopName(String shopName) {
 		this.shopName = shopName;
 	}
-	@Deprecated
-	public String getDescriptionMain() {
-		return descriptionMain;
-	}
-	@Deprecated
-	public void setDescriptionMain(String descriptionMain) {
-		this.descriptionMain = descriptionMain;
-	}
-	@Deprecated
-	public String getDescriptionSmall() {
-		return descriptionSmall;
-	}
-	@Deprecated
-	public void setDescriptionSmall(String descriptionSmall) {
-		this.descriptionSmall = descriptionSmall;
-	}
 	public URL getTermsAndConditionUrl() {
 		return termsAndConditionUrl;
 	}
@@ -153,14 +163,6 @@ public class JsonPaypage implements JsonObject {
 
 	public void setPrivacyPolicyUrl(URL privacyPolicyUrl) {
 		this.privacyPolicyUrl = privacyPolicyUrl;
-	}
-	@Deprecated
-	public URL getImpressumUrl() {
-		return impressumUrl;
-	}
-	@Deprecated
-	public void setImpressumUrl(URL impressumUrl) {
-		this.impressumUrl = impressumUrl;
 	}
 
 	public URL getHelpUrl() {
@@ -197,10 +199,6 @@ public class JsonPaypage implements JsonObject {
 
 	public String getRedirectUrl() {
 		return redirectUrl;
-	}
-
-	public void setRedirectUrl(String redirectUrl) {
-		this.redirectUrl = redirectUrl;
 	}
 
 	/**
@@ -357,5 +355,80 @@ public class JsonPaypage implements JsonObject {
 		this.css = css;
 	}
 
-	
+
+	public String getAlias() {
+		return alias;
+	}
+
+	public void setAlias(String alias) {
+		this.alias = alias;
+	}
+
+	public String getExpires() {
+		return expires;
+	}
+
+	public void setExpires(String expires) {
+		this.expires = expires;
+	}
+
+	public String getIntention() {
+		return intention;
+	}
+
+	public void setIntention(String intention) {
+		this.intention = intention;
+	}
+
+	public String getPaymentReference() {
+		return paymentReference;
+	}
+
+	public void setPaymentReference(String paymentReference) {
+		this.paymentReference = paymentReference;
+	}
+
+	public String getOrderIdRequired() {
+		return orderIdRequired;
+	}
+
+	public void setOrderIdRequired(String orderIdRequired) {
+		this.orderIdRequired = orderIdRequired;
+	}
+
+	public String getInvoiceIdRequired() {
+		return invoiceIdRequired;
+	}
+
+	public void setInvoiceIdRequired(String invoiceIdRequired) {
+		this.invoiceIdRequired = invoiceIdRequired;
+	}
+
+	public String getOneTimeUse() {
+		return oneTimeUse;
+	}
+
+	public void setOneTimeUse(String oneTimeUse) {
+		this.oneTimeUse = oneTimeUse;
+	}
+
+	public String getSuccessfullyProcessed() {
+		return successfullyProcessed;
+	}
+
+	public void setSuccessfullyProcessed(String successfullyProcessed) {
+		this.successfullyProcessed = successfullyProcessed;
+	}
+
+	public void setRedirectUrl(String redirectUrl) {
+		this.redirectUrl = redirectUrl;
+	}
+
+	public String getVersion() {
+		return version;
+	}
+
+	public void setVersion(String version) {
+		this.version = version;
+	}
 }

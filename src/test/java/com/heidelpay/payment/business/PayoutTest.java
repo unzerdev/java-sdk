@@ -76,11 +76,12 @@ public class PayoutTest extends AbstractPaymentTest {
 		assertEquals(payout.getReturnUrl(), payoutFetched.getReturnUrl());
 		assertEquals(payout.getStatus(), payoutFetched.getStatus());
 		assertEquals(payout.getTypeId(), payoutFetched.getTypeId());
+		assertEquals(payout.getPaymentReference(), payoutFetched.getPaymentReference());
 	}
 
 	private Payout getTestPayout(String typeId) throws PaymentException, HttpCommunicationException, ParseException, MalformedURLException {
 		Payout payout = new Payout();
-		payout.setAmount(BigDecimal.ONE);
+		payout.setAmount(new BigDecimal(856.4900));
 		payout.setCurrency(Currency.getInstance("EUR"));
 		payout.setOrderId(getRandomId());
 		payout.setPaymentReference("My Payment Reference");

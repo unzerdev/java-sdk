@@ -66,10 +66,10 @@ public class PaypageService {
 		return initialize(paypage, urlUtil.getRestUrl(paypage));
 	}
 	
-	public Paypage initialize(Paypage paypage, String url) throws PaymentException, HttpCommunicationException {
+	public Paypage initialize(Paypage paypage, String url) throws HttpCommunicationException {
 		String response = restCommunication.httpPost(url, heidelpay.getPrivateKey(), jsonToBusinessClassMapper.map(paypage));
 		JsonPaypage jsonPaypage = new JsonParser<JsonPaypage>().fromJson(response, JsonPaypage.class);
-		paypage = (Paypage) jsonToBusinessClassMapper.mapToBusinessObject(paypage, jsonPaypage);
+		paypage = jsonToBusinessClassMapper.mapToBusinessObject(paypage, jsonPaypage);
 		return paypage;
 	}
 

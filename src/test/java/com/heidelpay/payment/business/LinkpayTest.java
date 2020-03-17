@@ -24,25 +24,24 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 
-import com.heidelpay.payment.Paypage;
+import com.heidelpay.payment.Linkpay;
 import com.heidelpay.payment.communication.HttpCommunicationException;
 import java.net.MalformedURLException;
 import java.util.Arrays;
 import org.junit.Test;
 
-public class PaypageTest extends AbstractSeleniumTest {
+public class LinkpayTest extends AbstractSeleniumTest {
 
 	@Test
-	public void testMaximumPaypage() throws MalformedURLException, HttpCommunicationException {
-		Paypage request = getMaximumPaypage();
-		Paypage response = getHeidelpay().paypage(request);
-		assertNull(response.getImpressumUrl());
+	public void testMaximumLinkpay() throws MalformedURLException, HttpCommunicationException {
+		Linkpay request = getMaximumLinkpay();
+		Linkpay response = getHeidelpay().linkpay(request);
 		assertNull(response.getCard3ds());
 		
 		assertNotNull(response);
 		assertNotNull(response.getId());
 		assertNotNull(response.getRedirectUrl());
-		assertNotNull(response.getPaymentId());
+		assertNull(response.getPaymentId());
 		
 		assertEquals(request.getCurrency(), response.getCurrency());
 		assertEquals(request.getReturnUrl(), response.getReturnUrl());
@@ -51,8 +50,8 @@ public class PaypageTest extends AbstractSeleniumTest {
 		assertEquals(request.getTagline(), response.getTagline());
 		assertEquals(request.getTermsAndConditionUrl().toString(), response.getTermsAndConditionUrl().toString());
 		assertEquals(request.getPrivacyPolicyUrl().toString(), response.getPrivacyPolicyUrl().toString());
-		assertEquals(request.getLogoImage().toString(), response.getLogoImage().toString());
-		assertEquals(request.getFullPageImage().toString(), response.getFullPageImage().toString());
+		assertEquals(request.getLogoImage(), response.getLogoImage());
+		assertEquals(request.getFullPageImage(), response.getFullPageImage());
 		assertEquals(request.getContactUrl().toString(), response.getContactUrl().toString());
 		assertEquals(request.getHelpUrl().toString(), response.getHelpUrl().toString());
 		assertEquals(request.getImprintUrl().toString(), response.getImprintUrl().toString());
@@ -63,6 +62,8 @@ public class PaypageTest extends AbstractSeleniumTest {
 		assertEquals(request.getBillingAddressRequired(), response.getBillingAddressRequired());
 		assertEquals(request.getShippingAddressRequired(), response.getShippingAddressRequired());
 		assertEquals(Arrays.toString(request.getExcludeTypes()), Arrays.toString(response.getExcludeTypes()));
+		assertEquals(request.getOneTimeUse(), response.getOneTimeUse());
+		assertEquals(request.getIntention(), response.getIntention());
 		assertEquals("charge", response.getAction().toLowerCase());
 
 		for (String key : response.getCss().keySet()) {
@@ -71,18 +72,17 @@ public class PaypageTest extends AbstractSeleniumTest {
 	}
 	
 	@Test
-	public void testPaypage_WithEmptyCssMap() throws MalformedURLException, HttpCommunicationException {
-		Paypage request = getMaximumPaypage();
+	public void testLinkpay_WithEmptyCssMap() throws MalformedURLException, HttpCommunicationException {
+		Linkpay request = getMaximumLinkpay();
 		request.setCss(null);
-		
-		Paypage response = getHeidelpay().paypage(request);
-		assertNull(response.getImpressumUrl());
+
+		Linkpay response = getHeidelpay().linkpay(request);
 		assertNull(response.getCard3ds());
 
 		assertNotNull(response);
 		assertNotNull(response.getId());
 		assertNotNull(response.getRedirectUrl());
-		assertNotNull(response.getPaymentId());
+		assertNull(response.getPaymentId());
 		
 		assertEquals(request.getCurrency(), response.getCurrency());
 		assertEquals(request.getReturnUrl(), response.getReturnUrl());
@@ -91,8 +91,8 @@ public class PaypageTest extends AbstractSeleniumTest {
 		assertEquals(request.getTagline(), response.getTagline());
 		assertEquals(request.getTermsAndConditionUrl().toString(), response.getTermsAndConditionUrl().toString());
 		assertEquals(request.getPrivacyPolicyUrl().toString(), response.getPrivacyPolicyUrl().toString());
-		assertEquals(request.getLogoImage().toString(), response.getLogoImage().toString());
-		assertEquals(request.getFullPageImage().toString(), response.getFullPageImage().toString());
+		assertEquals(request.getLogoImage(), response.getLogoImage());
+		assertEquals(request.getFullPageImage(), response.getFullPageImage());
 		assertEquals(request.getContactUrl().toString(), response.getContactUrl().toString());
 		assertEquals(request.getHelpUrl().toString(), response.getHelpUrl().toString());
 		assertEquals(request.getImprintUrl().toString(), response.getImprintUrl().toString());

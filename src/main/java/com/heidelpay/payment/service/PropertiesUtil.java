@@ -23,10 +23,11 @@ package com.heidelpay.payment.service;
 import java.io.IOException;
 import java.util.Properties;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 public class PropertiesUtil {
-	public final static Logger logger = Logger.getLogger(PropertiesUtil.class);
+	public final static Logger logger = LogManager.getLogger(PropertiesUtil.class);
 	public final static String REST_ENDPOINT = "rest.endpoint"; 
 	public final static String REST_VERSION = "rest.version"; 
 	

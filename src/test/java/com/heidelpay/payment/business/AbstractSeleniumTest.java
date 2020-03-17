@@ -25,14 +25,17 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
+import com.heidelpay.payment.Linkpay;
+import com.heidelpay.payment.Paypage;
+import com.heidelpay.payment.communication.HttpCommunicationException;
 import java.math.BigDecimal;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.text.ParseException;
 import java.util.Currency;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
-
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
@@ -44,10 +47,7 @@ import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
-import com.heidelpay.payment.Paypage;
-import com.heidelpay.payment.communication.HttpCommunicationException;
-
-public class AbstractSeleniumTest extends AbstractPaymentTest {
+public abstract class AbstractSeleniumTest extends AbstractPaymentTest {
 
 	public enum Browser {Chrome, Firefox}; 
 	private Browser defaultBrowser = Browser.Firefox;
@@ -232,25 +232,58 @@ public class AbstractSeleniumTest extends AbstractPaymentTest {
 
 	protected Paypage getMaximumPaypage() throws MalformedURLException {
 		Paypage paypage = new Paypage();
+		String[] excludeTypes = {"paypal"};
+		paypage.setExcludeTypes(excludeTypes);
 		paypage.setAmount(BigDecimal.ONE);
 		paypage.setCurrency(Currency.getInstance("EUR"));
 		paypage.setReturnUrl(new URL(getReturnUrl()));
-		paypage.setDescriptionMain("Donation for Heidelpay Development team");
-		paypage.setDescriptionSmall("From Developers to Developers");
 		paypage.setShopName("Heidelpay Demo Shop");
+		paypage.setShopDescription("Heidelpay Demo Shop Description");
+		paypage.setTagline("Heidelpay Tagline");
+		paypage.setTermsAndConditionUrl(new URL("https://www.heidelpay.com/en/privacy-statement/"));
+		paypage.setPrivacyPolicyUrl(new URL("https://www.heidelpay.com/en/privacy-statement/"));
+		paypage.setCss(getCssMap());
 
-		paypage.setFullPageImage("https://www.heidelpay.com/fileadmin/content/header-Imges-neu/Header_Phone_12.jpg");
 		paypage.setLogoImage("https://www.heidelpay.com/typo3conf/ext/heidelpay_site/Resources/Public/Images/Heidelpay-Logo_mitUnterzeile-orange.svg");
-		paypage.setBasketImage("https://www.heidelpay.com/fileadmin/content/content-images-neu/icons/svg-Icons/alles-in-einem_001.svg");
+		paypage.setFullPageImage("https://www.heidelpay.com/fileadmin/content/header-Imges-neu/Header_Phone_12.jpg");
 
 		paypage.setContactUrl(new URL("mailto:rene.felder@heidelpay.com"));
 		paypage.setHelpUrl(new URL("https://www.heidelpay.com/de/support/"));
-		paypage.setImpressumUrl(new URL("https://www.heidelpay.com/de/impressum/"));
+		paypage.setImprintUrl(new URL("https://www.heidelpay.com/de/imprint/"));
 		paypage.setPrivacyPolicyUrl(new URL("https://www.heidelpay.com/de/datenschutz/"));
 		paypage.setTermsAndConditionUrl(new URL("https://www.heidelpay.com/de/datenschutz/"));
 
+		paypage.setInvoiceId(getRandomId());
 		paypage.setOrderId(getRandomId());
 		return paypage;
+	}
+
+	protected Linkpay getMaximumLinkpay() throws MalformedURLException {
+		Linkpay linkpay = new Linkpay();
+		String[] excludeTypes = {"paypal"};
+		linkpay.setExcludeTypes(excludeTypes);
+		linkpay.setAmount(BigDecimal.ONE);
+		linkpay.setCurrency(Currency.getInstance("EUR"));
+		linkpay.setReturnUrl(new URL(getReturnUrl()));
+		linkpay.setShopName("Heidelpay Demo Shop");
+		linkpay.setShopDescription("Heidelpay Demo Shop Description");
+		linkpay.setTagline("Heidelpay Tagline");
+		linkpay.setTermsAndConditionUrl(new URL("https://www.heidelpay.com/en/privacy-statement/"));
+		linkpay.setPrivacyPolicyUrl(new URL("https://www.heidelpay.com/en/privacy-statement/"));
+		linkpay.setCss(getCssMap());
+
+		linkpay.setLogoImage("https://www.heidelpay.com/typo3conf/ext/heidelpay_site/Resources/Public/Images/Heidelpay-Logo_mitUnterzeile-orange.svg");
+		linkpay.setFullPageImage("https://www.heidelpay.com/fileadmin/content/header-Imges-neu/Header_Phone_12.jpg");
+
+		linkpay.setContactUrl(new URL("mailto:rene.felder@heidelpay.com"));
+		linkpay.setHelpUrl(new URL("https://www.heidelpay.com/de/support/"));
+		linkpay.setImprintUrl(new URL("https://www.heidelpay.com/de/imprint/"));
+		linkpay.setPrivacyPolicyUrl(new URL("https://www.heidelpay.com/de/datenschutz/"));
+		linkpay.setTermsAndConditionUrl(new URL("https://www.heidelpay.com/de/datenschutz/"));
+
+		linkpay.setInvoiceId(getRandomId());
+		linkpay.setOrderId(getRandomId());
+		return linkpay;
 	}
 
 	// TODO: Currently not possible as card3ds flag is missing
@@ -286,7 +319,6 @@ public class AbstractSeleniumTest extends AbstractPaymentTest {
 		}
 	}
 
-
 	protected Map<String, String> getFormParameterMap(String parReq, String termUrl, String md) {
 		Map<String, String> formParameterMap = new LinkedHashMap<String, String>();
 		formParameterMap.put("PaReq", parReq);
@@ -295,7 +327,17 @@ public class AbstractSeleniumTest extends AbstractPaymentTest {
 		return formParameterMap;
 	}
 
-
+	protected Map<String, String> getCssMap() {
+		Map<String, String> cssMap = new HashMap<String, String>();
+		cssMap.put("shopDescription", "color: blue; font-size: 30px");
+		cssMap.put("tagline", "color: blue; font-size: 30px");
+		cssMap.put("header", "background-color: white");
+		cssMap.put("shopName", "color: blue; font-size: 30px");
+		cssMap.put("contactUrl", "color: blue; font-size: 30px");
+		cssMap.put("helpUrl", "color: blue; font-size: 30px");
+		return cssMap;
+	}
+	
 	protected void selectDropDown(RemoteWebDriver driver, String paymentMethod) throws InterruptedException {
 		Thread.sleep(1000);
 		WebElement dropdown = driver.findElement(By.xpath("//div[@class='field " + paymentMethod + " sixteen wide']//div[@class='heidelpayChoices__inner']"));

@@ -23,14 +23,17 @@ package com.heidelpay.payment;
 public class Shipment extends AbstractPayment {
 
 	private String invoiceId;
+
+	private String orderId;
 	
 	public Shipment() {
 		super();
 	}
 
-	public Shipment(String invoiceId) {
+	public Shipment(String invoiceId, String orderId) {
 		super();
 		this.invoiceId = invoiceId;
+		this.orderId = orderId;
 	}
 	
 	public Shipment(Heidelpay heidelpay) {
@@ -50,4 +53,11 @@ public class Shipment extends AbstractPayment {
 		this.invoiceId = invoiceId;
 	}
 
+	public String getOrderId() {
+		return orderId;
+	}
+
+	public void setOrderId(String orderId) {
+		this.orderId = orderId;
+	}
 }

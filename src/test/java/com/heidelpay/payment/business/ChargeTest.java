@@ -19,16 +19,9 @@ package com.heidelpay.payment.business;
  * limitations under the License.
  * #L%
  */
+
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
-
-import java.math.BigDecimal;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.text.ParseException;
-import java.util.Currency;
-
-import org.junit.Test;
 
 import com.heidelpay.payment.Charge;
 import com.heidelpay.payment.Customer;
@@ -36,6 +29,13 @@ import com.heidelpay.payment.Payment;
 import com.heidelpay.payment.communication.HttpCommunicationException;
 import com.heidelpay.payment.paymenttypes.Card;
 import com.heidelpay.payment.paymenttypes.Sofort;
+import java.math.BigDecimal;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.text.ParseException;
+import java.time.LocalDate;
+import java.util.Currency;
+import org.junit.Test;
 
 public class ChargeTest extends AbstractPaymentTest {
 
@@ -68,11 +68,28 @@ public class ChargeTest extends AbstractPaymentTest {
 		assertEquals("COR.000.100.112", charge.getMessage().getCode());
 		assertNotNull(charge.getMessage().getCustomer());
 		assertEquals(Charge.Status.SUCCESS, charge.getStatus());
+		assertNotNull(charge.getTraceId());
+	}
+
+	@Test
+	public void testChargeWIthInvoiceAndOrderIdIsSuccess() throws MalformedURLException, HttpCommunicationException {
+		Charge requestCharge = getCharge("1234");
+		requestCharge.setCard3ds(Boolean.FALSE);
+		requestCharge.setInvoiceId("4567");
+		Charge charge = getHeidelpay().charge(requestCharge);
+		assertNotNull(charge);
+		assertNotNull(charge.getId());
+		assertEquals("COR.000.100.112", charge.getMessage().getCode());
+		assertNotNull(charge.getMessage().getCustomer());
+		assertEquals(Charge.Status.SUCCESS, charge.getStatus());
+		assertEquals(requestCharge.getInvoiceId(), charge.getInvoiceId());
+		assertEquals(requestCharge.getOrderId(), charge.getOrderId());
 	}
 
 	@Test
 	public void testChargeWithPaymentType() throws MalformedURLException, HttpCommunicationException {
-		Card card = new Card("4444333322221111", "12/19");
+		LocalDate locaDateNow = LocalDate.now();
+		Card card = new Card("4444333322221111", "12/" + (locaDateNow.getYear() + 1));
 		Charge charge = getHeidelpay().charge(BigDecimal.ONE, Currency.getInstance("EUR"), card, new URL("https://www.google.at"), false);
 		assertNotNull(charge);
 		assertEquals("COR.000.100.112", charge.getMessage().getCode());
@@ -91,7 +108,8 @@ public class ChargeTest extends AbstractPaymentTest {
 
 	@Test
 	public void testChargeWithCustomerTypeReturnUrl() throws MalformedURLException, HttpCommunicationException {
-		Card card = new Card("4444333322221111", "12/19");
+		LocalDate locaDateNow = LocalDate.now();
+		Card card = new Card("4444333322221111", "12/" + (locaDateNow.getYear() + 1));
 		Customer customer = new Customer("Rene", "Felder");
 		Charge charge = getHeidelpay().charge(BigDecimal.ONE, Currency.getInstance("EUR"), card, new URL("https://www.google.at"), customer, false);
 		assertNotNull(charge);
@@ -111,7 +129,8 @@ public class ChargeTest extends AbstractPaymentTest {
 
 	@Test
 	public void testChargeReturnPayment() throws MalformedURLException, HttpCommunicationException {
-		Card card = new Card("4444333322221111", "12/19");
+		LocalDate locaDateNow = LocalDate.now();
+		Card card = new Card("4444333322221111", "12/" + (locaDateNow.getYear() + 1));
 		Charge charge = getHeidelpay().charge(BigDecimal.ONE, Currency.getInstance("EUR"), card, new URL("https://www.google.at"), false);
 		assertNotNull(charge);
 		assertEquals("COR.000.100.112", charge.getMessage().getCode());
@@ -173,5 +192,29 @@ public class ChargeTest extends AbstractPaymentTest {
 		assertEquals(Charge.Status.PENDING, charge.getStatus());
 		// TODO Bug in API, Ticket AHC-1197
 //		assertTrue(charge.getCard3ds());
+	}
+
+	@Test
+	public void testChargeWithPaymentReference() throws MalformedURLException, HttpCommunicationException {
+		String orderId = getRandomId();
+		Charge chargeObj = getCharge(orderId, true);
+		chargeObj.setPaymentReference("pmt-ref");
+		Charge charge = getHeidelpay().charge(chargeObj);
+		assertNotNull(charge);
+		assertNotNull(charge.getId());
+		assertEquals("pmt-ref", charge.getPaymentReference());
+	}
+
+	@Test
+	public void testChargeWithChargeObject() throws MalformedURLException, HttpCommunicationException {
+		String orderId = getRandomId();
+		Charge chargeObj = getCharge(orderId, true);
+		chargeObj.setPaymentReference("pmt-ref");
+		chargeObj.setAmount(new BigDecimal(1.0));
+		Charge charge = getHeidelpay().charge(chargeObj);
+		assertNotNull(charge);
+		assertNotNull(charge.getId());
+		assertEquals("pmt-ref", charge.getPaymentReference());
+		assertEquals(new BigDecimal(1.0000).setScale(4), charge.getAmount());
 	}
 }

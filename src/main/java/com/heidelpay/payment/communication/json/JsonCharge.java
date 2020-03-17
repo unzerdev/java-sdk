@@ -43,6 +43,7 @@ public class JsonCharge extends JsonInitPayment implements JsonObject {
 		this.setMessage(json.getMessage());
 		this.setProcessing(json.getProcessing());
 		this.setRedirectUrl(json.getRedirectUrl());
+		this.setPaymentReference(json.getPaymentReference());
 		this.setId(json.getId());
 	}
 

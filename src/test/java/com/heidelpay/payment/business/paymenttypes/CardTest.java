@@ -56,8 +56,21 @@ public class CardTest extends AbstractPaymentTest {
 	public void testCreateCardType() throws HttpCommunicationException {
 		Card card = new Card("4444333322221111", "03/20");
 		card.setCvc("123");
+		card.setCardHolder("Beethoven");
+		card.setBrand("VISA");
 		card = getHeidelpay().createPaymentType(card);
 		assertNotNull(card.getId());
+		assertEquals("Beethoven", card.getCardHolder());
+		assertEquals("VISA", card.getBrand());
+		assertNotNull(card.getCardDetails());
+		assertEquals("CREDIT", card.getCardDetails().getAccount());
+		assertEquals("US", card.getCardDetails().getCountryIsoA2());
+		assertEquals("UNITED STATES", card.getCardDetails().getCountryName());
+		assertEquals(null, card.getCardDetails().getCardType());
+		assertEquals(null, card.getCardDetails().getIssuerName());
+		assertEquals(null, card.getCardDetails().getIssuerUrl());
+		assertEquals(null, card.getCardDetails().getIssuerPhoneNumber());
+		assertEquals("card", card.getMethod());
 	}
 
 	@Test
@@ -109,6 +122,8 @@ public class CardTest extends AbstractPaymentTest {
 	public void testFetchCardType() throws HttpCommunicationException {
 		Card card = new Card("4444333322221111", "03/2020");
 		card.setCvc("123");
+		card.setCardHolder("Mozart");
+		card.setBrand("VISA");
 		
 		Card createdCard = getHeidelpay().createPaymentType(card);
 		assertNotNull(createdCard.getId());
@@ -122,6 +137,17 @@ public class CardTest extends AbstractPaymentTest {
 		assertEquals(maskString(card.getNumber(), 6, card.getNumber().length()-4, '*'), fetchedCard.getNumber());
 		assertEquals(card.getExpiryDate(), fetchedCard.getExpiryDate());
 		assertNotNull(fetchedCard.getCvc());
+		assertEquals("Mozart", fetchedCard.getCardHolder());
+		assertEquals("VISA", fetchedCard.getBrand());
+		assertNotNull(fetchedCard.getCardDetails());
+		assertEquals("CREDIT", fetchedCard.getCardDetails().getAccount());
+		assertEquals("US", fetchedCard.getCardDetails().getCountryIsoA2());
+		assertEquals("UNITED STATES", fetchedCard.getCardDetails().getCountryName());
+		assertEquals(null, fetchedCard.getCardDetails().getCardType());
+		assertEquals(null, fetchedCard.getCardDetails().getIssuerName());
+		assertEquals(null, fetchedCard.getCardDetails().getIssuerUrl());
+		assertEquals(null, fetchedCard.getCardDetails().getIssuerPhoneNumber());
+		assertEquals("card", fetchedCard.getMethod());
 	}
 
 }

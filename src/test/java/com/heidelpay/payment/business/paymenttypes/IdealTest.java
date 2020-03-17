@@ -21,14 +21,11 @@ package com.heidelpay.payment.business.paymenttypes;
  */
 
 import static org.junit.Assert.assertNotNull;
-
 import java.math.BigDecimal;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Currency;
-
 import org.junit.Test;
-
 import com.heidelpay.payment.Charge;
 import com.heidelpay.payment.business.AbstractPaymentTest;
 import com.heidelpay.payment.communication.HttpCommunicationException;

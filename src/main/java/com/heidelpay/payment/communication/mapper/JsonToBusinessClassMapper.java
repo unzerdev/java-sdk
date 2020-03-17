@@ -7,6 +7,7 @@ import com.heidelpay.payment.Charge;
 import com.heidelpay.payment.CommercialSector;
 import com.heidelpay.payment.Customer;
 import com.heidelpay.payment.CustomerCompanyData;
+import com.heidelpay.payment.Linkpay;
 import com.heidelpay.payment.Payment;
 import com.heidelpay.payment.Payout;
 import com.heidelpay.payment.Paypage;
@@ -18,33 +19,16 @@ import com.heidelpay.payment.business.paymenttypes.HirePurchaseRatePlan;
 import com.heidelpay.payment.communication.json.JSonCompanyInfo;
 import com.heidelpay.payment.communication.json.JsonApplepayResponse;
 import com.heidelpay.payment.communication.json.JsonAuthorization;
-/*-
- * #%L
- * Heidelpay Java SDK
- * %%
- * Copyright (C) 2018 Heidelpay GmbH
- * %%
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- * 
- *      http://www.apache.org/licenses/LICENSE-2.0
- * 
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- * #L%
- */
 import com.heidelpay.payment.communication.json.JsonCancel;
 import com.heidelpay.payment.communication.json.JsonCard;
+import com.heidelpay.payment.communication.json.JsonCardDetails;
 import com.heidelpay.payment.communication.json.JsonCharge;
 import com.heidelpay.payment.communication.json.JsonCustomer;
 import com.heidelpay.payment.communication.json.JsonHirePurchaseRatePlan;
 import com.heidelpay.payment.communication.json.JsonIdObject;
 import com.heidelpay.payment.communication.json.JsonIdeal;
 import com.heidelpay.payment.communication.json.JsonInitPayment;
+import com.heidelpay.payment.communication.json.JsonLinkpay;
 import com.heidelpay.payment.communication.json.JsonObject;
 import com.heidelpay.payment.communication.json.JsonPayment;
 import com.heidelpay.payment.communication.json.JsonPayout;
@@ -59,6 +43,7 @@ import com.heidelpay.payment.communication.json.JsonState;
 import com.heidelpay.payment.paymenttypes.Alipay;
 import com.heidelpay.payment.paymenttypes.Applepay;
 import com.heidelpay.payment.paymenttypes.Card;
+import com.heidelpay.payment.paymenttypes.CardDetails;
 import com.heidelpay.payment.paymenttypes.Eps;
 import com.heidelpay.payment.paymenttypes.Giropay;
 import com.heidelpay.payment.paymenttypes.Ideal;
@@ -74,6 +59,26 @@ import com.heidelpay.payment.paymenttypes.SepaDirectDebit;
 import com.heidelpay.payment.paymenttypes.SepaDirectDebitGuaranteed;
 import com.heidelpay.payment.paymenttypes.Sofort;
 import com.heidelpay.payment.paymenttypes.Wechatpay;
+
+/*-
+ * #%L
+ * Heidelpay Java SDK
+ * %%
+ * Copyright (C) 2018 Heidelpay GmbH
+ * %%
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ * #L%
+ */
 
 public class JsonToBusinessClassMapper {
 
@@ -94,7 +99,7 @@ public class JsonToBusinessClassMapper {
 			json = new JsonPayout(json);
 		} else if(abstractInitPayment instanceof Authorization) {
 			json = new JsonAuthorization(json);
-			((JsonAuthorization) json).setEffectiveInterestRate(((Authorization) abstractInitPayment).getEffectiveInterestRate());
+			json.setEffectiveInterestRate(((Authorization) abstractInitPayment).getEffectiveInterestRate());
 		}
 		return json;
 	}
@@ -108,27 +113,75 @@ public class JsonToBusinessClassMapper {
 	public JsonObject map(Cancel cancel) {
 		JsonCharge json = new JsonCharge();
 		json.setAmount(cancel.getAmount());
+		json.setPaymentReference(cancel.getPaymentReference());
 		return json;
 	}
 	
 	public JsonObject map(Paypage paypage) {
 		JsonPaypage json = new JsonPaypage();
-		json.setAmount(paypage.getAmount());
-		json.setContactUrl(paypage.getContactUrl());
-		json.setCurrency(paypage.getCurrency());
-		json.setDescriptionMain(paypage.getDescriptionMain());
-		json.setDescriptionSmall(paypage.getDescriptionSmall());
-		json.setFullPageImage(paypage.getFullPageImage());
-		json.setHelpUrl(paypage.getHelpUrl());
 		json.setId(paypage.getId());
-		json.setImpressumUrl(paypage.getImpressumUrl());
-		json.setLogoImage(paypage.getLogoImage());
-		json.setOrderId(paypage.getOrderId());
-		json.setPrivacyPolicyUrl(paypage.getPrivacyPolicyUrl());
+		json.setAmount(paypage.getAmount());
+		json.setCurrency(paypage.getCurrency());
 		json.setReturnUrl(paypage.getReturnUrl());
+		json.setLogoImage(paypage.getLogoImage());
+		json.setFullPageImage(paypage.getFullPageImage());
 		json.setShopName(paypage.getShopName());
+		json.setShopDescription(paypage.getShopDescription());
+		json.setTagline(paypage.getTagline());
+		json.setCss(paypage.getCss());
 		json.setTermsAndConditionUrl(paypage.getTermsAndConditionUrl());
+		json.setPrivacyPolicyUrl(paypage.getPrivacyPolicyUrl());
+		json.setImpressumUrl(paypage.getImpressumUrl());
+		json.setImprintUrl(paypage.getImprintUrl());
+		json.setHelpUrl(paypage.getHelpUrl());
+		json.setContactUrl(paypage.getContactUrl());
+		json.setInvoiceId(paypage.getInvoiceId());
+		json.setOrderId(paypage.getOrderId());
+		json.setCard3ds(paypage.getCard3ds());
+		json.setBillingAddressRequired(paypage.getBillingAddressRequired());
+		json.setShippingAddressRequired(paypage.getShippingAddressRequired());
+		json.setAdditionalAttributes(paypage.getAdditionalAttributes());
 		json.setResources(getResources(paypage));
+		json.setExcludeTypes(paypage.getExcludeTypes());
+		return json;
+	}
+
+	public JsonObject map(Linkpay linkpay) {
+		JsonLinkpay json = new JsonLinkpay();
+		json.setId(linkpay.getId());
+		json.setAmount(linkpay.getAmount());
+		json.setCurrency(linkpay.getCurrency());
+		json.setReturnUrl(linkpay.getReturnUrl());
+		json.setLogoImage(linkpay.getLogoImage());
+		json.setFullPageImage(linkpay.getFullPageImage());
+		json.setShopName(linkpay.getShopName());
+		json.setTermsAndConditionUrl(linkpay.getTermsAndConditionUrl());
+		json.setPrivacyPolicyUrl(linkpay.getPrivacyPolicyUrl());
+		json.setHelpUrl(linkpay.getHelpUrl());
+		json.setContactUrl(linkpay.getContactUrl());
+		json.setOrderId(linkpay.getOrderId());
+		json.setResources(getResources(linkpay));
+		json.setShopDescription(linkpay.getShopDescription());
+		json.setTagline(linkpay.getTagline());
+		json.setImprintUrl(linkpay.getImprintUrl());
+		json.setInvoiceId(linkpay.getInvoiceId());
+		json.setCard3ds(linkpay.getCard3ds());
+		json.setBillingAddressRequired(linkpay.getBillingAddressRequired());
+		json.setShippingAddressRequired(linkpay.getShippingAddressRequired());
+		json.setAdditionalAttributes(linkpay.getAdditionalAttributes());
+		json.setAction(linkpay.getAction());
+		json.setExcludeTypes(linkpay.getExcludeTypes());
+		json.setCss(linkpay.getCss());
+		json.setAlias(linkpay.getAlias());
+		json.setExpires(linkpay.getExpires());
+		json.setIntention(linkpay.getIntention());
+		json.setPaymentReference(linkpay.getPaymentReference());
+		json.setOrderIdRequired(linkpay.getOrderIdRequired());
+		json.setInvoiceIdRequired(linkpay.getInvoiceIdRequired());
+		json.setOneTimeUse(linkpay.getOneTimeUse());
+		json.setSuccessfullyProcessed(linkpay.getSuccessfullyProcessed());
+		json.setRedirectUrl(linkpay.getRedirectUrl());
+		json.setVersion(linkpay.getVersion());
 		return json;
 	}
 
@@ -139,6 +192,7 @@ public class JsonToBusinessClassMapper {
 		json.setTypeId(abstractInitPayment.getTypeId());
 		json.setRiskId(abstractInitPayment.getRiskId());
 		json.setBasketId(abstractInitPayment.getBasketId());
+		json.setTraceId(abstractInitPayment.getTraceId());
 		return json;
 	}
 	
@@ -157,25 +211,86 @@ public class JsonToBusinessClassMapper {
 		return json;
 	}
 
-	public Paypage mapToBusinessObject(Paypage paypage, JsonPaypage json) {
-		paypage.setAmount(json.getAmount());
-		paypage.setContactUrl(json.getContactUrl());
-		paypage.setCurrency(json.getCurrency());
-		paypage.setDescriptionMain(json.getDescriptionMain());
-		paypage.setDescriptionSmall(json.getDescriptionSmall());
-		paypage.setFullPageImage(json.getFullPageImage());
-		paypage.setHelpUrl(json.getHelpUrl());
-		paypage.setId(json.getId());
-		paypage.setImpressumUrl(json.getImpressumUrl());
-		paypage.setLogoImage(json.getLogoImage());
-		paypage.setOrderId(json.getOrderId());
-		paypage.setPrivacyPolicyUrl(json.getPrivacyPolicyUrl());
-		paypage.setReturnUrl(json.getReturnUrl());
-		paypage.setShopName(json.getShopName());
-		paypage.setTermsAndConditionUrl(json.getTermsAndConditionUrl());
-		paypage.setRedirectUrl(json.getRedirectUrl());
+	private JsonResources getResources(Linkpay linkpay) {
+		JsonResources json = new JsonResources();
+		json.setCustomerId(linkpay.getCustomerId());
+		json.setMetadataId(linkpay.getMetadataId());
+		json.setBasketId(linkpay.getBasketId());
+		return json;
+	}
 
-		if (json.getResources() != null) {
+	public Linkpay mapToBusinessObject(Linkpay linkpay, JsonLinkpay json) {
+		linkpay.setId(json.getId());
+		linkpay.setAmount(json.getAmount());
+		linkpay.setCurrency(json.getCurrency());
+		linkpay.setReturnUrl(json.getReturnUrl());
+		linkpay.setLogoImage(json.getLogoImage());
+		linkpay.setFullPageImage(json.getFullPageImage());
+		linkpay.setShopName(json.getShopName());
+		linkpay.setShopDescription(json.getShopDescription());
+		linkpay.setTagline(json.getTagline());
+		linkpay.setCss(json.getCss());
+		linkpay.setAlias(json.getAlias());
+		linkpay.setTermsAndConditionUrl(json.getTermsAndConditionUrl());
+		linkpay.setPrivacyPolicyUrl(json.getPrivacyPolicyUrl());
+		linkpay.setImprintUrl(json.getImprintUrl());
+		linkpay.setHelpUrl(json.getHelpUrl());
+		linkpay.setContactUrl(json.getContactUrl());
+		linkpay.setVersion(json.getVersion());
+		linkpay.setRedirectUrl(json.getRedirectUrl());
+		linkpay.setAction(json.getAction());
+		linkpay.setCard3ds(json.getCard3ds());
+		linkpay.setExpires(json.getExpires());
+		linkpay.setOrderId(json.getOrderId());
+		linkpay.setInvoiceId(json.getInvoiceId());
+		linkpay.setBillingAddressRequired(json.getBillingAddressRequired());
+		linkpay.setShippingAddressRequired(json.getShippingAddressRequired());
+		linkpay.setAdditionalAttributes(json.getAdditionalAttributes());
+		linkpay.setIntention(json.getIntention());
+		linkpay.setOrderIdRequired(json.getOrderIdRequired());
+		linkpay.setInvoiceIdRequired(json.getInvoiceIdRequired());
+		linkpay.setOneTimeUse(json.getOneTimeUse());
+		linkpay.setSuccessfullyProcessed(json.getSuccessfullyProcessed());
+		linkpay.setExcludeTypes(json.getExcludeTypes());
+		linkpay.setPaymentReference(json.getPaymentReference());
+		if(json.getResources() != null) {
+			JsonResources jsonResources = json.getResources();
+			linkpay.setCustomerId(jsonResources.getCustomerId());
+			linkpay.setMetadataId(jsonResources.getMetadataId());
+			linkpay.setPaymentId(jsonResources.getPaymentId());
+			linkpay.setBasketId(jsonResources.getBasketId());
+		}
+		return linkpay;
+	}
+
+	public Paypage mapToBusinessObject(Paypage paypage, JsonPaypage json) {
+		paypage.setId(json.getId());
+		paypage.setAmount(json.getAmount());
+		paypage.setCurrency(json.getCurrency());
+		paypage.setReturnUrl(json.getReturnUrl());
+		paypage.setLogoImage(json.getLogoImage());
+		paypage.setFullPageImage(json.getFullPageImage());
+		paypage.setShopName(json.getShopName());
+		paypage.setShopDescription(json.getShopDescription());
+		paypage.setTagline(json.getTagline());
+		paypage.setCss(json.getCss());
+		paypage.setTermsAndConditionUrl(json.getTermsAndConditionUrl());
+		paypage.setPrivacyPolicyUrl(json.getPrivacyPolicyUrl());
+		paypage.setImpressumUrl(json.getImpressumUrl());
+		paypage.setImprintUrl(json.getImprintUrl());
+		paypage.setHelpUrl(json.getHelpUrl());
+		paypage.setContactUrl(json.getContactUrl());
+		paypage.setInvoiceId(json.getInvoiceId());
+		paypage.setOrderId(json.getOrderId());
+		paypage.setCard3ds(json.getCard3ds());
+		paypage.setBillingAddressRequired(json.getBillingAddressRequired());
+		paypage.setShippingAddressRequired(json.getShippingAddressRequired());
+		paypage.setAdditionalAttributes(json.getAdditionalAttributes());
+		paypage.setRedirectUrl(json.getRedirectUrl());
+		paypage.setAction(json.getAction());
+		paypage.setExcludeTypes(json.getExcludeTypes());
+
+		if(json.getResources() != null) {
 			paypage.setBasketId(json.getResources().getBasketId());
 			paypage.setCustomerId(json.getResources().getCustomerId());
 			paypage.setMetadataId(json.getResources().getMetadataId());
@@ -209,6 +324,7 @@ public class JsonToBusinessClassMapper {
 			abstractInitPayment.setPaymentId(json.getResources().getPaymentId());
 			abstractInitPayment.setRiskId(json.getResources().getRiskId());
 			abstractInitPayment.setTypeId(json.getResources().getTypeId());
+			abstractInitPayment.setTraceId(json.getResources().getTraceId());
 		}
 		abstractInitPayment.setReturnUrl(json.getReturnUrl());
 		abstractInitPayment.setProcessing(getProcessing(json.getProcessing()));
@@ -301,8 +417,7 @@ public class JsonToBusinessClassMapper {
 		if (json.getCommercialRegisterNumber() != null) return false;
 		if (json.getCommercialSector() != null) return false;
 		if (json.getFunction() != null) return false;
-		if (json.getRegistrationType() != null) return false;
-		return true;
+		return json.getRegistrationType() == null;
 	}
 
 	private void setStatus(AbstractInitPayment abstractInitPayment, JsonInitPayment json) {
@@ -340,6 +455,7 @@ public class JsonToBusinessClassMapper {
 		cancel.setProcessing(getProcessing(json.getProcessing()));
 		cancel.setMessage(json.getMessage());
 		cancel.setDate(json.getDate());
+		cancel.setPaymentReference(json.getPaymentReference());
 		setStatus(cancel, json);
 		return cancel;
 	}
@@ -361,6 +477,7 @@ public class JsonToBusinessClassMapper {
 		processing.setIban(json.getIban());
 		processing.setPdfLink(json.getPdfLink());
 		processing.setExternalOrderId(json.getExternalOrderId());
+		processing.setZgReferenceId(json.getZgReferenceId());
 		return processing;
 	}
 
@@ -465,7 +582,24 @@ public class JsonToBusinessClassMapper {
 		card.setId(jsonCard.getId());
 		card.set3ds(jsonCard.get3ds());
 		card.setRecurring(jsonCard.getRecurring());
+		card.setBrand(jsonCard.getBrand());
+		card.setMethod(jsonCard.getMethod());
+		card.setCardHolder(jsonCard.getCardHolder());
+		CardDetails cardDetails = mapCardDetails(jsonCard.getCardDetails());
+		card.setCardDetails(cardDetails);
 		return card;
+	}
+
+	private CardDetails mapCardDetails(JsonCardDetails jsonCardDetails) {
+		CardDetails cardDetails = new CardDetails();
+		cardDetails.setAccount(jsonCardDetails.getAccount());
+		cardDetails.setCardType(jsonCardDetails.getCardType());
+		cardDetails.setCountryIsoA2(jsonCardDetails.getCountryIsoA2());
+		cardDetails.setCountryName(jsonCardDetails.getCountryName());
+		cardDetails.setIssuerName(jsonCardDetails.getIssuerName());
+		cardDetails.setIssuerPhoneNumber(jsonCardDetails.getIssuerPhoneNumber());
+		cardDetails.setIssuerUrl(jsonCardDetails.getIssuerUrl());
+		return cardDetails;
 	}
 
 	private PaymentType map(Applepay applepay, JsonApplepayResponse jsonApplePay) {

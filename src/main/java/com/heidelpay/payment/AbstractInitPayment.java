@@ -34,6 +34,7 @@ import java.util.List;
  *
  */
 public abstract class AbstractInitPayment extends AbstractPayment {
+
 	public enum Status {SUCCESS, PENDING, ERRROR}
 
 	private BigDecimal amount;
@@ -57,6 +58,8 @@ public abstract class AbstractInitPayment extends AbstractPayment {
 	private Processing processing = new Processing();
 
 	private List<Cancel> cancelList;
+
+	private String traceId;
 
 	public AbstractInitPayment() {
 		super();
@@ -217,6 +220,14 @@ public abstract class AbstractInitPayment extends AbstractPayment {
 
 	public void setPaymentReference(String paymentReference) {
 		this.paymentReference = paymentReference;
+	}
+
+	public String getTraceId() {
+		return traceId;
+	}
+
+	public void setTraceId(String traceId) {
+		this.traceId = traceId;
 	}
 
 }

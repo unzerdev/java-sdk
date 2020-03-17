@@ -19,9 +19,16 @@ package com.heidelpay.payment.business.paymenttypes;
  * limitations under the License.
  * #L%
  */
+
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
+import com.heidelpay.payment.Authorization;
+import com.heidelpay.payment.Cancel;
+import com.heidelpay.payment.Charge;
+import com.heidelpay.payment.Shipment;
+import com.heidelpay.payment.business.AbstractPaymentTest;
+import com.heidelpay.payment.communication.HttpCommunicationException;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.net.MalformedURLException;
@@ -31,16 +38,8 @@ import java.text.SimpleDateFormat;
 import java.util.Currency;
 import java.util.Date;
 import java.util.List;
-
 import org.apache.commons.lang3.time.DateUtils;
 import org.junit.Test;
-
-import com.heidelpay.payment.Authorization;
-import com.heidelpay.payment.Cancel;
-import com.heidelpay.payment.Charge;
-import com.heidelpay.payment.Shipment;
-import com.heidelpay.payment.business.AbstractPaymentTest;
-import com.heidelpay.payment.communication.HttpCommunicationException;
 
 public class HirePurchaseDirectDebitTest extends AbstractPaymentTest {
 
@@ -144,8 +143,13 @@ public class HirePurchaseDirectDebitTest extends AbstractPaymentTest {
 		
 		Charge charge = authorization.charge();
 		assertValidCharge(charge);
-		
-		Cancel cancel = charge.cancel(BigDecimal.ONE);
+
+		Cancel cancelReq = new Cancel();
+		cancelReq.setAmountGross(BigDecimal.TEN);
+		cancelReq.setAmountNet(BigDecimal.TEN);
+		cancelReq.setAmountVat(BigDecimal.TEN);
+		Cancel cancel = charge.cancel(cancelReq);
+
 		assertValidCancel(cancel, getBigDecimalTwoDigits(856.49));
 	}
 
@@ -255,6 +259,7 @@ public class HirePurchaseDirectDebitTest extends AbstractPaymentTest {
 		assertNotNull(authorization.getProcessing().getPdfLink());
 		assertNotNull(authorization.getProcessing().getExternalOrderId());
 		assertNotNull(authorization.getProcessing().getExternalOrderId());
+		assertNotNull(authorization.getProcessing().getZgReferenceId());
 
 		assertNotNull(authorization.getPaymentId());
 		assertNotNull(authorization.getCustomerId());
