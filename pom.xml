@@ -81,6 +81,7 @@
 				<configuration>
 					<skipProvidedScope>true</skipProvidedScope>
 					<skipRuntimeScope>true</skipRuntimeScope>
+					<failBuildOnCVSS>8</failBuildOnCVSS>
 				</configuration>
 				<executions>
 					<execution>
