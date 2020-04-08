@@ -38,6 +38,11 @@
 		<url>https://github.com/heidelpay/heidelpayJava.git</url>
 	</scm>
 
+	<properties>
+		<additionalparam>-Xdoclint:none</additionalparam>
+		<skip.dependency.check>true</skip.dependency.check>
+	</properties>
+
 	<distributionManagement>
 		<snapshotRepository>
 			<id>maven-snapshots</id>
@@ -82,6 +87,7 @@
 					<skipProvidedScope>true</skipProvidedScope>
 					<skipRuntimeScope>true</skipRuntimeScope>
 					<failBuildOnCVSS>8</failBuildOnCVSS>
+					<skip>${skip.dependency.check}</skip>
 				</configuration>
 				<executions>
 					<execution>
@@ -263,7 +269,4 @@
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
-	<properties>
-		<additionalparam>-Xdoclint:none</additionalparam>
-	</properties>
 </project>
