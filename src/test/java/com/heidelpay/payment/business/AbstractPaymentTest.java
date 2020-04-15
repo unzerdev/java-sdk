@@ -6,6 +6,7 @@ package com.heidelpay.payment.business;
  * %%
  * Copyright (C) 2018 Heidelpay GmbH
  * %%
+ * Licensed under the Apache License, Version 2.0 (the "License")
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  * 
@@ -63,7 +64,6 @@ public abstract class AbstractPaymentTest {
 
 	public Heidelpay getHeidelpay() {
 		return new Heidelpay("s-priv-2a102ZMq3gV4I3zJ888J7RR6u75oqK3n");
-//		return new Heidelpay("s-priv-6S59Dt6Q9mJYj8X5qpcxSpA3XLXUw4Zf");
 	}
 
 	public Heidelpay getHeidelpayDE() {
