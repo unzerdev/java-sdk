@@ -6,7 +6,6 @@ package com.heidelpay.payment;
  * %%
  * Copyright (C) 2018 Heidelpay GmbH
  * %%
- * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  * 
@@ -29,7 +28,7 @@ import java.util.List;
 public class PaymentException extends RuntimeException {
 	private static final long serialVersionUID = 1490670397634763643L;
 
-	private List<PaymentError> paymentErrorList;
+	private transient List<PaymentError> paymentErrorList;
 	private String timestamp;
 	private String url;
 	private Integer statusCode;

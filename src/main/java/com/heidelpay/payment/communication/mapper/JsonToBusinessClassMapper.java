@@ -66,7 +66,6 @@ import com.heidelpay.payment.paymenttypes.Wechatpay;
  * %%
  * Copyright (C) 2018 Heidelpay GmbH
  * %%
- * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
@@ -500,12 +499,12 @@ public class JsonToBusinessClassMapper {
 
 	private Payment.State getPaymentState(JsonState state) {
 		if (state == null) return null;
-		if (state.getId() == 0) return Payment.State.pending;
-		if (state.getId() == 1) return Payment.State.completed;
-		if (state.getId() == 2) return Payment.State.canceled;
-		if (state.getId() == 3) return Payment.State.partly;
-		if (state.getId() == 4) return Payment.State.payment_review;
-		if (state.getId() == 5) return Payment.State.chargeback;
+		if (state.getId() == 0) return Payment.State.PENDING;
+		if (state.getId() == 1) return Payment.State.COMPLETED;
+		if (state.getId() == 2) return Payment.State.CANCELED;
+		if (state.getId() == 3) return Payment.State.PARTLY;
+		if (state.getId() == 4) return Payment.State.PAYMENT_REVIEW;
+		if (state.getId() == 5) return Payment.State.CHARGEBACK;
 		return null;
 	}
 
