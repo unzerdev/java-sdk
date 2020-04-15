@@ -53,7 +53,7 @@ public class CardTest extends AbstractPaymentTest {
 
 	@Test
 	public void testCreateCardType() throws HttpCommunicationException {
-		Card card = new Card("4444333322221111", "03/20");
+		Card card = new Card("4444333322221111", "03/99");
 		card.setCvc("123");
 		card.setCardHolder("Beethoven");
 		card.setBrand("VISA");
@@ -74,7 +74,7 @@ public class CardTest extends AbstractPaymentTest {
 
 	@Test
 	public void testCreateCardTypeWith3DSFlag() throws HttpCommunicationException {
-		Card card = new Card("4444333322221111", "03/20");
+		Card card = new Card("4444333322221111", "03/99");
 		card.setCvc("123");
 		card.set3ds(false);
 		card = getHeidelpay().createPaymentType(card);
@@ -88,7 +88,7 @@ public class CardTest extends AbstractPaymentTest {
 
 	@Test
 	public void testAuthorizeCardType() throws HttpCommunicationException, MalformedURLException {
-		Card card = new Card("4444333322221111", "03/20");
+		Card card = new Card("4444333322221111", "03/99");
 		card.setCvc("123");
 		card = getHeidelpay().createPaymentType(card);
 		Authorization authorization = card.authorize(BigDecimal.ONE, Currency.getInstance("EUR"), new URL("https://www.meinShop.de"));
@@ -98,7 +98,7 @@ public class CardTest extends AbstractPaymentTest {
 
 	@Test
 	public void testAuthorizeAndPaymentCardType() throws HttpCommunicationException, MalformedURLException {
-		Card card = new Card("4444333322221111", "03/20").setCvc("123");
+		Card card = new Card("4444333322221111", "03/99").setCvc("123");
 		card.setCvc("123");
 		card = getHeidelpay().createPaymentType(card);
 		Authorization authorization = card.authorize(BigDecimal.ONE, Currency.getInstance("EUR"), new URL("https://www.meinShop.de"));
@@ -110,7 +110,7 @@ public class CardTest extends AbstractPaymentTest {
 
 	@Test
 	public void testChargeCardType() throws HttpCommunicationException, MalformedURLException {
-		Card card = new Card("4444333322221111", "03/20");
+		Card card = new Card("4444333322221111", "03/99");
 		card.setCvc("123");
 		card = getHeidelpay().createPaymentType(card);
 		Charge charge = card.charge(BigDecimal.ONE, Currency.getInstance("EUR"), new URL("https://www.google.at"));
@@ -119,7 +119,7 @@ public class CardTest extends AbstractPaymentTest {
 	
 	@Test
 	public void testFetchCardType() throws HttpCommunicationException {
-		Card card = new Card("4444333322221111", "03/2020");
+		Card card = new Card("4444333322221111", "03/2099");
 		card.setCvc("123");
 		card.setCardHolder("Mozart");
 		card.setBrand("VISA");
