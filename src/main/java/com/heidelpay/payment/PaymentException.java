@@ -39,6 +39,7 @@ public class PaymentException extends RuntimeException {
 	 * @deprecated should be avoided, specific Exceptions are refered.
 	 * @param message the message 
 	 */
+	@Deprecated
 	public PaymentException(String message) {
 		super(message);
 	}
@@ -140,7 +141,7 @@ public class PaymentException extends RuntimeException {
 	}
 
 	private static String toMessage(String url, Integer statusCode, List<PaymentError> errors) {
-		StringBuffer sb = new StringBuffer();
+		StringBuilder sb = new StringBuilder();
 		if (url != null && statusCode != null) {
 			sb.append("Heidelpay responded with ");
 			sb.append(statusCode);
@@ -152,8 +153,8 @@ public class PaymentException extends RuntimeException {
 		return withErrors(sb, errors).toString();
 	}
 
-	private static StringBuffer withErrors(StringBuffer sb, List<PaymentError> errors) {
-		if (errors == null || errors.size() <= 0) {
+	private static StringBuilder withErrors(StringBuilder sb, List<PaymentError> errors) {
+		if (errors == null || errors.isEmpty()) {
 			return sb;
 		}
 		sb.append("[");

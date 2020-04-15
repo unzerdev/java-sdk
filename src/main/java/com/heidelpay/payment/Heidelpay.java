@@ -142,7 +142,6 @@ public class Heidelpay {
 	public void deleteCustomer(String customerId) throws HttpCommunicationException {
 		paymentService.deleteCustomer(customerId);
 	}
-
 	
 	public Metadata createMetadata(Metadata metadata) throws PaymentException, HttpCommunicationException {
 		return paymentService.createMetadata(metadata);
@@ -163,9 +162,6 @@ public class Heidelpay {
 	public Basket updateBasket(Basket basket, String id) throws PaymentException, HttpCommunicationException {
 		return paymentService.updateBasket(id, basket);
 	}
-
-
-
 
 	/**
 	 * Create a new PaymentType at Heidelpay. This can be any Object which
@@ -656,7 +652,6 @@ public class Heidelpay {
 		return paymentService.payout(payout);
 	}
 
-
 	private Payout getPayout(BigDecimal amount, Currency currency, String typeId, URL returnUrl) {
 		Payout payout = new Payout();
 		payout.setAmount(amount);
@@ -950,7 +945,6 @@ public class Heidelpay {
 	public List<HirePurchaseRatePlan> hirePurchaseRates(BigDecimal amount, Currency currency, BigDecimal effectiveInterestRate, Date orderDate) throws PaymentException, HttpCommunicationException {
 		return paymentService.hirePurchasePlan(amount, currency, effectiveInterestRate, orderDate);
 	}
-
 
 	public String getPrivateKey() {
 		return privateKey;
