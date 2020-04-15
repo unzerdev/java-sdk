@@ -181,7 +181,7 @@ public class Payment extends AbstractPayment {
 		return null;
 	}
 
-	public Cancel getCancel(String chargeId, String refundId) {
+	public Cancel getCancel() {
 		return new Cancel();
 	}
 

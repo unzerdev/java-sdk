@@ -29,9 +29,9 @@ import java.net.URI;
  */
 public interface HeidelpayHttpRequest {
 
-	static enum HeidelpayHttpMethod {
+	enum HeidelpayHttpMethod {
 		GET, POST, DELETE, PUT
-	};
+	}
 
 	void addHeader(String header, String value);
 
