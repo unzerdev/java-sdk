@@ -6,7 +6,6 @@ package com.heidelpay.payment;
  * %%
  * Copyright (C) 2018 Heidelpay GmbH
  * %%
- * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  * 
@@ -87,9 +86,6 @@ public class Basket implements PaymentType {
 	public Basket addBasketItem(BasketItem basketItem) {
 		getBasketItems().add(basketItem);
 		return this;
-	}
-
-	public Basket() {
 	}
 
 	@Override

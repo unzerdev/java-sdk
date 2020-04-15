@@ -6,7 +6,6 @@ package com.heidelpay.payment;
  * %%
  * Copyright (C) 2018 Heidelpay GmbH
  * %%
- * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  * 
@@ -28,10 +27,10 @@ import com.heidelpay.payment.paymenttypes.PaymentType;
 public abstract class AbstractPayment implements PaymentType {
 	private String id;
 	
-	private transient Payment payment;
-	private transient Heidelpay heidelpay;
-	private transient URL resourceUrl;
-	private transient String type;
+	private Payment payment;
+	private Heidelpay heidelpay;
+	private URL resourceUrl;
+	private String type;
 	private Message message;
 
 	private Date date;
@@ -45,8 +44,6 @@ public abstract class AbstractPayment implements PaymentType {
 		super();
 	}
 
-	public abstract String getTypeUrl();
-	
 	public String getId() {
 		return id;
 	}

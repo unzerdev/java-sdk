@@ -6,7 +6,6 @@ package com.heidelpay.payment;
  * %%
  * Copyright (C) 2018 Heidelpay GmbH
  * %%
- * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  * 
@@ -23,14 +22,14 @@ package com.heidelpay.payment;
 import java.util.Date;
 
 /**
- * Business object for Customer toghether with billingAddress.
+ * Business object for Customer together with billingAddress.
  * 
  * firstname and lastname are mandatory to create a new Customer.
  * @author rene.felder
  *
  */
 public class Customer extends AbstractPayment {
-	public enum Salutation {mr, mrs, unknown};
+	public enum Salutation {MR, MRS, UNKNOWN}
 
 	private String firstname;
 	private String lastname;
