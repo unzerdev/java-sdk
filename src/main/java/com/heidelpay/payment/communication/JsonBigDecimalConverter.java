@@ -43,13 +43,11 @@ public class JsonBigDecimalConverter implements JsonDeserializer<BigDecimal>, Js
 			return null;
 		}
 		BigDecimal number = new BigDecimal(jsonValue);
-		number.setScale(4, BigDecimal.ROUND_HALF_UP);
-		return number;
+		return number.setScale(4, BigDecimal.ROUND_HALF_UP);
 	}
 
 	@Override
 	public JsonElement serialize(BigDecimal src, Type typeOfSrc, JsonSerializationContext context) {
-		src.setScale(4, BigDecimal.ROUND_HALF_UP);
 		DecimalFormat df = new DecimalFormat();
 		df.setMaximumFractionDigits(4);
 		df.setMinimumFractionDigits(4);
@@ -57,7 +55,7 @@ public class JsonBigDecimalConverter implements JsonDeserializer<BigDecimal>, Js
 		decimalFormatSymbols.setDecimalSeparator('.');
 		df.setDecimalFormatSymbols(decimalFormatSymbols);
 		df.setGroupingUsed(false);
-		return new JsonPrimitive(df.format(src));
+		return new JsonPrimitive(df.format(src.setScale(4, BigDecimal.ROUND_HALF_UP)));
 	}
 
 }
