@@ -38,16 +38,6 @@ public class PaypageService {
 	private Heidelpay heidelpay;
 
 	/**
-	 * Creates a PaymentService with the @deprecated {@code RestCommunication}
-	 * implementation.
-	 * 
-	 * @param heidelpay
-	 */
-	public PaypageService(Heidelpay heidelpay) {
-		this(heidelpay, new RestCommunication());
-	}
-	
-	/**
 	 * Creates the {@code PaymentService} with the given {@code Heidelpay} facade,
 	 * bound to the given {@code HeidelpayRestCommunication} implementation used for
 	 * http-communication.
@@ -62,7 +52,7 @@ public class PaypageService {
 		this.restCommunication = restCommunication;
 	}
 
-	public Paypage initialize(Paypage paypage) throws PaymentException, HttpCommunicationException {
+	public Paypage initialize(Paypage paypage) throws HttpCommunicationException {
 		return initialize(paypage, urlUtil.getRestUrl(paypage));
 	}
 	

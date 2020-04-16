@@ -29,7 +29,6 @@ import java.util.Locale;
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonDeserializer;
 import com.google.gson.JsonElement;
-import com.google.gson.JsonParseException;
 import com.google.gson.JsonPrimitive;
 import com.google.gson.JsonSerializationContext;
 import com.google.gson.JsonSerializer;
@@ -37,8 +36,7 @@ import com.google.gson.JsonSerializer;
 public class JsonBigDecimalConverter implements JsonDeserializer<BigDecimal>, JsonSerializer<BigDecimal> {
 
 	@Override
-	public BigDecimal deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context)
-			throws JsonParseException {
+	public BigDecimal deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) {
 		String jsonValue = json.getAsJsonPrimitive().getAsString();
 		if (jsonValue == null || "".equalsIgnoreCase(jsonValue)) {
 			return null;

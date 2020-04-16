@@ -36,7 +36,6 @@ import com.heidelpay.payment.business.paymenttypes.HirePurchaseRatePlan;
 import com.heidelpay.payment.communication.HeidelpayRestCommunication;
 import com.heidelpay.payment.communication.HttpCommunicationException;
 import com.heidelpay.payment.communication.JsonParser;
-import com.heidelpay.payment.communication.impl.RestCommunication;
 import com.heidelpay.payment.communication.json.JsonApplepayResponse;
 import com.heidelpay.payment.communication.json.JsonAuthorization;
 import com.heidelpay.payment.communication.json.JsonCancel;
@@ -96,16 +95,6 @@ public class PaymentService {
 	private Heidelpay heidelpay;
 
 	/**
-	 * Creates a PaymentService with the @deprecated {@code RestCommunication}
-	 * implementation.
-	 * 
-	 * @param heidelpay
-	 */
-	public PaymentService(Heidelpay heidelpay) {
-		this(heidelpay, new RestCommunication());
-	}
-
-	/**
 	 * Creates the {@code PaymentService} with the given {@code Heidelpay} facade,
 	 * bound to the given {@code HeidelpayRestCommunication} implementation used for
 	 * http-communication.
@@ -120,7 +109,7 @@ public class PaymentService {
 		this.restCommunication = restCommunication;
 	}
 
-	public List<HirePurchaseRatePlan> hirePurchasePlan(BigDecimal amount, Currency currency, BigDecimal effectiveInterestRate, Date orderDate) throws PaymentException, HttpCommunicationException {
+	public List<HirePurchaseRatePlan> hirePurchasePlan(BigDecimal amount, Currency currency, BigDecimal effectiveInterestRate, Date orderDate) throws HttpCommunicationException {
 		String response = restCommunication.httpGet(urlUtil.getHirePurchaseRateUrl(amount, currency, effectiveInterestRate, orderDate), heidelpay.getPrivateKey());
 		JsonHirePurchaseRatePlanList json = new JsonParser<Customer>().fromJson(response, JsonHirePurchaseRatePlanList.class);
 		return json.getEntity();
@@ -133,7 +122,7 @@ public class PaymentService {
 		return fetchPaymentType(jsonResponse.getId());
 	}
 
-	public <T extends PaymentType> T updatePaymentType(T paymentType) throws PaymentException, HttpCommunicationException {
+	public <T extends PaymentType> T updatePaymentType(T paymentType) throws HttpCommunicationException {
 		String url = urlUtil.getRestUrl(paymentType);
 		url = addId(url, paymentType.getId());
 		String response = restCommunication.httpPut(url, heidelpay.getPrivateKey(),
@@ -167,13 +156,13 @@ public class PaymentService {
 		return fetchCustomer(id);
 	}
 
-	public Basket updateBasket(String id, Basket basket) throws PaymentException, HttpCommunicationException {
+	public Basket updateBasket(String id, Basket basket) throws HttpCommunicationException {
 		restCommunication.httpPut(urlUtil.getHttpGetUrl(basket, id), heidelpay.getPrivateKey(), basket);
 		return fetchBasket(id);
 	}
 
 
-	public Metadata createMetadata(Metadata metadata) throws PaymentException, HttpCommunicationException {
+	public Metadata createMetadata(Metadata metadata) throws HttpCommunicationException {
 		String response = restCommunication.httpPost(urlUtil.getRestUrl(metadata), heidelpay.getPrivateKey(), metadata.getMetadataMap());
 		Metadata metadataJson = new JsonParser<Metadata>().fromJson(response, Metadata.class);
 		metadata.setHeidelpay(heidelpay);
@@ -181,7 +170,7 @@ public class PaymentService {
 		return metadata;
 	}
 	
-	public Metadata fetchMetadata(String id) throws PaymentException, HttpCommunicationException {
+	public Metadata fetchMetadata(String id) throws HttpCommunicationException {
 		Metadata metadata = new Metadata();
 		metadata.setId(id);
 		String response = restCommunication.httpGet(urlUtil.getHttpGetUrl(metadata, metadata.getId()),
@@ -191,14 +180,14 @@ public class PaymentService {
 		return metadata;
 	}
 
-	public Basket createBasket(Basket basket) throws PaymentException, HttpCommunicationException {
+	public Basket createBasket(Basket basket) throws HttpCommunicationException {
 		String response = restCommunication.httpPost(urlUtil.getRestUrl(basket), heidelpay.getPrivateKey(), basket);
 		Basket jsonBasket = new JsonParser<Basket>().fromJson(response, Basket.class);
 		basket.setId(jsonBasket.getId());
 		return basket;
 	}
 
-	public Basket fetchBasket(String id) throws PaymentException, HttpCommunicationException {
+	public Basket fetchBasket(String id) throws HttpCommunicationException {
 		Basket basket = new Basket();
 		basket.setId(id);
 		String response = restCommunication.httpGet(urlUtil.getHttpGetUrl(basket, basket.getId()), heidelpay.getPrivateKey());
@@ -331,11 +320,11 @@ public class PaymentService {
 		return payout;
 	}
 
-	public Recurring recurring(Recurring recurring) throws PaymentException, HttpCommunicationException {
+	public Recurring recurring(Recurring recurring) throws HttpCommunicationException {
 		String url = urlUtil.getRecurringUrl(recurring);
 		String response = restCommunication.httpPost(url, heidelpay.getPrivateKey(), jsonToBusinessClassMapper.map(recurring));
 		JsonRecurring json = new JsonParser<JsonRecurring>().fromJson(response, JsonRecurring.class);
-		recurring = (Recurring) jsonToBusinessClassMapper.mapToBusinessObject(recurring, json);
+		recurring = jsonToBusinessClassMapper.mapToBusinessObject(recurring, json);
 		recurring.setHeidelpay(heidelpay);
 		return recurring;
 		

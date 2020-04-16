@@ -27,45 +27,37 @@ import java.util.List;
  * The {@code PaymentException} represents an Api Error as described here:
  */
 public class PaymentException extends RuntimeException {
-	private static final long serialVersionUID = 1490670397634763643L;
 
-	private transient List<PaymentError> paymentErrorList;
-	private String timestamp;
-	private String url;
-	private Integer statusCode;
-	private String id;
+	private final transient List<PaymentError> paymentErrorList;
+	private final String timestamp;
+	private final String url;
+	private final Integer statusCode;
+	private final String id;
 
 	/**
-	 * Creates an unspecific {@code PaymentException}.
-	 * @deprecated should be avoided, specific Exceptions are refered.
-	 * @param message the message 
+	 * Creates an unspecific {@code PaymentException}, however should be avoided, specific Exceptions are preferred.
+	 * @param message the message
 	 */
-	@Deprecated
 	public PaymentException(String message) {
-		super(message);
+		this("", 0, "", "", new ArrayList<PaymentError>(), message);
 	}
 	
 	/**
 	 * Creates a {@code PaymentException} from the given values.
 	 * 
-	 * @param url
-	 *            - the url called but respondend with an error.
-	 * @param statusCode
-	 *            the http status code
-	 * @param timestamp
-	 *            the timestamp the cal was made
+	 * @param url the url called but respond with an error.
+	 * @param statusCode the http status code
+	 * @param timestamp the timestamp the cal was made
 	 * @param id the id for referencing the error
-	 * @param errors
-	 *            the list of {@code PaymentError}.
+	 * @param errors the list of {@code PaymentError}.
 	 */
-	public PaymentException(String url, Integer statusCode, String timestamp, String id, List<PaymentError> errors) {
-		super(toMessage(url, statusCode, errors));
+	public PaymentException(String url, Integer statusCode, String timestamp, String id, List<PaymentError> errors, String message) {
+		super(toMessage(url, statusCode, errors, message));
 		this.timestamp = timestamp;
 		this.url = url;
 		this.paymentErrorList = errors;
 		this.statusCode = statusCode;
 		this.id = id;
-
 	}
 
 	/**
@@ -75,35 +67,22 @@ public class PaymentException extends RuntimeException {
 	 * @param timestamp timestamp the call was made
 	 * @param errors a list of errors returned from the Api.
 	 */
-	public PaymentException(String id, String url, String timestamp, List<PaymentError> errors) {
-		this.id = id;
-		this.url = url;
-		this.timestamp = timestamp;
-		this.paymentErrorList = errors;
+	public PaymentException(String id, String url, String timestamp, List<PaymentError> errors, String message) {
+		this(url, 0, timestamp, id, errors, message);
 	}
 	
 	/**
-	 * Creates a {@code PaymentException} for the given values. The merchantMessage,
-	 * customerMessage and the code will be packed into a {@code PaymentError}.
-	 * 
-	 * @param merchantMessage
-	 *            the internal, detailed message
-	 * @param customerMessage
-	 *            the message to be shown to the customer
-	 * @param url
-	 *            the url that could not be called for any reason
-	 * @param code
-	 *            the heidelpay error code.
+	 * Creates a {@code PaymentException} for the given payment error.
+	 *
+	 * @param errors a list of errors returned from the Api.
 	 */
-	public PaymentException(String merchantMessage, String customerMessage, String code, String url) {
-		super(merchantMessage);
-		this.paymentErrorList = new ArrayList<PaymentError>();
-		this.paymentErrorList.add(new PaymentError(merchantMessage, customerMessage, code));
+	public PaymentException(List<PaymentError> errors, String message) {
+		this("", 0, "", "", errors, (errors != null && errors.size() == 1) ? errors.get(0).getMerchantMessage() : message);
 	}
 
 	/**
-	 * Returns the details of the api/pyment error as List of {@code PaymentError}s.
-	 * 
+	 * Returns the details of the api/payment error as List of {@code PaymentError}s.
+	 *
 	 * @return List of {@code PaymentError}s
 	 */
 	public List<PaymentError> getPaymentErrorList() {
@@ -111,9 +90,9 @@ public class PaymentException extends RuntimeException {
 	}
 
 	/**
-	 * Returns the timestamp the api-call was made, or the error occured at the sdk.
-	 * 
-	 * @return imestamp the api-call was made, or the error occured at the sdk.
+	 * Returns the timestamp the api-call was made, or the error occurred at the sdk.
+	 *
+	 * @return timestamp the api-call was made, or the error occurred at the sdk.
 	 */
 	public String getTimestamp() {
 		return timestamp;
@@ -134,14 +113,16 @@ public class PaymentException extends RuntimeException {
 	public Integer getStatusCode() {
 		return statusCode;
 	}
-	
-	
 
 	public String getId() {
 		return id;
 	}
 
-	private static String toMessage(String url, Integer statusCode, List<PaymentError> errors) {
+	private static String toMessage(String url, Integer statusCode, List<PaymentError> errors, String message) {
+		if(message == null || message.isEmpty()) {
+			return message;
+		}
+
 		StringBuilder sb = new StringBuilder();
 		if (url != null && statusCode != null) {
 			sb.append("Heidelpay responded with ");

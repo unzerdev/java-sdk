@@ -39,7 +39,7 @@ public class GiropayTest extends AbstractPaymentTest {
 	@Test
 	public void testCreateGiropayManatoryType() throws HttpCommunicationException {
 		Giropay giropay = new Giropay();
-		giropay = (Giropay) getHeidelpay().createPaymentType(giropay);
+		giropay = getHeidelpay().createPaymentType(giropay);
 		assertNotNull(giropay.getId());
 	}
 
@@ -60,11 +60,8 @@ public class GiropayTest extends AbstractPaymentTest {
 		assertNotNull(fetchedGiropay.getId());
 	}
 
-	
 	private Giropay getGiropay() {
-		Giropay giropay = new Giropay();
-		return giropay;
+		return new Giropay();
 	}
-
 
 }

@@ -30,18 +30,16 @@ import org.apache.logging.log4j.Logger;
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonDeserializer;
 import com.google.gson.JsonElement;
-import com.google.gson.JsonParseException;
 import com.google.gson.JsonPrimitive;
 import com.google.gson.JsonSerializationContext;
 import com.google.gson.JsonSerializer;
 
 public class JsonURLConverter
 		implements JsonDeserializer<URL>, JsonSerializer<URL> {
-	public final static Logger logger = LogManager.getLogger(JsonURLConverter.class);
+	public static final Logger logger = LogManager.getLogger(JsonURLConverter.class);
 
 	@Override
-	public URL deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context)
-			throws JsonParseException {
+	public URL deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) {
 		String urlValue = json.getAsJsonPrimitive().getAsString();
 		if (urlValue == null || "".equalsIgnoreCase(urlValue)) return null;
 		try {

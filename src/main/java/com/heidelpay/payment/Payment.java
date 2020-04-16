@@ -22,6 +22,7 @@ package com.heidelpay.payment;
 
 import java.math.BigDecimal;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.Currency;
 import java.util.List;
 
@@ -128,14 +129,26 @@ public class Payment extends AbstractPayment {
 
 	public Cancel cancel() throws HttpCommunicationException {
 		if (getAuthorization() == null) {
-			throw new PaymentException("Cancel is only possible for an Authorization", "Payment cancelation not possible", "", "");
+			List<PaymentError> paymentErrorList = new ArrayList<PaymentError>();
+			paymentErrorList.add(new PaymentError(
+							"Cancel is only possible for an Authorization",
+							"Payment cancellation not possible",
+							""));
+
+			throw new PaymentException(paymentErrorList, "");
 		}
 		return getAuthorization().cancel();
 	}
 
 	public Cancel cancel(BigDecimal amount) throws HttpCommunicationException {
 		if (getAuthorization() == null) {
-			throw new PaymentException("Cancel is only possible for an Authorization", "Payment cancelation not possible", "", "");
+			List<PaymentError> paymentErrorList = new ArrayList<PaymentError>();
+			paymentErrorList.add(new PaymentError(
+							"Cancel is only possible for an Authorization",
+							"Payment cancellation not possible",
+							""));
+
+			throw new PaymentException(paymentErrorList, "");
 		}
 		return getAuthorization().cancel(amount);
 	}

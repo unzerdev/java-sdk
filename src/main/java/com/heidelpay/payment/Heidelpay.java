@@ -144,23 +144,23 @@ public class Heidelpay {
 		paymentService.deleteCustomer(customerId);
 	}
 	
-	public Metadata createMetadata(Metadata metadata) throws PaymentException, HttpCommunicationException {
+	public Metadata createMetadata(Metadata metadata) throws HttpCommunicationException {
 		return paymentService.createMetadata(metadata);
 	}
 	
-	public Metadata fetchMetadata(String id) throws PaymentException, HttpCommunicationException {
+	public Metadata fetchMetadata(String id) throws HttpCommunicationException {
 		return paymentService.fetchMetadata(id);
 	}
 
-	public Basket createBasket(Basket basket) throws PaymentException, HttpCommunicationException {
+	public Basket createBasket(Basket basket) throws HttpCommunicationException {
 		return paymentService.createBasket(basket);
 	}
 
-	public Basket fetchBasket(String id) throws PaymentException, HttpCommunicationException {
+	public Basket fetchBasket(String id) throws HttpCommunicationException {
 		return paymentService.fetchBasket(id);
 	}
 
-	public Basket updateBasket(Basket basket, String id) throws PaymentException, HttpCommunicationException {
+	public Basket updateBasket(Basket basket, String id) throws HttpCommunicationException {
 		return paymentService.updateBasket(id, basket);
 	}
 
@@ -182,7 +182,7 @@ public class Heidelpay {
 		}
 	}
 
-	public <T extends PaymentType> T updatePaymentType(T paymentType) throws PaymentException, HttpCommunicationException {
+	public <T extends PaymentType> T updatePaymentType(T paymentType) throws HttpCommunicationException {
 		if (paymentType != null && paymentType.getId() == null) {
 			return paymentService.createPaymentType(paymentType);
 		} else if (paymentType != null && paymentType.getId() != null) {
@@ -911,28 +911,26 @@ public class Heidelpay {
 	 * for hosted paypage to redirect customer to this url.
 	 * @param paypage
 	 * @return
-	 * @throws PaymentException
 	 * @throws HttpCommunicationException
 	 */
-	public Paypage paypage (Paypage paypage) throws PaymentException, HttpCommunicationException {
+	public Paypage paypage (Paypage paypage) throws HttpCommunicationException {
 		return paypageService.initialize(paypage);
 	}
 
-	public Linkpay linkpay (Linkpay linkpay) throws PaymentException, HttpCommunicationException {
+	public Linkpay linkpay (Linkpay linkpay) throws HttpCommunicationException {
 		return linkpayService.initialize(linkpay);
 	}
 
-	public Recurring recurring(String typeId, String customerId, String metadataId, URL returnUrl) throws PaymentException, HttpCommunicationException {
+	public Recurring recurring(String typeId, String customerId, String metadataId, URL returnUrl) throws HttpCommunicationException {
 		return paymentService.recurring(getRecurring(typeId, customerId, metadataId, returnUrl));
 	}
-	public Recurring recurring(String typeId, String customerId, URL returnUrl) throws PaymentException, HttpCommunicationException {
+	public Recurring recurring(String typeId, String customerId, URL returnUrl) throws HttpCommunicationException {
 		return recurring(typeId, customerId, null, returnUrl);
 	}
 	
-	public Recurring recurring(String typeId, URL returnUrl) throws PaymentException, HttpCommunicationException {
+	public Recurring recurring(String typeId, URL returnUrl) throws HttpCommunicationException {
 		return recurring(typeId, null, returnUrl);
 	}
-	
 	
 	private Recurring getRecurring(String typeId, String customerId, String metadataId, URL returnUrl) {
 		Recurring recurring = new Recurring();
@@ -943,7 +941,7 @@ public class Heidelpay {
 		return recurring;
 	}
 	
-	public List<HirePurchaseRatePlan> hirePurchaseRates(BigDecimal amount, Currency currency, BigDecimal effectiveInterestRate, Date orderDate) throws PaymentException, HttpCommunicationException {
+	public List<HirePurchaseRatePlan> hirePurchaseRates(BigDecimal amount, Currency currency, BigDecimal effectiveInterestRate, Date orderDate) throws HttpCommunicationException {
 		return paymentService.hirePurchasePlan(amount, currency, effectiveInterestRate, orderDate);
 	}
 

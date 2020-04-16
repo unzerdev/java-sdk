@@ -51,7 +51,7 @@ public class InvoiceFactoring extends AbstractPaymentType implements PaymentType
 	}
 
 	private Charge getCharge(BigDecimal amount, Currency currency, InvoiceFactoring invoiceFactoring, URL returnUrl,
-			Customer customer, Basket basket, String invoiceId) throws HttpCommunicationException, PaymentException {
+			Customer customer, Basket basket, String invoiceId) throws HttpCommunicationException {
 		return ((Charge) new Charge()
             .setAmount(amount)
             .setCurrency(currency)
