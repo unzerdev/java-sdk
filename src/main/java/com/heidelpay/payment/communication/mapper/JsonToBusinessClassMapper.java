@@ -141,8 +141,8 @@ public class JsonToBusinessClassMapper {
 		json.setBillingAddressRequired(paypage.getBillingAddressRequired());
 		json.setShippingAddressRequired(paypage.getShippingAddressRequired());
 		json.setAdditionalAttributes(paypage.getAdditionalAttributes());
-		json.setResources(getResources(paypage));
 		json.setExcludeTypes(paypage.getExcludeTypes());
+		json.setResources(getResources(paypage));
 		return json;
 	}
 
@@ -286,9 +286,9 @@ public class JsonToBusinessClassMapper {
 		paypage.setBillingAddressRequired(json.getBillingAddressRequired());
 		paypage.setShippingAddressRequired(json.getShippingAddressRequired());
 		paypage.setAdditionalAttributes(json.getAdditionalAttributes());
+		paypage.setExcludeTypes(json.getExcludeTypes());
 		paypage.setRedirectUrl(json.getRedirectUrl());
 		paypage.setAction(json.getAction());
-		paypage.setExcludeTypes(json.getExcludeTypes());
 
 		if(json.getResources() != null) {
 			paypage.setBasketId(json.getResources().getBasketId());

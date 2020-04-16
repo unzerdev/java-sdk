@@ -21,9 +21,9 @@ package com.heidelpay.payment.communication.impl;
  */
 
 import java.io.IOException;
-import java.util.Base64;
-import java.util.Objects;
+import java.io.UnsupportedEncodingException;
 
+import com.heidelpay.payment.util.SDKInfo;
 import org.apache.http.HttpEntity;
 import org.apache.http.ParseException;
 import org.apache.http.StatusLine;
@@ -48,39 +48,42 @@ import com.heidelpay.payment.communication.HttpCommunicationException;
 import com.heidelpay.payment.communication.JsonParser;
 import com.heidelpay.payment.communication.json.JsonErrorObject;
 
+import javax.xml.bind.DatatypeConverter;
+
 /**
  * @deprecated use {@code HttpClientBasedRestCommunication} as a default
  *             implementation.
  *
  */
+@Deprecated
 public class RestCommunication implements HeidelpayRestCommunication {
 
-	private final static Logger logger = LogManager.getLogger(RestCommunication.class);
+	private static final Logger logger = LogManager.getLogger(RestCommunication.class);
 
 	public String httpGet(String url, String privateKey) throws HttpCommunicationException {
 		HttpGet httpGet = getHttpGet(url);
-		httpGet = (HttpGet) addAuthentication(privateKey, httpGet);
+		addAuthentication(privateKey, httpGet);
 		return this.execute(httpGet);
 	}
 
 	public String httpPost(String url, String privateKey, Object data) throws HttpCommunicationException {
-		if (Objects.isNull(url) || Objects.isNull(data)) {
+		if (url == null || data == null) {
 			throw new IllegalArgumentException("Cannot create a http post request to an empty URL or with null params");
 		}
 		HttpPost httpPost = getHttpPost(url);
-		httpPost = (HttpPost) addAuthentication(privateKey, httpPost);
+		addAuthentication(privateKey, httpPost);
 		return makeRequest(httpPost, data);
 	}
 
 	public String httpDelete(String url, String privateKey) throws HttpCommunicationException {
 		HttpDelete httpDelete = getHttpDelete(url);
-		httpDelete = (HttpDelete) addAuthentication(privateKey, httpDelete);
+		addAuthentication(privateKey, httpDelete);
 		return this.execute(httpDelete);
 	}
 
 	public String httpPut(String url, String privateKey, Object data) throws HttpCommunicationException {
 		HttpPut httpPut = getHttpPut(url);
-		httpPut = (HttpPut) addAuthentication(privateKey, httpPut);
+		addAuthentication(privateKey, httpPut);
 		return makeRequest(httpPut, data);
 	}
 
@@ -94,7 +97,7 @@ public class RestCommunication implements HeidelpayRestCommunication {
 		return response;
 	}
 
-	private HttpUriRequest addAuthentication(String privateKey, HttpUriRequest http) {
+	private void addAuthentication(String privateKey, HttpUriRequest http) {
 		if (privateKey == null) {
 			String uri;
 			if (http.getURI() == null) {
@@ -109,9 +112,13 @@ public class RestCommunication implements HeidelpayRestCommunication {
 		if (!privateKey.endsWith(":")) {
 			privateKey = privateKey + ":";
 		}
-		String privateKeyBase64 = new String(Base64.getEncoder().encode(privateKey.getBytes()));
+		String privateKeyBase64;
+		try {
+			privateKeyBase64 = DatatypeConverter.printBase64Binary(privateKey.getBytes("UTF-8"));
+		} catch (UnsupportedEncodingException e) {
+			throw new PaymentException("Unsupported encoding for the private key: Base64!");
+		}
 		http.addHeader("Authorization", "Basic " + privateKeyBase64);
-		return http;
 	}
 
 	private String execute(HttpUriRequest httpPost) throws HttpCommunicationException {
@@ -155,7 +162,7 @@ public class RestCommunication implements HeidelpayRestCommunication {
 	}
 
 	private void setUserAgent(HttpUriRequest httpRequest) {
-		httpRequest.setHeader("User-Agent", "heidelpay-Java-1.0.0.2");
+		httpRequest.setHeader("User-Agent", "heidelpay-Java-" + SDKInfo.getVersion());
 	}
 
 	private HttpGet getHttpGet(String url) {

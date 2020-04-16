@@ -21,6 +21,7 @@ package com.heidelpay.payment;
  */
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 
 import com.heidelpay.payment.communication.HttpCommunicationException;
 
@@ -38,9 +39,11 @@ public class Charge extends AbstractInitPayment {
 
 	public Charge() {
 		super();
+		setCancelList(new ArrayList<Cancel>());
 	}
 	public Charge(Heidelpay heidelpay) {
 		super(heidelpay);
+		setCancelList(new ArrayList<Cancel>());
 	}
 
 	public String getInvoiceId() {

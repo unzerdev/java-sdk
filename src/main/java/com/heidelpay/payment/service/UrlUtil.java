@@ -30,6 +30,7 @@ import java.util.Currency;
 import java.util.Date;
 import java.util.Locale;
 
+import com.heidelpay.payment.exceptions.PropertiesException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -47,9 +48,9 @@ public class UrlUtil {
 
 	private static final String RECURRING_URL = "types/<typeId>/recurring";
 
-	public final static Logger logger = LogManager.getLogger(UrlUtil.class);
+	public static final Logger logger = LogManager.getLogger(UrlUtil.class);
 
-	private PropertiesUtil properties = new PropertiesUtil();
+	private final PropertiesUtil properties = new PropertiesUtil();
 
 	private String endPoint;
 
@@ -67,42 +68,42 @@ public class UrlUtil {
 	}
 	
 	public String getRefundUrl(String paymentId, String chargeId) {
-		StringBuffer buffer = new StringBuffer();
-		buffer.append(getRestUrl());
-		appendSlashIfNeeded(buffer);
-		buffer.append(REFUND_URL);
-		String result = buffer.toString();
+		StringBuilder stringBuilder = new StringBuilder();
+		stringBuilder.append(getRestUrl());
+		appendSlashIfNeeded(stringBuilder);
+		stringBuilder.append(REFUND_URL);
+		String result = stringBuilder.toString();
 		result = result.replaceAll(PLACEHOLDER_PAYMENT_ID, paymentId);
 		return result.replaceAll(PLACEHOLDER_CHARGE_ID, chargeId);
 	}
 	public String getPaymentUrl(PaymentType paymentType, String paymentId) {
-		StringBuffer buffer = new StringBuffer();
-		buffer.append(getRestUrlInternal(paymentType));
-		appendSlashIfNeeded(buffer);
-		String result = buffer.toString();
+		StringBuilder stringBuilder = new StringBuilder();
+		stringBuilder.append(getRestUrlInternal(paymentType));
+		appendSlashIfNeeded(stringBuilder);
+		String result = stringBuilder.toString();
 		return result.replaceAll(PLACEHOLDER_PAYMENT_ID, paymentId);
 	}
 	public String getPaymentUrl(PaymentType paymentType, String paymentId, String id) {
-		StringBuffer buffer = new StringBuffer();
-		buffer.append(getRestUrlInternal(paymentType));
-		appendSlashIfNeeded(buffer);
-		buffer.append(id);
-		String result = buffer.toString();
+		StringBuilder stringBuilder = new StringBuilder();
+		stringBuilder.append(getRestUrlInternal(paymentType));
+		appendSlashIfNeeded(stringBuilder);
+		stringBuilder.append(id);
+		String result = stringBuilder.toString();
 		return result.replaceAll(PLACEHOLDER_PAYMENT_ID, paymentId);
 	}
 	public String getHttpGetUrl(PaymentType paymentType, String id) {
-		StringBuffer buffer = new StringBuffer();
-		buffer.append(getRestUrl(paymentType));
-		appendSlashIfNeeded(buffer);
-		buffer.append(id);
-		return  buffer.toString();
+		StringBuilder stringBuilder = new StringBuilder();
+		stringBuilder.append(getRestUrl(paymentType));
+		appendSlashIfNeeded(stringBuilder);
+		stringBuilder.append(id);
+		return  stringBuilder.toString();
 	}
 	public String getRecurringUrl(Recurring recurring) {
-		StringBuffer buffer = new StringBuffer();
-		buffer.append(getRestUrl());
-		appendSlashIfNeeded(buffer);
-		buffer.append(RECURRING_URL);
-		String result = buffer.toString();
+		StringBuilder stringBuilder = new StringBuilder();
+		stringBuilder.append(getRestUrl());
+		appendSlashIfNeeded(stringBuilder);
+		stringBuilder.append(RECURRING_URL);
+		String result = stringBuilder.toString();
 		result = result.replaceAll(PLACEHOLDER_TYPE_ID, recurring.getType());
 		return result;
 	}
@@ -110,43 +111,43 @@ public class UrlUtil {
 		return getRestUrlInternal(paymentType).replaceAll("<paymentId>/", "");
 	}
 	private String getRestUrlInternal(PaymentType paymentType) {
-		StringBuffer buffer = new StringBuffer();
-		buffer.append(getRestUrl());
-		appendSlashIfNeeded(buffer);
-		buffer.append(paymentType.getTypeUrl());
-		return buffer.toString();
+		StringBuilder stringBuilder = new StringBuilder();
+		stringBuilder.append(getRestUrl());
+		appendSlashIfNeeded(stringBuilder);
+		stringBuilder.append(paymentType.getTypeUrl());
+		return stringBuilder.toString();
 	}
 	public String getRestUrl() {
 		if(endPoint != null && !endPoint.isEmpty()) {
 			return endPoint;
 		} else {
-			StringBuffer buffer = new StringBuffer();
-			buffer.append(properties.getString(PropertiesUtil.REST_ENDPOINT));
-			if (buffer.length() == 0) {
-				throw new RuntimeException("Properties file heidelpay.properties is empty");
+			StringBuilder stringBuilder = new StringBuilder();
+			stringBuilder.append(properties.getString(PropertiesUtil.REST_ENDPOINT));
+			if (stringBuilder.length() == 0) {
+				throw new PropertiesException("Properties file heidelpay.properties is empty");
 			}
-			appendSlashIfNeeded(buffer);
-			buffer.append(properties.getString(PropertiesUtil.REST_VERSION));
-			appendSlashIfNeeded(buffer);
-			return buffer.toString();
+			appendSlashIfNeeded(stringBuilder);
+			stringBuilder.append(properties.getString(PropertiesUtil.REST_VERSION));
+			appendSlashIfNeeded(stringBuilder);
+			return stringBuilder.toString();
 		}
 	}
 
-	private void appendSlashIfNeeded(StringBuffer buffer) {
-		if (buffer.charAt(buffer.length()-1) != '/') {
-			buffer.append("/");
+	private void appendSlashIfNeeded(StringBuilder stringBuilder) {
+		if (stringBuilder.charAt(stringBuilder.length()-1) != '/') {
+			stringBuilder.append("/");
 		}
 	}
 
 	public String getHirePurchaseRateUrl(BigDecimal amount, Currency currency, BigDecimal effectiveInterestRate, Date orderDate) {
-		StringBuffer buffer = new StringBuffer();
-		buffer.append(getRestUrl());
-		buffer.append("types/hire-purchase-direct-debit/plans?");
-		buffer.append("amount=").append(getBigDecimal(amount)).append("&");
-		buffer.append("currency=").append(currency.getCurrencyCode()).append("&");
-		buffer.append("effectiveInterest=").append(getBigDecimal(effectiveInterestRate)).append("&");
-		buffer.append("orderDate=").append(getDate(orderDate));
-		return buffer.toString();
+		StringBuilder stringBuilder = new StringBuilder();
+		stringBuilder.append(getRestUrl());
+		stringBuilder.append("types/hire-purchase-direct-debit/plans?");
+		stringBuilder.append("amount=").append(getBigDecimal(amount)).append("&");
+		stringBuilder.append("currency=").append(currency.getCurrencyCode()).append("&");
+		stringBuilder.append("effectiveInterest=").append(getBigDecimal(effectiveInterestRate)).append("&");
+		stringBuilder.append("orderDate=").append(getDate(orderDate));
+		return stringBuilder.toString();
 	}
 
 	private String getDate(Date date) {

@@ -410,8 +410,8 @@ public class PaymentService {
 
 	private List<Charge> fetchChargeList(Payment payment, List<JsonTransaction> jsonChargesTransactionList)
 			throws HttpCommunicationException {
-		if (jsonChargesTransactionList == null || jsonChargesTransactionList.size() == 0)
-			return null;
+		if (jsonChargesTransactionList == null || jsonChargesTransactionList.isEmpty())
+			return new ArrayList<Charge>();
 		List<Charge> chargesList = new ArrayList<Charge>();
 		for (JsonTransaction jsonTransaction : jsonChargesTransactionList) {
 			Charge charge = fetchCharge(payment, new Charge(heidelpay), jsonTransaction.getUrl());
@@ -427,8 +427,8 @@ public class PaymentService {
 
 	private List<Payout> fetchPayoutList(Payment payment, List<JsonTransaction> jsonTransactionList)
 			throws HttpCommunicationException {
-		if (jsonTransactionList == null || jsonTransactionList.size() == 0)
-			return null;
+		if (jsonTransactionList == null || jsonTransactionList.isEmpty())
+			return new ArrayList<Payout>();
 		List<Payout> payoutList = new ArrayList<Payout>();
 		for (JsonTransaction jsonTransaction : jsonTransactionList) {
 			Payout payout = fetchPayout(payment, new Payout(heidelpay), jsonTransaction.getUrl());
@@ -441,7 +441,7 @@ public class PaymentService {
 
 	private List<Cancel> getCancelListForAuthorization(List<Cancel> cancelList) {
 		if (cancelList == null)
-			return null;
+			return new ArrayList<Cancel>();
 		List<Cancel> authorizationCancelList = new ArrayList<Cancel>();
 		for (Cancel cancel : cancelList) {
 			if (TRANSACTION_TYPE_CANCEL_AUTHORIZE.equalsIgnoreCase(cancel.getType())) {
@@ -454,7 +454,7 @@ public class PaymentService {
 
 	private List<Cancel> getCancelListForCharge(String chargeId, List<Cancel> cancelList) {
 		if (cancelList == null)
-			return null;
+			return new ArrayList<Cancel>();
 		List<Cancel> chargeCancelList = new ArrayList<Cancel>();
 		for (Cancel cancel : cancelList) {
 			if (TRANSACTION_TYPE_CANCEL_CHARGE.equalsIgnoreCase(cancel.getType())
@@ -490,8 +490,8 @@ public class PaymentService {
 
 	private List<Cancel> fetchCancelList(Payment payment, List<JsonTransaction> jsonChargesTransactionList)
 			throws HttpCommunicationException {
-		if (jsonChargesTransactionList == null || jsonChargesTransactionList.size() == 0)
-			return null;
+		if (jsonChargesTransactionList == null || jsonChargesTransactionList.isEmpty())
+			return new ArrayList<Cancel>();
 		List<Cancel> cancelList = new ArrayList<Cancel>();
 		for (JsonTransaction jsonTransaction : jsonChargesTransactionList) {
 			Cancel cancel = fetchCancel(payment, new Cancel(heidelpay), jsonTransaction.getUrl());

@@ -20,21 +20,13 @@ package com.heidelpay.payment.paymenttypes;
  * #L%
  */
 
-import com.heidelpay.payment.Basket;
-import com.heidelpay.payment.Charge;
-import com.heidelpay.payment.Customer;
 import com.heidelpay.payment.Heidelpay;
-import com.heidelpay.payment.PaymentException;
-import com.heidelpay.payment.communication.HttpCommunicationException;
-import java.math.BigDecimal;
-import java.net.URL;
-import java.util.Currency;
 
 public abstract class AbstractPaymentType implements PaymentType {
 	private String id;
 	private Boolean recurring;
 	
-	private transient Heidelpay heidelpay;
+	private Heidelpay heidelpay;
 	
 	public AbstractPaymentType(Heidelpay heidelpay) {
 		super();
@@ -45,8 +37,6 @@ public abstract class AbstractPaymentType implements PaymentType {
 		super();
 	}
 
-	public abstract String getTypeUrl();
-	
 	public String getId() {
 		return id;
 	}
@@ -70,15 +60,5 @@ public abstract class AbstractPaymentType implements PaymentType {
 	public void setRecurring(Boolean recurring) {
 		this.recurring = recurring;
 	}
-
-	// Currently returnUrl is mandatory	
-//		public Charge charge(BigDecimal amount, Currency currency) throws HttpCommunicationException {
-//			return getHeidelpay().charge(amount, currency, this);
-//		}
-//		public Authorization authorize(BigDecimal amount, Currency currency) throws HttpCommunicationException {
-//			return authorize(amount, currency, (URL)null, (Customer)null);
-//		}
-		
-
 
 }

@@ -73,7 +73,6 @@ public class SepaDirectDebitTest extends AbstractPaymentTest {
 	}
 
 	@Test(expected=PaymentException.class)
-	@Ignore
 	public void testCreateSepaDirectDebitBlockedIban() throws HttpCommunicationException, MalformedURLException {
 		SepaDirectDebit sdd = new SepaDirectDebit("DE69545100670661762678");
 		sdd = getHeidelpay().createPaymentType(sdd);
