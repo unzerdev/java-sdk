@@ -6,6 +6,7 @@ package com.heidelpay.payment.service;
  * %%
  * Copyright (C) 2018 Heidelpay GmbH
  * %%
+ * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  * 
@@ -22,24 +23,25 @@ package com.heidelpay.payment.service;
 import java.io.IOException;
 import java.util.Properties;
 
+import com.heidelpay.payment.exceptions.PropertiesException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 public class PropertiesUtil {
-	public final static Logger logger = LogManager.getLogger(PropertiesUtil.class);
-	public final static String REST_ENDPOINT = "rest.endpoint"; 
-	public final static String REST_VERSION = "rest.version"; 
+	public static final Logger logger = LogManager.getLogger(PropertiesUtil.class);
+	public static final String REST_ENDPOINT = "rest.endpoint";
+	public static final String REST_VERSION = "rest.version";
 	
 	private Properties properties;
 	
 	private void loadProperties() {
 		try {
-			Properties properties = new Properties();
-			properties.load(this.getClass().getResourceAsStream("/heidelpay.properties"));
-			this.properties = properties;
+			Properties loadedProperties = new Properties();
+			loadedProperties.load(this.getClass().getResourceAsStream("/heidelpay.properties"));
+			this.properties = loadedProperties;
 		} catch (IOException e) {
 			logger.error("Error loading heidelpay.properties from Classpath: " + e.getMessage(), e);
-			throw new RuntimeException("Error loading heidelpay.properties from Classpath: " + e.getMessage(), e);
+			throw new PropertiesException("Error loading heidelpay.properties from Classpath: " + e.getMessage());
 		}
 	}
 	

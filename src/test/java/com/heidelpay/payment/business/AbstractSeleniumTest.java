@@ -6,6 +6,7 @@ package com.heidelpay.payment.business;
  * %%
  * Copyright (C) 2018 - 2019 Heidelpay GmbH
  * %%
+ * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  * 
@@ -19,6 +20,8 @@ package com.heidelpay.payment.business;
  * #L%
  */
 
+import static java.util.concurrent.TimeUnit.SECONDS;
+import static org.awaitility.Awaitility.await;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
@@ -48,9 +51,8 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 public abstract class AbstractSeleniumTest extends AbstractPaymentTest {
 
-	public enum Browser {Chrome, Firefox}; 
-	private Browser defaultBrowser = Browser.Firefox;
-	private boolean close = true;
+	public enum Browser {Chrome, Firefox}
+	private final Browser defaultBrowser = Browser.Firefox;
 
 	public AbstractSeleniumTest() {
 	}
@@ -301,6 +303,7 @@ public abstract class AbstractSeleniumTest extends AbstractPaymentTest {
 	
 	
 	protected void close() {
+		boolean close = true;
 		if (driver != null && close) driver.quit();
 	}
 
@@ -338,7 +341,8 @@ public abstract class AbstractSeleniumTest extends AbstractPaymentTest {
 	}
 	
 	protected void selectDropDown(RemoteWebDriver driver, String paymentMethod) throws InterruptedException {
-		Thread.sleep(1000);
+		await().atLeast(1, SECONDS).and().atMost(2, SECONDS);
+
 		WebElement dropdown = driver.findElement(By.xpath("//div[@class='field " + paymentMethod + " sixteen wide']//div[@class='heidelpayChoices__inner']"));
 		WebDriverWait wait = new WebDriverWait(driver, 5);
         wait.until(ExpectedConditions.visibilityOf(dropdown));

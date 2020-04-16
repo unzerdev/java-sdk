@@ -6,6 +6,7 @@ package com.heidelpay.payment.util;
  * %%
  * Copyright (C) 2018 Heidelpay GmbH
  * %%
+ * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  * 
@@ -19,6 +20,8 @@ package com.heidelpay.payment.util;
  * #L%
  */
 
+import com.heidelpay.payment.exceptions.PropertiesException;
+
 import java.io.IOException;
 import java.util.Properties;
 
@@ -28,7 +31,7 @@ public class SDKInfo {
 	
 	private static String version = null;
 	
-	private SDKInfo() {};
+	private SDKInfo() {}
 	
 	public static String getVersion() {
 		if(version == null) {
@@ -36,15 +39,14 @@ public class SDKInfo {
 		}
 		return version;
 	}
-	
-	
+
 	private static void initProperties() {
 		try {
 			Properties properties = new Properties();
 			properties.load(SDKInfo.class.getResourceAsStream("/version.properties"));
 			version  = properties.getProperty(SDK_VERSION_KEY);
 		} catch (IOException e) {
-			throw new RuntimeException("Error loading version.properties from Classpath: " + e.getMessage(), e);
+			throw new PropertiesException("Error loading version.properties from Classpath: " + e.getMessage());
 		}
 	}
 }

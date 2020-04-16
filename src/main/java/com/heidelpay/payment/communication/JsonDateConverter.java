@@ -6,6 +6,7 @@ package com.heidelpay.payment.communication;
  * %%
  * Copyright (C) 2018 Heidelpay GmbH
  * %%
+ * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  * 
@@ -36,8 +37,16 @@ public class JsonDateConverter
 		implements JsonDeserializer<Date>, JsonSerializer<Date> {
 
 	@Override
-	public Date deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context)
-			throws JsonParseException {
+	public Date deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) {
+		return getDate(json);
+	}
+
+	@Override
+	public JsonElement serialize(Date src, Type typeOfSrc, JsonSerializationContext context) {
+		return new JsonPrimitive(new SimpleDateFormat("yyyy-MM-dd").format(src));
+	}
+
+	Date getDate(JsonElement json) {
 		String jsonValue = json.getAsJsonPrimitive().getAsString();
 		if (jsonValue == null || "".equalsIgnoreCase(jsonValue)) {
 			return null;
@@ -51,11 +60,6 @@ public class JsonDateConverter
 		} catch (ParseException e) {
 			throw new JsonParseException("Cannot parse date " + json.getAsJsonPrimitive().getAsString() + ". Date must be in format 'yyyy-MM-dd HH:mm:ss");
 		}
-	}
-
-	@Override
-	public JsonElement serialize(Date src, Type typeOfSrc, JsonSerializationContext context) {
-		return new JsonPrimitive(new SimpleDateFormat("yyyy-MM-dd").format(src));
 	}
 
 }

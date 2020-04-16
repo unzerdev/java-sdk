@@ -6,6 +6,7 @@ package com.heidelpay.payment.business;
  * %%
  * Copyright (C) 2018 - 2019 Heidelpay GmbH
  * %%
+ * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  * 
@@ -19,6 +20,8 @@ package com.heidelpay.payment.business;
  * #L%
  */
 
+import static java.util.concurrent.TimeUnit.SECONDS;
+import static org.awaitility.Awaitility.await;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
@@ -42,7 +45,7 @@ import com.heidelpay.payment.communication.HttpCommunicationException;
 public class PaypageSeleniumTest extends AbstractSeleniumTest {
 
 	@After
-	public void tearDown() throws Exception {
+	public void tearDown(){
 		close();
 	}
 
@@ -188,8 +191,8 @@ public class PaypageSeleniumTest extends AbstractSeleniumTest {
 	}
 
 	@Test
-	@Ignore ("currently B2B is confgiured")
-	public void testSDDGuaranteedWithoutCustomerReferencePaypage() throws MalformedURLException, HttpCommunicationException, PaymentException, ParseException, InterruptedException {
+	@Ignore ("currently B2B is configured")
+	public void testSDDGuaranteedWithoutCustomerReferencePaypage() throws MalformedURLException, HttpCommunicationException, PaymentException {
 		Paypage paypage = getHeidelpay().paypage(getMinimumPaypage(BigDecimal.TEN));
 		assertNotNull(paypage);
 		assertNotNull(paypage.getId());
@@ -209,7 +212,8 @@ public class PaypageSeleniumTest extends AbstractSeleniumTest {
 		assertTrue(isLabelPresent(driver, "City"));
 		assertTrue(isLabelPresent(driver, "Country"));
 
-		Thread.sleep(1000);
+		await().atLeast(1, SECONDS).and().atMost(2, SECONDS);
+
 		getWebElementByXpath(driver, "//div[@id='customer-sepa-direct-debit-guaranteed']//input[@name='salutation' and @value='mr']").click();
 		sendDataByXpath(driver, "//div[@id='sepa-direct-debit-guaranteed']/div/div/div/input", "DE89370400440532013000");
 		sendDataByXpath(driver, "//div[@id='customer-sepa-direct-debit-guaranteed']//input[@name='firstname']", "Peter");
@@ -222,7 +226,6 @@ public class PaypageSeleniumTest extends AbstractSeleniumTest {
 		sendDataByXpath(driver, "//div[@id='customer-sepa-direct-debit-guaranteed']//input[@name='city']", "Frankfurt am Main");
 		sendDataByXpath(driver, "//div[@id='customer-sepa-direct-debit-guaranteed']//input[@name='zip']", "60386");
 
-
 		pay(driver, getReturnUrl(), "Pay € 10.00");
 
 		close();
@@ -230,7 +233,7 @@ public class PaypageSeleniumTest extends AbstractSeleniumTest {
 
 	@Test
 	@Ignore("Works in Debug mode but not in run mode?")
-	public void testInvoiceFactoringWithCustomerReferencePaypage() throws MalformedURLException, HttpCommunicationException, PaymentException, ParseException, InterruptedException {
+	public void testInvoiceFactoringWithCustomerReferencePaypage() throws MalformedURLException, HttpCommunicationException, PaymentException, ParseException {
 		Paypage paypage = getHeidelpay().paypage(getMinimumWithReferencesPaypage("866.49"));
 		assertNotNull(paypage);
 		assertNotNull(paypage.getId());

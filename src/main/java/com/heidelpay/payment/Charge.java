@@ -6,6 +6,7 @@ package com.heidelpay.payment;
  * %%
  * Copyright (C) 2018 Heidelpay GmbH
  * %%
+ * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  * 
@@ -20,6 +21,7 @@ package com.heidelpay.payment;
  */
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 
 import com.heidelpay.payment.communication.HttpCommunicationException;
 
@@ -37,9 +39,11 @@ public class Charge extends AbstractInitPayment {
 
 	public Charge() {
 		super();
+		setCancelList(new ArrayList<Cancel>());
 	}
 	public Charge(Heidelpay heidelpay) {
 		super(heidelpay);
+		setCancelList(new ArrayList<Cancel>());
 	}
 
 	public String getInvoiceId() {

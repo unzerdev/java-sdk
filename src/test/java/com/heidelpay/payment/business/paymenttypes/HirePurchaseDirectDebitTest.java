@@ -6,6 +6,7 @@ package com.heidelpay.payment.business.paymenttypes;
  * %%
  * Copyright (C) 2018 Heidelpay GmbH
  * %%
+ * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  * 
@@ -44,7 +45,7 @@ public class HirePurchaseDirectDebitTest extends AbstractPaymentTest {
 
 	@Test
 	public void testRateRetrieval() throws HttpCommunicationException, ParseException {
-		BigDecimal effectiveInterestRate = BigDecimal.valueOf(5.5);
+		BigDecimal effectiveInterestRate = BigDecimal.valueOf(5.5).setScale(4, BigDecimal.ROUND_HALF_UP);
 		Date orderDate = getDate("21.06.2019");
 		List<HirePurchaseRatePlan> rateList = getHeidelpay().hirePurchaseRates(BigDecimal.TEN, Currency.getInstance("EUR"), effectiveInterestRate, orderDate);
 		assertNotNull(rateList);
@@ -149,7 +150,7 @@ public class HirePurchaseDirectDebitTest extends AbstractPaymentTest {
 		cancelReq.setAmountVat(BigDecimal.TEN);
 		Cancel cancel = charge.cancel(cancelReq);
 
-		assertValidCancel(cancel, getBigDecimalTwoDigits(856.49));
+		assertValidCancel(cancel, getBigDecimalFourDigits(856.49));
 	}
 
 	@Test
@@ -308,17 +309,17 @@ public class HirePurchaseDirectDebitTest extends AbstractPaymentTest {
 	private void assertRatePlan(BigDecimal effectiveInterestRate, Date orderDate, HirePurchaseRatePlan ratePlan) {
 		assertEquals(3, ratePlan.getNumberOfRates());
 		assertEquals(effectiveInterestRate, ratePlan.getEffectiveInterestRate());
-		assertEquals(new BigDecimal("10.0"), ratePlan.getTotalPurchaseAmount());
-		assertEquals(getBigDecimalTwoDigits(0.08), ratePlan.getTotalInterestAmount());
-		assertEquals(ratePlan.getTotalAmount(), ratePlan.getTotalInterestAmount().add(ratePlan.getTotalPurchaseAmount()));
-		assertEquals(getBigDecimalTwoDigits(3.37), ratePlan.getMonthlyRate());
-		assertEquals(getBigDecimalTwoDigits(3.34), ratePlan.getLastRate());
-		assertEquals(getBigDecimalTwoDigits(5.40), getBigDecimalTwoDigits(ratePlan.getNominalInterestRate().doubleValue()));
+		assertEquals(new BigDecimal("10.0").setScale(4, BigDecimal.ROUND_HALF_UP), ratePlan.getTotalPurchaseAmount());
+		assertEquals(getBigDecimalFourDigits(0.08), ratePlan.getTotalInterestAmount());
+		assertEquals(ratePlan.getTotalAmount().setScale(4, BigDecimal.ROUND_HALF_UP), ratePlan.getTotalInterestAmount().add(ratePlan.getTotalPurchaseAmount()));
+		assertEquals(getBigDecimalFourDigits(3.37), ratePlan.getMonthlyRate());
+		assertEquals(getBigDecimalFourDigits(3.34), ratePlan.getLastRate());
+		assertEquals(getBigDecimalFourDigits(5.40), getBigDecimalFourDigits(ratePlan.getNominalInterestRate().doubleValue()));
 		assertEquals(orderDate, ratePlan.getOrderDate());
 	}
 
-	private BigDecimal getBigDecimalTwoDigits(double number) {
-		return new BigDecimal(number).setScale(2, BigDecimal.ROUND_HALF_UP);
+	private BigDecimal getBigDecimalFourDigits(double number) {
+		return new BigDecimal(number).setScale(4, BigDecimal.ROUND_HALF_UP);
 	}
 
 }

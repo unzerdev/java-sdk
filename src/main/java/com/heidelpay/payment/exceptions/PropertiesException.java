@@ -1,4 +1,4 @@
-package com.heidelpay.payment.communication.json;
+package com.heidelpay.payment.exceptions;
 
 /*-
  * #%L
@@ -20,19 +20,10 @@ package com.heidelpay.payment.communication.json;
  * #L%
  */
 
-public class JsonState {
-	private int id;
-	private String name;
-	public int getId() {
-		return id;
+public class PropertiesException extends RuntimeException {
+
+	public PropertiesException(String msg) {
+		super(msg);
 	}
-	public void setId(int id) {
-		this.id = id;
-	}
-	public String getName() {
-		return name;
-	}
-	public void setName(String name) {
-		this.name = name;
-	}
+
 }

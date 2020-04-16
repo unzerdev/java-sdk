@@ -6,6 +6,7 @@ package com.heidelpay.payment.business.paymenttypes;
  * %%
  * Copyright (C) 2018 Heidelpay GmbH
  * %%
+ * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  * 
@@ -72,7 +73,6 @@ public class SepaDirectDebitTest extends AbstractPaymentTest {
 	}
 
 	@Test(expected=PaymentException.class)
-	@Ignore
 	public void testCreateSepaDirectDebitBlockedIban() throws HttpCommunicationException, MalformedURLException {
 		SepaDirectDebit sdd = new SepaDirectDebit("DE69545100670661762678");
 		sdd = getHeidelpay().createPaymentType(sdd);
