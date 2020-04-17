@@ -28,6 +28,8 @@ import java.util.List;
  */
 public class PaymentException extends RuntimeException {
 
+	private static final String EMPTY_STRING = "";
+	private static final int STATUS_CODE_ZERO = 0;
 	private final transient List<PaymentError> paymentErrorList;
 	private final String timestamp;
 	private final String url;
@@ -39,7 +41,7 @@ public class PaymentException extends RuntimeException {
 	 * @param message the message
 	 */
 	public PaymentException(String message) {
-		this("", 0, "", "", new ArrayList<PaymentError>(), message);
+		this(EMPTY_STRING, STATUS_CODE_ZERO, EMPTY_STRING, EMPTY_STRING, new ArrayList<PaymentError>(), message);
 	}
 	
 	/**
@@ -68,7 +70,7 @@ public class PaymentException extends RuntimeException {
 	 * @param errors a list of errors returned from the Api.
 	 */
 	public PaymentException(String id, String url, String timestamp, List<PaymentError> errors, String message) {
-		this(url, 0, timestamp, id, errors, message);
+		this(url, STATUS_CODE_ZERO, timestamp, id, errors, message);
 	}
 	
 	/**
@@ -77,7 +79,7 @@ public class PaymentException extends RuntimeException {
 	 * @param errors a list of errors returned from the Api.
 	 */
 	public PaymentException(List<PaymentError> errors, String message) {
-		this("", 0, "", "", errors, (errors != null && errors.size() == 1) ? errors.get(0).getMerchantMessage() : message);
+		this(EMPTY_STRING, STATUS_CODE_ZERO, EMPTY_STRING, EMPTY_STRING, errors, (errors != null && errors.size() == 1) ? errors.get(STATUS_CODE_ZERO).getMerchantMessage() : message);
 	}
 
 	/**
@@ -140,7 +142,7 @@ public class PaymentException extends RuntimeException {
 			return sb;
 		}
 		sb.append("[");
-		for (int i = 0; i < errors.size(); i++) {
+		for (int i = STATUS_CODE_ZERO; i < errors.size(); i++) {
 			sb.append(errors.get(i).toString());
 			if (i < errors.size() - 1) {
 				sb.append(",");
