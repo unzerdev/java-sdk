@@ -27,7 +27,6 @@ import java.util.Currency;
 import com.heidelpay.payment.Basket;
 import com.heidelpay.payment.Charge;
 import com.heidelpay.payment.Customer;
-import com.heidelpay.payment.PaymentException;
 import com.heidelpay.payment.communication.HttpCommunicationException;
 
 /**
