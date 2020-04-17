@@ -40,7 +40,7 @@ public class LinkpayService {
 	 * Creates a PaymentService with the @deprecated {@code RestCommunication}
 	 * implementation.
 	 *
-	 * @param heidelpay
+	 * @param heidelpay used Heidelpay object
 	 */
 	public LinkpayService(Heidelpay heidelpay) {
 		this(heidelpay, new HttpClientBasedRestCommunication());

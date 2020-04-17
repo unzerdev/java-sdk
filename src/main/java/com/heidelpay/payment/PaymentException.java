@@ -52,6 +52,7 @@ public class PaymentException extends RuntimeException {
 	 * @param timestamp the timestamp the cal was made
 	 * @param id the id for referencing the error
 	 * @param errors the list of {@code PaymentError}.
+	 * @param message to be thrown
 	 */
 	public PaymentException(String url, Integer statusCode, String timestamp, String id, List<PaymentError> errors, String message) {
 		super(toMessage(url, statusCode, errors, message));
@@ -68,6 +69,7 @@ public class PaymentException extends RuntimeException {
 	 * @param url called endpoint causing the error
 	 * @param timestamp timestamp the call was made
 	 * @param errors a list of errors returned from the Api.
+	 * @param message to be thrown
 	 */
 	public PaymentException(String id, String url, String timestamp, List<PaymentError> errors, String message) {
 		this(url, STATUS_CODE_ZERO, timestamp, id, errors, message);
@@ -77,6 +79,7 @@ public class PaymentException extends RuntimeException {
 	 * Creates a {@code PaymentException} for the given payment error.
 	 *
 	 * @param errors a list of errors returned from the Api.
+	 * @param message to be thrown
 	 */
 	public PaymentException(List<PaymentError> errors, String message) {
 		this(EMPTY_STRING, STATUS_CODE_ZERO, EMPTY_STRING, EMPTY_STRING, errors, (errors != null && errors.size() == 1) ? errors.get(STATUS_CODE_ZERO).getMerchantMessage() : message);
