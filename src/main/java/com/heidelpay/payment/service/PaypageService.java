@@ -21,12 +21,10 @@ package com.heidelpay.payment.service;
  */
 
 import com.heidelpay.payment.Heidelpay;
-import com.heidelpay.payment.PaymentException;
 import com.heidelpay.payment.Paypage;
 import com.heidelpay.payment.communication.HeidelpayRestCommunication;
 import com.heidelpay.payment.communication.HttpCommunicationException;
 import com.heidelpay.payment.communication.JsonParser;
-import com.heidelpay.payment.communication.impl.RestCommunication;
 import com.heidelpay.payment.communication.json.JsonPaypage;
 import com.heidelpay.payment.communication.mapper.JsonToBusinessClassMapper;
 

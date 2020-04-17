@@ -31,6 +31,7 @@ import com.heidelpay.payment.communication.HeidelpayHttpRequest.HeidelpayHttpMet
 import com.heidelpay.payment.communication.impl.HttpClientBasedRestCommunication;
 import com.heidelpay.payment.communication.json.JsonErrorObject;
 import com.heidelpay.payment.util.SDKInfo;
+import org.apache.http.client.methods.HttpUriRequest;
 
 import javax.xml.bind.DatatypeConverter;
 
@@ -178,13 +179,17 @@ public abstract class AbstractHeidelpayRestCommunication implements HeidelpayRes
 	}
 
 	private void addAuthentication(String privateKey, HeidelpayHttpRequest request) {
+		addAuthentication(privateKey, request);
+	}
 
+	public static void addAuthentication(String privateKey, HttpUriRequest request) {
 		if (privateKey == null) {
 			List<PaymentError> paymentErrorList = new ArrayList<PaymentError>();
 			paymentErrorList.add(new PaymentError(
 							"PrivateKey/PublicKey is missing",
 							"There was a problem authenticating your request.Please contact us for more information.",
 							"API.000.000.001"));
+
 			throw new PaymentException(paymentErrorList, "");
 		}
 		if (!privateKey.endsWith(":")) {
@@ -204,7 +209,6 @@ public abstract class AbstractHeidelpayRestCommunication implements HeidelpayRes
 			request.addHeader(ACCEPT_LANGUAGE, this.locale.getLanguage());
 		}
 	}
-
 
 	String execute(HeidelpayHttpRequest request, String privateKey) throws HttpCommunicationException {
 		addUserAgent(request);
