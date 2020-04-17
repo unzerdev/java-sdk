@@ -31,9 +31,10 @@ import com.heidelpay.payment.communication.HeidelpayHttpRequest.HeidelpayHttpMet
 import com.heidelpay.payment.communication.impl.HttpClientBasedRestCommunication;
 import com.heidelpay.payment.communication.json.JsonErrorObject;
 import com.heidelpay.payment.util.SDKInfo;
-import org.apache.http.client.methods.HttpUriRequest;
 
 import javax.xml.bind.DatatypeConverter;
+
+import static org.apache.http.HttpHeaders.*;
 
 /**
  * Template implementation of the {@code HeidelpayRestCommunication}. You should
@@ -56,13 +57,9 @@ import javax.xml.bind.DatatypeConverter;
  */
 public abstract class AbstractHeidelpayRestCommunication implements HeidelpayRestCommunication {
 
-	private static final String USER_AGENT = "User-Agent";
-	private static final String AUTHORIZATION = "Authorization";
-	private static final String BASIC = "Basic ";
+	public static final String BASIC = "Basic ";
 	static final String USER_AGENT_PREFIX = "HeidelpayJava";
 	private static final String CONTENT_TYPE_JSON = "application/json; charset=UTF-8";
-	private static final String CONTENT_TYPE = "Content-Type";
-	private static final String ACCEPT_LANGUAGE = "Accept-Language";
 
 	private Locale locale;
 
@@ -178,11 +175,11 @@ public abstract class AbstractHeidelpayRestCommunication implements HeidelpayRes
 		request.addHeader(USER_AGENT, USER_AGENT_PREFIX + " - " + SDKInfo.getVersion());
 	}
 
-	private void addAuthentication(String privateKey, HeidelpayHttpRequest request) {
-		addAuthentication(privateKey, request);
+	private void addHeidelpayAuthentication(String privateKey, HeidelpayHttpRequest request) {
+		request.addHeader(AUTHORIZATION, BASIC + addAuthentication(privateKey));
 	}
 
-	public static void addAuthentication(String privateKey, HttpUriRequest request) {
+	public static String addAuthentication(String privateKey) {
 		if (privateKey == null) {
 			List<PaymentError> paymentErrorList = new ArrayList<PaymentError>();
 			paymentErrorList.add(new PaymentError(
@@ -201,7 +198,8 @@ public abstract class AbstractHeidelpayRestCommunication implements HeidelpayRes
 		} catch (UnsupportedEncodingException e) {
 			throw new PaymentException("Unsupported encoding for the private key: Base64!");
 		}
-		request.addHeader(AUTHORIZATION, BASIC + privateKeyBase64);
+
+		return privateKeyBase64;
 	}
 
 	private void addAcceptLanguageHeader(HeidelpayHttpRequest request) {
@@ -212,7 +210,7 @@ public abstract class AbstractHeidelpayRestCommunication implements HeidelpayRes
 
 	String execute(HeidelpayHttpRequest request, String privateKey) throws HttpCommunicationException {
 		addUserAgent(request);
-		addAuthentication(privateKey, request);
+		addHeidelpayAuthentication(privateKey, request);
 		addAcceptLanguageHeader(request);
 		setContentType(request);
 

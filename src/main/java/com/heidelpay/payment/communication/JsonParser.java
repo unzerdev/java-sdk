@@ -76,9 +76,10 @@ public class JsonParser<T> {
 
 	/**
 	 * Provide a simple parser method to get object from json
-	 * 
-	 * @param json
-	 * @param clazz
+	 *
+	 * @param <T> type of used class to be parsed
+	 * @param json json to be parsed
+	 * @param clazz class to be used for the parsing
 	 * @return an object of type T
 	 */
 	@SuppressWarnings("hiding")
