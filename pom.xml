@@ -39,6 +39,7 @@
 	</scm>
 
 	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<additionalparam>-Xdoclint:none</additionalparam>
 		<skip.dependency.check>true</skip.dependency.check>
 	</properties>
@@ -125,6 +126,7 @@
 			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>exec-maven-plugin</artifactId>
+				<version>1.6.0</version>
 			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
