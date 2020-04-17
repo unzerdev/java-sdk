@@ -39,7 +39,10 @@ import com.heidelpay.payment.paymenttypes.PaymentType;
  *
  */
 public class Payment extends AbstractPayment {
-	
+
+	private static final String CANCEL_IS_ONLY_POSSIBLE_FOR_AN_AUTHORIZATION = "Cancel is only possible for an Authorization";
+	private static final String PAYMENT_CANCELLATION_NOT_POSSIBLE = "Payment cancellation not possible";
+
 	public enum State {
 		COMPLETED, PENDING, CANCELED, PARTLY, PAYMENT_REVIEW, CHARGEBACK
 	}
@@ -131,8 +134,8 @@ public class Payment extends AbstractPayment {
 		if (getAuthorization() == null) {
 			List<PaymentError> paymentErrorList = new ArrayList<PaymentError>();
 			paymentErrorList.add(new PaymentError(
-							"Cancel is only possible for an Authorization",
-							"Payment cancellation not possible",
+							CANCEL_IS_ONLY_POSSIBLE_FOR_AN_AUTHORIZATION,
+							PAYMENT_CANCELLATION_NOT_POSSIBLE,
 							""));
 
 			throw new PaymentException(paymentErrorList, "");
@@ -144,8 +147,8 @@ public class Payment extends AbstractPayment {
 		if (getAuthorization() == null) {
 			List<PaymentError> paymentErrorList = new ArrayList<PaymentError>();
 			paymentErrorList.add(new PaymentError(
-							"Cancel is only possible for an Authorization",
-							"Payment cancellation not possible",
+							CANCEL_IS_ONLY_POSSIBLE_FOR_AN_AUTHORIZATION,
+							PAYMENT_CANCELLATION_NOT_POSSIBLE,
 							""));
 
 			throw new PaymentException(paymentErrorList, "");
