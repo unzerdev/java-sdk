@@ -22,7 +22,10 @@ package com.heidelpay.payment.communication.impl;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
+import java.util.List;
 
+import com.heidelpay.payment.PaymentError;
 import com.heidelpay.payment.util.SDKInfo;
 import org.apache.http.HttpEntity;
 import org.apache.http.ParseException;
@@ -99,15 +102,13 @@ public class RestCommunication implements HeidelpayRestCommunication {
 
 	private void addAuthentication(String privateKey, HttpUriRequest http) {
 		if (privateKey == null) {
-			String uri;
-			if (http.getURI() == null) {
-				uri = null;
-			} else {
-				uri = http.getURI().toString();
-			}
-			throw new PaymentException("PrivateKey/PublicKey is missing",
-					"There was a problem authenticating your request.Please contact us for more information.",
-					"API.000.000.001", uri);
+			List<PaymentError> paymentErrorList = new ArrayList<PaymentError>();
+			paymentErrorList.add(new PaymentError(
+							"PrivateKey/PublicKey is missing",
+							"There was a problem authenticating your request.Please contact us for more information.",
+							"API.000.000.001"));
+
+			throw new PaymentException(paymentErrorList, "");
 		}
 		if (!privateKey.endsWith(":")) {
 			privateKey = privateKey + ":";
@@ -135,8 +136,7 @@ public class RestCommunication implements HeidelpayRestCommunication {
 
 			if (status.getStatusCode() > 201 || status.getStatusCode() < 200) {
 				JsonErrorObject error = new JsonParser<JsonErrorObject>().fromJson(content, JsonErrorObject.class);
-				throw new PaymentException(error.getUrl(), status.getStatusCode(), error.getTimestamp(), error.getId(),
-						error.getErrors());
+				throw new PaymentException(error.getUrl(), status.getStatusCode(), error.getTimestamp(), error.getId(), error.getErrors(), "");
 			}
 			return content;
 		} catch (IOException e) {

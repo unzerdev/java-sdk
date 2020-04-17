@@ -22,6 +22,7 @@ package com.heidelpay.payment;
 
 import java.math.BigDecimal;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.Currency;
 import java.util.List;
 
@@ -38,7 +39,10 @@ import com.heidelpay.payment.paymenttypes.PaymentType;
  *
  */
 public class Payment extends AbstractPayment {
-	
+
+	private static final String CANCEL_IS_ONLY_POSSIBLE_FOR_AN_AUTHORIZATION = "Cancel is only possible for an Authorization";
+	private static final String PAYMENT_CANCELLATION_NOT_POSSIBLE = "Payment cancellation not possible";
+
 	public enum State {
 		COMPLETED, PENDING, CANCELED, PARTLY, PAYMENT_REVIEW, CHARGEBACK
 	}
@@ -128,14 +132,26 @@ public class Payment extends AbstractPayment {
 
 	public Cancel cancel() throws HttpCommunicationException {
 		if (getAuthorization() == null) {
-			throw new PaymentException("Cancel is only possible for an Authorization", "Payment cancelation not possible", "", "");
+			List<PaymentError> paymentErrorList = new ArrayList<PaymentError>();
+			paymentErrorList.add(new PaymentError(
+							CANCEL_IS_ONLY_POSSIBLE_FOR_AN_AUTHORIZATION,
+							PAYMENT_CANCELLATION_NOT_POSSIBLE,
+							""));
+
+			throw new PaymentException(paymentErrorList, "");
 		}
 		return getAuthorization().cancel();
 	}
 
 	public Cancel cancel(BigDecimal amount) throws HttpCommunicationException {
 		if (getAuthorization() == null) {
-			throw new PaymentException("Cancel is only possible for an Authorization", "Payment cancelation not possible", "", "");
+			List<PaymentError> paymentErrorList = new ArrayList<PaymentError>();
+			paymentErrorList.add(new PaymentError(
+							CANCEL_IS_ONLY_POSSIBLE_FOR_AN_AUTHORIZATION,
+							PAYMENT_CANCELLATION_NOT_POSSIBLE,
+							""));
+
+			throw new PaymentException(paymentErrorList, "");
 		}
 		return getAuthorization().cancel(amount);
 	}

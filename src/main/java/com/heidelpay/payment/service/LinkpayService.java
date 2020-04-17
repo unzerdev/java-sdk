@@ -62,7 +62,7 @@ public class LinkpayService {
 		this.restCommunication = restCommunication;
 	}
 
-	public Linkpay initialize(Linkpay linkpay) throws PaymentException, HttpCommunicationException {
+	public Linkpay initialize(Linkpay linkpay) throws HttpCommunicationException {
 		return initialize(linkpay, urlUtil.getRestUrl(linkpay));
 	}
 

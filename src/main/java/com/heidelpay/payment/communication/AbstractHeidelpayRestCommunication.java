@@ -20,14 +20,19 @@ package com.heidelpay.payment.communication;
  * #L%
  */
 
-import java.util.Base64;
+import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
 
+import com.heidelpay.payment.PaymentError;
 import com.heidelpay.payment.PaymentException;
 import com.heidelpay.payment.communication.HeidelpayHttpRequest.HeidelpayHttpMethod;
 import com.heidelpay.payment.communication.impl.HttpClientBasedRestCommunication;
 import com.heidelpay.payment.communication.json.JsonErrorObject;
 import com.heidelpay.payment.util.SDKInfo;
+
+import javax.xml.bind.DatatypeConverter;
 
 /**
  * Template implementation of the {@code HeidelpayRestCommunication}. You should
@@ -119,13 +124,13 @@ public abstract class AbstractHeidelpayRestCommunication implements HeidelpayRes
 	 */
 	protected abstract void logResponse(HeidelpayHttpResponse response);
 
-	public String httpGet(String url, String privateKey) throws HttpCommunicationException, PaymentException {
+	public String httpGet(String url, String privateKey) throws HttpCommunicationException {
 
 		return this.execute(createRequest(url, HeidelpayHttpMethod.GET), privateKey);
 	}
 
 	public String httpPost(String url, String privateKey, Object data)
-			throws HttpCommunicationException, PaymentException {
+			throws HttpCommunicationException {
 		if (url == null) {
 			throw new IllegalArgumentException("Cannot post to a null URL");
 		}
@@ -133,20 +138,20 @@ public abstract class AbstractHeidelpayRestCommunication implements HeidelpayRes
 	}
 
 	public String httpPut(String url, String privateKey, Object data)
-			throws HttpCommunicationException, PaymentException {
+			throws HttpCommunicationException {
 		if (url == null) {
 			throw new IllegalArgumentException("Cannot put to a null URL");
 		}
 		return sendPutOrPost(createRequest(url, HeidelpayHttpMethod.PUT), privateKey, data);
 	}
 
-	public String httpDelete(String url, String privateKey) throws HttpCommunicationException, PaymentException {
+	public String httpDelete(String url, String privateKey) throws HttpCommunicationException {
 		
 		return this.execute(createRequest(url, HeidelpayHttpMethod.DELETE), privateKey);
 	}
 
 	private String sendPutOrPost(HeidelpayHttpRequest request, String privateKey, Object data)
-			throws HttpCommunicationException, PaymentException {
+			throws HttpCommunicationException {
 		if (data == null) {
 			throw new IllegalArgumentException("Cannot create a http post request with null params");
 		}
@@ -172,28 +177,36 @@ public abstract class AbstractHeidelpayRestCommunication implements HeidelpayRes
 		request.addHeader(USER_AGENT, USER_AGENT_PREFIX + " - " + SDKInfo.getVersion());
 	}
 
-	private void addAuthentication(String privateKey, HeidelpayHttpRequest request) throws PaymentException {
+	private void addAuthentication(String privateKey, HeidelpayHttpRequest request) {
 
 		if (privateKey == null) {
-			throw new PaymentException("PrivateKey/PublicKey is missing",
-					"There was a problem authenticating your request. Please contact us for more information.",
-					"API.000.000.001", request.getURI().toString());
+			List<PaymentError> paymentErrorList = new ArrayList<PaymentError>();
+			paymentErrorList.add(new PaymentError(
+							"PrivateKey/PublicKey is missing",
+							"There was a problem authenticating your request.Please contact us for more information.",
+							"API.000.000.001"));
+			throw new PaymentException(paymentErrorList, "");
 		}
 		if (!privateKey.endsWith(":")) {
 			privateKey = privateKey + ":";
 		}
-		String privateKeyBase64 = new String(Base64.getEncoder().encode(privateKey.getBytes()));
+		String privateKeyBase64;
+		try {
+			privateKeyBase64 = DatatypeConverter.printBase64Binary(privateKey.getBytes("UTF-8"));
+		} catch (UnsupportedEncodingException e) {
+			throw new PaymentException("Unsupported encoding for the private key: Base64!");
+		}
 		request.addHeader(AUTHORIZATION, BASIC + privateKeyBase64);
 	}
 
-	private void addAcceptLanguageHeader(HeidelpayHttpRequest request) throws PaymentException {
+	private void addAcceptLanguageHeader(HeidelpayHttpRequest request) {
 		if(this.locale != null) {
 			request.addHeader(ACCEPT_LANGUAGE, this.locale.getLanguage());
 		}
 	}
 
 
-	String execute(HeidelpayHttpRequest request, String privateKey) throws PaymentException, HttpCommunicationException {
+	String execute(HeidelpayHttpRequest request, String privateKey) throws HttpCommunicationException {
 		addUserAgent(request);
 		addAuthentication(privateKey, request);
 		addAcceptLanguageHeader(request);
@@ -213,11 +226,10 @@ public abstract class AbstractHeidelpayRestCommunication implements HeidelpayRes
 
 	}
 
-	private void throwPaymentException(HeidelpayHttpResponse response)
-			throws PaymentException {
+	private void throwPaymentException(HeidelpayHttpResponse response) {
 		JsonErrorObject error = new JsonParser<JsonErrorObject>().fromJson(response.getContent(),
 				JsonErrorObject.class);
-		throw new PaymentException(error.getUrl(), response.getStatusCode(), error.getTimestamp(), error.getId(), error.getErrors());
+		throw new PaymentException(error.getUrl(), response.getStatusCode(), error.getTimestamp(), error.getId(), error.getErrors(), "");
 	}
 
 	private boolean isError(HeidelpayHttpResponse response) {

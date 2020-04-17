@@ -95,7 +95,7 @@ public class JsonParser<T> {
 	private PaymentException toPaymentException(String json) {
 		JsonErrorObject error = gson.fromJson(json, JsonErrorObject.class);
 
-		return new PaymentException(error.getId(), error.getUrl(), error.getTimestamp(), error.getErrors());
+		return new PaymentException(error.getId(), error.getUrl(), error.getTimestamp(), error.getErrors(), "");
 	}
 
 	private boolean isError(String json) {
