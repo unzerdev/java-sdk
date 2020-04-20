@@ -75,11 +75,7 @@ import com.heidelpay.payment.paymenttypes.Sofort;
 import com.heidelpay.payment.paymenttypes.Wechatpay;
 import java.math.BigDecimal;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.Currency;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class PaymentService {
 	private static final String TRANSACTION_TYPE_AUTHORIZATION = "authorize";
@@ -553,45 +549,26 @@ public class PaymentService {
 	}
 
 	private JsonIdObject getJsonObjectFromTypeId(String typeId) {
-		String paymentType = typeId.substring(2, 5);
-		if ("crd".equalsIgnoreCase(paymentType)) {
+		List<String> jsonIdObjects = Arrays.asList("eps", "gro", "ivc", "ivg", "ivf", "ppl", "ppy", "p24", "sft", "ali", "wcp");
+		String paymentType = typeId.substring(2, 5).toLowerCase();
+		if (jsonIdObjects.contains(paymentType)) {
+			return new JsonIdObject();
+		} else if ("crd".equalsIgnoreCase(paymentType)) {
 			return new JsonCard();
-		} else if ("eps".equalsIgnoreCase(paymentType)) {
-			return new JsonIdObject();
-		} else if ("gro".equalsIgnoreCase(paymentType)) {
-			return new JsonIdObject();
 		} else if ("idl".equalsIgnoreCase(paymentType)) {
 			return new JsonIdeal();
-		} else if ("ivc".equalsIgnoreCase(paymentType)) {
-			return new JsonIdObject();
-		} else if ("ivg".equalsIgnoreCase(paymentType)) {
-			return new JsonIdObject();
-		} else if ("ivf".equalsIgnoreCase(paymentType)) {
-			return new JsonIdObject();
-		} else if ("ppl".equalsIgnoreCase(paymentType)) {
-			return new JsonIdObject();
-		} else if ("ppy".equalsIgnoreCase(paymentType)) {
-			return new JsonIdObject();
-		} else if ("p24".equalsIgnoreCase(paymentType)) {
-			return new JsonIdObject();
 		} else if ("sdd".equalsIgnoreCase(paymentType)) {
 			return new JsonSepaDirectDebit();
 		} else if ("ddg".equalsIgnoreCase(paymentType)) {
 			return new JsonSepaDirectDebit();
-		} else if ("sft".equalsIgnoreCase(paymentType)) {
-			return new JsonIdObject();
 		} else if ("pis".equalsIgnoreCase(paymentType)) {
 			return new JsonPis();
-		} else if ("ali".equalsIgnoreCase(paymentType)) {
-			return new JsonIdObject();
-		} else if ("wcp".equalsIgnoreCase(paymentType)) {
-			return new JsonIdObject();
 		} else if ("apl".equalsIgnoreCase(paymentType)) {
 			return new JsonApplepayResponse();
 		} else if ("hdd".equalsIgnoreCase(paymentType)) {
 			return new JsonHirePurchaseRatePlan();
 		} else {
-			throw new PaymentException("Type '" + typeId + "' is currently now supported by the SDK");
+			throw new PaymentException("Type '" + typeId + "' is currently not supported by the SDK");
 		}
 
 	}
@@ -638,7 +615,7 @@ public class PaymentService {
 		} else if ("hdd".equalsIgnoreCase(paymentType)) {
 			return new HirePurchaseRatePlan();
 		} else {
-			throw new PaymentException("Type '" + typeId + "' is currently now supported by the SDK");
+			throw new PaymentException("Type '" + typeId + "' is currently not supported by the SDK");
 		}
 	}
 
