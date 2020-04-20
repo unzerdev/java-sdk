@@ -112,6 +112,7 @@ public class ErrorTestDE extends AbstractPaymentTest {
         }
     }
 
+    @Ignore("see https://heidelpay.atlassian.net/browse/AHC-3387")
     @Test
     public void testPaymentTypeIdMissing() throws MalformedURLException, HttpCommunicationException {
         try {
