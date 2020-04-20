@@ -28,6 +28,8 @@ import com.heidelpay.payment.Authorization;
 import com.heidelpay.payment.Charge;
 import com.heidelpay.payment.Customer;
 import com.heidelpay.payment.communication.HttpCommunicationException;
+import com.heidelpay.payment.communication.json.JsonApplepayResponse;
+import com.heidelpay.payment.communication.json.JsonObject;
 
 /**
  * Alipay business object 
@@ -49,6 +51,17 @@ public class Applepay extends AbstractPaymentType implements PaymentType {
 	@Override
 	public String getTypeUrl() {
 		return "types/applepay";
+	}
+
+	@Override
+	public PaymentType map(PaymentType applepay, JsonObject jsonApplePay) {
+		((Applepay) applepay).setId(jsonApplePay.getId());
+		((Applepay) applepay).setExpiryDate(((JsonApplepayResponse) jsonApplePay).getApplicationExpirationDate());
+		((Applepay) applepay).setNumber(((JsonApplepayResponse) jsonApplePay).getApplicationPrimaryAccountNumber());
+		((Applepay) applepay).setCurrencyCode(((JsonApplepayResponse) jsonApplePay).getCurrencyCode());
+		((Applepay) applepay).setTransactionAmount(((JsonApplepayResponse) jsonApplePay).getTransactionAmount());
+		((Applepay) applepay).setRecurring(((JsonApplepayResponse) jsonApplePay).getRecurring());
+		return applepay;
 	}
 
 	public Authorization authorize(BigDecimal amount, Currency currency, URL returnUrl) throws HttpCommunicationException {

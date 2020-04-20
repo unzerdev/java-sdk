@@ -24,6 +24,8 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 
 import com.heidelpay.payment.communication.HttpCommunicationException;
+import com.heidelpay.payment.communication.json.JsonObject;
+import com.heidelpay.payment.paymenttypes.PaymentType;
 
 /**
  * Business object for Charge. Amount, currency and typeId are mandatory parameter to 
@@ -70,6 +72,11 @@ public class Charge extends AbstractInitPayment {
 	@Override
 	public String getTypeUrl() {
 		return "payments/<paymentId>/charges";
+	}
+
+	@Override
+	public PaymentType map(PaymentType paymentType, JsonObject jsonObject) {
+		return null;
 	}
 
 }

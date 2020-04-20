@@ -27,6 +27,8 @@ import java.util.Currency;
 import com.heidelpay.payment.Charge;
 import com.heidelpay.payment.Customer;
 import com.heidelpay.payment.communication.HttpCommunicationException;
+import com.heidelpay.payment.communication.json.JsonIdObject;
+import com.heidelpay.payment.communication.json.JsonObject;
 
 /**
  * Alipay business object 
@@ -39,6 +41,13 @@ public class Wechatpay extends AbstractPaymentType implements PaymentType {
 	@Override
 	public String getTypeUrl() {
 		return "types/wechatpay";
+	}
+
+	@Override
+	public PaymentType map(PaymentType wechatpay, JsonObject jsonId) {
+		((Wechatpay) wechatpay).setId(jsonId.getId());
+		((Wechatpay) wechatpay).setRecurring(((JsonIdObject) jsonId).getRecurring());
+		return wechatpay;
 	}
 
 	public Charge charge(BigDecimal amount, Currency currency, URL returnUrl) throws HttpCommunicationException {

@@ -27,6 +27,8 @@ import java.util.Currency;
 import com.heidelpay.payment.Charge;
 import com.heidelpay.payment.Customer;
 import com.heidelpay.payment.communication.HttpCommunicationException;
+import com.heidelpay.payment.communication.json.JsonIdeal;
+import com.heidelpay.payment.communication.json.JsonObject;
 
 /**
  * Ideal business object
@@ -40,6 +42,14 @@ public class Ideal extends AbstractPaymentType implements PaymentType {
 	@Override
 	public String getTypeUrl() {
 		return "types/ideal";
+	}
+
+	@Override
+	public PaymentType map(PaymentType ideal, JsonObject jsonIdeal) {
+		((Ideal) ideal).setId(jsonIdeal.getId());
+		((Ideal) ideal).setBic(((JsonIdeal) jsonIdeal).getBankName());
+		((Ideal) ideal).setRecurring(((JsonIdeal) jsonIdeal).getRecurring());
+		return ideal;
 	}
 
 	public String getBic() {

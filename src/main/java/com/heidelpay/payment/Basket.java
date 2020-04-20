@@ -25,6 +25,7 @@ import java.util.ArrayList;
 import java.util.Currency;
 import java.util.List;
 
+import com.heidelpay.payment.communication.json.JsonObject;
 import com.heidelpay.payment.paymenttypes.PaymentType;
 
 public class Basket implements PaymentType {
@@ -97,6 +98,11 @@ public class Basket implements PaymentType {
 	@Override
 	public String getId() {
 		return id;
+	}
+
+	@Override
+	public PaymentType map(PaymentType paymentType, JsonObject jsonObject) {
+		return null;
 	}
 
 	public Basket setId(String id) {

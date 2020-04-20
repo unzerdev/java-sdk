@@ -20,6 +20,7 @@ package com.heidelpay.payment;
  * #L%
  */
 
+import com.heidelpay.payment.communication.json.JsonObject;
 import com.heidelpay.payment.paymenttypes.PaymentType;
 import java.math.BigDecimal;
 import java.net.URL;
@@ -110,6 +111,11 @@ public class Linkpay implements PaymentType {
 	 */
 	public String getId() {
 		return id;
+	}
+
+	@Override
+	public PaymentType map(PaymentType paymentType, JsonObject jsonObject) {
+		return null;
 	}
 
 	/**

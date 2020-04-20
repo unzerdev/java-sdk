@@ -27,6 +27,8 @@ import java.util.Currency;
 import com.heidelpay.payment.Charge;
 import com.heidelpay.payment.Customer;
 import com.heidelpay.payment.communication.HttpCommunicationException;
+import com.heidelpay.payment.communication.json.JsonIdObject;
+import com.heidelpay.payment.communication.json.JsonObject;
 
 /**
  * Prepayment business object
@@ -41,8 +43,15 @@ public class Prepayment extends AbstractPaymentType implements PaymentType {
 		return "types/prepayment";
 	}
 
+	@Override
+	public PaymentType map(PaymentType prepayment, JsonObject jsonId) {
+		((Prepayment) prepayment).setId(jsonId.getId());
+		((Prepayment) prepayment).setRecurring(((JsonIdObject) jsonId).getRecurring());
+		return prepayment;
+	}
+
 	public Charge charge(BigDecimal amount, Currency currency, URL returnUrl) throws HttpCommunicationException {
-		return charge(amount, currency, returnUrl, (Customer)null);
+		return charge(amount, currency, returnUrl, null);
 	}
 	public Charge charge(BigDecimal amount, Currency currency, URL returnUrl, Customer customer) throws HttpCommunicationException {
 		return getHeidelpay().charge(amount, currency, this, returnUrl, customer);
