@@ -99,21 +99,21 @@ public class Card extends AbstractPaymentType implements PaymentType {
 		((Card) card).setBrand(((JsonCard) jsonCard).getBrand());
 		((Card) card).setMethod(((JsonCard) jsonCard).getMethod());
 		((Card) card).setCardHolder(((JsonCard) jsonCard).getCardHolder());
-		CardDetails cardDetails = mapCardDetails(((JsonCard) jsonCard).getCardDetails());
-		((Card) card).setCardDetails(cardDetails);
+		CardDetails tempCardDetails = mapCardDetails(((JsonCard) jsonCard).getCardDetails());
+		((Card) card).setCardDetails(tempCardDetails);
 		return card;
 	}
 
 	private CardDetails mapCardDetails(JsonCardDetails jsonCardDetails) {
-		CardDetails cardDetails = new CardDetails();
-		cardDetails.setAccount(jsonCardDetails.getAccount());
-		cardDetails.setCardType(jsonCardDetails.getCardType());
-		cardDetails.setCountryIsoA2(jsonCardDetails.getCountryIsoA2());
-		cardDetails.setCountryName(jsonCardDetails.getCountryName());
-		cardDetails.setIssuerName(jsonCardDetails.getIssuerName());
-		cardDetails.setIssuerPhoneNumber(jsonCardDetails.getIssuerPhoneNumber());
-		cardDetails.setIssuerUrl(jsonCardDetails.getIssuerUrl());
-		return cardDetails;
+		CardDetails tempCardDetails = new CardDetails();
+		tempCardDetails.setAccount(jsonCardDetails.getAccount());
+		tempCardDetails.setCardType(jsonCardDetails.getCardType());
+		tempCardDetails.setCountryIsoA2(jsonCardDetails.getCountryIsoA2());
+		tempCardDetails.setCountryName(jsonCardDetails.getCountryName());
+		tempCardDetails.setIssuerName(jsonCardDetails.getIssuerName());
+		tempCardDetails.setIssuerPhoneNumber(jsonCardDetails.getIssuerPhoneNumber());
+		tempCardDetails.setIssuerUrl(jsonCardDetails.getIssuerUrl());
+		return tempCardDetails;
 	}
 
 	public String getBrand() {
