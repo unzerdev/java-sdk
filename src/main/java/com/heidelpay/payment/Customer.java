@@ -20,6 +20,9 @@ package com.heidelpay.payment;
  * #L%
  */
 
+import com.heidelpay.payment.communication.json.JsonObject;
+import com.heidelpay.payment.paymenttypes.PaymentType;
+
 import java.util.Date;
 
 /**
@@ -141,6 +144,11 @@ public class Customer extends AbstractPayment {
 	@Override
 	public String getTypeUrl() {
 		return "customers";
+	}
+
+	@Override
+	public PaymentType map(PaymentType paymentType, JsonObject jsonObject) {
+		return null;
 	}
 
 	public Address getShippingAddress() {

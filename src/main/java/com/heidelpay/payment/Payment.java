@@ -27,6 +27,7 @@ import java.util.Currency;
 import java.util.List;
 
 import com.heidelpay.payment.communication.HttpCommunicationException;
+import com.heidelpay.payment.communication.json.JsonObject;
 import com.heidelpay.payment.paymenttypes.PaymentType;
 
 /**
@@ -235,6 +236,11 @@ public class Payment extends AbstractPayment {
 	@Override
 	public String getTypeUrl() {
 		return "payments";
+	}
+
+	@Override
+	public PaymentType map(PaymentType paymentType, JsonObject jsonObject) {
+		return null;
 	}
 
 	public State getPaymentState() {

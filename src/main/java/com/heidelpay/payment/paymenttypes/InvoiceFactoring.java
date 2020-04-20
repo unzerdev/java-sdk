@@ -28,6 +28,8 @@ import com.heidelpay.payment.Basket;
 import com.heidelpay.payment.Charge;
 import com.heidelpay.payment.Customer;
 import com.heidelpay.payment.communication.HttpCommunicationException;
+import com.heidelpay.payment.communication.json.JsonIdObject;
+import com.heidelpay.payment.communication.json.JsonObject;
 
 /**
  * Invoice guaranteed is an Invoice payment with guarantee for the Merchant
@@ -39,6 +41,13 @@ public class InvoiceFactoring extends AbstractPaymentType implements PaymentType
 	@Override
 	public String getTypeUrl() {
 		return "types/invoice-factoring";
+	}
+
+	@Override
+	public PaymentType map(PaymentType invoice, JsonObject jsonId) {
+		((InvoiceFactoring) invoice).setId(jsonId.getId());
+		((InvoiceFactoring) invoice).setRecurring(((JsonIdObject) jsonId).getRecurring());
+		return invoice;
 	}
 
 	public Charge charge(BigDecimal amount, Currency currency, URL returnUrl, Customer customer, Basket basket) throws HttpCommunicationException {

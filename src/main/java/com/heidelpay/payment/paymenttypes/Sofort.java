@@ -27,12 +27,21 @@ import java.util.Currency;
 import com.heidelpay.payment.Charge;
 import com.heidelpay.payment.Customer;
 import com.heidelpay.payment.communication.HttpCommunicationException;
+import com.heidelpay.payment.communication.json.JsonIdObject;
+import com.heidelpay.payment.communication.json.JsonObject;
 
 public class Sofort extends AbstractPaymentType implements PaymentType {
 
 	@Override
 	public String getTypeUrl() {
 		return "types/sofort";
+	}
+
+	@Override
+	public PaymentType map(PaymentType sofort, JsonObject jsonId) {
+		((Sofort) sofort).setId(jsonId.getId());
+		((Sofort) sofort).setRecurring(((JsonIdObject) jsonId).getRecurring());
+		return sofort;
 	}
 
 	public Charge charge(BigDecimal amount, Currency currency, URL returnUrl) throws HttpCommunicationException {

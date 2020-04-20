@@ -24,6 +24,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.TreeMap;
 
+import com.heidelpay.payment.communication.json.JsonObject;
 import com.heidelpay.payment.paymenttypes.PaymentType;
 
 public class Metadata implements PaymentType {
@@ -52,6 +53,12 @@ public class Metadata implements PaymentType {
 	public String getId() {
 		return id;
 	}
+
+	@Override
+	public PaymentType map(PaymentType paymentType, JsonObject jsonObject) {
+		return null;
+	}
+
 	public void setId(String id) {
 		this.id = id;
 	}

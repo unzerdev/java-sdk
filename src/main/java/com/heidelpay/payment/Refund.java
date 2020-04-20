@@ -20,10 +20,18 @@ package com.heidelpay.payment;
  * #L%
  */
 
+import com.heidelpay.payment.communication.json.JsonObject;
+import com.heidelpay.payment.paymenttypes.PaymentType;
+
 public class Refund extends AbstractPayment {
 	@Override
 	public String getTypeUrl() {
 		return "";
+	}
+
+	@Override
+	public PaymentType map(PaymentType paymentType, JsonObject jsonObject) {
+		return null;
 	}
 
 }

@@ -20,6 +20,7 @@ package com.heidelpay.payment;
  * #L%
  */
 
+import com.heidelpay.payment.communication.json.JsonObject;
 import com.heidelpay.payment.paymenttypes.PaymentType;
 import java.net.URL;
 
@@ -56,6 +57,12 @@ public class Recurring extends AbstractPayment implements PaymentType {
 	public String getTypeUrl() {
 		return "types/<typeId>/recurring";
 	}
+
+	@Override
+	public PaymentType map(PaymentType paymentType, JsonObject jsonObject) {
+		return null;
+	}
+
 	public Status getStatus() {
 		return status;
 	}

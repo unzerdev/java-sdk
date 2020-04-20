@@ -28,6 +28,8 @@ import com.heidelpay.payment.Authorization;
 import com.heidelpay.payment.Charge;
 import com.heidelpay.payment.Customer;
 import com.heidelpay.payment.communication.HttpCommunicationException;
+import com.heidelpay.payment.communication.json.JsonIdObject;
+import com.heidelpay.payment.communication.json.JsonObject;
 
 /**
  * Paypal business object
@@ -39,6 +41,13 @@ public class Paypal extends AbstractPaymentType implements PaymentType {
 	@Override
 	public String getTypeUrl() {
 		return "types/paypal";
+	}
+
+	@Override
+	public PaymentType map(PaymentType paypal, JsonObject jsonId) {
+		((Paypal) paypal).setId(jsonId.getId());
+		((Paypal) paypal).setRecurring(((JsonIdObject) jsonId).getRecurring());
+		return paypal;
 	}
 
 	public Authorization authorize(BigDecimal amount, Currency currency, URL returnUrl) throws HttpCommunicationException {

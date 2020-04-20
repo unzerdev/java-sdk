@@ -32,13 +32,13 @@ import com.google.gson.annotations.SerializedName;
 import com.heidelpay.payment.Authorization;
 import com.heidelpay.payment.communication.HttpCommunicationException;
 import com.heidelpay.payment.communication.JsonDateConverter;
+import com.heidelpay.payment.communication.json.JsonHirePurchaseRatePlan;
 import com.heidelpay.payment.communication.json.JsonObject;
 import com.heidelpay.payment.paymenttypes.AbstractPaymentType;
 import com.heidelpay.payment.paymenttypes.PaymentType;
 
 public class HirePurchaseRatePlan extends AbstractPaymentType implements PaymentType, JsonObject {
 
-	
 	private String iban;
 	private String bic;
 	private String accountHolder;
@@ -138,6 +138,31 @@ public class HirePurchaseRatePlan extends AbstractPaymentType implements Payment
 	public String getTypeUrl() {
 		return "types/hire-purchase-direct-debit";
 	}
+
+	@Override
+	public PaymentType map(PaymentType paymentType, JsonObject jsonPaymentType) {
+		((HirePurchaseRatePlan) paymentType).setAccountHolder(((JsonHirePurchaseRatePlan) jsonPaymentType).getAccountHolder());
+		((HirePurchaseRatePlan) paymentType).setBic(((JsonHirePurchaseRatePlan) jsonPaymentType).getBic());
+		((HirePurchaseRatePlan) paymentType).setEffectiveInterestRate(((JsonHirePurchaseRatePlan) jsonPaymentType).getEffectiveInterestRate());
+		((HirePurchaseRatePlan) paymentType).setFeeFirstRate(((JsonHirePurchaseRatePlan) jsonPaymentType).getFeeFirstRate());
+		((HirePurchaseRatePlan) paymentType).setFeePerRate(((JsonHirePurchaseRatePlan) jsonPaymentType).getFeePerRate());
+		((HirePurchaseRatePlan) paymentType).setIban(((JsonHirePurchaseRatePlan) jsonPaymentType).getIban());
+		((HirePurchaseRatePlan) paymentType).setId(jsonPaymentType.getId());
+		((HirePurchaseRatePlan) paymentType).setInvoiceDate(((JsonHirePurchaseRatePlan) jsonPaymentType).getInvoiceDate());
+		((HirePurchaseRatePlan) paymentType).setInvoiceDueDate(((JsonHirePurchaseRatePlan) jsonPaymentType).getInvoiceDueDate());
+		((HirePurchaseRatePlan) paymentType).setLastRate(((JsonHirePurchaseRatePlan) jsonPaymentType).getLastRate());
+		((HirePurchaseRatePlan) paymentType).setMonthlyRate(((JsonHirePurchaseRatePlan) jsonPaymentType).getMonthlyRate());
+		((HirePurchaseRatePlan) paymentType).setNominalInterestRate(((JsonHirePurchaseRatePlan) jsonPaymentType).getNominalInterestRate());
+		((HirePurchaseRatePlan) paymentType).setNumberOfRates(((JsonHirePurchaseRatePlan) jsonPaymentType).getNumberOfRates());
+		((HirePurchaseRatePlan) paymentType).setOrderDate(((JsonHirePurchaseRatePlan) jsonPaymentType).getOrderDate());
+		((HirePurchaseRatePlan) paymentType).setRateList(((JsonHirePurchaseRatePlan) jsonPaymentType).getRateList());
+		((HirePurchaseRatePlan) paymentType).setRecurring(((JsonHirePurchaseRatePlan) jsonPaymentType).getRecurring());
+		((HirePurchaseRatePlan) paymentType).setTotalAmount(((JsonHirePurchaseRatePlan) jsonPaymentType).getTotalAmount());
+		((HirePurchaseRatePlan) paymentType).setTotalInterestAmount(((JsonHirePurchaseRatePlan) jsonPaymentType).getTotalInterestAmount());
+		((HirePurchaseRatePlan) paymentType).setTotalPurchaseAmount(((JsonHirePurchaseRatePlan) jsonPaymentType).getTotalPurchaseAmount());
+		return paymentType;
+	}
+
 	public String getIban() {
 		return iban;
 	}
