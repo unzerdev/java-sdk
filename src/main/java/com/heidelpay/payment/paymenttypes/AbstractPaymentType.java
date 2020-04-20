@@ -26,7 +26,7 @@ public abstract class AbstractPaymentType implements PaymentType {
 	private String id;
 	private Boolean recurring;
 	
-	private Heidelpay heidelpay;
+	private transient Heidelpay heidelpay;
 	
 	public AbstractPaymentType(Heidelpay heidelpay) {
 		super();

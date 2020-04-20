@@ -25,7 +25,6 @@ import static org.junit.Assert.assertNotNull;
 import java.math.BigDecimal;
 import java.net.MalformedURLException;
 
-import org.junit.Ignore;
 import org.junit.Test;
 
 import com.heidelpay.payment.Authorization;
@@ -109,7 +108,7 @@ public class CancelAfterAuthorizationTest extends AbstractPaymentTest {
 		assertEquals(2, authorization.getPayment().getAuthorization().getCancelList().size());
 	}
 
-	@Ignore("Currently PAPI doens't return paymentReference in Reversal response")
+	@Test
 	public void cancelWithPaymentReference() throws HttpCommunicationException, MalformedURLException {
 		Authorization authorize = getHeidelpay().authorize(getAuthorization(createPaymentTypeCard().getId(), false));
 		Cancel cancelReq = new Cancel();
