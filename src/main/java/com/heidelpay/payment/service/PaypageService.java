@@ -21,12 +21,10 @@ package com.heidelpay.payment.service;
  */
 
 import com.heidelpay.payment.Heidelpay;
-import com.heidelpay.payment.PaymentException;
 import com.heidelpay.payment.Paypage;
 import com.heidelpay.payment.communication.HeidelpayRestCommunication;
 import com.heidelpay.payment.communication.HttpCommunicationException;
 import com.heidelpay.payment.communication.JsonParser;
-import com.heidelpay.payment.communication.impl.RestCommunication;
 import com.heidelpay.payment.communication.json.JsonPaypage;
 import com.heidelpay.payment.communication.mapper.JsonToBusinessClassMapper;
 
@@ -37,16 +35,6 @@ public class PaypageService {
 	private JsonToBusinessClassMapper jsonToBusinessClassMapper = new JsonToBusinessClassMapper();
 	private Heidelpay heidelpay;
 
-	/**
-	 * Creates a PaymentService with the @deprecated {@code RestCommunication}
-	 * implementation.
-	 * 
-	 * @param heidelpay
-	 */
-	public PaypageService(Heidelpay heidelpay) {
-		this(heidelpay, new RestCommunication());
-	}
-	
 	/**
 	 * Creates the {@code PaymentService} with the given {@code Heidelpay} facade,
 	 * bound to the given {@code HeidelpayRestCommunication} implementation used for
@@ -62,7 +50,7 @@ public class PaypageService {
 		this.restCommunication = restCommunication;
 	}
 
-	public Paypage initialize(Paypage paypage) throws PaymentException, HttpCommunicationException {
+	public Paypage initialize(Paypage paypage) throws HttpCommunicationException {
 		return initialize(paypage, urlUtil.getRestUrl(paypage));
 	}
 	

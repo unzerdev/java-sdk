@@ -96,7 +96,7 @@ public class Heidelpay {
 	 * 
 	 * @param customer used customer for creation
 	 * @return Customer with id
-	 * @throws HttpCommunicationException
+	 * @throws HttpCommunicationException in case communication to Heidelpay didn't work
 	 */
 	public Customer createCustomerIfPresent(Customer customer) throws HttpCommunicationException {
 		if (customer == null)
@@ -108,9 +108,9 @@ public class Heidelpay {
 	 * Create a customer. This is only possible for new customers. If the customer
 	 * is already on the system (has an id) this method will throw an Exception.
 	 * 
-	 * @param customer
+	 * @param customer Create customer
 	 * @return Customer with Id
-	 * @throws HttpCommunicationException
+	 * @throws HttpCommunicationException in case communication to Heidelpay didn't work
 	 */
 	public Customer createCustomer(Customer customer) throws HttpCommunicationException {
 		if (customer == null)
@@ -125,10 +125,10 @@ public class Heidelpay {
 	 * Update a customers data. All parameters that are null are ignored. Only the
 	 * non null values are updated.
 	 * 
-	 * @param id
-	 * @param customer
-	 * @return Customer
-	 * @throws HttpCommunicationException
+	 * @param id Customer id to be updated
+	 * @param customer Object ti be used for the update
+	 * @return Customer updated customer
+	 * @throws HttpCommunicationException in case communication to Heidelpay didn't work
 	 */
 	public Customer updateCustomer(String id, Customer customer) throws HttpCommunicationException {
 		return paymentService.updateCustomer(id, customer);
@@ -137,44 +137,41 @@ public class Heidelpay {
 	/**
 	 * Delete a customer at Heidelpay
 	 * 
-	 * @param customerId
-	 * @throws HttpCommunicationException
+	 * @param customerId Customer id to be deleted
+	 * @throws HttpCommunicationException in case communication to Heidelpay didn't work
 	 */
 	public void deleteCustomer(String customerId) throws HttpCommunicationException {
 		paymentService.deleteCustomer(customerId);
 	}
-
 	
-	public Metadata createMetadata(Metadata metadata) throws PaymentException, HttpCommunicationException {
+	public Metadata createMetadata(Metadata metadata) throws HttpCommunicationException {
 		return paymentService.createMetadata(metadata);
 	}
 	
-	public Metadata fetchMetadata(String id) throws PaymentException, HttpCommunicationException {
+	public Metadata fetchMetadata(String id) throws HttpCommunicationException {
 		return paymentService.fetchMetadata(id);
 	}
 
-	public Basket createBasket(Basket basket) throws PaymentException, HttpCommunicationException {
+	public Basket createBasket(Basket basket) throws HttpCommunicationException {
 		return paymentService.createBasket(basket);
 	}
 
-	public Basket fetchBasket(String id) throws PaymentException, HttpCommunicationException {
+	public Basket fetchBasket(String id) throws HttpCommunicationException {
 		return paymentService.fetchBasket(id);
 	}
 
-	public Basket updateBasket(Basket basket, String id) throws PaymentException, HttpCommunicationException {
+	public Basket updateBasket(Basket basket, String id) throws HttpCommunicationException {
 		return paymentService.updateBasket(id, basket);
 	}
-
-
-
 
 	/**
 	 * Create a new PaymentType at Heidelpay. This can be any Object which
 	 * implements the Interface PaymentType
-	 * 
-	 * @param paymentType
+	 *
+	 * @param <T> type of PaymentType object
+	 * @param paymentType object used for creating a payment type
 	 * @return PaymentType Object with an id
-	 * @throws HttpCommunicationException
+	 * @throws HttpCommunicationException in case communication to Heidelpay didn't work
 	 */
 	public <T extends PaymentType> T createPaymentType(T paymentType) throws HttpCommunicationException {
 		if (paymentType != null && paymentType.getId() == null) {
@@ -186,7 +183,7 @@ public class Heidelpay {
 		}
 	}
 
-	public <T extends PaymentType> T updatePaymentType(T paymentType) throws PaymentException, HttpCommunicationException {
+	public <T extends PaymentType> T updatePaymentType(T paymentType) throws HttpCommunicationException {
 		if (paymentType != null && paymentType.getId() == null) {
 			return paymentService.createPaymentType(paymentType);
 		} else if (paymentType != null && paymentType.getId() != null) {
@@ -200,12 +197,12 @@ public class Heidelpay {
 	 * Authorize call with customerId and typeId. This is used if the type is
 	 * created using the Javascript SDK or the Mobile SDK
 	 * 
-	 * @param amount
-	 * @param currency
-	 * @param typeId
-	 * @param customerId
+	 * @param amount Amount usd for the authorization
+	 * @param currency Currency used for the authorization
+	 * @param typeId Payment type id used for the authorization
+	 * @param customerId Customer id used for the authorization
 	 * @return Authorization with paymentId and authorize id
-	 * @throws HttpCommunicationException
+	 * @throws HttpCommunicationException in case communication to Heidelpay didn't work
 	 */
 	public Authorization authorize(BigDecimal amount, Currency currency, String typeId, String customerId)
 			throws HttpCommunicationException {
@@ -216,11 +213,11 @@ public class Heidelpay {
 	 * Authorize call. This is used if the type is created using the Javascript SDK
 	 * or the Mobile SDK
 	 * 
-	 * @param amount
-	 * @param currency
-	 * @param typeId
+	 * @param amount Amount usd for the authorization
+	 * @param currency Currency used for the authorization
+	 * @param typeId Payment type id used for the authorization
 	 * @return Authorization with paymentId and authorize id
-	 * @throws HttpCommunicationException
+	 * @throws HttpCommunicationException in case communication to Heidelpay didn't work
 	 */
 	public Authorization authorize(BigDecimal amount, Currency currency, String typeId)
 			throws HttpCommunicationException {
@@ -231,12 +228,12 @@ public class Heidelpay {
 	 * Authorize call for redirect payments with a returnUrl. This is used if the
 	 * type is created using the Javascript SDK or the Mobile SDK
 	 * 
-	 * @param amount
-	 * @param currency
-	 * @param typeId
-	 * @param returnUrl
+	 * @param amount Amount usd for the authorization
+	 * @param currency Currency used for the authorization
+	 * @param typeId Payment type id used for the authorization
+	 * @param returnUrl ReturnURL where after the payment was finished
 	 * @return Authorization with paymentId and authorize id
-	 * @throws HttpCommunicationException
+	 * @throws HttpCommunicationException in case communication to Heidelpay didn't work
 	 */
 	public Authorization authorize(BigDecimal amount, Currency currency, String typeId, URL returnUrl)
 			throws HttpCommunicationException {
@@ -246,14 +243,14 @@ public class Heidelpay {
 	/**
 	 * Authorize call for redirect payments with a returnUrl. This is used if the
 	 * type is created using the Javascript SDK or the Mobile SDK
-	 * 
-	 * @param amount
-	 * @param currency
-	 * @param typeId
-	 * @param returnUrl
-	 * @param card3ds
+	 *
+	 * @param amount Amount usd for the authorization
+	 * @param currency Currency used for the authorization
+	 * @param typeId Payment type id used for the authorization
+	 * @param returnUrl ReturnURL where after the payment was finished
+	 * @param card3ds Flag to specify whether to force 3ds or not
 	 * @return Authorization with paymentId and authorize id
-	 * @throws HttpCommunicationException
+	 * @throws HttpCommunicationException in case communication to Heidelpay didn't work
 	 */
 	public Authorization authorize(BigDecimal amount, Currency currency, String typeId, URL returnUrl, Boolean card3ds)
 			throws HttpCommunicationException {
@@ -263,14 +260,14 @@ public class Heidelpay {
 	 * Authorize call for redirect payments with returnUrl and a customer. This is
 	 * used if the type is created using the Javascript SDK or the Mobile SDK. The
 	 * customer can already exist. If the customer does not exist it will be created
-	 * 
-	 * @param amount
-	 * @param currency
-	 * @param typeId
-	 * @param returnUrl
-	 * @param customer
+	 *
+	 * @param amount Amount usd for the authorization
+	 * @param currency Currency used for the authorization
+	 * @param typeId Payment type id used for the authorization
+	 * @param returnUrl ReturnURL where after the payment was finished
+	 * @param customer Customer used for the authorization
 	 * @return Authorization with paymentId and authorize id
-	 * @throws HttpCommunicationException
+	 * @throws HttpCommunicationException in case communication to Heidelpay didn't work
 	 */
 	public Authorization authorize(BigDecimal amount, Currency currency, String typeId, URL returnUrl,
 			Customer customer) throws HttpCommunicationException {
@@ -279,12 +276,12 @@ public class Heidelpay {
 
 	/**
 	 * Authorize call. Creates a new paymentType
-	 * 
-	 * @param amount
-	 * @param currency
-	 * @param paymentType
+	 *
+	 * @param amount Amount usd for the authorization
+	 * @param currency Currency used for the authorization
+	 * @param paymentType Payment type used for the authorization
 	 * @return Authorization with paymentId and authorize id
-	 * @throws HttpCommunicationException
+	 * @throws HttpCommunicationException in case communication to Heidelpay didn't work
 	 */
 	public Authorization authorize(BigDecimal amount, Currency currency, PaymentType paymentType)
 			throws HttpCommunicationException {
@@ -294,13 +291,14 @@ public class Heidelpay {
 	/**
 	 * Authorize call for redirect payments with returnUrl. Creates a new
 	 * paymentType
-	 * 
-	 * @param amount
-	 * @param currency
-	 * @param paymentType
-	 * @param returnUrl
+	 *
+	 *
+	 * @param amount Amount usd for the authorization
+	 * @param currency Currency used for the authorization
+	 * @param paymentType Payment type used for the authorization
+	 * @param returnUrl ReturnURL where after the payment was finished
 	 * @return Authorization with paymentId and authorize id
-	 * @throws HttpCommunicationException
+	 * @throws HttpCommunicationException in case communication to Heidelpay didn't work
 	 */
 	public Authorization authorize(BigDecimal amount, Currency currency, PaymentType paymentType, URL returnUrl)
 			throws HttpCommunicationException {
@@ -310,13 +308,15 @@ public class Heidelpay {
 	/**
 	 * Authorize call for redirect payments with returnUrl. Creates a new
 	 * paymentType
-	 * 
-	 * @param amount
-	 * @param currency
-	 * @param paymentType
-	 * @param returnUrl
+	 *
+	 *
+	 * @param amount Amount usd for the authorization
+	 * @param currency Currency used for the authorization
+	 * @param paymentType Payment type used for the authorization
+	 * @param returnUrl ReturnURL where after the payment was finished
+	 * @param card3ds Flag to specify whether to force 3ds or not
 	 * @return Authorization with paymentId and authorize id
-	 * @throws HttpCommunicationException
+	 * @throws HttpCommunicationException in case communication to Heidelpay didn't work
 	 */
 	public Authorization authorize(BigDecimal amount, Currency currency, PaymentType paymentType, URL returnUrl, Boolean card3ds)
 			throws HttpCommunicationException {
@@ -327,14 +327,15 @@ public class Heidelpay {
 	 * Authorize call for redirect payments with returnUrl and a customer. Creates a
 	 * new paymentType The customer can already exist. If the customer does not
 	 * exist it will be created
-	 * 
-	 * @param amount
-	 * @param currency
-	 * @param paymentType
-	 * @param returnUrl
-	 * @param customer
+	 *
+	 *
+	 * @param amount Amount used for the authorization
+	 * @param currency Currency used for the authorization
+	 * @param paymentType Payment type used for the authorization
+	 * @param returnUrl ReturnURL where after the payment was finished
+	 * @param customer used for the authorization
 	 * @return Authorization with paymentId and authorize id
-	 * @throws HttpCommunicationException
+	 * @throws HttpCommunicationException in case communication to Heidelpay didn't work
 	 */
 	public Authorization authorize(BigDecimal amount, Currency currency, PaymentType paymentType, URL returnUrl,
 			Customer customer) throws HttpCommunicationException {
@@ -346,15 +347,15 @@ public class Heidelpay {
 	 * Authorize call for redirect payments with returnUrl and a customer. Creates a
 	 * new paymentType The customer can already exist. If the customer does not
 	 * exist it will be created
-	 * 
-	 * @param amount
-	 * @param currency
-	 * @param paymentType
-	 * @param returnUrl
-	 * @param customer
-	 * @param card3ds
+	 *
+	 * @param amount Amount usd for the authorization
+	 * @param currency Currency used for the authorization
+	 * @param paymentType Payment type used for the authorization
+	 * @param returnUrl ReturnURL where after the payment was finished
+	 * @param customer used for the authorization
+	 * @param card3ds Flag to specify whether to force 3ds or not
 	 * @return Authorization with paymentId and authorize id
-	 * @throws HttpCommunicationException
+	 * @throws HttpCommunicationException in case communication to Heidelpay didn't work
 	 */
 	public Authorization authorize(BigDecimal amount, Currency currency, PaymentType paymentType, URL returnUrl,
 			Customer customer, Boolean card3ds) throws HttpCommunicationException {
@@ -365,14 +366,14 @@ public class Heidelpay {
 	/**
 	 * Authorize call for redirect payments with returnUrl and a customerId. The
 	 * customer must exist.
-	 * 
-	 * @param amount
-	 * @param currency
-	 * @param typeId
-	 * @param returnUrl
-	 * @param customerId
+	 *
+	 * @param amount Amount usd for the authorization
+	 * @param currency Currency used for the authorization
+	 * @param typeId Payment type id used for the authorization
+	 * @param returnUrl ReturnURL where after the payment was finished
+	 * @param customerId used for the authorization
 	 * @return Authorization with paymentId and authorize id
-	 * @throws HttpCommunicationException
+	 * @throws HttpCommunicationException in case communication to Heidelpay didn't work
 	 */
 	public Authorization authorize(BigDecimal amount, Currency currency, String typeId, URL returnUrl,
 			String customerId) throws HttpCommunicationException {
@@ -382,15 +383,15 @@ public class Heidelpay {
 	/**
 	 * Authorize call for redirect payments with returnUrl and a customerId. The
 	 * customer must exist.
-	 * 
-	 * @param amount
-	 * @param currency
-	 * @param typeId
-	 * @param returnUrl
-	 * @param customerId
-	 * @param card3ds
+	 *
+	 * @param amount Amount usd for the authorization
+	 * @param currency Currency used for the authorization
+	 * @param typeId Payment type id used for the authorization
+	 * @param returnUrl ReturnURL where after the payment was finished
+	 * @param customerId used for the authorization
+	 * @param card3ds Flag to specify whether to force 3ds or not
 	 * @return Authorization with paymentId and authorize id
-	 * @throws HttpCommunicationException
+	 * @throws HttpCommunicationException in case communication to Heidelpay didn't work
 	 */
 	public Authorization authorize(BigDecimal amount, Currency currency, String typeId, URL returnUrl,
 			String customerId, Boolean card3ds) throws HttpCommunicationException {
@@ -401,9 +402,9 @@ public class Heidelpay {
 	 * Authorize call with an Authorization object. The Authorization object must
 	 * have at least an amount, a currency, a typeId
 	 * 
-	 * @param authorization
+	 * @param authorization Authorization object
 	 * @return Authorization with paymentId and authorize id
-	 * @throws HttpCommunicationException
+	 * @throws HttpCommunicationException in case communication to Heidelpay didn't work
 	 */
 	public Authorization authorize(Authorization authorization) throws HttpCommunicationException {
 		return paymentService.authorize(authorization);
@@ -411,12 +412,12 @@ public class Heidelpay {
 
 	/**
 	 * Charge call with a typeId that was created using the Javascript or Mobile SDK
-	 * 
-	 * @param amount
-	 * @param currency
-	 * @param typeId
+	 *
+	 * @param amount Amount usd for the charge
+	 * @param currency Currency used for the charge
+	 * @param typeId Payment type id used for the charge
 	 * @return Charge with paymentId and authorize id
-	 * @throws HttpCommunicationException
+	 * @throws HttpCommunicationException in case communication to Heidelpay didn't work
 	 */
 	public Charge charge(BigDecimal amount, Currency currency, String typeId) throws HttpCommunicationException {
 		return charge(amount, currency, typeId, (URL) null);
@@ -425,13 +426,13 @@ public class Heidelpay {
 	/**
 	 * Charge call with a typeId that was created using the Javascript or Mobile SDK
 	 * and a customerId
-	 * 
-	 * @param amount
-	 * @param currency
-	 * @param typeId
-	 * @param customerId
+	 *
+	 * @param amount Amount usd for the charge
+	 * @param currency Currency used for the charge
+	 * @param typeId Payment type id used for the charge
+	 * @param customerId used for the charge
 	 * @return Charge with paymentId and authorize id
-	 * @throws HttpCommunicationException
+	 * @throws HttpCommunicationException in case communication to Heidelpay didn't work
 	 */
 	public Charge charge(BigDecimal amount, Currency currency, String typeId, String customerId)
 			throws HttpCommunicationException {
@@ -440,12 +441,12 @@ public class Heidelpay {
 
 	/**
 	 * Charge call. The PaymentType will be created within this method
-	 * 
-	 * @param amount
-	 * @param currency
-	 * @param paymentType
+	 *
+	 * @param amount Amount usd for the charge
+	 * @param currency Currency used for the charge
+	 * @param paymentType Payment type used for the charge
 	 * @return Charge with paymentId and authorize id
-	 * @throws HttpCommunicationException
+	 * @throws HttpCommunicationException in case communication to Heidelpay didn't work
 	 */
 	public Charge charge(BigDecimal amount, Currency currency, PaymentType paymentType)
 			throws HttpCommunicationException {
@@ -455,13 +456,13 @@ public class Heidelpay {
 	/**
 	 * Charge call with a typeId that was created using the Javascript or Mobile SDK
 	 * for redirect payments
-	 * 
-	 * @param amount
-	 * @param currency
-	 * @param typeId
-	 * @param returnUrl
+	 *
+	 * @param amount Amount usd for the charge
+	 * @param currency Currency used for the charge
+	 * @param typeId Payment type id used for the charge
+	 * @param returnUrl ReturnURL where after the payment was finished
 	 * @return Charge with paymentId and authorize id
-	 * @throws HttpCommunicationException
+	 * @throws HttpCommunicationException in case communication to Heidelpay didn't work
 	 */
 	public Charge charge(BigDecimal amount, Currency currency, String typeId, URL returnUrl)
 			throws HttpCommunicationException {
@@ -471,13 +472,14 @@ public class Heidelpay {
 	/**
 	 * Charge call with a typeId that was created using the Javascript or Mobile SDK
 	 * for redirect payments
-	 * 
-	 * @param amount
-	 * @param currency
-	 * @param typeId
-	 * @param returnUrl
+	 *
+	 * @param amount Amount usd for the charge
+	 * @param currency Currency used for the charge
+	 * @param typeId Payment type id used for the charge
+	 * @param returnUrl ReturnURL where after the payment was finished
+	 * @param card3ds Flag to specify whether to force 3ds or not
 	 * @return Charge with paymentId and authorize id
-	 * @throws HttpCommunicationException
+	 * @throws HttpCommunicationException in case communication to Heidelpay didn't work
 	 */
 	public Charge charge(BigDecimal amount, Currency currency, String typeId, URL returnUrl, Boolean card3ds)
 			throws HttpCommunicationException {
@@ -487,14 +489,14 @@ public class Heidelpay {
 	/**
 	 * Charge call with a typeId that was created using the Javascript or Mobile SDK
 	 * for redirect payments
-	 * 
-	 * @param amount
-	 * @param currency
-	 * @param typeId
-	 * @param returnUrl
-	 * @param customerId
+	 *
+	 * @param amount Amount usd for the charge
+	 * @param currency Currency used for the charge
+	 * @param typeId Payment type id used for the charge
+	 * @param returnUrl ReturnURL where after the payment was finished
+	 * @param customerId used for the charge
 	 * @return Charge with paymentId and authorize id
-	 * @throws HttpCommunicationException
+	 * @throws HttpCommunicationException in case communication to Heidelpay didn't work
 	 */
 	public Charge charge(BigDecimal amount, Currency currency, String typeId, URL returnUrl, String customerId)
 			throws HttpCommunicationException {
@@ -504,15 +506,16 @@ public class Heidelpay {
 	/**
 	 * Charge call with a typeId that was created using the Javascript or Mobile SDK
 	 * for redirect payments
-	 * 
-	 * @param amount
-	 * @param currency
-	 * @param typeId
-	 * @param returnUrl
-	 * @param customerId
-	 * @param basketId
+	 *
+	 * @param amount Amount usd for the charge
+	 * @param currency Currency used for the charge
+	 * @param typeId Payment type id used for the charge
+	 * @param returnUrl ReturnURL where after the payment was finished
+	 * @param customerId used for the charge
+	 * @param basketId used for the charge
+	 * @param card3ds Flag to specify whether to force 3ds or not
 	 * @return Charge with paymentId and authorize id
-	 * @throws HttpCommunicationException
+	 * @throws HttpCommunicationException in case communication to Heidelpay didn't work
 	 */
 	public Charge charge(BigDecimal amount, Currency currency, String typeId, URL returnUrl, String customerId, String basketId, Boolean card3ds)
 			throws HttpCommunicationException {
@@ -522,14 +525,15 @@ public class Heidelpay {
 	/**
 	 * Charge call with a typeId that was created using the Javascript or Mobile SDK
 	 * for redirect payments
-	 * 
-	 * @param amount
-	 * @param currency
-	 * @param typeId
-	 * @param returnUrl
-	 * @param customerId
+	 *
+	 * @param amount Amount usd for the charge
+	 * @param currency Currency used for the charge
+	 * @param typeId Payment type id used for the charge
+	 * @param returnUrl ReturnURL where after the payment was finished
+	 * @param customerId used for the charge
+	 * @param card3ds Flag to specify whether to force 3ds or not
 	 * @return Charge with paymentId and authorize id
-	 * @throws HttpCommunicationException
+	 * @throws HttpCommunicationException in case communication to Heidelpay didn't work
 	 */
 	public Charge charge(BigDecimal amount, Currency currency, String typeId, URL returnUrl, String customerId, Boolean card3ds)
 			throws HttpCommunicationException {
@@ -539,13 +543,13 @@ public class Heidelpay {
 	/**
 	 * Charge call for redirect payments. The PaymentType will be created within
 	 * this method
-	 * 
-	 * @param amount
-	 * @param currency
-	 * @param paymentType
-	 * @param returnUrl
+	 *
+	 * @param amount Amount usd for the charge
+	 * @param currency Currency used for the charge
+	 * @param paymentType Payment type used for the charge
+	 * @param returnUrl ReturnURL where after the payment was finished
 	 * @return Charge with paymentId and authorize id
-	 * @throws HttpCommunicationException
+	 * @throws HttpCommunicationException in case communication to Heidelpay didn't work
 	 */
 	public Charge charge(BigDecimal amount, Currency currency, PaymentType paymentType, URL returnUrl)
 			throws HttpCommunicationException {
@@ -555,13 +559,14 @@ public class Heidelpay {
 	/**
 	 * Charge call for redirect payments. The PaymentType will be created within
 	 * this method
-	 * 
-	 * @param amount
-	 * @param currency
-	 * @param paymentType
-	 * @param returnUrl
+	 *
+	 * @param amount Amount usd for the charge
+	 * @param currency Currency used for the charge
+	 * @param paymentType Payment type used for the charge
+	 * @param returnUrl ReturnURL where after the payment was finished
+	 * @param card3ds Flag to specify whether to force 3ds or not
 	 * @return Charge with paymentId and authorize id
-	 * @throws HttpCommunicationException
+	 * @throws HttpCommunicationException in case communication to Heidelpay didn't work
 	 */
 	public Charge charge(BigDecimal amount, Currency currency, PaymentType paymentType, URL returnUrl, Boolean card3ds)
 			throws HttpCommunicationException {
@@ -571,14 +576,14 @@ public class Heidelpay {
 	/**
 	 * Charge call for redirect payments. The PaymentType will be created within
 	 * this method
-	 * 
-	 * @param amount
-	 * @param currency
-	 * @param paymentType
-	 * @param returnUrl
-	 * @param customer
+	 *
+	 * @param amount Amount usd for the charge
+	 * @param currency Currency used for the charge
+	 * @param paymentType Payment type used for the charge
+	 * @param returnUrl ReturnURL where after the payment was finished
+	 * @param customer used for the charge
 	 * @return Charge with paymentId and authorize id
-	 * @throws HttpCommunicationException
+	 * @throws HttpCommunicationException in case communication to Heidelpay didn't work
 	 */
 	public Charge charge(BigDecimal amount, Currency currency, PaymentType paymentType, URL returnUrl,
 			Customer customer) throws HttpCommunicationException {
@@ -589,15 +594,15 @@ public class Heidelpay {
 	/**
 	 * Charge call for redirect payments. The PaymentType will be created within
 	 * this method
-	 * 
-	 * @param amount
-	 * @param currency
-	 * @param paymentType
-	 * @param returnUrl
-	 * @param customer
-	 * @param basket
+	 *
+	 * @param amount Amount usd for the charge
+	 * @param currency Currency used for the charge
+	 * @param paymentType Payment type used for the charge
+	 * @param returnUrl ReturnURL where after the payment was finished
+	 * @param customer used for the charge
+	 * @param basket used for the charge
 	 * @return Charge with paymentId and authorize id
-	 * @throws HttpCommunicationException
+	 * @throws HttpCommunicationException in case communication to Heidelpay didn't work
 	 */
 	public Charge charge(BigDecimal amount, Currency currency, PaymentType paymentType, URL returnUrl,
 			Customer customer, Basket basket) throws HttpCommunicationException {
@@ -613,14 +618,15 @@ public class Heidelpay {
 	/**
 	 * Charge call for redirect payments. The PaymentType will be created within
 	 * this method
-	 * 
-	 * @param amount
-	 * @param currency
-	 * @param paymentType
-	 * @param returnUrl
-	 * @param customer
+	 *
+	 * @param amount Amount usd for the charge
+	 * @param currency Currency used for the charge
+	 * @param paymentType Payment type used for the charge
+	 * @param returnUrl ReturnURL where after the payment was finished
+	 * @param customer used for the charge
+	 * @param card3ds Flag to specify whether to force 3ds or not
 	 * @return Charge with paymentId and authorize id
-	 * @throws HttpCommunicationException
+	 * @throws HttpCommunicationException in case communication to Heidelpay didn't work
 	 */
 	public Charge charge(BigDecimal amount, Currency currency, PaymentType paymentType, URL returnUrl,
 			Customer customer, Boolean card3ds) throws HttpCommunicationException {
@@ -632,9 +638,9 @@ public class Heidelpay {
 	 * Charge call with a Charge object. At least amount, currency and paymentTypeId
 	 * are mandatory
 	 * 
-	 * @param charge
+	 * @param charge Charge object
 	 * @return Charge with paymentId and authorize id
-	 * @throws HttpCommunicationException
+	 * @throws HttpCommunicationException in case communication to Heidelpay didn't work
 	 */
 	public Charge charge(Charge charge) throws HttpCommunicationException {
 		return paymentService.charge(charge);
@@ -642,12 +648,12 @@ public class Heidelpay {
 
 	/**
 	 * Pay out money to the customer. 
-	 * @param amount
-	 * @param currency
-	 * @param typeId
-	 * @param returnUrl
-	 * @return
-	 * @throws HttpCommunicationException 
+	 * @param amount Amount usd for the payout
+	 * @param currency Currency used for the payout
+	 * @param typeId Payment type id used for the payout
+	 * @param returnUrl ReturnURL where after the payment was finished
+	 * @return Payout object
+	 * @throws HttpCommunicationException in case communication to Heidelpay didn't work
 	 */
 	public Payout payout(BigDecimal amount, Currency currency, String typeId, URL returnUrl) throws HttpCommunicationException {
 		return payout(getPayout(amount, currency, typeId, returnUrl));
@@ -656,7 +662,6 @@ public class Heidelpay {
 	public Payout payout(Payout payout) throws HttpCommunicationException {
 		return paymentService.payout(payout);
 	}
-
 
 	private Payout getPayout(BigDecimal amount, Currency currency, String typeId, URL returnUrl) {
 		Payout payout = new Payout();
@@ -669,9 +674,9 @@ public class Heidelpay {
 	/**
 	 * Charge (Capture) the full amount that was authorized
 	 * 
-	 * @param paymentId
+	 * @param paymentId used for the charge of an authorization
 	 * @return Charge with id
-	 * @throws HttpCommunicationException
+	 * @throws HttpCommunicationException in case communication to Heidelpay didn't work
 	 */
 	public Charge chargeAuthorization(String paymentId) throws HttpCommunicationException {
 		return paymentService.chargeAuthorization(paymentId);
@@ -680,11 +685,11 @@ public class Heidelpay {
 	/**
 	 * Charge (Capture) partial amount of Authorization. As there is only one Authorization
 	 * for a Payment id you only need to provide a paymentId
-	 * 
-	 * @param paymentId
-	 * @param amount
+	 *
+	 * @param paymentId used for the charge of an authorization
+	 * @param amount used for the charge of an authorization
 	 * @return Charge with id
-	 * @throws HttpCommunicationException
+	 * @throws HttpCommunicationException in case communication to Heidelpay didn't work
 	 */
 	public Charge chargeAuthorization(String paymentId, BigDecimal amount) throws HttpCommunicationException {
 		return paymentService.chargeAuthorization(paymentId, amount);
@@ -693,11 +698,11 @@ public class Heidelpay {
 	/**
 	 * Charge (Capture) with amount and paymentReference
 	 *
-	 * @param paymentId
-	 * @param amount
-	 * @param paymentReference
+	 * @param paymentId used for the charge of an authorization
+	 * @param amount used for the charge of an authorization
+	 * @param paymentReference used for the charge of an authorization
 	 * @return Charge with id
-	 * @throws HttpCommunicationException
+	 * @throws HttpCommunicationException in case communication to Heidelpay didn't work
 	 */
 	public Charge chargeAuthorization(String paymentId, BigDecimal amount, String paymentReference) throws HttpCommunicationException {
 		return paymentService.chargeAuthorization(paymentId, amount, paymentReference);
@@ -706,10 +711,10 @@ public class Heidelpay {
 	/**
 	 * Cancel (Reverse) the full Authorization. As there is only one Authorization for a
 	 * Payment id you only need to provide a paymentId
-	 * 
-	 * @param paymentId
-	 * @return Cancel with id
-	 * @throws HttpCommunicationException
+	 *
+	 * @param paymentId used for the cancel of an authorization
+	 * @return Cancel object
+	 * @throws HttpCommunicationException in case communication to Heidelpay didn't work
 	 */
 	public Cancel cancelAuthorization(String paymentId) throws HttpCommunicationException {
 		return paymentService.cancelAuthorization(paymentId);
@@ -718,11 +723,11 @@ public class Heidelpay {
 	/**
 	 * Cancel (Reverse) partial amount of Authorization. As there is only one Authorization
 	 * for a Payment id you only need to provide a paymentId
-	 * 
-	 * @param paymentId
-	 * @param amount
+	 *
+	 * @param paymentId used for the cancel of an authorization
+	 * @param amount used for the cancel of an authorization
 	 * @return Cancel with id
-	 * @throws HttpCommunicationException
+	 * @throws HttpCommunicationException in case communication to Heidelpay didn't work
 	 */
 	public Cancel cancelAuthorization(String paymentId, BigDecimal amount) throws HttpCommunicationException {
 		return paymentService.cancelAuthorization(paymentId, amount);
@@ -731,9 +736,10 @@ public class Heidelpay {
 	/**
 	 * Cancel (Reverse) Authorize with Cancel object
 	 *
-	 * @param paymentId
+	 * @param paymentId used for the cancel of an authorization
+	 * @param cancel object used for the cancelation
 	 * @return Cancel with id
-	 * @throws HttpCommunicationException
+	 * @throws HttpCommunicationException in case communication to Heidelpay didn't work
 	 */
 	public Cancel cancelAuthorization(String paymentId, Cancel cancel) throws HttpCommunicationException {
 		return paymentService.cancelAuthorization(paymentId, cancel);
@@ -741,11 +747,11 @@ public class Heidelpay {
 
 	/**
 	 * Cancel (Refund) full Charge
-	 * 
-	 * @param paymentId
-	 * @param chargeId
+	 *
+	 * @param paymentId used for the cancel of a charge
+	 * @param chargeId used for the cancel of a charge
 	 * @return Cancel with id
-	 * @throws HttpCommunicationException
+	 * @throws HttpCommunicationException in case communication to Heidelpay didn't work
 	 */
 	public Cancel cancelCharge(String paymentId, String chargeId) throws HttpCommunicationException {
 		return paymentService.cancelCharge(paymentId, chargeId);
@@ -753,12 +759,12 @@ public class Heidelpay {
 
 	/**
 	 * Cancel (Refund) partial Charge
-	 * 
-	 * @param paymentId
-	 * @param chargeId
-	 * @param amount
+	 *
+	 * @param paymentId used for the cancel of a charge
+	 * @param chargeId used for the cancel of a charge
+	 * @param amount used for the cancel of a charge
 	 * @return Cancel with id
-	 * @throws HttpCommunicationException
+	 * @throws HttpCommunicationException in case communication to Heidelpay didn't work
 	 */
 	public Cancel cancelCharge(String paymentId, String chargeId, BigDecimal amount) throws HttpCommunicationException {
 		return paymentService.cancelCharge(paymentId, chargeId, amount);
@@ -767,11 +773,11 @@ public class Heidelpay {
 	/**
 	 * Cancel (Refund) charge with Cancel object
 	 *
-	 * @param paymentId
-	 * @param chargeId
-	 * @param cancel
-	 * @return
-	 * @throws HttpCommunicationException
+	 * @param paymentId used for the cancel of a charge
+	 * @param chargeId used for the cancel of a charge
+	 * @param cancel used for the cancel of a charge
+	 * @return Cancel with id
+	 * @throws HttpCommunicationException in case communication to Heidelpay didn't work
 	 */
 	public Cancel cancelCharge(String paymentId, String chargeId, Cancel cancel) throws HttpCommunicationException {
 		return paymentService.cancelCharge(paymentId, chargeId, cancel);
@@ -780,9 +786,9 @@ public class Heidelpay {
 	/**
 	 * Inform about a shipment of goods. From this time the insurance start.
 	 * 
-	 * @param paymentId
+	 * @param paymentId used for the shipment of a payment
 	 * @return Shipment with id
-	 * @throws HttpCommunicationException
+	 * @throws HttpCommunicationException in case communication to Heidelpay didn't work
 	 */
 	public Shipment shipment(String paymentId) throws HttpCommunicationException {
 		return paymentService.shipment(paymentId, null, null);
@@ -794,11 +800,11 @@ public class Heidelpay {
 
 	/**
 	 * Inform about a shipment of goods and provide invoiceId. From this time the insurance start.
-	 * 
-	 * @param paymentId
-	 * @param invoiceId
+	 *
+	 * @param paymentId used for the shipment of a payment
+	 * @param invoiceId used for the shipment of a payment
 	 * @return Shipment with id
-	 * @throws HttpCommunicationException
+	 * @throws HttpCommunicationException in case communication to Heidelpay didn't work
 	 */
 	public Shipment shipment(String paymentId, String invoiceId) throws HttpCommunicationException {
 		return paymentService.shipment(paymentId, invoiceId, null);
@@ -807,11 +813,11 @@ public class Heidelpay {
 	/**
 	 * Inform about a shipment of goods and provide invoiceId. From this time the insurance start.
 	 *
-	 * @param paymentId
-	 * @param invoiceId
-	 * @param orderId
+	 * @param paymentId used for the shipment of a payment
+	 * @param invoiceId used for the shipment of a payment
+	 * @param orderId used for the shipment of a payment
 	 * @return Shipment with id
-	 * @throws HttpCommunicationException
+	 * @throws HttpCommunicationException in case communication to Heidelpay didn't work
 	 */
 	public Shipment shipment(String paymentId, String invoiceId, String orderId) throws HttpCommunicationException {
 		return paymentService.shipment(paymentId, invoiceId, orderId);
@@ -820,9 +826,9 @@ public class Heidelpay {
 	/**
 	 * Load the whole Payment Object for the given paymentId
 	 * 
-	 * @param paymentId
+	 * @param paymentId used for fetching a payment
 	 * @return Payment object
-	 * @throws HttpCommunicationException
+	 * @throws HttpCommunicationException in case communication to Heidelpay didn't work
 	 */
 	public Payment fetchPayment(String paymentId) throws HttpCommunicationException {
 		return paymentService.fetchPayment(paymentId);
@@ -830,10 +836,10 @@ public class Heidelpay {
 
 	/**
 	 * Load the Payout Object
-	 * @param paymentId
-	 * @param payoutId
-	 * @return
-	 * @throws HttpCommunicationException 
+	 * @param paymentId used for fetching a payout
+	 * @param payoutId used for fetching a payout
+	 * @return Payout object
+	 * @throws HttpCommunicationException in case communication to Heidelpay didn't work
 	 */
 	public Payout fetchPayout(String paymentId, String payoutId) throws HttpCommunicationException {
 		return paymentService.fetchPayout(paymentId, payoutId);
@@ -843,9 +849,9 @@ public class Heidelpay {
 	 * Load the Authorization for the given paymentId. As there is only one
 	 * Authorization for a Payment the Authorization id is not needed.
 	 * 
-	 * @param paymentId
+	 * @param paymentId used for fetching an authorization
 	 * @return Authorization object
-	 * @throws HttpCommunicationException
+	 * @throws HttpCommunicationException in case communication to Heidelpay didn't work
 	 */
 	public Authorization fetchAuthorization(String paymentId) throws HttpCommunicationException {
 		return paymentService.fetchAuthorization(paymentId);
@@ -854,10 +860,10 @@ public class Heidelpay {
 	/**
 	 * Load the Charge for the given paymentId and charge Id.
 	 * 
-	 * @param paymentId
-	 * @param chargeId
+	 * @param paymentId used for fetching a charge
+	 * @param chargeId used for fetching a charge
 	 * @return Charge
-	 * @throws HttpCommunicationException
+	 * @throws HttpCommunicationException in case communication to Heidelpay didn't work
 	 */
 	public Charge fetchCharge(String paymentId, String chargeId) throws HttpCommunicationException {
 		return paymentService.fetchCharge(paymentId, chargeId);
@@ -866,10 +872,10 @@ public class Heidelpay {
 	/**
 	 * Load the Cancel for the given paymentId and cancelId
 	 * 
-	 * @param paymentId
-	 * @param cancelId
+	 * @param paymentId used for fetching a cancel
+	 * @param cancelId used for fetching a cancel
 	 * @return Cancel
-	 * @throws HttpCommunicationException
+	 * @throws HttpCommunicationException in case communication to Heidelpay didn't work
 	 */
 	public Cancel fetchCancel(String paymentId, String cancelId) throws HttpCommunicationException {
 		return paymentService.fetchCancel(paymentId, cancelId);
@@ -878,11 +884,11 @@ public class Heidelpay {
 	/**
 	 * Load the Cancel for the given paymentId, chargeId and cancelId
 	 * 
-	 * @param paymentId
-	 * @param chargeId
-	 * @param cancelId
+	 * @param paymentId used for fetching a cancel
+	 * @param chargeId used for fetching a cancel
+	 * @param cancelId used for fetching a cancel
 	 * @return Cancel
-	 * @throws HttpCommunicationException
+	 * @throws HttpCommunicationException in case communication to Heidelpay didn't work
 	 */
 	public Cancel fetchCancel(String paymentId, String chargeId, String cancelId) throws HttpCommunicationException {
 		return paymentService.fetchCancel(paymentId, chargeId, cancelId);
@@ -891,9 +897,9 @@ public class Heidelpay {
 	/**
 	 * Load the Customer data for the given customerId
 	 * 
-	 * @param customerId
-	 * @return
-	 * @throws HttpCommunicationException
+	 * @param customerId used for fetching a customer
+	 * @return Customer object
+	 * @throws HttpCommunicationException in case communication to Heidelpay didn't work
 	 */
 	public Customer fetchCustomer(String customerId) throws HttpCommunicationException {
 		return paymentService.fetchCustomer(customerId);
@@ -902,9 +908,9 @@ public class Heidelpay {
 	/**
 	 * Load the PaymentType
 	 * 
-	 * @param typeId
-	 * @return
-	 * @throws HttpCommunicationException
+	 * @param typeId used for fetching a payment type
+	 * @return PaymentType object
+	 * @throws HttpCommunicationException in case communication to Heidelpay didn't work
 	 */
 	public PaymentType fetchPaymentType(String typeId) throws HttpCommunicationException {
 		return paymentService.fetchPaymentType(typeId);
@@ -914,30 +920,28 @@ public class Heidelpay {
 	 * Initiates a paypage and returns the redirectUrl and an id to the paypage. The id will be 
 	 * used for embedded paypage within Javascript components, the redirectUrl will be used
 	 * for hosted paypage to redirect customer to this url.
-	 * @param paypage
-	 * @return
-	 * @throws PaymentException
-	 * @throws HttpCommunicationException
+	 * @param paypage used for initializing a paypage
+	 * @return PayPage object
+	 * @throws HttpCommunicationException in case communication to Heidelpay didn't work
 	 */
-	public Paypage paypage (Paypage paypage) throws PaymentException, HttpCommunicationException {
+	public Paypage paypage (Paypage paypage) throws HttpCommunicationException {
 		return paypageService.initialize(paypage);
 	}
 
-	public Linkpay linkpay (Linkpay linkpay) throws PaymentException, HttpCommunicationException {
+	public Linkpay linkpay (Linkpay linkpay) throws HttpCommunicationException {
 		return linkpayService.initialize(linkpay);
 	}
 
-	public Recurring recurring(String typeId, String customerId, String metadataId, URL returnUrl) throws PaymentException, HttpCommunicationException {
+	public Recurring recurring(String typeId, String customerId, String metadataId, URL returnUrl) throws HttpCommunicationException {
 		return paymentService.recurring(getRecurring(typeId, customerId, metadataId, returnUrl));
 	}
-	public Recurring recurring(String typeId, String customerId, URL returnUrl) throws PaymentException, HttpCommunicationException {
+	public Recurring recurring(String typeId, String customerId, URL returnUrl) throws HttpCommunicationException {
 		return recurring(typeId, customerId, null, returnUrl);
 	}
 	
-	public Recurring recurring(String typeId, URL returnUrl) throws PaymentException, HttpCommunicationException {
+	public Recurring recurring(String typeId, URL returnUrl) throws HttpCommunicationException {
 		return recurring(typeId, null, returnUrl);
 	}
-	
 	
 	private Recurring getRecurring(String typeId, String customerId, String metadataId, URL returnUrl) {
 		Recurring recurring = new Recurring();
@@ -948,10 +952,9 @@ public class Heidelpay {
 		return recurring;
 	}
 	
-	public List<HirePurchaseRatePlan> hirePurchaseRates(BigDecimal amount, Currency currency, BigDecimal effectiveInterestRate, Date orderDate) throws PaymentException, HttpCommunicationException {
+	public List<HirePurchaseRatePlan> hirePurchaseRates(BigDecimal amount, Currency currency, BigDecimal effectiveInterestRate, Date orderDate) throws HttpCommunicationException {
 		return paymentService.hirePurchasePlan(amount, currency, effectiveInterestRate, orderDate);
 	}
-
 
 	public String getPrivateKey() {
 		return privateKey;

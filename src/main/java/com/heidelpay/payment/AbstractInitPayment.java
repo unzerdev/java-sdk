@@ -212,8 +212,6 @@ public abstract class AbstractInitPayment extends AbstractPayment {
 		return null;
 	}
 
-	public abstract String getTypeUrl();
-
 	public String getPaymentReference() {
 		return paymentReference;
 	}

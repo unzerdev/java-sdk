@@ -45,8 +45,6 @@ public abstract class AbstractPaymentType implements PaymentType {
 		super();
 	}
 
-	public abstract String getTypeUrl();
-	
 	public String getId() {
 		return id;
 	}
@@ -70,15 +68,5 @@ public abstract class AbstractPaymentType implements PaymentType {
 	public void setRecurring(Boolean recurring) {
 		this.recurring = recurring;
 	}
-
-	// Currently returnUrl is mandatory	
-//		public Charge charge(BigDecimal amount, Currency currency) throws HttpCommunicationException {
-//			return getHeidelpay().charge(amount, currency, this);
-//		}
-//		public Authorization authorize(BigDecimal amount, Currency currency) throws HttpCommunicationException {
-//			return authorize(amount, currency, (URL)null, (Customer)null);
-//		}
-		
-
 
 }

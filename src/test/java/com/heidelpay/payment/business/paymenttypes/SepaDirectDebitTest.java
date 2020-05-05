@@ -22,7 +22,6 @@ package com.heidelpay.payment.business.paymenttypes;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
 
 import java.math.BigDecimal;
 import java.net.MalformedURLException;
@@ -30,11 +29,9 @@ import java.net.URL;
 import java.util.Currency;
 
 import com.heidelpay.payment.Cancel;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import com.heidelpay.payment.Charge;
-import com.heidelpay.payment.PaymentException;
 import com.heidelpay.payment.business.AbstractPaymentTest;
 import com.heidelpay.payment.communication.HttpCommunicationException;
 import com.heidelpay.payment.paymenttypes.SepaDirectDebit;
@@ -70,16 +67,6 @@ public class SepaDirectDebitTest extends AbstractPaymentTest {
 		SepaDirectDebit fetchedSdd = (SepaDirectDebit) getHeidelpay().fetchPaymentType(sdd.getId());
 		assertNotNull(fetchedSdd.getId());
 		assertSddEquals(sdd, fetchedSdd);
-	}
-
-	@Test(expected=PaymentException.class)
-	@Ignore
-	public void testCreateSepaDirectDebitBlockedIban() throws HttpCommunicationException, MalformedURLException {
-		SepaDirectDebit sdd = new SepaDirectDebit("DE69545100670661762678");
-		sdd = getHeidelpay().createPaymentType(sdd);
-		assertNotNull(sdd.getId());
-		Charge charge = sdd.charge(BigDecimal.ONE, Currency.getInstance("EUR"), new URL("https://www.google.at"));
-		assertNull(charge.getId());
 	}
 
 	@Test

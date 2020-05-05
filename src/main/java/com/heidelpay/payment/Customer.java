@@ -20,17 +20,20 @@ package com.heidelpay.payment;
  * #L%
  */
 
+import com.heidelpay.payment.communication.json.JsonObject;
+import com.heidelpay.payment.paymenttypes.PaymentType;
+
 import java.util.Date;
 
 /**
- * Business object for Customer toghether with billingAddress.
+ * Business object for Customer together with billingAddress.
  * 
  * firstname and lastname are mandatory to create a new Customer.
  * @author rene.felder
  *
  */
 public class Customer extends AbstractPayment {
-	public enum Salutation {mr, mrs, unknown};
+	public enum Salutation {MR, MRS, UNKNOWN}
 
 	private String firstname;
 	private String lastname;
@@ -141,6 +144,11 @@ public class Customer extends AbstractPayment {
 	@Override
 	public String getTypeUrl() {
 		return "customers";
+	}
+
+	@Override
+	public PaymentType map(PaymentType paymentType, JsonObject jsonObject) {
+		return null;
 	}
 
 	public Address getShippingAddress() {

@@ -2,7 +2,7 @@
  * JsonParser.java
  *
  * @license Use of this software requires acceptance of the Evaluation License Agreement. See LICENSE file.
- * @copyright Copyright © 2016-present Heidelberger Payment GmbH. All rights reserved.
+ * @copyright Copyright (C) 2016-present Heidelberger Payment GmbH. All rights reserved.
  *
  * @link  http://dev.heidelpay.com/heidelpay-php-api/
  *
@@ -76,9 +76,10 @@ public class JsonParser<T> {
 
 	/**
 	 * Provide a simple parser method to get object from json
-	 * 
-	 * @param json
-	 * @param clazz
+	 *
+	 * @param <T> type of used class to be parsed
+	 * @param json json to be parsed
+	 * @param clazz class to be used for the parsing
 	 * @return an object of type T
 	 */
 	@SuppressWarnings("hiding")
@@ -95,7 +96,7 @@ public class JsonParser<T> {
 	private PaymentException toPaymentException(String json) {
 		JsonErrorObject error = gson.fromJson(json, JsonErrorObject.class);
 
-		return new PaymentException(error.getId(), error.getUrl(), error.getTimestamp(), error.getErrors());
+		return new PaymentException(error.getId(), error.getUrl(), error.getTimestamp(), error.getErrors(), "");
 	}
 
 	private boolean isError(String json) {

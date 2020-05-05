@@ -27,6 +27,8 @@ import java.util.Currency;
 import com.heidelpay.payment.Charge;
 import com.heidelpay.payment.Customer;
 import com.heidelpay.payment.communication.HttpCommunicationException;
+import com.heidelpay.payment.communication.json.JsonObject;
+import com.heidelpay.payment.communication.json.JsonPis;
 
 /**
  * Paypal business object
@@ -42,6 +44,16 @@ public class Pis extends AbstractPaymentType implements PaymentType {
 	@Override
 	public String getTypeUrl() {
 		return "types/pis";
+	}
+
+	@Override
+	public PaymentType map(PaymentType pis, JsonObject jsonPis) {
+		((Pis) pis).setId(jsonPis.getId());
+		((Pis) pis).setRecurring(((JsonPis) jsonPis).getRecurring());
+		((Pis) pis).setBic(((JsonPis) jsonPis).getBic());
+		((Pis) pis).setIban(((JsonPis) jsonPis).getIban());
+		((Pis) pis).setHolder(((JsonPis) jsonPis).getHolder());
+		return pis;
 	}
 
 	public Pis() {

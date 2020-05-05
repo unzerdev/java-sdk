@@ -23,6 +23,8 @@ package com.heidelpay.payment;
 import java.math.BigDecimal;
 
 import com.heidelpay.payment.AbstractInitPayment.Status;
+import com.heidelpay.payment.communication.json.JsonObject;
+import com.heidelpay.payment.paymenttypes.PaymentType;
 
 /**
  * Business object for Cancelations
@@ -69,6 +71,12 @@ public class Cancel extends AbstractPayment {
 	public String getTypeUrl() {
 		return "payments/<paymentId>/authorize/cancels";
 	}
+
+	@Override
+	public PaymentType map(PaymentType paymentType, JsonObject jsonObject) {
+		return null;
+	}
+
 	public Status getStatus() {
 		return status;
 	}

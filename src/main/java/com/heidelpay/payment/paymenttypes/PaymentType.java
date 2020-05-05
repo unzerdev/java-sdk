@@ -20,7 +20,10 @@ package com.heidelpay.payment.paymenttypes;
  * #L%
  */
 
+import com.heidelpay.payment.communication.json.JsonObject;
+
 public interface PaymentType {
 	public String getTypeUrl();
 	public String getId();
+	public PaymentType map(PaymentType paymentType, JsonObject jsonObject);
 }

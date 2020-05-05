@@ -20,6 +20,9 @@ package com.heidelpay.payment;
  * #L%
  */
 
+import com.heidelpay.payment.communication.json.JsonObject;
+import com.heidelpay.payment.paymenttypes.PaymentType;
+
 public class Payout extends AbstractInitPayment {
 
 	public Payout() {
@@ -32,6 +35,11 @@ public class Payout extends AbstractInitPayment {
 	@Override
 	public String getTypeUrl() {
 		return "payments/<paymentId>/payouts";
+	}
+
+	@Override
+	public PaymentType map(PaymentType paymentType, JsonObject jsonObject) {
+		return null;
 	}
 
 }

@@ -1,4 +1,4 @@
-package com.heidelpay.payment.communication;
+package com.heidelpay.payment.exceptions;
 
 /*-
  * #%L
@@ -20,25 +20,10 @@ package com.heidelpay.payment.communication;
  * #L%
  */
 
-import java.net.URI;
+public class PropertiesException extends RuntimeException {
 
-/**
- * Abstraction for any http-request executed by the
- * {@code HeidelpayRestCommunication} and its basic implementation in
- * {@code AbstractHeidelpayRestCommunication}.
- * 
- */
-public interface HeidelpayHttpRequest {
-
-	enum HeidelpayHttpMethod {
-		GET, POST, DELETE, PUT
+	public PropertiesException(String msg) {
+		super(msg);
 	}
 
-	void addHeader(String header, String value);
-
-	URI getURI();
-
-	void setContent(String content, String encoding);
-
-	HeidelpayHttpMethod getMethod();
 }

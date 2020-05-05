@@ -21,15 +21,12 @@ package com.heidelpay.payment;
  */
 
 public class CustomerCompanyData {
-	public enum RegistrationType {REGISTERED, NOT_REGISTERED};
+	public enum RegistrationType {REGISTERED, NOT_REGISTERED}
 
 	private RegistrationType registrationType;
 	private String commercialRegisterNumber;
 	private CommercialSector commercialSector;
 	
-	public CustomerCompanyData() {
-	}
-
 	public RegistrationType getRegistrationType() {
 		return registrationType;
 	}
