@@ -29,6 +29,9 @@ import com.heidelpay.payment.Authorization;
 import com.heidelpay.payment.Charge;
 import com.heidelpay.payment.Customer;
 import com.heidelpay.payment.communication.HttpCommunicationException;
+import com.heidelpay.payment.communication.json.JsonCard;
+import com.heidelpay.payment.communication.json.JsonCardDetails;
+import com.heidelpay.payment.communication.json.JsonObject;
 
 /**
  * Credit / Debit Card business object. 
@@ -84,6 +87,35 @@ public class Card extends AbstractPaymentType implements PaymentType {
 	public String getTypeUrl() {
 		return "types/card";
 	}
+
+	@Override
+	public PaymentType map(PaymentType card, JsonObject jsonCard) {
+		((Card) card).setCvc(((JsonCard) jsonCard).getCvc());
+		((Card) card).setExpiryDate(((JsonCard) jsonCard).getExpiryDate());
+		((Card) card).setNumber(((JsonCard) jsonCard).getNumber());
+		((Card) card).setId(jsonCard.getId());
+		((Card) card).set3ds(((JsonCard) jsonCard).get3ds());
+		((Card) card).setRecurring(((JsonCard) jsonCard).getRecurring());
+		((Card) card).setBrand(((JsonCard) jsonCard).getBrand());
+		((Card) card).setMethod(((JsonCard) jsonCard).getMethod());
+		((Card) card).setCardHolder(((JsonCard) jsonCard).getCardHolder());
+		CardDetails tempCardDetails = mapCardDetails(((JsonCard) jsonCard).getCardDetails());
+		((Card) card).setCardDetails(tempCardDetails);
+		return card;
+	}
+
+	private CardDetails mapCardDetails(JsonCardDetails jsonCardDetails) {
+		CardDetails tempCardDetails = new CardDetails();
+		tempCardDetails.setAccount(jsonCardDetails.getAccount());
+		tempCardDetails.setCardType(jsonCardDetails.getCardType());
+		tempCardDetails.setCountryIsoA2(jsonCardDetails.getCountryIsoA2());
+		tempCardDetails.setCountryName(jsonCardDetails.getCountryName());
+		tempCardDetails.setIssuerName(jsonCardDetails.getIssuerName());
+		tempCardDetails.setIssuerPhoneNumber(jsonCardDetails.getIssuerPhoneNumber());
+		tempCardDetails.setIssuerUrl(jsonCardDetails.getIssuerUrl());
+		return tempCardDetails;
+	}
+
 	public String getBrand() {
 		return brand;
 	}

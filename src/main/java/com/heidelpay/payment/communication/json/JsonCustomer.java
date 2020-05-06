@@ -44,9 +44,6 @@ public class JsonCustomer extends JsonIdObject implements JsonObject {
 
 	private JSonCompanyInfo companyInfo;
 	
-	public JsonCustomer() {
-	}
-
 	public String getFirstname() {
 		return firstname;
 	}

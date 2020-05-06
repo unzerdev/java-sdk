@@ -88,7 +88,6 @@ public class RecurringTest extends AbstractSeleniumTest {
 	}
 
 	@Test
-	@Ignore ("Recurring with customerId does not work. Bugticket: https://heidelpay.atlassian.net/browse/AHC-1694")
 	public void testRecurringCardWitCustomerWithCustomerId() throws MalformedURLException, HttpCommunicationException, ParseException {
 		Customer customer = getHeidelpay().createCustomer(getMaximumCustomer(getRandomId()));
 		Recurring recurring = getHeidelpay().recurring(createPaymentTypeCard().getId(), customer.getCustomerId(), new URL("https://www.heidelpay.com"));

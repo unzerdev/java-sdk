@@ -14,51 +14,24 @@ import com.heidelpay.payment.Paypage;
 import com.heidelpay.payment.Processing;
 import com.heidelpay.payment.Recurring;
 import com.heidelpay.payment.Shipment;
-import com.heidelpay.payment.UnsupportedPaymentTypeException;
-import com.heidelpay.payment.business.paymenttypes.HirePurchaseRatePlan;
 import com.heidelpay.payment.communication.json.JSonCompanyInfo;
-import com.heidelpay.payment.communication.json.JsonApplepayResponse;
 import com.heidelpay.payment.communication.json.JsonAuthorization;
 import com.heidelpay.payment.communication.json.JsonCancel;
-import com.heidelpay.payment.communication.json.JsonCard;
-import com.heidelpay.payment.communication.json.JsonCardDetails;
 import com.heidelpay.payment.communication.json.JsonCharge;
 import com.heidelpay.payment.communication.json.JsonCustomer;
-import com.heidelpay.payment.communication.json.JsonHirePurchaseRatePlan;
 import com.heidelpay.payment.communication.json.JsonIdObject;
-import com.heidelpay.payment.communication.json.JsonIdeal;
 import com.heidelpay.payment.communication.json.JsonInitPayment;
 import com.heidelpay.payment.communication.json.JsonLinkpay;
 import com.heidelpay.payment.communication.json.JsonObject;
 import com.heidelpay.payment.communication.json.JsonPayment;
 import com.heidelpay.payment.communication.json.JsonPayout;
 import com.heidelpay.payment.communication.json.JsonPaypage;
-import com.heidelpay.payment.communication.json.JsonPis;
 import com.heidelpay.payment.communication.json.JsonProcessing;
 import com.heidelpay.payment.communication.json.JsonRecurring;
 import com.heidelpay.payment.communication.json.JsonResources;
-import com.heidelpay.payment.communication.json.JsonSepaDirectDebit;
 import com.heidelpay.payment.communication.json.JsonShipment;
 import com.heidelpay.payment.communication.json.JsonState;
-import com.heidelpay.payment.paymenttypes.Alipay;
-import com.heidelpay.payment.paymenttypes.Applepay;
-import com.heidelpay.payment.paymenttypes.Card;
-import com.heidelpay.payment.paymenttypes.CardDetails;
-import com.heidelpay.payment.paymenttypes.Eps;
-import com.heidelpay.payment.paymenttypes.Giropay;
-import com.heidelpay.payment.paymenttypes.Ideal;
-import com.heidelpay.payment.paymenttypes.Invoice;
-import com.heidelpay.payment.paymenttypes.InvoiceFactoring;
-import com.heidelpay.payment.paymenttypes.InvoiceGuaranteed;
 import com.heidelpay.payment.paymenttypes.PaymentType;
-import com.heidelpay.payment.paymenttypes.Paypal;
-import com.heidelpay.payment.paymenttypes.Pis;
-import com.heidelpay.payment.paymenttypes.Prepayment;
-import com.heidelpay.payment.paymenttypes.Przelewy24;
-import com.heidelpay.payment.paymenttypes.SepaDirectDebit;
-import com.heidelpay.payment.paymenttypes.SepaDirectDebitGuaranteed;
-import com.heidelpay.payment.paymenttypes.Sofort;
-import com.heidelpay.payment.paymenttypes.Wechatpay;
 
 /*-
  * #%L
@@ -69,9 +42,9 @@ import com.heidelpay.payment.paymenttypes.Wechatpay;
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *
+ * 
  *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * 
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -141,8 +114,8 @@ public class JsonToBusinessClassMapper {
 		json.setBillingAddressRequired(paypage.getBillingAddressRequired());
 		json.setShippingAddressRequired(paypage.getShippingAddressRequired());
 		json.setAdditionalAttributes(paypage.getAdditionalAttributes());
-		json.setResources(getResources(paypage));
 		json.setExcludeTypes(paypage.getExcludeTypes());
+		json.setResources(getResources(paypage));
 		return json;
 	}
 
@@ -286,9 +259,9 @@ public class JsonToBusinessClassMapper {
 		paypage.setBillingAddressRequired(json.getBillingAddressRequired());
 		paypage.setShippingAddressRequired(json.getShippingAddressRequired());
 		paypage.setAdditionalAttributes(json.getAdditionalAttributes());
+		paypage.setExcludeTypes(json.getExcludeTypes());
 		paypage.setRedirectUrl(json.getRedirectUrl());
 		paypage.setAction(json.getAction());
-		paypage.setExcludeTypes(json.getExcludeTypes());
 
 		if(json.getResources() != null) {
 			paypage.setBasketId(json.getResources().getBasketId());
@@ -500,210 +473,16 @@ public class JsonToBusinessClassMapper {
 
 	private Payment.State getPaymentState(JsonState state) {
 		if (state == null) return null;
-		if (state.getId() == 0) return Payment.State.pending;
-		if (state.getId() == 1) return Payment.State.completed;
-		if (state.getId() == 2) return Payment.State.canceled;
-		if (state.getId() == 3) return Payment.State.partly;
-		if (state.getId() == 4) return Payment.State.payment_review;
-		if (state.getId() == 5) return Payment.State.chargeback;
+		if (state.getId() == 0) return Payment.State.PENDING;
+		if (state.getId() == 1) return Payment.State.COMPLETED;
+		if (state.getId() == 2) return Payment.State.CANCELED;
+		if (state.getId() == 3) return Payment.State.PARTLY;
+		if (state.getId() == 4) return Payment.State.PAYMENT_REVIEW;
+		if (state.getId() == 5) return Payment.State.CHARGEBACK;
 		return null;
 	}
 
 	public PaymentType mapToBusinessObject(PaymentType paymentType, JsonIdObject jsonPaymentType) {
-		if (paymentType instanceof Card) {
-			return map((Card) paymentType, (JsonCard) jsonPaymentType);
-		} else if (paymentType instanceof SepaDirectDebitGuaranteed) {
-			return map((SepaDirectDebitGuaranteed) paymentType, (JsonSepaDirectDebit) jsonPaymentType);
-		} else if (paymentType instanceof SepaDirectDebit) {
-			return map((SepaDirectDebit) paymentType, (JsonSepaDirectDebit) jsonPaymentType);
-		} else if (paymentType instanceof Eps) {
-			return map((Eps) paymentType, jsonPaymentType);
-		} else if (paymentType instanceof Giropay) {
-			return map((Giropay) paymentType, jsonPaymentType);
-		} else if (paymentType instanceof Ideal) {
-			return map((Ideal) paymentType, (JsonIdeal) jsonPaymentType);
-		} else if (paymentType instanceof Invoice) {
-			return map((Invoice) paymentType, jsonPaymentType);
-		} else if (paymentType instanceof InvoiceFactoring) {
-			return map((InvoiceFactoring) paymentType, jsonPaymentType);
-		} else if (paymentType instanceof InvoiceGuaranteed) {
-			return map((InvoiceGuaranteed) paymentType, jsonPaymentType);
-		} else if (paymentType instanceof Paypal) {
-			return map((Paypal) paymentType, jsonPaymentType);
-		} else if (paymentType instanceof Prepayment) {
-			return map((Prepayment) paymentType, jsonPaymentType);
-		} else if (paymentType instanceof Przelewy24) {
-			return map((Przelewy24) paymentType, jsonPaymentType);
-		} else if (paymentType instanceof Sofort) {
-			return map((Sofort) paymentType, jsonPaymentType);
-		} else if (paymentType instanceof Pis) {
-			return map((Pis) paymentType, (JsonPis)jsonPaymentType);
-		} else if (paymentType instanceof Alipay) {
-			return map((Alipay) paymentType, jsonPaymentType);
-		} else if (paymentType instanceof Wechatpay) {
-			return map((Wechatpay) paymentType, jsonPaymentType);
-		} else if (paymentType instanceof Applepay) {
-			return map((Applepay) paymentType, (JsonApplepayResponse) jsonPaymentType);
-		} else if (paymentType instanceof HirePurchaseRatePlan) {
-			return map((HirePurchaseRatePlan) paymentType, (JsonHirePurchaseRatePlan) jsonPaymentType);
-		} else {
-			throw new UnsupportedPaymentTypeException(
-					"Type '" + paymentType.getClass().getName() + "' is currently now supported by the SDK");
-		}
+		return paymentType.map(paymentType, jsonPaymentType);
 	}
-
-	private HirePurchaseRatePlan map(HirePurchaseRatePlan paymentType, JsonHirePurchaseRatePlan jsonPaymentType) {
-		paymentType.setAccountHolder(jsonPaymentType.getAccountHolder());
-		paymentType.setBic(jsonPaymentType.getBic());
-		paymentType.setEffectiveInterestRate(jsonPaymentType.getEffectiveInterestRate());
-		paymentType.setFeeFirstRate(jsonPaymentType.getFeeFirstRate());
-		paymentType.setFeePerRate(jsonPaymentType.getFeePerRate());
-		paymentType.setIban(jsonPaymentType.getIban());
-		paymentType.setId(jsonPaymentType.getId());
-		paymentType.setInvoiceDate(jsonPaymentType.getInvoiceDate());
-		paymentType.setInvoiceDueDate(jsonPaymentType.getInvoiceDueDate());
-		paymentType.setLastRate(jsonPaymentType.getLastRate());
-		paymentType.setMonthlyRate(jsonPaymentType.getMonthlyRate());
-		paymentType.setNominalInterestRate(jsonPaymentType.getNominalInterestRate());
-		paymentType.setNumberOfRates(jsonPaymentType.getNumberOfRates());
-		paymentType.setOrderDate(jsonPaymentType.getOrderDate());
-		paymentType.setRateList(jsonPaymentType.getRateList());
-		paymentType.setRecurring(jsonPaymentType.getRecurring());
-		paymentType.setTotalAmount(jsonPaymentType.getTotalAmount());
-		paymentType.setTotalInterestAmount(jsonPaymentType.getTotalInterestAmount());
-		paymentType.setTotalPurchaseAmount(jsonPaymentType.getTotalPurchaseAmount());
-		return paymentType;
-	}
-
-	private PaymentType map(Card card, JsonCard jsonCard) {
-		card.setCvc(jsonCard.getCvc());
-		card.setExpiryDate(jsonCard.getExpiryDate());
-		card.setNumber(jsonCard.getNumber());
-		card.setId(jsonCard.getId());
-		card.set3ds(jsonCard.get3ds());
-		card.setRecurring(jsonCard.getRecurring());
-		card.setBrand(jsonCard.getBrand());
-		card.setMethod(jsonCard.getMethod());
-		card.setCardHolder(jsonCard.getCardHolder());
-		CardDetails cardDetails = mapCardDetails(jsonCard.getCardDetails());
-		card.setCardDetails(cardDetails);
-		return card;
-	}
-
-	private CardDetails mapCardDetails(JsonCardDetails jsonCardDetails) {
-		CardDetails cardDetails = new CardDetails();
-		cardDetails.setAccount(jsonCardDetails.getAccount());
-		cardDetails.setCardType(jsonCardDetails.getCardType());
-		cardDetails.setCountryIsoA2(jsonCardDetails.getCountryIsoA2());
-		cardDetails.setCountryName(jsonCardDetails.getCountryName());
-		cardDetails.setIssuerName(jsonCardDetails.getIssuerName());
-		cardDetails.setIssuerPhoneNumber(jsonCardDetails.getIssuerPhoneNumber());
-		cardDetails.setIssuerUrl(jsonCardDetails.getIssuerUrl());
-		return cardDetails;
-	}
-
-	private PaymentType map(Applepay applepay, JsonApplepayResponse jsonApplePay) {
-		applepay.setId(jsonApplePay.getId());
-		applepay.setExpiryDate(jsonApplePay.getApplicationExpirationDate());
-		applepay.setNumber(jsonApplePay.getApplicationPrimaryAccountNumber());
-		applepay.setCurrencyCode(jsonApplePay.getCurrencyCode());
-		applepay.setTransactionAmount(jsonApplePay.getTransactionAmount());
-		applepay.setRecurring(jsonApplePay.getRecurring());
-		return applepay;
-	}
-
-	private PaymentType map(SepaDirectDebit sdd, JsonSepaDirectDebit jsonSdd) {
-		sdd.setId(jsonSdd.getId());
-		sdd.setBic(jsonSdd.getBic());
-		sdd.setIban(jsonSdd.getIban());
-		sdd.setHolder(jsonSdd.getHolder());
-		sdd.setRecurring(jsonSdd.getRecurring());
-		return sdd;
-	}
-
-	private PaymentType map(Eps eps, JsonIdObject jsonId) {
-		eps.setId(jsonId.getId());
-		eps.setRecurring(jsonId.getRecurring());
-		return eps;
-	}
-
-	private PaymentType map(Giropay giropay, JsonIdObject jsonId) {
-		giropay.setId(jsonId.getId());
-		giropay.setRecurring(jsonId.getRecurring());
-		return giropay;
-	}
-	
-	private PaymentType map(Ideal ideal, JsonIdeal jsonIdeal) {
-		ideal.setId(jsonIdeal.getId());
-		ideal.setBic(jsonIdeal.getBankName());
-		ideal.setRecurring(jsonIdeal.getRecurring());
-		return ideal;
-	}
-	
-	private PaymentType map(Invoice invoice, JsonIdObject jsonId) {
-		invoice.setId(jsonId.getId());
-		invoice.setRecurring(jsonId.getRecurring());
-		return invoice;
-	}
-	
-	private PaymentType map(InvoiceGuaranteed invoice, JsonIdObject jsonId) {
-		invoice.setId(jsonId.getId());
-		invoice.setRecurring(jsonId.getRecurring());
-		return invoice;
-	}
-	
-	private PaymentType map(InvoiceFactoring invoice, JsonIdObject jsonId) {
-		invoice.setId(jsonId.getId());
-		invoice.setRecurring(jsonId.getRecurring());
-		return invoice;
-	}
-
-
-	private PaymentType map(Paypal paypal, JsonIdObject jsonId) {
-		paypal.setId(jsonId.getId());
-		paypal.setRecurring(jsonId.getRecurring());
-		return paypal;
-	}
-	
-	private PaymentType map(Prepayment prepayment, JsonIdObject jsonId) {
-		prepayment.setId(jsonId.getId());
-		prepayment.setRecurring(jsonId.getRecurring());
-		return prepayment;
-	}
-	
-	private PaymentType map(Przelewy24 p24, JsonIdObject jsonId) {
-		p24.setId(jsonId.getId());
-		p24.setRecurring(jsonId.getRecurring());
-		return p24;
-	}
-	
-	private PaymentType map(Alipay alipay, JsonIdObject jsonId) {
-		alipay.setId(jsonId.getId());
-		alipay.setRecurring(jsonId.getRecurring());
-		return alipay;
-	}
-
-	private PaymentType map(Wechatpay wechatpay, JsonIdObject jsonId) {
-		wechatpay.setId(jsonId.getId());
-		wechatpay.setRecurring(jsonId.getRecurring());
-		return wechatpay;
-	}
-
-	private PaymentType map(Sofort sofort, JsonIdObject jsonId) {
-		sofort.setId(jsonId.getId());
-		sofort.setRecurring(jsonId.getRecurring());
-		return sofort;
-	}
-	
-	private PaymentType map(Pis pis, JsonPis jsonPis) {
-		pis.setId(jsonPis.getId());
-		pis.setRecurring(jsonPis.getRecurring());
-		pis.setBic(jsonPis.getBic());
-		pis.setIban(jsonPis.getIban());
-		pis.setHolder(jsonPis.getHolder());
-		return pis;
-	}
-
-
-
 }

@@ -23,6 +23,8 @@ package com.heidelpay.payment;
 import java.math.BigDecimal;
 
 import com.heidelpay.payment.communication.HttpCommunicationException;
+import com.heidelpay.payment.communication.json.JsonObject;
+import com.heidelpay.payment.paymenttypes.PaymentType;
 
 /**
  * Business object for Authorization. Amount, currency and typeId are mandatory parameter to 
@@ -71,6 +73,11 @@ public class Authorization extends AbstractInitPayment {
 	@Override
 	public String getTypeUrl() {
 		return "payments/<paymentId>/authorize";
+	}
+
+	@Override
+	public PaymentType map(PaymentType paymentType, JsonObject jsonObject) {
+		return null;
 	}
 
 	public BigDecimal getEffectiveInterestRate() {

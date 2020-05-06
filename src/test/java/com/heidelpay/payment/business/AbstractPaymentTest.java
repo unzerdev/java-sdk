@@ -64,14 +64,16 @@ public abstract class AbstractPaymentTest {
 
 	public Heidelpay getHeidelpay() {
 		return new Heidelpay("s-priv-2a102ZMq3gV4I3zJ888J7RR6u75oqK3n");
-//		return new Heidelpay("s-priv-6S59Dt6Q9mJYj8X5qpcxSpA3XLXUw4Zf");
 	}
+
 	public Heidelpay getHeidelpayDE() {
 		return new Heidelpay("s-priv-2a102ZMq3gV4I3zJ888J7RR6u75oqK3n", Locale.GERMANY);
 	}
+
 	public Heidelpay getHeidelpay(String key) {
 		return new Heidelpay(new HttpClientBasedRestCommunication(), key);
 	}
+
 	public Heidelpay getHeidelpayDE(String key) {
 		return new Heidelpay(new HttpClientBasedRestCommunication(Locale.GERMANY), key);
 	}
@@ -79,18 +81,23 @@ public abstract class AbstractPaymentTest {
 	protected Authorization getAuthorization(String typeId) throws MalformedURLException {
 		return getAuthorization(typeId, (String)null);
 	}
+
 	protected Authorization getAuthorization(String typeId, Boolean card3ds) throws MalformedURLException {
 		return getAuthorization(typeId, null, null, null, null, card3ds);
 	}
+
 	protected Authorization getAuthorization(String typeId, String customerId) throws MalformedURLException {
 		return getAuthorization(typeId, customerId, null, null, null, null);
 	}
+
 	protected Authorization getAuthorization(String typeId, String customerId, String metadataId) throws MalformedURLException {
 		return getAuthorization(typeId, customerId, null, metadataId, null, null);
 	}
+
 	protected Authorization getAuthorization(String typeId, String customerId, String orderId, String metadataId, String basketId) throws MalformedURLException {
 		return getAuthorization(typeId, customerId, orderId, metadataId, basketId, null);
 	}
+
 	protected Authorization getAuthorization(String typeId, String customerId, String orderId, String metadataId, String basketId, Boolean card3ds) throws MalformedURLException {
 		Authorization authorization = new Authorization();
 		authorization
@@ -109,17 +116,21 @@ public abstract class AbstractPaymentTest {
 	protected Charge getCharge() throws MalformedURLException, HttpCommunicationException {
 		return getCharge(null);
 	}
+
 	protected Charge getCharge(String orderId) throws MalformedURLException, HttpCommunicationException {
 		Charge charge = getCharge(createPaymentTypeCard().getId(), null);
 		charge.setOrderId(orderId);
 		return charge;
 	}
+
 	protected Charge getCharge(String orderId, Boolean card3ds) throws MalformedURLException, HttpCommunicationException {
 		return getCharge(createPaymentTypeCard().getId(), null, orderId, null, null, card3ds);
 	}
+
 	protected Charge getCharge(String typeId, String customerId, String orderId, String metadataId, String basketId) throws MalformedURLException, HttpCommunicationException {
 		return getCharge(typeId, customerId, orderId, metadataId, basketId, null);
 	}
+
 	protected Charge getCharge(String typeId, String customerId, String orderId, String metadataId, String basketId, Boolean card3ds) throws MalformedURLException, HttpCommunicationException {
 		Charge charge = new Charge();
 		charge.setAmount(BigDecimal.ONE)
@@ -137,11 +148,13 @@ public abstract class AbstractPaymentTest {
 	protected Card createPaymentTypeCard() throws HttpCommunicationException {
 		return createPaymentTypeCard("4444333322221111");
 	}
+
 	protected Card createPaymentTypeCard(String cardnumber) throws HttpCommunicationException {
 		Card card = getPaymentTypeCard(cardnumber);
 		card = (Card)getHeidelpay().createPaymentType(card);
 		return card;
 	}
+
 	protected InvoiceGuaranteed createPaymentTypeInvoiceGuaranteed() throws HttpCommunicationException {
 		InvoiceGuaranteed invoice = new InvoiceGuaranteed();
 		invoice = (InvoiceGuaranteed)getHeidelpay().createPaymentType(invoice);
@@ -151,8 +164,9 @@ public abstract class AbstractPaymentTest {
 	protected Card getPaymentTypeCard() {
 		return getPaymentTypeCard("4444333322221111");
 	}
+
 	protected Card getPaymentTypeCard(String cardnumber) {
-		Card card = new Card(cardnumber, "03/20");
+		Card card = new Card(cardnumber, "03/99");
 		card.setCvc("123");
 		return card;
 	}
@@ -168,7 +182,6 @@ public abstract class AbstractPaymentTest {
 		sdd.setHolder("Rene Felder");
 		return sdd;
 	}
-
 
 	protected String getRandomId() {
 		return UUID.randomUUID().toString().substring(0, 8);
@@ -193,6 +206,7 @@ public abstract class AbstractPaymentTest {
 	protected Customer getMinimumCustomer() {
 		return new Customer("Rene", "Felder"); 
 	}
+
 	protected Customer getMinimumRegisteredCustomer() {
 		return new Customer("Heidelpay GmbH"); 
 	}
@@ -201,7 +215,7 @@ public abstract class AbstractPaymentTest {
 		Customer customer = new Customer( "Peter", "Universum");
 		customer
 		.setCustomerId(customerId)
-		.setSalutation(Salutation.mr)
+		.setSalutation(Salutation.MR)
 		.setEmail("info@heidelpay.com")
 		.setMobile("+43676123456")
 				.setPhone("+49 6221 64 71 100")
@@ -216,7 +230,7 @@ public abstract class AbstractPaymentTest {
 		Customer customer = new Customer("Rene", "Felder");
 		customer
 		.setCustomerId(customerId)
-		.setSalutation(Salutation.mr)
+		.setSalutation(Salutation.MR)
 		.setEmail("info@heidelpay.com")
 		.setMobile("+43676123456")
 		.setBirthDate(getDate("03.10.1974"))
@@ -229,7 +243,7 @@ public abstract class AbstractPaymentTest {
 		Customer customer = new Customer("Anna", "Sadriu");
 		customer
 						.setCustomerId(customerId)
-						.setSalutation(Salutation.mrs)
+						.setSalutation(Salutation.MRS)
 						.setEmail("info@heidelpay.com")
 						.setMobile("+43676123456")
 						.setBirthDate(getDate("08.05.1986"))
@@ -242,7 +256,7 @@ public abstract class AbstractPaymentTest {
 		Customer customer = new Customer("XXX", "YYY");
 		customer
 						.setCustomerId(customerId)
-						.setSalutation(Salutation.unknown)
+						.setSalutation(Salutation.UNKNOWN)
 						.setEmail("info@heidelpay.com")
 						.setMobile("+43676123456")
 						.setBirthDate(getDate("01.01.1999"))
@@ -257,6 +271,7 @@ public abstract class AbstractPaymentTest {
 		customer.setCompanyData(getRegisteredCompanyData());
 		return customer;
 	}
+
 	protected Customer getRegisterdMaximumBusinessCustomer(String customerId) throws ParseException {
 		Customer customer = getMaximumCustomer(customerId);
 		customer.setCompany("Heidelpay GmbH");
@@ -284,20 +299,18 @@ public abstract class AbstractPaymentTest {
 		business.setCommercialRegisterNumber("HRB337681 MANNHEIM");
 		return business;
 	}
+
 	protected CustomerCompanyData getRegisteredCompanyData() {
 		CustomerCompanyData customerBusinessData = new CustomerCompanyData();
 		customerBusinessData.setCommercialRegisterNumber("HRB337681 MANNHEIM");
 		return customerBusinessData;
 	}
 
-
-
-
 	protected Customer getFactoringOKCustomer(String customerId) throws ParseException {
 		Customer customer = new Customer("Maximilian", "Mustermann");
 		customer
 						.setCustomerId(customerId)
-						.setSalutation(Salutation.mr)
+						.setSalutation(Salutation.MR)
 						.setBirthDate(getDate("22.11.1980"))
 						.setBillingAddress(getFactoringOKAddress())
 						.setShippingAddress(getFactoringOKAddress());
@@ -311,6 +324,7 @@ public abstract class AbstractPaymentTest {
 	protected Address getAddress() {
 		return getAddress("Peter Universum", "Hugo-Junkers-Str. 6", "Frankfurt am Main", "DE-BO", "60386", "DE");
 	}
+
 	protected Address getAddress(String name, String street, String city, String state, String zip, String country) {
 		Address address = new Address();
 		address
@@ -330,10 +344,10 @@ public abstract class AbstractPaymentTest {
 
 	}
 
-
 	protected Metadata getTestMetadata() {
 		return getTestMetadata(false);
 	}
+
 	protected Metadata getTestMetadata(boolean sorted) {
 		Metadata metadata = new Metadata(sorted)
 				.addMetadata("invoice-nr", "Rg-2018-11-1")
@@ -342,8 +356,6 @@ public abstract class AbstractPaymentTest {
 				.addMetadata("reason", "X-mas present");
 		return metadata;
 	}
-
-
 
 	protected Date getDate(String date) throws ParseException {
 		return new SimpleDateFormat("dd.MM.yy").parse(date);
@@ -354,7 +366,6 @@ public abstract class AbstractPaymentTest {
 			assertEquals(entry.getValue(), testMetadataMap.get(entry.getKey()));
 		}
 	}
-
 
 	protected void assertChargeEquals(Charge initCharge, Charge charge) {
 		assertEquals(initCharge.getAmount(), charge.getAmount());
@@ -380,6 +391,7 @@ public abstract class AbstractPaymentTest {
 		assertEquals(customerExpected.getCommercialRegisterNumber(), customer.getCommercialRegisterNumber());
 		assertEquals(customerExpected.getCommercialSector(), customer.getCommercialSector());
 	}
+
 	protected void assertCustomerEquals(Customer customerExpected, Customer customer) {
 		assertEquals(customerExpected.getFirstname(), customer.getFirstname());
 		assertEquals(customerExpected.getLastname(), customer.getLastname());
@@ -393,6 +405,7 @@ public abstract class AbstractPaymentTest {
 		assertAddressEquals(customerExpected.getShippingAddress(), customer.getShippingAddress());	
 		assertBusinessCustomerEquals(customerExpected.getCompanyData(), customer.getCompanyData());
 	}
+
 	protected void assertAddressEquals(Address addressExpected, Address address) {
 		if (addressExpected == null) return;
 		assertEquals(addressExpected.getCity(), address.getCity());
@@ -416,8 +429,6 @@ public abstract class AbstractPaymentTest {
 		if (expected.compareTo(actual) != 0) throw new AssertionError("expected: " + expected + ", actual: " + actual);
 	}
 
-
-
 	protected BigDecimal getBigDecimal(String number) {
 		BigDecimal bigDecimal = new BigDecimal(number);
 		bigDecimal.setScale(4);
@@ -429,7 +440,6 @@ public abstract class AbstractPaymentTest {
 	}
 
 	protected static String maskString(String strText, int start, int end, char maskChar) {
-
 		if (strText == null) return null;
 		if (strText.equals("")) return "";
 		if (start < 0) start = 0;
@@ -470,6 +480,7 @@ public abstract class AbstractPaymentTest {
 				.addBasketItem(getMinTestBasketItem());
 		return basket;
 	}
+
 	private BasketItem getMaxTestBasketItem1() {
 		BasketItem basketItem = new BasketItem();
 		basketItem.setBasketItemReferenceId("Artikelnummer4711");
@@ -490,6 +501,7 @@ public abstract class AbstractPaymentTest {
 		}
 		return basketItem;
 	}
+
 	private BasketItem getMaxTestBasketItem2() {
 		BasketItem basketItem = new BasketItem();
 		basketItem.setBasketItemReferenceId("Artikelnummer4712");

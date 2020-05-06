@@ -27,6 +27,8 @@ import java.util.Currency;
 import com.heidelpay.payment.Charge;
 import com.heidelpay.payment.Customer;
 import com.heidelpay.payment.communication.HttpCommunicationException;
+import com.heidelpay.payment.communication.json.JsonIdObject;
+import com.heidelpay.payment.communication.json.JsonObject;
 
 /**
  * Giropay business object
@@ -39,6 +41,13 @@ public class Giropay extends AbstractPaymentType implements PaymentType {
 	@Override
 	public String getTypeUrl() {
 		return "types/giropay";
+	}
+
+	@Override
+	public PaymentType map(PaymentType giropay, JsonObject jsonId) {
+		((Giropay) giropay).setId(jsonId.getId());
+		((Giropay) giropay).setRecurring(((JsonIdObject) jsonId).getRecurring());
+		return giropay;
 	}
 
 	public Charge charge(BigDecimal amount, Currency currency, URL returnUrl) throws HttpCommunicationException {

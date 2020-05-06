@@ -9,9 +9,9 @@ package com.heidelpay.payment.business.errors;
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *
+ * 
  *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * 
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -130,8 +130,8 @@ public class ErrorTest extends AbstractPaymentTest {
         } catch (PaymentException e) {
             assertNotNull(e.getPaymentErrorList());
             assertTrue(e.getPaymentErrorList().size() > 0);
-            assertEquals("API.320.200.163", e.getPaymentErrorList().get(0).getCode());
-            assertEquals("Resources type id is invalid.", e.getPaymentErrorList().get(0).getMerchantMessage());
+            assertEquals("API.320.200.143", e.getPaymentErrorList().get(0).getCode());
+            assertEquals("Resources: type id is missing.", e.getPaymentErrorList().get(0).getMerchantMessage());
         }
     }
 

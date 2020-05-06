@@ -27,6 +27,8 @@ import java.util.Currency;
 import com.heidelpay.payment.Charge;
 import com.heidelpay.payment.Customer;
 import com.heidelpay.payment.communication.HttpCommunicationException;
+import com.heidelpay.payment.communication.json.JsonObject;
+import com.heidelpay.payment.communication.json.JsonSepaDirectDebit;
 
 /**
  * Sepa direct debit business object. Iban is mandatory, bic and holder are optional fields 
@@ -74,7 +76,17 @@ public class SepaDirectDebit extends AbstractPaymentType implements PaymentType 
 	public String getTypeUrl() {
 		return "types/sepa-direct-debit";
 	}
-	
+
+	@Override
+	public PaymentType map(PaymentType sdd, JsonObject jsonSdd) {
+		((SepaDirectDebit) sdd).setId(jsonSdd.getId());
+		((SepaDirectDebit) sdd).setBic(((JsonSepaDirectDebit) jsonSdd).getBic());
+		((SepaDirectDebit) sdd).setIban(((JsonSepaDirectDebit) jsonSdd).getIban());
+		((SepaDirectDebit) sdd).setHolder(((JsonSepaDirectDebit) jsonSdd).getHolder());
+		((SepaDirectDebit) sdd).setRecurring(((JsonSepaDirectDebit) jsonSdd).getRecurring());
+		return sdd;
+	}
+
 	public Charge charge(BigDecimal amount, Currency currency, URL returnUrl) throws HttpCommunicationException {
 		return getHeidelpay().charge(amount, currency, this, returnUrl, (Customer)null);
 	}

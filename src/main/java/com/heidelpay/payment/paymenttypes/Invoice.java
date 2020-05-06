@@ -27,6 +27,8 @@ import java.util.Currency;
 import com.heidelpay.payment.Charge;
 import com.heidelpay.payment.Customer;
 import com.heidelpay.payment.communication.HttpCommunicationException;
+import com.heidelpay.payment.communication.json.JsonIdObject;
+import com.heidelpay.payment.communication.json.JsonObject;
 
 /**
  * Invoice business object
@@ -40,8 +42,15 @@ public class Invoice extends AbstractPaymentType implements PaymentType {
 		return "types/invoice";
 	}
 
+	@Override
+	public PaymentType map(PaymentType invoice, JsonObject jsonId) {
+		((Invoice) invoice).setId(jsonId.getId());
+		((Invoice) invoice).setRecurring(((JsonIdObject) jsonId).getRecurring());
+		return invoice;
+	}
+
 	public Charge charge(BigDecimal amount, Currency currency, URL returnUrl) throws HttpCommunicationException {
-		return charge(amount, currency, returnUrl, (Customer)null);
+		return charge(amount, currency, returnUrl, null);
 	}
 	public Charge charge(BigDecimal amount, Currency currency, URL returnUrl, Customer customer) throws HttpCommunicationException {
 		return getHeidelpay().charge(amount, currency, this, returnUrl, customer);

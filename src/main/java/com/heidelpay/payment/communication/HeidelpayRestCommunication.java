@@ -20,8 +20,6 @@ package com.heidelpay.payment.communication;
  * #L%
  */
 
-import com.heidelpay.payment.PaymentException;
-
 /**
  * Defines the rest-communication used by the {@code PaymentService}.
  * 
@@ -42,13 +40,9 @@ public interface HeidelpayRestCommunication {
 	 * @return - the Response as application/json, UTF-8
 	 * 
 	 * @throws HttpCommunicationException
-	 *             - thrown for any problems occuring in http-communication
-	 * @throws PaymentException
-	 *             - business error, e.g 4xx will be translated into a
-	 *             {@code PaymentException} holding the {@code PaymentError} with
-	 *             the details
+	 *             - thrown for any problems occurring in http-communication
 	 */
-	String httpGet(String url, String privateKey) throws HttpCommunicationException, PaymentException;
+	String httpGet(String url, String privateKey) throws HttpCommunicationException;
 
 	/**
 	 * Executes a POST Request to the given {@code url} authenticated with the given
@@ -62,13 +56,9 @@ public interface HeidelpayRestCommunication {
 	 * @return - the Response as application/json, UTF-8
 	 * 
 	 * @throws HttpCommunicationException
-	 *             - thrown for any problems occuring in http-communication
-	 * @throws PaymentException
-	 *             - business error, e.g 4xx will be translated into a
-	 *             {@code PaymentException} holding the {@code PaymentError} with
-	 *             the details
+	 *             - thrown for any problems occurring in http-communication
 	 */
-	String httpPost(String url, String privateKey, Object data) throws HttpCommunicationException, PaymentException;
+	String httpPost(String url, String privateKey, Object data) throws HttpCommunicationException;
 
 	/**
 	 * Executes a PUT Request to the given {@code url} authenticated with the given
@@ -82,13 +72,9 @@ public interface HeidelpayRestCommunication {
 	 * @return - the Response as application/json, UTF-8
 	 * 
 	 * @throws HttpCommunicationException
-	 *             - thrown for any problems occuring in http-communication
-	 * @throws PaymentException
-	 *             - business error, e.g 4xx will be translated into a
-	 *             {@code PaymentException} holding the {@code PaymentError} with
-	 *             the details
+	 *             - thrown for any problems occurring in http-communication
 	 */
-	String httpPut(String url, String privateKey, Object data) throws HttpCommunicationException, PaymentException;
+	String httpPut(String url, String privateKey, Object data) throws HttpCommunicationException;
 
 	/**
 	 * Executes a DELETE Request to the given {@code url} authenticated with the given
@@ -101,11 +87,7 @@ public interface HeidelpayRestCommunication {
 	 * @return - the Response as application/json, UTF-8
 	 * 
 	 * @throws HttpCommunicationException
-	 *             - thrown for any problems occuring in http-communication
-	 * @throws PaymentException
-	 *             - business error, e.g 4xx will be translated into a
-	 *             {@code PaymentException} holding the {@code PaymentError} with
-	 *             the details
+	 *             - thrown for any problems occurring in http-communication
 	 */
-	String httpDelete(String url, String privateKey) throws HttpCommunicationException, PaymentException;
+	String httpDelete(String url, String privateKey) throws HttpCommunicationException;
 }

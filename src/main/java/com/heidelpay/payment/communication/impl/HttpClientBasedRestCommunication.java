@@ -44,7 +44,7 @@ import com.heidelpay.payment.communication.HttpCommunicationException;
  */
 public class HttpClientBasedRestCommunication extends AbstractHeidelpayRestCommunication {
 
-	private final static Logger logger = LogManager.getLogger(AbstractHeidelpayRestCommunication.class);
+	private static final Logger logger = LogManager.getLogger(HttpClientBasedRestCommunication.class);
 
 	public HttpClientBasedRestCommunication() {
 		super(null);

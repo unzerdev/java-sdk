@@ -9,9 +9,9 @@ package com.heidelpay.payment.business.errors;
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *
+ * 
  *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * 
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -45,7 +45,7 @@ public class ErrorTestDE extends AbstractPaymentTest {
             assertNotNull(e.getPaymentErrorList());
             assertTrue(e.getPaymentErrorList().size() > 0);
             assertEquals("API.320.000.002", e.getPaymentErrorList().get(0).getCode());
-            assertEquals("The given key s-priv-123 is unknown or invalid.",
+            assertEquals("Der angegebene key s-priv-123 ist unbekannt oder ungültig.",
                     e.getPaymentErrorList().get(0).getMerchantMessage());
             assertEquals("Bei der Überprüfung Ihrer Anfrage ist ein Problem aufgetreten. " +
                             "Wenden Sie sich für weitere Informationen bitte an uns.",
@@ -87,7 +87,7 @@ public class ErrorTestDE extends AbstractPaymentTest {
             assertTrue(e.getPaymentErrorList().size() > 0);
 
             assertEquals("API.710.100.001", e.getPaymentErrorList().get(0).getCode());
-            assertEquals("The given payment method " + card.getId() + " is not found",
+            assertEquals("Die Zahlungsmethode " + card.getId() + " existiert nicht.",
                     e.getPaymentErrorList().get(0).getMerchantMessage());
             assertEquals("Ungültige Zahlungsmethode. Wenden Sie sich für weitere Informationen bitte an uns.",
                     e.getPaymentErrorList().get(0).getCustomerMessage());
@@ -106,7 +106,7 @@ public class ErrorTestDE extends AbstractPaymentTest {
             assertNotNull(e.getPaymentErrorList());
             assertTrue(e.getPaymentErrorList().size() > 0);
             assertEquals("API.320.100.203", e.getPaymentErrorList().get(0).getCode());
-            assertEquals("Return URL is missing", e.getPaymentErrorList().get(0).getMerchantMessage());
+            assertEquals("Die Rückgabe-URL ist ungültig.", e.getPaymentErrorList().get(0).getMerchantMessage());
             assertEquals("Rückgabe-URL fehlt. Wenden Sie sich für weitere Informationen bitte an uns.",
                     e.getPaymentErrorList().get(0).getCustomerMessage());
         }
@@ -120,7 +120,7 @@ public class ErrorTestDE extends AbstractPaymentTest {
             assertNotNull(e.getPaymentErrorList());
             assertTrue(e.getPaymentErrorList().size() > 0);
             assertEquals("API.320.200.143", e.getPaymentErrorList().get(0).getCode());
-            assertEquals("Resources type id is missing", e.getPaymentErrorList().get(0).getMerchantMessage());
+            assertEquals("Resources type id fehlt.", e.getPaymentErrorList().get(0).getMerchantMessage());
             assertEquals("Ein Fehler ist aufgetreten. Wenden Sie sich für weitere Informationen bitte an uns.",
                     e.getPaymentErrorList().get(0).getCustomerMessage());
         }
@@ -134,7 +134,7 @@ public class ErrorTestDE extends AbstractPaymentTest {
             assertNotNull(e.getPaymentErrorList());
             assertTrue(e.getPaymentErrorList().size() > 0);
             assertEquals("API.310.100.003", e.getPaymentErrorList().get(0).getCode());
-            assertEquals("Payment not found with key 213", e.getPaymentErrorList().get(0).getMerchantMessage());
+            assertEquals("Die Zahlung 213 wurde nicht gefunden.", e.getPaymentErrorList().get(0).getMerchantMessage());
             assertEquals("Die Zahlung wurde nicht gefunden. Wenden Sie sich für weitere Informationen bitte an uns.",
                     e.getPaymentErrorList().get(0).getCustomerMessage());
         }
@@ -151,8 +151,8 @@ public class ErrorTestDE extends AbstractPaymentTest {
             assertNotNull(e.getPaymentErrorList());
             assertTrue(e.getPaymentErrorList().size() > 0);
             assertEquals("API.410.200.013", getCode("API.410.200.013", e.getPaymentErrorList()));
-            assertEquals("email has invalid format.", getMerchantMessage("API.410.200.013", e.getPaymentErrorList()));
-            assertEquals("Format der E-Mail ungültig", getCustomerMessage("API.410.200.013", e.getPaymentErrorList()));
+            assertEquals("Format der E-Mail ungültig.", getMerchantMessage("API.410.200.013", e.getPaymentErrorList()));
+            assertEquals("Format der E-Mail ungültig.", getCustomerMessage("API.410.200.013", e.getPaymentErrorList()));
         }
     }
 
@@ -170,17 +170,17 @@ public class ErrorTestDE extends AbstractPaymentTest {
             assertNotNull(e.getPaymentErrorList());
             assertEquals(4, e.getPaymentErrorList().size());
             assertEquals("API.410.200.005", getCode("API.410.200.005", e.getPaymentErrorList()));
-            assertEquals("firstName has invalid length.", getMerchantMessage("API.410.200.005", e.getPaymentErrorList()));
-            assertEquals("Länge des Vornamens unzulässig", getCustomerMessage("API.410.200.005", e.getPaymentErrorList()));
+            assertEquals("Länge des Vornamens unzulässig.", getMerchantMessage("API.410.200.005", e.getPaymentErrorList()));
+            assertEquals("Länge des Vornamens unzulässig.", getCustomerMessage("API.410.200.005", e.getPaymentErrorList()));
             assertEquals("API.410.200.002", getCode("API.410.200.002", e.getPaymentErrorList()));
-            assertEquals("lastName has invalid length.", getMerchantMessage("API.410.200.002", e.getPaymentErrorList()));
-            assertEquals("Länge des Nachnamens unzulässig", getCustomerMessage("API.410.200.002", e.getPaymentErrorList()));
+            assertEquals("Länge des Nachnamens unzulässig.", getMerchantMessage("API.410.200.002", e.getPaymentErrorList()));
+            assertEquals("Länge des Nachnamens unzulässig.", getCustomerMessage("API.410.200.002", e.getPaymentErrorList()));
             assertEquals("API.410.200.015", getCode("API.410.200.015", e.getPaymentErrorList()));
-            assertEquals("phone has invalid format.", getMerchantMessage("API.410.200.015", e.getPaymentErrorList()));
-            assertEquals("Format der Telefonnummer ungültig", getCustomerMessage("API.410.200.015", e.getPaymentErrorList()));
+            assertEquals("Format der Telefonnummer ungültig.", getMerchantMessage("API.410.200.015", e.getPaymentErrorList()));
+            assertEquals("Format der Telefonnummer ungültig.", getCustomerMessage("API.410.200.015", e.getPaymentErrorList()));
             assertEquals("API.410.200.013", getCode("API.410.200.013", e.getPaymentErrorList()));
-            assertEquals("email has invalid format.", getMerchantMessage("API.410.200.013", e.getPaymentErrorList()));
-            assertEquals("Format der E-Mail ungültig", getCustomerMessage("API.410.200.013", e.getPaymentErrorList()));
+            assertEquals("Format der E-Mail ungültig.", getMerchantMessage("API.410.200.013", e.getPaymentErrorList()));
+            assertEquals("Format der E-Mail ungültig.", getCustomerMessage("API.410.200.013", e.getPaymentErrorList()));
         }
     }
 

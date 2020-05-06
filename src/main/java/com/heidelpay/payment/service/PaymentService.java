@@ -36,7 +36,6 @@ import com.heidelpay.payment.business.paymenttypes.HirePurchaseRatePlan;
 import com.heidelpay.payment.communication.HeidelpayRestCommunication;
 import com.heidelpay.payment.communication.HttpCommunicationException;
 import com.heidelpay.payment.communication.JsonParser;
-import com.heidelpay.payment.communication.impl.RestCommunication;
 import com.heidelpay.payment.communication.json.JsonApplepayResponse;
 import com.heidelpay.payment.communication.json.JsonAuthorization;
 import com.heidelpay.payment.communication.json.JsonCancel;
@@ -76,11 +75,7 @@ import com.heidelpay.payment.paymenttypes.Sofort;
 import com.heidelpay.payment.paymenttypes.Wechatpay;
 import java.math.BigDecimal;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.Currency;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class PaymentService {
 	private static final String TRANSACTION_TYPE_AUTHORIZATION = "authorize";
@@ -94,16 +89,6 @@ public class PaymentService {
 	private UrlUtil urlUtil;
 	private JsonToBusinessClassMapper jsonToBusinessClassMapper = new JsonToBusinessClassMapper();
 	private Heidelpay heidelpay;
-
-	/**
-	 * Creates a PaymentService with the @deprecated {@code RestCommunication}
-	 * implementation.
-	 * 
-	 * @param heidelpay
-	 */
-	public PaymentService(Heidelpay heidelpay) {
-		this(heidelpay, new RestCommunication());
-	}
 
 	/**
 	 * Creates the {@code PaymentService} with the given {@code Heidelpay} facade,
@@ -120,7 +105,7 @@ public class PaymentService {
 		this.restCommunication = restCommunication;
 	}
 
-	public List<HirePurchaseRatePlan> hirePurchasePlan(BigDecimal amount, Currency currency, BigDecimal effectiveInterestRate, Date orderDate) throws PaymentException, HttpCommunicationException {
+	public List<HirePurchaseRatePlan> hirePurchasePlan(BigDecimal amount, Currency currency, BigDecimal effectiveInterestRate, Date orderDate) throws HttpCommunicationException {
 		String response = restCommunication.httpGet(urlUtil.getHirePurchaseRateUrl(amount, currency, effectiveInterestRate, orderDate), heidelpay.getPrivateKey());
 		JsonHirePurchaseRatePlanList json = new JsonParser<Customer>().fromJson(response, JsonHirePurchaseRatePlanList.class);
 		return json.getEntity();
@@ -133,7 +118,7 @@ public class PaymentService {
 		return fetchPaymentType(jsonResponse.getId());
 	}
 
-	public <T extends PaymentType> T updatePaymentType(T paymentType) throws PaymentException, HttpCommunicationException {
+	public <T extends PaymentType> T updatePaymentType(T paymentType) throws HttpCommunicationException {
 		String url = urlUtil.getRestUrl(paymentType);
 		url = addId(url, paymentType.getId());
 		String response = restCommunication.httpPut(url, heidelpay.getPrivateKey(),
@@ -167,13 +152,13 @@ public class PaymentService {
 		return fetchCustomer(id);
 	}
 
-	public Basket updateBasket(String id, Basket basket) throws PaymentException, HttpCommunicationException {
+	public Basket updateBasket(String id, Basket basket) throws HttpCommunicationException {
 		restCommunication.httpPut(urlUtil.getHttpGetUrl(basket, id), heidelpay.getPrivateKey(), basket);
 		return fetchBasket(id);
 	}
 
 
-	public Metadata createMetadata(Metadata metadata) throws PaymentException, HttpCommunicationException {
+	public Metadata createMetadata(Metadata metadata) throws HttpCommunicationException {
 		String response = restCommunication.httpPost(urlUtil.getRestUrl(metadata), heidelpay.getPrivateKey(), metadata.getMetadataMap());
 		Metadata metadataJson = new JsonParser<Metadata>().fromJson(response, Metadata.class);
 		metadata.setHeidelpay(heidelpay);
@@ -181,7 +166,7 @@ public class PaymentService {
 		return metadata;
 	}
 	
-	public Metadata fetchMetadata(String id) throws PaymentException, HttpCommunicationException {
+	public Metadata fetchMetadata(String id) throws HttpCommunicationException {
 		Metadata metadata = new Metadata();
 		metadata.setId(id);
 		String response = restCommunication.httpGet(urlUtil.getHttpGetUrl(metadata, metadata.getId()),
@@ -191,14 +176,14 @@ public class PaymentService {
 		return metadata;
 	}
 
-	public Basket createBasket(Basket basket) throws PaymentException, HttpCommunicationException {
+	public Basket createBasket(Basket basket) throws HttpCommunicationException {
 		String response = restCommunication.httpPost(urlUtil.getRestUrl(basket), heidelpay.getPrivateKey(), basket);
 		Basket jsonBasket = new JsonParser<Basket>().fromJson(response, Basket.class);
 		basket.setId(jsonBasket.getId());
 		return basket;
 	}
 
-	public Basket fetchBasket(String id) throws PaymentException, HttpCommunicationException {
+	public Basket fetchBasket(String id) throws HttpCommunicationException {
 		Basket basket = new Basket();
 		basket.setId(id);
 		String response = restCommunication.httpGet(urlUtil.getHttpGetUrl(basket, basket.getId()), heidelpay.getPrivateKey());
@@ -331,11 +316,11 @@ public class PaymentService {
 		return payout;
 	}
 
-	public Recurring recurring(Recurring recurring) throws PaymentException, HttpCommunicationException {
+	public Recurring recurring(Recurring recurring) throws HttpCommunicationException {
 		String url = urlUtil.getRecurringUrl(recurring);
 		String response = restCommunication.httpPost(url, heidelpay.getPrivateKey(), jsonToBusinessClassMapper.map(recurring));
 		JsonRecurring json = new JsonParser<JsonRecurring>().fromJson(response, JsonRecurring.class);
-		recurring = (Recurring) jsonToBusinessClassMapper.mapToBusinessObject(recurring, json);
+		recurring = jsonToBusinessClassMapper.mapToBusinessObject(recurring, json);
 		recurring.setHeidelpay(heidelpay);
 		return recurring;
 		
@@ -410,8 +395,8 @@ public class PaymentService {
 
 	private List<Charge> fetchChargeList(Payment payment, List<JsonTransaction> jsonChargesTransactionList)
 			throws HttpCommunicationException {
-		if (jsonChargesTransactionList == null || jsonChargesTransactionList.size() == 0)
-			return null;
+		if (jsonChargesTransactionList == null || jsonChargesTransactionList.isEmpty())
+			return new ArrayList<Charge>();
 		List<Charge> chargesList = new ArrayList<Charge>();
 		for (JsonTransaction jsonTransaction : jsonChargesTransactionList) {
 			Charge charge = fetchCharge(payment, new Charge(heidelpay), jsonTransaction.getUrl());
@@ -427,8 +412,8 @@ public class PaymentService {
 
 	private List<Payout> fetchPayoutList(Payment payment, List<JsonTransaction> jsonTransactionList)
 			throws HttpCommunicationException {
-		if (jsonTransactionList == null || jsonTransactionList.size() == 0)
-			return null;
+		if (jsonTransactionList == null || jsonTransactionList.isEmpty())
+			return new ArrayList<Payout>();
 		List<Payout> payoutList = new ArrayList<Payout>();
 		for (JsonTransaction jsonTransaction : jsonTransactionList) {
 			Payout payout = fetchPayout(payment, new Payout(heidelpay), jsonTransaction.getUrl());
@@ -441,7 +426,7 @@ public class PaymentService {
 
 	private List<Cancel> getCancelListForAuthorization(List<Cancel> cancelList) {
 		if (cancelList == null)
-			return null;
+			return new ArrayList<Cancel>();
 		List<Cancel> authorizationCancelList = new ArrayList<Cancel>();
 		for (Cancel cancel : cancelList) {
 			if (TRANSACTION_TYPE_CANCEL_AUTHORIZE.equalsIgnoreCase(cancel.getType())) {
@@ -454,7 +439,7 @@ public class PaymentService {
 
 	private List<Cancel> getCancelListForCharge(String chargeId, List<Cancel> cancelList) {
 		if (cancelList == null)
-			return null;
+			return new ArrayList<Cancel>();
 		List<Cancel> chargeCancelList = new ArrayList<Cancel>();
 		for (Cancel cancel : cancelList) {
 			if (TRANSACTION_TYPE_CANCEL_CHARGE.equalsIgnoreCase(cancel.getType())
@@ -490,8 +475,8 @@ public class PaymentService {
 
 	private List<Cancel> fetchCancelList(Payment payment, List<JsonTransaction> jsonChargesTransactionList)
 			throws HttpCommunicationException {
-		if (jsonChargesTransactionList == null || jsonChargesTransactionList.size() == 0)
-			return null;
+		if (jsonChargesTransactionList == null || jsonChargesTransactionList.isEmpty())
+			return new ArrayList<Cancel>();
 		List<Cancel> cancelList = new ArrayList<Cancel>();
 		for (JsonTransaction jsonTransaction : jsonChargesTransactionList) {
 			Cancel cancel = fetchCancel(payment, new Cancel(heidelpay), jsonTransaction.getUrl());
@@ -564,45 +549,26 @@ public class PaymentService {
 	}
 
 	private JsonIdObject getJsonObjectFromTypeId(String typeId) {
-		String paymentType = typeId.substring(2, 5);
-		if ("crd".equalsIgnoreCase(paymentType)) {
+		List<String> jsonIdObjects = Arrays.asList("eps", "gro", "ivc", "ivg", "ivf", "ppl", "ppy", "p24", "sft", "ali", "wcp");
+		String paymentType = typeId.substring(2, 5).toLowerCase();
+		if (jsonIdObjects.contains(paymentType)) {
+			return new JsonIdObject();
+		} else if ("crd".equalsIgnoreCase(paymentType)) {
 			return new JsonCard();
-		} else if ("eps".equalsIgnoreCase(paymentType)) {
-			return new JsonIdObject();
-		} else if ("gro".equalsIgnoreCase(paymentType)) {
-			return new JsonIdObject();
 		} else if ("idl".equalsIgnoreCase(paymentType)) {
 			return new JsonIdeal();
-		} else if ("ivc".equalsIgnoreCase(paymentType)) {
-			return new JsonIdObject();
-		} else if ("ivg".equalsIgnoreCase(paymentType)) {
-			return new JsonIdObject();
-		} else if ("ivf".equalsIgnoreCase(paymentType)) {
-			return new JsonIdObject();
-		} else if ("ppl".equalsIgnoreCase(paymentType)) {
-			return new JsonIdObject();
-		} else if ("ppy".equalsIgnoreCase(paymentType)) {
-			return new JsonIdObject();
-		} else if ("p24".equalsIgnoreCase(paymentType)) {
-			return new JsonIdObject();
 		} else if ("sdd".equalsIgnoreCase(paymentType)) {
 			return new JsonSepaDirectDebit();
 		} else if ("ddg".equalsIgnoreCase(paymentType)) {
 			return new JsonSepaDirectDebit();
-		} else if ("sft".equalsIgnoreCase(paymentType)) {
-			return new JsonIdObject();
 		} else if ("pis".equalsIgnoreCase(paymentType)) {
 			return new JsonPis();
-		} else if ("ali".equalsIgnoreCase(paymentType)) {
-			return new JsonIdObject();
-		} else if ("wcp".equalsIgnoreCase(paymentType)) {
-			return new JsonIdObject();
 		} else if ("apl".equalsIgnoreCase(paymentType)) {
 			return new JsonApplepayResponse();
 		} else if ("hdd".equalsIgnoreCase(paymentType)) {
 			return new JsonHirePurchaseRatePlan();
 		} else {
-			throw new PaymentException("Type '" + typeId + "' is currently now supported by the SDK");
+			throw new PaymentException("Type '" + typeId + "' is currently not supported by the SDK");
 		}
 
 	}
@@ -649,7 +615,7 @@ public class PaymentService {
 		} else if ("hdd".equalsIgnoreCase(paymentType)) {
 			return new HirePurchaseRatePlan();
 		} else {
-			throw new PaymentException("Type '" + typeId + "' is currently now supported by the SDK");
+			throw new PaymentException("Type '" + typeId + "' is currently not supported by the SDK");
 		}
 	}
 

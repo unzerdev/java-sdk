@@ -25,9 +25,6 @@ public class JsonApplepayHeader {
 	private String publicKeyHash;
 	private String transactionId;
 
-	public JsonApplepayHeader() {
-	}
-
 	public String getEphemeralPublicKey() {
 		return ephemeralPublicKey;
 	}
