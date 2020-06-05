@@ -901,7 +901,7 @@ public class Heidelpay {
 	 * @return Customer object
 	 * @throws HttpCommunicationException in case communication to Heidelpay didn't work
 	 */
-	public Customer fetchCustomer(String customerId) throws HttpCommunicationException {
+	public Customer fetchCustomer(String customerId) throws HttpCommunicationException, PaymentException {
 		return paymentService.fetchCustomer(customerId);
 	}
 
