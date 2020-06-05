@@ -32,10 +32,10 @@ public class PropertiesUtil {
 	public static final String REST_ENDPOINT = "rest.endpoint";
 	public static final String REST_VERSION = "rest.version";
 
-	public static final String PUBLIC_KEY1 = "heidelpay.test.publickkey1";
-	public static final String PRIVATE_KEY1 = "heidelpay.test.privatekey1";
-	public static final String PRIVATE_KEY2 = "heidelpay.test.privatekey2";
-	public static final String PRIVATE_KEY3 = "heidelpay.test.privatekey3";
+	public static final String PUBLIC_KEY1 = "publickey1";
+	public static final String PRIVATE_KEY1 = "privatekey1";
+	public static final String PRIVATE_KEY2 = "privatekey2";
+	public static final String PRIVATE_KEY3 = "privatekey3";
 
 	private Properties properties;
 	

@@ -6,7 +6,7 @@
 
 	<groupId>com.heidelpay.payment</groupId>
 	<artifactId>heidelpayJava</artifactId>
-	<version>1.8.0.0-SNAPSHOT</version>
+	<version>1.9.0.0-SNAPSHOT</version>
 	<name>Heidelpay Java SDK</name>
 	<description>Heidelpay Java SDK</description>
 	<url>https://docs.heidelpay.com</url>
@@ -42,6 +42,11 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<additionalparam>-Xdoclint:none</additionalparam>
 		<skip.dependency.check>true</skip.dependency.check>
+
+		<publickey1>${publickey1}</publickey1>
+		<privatekey1>${privatekey1}</privatekey1>
+		<privatekey2>${privatekey2}</privatekey2>
+		<privatekey3>${privatekey3}</privatekey3>
 	</properties>
 
 	<distributionManagement>
@@ -208,6 +213,27 @@
 					<nexusUrl>https://oss.sonatype.org/</nexusUrl>
 					<autoReleaseAfterClose>true</autoReleaseAfterClose>
 				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<version>3.0.0-M4</version>
+			</plugin>
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>properties-maven-plugin</artifactId>
+				<version>1.0.0</version>
+				<executions>
+					<execution>
+						<phase>generate-resources</phase>
+						<goals>
+							<goal>write-project-properties</goal>
+						</goals>
+						<configuration>
+							<outputFile>${project.build.testOutputDirectory}/test-keys.properties</outputFile>
+						</configuration>
+					</execution>
+				</executions>
 			</plugin>
 		</plugins>
 	</build>
