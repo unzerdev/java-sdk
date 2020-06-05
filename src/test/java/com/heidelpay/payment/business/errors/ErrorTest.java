@@ -39,8 +39,12 @@ import com.heidelpay.payment.PaymentException;
 import com.heidelpay.payment.business.AbstractPaymentTest;
 import com.heidelpay.payment.communication.HttpCommunicationException;
 import com.heidelpay.payment.paymenttypes.Card;
+import com.heidelpay.payment.TestKeyConfiguration;
 
 public class ErrorTest extends AbstractPaymentTest {
+
+    private final String privateKey = new TestKeyConfiguration().getPrivateKey2();
+    private final String publicKey = new TestKeyConfiguration().getPublicKey1();
 
     @Test
     public void testKeyMissing() throws MalformedURLException, HttpCommunicationException {
@@ -76,8 +80,7 @@ public class ErrorTest extends AbstractPaymentTest {
     @Test
     public void testPCILevelSaqA() throws HttpCommunicationException {
         try {
-//			getHeidelpay("s-pub-2a10ehAb66CT6wXy43gJVqMvvOjGY5Gt").createPaymentType(getPaymentTypeCard()); // Development
-            getHeidelpay("s-pub-2a10xITCUtmO2FlTP8RKB3OhdnKI4RmU").createPaymentType(getPaymentTypeCard()); // Prod Sandbox
+            getHeidelpay(publicKey).createPaymentType(getPaymentTypeCard()); // Prod Sandbox
         } catch (PaymentException e) {
             assertNotNull(e.getPaymentErrorList());
             assertTrue(e.getPaymentErrorList().size() > 0);
@@ -95,8 +98,7 @@ public class ErrorTest extends AbstractPaymentTest {
     public void testInvalidAccess() throws HttpCommunicationException {
         Card card = createPaymentTypeCard();
         try {
-//			getHeidelpay("s-priv-2a10SyGqMkJQoku5BdPSYUi3YO2iXQO9").fetchPaymentType(card.getId());  // Dev
-            getHeidelpay("s-priv-2a1095rIVXy4IrNFXG6yQiguSAqNjciC").fetchPaymentType(card.getId());  // Prod-Sandbox
+            getHeidelpay(privateKey).fetchPaymentType(card.getId());  // Prod-Sandbox
 
         } catch (PaymentException e) {
             assertNotNull(e.getPaymentErrorList());

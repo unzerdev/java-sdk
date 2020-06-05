@@ -35,6 +35,7 @@ import com.heidelpay.payment.Heidelpay;
 import com.heidelpay.payment.Metadata;
 import com.heidelpay.payment.PaymentException;
 import com.heidelpay.payment.Processing;
+import com.heidelpay.payment.TestKeyConfiguration;
 import com.heidelpay.payment.communication.HttpCommunicationException;
 import com.heidelpay.payment.communication.impl.HttpClientBasedRestCommunication;
 import com.heidelpay.payment.paymenttypes.Card;
@@ -57,17 +58,18 @@ public abstract class AbstractPaymentTest {
 	protected String getRandomInvoiceId() {
 		return getRandomId().substring(0, 5);
 	}
+	private final String privateKey = new TestKeyConfiguration().getPrivateKey1();
 
 	public Heidelpay getHeidelpayWithEndPoint(String endPoint) {
-		return new Heidelpay("s-priv-2a102ZMq3gV4I3zJ888J7RR6u75oqK3n", null, endPoint);
+		return new Heidelpay(privateKey, null, endPoint);
 	}
 
 	public Heidelpay getHeidelpay() {
-		return new Heidelpay("s-priv-2a102ZMq3gV4I3zJ888J7RR6u75oqK3n");
+		return new Heidelpay(privateKey);
 	}
 
 	public Heidelpay getHeidelpayDE() {
-		return new Heidelpay("s-priv-2a102ZMq3gV4I3zJ888J7RR6u75oqK3n", Locale.GERMANY);
+		return new Heidelpay(privateKey, Locale.GERMANY);
 	}
 
 	public Heidelpay getHeidelpay(String key) {

@@ -35,6 +35,7 @@ import com.heidelpay.payment.Charge;
 import com.heidelpay.payment.Heidelpay;
 import com.heidelpay.payment.Payment;
 import com.heidelpay.payment.PaymentException;
+import com.heidelpay.payment.TestKeyConfiguration;
 import com.heidelpay.payment.business.AbstractPaymentTest;
 import com.heidelpay.payment.communication.HttpCommunicationException;
 import com.heidelpay.payment.communication.impl.HttpClientBasedRestCommunication;
@@ -42,12 +43,13 @@ import com.heidelpay.payment.paymenttypes.Card;
 
 public class CardTest extends AbstractPaymentTest {
 
-	
+	private final String privateKey = new TestKeyConfiguration().getPrivateKey3();
+
 	@Test(expected=PaymentException.class)
 	public void testCreateCardWithMerchantNotPCIDSSCompliant() throws HttpCommunicationException {
 		Card card = new Card("4444333322221111", "03/20");
 		card.setCvc("123");
-		Heidelpay heidelpay = new Heidelpay(new HttpClientBasedRestCommunication(), "s-priv-2a107CYZMp3UbyVPAuqWoxQHi9nFyeiW");
+		Heidelpay heidelpay = new Heidelpay(new HttpClientBasedRestCommunication(), privateKey);
 		card = heidelpay.createPaymentType(card);
 		assertNotNull(card.getId());
 	}
