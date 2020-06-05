@@ -58,18 +58,18 @@ public abstract class AbstractPaymentTest {
 	protected String getRandomInvoiceId() {
 		return getRandomId().substring(0, 5);
 	}
-	private final String privateKey = new TestKeyConfiguration().getPrivateKey1();
+	private final String privateKey1 = new TestKeyConfiguration().getPrivateKey1();
 
 	public Heidelpay getHeidelpayWithEndPoint(String endPoint) {
-		return new Heidelpay(privateKey, null, endPoint);
+		return new Heidelpay(privateKey1, null, endPoint);
 	}
 
 	public Heidelpay getHeidelpay() {
-		return new Heidelpay(privateKey);
+		return new Heidelpay(privateKey1);
 	}
 
 	public Heidelpay getHeidelpayDE() {
-		return new Heidelpay(privateKey, Locale.GERMANY);
+		return new Heidelpay(privateKey1, Locale.GERMANY);
 	}
 
 	public Heidelpay getHeidelpay(String key) {

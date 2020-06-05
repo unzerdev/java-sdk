@@ -43,8 +43,8 @@ import com.heidelpay.payment.TestKeyConfiguration;
 
 public class ErrorTest extends AbstractPaymentTest {
 
-    private final String privateKey = new TestKeyConfiguration().getPrivateKey2();
-    private final String publicKey = new TestKeyConfiguration().getPublicKey1();
+    private final String privateKey2 = new TestKeyConfiguration().getPrivateKey2();
+    private final String publicKey1 = new TestKeyConfiguration().getPublicKey1();
 
     @Test
     public void testKeyMissing() throws MalformedURLException, HttpCommunicationException {
@@ -80,7 +80,7 @@ public class ErrorTest extends AbstractPaymentTest {
     @Test
     public void testPCILevelSaqA() throws HttpCommunicationException {
         try {
-            getHeidelpay(publicKey).createPaymentType(getPaymentTypeCard()); // Prod Sandbox
+            getHeidelpay(publicKey1).createPaymentType(getPaymentTypeCard()); // Prod Sandbox
         } catch (PaymentException e) {
             assertNotNull(e.getPaymentErrorList());
             assertTrue(e.getPaymentErrorList().size() > 0);
@@ -98,7 +98,7 @@ public class ErrorTest extends AbstractPaymentTest {
     public void testInvalidAccess() throws HttpCommunicationException {
         Card card = createPaymentTypeCard();
         try {
-            getHeidelpay(privateKey).fetchPaymentType(card.getId());  // Prod-Sandbox
+            getHeidelpay(privateKey2).fetchPaymentType(card.getId());  // Prod-Sandbox
 
         } catch (PaymentException e) {
             assertNotNull(e.getPaymentErrorList());
