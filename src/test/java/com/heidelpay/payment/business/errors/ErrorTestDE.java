@@ -34,8 +34,6 @@ import static org.junit.Assert.*;
 
 public class ErrorTestDE extends AbstractPaymentTest {
 
-    private final Heidelpay heidelpay =  getHeidelpayDE(new TestKeyConfiguration().getPublicKey1());
-
     // The given key something is unknown or invalid.
     // The key 's-priv-123' is invalid
     @Test
@@ -61,7 +59,7 @@ public class ErrorTestDE extends AbstractPaymentTest {
     @Test
     public void testPCILevelSaqA() throws HttpCommunicationException {
         try {
-            heidelpay.createPaymentType(getPaymentTypeCard()); // Prod Sandbox
+            getHeidelpayDE(publicKey1).createPaymentType(getPaymentTypeCard()); // Prod Sandbox
         } catch (PaymentException e) {
             assertNotNull(e.getPaymentErrorList());
             assertTrue(e.getPaymentErrorList().size() > 0);
@@ -79,7 +77,7 @@ public class ErrorTestDE extends AbstractPaymentTest {
     public void testInvalidAccess() throws HttpCommunicationException {
         Card card = createPaymentTypeCard();
         try {
-            heidelpay.fetchPaymentType(card.getId());  // Prod-Sandbox
+            getHeidelpayDE(privateKey1).fetchPaymentType(card.getId());  // Prod-Sandbox
 
         } catch (PaymentException e) {
             assertNotNull(e.getPaymentErrorList());

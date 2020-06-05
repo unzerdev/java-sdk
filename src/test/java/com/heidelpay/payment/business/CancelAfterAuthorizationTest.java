@@ -34,7 +34,6 @@ import com.heidelpay.payment.communication.HttpCommunicationException;
 
 public class CancelAfterAuthorizationTest extends AbstractPaymentTest {
 
-
 	@Test
 	public void fetchAuthorization() throws HttpCommunicationException, MalformedURLException {
 		Authorization authorize = getHeidelpay().authorize(getAuthorization(createPaymentTypeCard().getId()));

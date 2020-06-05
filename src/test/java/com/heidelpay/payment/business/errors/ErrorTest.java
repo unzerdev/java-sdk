@@ -39,12 +39,8 @@ import com.heidelpay.payment.PaymentException;
 import com.heidelpay.payment.business.AbstractPaymentTest;
 import com.heidelpay.payment.communication.HttpCommunicationException;
 import com.heidelpay.payment.paymenttypes.Card;
-import com.heidelpay.payment.TestKeyConfiguration;
 
 public class ErrorTest extends AbstractPaymentTest {
-
-    private final String privateKey2 = new TestKeyConfiguration().getPrivateKey2();
-    private final String publicKey1 = new TestKeyConfiguration().getPublicKey1();
 
     @Test
     public void testKeyMissing() throws MalformedURLException, HttpCommunicationException {
