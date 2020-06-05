@@ -42,5 +42,4 @@ public class JsonPis extends JsonIdObject implements JsonObject {
 	public void setHolder(String holder) {
 		this.holder = holder;
 	}
-	
 }

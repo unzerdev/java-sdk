@@ -33,7 +33,6 @@ import com.heidelpay.payment.communication.HttpCommunicationException;
 
 public class CustomerTest extends AbstractPaymentTest {
 
-	
 	@Test
 	public void testCreateMinimumCustomer() throws HttpCommunicationException {
 		Customer customer = getHeidelpay().createCustomer(getMinimumCustomer());

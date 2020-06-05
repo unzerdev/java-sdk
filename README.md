@@ -21,7 +21,7 @@ Documentation is available at https://docs.heidelpay.com/docs/java-sdk.
 ### Heidelpay class
 The Heidelpay class is instantiated using your private or public key:
 ```java
-Heidelpay heidelpay = new Heidelpay("s-priv-2a102ZMq3gV4I3zJ888J7RR6u75oqK3n");
+Heidelpay heidelpay = new Heidelpay("s-priv-xxxxxxxxxx");
 ```
 You can inject a custom implementation of the http-network communication into the Heidelpay constructor. For implementing a custom communication stack, you have to subclass the AbstractHeidelpayRestCommunication class together with a HeidelpayHttpRequest. For an example please refer to the reference implementation com.heidelpay.payment.communication.impl.HttpClientBasedRestCommunication.
 
@@ -31,7 +31,7 @@ The first step is to create a Payment Type and then do an authorize or charge fo
 Example for Authorize
 
 ```java
-Heidelpay heidelpay = new Heidelpay("s-priv-2a102ZMq3gV4I3zJ888J7RR6u75oqK3n");
+Heidelpay heidelpay = new Heidelpay("s-priv-xxxxxxxxxx");
 
 // Already created the payment type using our Javascript or Mobile SDK's
 Authorization authorize = heidelpay.authorize(BigDecimal.ONE, Currency.getInstance("EUR"), "s-crd-fm7tifzkqewy", new URL("https://www.heidelpay.com"));
@@ -45,7 +45,7 @@ Authorization authorize2 = heidelpay.authorize(BigDecimal.ONE, Currency.getInsta
 Example for Charge
 
 ```java
-Heidelpay heidelpay = new Heidelpay("s-priv-2a102ZMq3gV4I3zJ888J7RR6u75oqK3n");
+Heidelpay heidelpay = new Heidelpay("s-priv-xxxxxxxxxx");
 
 // Already created the payment type using our Javascript or Mobile SDK's
 Charge charge = heidelpay.charge(BigDecimal.ONE, Currency.getInstance("EUR"), "s-sft-fm7tifzkqewy", new URL("https://www.heidelpay.com"));
@@ -61,7 +61,7 @@ As a result for authorize or charge an Authorization or Charge object will be re
 To query the status of a payment you can fetch the Payment:
 
 ```java
-Heidelpay heidelpay = new Heidelpay("s-priv-2a102ZMq3gV4I3zJ888J7RR6u75oqK3n");
+Heidelpay heidelpay = new Heidelpay("s-priv-xxxxxxxxxx");
 
 Payment payment = heidelpay.fetchPayment(authorize.getPayment().getId());
 ```
@@ -71,7 +71,7 @@ If you started the payment with an authorize (reservation) then you can do a Cha
 There are different options to Charge after an Authorization:
 
 ```java
-Heidelpay heidelpay = new Heidelpay("s-priv-2a102ZMq3gV4I3zJ888J7RR6u75oqK3n");
+Heidelpay heidelpay = new Heidelpay("s-priv-xxxxxxxxxx");
 
 // Charge using Authorize object
 Authorization authorization = heidelpay.fetchAuthorization("s-pay-1");
@@ -89,7 +89,7 @@ Charge charge3 = heidelpay.chargeAuthorization("s-pay-1");
 Cancelling a payment after authorization. There are again three options how to do this:
 
 ```java
-Heidelpay heidelpay = new Heidelpay("s-priv-2a102ZMq3gV4I3zJ888J7RR6u75oqK3n");
+Heidelpay heidelpay = new Heidelpay("s-priv-xxxxxxxxxx");
 
 // Cancel Authorization
 Authorization authorization = heidelpay.fetchAuthorization("s-pay-1");
@@ -107,7 +107,7 @@ Cancel cancel3 = heidelpay.cancelAuthorization("s-pay-1");
 Cancelling a charge refunds money from the merchant to the customer. There are several options how to do a refund:
 
 ```java
-Heidelpay heidelpay = new Heidelpay("s-priv-2a102ZMq3gV4I3zJ888J7RR6u75oqK3n");
+Heidelpay heidelpay = new Heidelpay("s-priv-xxxxxxxxxx");
 
 // cancel a charge using Charge object
 Charge charge = heidelpay.fetchCharge("s-pay-1", "s-chg-1");
@@ -122,7 +122,7 @@ Cancel cancel = heidelpay.cancelCharge("s-pay-1", "s-chg-1", BigDecimal.ONE);
 To execute a Shipment you need to call the shipment method in Heidelpay object:
 
 ```java
-Heidelpay heidelpay = new Heidelpay("s-priv-2a102ZMq3gV4I3zJ888J7RR6u75oqK3n");
+Heidelpay heidelpay = new Heidelpay("s-priv-xxxxxxxxxx");
 
 Shipment shipment = heidelpay.shipment(authorize.getPaymentId());
 ```

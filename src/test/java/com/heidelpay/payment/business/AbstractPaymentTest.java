@@ -40,6 +40,8 @@ import com.heidelpay.payment.communication.impl.HttpClientBasedRestCommunication
 import com.heidelpay.payment.paymenttypes.Card;
 import com.heidelpay.payment.paymenttypes.InvoiceGuaranteed;
 import com.heidelpay.payment.paymenttypes.SepaDirectDebit;
+import com.heidelpay.payment.service.PropertiesUtil;
+
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.net.MalformedURLException;
@@ -54,20 +56,27 @@ import java.util.UUID;
 
 public abstract class AbstractPaymentTest {
 
+	private final PropertiesUtil properties = new PropertiesUtil();
+
+	public final String publicKey1 = properties.getString(PropertiesUtil.PUBLIC_KEY1);
+	public final String privateKey1 = properties.getString(PropertiesUtil.PRIVATE_KEY1);
+	public final String privateKey2 = properties.getString(PropertiesUtil.PRIVATE_KEY2);
+	public final String privateKey3 = properties.getString(PropertiesUtil.PRIVATE_KEY3);
+
 	protected String getRandomInvoiceId() {
 		return getRandomId().substring(0, 5);
 	}
 
 	public Heidelpay getHeidelpayWithEndPoint(String endPoint) {
-		return new Heidelpay("s-priv-2a102ZMq3gV4I3zJ888J7RR6u75oqK3n", null, endPoint);
+		return new Heidelpay(privateKey1, null, endPoint);
 	}
 
 	public Heidelpay getHeidelpay() {
-		return new Heidelpay("s-priv-2a102ZMq3gV4I3zJ888J7RR6u75oqK3n");
+		return new Heidelpay(privateKey1);
 	}
 
 	public Heidelpay getHeidelpayDE() {
-		return new Heidelpay("s-priv-2a102ZMq3gV4I3zJ888J7RR6u75oqK3n", Locale.GERMANY);
+		return new Heidelpay(privateKey1, Locale.GERMANY);
 	}
 
 	public Heidelpay getHeidelpay(String key) {
