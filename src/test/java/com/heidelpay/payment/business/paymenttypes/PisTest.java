@@ -27,6 +27,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Currency;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
 import com.heidelpay.payment.Charge;
@@ -75,8 +76,9 @@ public class PisTest extends AbstractPaymentTest {
 	}
 
 	@Test
+	@Ignore("AHC-3615 PIS holder not in response when doing a POST/GET")
 	public void testFetchPisTypeWithHolderBicIban() throws HttpCommunicationException {
-		Pis fetchedPis = (Pis)getHeidelpay().fetchPaymentType("s-pis-tqiu0stu41qm");
+		Pis fetchedPis = (Pis)getHeidelpay().fetchPaymentType("s-pis-ivt4ibypi0zk");
 		assertNotNull(fetchedPis.getId());
 		assertNotNull(fetchedPis.getIban());
 		assertNotNull(fetchedPis.getBic());

@@ -31,7 +31,12 @@ public class PropertiesUtil {
 	public static final Logger logger = LogManager.getLogger(PropertiesUtil.class);
 	public static final String REST_ENDPOINT = "rest.endpoint";
 	public static final String REST_VERSION = "rest.version";
-	
+
+	public static final String PUBLIC_KEY1 = "publickey1";
+	public static final String PRIVATE_KEY1 = "privatekey1";
+	public static final String PRIVATE_KEY2 = "privatekey2";
+	public static final String PRIVATE_KEY3 = "privatekey3";
+
 	private Properties properties;
 	
 	private void loadProperties() {
@@ -39,6 +44,9 @@ public class PropertiesUtil {
 			Properties loadedProperties = new Properties();
 			loadedProperties.load(this.getClass().getResourceAsStream("/heidelpay.properties"));
 			this.properties = loadedProperties;
+
+			loadedProperties.load(this.getClass().getResourceAsStream("/test-keys.properties"));
+			this.properties.putAll(loadedProperties);
 		} catch (IOException e) {
 			logger.error("Error loading heidelpay.properties from Classpath: " + e.getMessage(), e);
 			throw new PropertiesException("Error loading heidelpay.properties from Classpath: " + e.getMessage());

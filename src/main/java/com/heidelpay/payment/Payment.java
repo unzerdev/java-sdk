@@ -225,7 +225,7 @@ public class Payment extends AbstractPayment {
 		return value != null && !"".equalsIgnoreCase(value.trim());
 	}
 
-	private Customer fetchCustomer(String customerId) throws HttpCommunicationException {
+	private Customer fetchCustomer(String customerId) throws HttpCommunicationException, PaymentException {
 		return getHeidelpay().fetchCustomer(customerId);
 	}
 

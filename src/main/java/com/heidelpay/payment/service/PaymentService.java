@@ -138,7 +138,7 @@ public class PaymentService {
 		return fetchCustomer(jsonId.getId());
 	}
 
-	public Customer fetchCustomer(String customerId) throws HttpCommunicationException {
+	public Customer fetchCustomer(String customerId) throws HttpCommunicationException, PaymentException {
 		Customer customer = new Customer("", "");
 		customer.setId(customerId);
 		String response = restCommunication.httpGet(urlUtil.getHttpGetUrl(customer, customer.getId()),
