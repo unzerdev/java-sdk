@@ -23,6 +23,7 @@ package com.heidelpay.payment.business;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
+import com.google.gson.Gson;
 import com.heidelpay.payment.Charge;
 import com.heidelpay.payment.Customer;
 import com.heidelpay.payment.Payment;
@@ -216,5 +217,11 @@ public class ChargeTest extends AbstractPaymentTest {
 		assertNotNull(charge.getId());
 		assertEquals("pmt-ref", charge.getPaymentReference());
 		assertEquals(new BigDecimal(1.0000).setScale(4), charge.getAmount());
+	}
+
+	@Test
+	public void testChargeObjectIsParsableWithGson() throws HttpCommunicationException, MalformedURLException {
+		Charge charge = getHeidelpay().charge(BigDecimal.ONE, Currency.getInstance("EUR"), createPaymentTypeCard().getId(), new URL("https://integration.splitit.com//gateways/Proxy/Execute?publicToken=9e517919-9e3d-4d5f-825e-99f7712eefd1"), false);
+		assertEquals(String.class, new Gson().toJson(charge).getClass());
 	}
 }

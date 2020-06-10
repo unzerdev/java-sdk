@@ -28,10 +28,10 @@ import com.heidelpay.payment.paymenttypes.PaymentType;
 public abstract class AbstractPayment implements PaymentType {
 	private String id;
 	
-	private Payment payment;
-	private Heidelpay heidelpay;
-	private URL resourceUrl;
-	private String type;
+	private transient Payment payment;
+	private transient Heidelpay heidelpay;
+	private transient URL resourceUrl;
+	private transient String type;
 	private Message message;
 
 	private Date date;
