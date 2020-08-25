@@ -51,7 +51,7 @@ public class Prepayment extends AbstractPaymentType implements PaymentType {
 	}
 
 	public Charge charge(BigDecimal amount, Currency currency, URL returnUrl) throws HttpCommunicationException {
-		return charge(amount, currency, returnUrl, null);
+		return charge(amount, currency, returnUrl);
 	}
 	public Charge charge(BigDecimal amount, Currency currency, URL returnUrl, Customer customer) throws HttpCommunicationException {
 		return getHeidelpay().charge(amount, currency, this, returnUrl, customer);

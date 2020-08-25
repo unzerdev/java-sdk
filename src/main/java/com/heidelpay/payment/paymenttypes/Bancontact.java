@@ -34,9 +34,11 @@ public class Bancontact extends AbstractPaymentType implements PaymentType {
 
 	@Override
 	public PaymentType map(PaymentType bancontact, JsonObject jsonId) {
-		((Bancontact) bancontact).setId(jsonId.getId());
-		((Bancontact) bancontact).setRecurring(((JsonBancontact) jsonId).getRecurring());
-		((Bancontact) bancontact).setHolder(((JsonBancontact) jsonId).getHolder());
+		if(bancontact instanceof Bancontact) {
+			((Bancontact) bancontact).setId(jsonId.getId());
+			((Bancontact) bancontact).setRecurring(((JsonBancontact) jsonId).getRecurring());
+			((Bancontact) bancontact).setHolder(((JsonBancontact) jsonId).getHolder());
+		}
 		return bancontact;
 	}
 
@@ -49,7 +51,7 @@ public class Bancontact extends AbstractPaymentType implements PaymentType {
 	}
 
 	public Charge charge(BigDecimal amount, Currency currency, URL returnUrl) throws HttpCommunicationException {
-		return getHeidelpay().charge(amount, currency, this, returnUrl, (Customer)null);
+		return getHeidelpay().charge(amount, currency, this, returnUrl);
 	}
 	public Charge charge(BigDecimal amount, Currency currency, URL returnUrl, Customer customer) throws HttpCommunicationException {
 		return getHeidelpay().charge(amount, currency, this, returnUrl, customer);

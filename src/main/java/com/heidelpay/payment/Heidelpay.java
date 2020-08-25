@@ -221,7 +221,7 @@ public class Heidelpay {
 	 */
 	public Authorization authorize(BigDecimal amount, Currency currency, String typeId)
 			throws HttpCommunicationException {
-		return authorize(amount, currency, typeId, null, (String) null);
+		return authorize(amount, currency, typeId, null, "");
 	}
 
 	/**
@@ -553,7 +553,7 @@ public class Heidelpay {
 	 */
 	public Charge charge(BigDecimal amount, Currency currency, PaymentType paymentType, URL returnUrl)
 			throws HttpCommunicationException {
-		return charge(amount, currency, createPaymentType(paymentType).getId(), returnUrl, (String) null);
+		return charge(amount, currency, createPaymentType(paymentType).getId(), returnUrl, "");
 	}
 
 	/**
