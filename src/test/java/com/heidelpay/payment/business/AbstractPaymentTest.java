@@ -480,6 +480,20 @@ public abstract class AbstractPaymentTest {
 		basket.addBasketItem(getMaxTestBasketItem2());
 		return basket;
 	}
+	
+	protected Basket getTestBasketForInvoice() {
+		Basket basket = new Basket();
+		basket.setAmountTotalGross(new BigDecimal(14.49));
+		basket.setAmountTotalVat(new BigDecimal(14.49*0.2).setScale(2, RoundingMode.HALF_UP));
+		basket.setAmountTotalDiscount(BigDecimal.TEN);
+		basket.setAmountTotalVat(new BigDecimal(3.41));
+		basket.setCurrencyCode(Currency.getInstance("EUR"));
+		basket.setNote("Mistery shopping");
+		basket.setOrderId(getRandomId());
+		basket.addBasketItem(getMaxTestBasketItem1());
+		basket.addBasketItem(getMaxTestBasketItem2());
+		return basket;
+	}
 
 	protected Basket getMinTestBasket() {
 		Basket basket = new Basket()

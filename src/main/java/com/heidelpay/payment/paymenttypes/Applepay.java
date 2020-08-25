@@ -65,14 +65,14 @@ public class Applepay extends AbstractPaymentType implements PaymentType {
 	}
 
 	public Authorization authorize(BigDecimal amount, Currency currency, URL returnUrl) throws HttpCommunicationException {
-		return authorize(amount, currency, returnUrl, (Customer)null);
+		return authorize(amount, currency, returnUrl, null);
 	}
 	public Authorization authorize(BigDecimal amount, Currency currency, URL returnUrl, Customer customer) throws HttpCommunicationException {
 		return getHeidelpay().authorize(amount, currency, this, returnUrl, customer);
 	}
 
 	public Charge charge(BigDecimal amount, Currency currency, URL returnUrl) throws HttpCommunicationException {
-		return getHeidelpay().charge(amount, currency, this, returnUrl, (Customer)null);
+		return getHeidelpay().charge(amount, currency, this, returnUrl);
 	}
 	public Charge charge(BigDecimal amount, Currency currency, URL returnUrl, Customer customer) throws HttpCommunicationException {
 		return getHeidelpay().charge(amount, currency, this, returnUrl, customer);

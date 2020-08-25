@@ -1,5 +1,7 @@
 package com.heidelpay.payment.business.paymenttypes;
 
+import static org.junit.Assert.assertEquals;
+
 /*-
  * #%L
  * Heidelpay Java SDK
@@ -38,10 +40,19 @@ import com.heidelpay.payment.paymenttypes.Paypal;
 public class PaypalTest extends AbstractPaymentTest {
 
 	@Test
-	public void testCreatePaypalManatoryType() throws HttpCommunicationException {
+	public void testCreatePaypalMandatoryType() throws HttpCommunicationException {
 		Paypal paypal = new Paypal();
 		paypal = (Paypal) getHeidelpay().createPaymentType(paypal);
 		assertNotNull(paypal.getId());
+	}
+	
+	@Test
+	public void testCreatePaypalWithEmail() throws HttpCommunicationException {
+		Paypal paypal = new Paypal();
+		paypal.setEmail("test.user@email.com");
+		paypal = (Paypal) getHeidelpay().createPaymentType(paypal);
+		assertNotNull(paypal.getId());
+		assertEquals("test.user@email.com", paypal.getEmail());
 	}
 
 	@Test
