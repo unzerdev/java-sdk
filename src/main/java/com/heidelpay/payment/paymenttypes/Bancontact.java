@@ -34,7 +34,7 @@ public class Bancontact extends AbstractPaymentType implements PaymentType {
 
 	@Override
 	public PaymentType map(PaymentType bancontact, JsonObject jsonId) {
-		if(bancontact instanceof Bancontact) {
+		if(bancontact instanceof Bancontact && jsonId instanceof JsonBancontact) {
 			((Bancontact) bancontact).setId(jsonId.getId());
 			((Bancontact) bancontact).setRecurring(((JsonBancontact) jsonId).getRecurring());
 			((Bancontact) bancontact).setHolder(((JsonBancontact) jsonId).getHolder());
