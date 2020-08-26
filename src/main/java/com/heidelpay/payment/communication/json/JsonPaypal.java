@@ -1,10 +1,10 @@
-package com.heidelpay.payment.paymenttypes;
+package com.heidelpay.payment.communication.json;
 
 /*-
  * #%L
  * Heidelpay Java SDK
  * %%
- * Copyright (C) 2018 Heidelpay GmbH
+ * Copyright (C) 2018 - 2020 Heidelpay GmbH
  * %%
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,23 +20,12 @@ package com.heidelpay.payment.paymenttypes;
  * #L%
  */
 
-/**
- * @deprecated use {@code SepaDirectDebitSecured} as a default implementation.
- * @author rene.felder
- *
- */
-@Deprecated
-public class SepaDirectDebitGuaranteed extends SepaDirectDebit implements PaymentType {
-
-	@Deprecated
-	public SepaDirectDebitGuaranteed(String iban) {
-		super(iban);
+public class JsonPaypal extends JsonIdObject implements JsonObject {
+	private String email;
+	public String getEmail() {
+		return email;
 	}
-
-	@Deprecated
-	@Override
-	public String getTypeUrl() {
-		return "types/sepa-direct-debit-guaranteed";
+	public void setEmail(String email) {
+		this.email = email;
 	}
-
 }

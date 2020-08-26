@@ -21,64 +21,53 @@ package com.heidelpay.payment.paymenttypes;
  */
 
 import com.heidelpay.payment.Basket;
-import java.math.BigDecimal;
-import java.net.URL;
-import java.util.Currency;
-
 import com.heidelpay.payment.Charge;
 import com.heidelpay.payment.Customer;
-import com.heidelpay.payment.GeoLocation;
 import com.heidelpay.payment.communication.HttpCommunicationException;
 import com.heidelpay.payment.communication.json.JsonIdObject;
 import com.heidelpay.payment.communication.json.JsonObject;
 
-/**
- * @deprecated use {@code InvoiceSecured} as a default implementation.
- * Invoice guaranteed is an Invoice payment with guarantee for the Merchant
- * @author rene.felder
- *
- */
-@Deprecated
-public class InvoiceGuaranteed extends AbstractPaymentType implements PaymentType {
+import java.math.BigDecimal;
+import java.net.URL;
+import java.util.Currency;
 
-	@Deprecated
+/**
+ * Invoice secured is an Invoice payment with guarantee for the Merchant
+ */
+public class InvoiceSecured extends AbstractPaymentType implements PaymentType {
+
 	@Override
 	public String getTypeUrl() {
-		return "types/invoice-guaranteed";
+		return "types/invoice-secured";
 	}
 
-	@Deprecated
 	@Override
-	public PaymentType map(PaymentType invoiceGuaranteed, JsonObject jsonId) {
-		((InvoiceGuaranteed) invoiceGuaranteed).setId(jsonId.getId());
-		((InvoiceGuaranteed) invoiceGuaranteed).setRecurring(((JsonIdObject) jsonId).getRecurring());
-		GeoLocation tempGeoLocation = new GeoLocation(((JsonIdObject) jsonId).getGeoLocation().getClientIp(), ((JsonIdObject) jsonId).getGeoLocation().getCountryIsoA2());
-		((InvoiceGuaranteed) invoiceGuaranteed).setGeoLocation(tempGeoLocation);
-		return invoiceGuaranteed;
+	public PaymentType map(PaymentType invoiceSecured, JsonObject jsonId) {
+		if(invoiceSecured instanceof InvoiceSecured && jsonId instanceof JsonIdObject) {
+			((InvoiceSecured) invoiceSecured).setId(jsonId.getId());
+			((InvoiceSecured) invoiceSecured).setRecurring(((JsonIdObject) jsonId).getRecurring());
+		}
+		return invoiceSecured;
 	}
 
-	@Deprecated
 	public Charge charge(BigDecimal amount, Currency currency, URL returnUrl) throws HttpCommunicationException {
 		return charge(amount, currency, returnUrl, null);
 	}
 
-	@Deprecated
 	public Charge charge(BigDecimal amount, Currency currency, URL returnUrl, Customer customer) throws HttpCommunicationException {
 		return getHeidelpay().charge(amount, currency, this, returnUrl, customer);
 	}
 
-	@Deprecated
 	public Charge charge(BigDecimal amount, Currency currency, URL returnUrl, Customer customer, Basket basket, String invoiceId) throws HttpCommunicationException {
 		return getHeidelpay().charge(getCharge(amount, currency, this, returnUrl, customer, basket, invoiceId));
 	}
 
-	@Deprecated
-	private Charge getCharge(BigDecimal amount, Currency currency, InvoiceGuaranteed invoiceGuaranteed, URL returnUrl,
-			Customer customer, Basket basket, String invoiceId) throws HttpCommunicationException {
+	private Charge getCharge(BigDecimal amount, Currency currency, InvoiceSecured invoiceSecured, URL returnUrl,
+                             Customer customer, Basket basket, String invoiceId) throws HttpCommunicationException {
 		return ((Charge) new Charge()
 				.setAmount(amount)
 				.setCurrency(currency)
-				.setTypeId(getHeidelpay().createPaymentType(invoiceGuaranteed).getId())
+				.setTypeId(getHeidelpay().createPaymentType(invoiceSecured).getId())
 				.setReturnUrl(returnUrl)
 				.setCustomerId(getHeidelpay().createCustomerIfPresent(customer).getId())
 				.setBasketId(getHeidelpay().createBasket(basket).getId()))

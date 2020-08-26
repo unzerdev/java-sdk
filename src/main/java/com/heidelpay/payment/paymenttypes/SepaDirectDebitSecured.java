@@ -20,23 +20,15 @@ package com.heidelpay.payment.paymenttypes;
  * #L%
  */
 
-/**
- * @deprecated use {@code SepaDirectDebitSecured} as a default implementation.
- * @author rene.felder
- *
- */
-@Deprecated
-public class SepaDirectDebitGuaranteed extends SepaDirectDebit implements PaymentType {
+public class SepaDirectDebitSecured extends SepaDirectDebit implements PaymentType {
 
-	@Deprecated
-	public SepaDirectDebitGuaranteed(String iban) {
+	public SepaDirectDebitSecured(String iban) {
 		super(iban);
 	}
 
-	@Deprecated
 	@Override
 	public String getTypeUrl() {
-		return "types/sepa-direct-debit-guaranteed";
+		return "types/sepa-direct-debit-secured";
 	}
 
 }

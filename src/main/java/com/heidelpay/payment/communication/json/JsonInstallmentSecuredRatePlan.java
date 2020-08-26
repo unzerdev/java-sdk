@@ -20,21 +20,17 @@ package com.heidelpay.payment.communication.json;
  * #L%
  */
 
+import com.google.gson.annotations.JsonAdapter;
+import com.google.gson.annotations.SerializedName;
+import com.heidelpay.payment.business.paymenttypes.InstallmentSecuredRate;
+import com.heidelpay.payment.communication.JsonDateConverter;
+
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import com.google.gson.annotations.JsonAdapter;
-import com.google.gson.annotations.SerializedName;
-import com.heidelpay.payment.business.paymenttypes.HirePurchaseRate;
-import com.heidelpay.payment.communication.JsonDateConverter;
-
-/**
- * @deprecated @deprecated use {@code JsonInstallmentSecuredRatePlan} as a default implementation.
- */
-@Deprecated
-public class JsonHirePurchaseRatePlan extends JsonIdObject implements JsonObject {
+public class JsonInstallmentSecuredRatePlan extends JsonIdObject implements JsonObject {
 
 	
 	private String iban;
@@ -60,7 +56,7 @@ public class JsonHirePurchaseRatePlan extends JsonIdObject implements JsonObject
 	private BigDecimal feePerRate;
 	private BigDecimal monthlyRate;
 	private BigDecimal lastRate;
-	private List<HirePurchaseRate> rateList = new ArrayList<HirePurchaseRate>();
+	private List<InstallmentSecuredRate> rateList = new ArrayList<InstallmentSecuredRate>();
 	
 	public int getNumberOfRates() {
 		return numberOfRates;
@@ -128,10 +124,10 @@ public class JsonHirePurchaseRatePlan extends JsonIdObject implements JsonObject
 	public void setLastRate(BigDecimal lastRate) {
 		this.lastRate = lastRate;
 	}
-	public List<HirePurchaseRate> getRateList() {
+	public List<InstallmentSecuredRate> getRateList() {
 		return rateList;
 	}
-	public void setRateList(List<HirePurchaseRate> rateList) {
+	public void setRateList(List<InstallmentSecuredRate> rateList) {
 		this.rateList = rateList;
 	}
 	public String getIban() {

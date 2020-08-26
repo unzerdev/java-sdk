@@ -1,10 +1,10 @@
-package com.heidelpay.payment.paymenttypes;
+package com.heidelpay.payment.webhook;
 
 /*-
  * #%L
  * Heidelpay Java SDK
  * %%
- * Copyright (C) 2018 Heidelpay GmbH
+ * Copyright (C) 2018 - 2020 Heidelpay GmbH
  * %%
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,23 +20,17 @@ package com.heidelpay.payment.paymenttypes;
  * #L%
  */
 
-/**
- * @deprecated use {@code SepaDirectDebitSecured} as a default implementation.
- * @author rene.felder
- *
- */
-@Deprecated
-public class SepaDirectDebitGuaranteed extends SepaDirectDebit implements PaymentType {
+import java.util.List;
 
-	@Deprecated
-	public SepaDirectDebitGuaranteed(String iban) {
-		super(iban);
+public class WebhookList {
+	
+	private List<Webhook> events;
+
+	public List<Webhook> getEvents() {
+		return events;
 	}
 
-	@Deprecated
-	@Override
-	public String getTypeUrl() {
-		return "types/sepa-direct-debit-guaranteed";
+	public void setEvents(List<Webhook> events) {
+		this.events = events;
 	}
-
 }
