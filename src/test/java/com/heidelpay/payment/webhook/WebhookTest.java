@@ -6,6 +6,7 @@ import static org.junit.Assert.assertNotNull;
 import java.util.Arrays;
 import java.util.List;
 
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -15,7 +16,13 @@ import com.heidelpay.payment.communication.HttpCommunicationException;
 public class WebhookTest extends AbstractPaymentTest {
 	
 	@Before
-	public void clearData() throws HttpCommunicationException {
+	public void clearDataBeforeTest() throws HttpCommunicationException {
+		WebhookList deleteResult = getHeidelpay().deleteMultiWebhook();
+		assertNotNull(deleteResult);
+	}
+	
+	@After
+	public void clearDataAfterTest() throws HttpCommunicationException {
 		WebhookList deleteResult = getHeidelpay().deleteMultiWebhook();
 		assertNotNull(deleteResult);
 	}
