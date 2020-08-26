@@ -26,6 +26,7 @@ import java.util.Currency;
 
 import com.heidelpay.payment.Charge;
 import com.heidelpay.payment.Customer;
+import com.heidelpay.payment.GeoLocation;
 import com.heidelpay.payment.communication.HttpCommunicationException;
 import com.heidelpay.payment.communication.json.JsonObject;
 import com.heidelpay.payment.communication.json.JsonPis;
@@ -53,6 +54,8 @@ public class Pis extends AbstractPaymentType implements PaymentType {
 		((Pis) pis).setBic(((JsonPis) jsonPis).getBic());
 		((Pis) pis).setIban(((JsonPis) jsonPis).getIban());
 		((Pis) pis).setHolder(((JsonPis) jsonPis).getHolder());
+		GeoLocation tempGeoLocation = new GeoLocation(((JsonPis) jsonPis).getGeoLocation().getClientIp(), ((JsonPis) jsonPis).getGeoLocation().getCountryIsoA2());
+		((Pis) pis).setGeoLocation(tempGeoLocation);
 		return pis;
 	}
 

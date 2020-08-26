@@ -20,11 +20,13 @@ package com.heidelpay.payment.paymenttypes;
  * #L%
  */
 
+import com.heidelpay.payment.GeoLocation;
 import com.heidelpay.payment.Heidelpay;
 
 public abstract class AbstractPaymentType implements PaymentType {
 	private String id;
 	private Boolean recurring;
+	private GeoLocation geoLocation;
 	
 	private transient Heidelpay heidelpay;
 	
@@ -61,4 +63,11 @@ public abstract class AbstractPaymentType implements PaymentType {
 		this.recurring = recurring;
 	}
 
+	public GeoLocation getGeoLocation() {
+		return geoLocation;
+	}
+
+	public void setGeoLocation(GeoLocation geoLocation) {
+		this.geoLocation = geoLocation;
+	}
 }

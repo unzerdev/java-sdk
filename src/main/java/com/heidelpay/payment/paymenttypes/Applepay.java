@@ -27,6 +27,7 @@ import java.util.Currency;
 import com.heidelpay.payment.Authorization;
 import com.heidelpay.payment.Charge;
 import com.heidelpay.payment.Customer;
+import com.heidelpay.payment.GeoLocation;
 import com.heidelpay.payment.communication.HttpCommunicationException;
 import com.heidelpay.payment.communication.json.JsonApplepayResponse;
 import com.heidelpay.payment.communication.json.JsonObject;
@@ -47,7 +48,7 @@ public class Applepay extends AbstractPaymentType implements PaymentType {
 	private String expiryDate;
 	private String currencyCode;
 	private BigDecimal transactionAmount;
-	
+
 	@Override
 	public String getTypeUrl() {
 		return "types/applepay";
@@ -61,6 +62,8 @@ public class Applepay extends AbstractPaymentType implements PaymentType {
 		((Applepay) applepay).setCurrencyCode(((JsonApplepayResponse) jsonApplePay).getCurrencyCode());
 		((Applepay) applepay).setTransactionAmount(((JsonApplepayResponse) jsonApplePay).getTransactionAmount());
 		((Applepay) applepay).setRecurring(((JsonApplepayResponse) jsonApplePay).getRecurring());
+		GeoLocation tempGeoLocation = new GeoLocation(((JsonApplepayResponse) jsonApplePay).getGeoLocation().getClientIp(), ((JsonApplepayResponse) jsonApplePay).getGeoLocation().getCountryIsoA2());
+		((Applepay) applepay).setGeoLocation(tempGeoLocation);
 		return applepay;
 	}
 

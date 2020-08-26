@@ -28,6 +28,7 @@ import com.google.gson.annotations.SerializedName;
 import com.heidelpay.payment.Authorization;
 import com.heidelpay.payment.Charge;
 import com.heidelpay.payment.Customer;
+import com.heidelpay.payment.GeoLocation;
 import com.heidelpay.payment.communication.HttpCommunicationException;
 import com.heidelpay.payment.communication.json.JsonCard;
 import com.heidelpay.payment.communication.json.JsonCardDetails;
@@ -101,6 +102,8 @@ public class Card extends AbstractPaymentType implements PaymentType {
 		((Card) card).setCardHolder(((JsonCard) jsonCard).getCardHolder());
 		CardDetails tempCardDetails = mapCardDetails(((JsonCard) jsonCard).getCardDetails());
 		((Card) card).setCardDetails(tempCardDetails);
+		GeoLocation tempGeoLocation = new GeoLocation(((JsonCard) jsonCard).getGeoLocation().getClientIp(), ((JsonCard) jsonCard).getGeoLocation().getCountryIsoA2());
+		((Card) card).setGeoLocation(tempGeoLocation);
 		return card;
 	}
 

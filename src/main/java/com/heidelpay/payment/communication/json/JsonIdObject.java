@@ -23,6 +23,7 @@ package com.heidelpay.payment.communication.json;
 public class JsonIdObject implements JsonObject {
 	private String id;
 	private Boolean recurring;
+	private JsonGeoLocation geoLocation;
 
 	public String getId() {
 		return id;
@@ -40,5 +41,11 @@ public class JsonIdObject implements JsonObject {
 		this.recurring = recurring;
 	}
 
+	public JsonGeoLocation getGeoLocation() {
+		return geoLocation;
+	}
 
+	public void setGeoLocation(JsonGeoLocation geoLocation) {
+		this.geoLocation = geoLocation;
+	}
 }

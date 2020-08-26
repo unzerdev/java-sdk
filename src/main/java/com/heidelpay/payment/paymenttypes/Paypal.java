@@ -27,6 +27,7 @@ import java.util.Currency;
 import com.heidelpay.payment.Authorization;
 import com.heidelpay.payment.Charge;
 import com.heidelpay.payment.Customer;
+import com.heidelpay.payment.GeoLocation;
 import com.heidelpay.payment.communication.HttpCommunicationException;
 import com.heidelpay.payment.communication.json.JsonIdObject;
 import com.heidelpay.payment.communication.json.JsonObject;
@@ -47,6 +48,8 @@ public class Paypal extends AbstractPaymentType implements PaymentType {
 	public PaymentType map(PaymentType paypal, JsonObject jsonId) {
 		((Paypal) paypal).setId(jsonId.getId());
 		((Paypal) paypal).setRecurring(((JsonIdObject) jsonId).getRecurring());
+		GeoLocation tempGeoLocation = new GeoLocation(((JsonIdObject) jsonId).getGeoLocation().getClientIp(), ((JsonIdObject) jsonId).getGeoLocation().getCountryIsoA2());
+		((Paypal) paypal).setGeoLocation(tempGeoLocation);
 		return paypal;
 	}
 

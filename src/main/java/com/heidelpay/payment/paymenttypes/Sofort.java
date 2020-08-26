@@ -26,6 +26,7 @@ import java.util.Currency;
 
 import com.heidelpay.payment.Charge;
 import com.heidelpay.payment.Customer;
+import com.heidelpay.payment.GeoLocation;
 import com.heidelpay.payment.communication.HttpCommunicationException;
 import com.heidelpay.payment.communication.json.JsonIdObject;
 import com.heidelpay.payment.communication.json.JsonObject;
@@ -41,12 +42,15 @@ public class Sofort extends AbstractPaymentType implements PaymentType {
 	public PaymentType map(PaymentType sofort, JsonObject jsonId) {
 		((Sofort) sofort).setId(jsonId.getId());
 		((Sofort) sofort).setRecurring(((JsonIdObject) jsonId).getRecurring());
+		GeoLocation tempGeoLocation = new GeoLocation(((JsonIdObject) jsonId).getGeoLocation().getClientIp(), ((JsonIdObject) jsonId).getGeoLocation().getCountryIsoA2());
+		((Sofort) sofort).setGeoLocation(tempGeoLocation);
 		return sofort;
 	}
 
 	public Charge charge(BigDecimal amount, Currency currency, URL returnUrl) throws HttpCommunicationException {
 		return getHeidelpay().charge(amount, currency, this, returnUrl, (Customer)null);
 	}
+
 	public Charge charge(BigDecimal amount, Currency currency, URL returnUrl, Customer customer) throws HttpCommunicationException {
 		return getHeidelpay().charge(amount, currency, this, returnUrl, customer);
 	}
