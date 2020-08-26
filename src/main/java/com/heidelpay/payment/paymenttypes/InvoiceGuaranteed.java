@@ -27,6 +27,7 @@ import java.util.Currency;
 
 import com.heidelpay.payment.Charge;
 import com.heidelpay.payment.Customer;
+import com.heidelpay.payment.GeoLocation;
 import com.heidelpay.payment.communication.HttpCommunicationException;
 import com.heidelpay.payment.communication.json.JsonIdObject;
 import com.heidelpay.payment.communication.json.JsonObject;
@@ -51,6 +52,8 @@ public class InvoiceGuaranteed extends AbstractPaymentType implements PaymentTyp
 	public PaymentType map(PaymentType invoiceGuaranteed, JsonObject jsonId) {
 		((InvoiceGuaranteed) invoiceGuaranteed).setId(jsonId.getId());
 		((InvoiceGuaranteed) invoiceGuaranteed).setRecurring(((JsonIdObject) jsonId).getRecurring());
+		GeoLocation tempGeoLocation = new GeoLocation(((JsonIdObject) jsonId).getGeoLocation().getClientIp(), ((JsonIdObject) jsonId).getGeoLocation().getCountryIsoA2());
+		((InvoiceGuaranteed) invoiceGuaranteed).setGeoLocation(tempGeoLocation);
 		return invoiceGuaranteed;
 	}
 

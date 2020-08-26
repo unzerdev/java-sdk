@@ -26,6 +26,7 @@ import java.util.Currency;
 
 import com.heidelpay.payment.Charge;
 import com.heidelpay.payment.Customer;
+import com.heidelpay.payment.GeoLocation;
 import com.heidelpay.payment.communication.HttpCommunicationException;
 import com.heidelpay.payment.communication.json.JsonIdObject;
 import com.heidelpay.payment.communication.json.JsonObject;
@@ -47,6 +48,8 @@ public class Alipay extends AbstractPaymentType implements PaymentType {
 	public PaymentType map(PaymentType alipay, JsonObject jsonId) {
 		((Alipay) alipay).setId(jsonId.getId());
 		((Alipay) alipay).setRecurring(((JsonIdObject) jsonId).getRecurring());
+		GeoLocation tempGeoLocation = new GeoLocation(((JsonIdObject) jsonId).getGeoLocation().getClientIp(), ((JsonIdObject) jsonId).getGeoLocation().getCountryIsoA2());
+		((Alipay) alipay).setGeoLocation(tempGeoLocation);
 		return alipay;
 	}
 

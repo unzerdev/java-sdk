@@ -1,4 +1,4 @@
-package com.heidelpay.payment.communication.json;
+package com.heidelpay.payment;
 
 /*-
  * #%L
@@ -20,36 +20,30 @@ package com.heidelpay.payment.communication.json;
  * #L%
  */
 
-public class JsonSepaDirectDebit extends JsonIdObject{
-	private String iban;
-	private String bic;
-	private String holder;
-	
-	public JsonSepaDirectDebit() {
-		super();
+public class GeoLocation {
+	private String clientIp;
+	private String countryIsoA2;
+
+	public GeoLocation(String clientIp, String countryIsoA2) {
+		this.clientIp = clientIp;
+		this.countryIsoA2 = countryIsoA2;
 	}
 
-	public String getIban() {
-		return iban;
+	public String getClientIp() {
+		return clientIp;
 	}
 
-	public void setIban(String iban) {
-		this.iban = iban;
+	public GeoLocation setClientIp(String clientIp) {
+		this.clientIp = clientIp;
+		return this;
 	}
 
-	public String getBic() {
-		return bic;
+	public String getCountryIsoA2() {
+		return countryIsoA2;
 	}
 
-	public void setBic(String bic) {
-		this.bic = bic;
-	}
-
-	public String getHolder() {
-		return holder;
-	}
-
-	public void setHolder(String holder) {
-		this.holder = holder;
+	public GeoLocation setCountryIsoA2(String countryIsoA2) {
+		this.countryIsoA2 = countryIsoA2;
+		return this;
 	}
 }

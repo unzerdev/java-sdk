@@ -19,9 +19,6 @@ package com.heidelpay.payment.business.paymenttypes;
  * limitations under the License.
  * #L%
  */
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
 
 import java.math.BigDecimal;
 import java.net.MalformedURLException;
@@ -39,6 +36,8 @@ import com.heidelpay.payment.business.AbstractPaymentTest;
 import com.heidelpay.payment.communication.HttpCommunicationException;
 import com.heidelpay.payment.communication.impl.HttpClientBasedRestCommunication;
 import com.heidelpay.payment.paymenttypes.Card;
+
+import static org.junit.Assert.*;
 
 public class CardTest extends AbstractPaymentTest {
 
@@ -142,10 +141,12 @@ public class CardTest extends AbstractPaymentTest {
 		assertEquals("CREDIT", fetchedCard.getCardDetails().getAccount());
 		assertEquals("US", fetchedCard.getCardDetails().getCountryIsoA2());
 		assertEquals("UNITED STATES", fetchedCard.getCardDetails().getCountryName());
-		assertEquals(null, fetchedCard.getCardDetails().getCardType());
-		assertEquals(null, fetchedCard.getCardDetails().getIssuerName());
-		assertEquals(null, fetchedCard.getCardDetails().getIssuerUrl());
-		assertEquals(null, fetchedCard.getCardDetails().getIssuerPhoneNumber());
+		assertNull(fetchedCard.getCardDetails().getCardType());
+		assertNull(fetchedCard.getCardDetails().getIssuerName());
+		assertNull(fetchedCard.getCardDetails().getIssuerUrl());
+		assertNull(fetchedCard.getCardDetails().getIssuerPhoneNumber());
+		assertNotNull(fetchedCard.getGeoLocation().getClientIp());
+		assertNotNull(fetchedCard.getGeoLocation().getCountryIsoA2());
 		assertEquals("card", fetchedCard.getMethod());
 	}
 

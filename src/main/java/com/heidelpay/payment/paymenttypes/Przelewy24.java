@@ -26,6 +26,7 @@ import java.util.Currency;
 
 import com.heidelpay.payment.Charge;
 import com.heidelpay.payment.Customer;
+import com.heidelpay.payment.GeoLocation;
 import com.heidelpay.payment.communication.HttpCommunicationException;
 import com.heidelpay.payment.communication.json.JsonIdObject;
 import com.heidelpay.payment.communication.json.JsonObject;
@@ -47,6 +48,8 @@ public class Przelewy24 extends AbstractPaymentType implements PaymentType {
 	public PaymentType map(PaymentType przelewy24, JsonObject jsonId) {
 		((Przelewy24) przelewy24).setId(jsonId.getId());
 		((Przelewy24) przelewy24).setRecurring(((JsonIdObject) jsonId).getRecurring());
+		GeoLocation tempGeoLocation = new GeoLocation(((JsonIdObject) jsonId).getGeoLocation().getClientIp(), ((JsonIdObject) jsonId).getGeoLocation().getCountryIsoA2());
+		((Przelewy24) przelewy24).setGeoLocation(tempGeoLocation);
 		return przelewy24;
 	}
 
