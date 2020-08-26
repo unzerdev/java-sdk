@@ -36,6 +36,10 @@ import java.text.ParseException;
 import java.util.Currency;
 import org.junit.Test;
 
+/**
+ * @deprecated @deprecated use {@code InvoiceSecuredTest} as a default implementation.
+ */
+@Deprecated
 public class InvoiceFactoringTest extends AbstractPaymentTest {
 
 	@Test

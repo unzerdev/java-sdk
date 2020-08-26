@@ -20,10 +20,15 @@ package com.heidelpay.payment.business.paymenttypes;
  * #L%
  */
 
-import static junit.framework.TestCase.assertEquals;
-import static org.junit.Assert.assertNotNull;
-
 import com.heidelpay.payment.Basket;
+import com.heidelpay.payment.Charge;
+import com.heidelpay.payment.PaymentException;
+import com.heidelpay.payment.Shipment;
+import com.heidelpay.payment.business.AbstractPaymentTest;
+import com.heidelpay.payment.communication.HttpCommunicationException;
+import com.heidelpay.payment.paymenttypes.InvoiceSecured;
+import org.junit.Test;
+
 import java.math.BigDecimal;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -31,26 +36,16 @@ import java.text.ParseException;
 import java.util.Currency;
 import java.util.Date;
 
-import org.junit.Test;
+import static junit.framework.TestCase.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
-import com.heidelpay.payment.Charge;
-import com.heidelpay.payment.PaymentException;
-import com.heidelpay.payment.Shipment;
-import com.heidelpay.payment.business.AbstractPaymentTest;
-import com.heidelpay.payment.communication.HttpCommunicationException;
-import com.heidelpay.payment.paymenttypes.InvoiceGuaranteed;
-
-/**
- * @deprecated @deprecated use {@code InvoiceSecuredTest} as a default implementation.
- */
-@Deprecated
-public class InvoiceGuaranteedTest extends AbstractPaymentTest {
+public class InvoiceSecuredTest extends AbstractPaymentTest {
 
 	@Test
 	public void testChargeTypeWithInvoiceId()
 			throws HttpCommunicationException, MalformedURLException, ParseException {
-		InvoiceGuaranteed invoice = getHeidelpay().createPaymentType(getInvoiceGuaranteed());
-		Basket basket = getHeidelpay().createBasket(getMinTestBasket());
+		InvoiceSecured invoice = getHeidelpay().createPaymentType(getInvoiceSecured());
+		Basket basket = getMinTestBasket();
 		String invoiceId = getRandomInvoiceId();
 		Charge charge = invoice.charge(basket.getAmountTotalGross(), Currency.getInstance("EUR"),
 				new URL("https://www.meinShop.de"), getMaximumCustomerSameAddress(getRandomId()), basket,
@@ -61,27 +56,31 @@ public class InvoiceGuaranteedTest extends AbstractPaymentTest {
 	}
 
 	@Test
-	public void testCreateInvoiceGuaranteedManatoryType() throws HttpCommunicationException {
-		InvoiceGuaranteed invoice = getHeidelpay().createPaymentType(getInvoiceGuaranteed());
+	public void testCreateInvoiceSecuredManatoryType() throws HttpCommunicationException {
+		InvoiceSecured invoice = getHeidelpay().createPaymentType(getInvoiceSecured());
 		assertNotNull(invoice.getId());
 	}
 
 	@Test
 	public void testChargeType() throws HttpCommunicationException, MalformedURLException, ParseException {
-		InvoiceGuaranteed invoice = getHeidelpay().createPaymentType(getInvoiceGuaranteed());
-		invoice.charge(BigDecimal.TEN, Currency.getInstance("EUR"), new URL("https://www.meinShop.de"), getMaximumCustomerSameAddress(getRandomId()));		
+		InvoiceSecured invoice = getHeidelpay().createPaymentType(getInvoiceSecured());
+		Basket basket = getMinTestBasket();
+		Charge chargeResult = invoice.charge(basket.getAmountTotalGross(), Currency.getInstance("EUR"), new URL("https://www.meinShop.de"), getMaximumCustomerSameAddress(getRandomId()), basket, invoice.getId());
+		assertNotNull(chargeResult);
 	}
 
 	@Test(expected=PaymentException.class)
 	public void testChargeTypeDifferentAddresses() throws HttpCommunicationException, MalformedURLException, ParseException {
-		InvoiceGuaranteed invoice = getHeidelpay().createPaymentType(getInvoiceGuaranteed());
+		InvoiceSecured invoice = getHeidelpay().createPaymentType(getInvoiceSecured());
 		invoice.charge(BigDecimal.TEN, Currency.getInstance("EUR"), new URL("https://www.meinShop.de"), getMaximumCustomer(getRandomId()));		
 	}
 
 	@Test
-	public void testShipmentInvoiceGuaranteedType() throws HttpCommunicationException, MalformedURLException, ParseException {
-		Charge charge = getHeidelpay().charge(BigDecimal.TEN, Currency.getInstance("EUR"), new InvoiceGuaranteed(), new URL("https://www.meinShop.de"), getMaximumCustomerSameAddress(getRandomId()));
+	public void testShipmentInvoiceSecuredType() throws HttpCommunicationException, MalformedURLException, ParseException {
+		InvoiceSecured invoice = getHeidelpay().createPaymentType(getInvoiceSecured());
+		Basket basket = getMinTestBasket();
 		String invoiceId = new Date().getTime() + "";
+		Charge charge = getHeidelpay().charge(basket.getAmountTotalGross(), Currency.getInstance("EUR"), invoice, new URL("https://www.meinShop.de"), getMaximumCustomerSameAddress(getRandomId()), basket);
 		Shipment shipment = getHeidelpay().shipment(charge.getPaymentId(), invoiceId);
 		assertNotNull(shipment);
 		assertNotNull(shipment.getId());
@@ -89,16 +88,16 @@ public class InvoiceGuaranteedTest extends AbstractPaymentTest {
 	}
 
 	@Test
-	public void testFetchInvoiceGuaranteedType() throws HttpCommunicationException {
-		InvoiceGuaranteed invoice = getHeidelpay().createPaymentType(getInvoiceGuaranteed());
+	public void testFetchInvoiceSecuredType() throws HttpCommunicationException {
+		InvoiceSecured invoice = getHeidelpay().createPaymentType(getInvoiceSecured());
 		assertNotNull(invoice.getId());
-		InvoiceGuaranteed fetchedInvoiceGuaranteed = (InvoiceGuaranteed) getHeidelpay().fetchPaymentType(invoice.getId());
-		assertNotNull(fetchedInvoiceGuaranteed.getId());
+		InvoiceSecured fetchedInvoiceSecured = (InvoiceSecured) getHeidelpay().fetchPaymentType(invoice.getId());
+		assertNotNull(fetchedInvoiceSecured.getId());
 	}
 
 	
-	private InvoiceGuaranteed getInvoiceGuaranteed() {
-		return new InvoiceGuaranteed();
+	private InvoiceSecured getInvoiceSecured() {
+		return new InvoiceSecured();
 	}
 
 }

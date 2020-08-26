@@ -32,17 +32,20 @@ import com.heidelpay.payment.communication.json.JsonIdObject;
 import com.heidelpay.payment.communication.json.JsonObject;
 
 /**
+ * @deprecated use {@code InvoiceSecured} as a default implementation.
  * Invoice guaranteed is an Invoice payment with guarantee for the Merchant
  * @author rene.felder
  *
  */
 public class InvoiceFactoring extends AbstractPaymentType implements PaymentType {
 
+	@Deprecated
 	@Override
 	public String getTypeUrl() {
 		return "types/invoice-factoring";
 	}
 
+	@Deprecated
 	@Override
 	public PaymentType map(PaymentType invoice, JsonObject jsonId) {
 		((InvoiceFactoring) invoice).setId(jsonId.getId());
@@ -50,14 +53,17 @@ public class InvoiceFactoring extends AbstractPaymentType implements PaymentType
 		return invoice;
 	}
 
+	@Deprecated
 	public Charge charge(BigDecimal amount, Currency currency, URL returnUrl, Customer customer, Basket basket) throws HttpCommunicationException {
 		return getHeidelpay().charge(amount, currency, this, returnUrl, customer, basket);
 	}
 
+	@Deprecated
 	public Charge charge(BigDecimal amount, Currency currency, URL returnUrl, Customer customer, Basket basket, String invoiceId) throws HttpCommunicationException {
 		return getHeidelpay().charge(getCharge(amount, currency, this, returnUrl, customer, basket, invoiceId));
 	}
 
+	@Deprecated
 	private Charge getCharge(BigDecimal amount, Currency currency, InvoiceFactoring invoiceFactoring, URL returnUrl,
 			Customer customer, Basket basket, String invoiceId) throws HttpCommunicationException {
 		return ((Charge) new Charge()

@@ -39,6 +39,7 @@ import com.heidelpay.payment.communication.HttpCommunicationException;
 import com.heidelpay.payment.communication.impl.HttpClientBasedRestCommunication;
 import com.heidelpay.payment.paymenttypes.Card;
 import com.heidelpay.payment.paymenttypes.InvoiceGuaranteed;
+import com.heidelpay.payment.paymenttypes.InvoiceSecured;
 import com.heidelpay.payment.paymenttypes.SepaDirectDebit;
 import com.heidelpay.payment.service.PropertiesUtil;
 
@@ -164,9 +165,16 @@ public abstract class AbstractPaymentTest {
 		return card;
 	}
 
+	@Deprecated
 	protected InvoiceGuaranteed createPaymentTypeInvoiceGuaranteed() throws HttpCommunicationException {
 		InvoiceGuaranteed invoice = new InvoiceGuaranteed();
 		invoice = (InvoiceGuaranteed)getHeidelpay().createPaymentType(invoice);
+		return invoice;
+	}
+
+	protected InvoiceSecured createPaymentTypeInvoiceSecured() throws HttpCommunicationException {
+		InvoiceSecured invoice = new InvoiceSecured();
+		invoice = (InvoiceSecured)getHeidelpay().createPaymentType(invoice);
 		return invoice;
 	}
 
@@ -469,10 +477,10 @@ public abstract class AbstractPaymentTest {
 
 	protected Basket getMaxTestBasket() {
 		Basket basket = new Basket();
-		basket.setAmountTotalGross(new BigDecimal(866.49));
-		basket.setAmountTotalVat(new BigDecimal(866.49*0.2).setScale(2, RoundingMode.HALF_UP));
+		basket.setAmountTotalGross(new BigDecimal(380.48));
+		basket.setAmountTotalVat(new BigDecimal(380.48*0.2).setScale(2, RoundingMode.HALF_UP));
 		basket.setAmountTotalDiscount(BigDecimal.TEN);
-		basket.setAmountTotalVat(new BigDecimal(142.41));
+		basket.setAmountTotalVat(new BigDecimal(5.41));
 		basket.setCurrencyCode(Currency.getInstance("EUR"));
 		basket.setNote("Mistery shopping");
 		basket.setOrderId(getRandomId());
@@ -485,13 +493,12 @@ public abstract class AbstractPaymentTest {
 		Basket basket = new Basket();
 		basket.setAmountTotalGross(new BigDecimal(14.49));
 		basket.setAmountTotalVat(new BigDecimal(14.49*0.2).setScale(2, RoundingMode.HALF_UP));
-		basket.setAmountTotalDiscount(BigDecimal.TEN);
+		basket.setAmountTotalDiscount(BigDecimal.ONE);
 		basket.setAmountTotalVat(new BigDecimal(3.41));
 		basket.setCurrencyCode(Currency.getInstance("EUR"));
 		basket.setNote("Mistery shopping");
 		basket.setOrderId(getRandomId());
 		basket.addBasketItem(getMaxTestBasketItem1());
-		basket.addBasketItem(getMaxTestBasketItem2());
 		return basket;
 	}
 
@@ -508,11 +515,11 @@ public abstract class AbstractPaymentTest {
 		BasketItem basketItem = new BasketItem();
 		basketItem.setBasketItemReferenceId("Artikelnummer4711");
 		basketItem.setAmountDiscount(BigDecimal.ONE);
-		basketItem.setAmountGross(new BigDecimal(500.5));
-		basketItem.setAmountNet(new BigDecimal(420.1));
-		basketItem.setAmountPerUnit(new BigDecimal(100.1));
-		basketItem.setAmountVat(new BigDecimal(80.4));
-		basketItem.setQuantity(5);
+		basketItem.setAmountGross(new BigDecimal(14.49));
+		basketItem.setAmountNet(new BigDecimal(13.49));
+		basketItem.setAmountPerUnit(new BigDecimal(14.49));
+		basketItem.setAmountVat(new BigDecimal(1.4));
+		basketItem.setQuantity(1);
 		basketItem.setTitle("Apple iPhone");
 		basketItem.setUnit("Pc.");
 		basketItem.setVat(19);
@@ -553,6 +560,8 @@ public abstract class AbstractPaymentTest {
 				.setAmountPerUnit(new BigDecimal(100.1))
 				.setAmountNet(new BigDecimal(420.1))
 				.setTitle("Apple iPhone");
+		
+		basketItem.setAmountGross(basketItem.getAmountPerUnit().multiply(new BigDecimal(basketItem.getQuantity())));
 		return basketItem;
 	}
 

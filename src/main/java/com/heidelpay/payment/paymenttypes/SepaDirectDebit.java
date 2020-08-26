@@ -24,6 +24,7 @@ import java.math.BigDecimal;
 import java.net.URL;
 import java.util.Currency;
 
+import com.heidelpay.payment.Basket;
 import com.heidelpay.payment.Charge;
 import com.heidelpay.payment.Customer;
 import com.heidelpay.payment.communication.HttpCommunicationException;
@@ -92,6 +93,10 @@ public class SepaDirectDebit extends AbstractPaymentType implements PaymentType 
 	}
 	public Charge charge(BigDecimal amount, Currency currency, URL returnUrl, Customer customer) throws HttpCommunicationException {
 		return getHeidelpay().charge(amount, currency, this, returnUrl, customer);
+	}
+	public Charge charge(BigDecimal amount, Currency currency, URL returnUrl, Customer customer, Basket basket) throws HttpCommunicationException{
+		return getHeidelpay().charge(amount,currency, this, returnUrl, customer, basket);
+
 	}
 
 }
