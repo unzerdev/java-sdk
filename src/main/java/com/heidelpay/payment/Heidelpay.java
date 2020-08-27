@@ -1,5 +1,12 @@
 package com.heidelpay.payment;
 
+import java.math.BigDecimal;
+import java.net.URL;
+import java.util.Currency;
+import java.util.Date;
+import java.util.List;
+import java.util.Locale;
+
 /*-
  * #%L
  * Heidelpay Java SDK
@@ -21,6 +28,7 @@ package com.heidelpay.payment;
  */
 
 import com.heidelpay.payment.business.paymenttypes.HirePurchaseRatePlan;
+import com.heidelpay.payment.business.paymenttypes.InstallmentSecuredRatePlan;
 import com.heidelpay.payment.communication.HeidelpayRestCommunication;
 import com.heidelpay.payment.communication.HttpCommunicationException;
 import com.heidelpay.payment.communication.impl.HttpClientBasedRestCommunication;
@@ -28,12 +36,9 @@ import com.heidelpay.payment.paymenttypes.PaymentType;
 import com.heidelpay.payment.service.LinkpayService;
 import com.heidelpay.payment.service.PaymentService;
 import com.heidelpay.payment.service.PaypageService;
-import java.math.BigDecimal;
-import java.net.URL;
-import java.util.Currency;
-import java.util.Date;
-import java.util.List;
-import java.util.Locale;
+import com.heidelpay.payment.service.WebhookService;
+import com.heidelpay.payment.webhook.Webhook;
+import com.heidelpay.payment.webhook.WebhookList;
 
 /**
  * {@code Heidelpay} is a facade to the Heidelpay REST Api. The facade is
@@ -50,6 +55,7 @@ public class Heidelpay {
 	private PaymentService paymentService;
 	private PaypageService paypageService;
 	private LinkpayService linkpayService;
+	private WebhookService webhookService;
 
 	public Heidelpay(String privateKey) {
 		this(new HttpClientBasedRestCommunication(null), privateKey, null);
@@ -73,6 +79,7 @@ public class Heidelpay {
 		this.paymentService = new PaymentService(this, restCommunication);
 		this.paypageService = new PaypageService(this, restCommunication);
 		this.linkpayService = new LinkpayService(this, restCommunication);
+		this.webhookService = new WebhookService(this, restCommunication);
 	}
 
 	/**
@@ -88,6 +95,7 @@ public class Heidelpay {
 		this.paymentService = new PaymentService(this, restCommunication);
 		this.paypageService = new PaypageService(this, restCommunication);
 		this.linkpayService = new LinkpayService(this, restCommunication);
+		this.webhookService = new WebhookService(this, restCommunication);
 	}
 
 	/**
@@ -221,7 +229,7 @@ public class Heidelpay {
 	 */
 	public Authorization authorize(BigDecimal amount, Currency currency, String typeId)
 			throws HttpCommunicationException {
-		return authorize(amount, currency, typeId, null, (String) null);
+		return authorize(amount, currency, typeId, null, "");
 	}
 
 	/**
@@ -553,7 +561,7 @@ public class Heidelpay {
 	 */
 	public Charge charge(BigDecimal amount, Currency currency, PaymentType paymentType, URL returnUrl)
 			throws HttpCommunicationException {
-		return charge(amount, currency, createPaymentType(paymentType).getId(), returnUrl, (String) null);
+		return charge(amount, currency, createPaymentType(paymentType).getId(), returnUrl, "");
 	}
 
 	/**
@@ -951,9 +959,17 @@ public class Heidelpay {
 		recurring.setMetadataId(metadataId);
 		return recurring;
 	}
-	
+
+	/**
+	 * @deprecated use {@code installmentSecuredRates} as a default implementation.
+	 */
+	@Deprecated
 	public List<HirePurchaseRatePlan> hirePurchaseRates(BigDecimal amount, Currency currency, BigDecimal effectiveInterestRate, Date orderDate) throws HttpCommunicationException {
 		return paymentService.hirePurchasePlan(amount, currency, effectiveInterestRate, orderDate);
+	}
+
+	public List<InstallmentSecuredRatePlan> installmentSecuredRates(BigDecimal amount, Currency currency, BigDecimal effectiveInterestRate, Date orderDate) throws HttpCommunicationException {
+		return paymentService.installmentSecuredPlan(amount, currency, effectiveInterestRate, orderDate);
 	}
 
 	public String getPrivateKey() {
@@ -994,5 +1010,145 @@ public class Heidelpay {
 		.setCustomerId(customerId)
 		.setCard3ds(card3ds);
 		return authorization;
+	}
+	
+	/**
+	 * Register single webhook. It may response error if <code><b>event</b></code> & <code><b>eventList</b></code> are both defined.
+	 * @param webhookRequest refers to registration request
+	 * <br>
+	 * Request example:
+	 * <pre>
+	 * {
+  	 *    "url": "https://domain.com",
+  	 *    "event": "types"
+     * }
+     * <pre>
+     * @return Webhook refers to webhook has been created.
+     * <br>
+     * Response example:
+	 * <pre>
+	 * {
+  	 *    "id": "s-whk-61873",
+  	 *    "url": "https://domain.com",
+  	 *    "event": "types"
+     * }
+     * <pre>
+	 * @throws HttpCommunicationException
+	 */
+	public Webhook registerSingleWebhook(Webhook webhookRequest) throws HttpCommunicationException {
+		return webhookService.registerSingleWebhook(webhookRequest);
+	}
+	
+	/**
+	 * Register single webhook. It may response error if <code><b>event</b></code> & <code><b>eventList</b></code> are both defined.
+	 * The URL will be registered to all webhook events.
+	 * 
+	 * @param webhookRequest refers to list of webhook events 
+	 * <br>
+	 * Request example:
+	 * <pre>
+	 *{
+  	 *   "url": "https://domain.com",
+  	 *   "eventList": ["types", "payments"]
+     *}
+     * <pre>
+     * @return WebhookList refers to list of webhooks have been created.
+     *  * <br>
+     * Response example:
+	 * <pre>
+	 *{
+	 *    "events":[{
+  	 *       "id": "s-whk-61873",
+  	 *       "url": "https://domain.com",
+  	 *       "event": "types"
+     *    },
+     *    {
+  	 *       "id": "s-whk-61874",
+  	 *       "url": "https://domain.com",
+  	 *       "event": "payments"
+     *    }]
+     *}
+     * <pre>
+	 * @throws HttpCommunicationException
+	 */
+	public WebhookList registerMultiWebhooks(Webhook webhookRequest) throws HttpCommunicationException {
+		return webhookService.registerMultiWebhooks(webhookRequest);
+	}
+	
+	/**
+	 * Delete single webhook.
+	 * @param webhookId refers to id of a webhook.
+	 * 
+	 * @return WebhookList refers to list of ids of which webhooks have been deleted.
+	 * <br>
+	 * Response example:
+	 * <pre>
+	 *{
+  	 *   "id": "s-whk-61873"
+     *}
+     * <pre>
+	 * @throws HttpCommunicationException
+	 */
+	public Webhook deleteSingleWebhook(String webhookId) throws HttpCommunicationException {
+		return webhookService.deleteSingleWebhook(webhookId);
+	}
+	
+	/**
+	 * Delete list of webhooks. It may return empty list if there is no webhooks to delete.
+	 * 
+	 * @return WebhookList refers to list of ids of which webhooks have been deleted.
+	 * <br>
+	 * Response example:
+	 * <pre>
+	 * {
+  	 *    "events": [
+     *      {
+     *         "id": "s-whk-61873"
+     *      }
+     *    ]
+     * }
+     * <pre>
+	 * @throws HttpCommunicationException
+	 */
+	public WebhookList deleteMultiWebhook() throws HttpCommunicationException {
+		return webhookService.deleteMultiWebhook();
+	}
+	
+	/**
+	 * Update URl of a webhook. Only URL is able to be updated
+	 * 
+	 * @param updateId: webhook id to be updated
+	 * @param updateWebhook: update request
+	 * @return
+	 * @throws HttpCommunicationException
+	 */
+	public Webhook updateSingleWebhook(String updateId, Webhook updateWebhook) throws HttpCommunicationException {
+		return webhookService.updateSingleWebhook(updateId, updateWebhook);
+	}
+	
+	/**
+	 * Get list of webhooks. It may response empty list if there is no webhook.
+	 * 
+     * @return WebhookList refers to list of webhooks have been created.
+     *  * <br>
+     * Response example:
+	 * <pre>
+	 *{
+	 *    "events":[{
+  	 *       "id": "s-whk-61873",
+  	 *       "url": "https://domain.com",
+  	 *       "event": "types"
+     *    },
+     *    {
+  	 *       "id": "s-whk-61874",
+  	 *       "url": "https://domain.com",
+  	 *       "event": "payments"
+     *    }]
+     *}
+     * <pre>
+	 * @throws HttpCommunicationException
+	 */
+	public WebhookList getWebhooks() throws HttpCommunicationException {
+		return webhookService.getWebhooks();
 	}
 }

@@ -4,7 +4,7 @@ package com.heidelpay.payment.paymenttypes;
  * #%L
  * Heidelpay Java SDK
  * %%
- * Copyright (C) 2018 Heidelpay GmbH
+ * Copyright (C) 2018 - 2020 Heidelpay GmbH
  * %%
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -26,37 +26,53 @@ import java.util.Currency;
 
 import com.heidelpay.payment.Charge;
 import com.heidelpay.payment.Customer;
-import com.heidelpay.payment.GeoLocation;
+import com.heidelpay.payment.Heidelpay;
 import com.heidelpay.payment.communication.HttpCommunicationException;
-import com.heidelpay.payment.communication.json.JsonIdObject;
+import com.heidelpay.payment.communication.json.JsonBancontact;
 import com.heidelpay.payment.communication.json.JsonObject;
 
-/**
- * Giropay business object
- * 
- * @author rene.felder
- *
- */
-public class Giropay extends AbstractPaymentType implements PaymentType {
+public class Bancontact extends AbstractPaymentType implements PaymentType {
 
-	@Override
-	public String getTypeUrl() {
-		return "types/giropay";
+	private String holder;
+	
+	public Bancontact(String holder) {
+		this.holder = holder;
+	}
+
+	public Bancontact() {
+		super();
+	}
+
+	public Bancontact(Heidelpay heidelpay) {
+		super(heidelpay);
 	}
 
 	@Override
-	public PaymentType map(PaymentType giropay, JsonObject jsonId) {
-		((Giropay) giropay).setId(jsonId.getId());
-		((Giropay) giropay).setRecurring(((JsonIdObject) jsonId).getRecurring());
-		GeoLocation tempGeoLocation = new GeoLocation(((JsonIdObject) jsonId).getGeoLocation().getClientIp(), ((JsonIdObject) jsonId).getGeoLocation().getCountryIsoA2());
-		((Giropay) giropay).setGeoLocation(tempGeoLocation);
-		return giropay;
+	public String getTypeUrl() {
+		return "types/bancontact";
+	}
+
+	@Override
+	public PaymentType map(PaymentType bancontact, JsonObject jsonId) {
+		if(bancontact instanceof Bancontact && jsonId instanceof JsonBancontact) {
+			((Bancontact) bancontact).setId(jsonId.getId());
+			((Bancontact) bancontact).setRecurring(((JsonBancontact) jsonId).getRecurring());
+			((Bancontact) bancontact).setHolder(((JsonBancontact) jsonId).getHolder());
+		}
+		return bancontact;
+	}
+
+	public String getHolder() {
+		return holder;
+	}
+
+	public void setHolder(String holder) {
+		this.holder = holder;
 	}
 
 	public Charge charge(BigDecimal amount, Currency currency, URL returnUrl) throws HttpCommunicationException {
 		return getHeidelpay().charge(amount, currency, this, returnUrl);
 	}
-
 	public Charge charge(BigDecimal amount, Currency currency, URL returnUrl, Customer customer) throws HttpCommunicationException {
 		return getHeidelpay().charge(amount, currency, this, returnUrl, customer);
 	}

@@ -4,7 +4,7 @@ package com.heidelpay.payment.communication.json;
  * #%L
  * Heidelpay Java SDK
  * %%
- * Copyright (C) 2018 Heidelpay GmbH
+ * Copyright (C) 2018 - 2019 Heidelpay GmbH
  * %%
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,36 +20,25 @@ package com.heidelpay.payment.communication.json;
  * #L%
  */
 
-public class JsonSepaDirectDebit extends JsonIdObject{
-	private String iban;
-	private String bic;
-	private String holder;
-	
-	public JsonSepaDirectDebit() {
-		super();
-	}
+import com.heidelpay.payment.business.paymenttypes.HirePurchaseRatePlan;
+import com.heidelpay.payment.business.paymenttypes.InstallmentSecuredRatePlan;
 
-	public String getIban() {
-		return iban;
-	}
+import java.util.ArrayList;
+import java.util.List;
 
-	public void setIban(String iban) {
-		this.iban = iban;
+public class JsonInstallmentSecuredRatePlanList {
+	private String code;
+	private List<InstallmentSecuredRatePlan> entity = new ArrayList<InstallmentSecuredRatePlan>();
+	public String getCode() {
+		return code;
 	}
-
-	public String getBic() {
-		return bic;
+	public void setCode(String code) {
+		this.code = code;
 	}
-
-	public void setBic(String bic) {
-		this.bic = bic;
+	public List<InstallmentSecuredRatePlan> getEntity() {
+		return entity;
 	}
-
-	public String getHolder() {
-		return holder;
-	}
-
-	public void setHolder(String holder) {
-		this.holder = holder;
+	public void setEntity(List<InstallmentSecuredRatePlan> entity) {
+		this.entity = entity;
 	}
 }

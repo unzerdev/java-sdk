@@ -28,8 +28,10 @@ import com.heidelpay.payment.Authorization;
 import com.heidelpay.payment.Charge;
 import com.heidelpay.payment.Customer;
 import com.heidelpay.payment.communication.HttpCommunicationException;
+import com.heidelpay.payment.GeoLocation;
 import com.heidelpay.payment.communication.json.JsonIdObject;
 import com.heidelpay.payment.communication.json.JsonObject;
+import com.heidelpay.payment.communication.json.JsonPaypal;
 
 /**
  * Paypal business object
@@ -37,6 +39,8 @@ import com.heidelpay.payment.communication.json.JsonObject;
  *
  */
 public class Paypal extends AbstractPaymentType implements PaymentType {
+
+	private String email;
 
 	@Override
 	public String getTypeUrl() {
@@ -47,17 +51,29 @@ public class Paypal extends AbstractPaymentType implements PaymentType {
 	public PaymentType map(PaymentType paypal, JsonObject jsonId) {
 		((Paypal) paypal).setId(jsonId.getId());
 		((Paypal) paypal).setRecurring(((JsonIdObject) jsonId).getRecurring());
+		GeoLocation tempGeoLocation = new GeoLocation(((JsonIdObject) jsonId).getGeoLocation().getClientIp(), ((JsonIdObject) jsonId).getGeoLocation().getCountryIsoA2());
+		((Paypal) paypal).setGeoLocation(tempGeoLocation);
+		((Paypal) paypal).setRecurring(((JsonPaypal) jsonId).getRecurring());
+		((Paypal) paypal).setEmail(((JsonPaypal) jsonId).getEmail());
 		return paypal;
 	}
 
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
 	public Authorization authorize(BigDecimal amount, Currency currency, URL returnUrl) throws HttpCommunicationException {
-		return authorize(amount, currency, returnUrl, (Customer)null);
+		return authorize(amount, currency, returnUrl, null);
 	}
 	public Authorization authorize(BigDecimal amount, Currency currency, URL returnUrl, Customer customer) throws HttpCommunicationException {
 		return getHeidelpay().authorize(amount, currency, this, returnUrl, customer);
 	}
 	public Charge charge(BigDecimal amount, Currency currency, URL returnUrl) throws HttpCommunicationException {
-		return getHeidelpay().charge(amount, currency, this, returnUrl, (Customer)null);
+		return getHeidelpay().charge(amount, currency, this, returnUrl);
 	}
 	public Charge charge(BigDecimal amount, Currency currency, URL returnUrl, Customer customer) throws HttpCommunicationException {
 		return getHeidelpay().charge(amount, currency, this, returnUrl, customer);

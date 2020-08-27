@@ -51,9 +51,15 @@ public class ShipmentTest extends AbstractPaymentTest {
 		assertNotNull(shipment.getMessage().getCustomer());
 	}
 
+	@Deprecated
 	@Test(expected=PaymentException.class)
 	public void testAuthorizeWithShipmentNotSameAddress() throws MalformedURLException, HttpCommunicationException, ParseException {
 		getHeidelpay().authorize(getAuthorization(createPaymentTypeInvoiceGuaranteed().getId(), createMaximumCustomer().getId()));
+	}
+
+	@Test(expected=PaymentException.class)
+	public void testAuthorizeWithShipmentNotSameAddressWithInvoiceSecured() throws MalformedURLException, HttpCommunicationException, ParseException {
+		getHeidelpay().authorize(getAuthorization(createPaymentTypeInvoiceSecured().getId(), createMaximumCustomer().getId()));
 	}
 
 }

@@ -36,6 +36,10 @@ import java.text.ParseException;
 import java.util.Currency;
 import org.junit.Test;
 
+/**
+ * @deprecated @deprecated use {@code InvoiceSecuredTest} as a default implementation.
+ */
+@Deprecated
 public class InvoiceFactoringTest extends AbstractPaymentTest {
 
 	@Test
@@ -47,7 +51,7 @@ public class InvoiceFactoringTest extends AbstractPaymentTest {
 	@Test
 	public void testChargeType() throws HttpCommunicationException, MalformedURLException, ParseException {
 		InvoiceFactoring invoice = createInvoiceFactoring();
-		Basket basket =  getMaxTestBasket();
+		Basket basket =  getTestBasketForInvoice();
 		Charge charge = invoice.charge(basket.getAmountTotalGross().subtract(basket.getAmountTotalDiscount()), Currency.getInstance("EUR"), new URL("https://www.meinShop.de"), getMaximumCustomerSameAddress(getRandomInvoiceId()), basket);
 		assertNotNull(charge);
 		assertNotNull(charge.getPaymentId());
@@ -56,7 +60,7 @@ public class InvoiceFactoringTest extends AbstractPaymentTest {
 	@Test
 	public void testChargeTypeWithInvoiceId() throws HttpCommunicationException, MalformedURLException, ParseException {
 		InvoiceFactoring invoice = createInvoiceFactoring();
-		Basket basket =  getMaxTestBasket();
+		Basket basket =  getTestBasketForInvoice();
 		Charge charge = invoice.charge(basket.getAmountTotalGross().subtract(basket.getAmountTotalDiscount()), Currency.getInstance("EUR"), new URL("https://www.meinShop.de"), getFactoringOKCustomer(getRandomInvoiceId()), basket, getRandomInvoiceId());
 		assertNotNull(charge);
 		assertNotNull(charge.getPaymentId());
@@ -75,7 +79,7 @@ public class InvoiceFactoringTest extends AbstractPaymentTest {
 
 	@Test
 	public void testShipmentInvoiceFactoringTypeWithInvoiceId() throws HttpCommunicationException, MalformedURLException, ParseException {
-		Basket basket = getHeidelpay().createBasket(getMaxTestBasket());
+		Basket basket = getHeidelpay().createBasket(getTestBasketForInvoice());
 		assertNotNull(basket);
 		Charge charge = getHeidelpay().charge(basket.getAmountTotalGross().subtract(basket.getAmountTotalDiscount()), Currency.getInstance("EUR"), createInvoiceFactoring().getId(), new URL("https://www.meinShop.de"), createFactoringOKCustomer().getId() , basket.getId(), false);
 		Shipment shipment = getHeidelpay().shipment(charge.getPaymentId(), getRandomInvoiceId(), "3451");

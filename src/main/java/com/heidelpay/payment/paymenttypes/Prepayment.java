@@ -26,6 +26,7 @@ import java.util.Currency;
 
 import com.heidelpay.payment.Charge;
 import com.heidelpay.payment.Customer;
+import com.heidelpay.payment.GeoLocation;
 import com.heidelpay.payment.communication.HttpCommunicationException;
 import com.heidelpay.payment.communication.json.JsonIdObject;
 import com.heidelpay.payment.communication.json.JsonObject;
@@ -47,6 +48,8 @@ public class Prepayment extends AbstractPaymentType implements PaymentType {
 	public PaymentType map(PaymentType prepayment, JsonObject jsonId) {
 		((Prepayment) prepayment).setId(jsonId.getId());
 		((Prepayment) prepayment).setRecurring(((JsonIdObject) jsonId).getRecurring());
+		GeoLocation tempGeoLocation = new GeoLocation(((JsonIdObject) jsonId).getGeoLocation().getClientIp(), ((JsonIdObject) jsonId).getGeoLocation().getCountryIsoA2());
+		((Prepayment) prepayment).setGeoLocation(tempGeoLocation);
 		return prepayment;
 	}
 

@@ -25,6 +25,10 @@ import java.util.List;
 
 import com.heidelpay.payment.business.paymenttypes.HirePurchaseRatePlan;
 
+/**
+ * @deprecated @deprecated use {@code JsonInstallmentSecuredRatePlanList} as a default implementation.
+ */
+@Deprecated
 public class JsonHirePurchaseRatePlanList {
 	private String code;
 	private List<HirePurchaseRatePlan> entity = new ArrayList<HirePurchaseRatePlan>();

@@ -22,63 +22,47 @@ package com.heidelpay.payment.business.paymenttypes;
 
 import java.math.BigDecimal;
 
-/**
- * @deprecated use {@code InstallmentSecuredRate} as a default implementation.
- */
-@Deprecated
-public class HirePurchaseRate {
+public class InstallmentSecuredRate {
 	private BigDecimal amountOfRepayment;
 	private BigDecimal rate;
 	private BigDecimal totalRemainingAmount;
 	private String type;
 	private Integer rateIndex;
 	private Boolean ultimo;
-
-	@Deprecated
+	
 	public BigDecimal getAmountOfRepayment() {
 		return amountOfRepayment;
 	}
-	@Deprecated
 	public void setAmountOfRepayment(BigDecimal amountOfRepayment) {
 		this.amountOfRepayment = amountOfRepayment;
 	}
-	@Deprecated
 	public BigDecimal getRate() {
 		return rate;
 	}
-	@Deprecated
 	public void setRate(BigDecimal rate) {
 		this.rate = rate;
 	}
-	@Deprecated
 	public BigDecimal getTotalRemainingAmount() {
 		return totalRemainingAmount;
 	}
-	@Deprecated
 	public void setTotalRemainingAmount(BigDecimal totalRemainingAmount) {
 		this.totalRemainingAmount = totalRemainingAmount;
 	}
-	@Deprecated
 	public String getType() {
 		return type;
 	}
-	@Deprecated
 	public void setType(String type) {
 		this.type = type;
 	}
-	@Deprecated
 	public Integer getRateIndex() {
 		return rateIndex;
 	}
-	@Deprecated
 	public void setRateIndex(Integer rateIndex) {
 		this.rateIndex = rateIndex;
 	}
-	@Deprecated
 	public Boolean getUltimo() {
 		return ultimo;
 	}
-	@Deprecated
 	public void setUltimo(Boolean ultimo) {
 		this.ultimo = ultimo;
 	}

@@ -24,8 +24,10 @@ import java.math.BigDecimal;
 import java.net.URL;
 import java.util.Currency;
 
+import com.heidelpay.payment.Basket;
 import com.heidelpay.payment.Charge;
 import com.heidelpay.payment.Customer;
+import com.heidelpay.payment.GeoLocation;
 import com.heidelpay.payment.communication.HttpCommunicationException;
 import com.heidelpay.payment.communication.json.JsonObject;
 import com.heidelpay.payment.communication.json.JsonSepaDirectDebit;
@@ -84,14 +86,20 @@ public class SepaDirectDebit extends AbstractPaymentType implements PaymentType 
 		((SepaDirectDebit) sdd).setIban(((JsonSepaDirectDebit) jsonSdd).getIban());
 		((SepaDirectDebit) sdd).setHolder(((JsonSepaDirectDebit) jsonSdd).getHolder());
 		((SepaDirectDebit) sdd).setRecurring(((JsonSepaDirectDebit) jsonSdd).getRecurring());
+		GeoLocation tempGeoLocation = new GeoLocation(((JsonSepaDirectDebit) jsonSdd).getGeoLocation().getClientIp(), ((JsonSepaDirectDebit) jsonSdd).getGeoLocation().getCountryIsoA2());
+		((SepaDirectDebit) sdd).setGeoLocation(tempGeoLocation);
 		return sdd;
 	}
 
 	public Charge charge(BigDecimal amount, Currency currency, URL returnUrl) throws HttpCommunicationException {
-		return getHeidelpay().charge(amount, currency, this, returnUrl, (Customer)null);
+		return getHeidelpay().charge(amount, currency, this, returnUrl);
 	}
 	public Charge charge(BigDecimal amount, Currency currency, URL returnUrl, Customer customer) throws HttpCommunicationException {
 		return getHeidelpay().charge(amount, currency, this, returnUrl, customer);
+	}
+	public Charge charge(BigDecimal amount, Currency currency, URL returnUrl, Customer customer, Basket basket) throws HttpCommunicationException{
+		return getHeidelpay().charge(amount,currency, this, returnUrl, customer, basket);
+
 	}
 
 }

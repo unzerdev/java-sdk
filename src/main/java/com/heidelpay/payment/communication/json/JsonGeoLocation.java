@@ -4,7 +4,7 @@ package com.heidelpay.payment.communication.json;
  * #%L
  * Heidelpay Java SDK
  * %%
- * Copyright (C) 2018 Heidelpay GmbH
+ * Copyright (C) 2018 - 2020 Heidelpay GmbH
  * %%
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,36 +20,23 @@ package com.heidelpay.payment.communication.json;
  * #L%
  */
 
-public class JsonSepaDirectDebit extends JsonIdObject{
-	private String iban;
-	private String bic;
-	private String holder;
-	
-	public JsonSepaDirectDebit() {
-		super();
+public class JsonGeoLocation {
+	private String clientIp;
+	private String countryIsoA2;
+
+	public String getClientIp() {
+		return clientIp;
 	}
 
-	public String getIban() {
-		return iban;
+	public void setClientIp(String clientIp) {
+		this.clientIp = clientIp;
 	}
 
-	public void setIban(String iban) {
-		this.iban = iban;
+	public String getCountryIsoA2() {
+		return countryIsoA2;
 	}
 
-	public String getBic() {
-		return bic;
-	}
-
-	public void setBic(String bic) {
-		this.bic = bic;
-	}
-
-	public String getHolder() {
-		return holder;
-	}
-
-	public void setHolder(String holder) {
-		this.holder = holder;
+	public void setCountryIsoA2(String countryIsoA2) {
+		this.countryIsoA2 = countryIsoA2;
 	}
 }

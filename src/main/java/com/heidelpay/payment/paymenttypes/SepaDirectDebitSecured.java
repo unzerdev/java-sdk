@@ -1,4 +1,4 @@
-package com.heidelpay.payment.communication.json;
+package com.heidelpay.payment.paymenttypes;
 
 /*-
  * #%L
@@ -20,36 +20,15 @@ package com.heidelpay.payment.communication.json;
  * #L%
  */
 
-public class JsonSepaDirectDebit extends JsonIdObject{
-	private String iban;
-	private String bic;
-	private String holder;
-	
-	public JsonSepaDirectDebit() {
-		super();
+public class SepaDirectDebitSecured extends SepaDirectDebit implements PaymentType {
+
+	public SepaDirectDebitSecured(String iban) {
+		super(iban);
 	}
 
-	public String getIban() {
-		return iban;
+	@Override
+	public String getTypeUrl() {
+		return "types/sepa-direct-debit-secured";
 	}
 
-	public void setIban(String iban) {
-		this.iban = iban;
-	}
-
-	public String getBic() {
-		return bic;
-	}
-
-	public void setBic(String bic) {
-		this.bic = bic;
-	}
-
-	public String getHolder() {
-		return holder;
-	}
-
-	public void setHolder(String holder) {
-		this.holder = holder;
-	}
 }
