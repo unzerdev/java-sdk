@@ -42,7 +42,6 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<additionalparam>-Xdoclint:none</additionalparam>
 		<skip.dependency.check>true</skip.dependency.check>
-
 		<publickey1>${publickey1}</publickey1>
 		<privatekey1>${privatekey1}</privatekey1>
 		<privatekey2>${privatekey2}</privatekey2>
@@ -146,6 +145,9 @@
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-javadoc-plugin</artifactId>
 				<version>3.2.0</version>
+				<configuration>
+					<doclint>none</doclint>
+				</configuration>
 				<executions>
 					<execution>
 						<id>attach-javadocs</id>
