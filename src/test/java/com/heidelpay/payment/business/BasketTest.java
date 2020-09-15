@@ -43,6 +43,11 @@ public class BasketTest extends AbstractPaymentTest {
 	@Test
 	public void testCreateFetchBasket() throws HttpCommunicationException {
 		Basket maxBasket = getMaxTestBasket();
+		int basketItemCnt = maxBasket.getBasketItems().size();
+		for(int i=0; i<basketItemCnt; i++) {
+			maxBasket.getBasketItems().get(i).setParticipantId("testparticipant" + (i + 1));
+		}
+
 		Basket basket = getHeidelpay().createBasket(maxBasket);
 		Basket basketFetched = getHeidelpay().fetchBasket(basket.getId());
 		assertNotNull(basketFetched);
@@ -164,6 +169,7 @@ public class BasketTest extends AbstractPaymentTest {
 		assertEquals(expected.getImageUrl(), actual.getImageUrl());
 		assertEquals(expected.getSubTitle(), actual.getSubTitle());
 		assertEquals(expected.getType(), actual.getType());
+		assertEquals(expected.getParticipantId(), actual.getParticipantId());
 	}
 
 	private void assertNumberEquals(Integer expected, Integer actual) {

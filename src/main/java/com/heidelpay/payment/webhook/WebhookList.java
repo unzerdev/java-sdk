@@ -29,8 +29,4 @@ public class WebhookList {
 	public List<Webhook> getEvents() {
 		return events;
 	}
-
-	public void setEvents(List<Webhook> events) {
-		this.events = events;
-	}
 }

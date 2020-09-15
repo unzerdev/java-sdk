@@ -20,39 +20,37 @@ package com.heidelpay.payment.paymenttypes;
  * #L%
  */
 
-import java.math.BigDecimal;
-import java.net.URL;
-import java.util.Currency;
-
 import com.heidelpay.payment.Charge;
 import com.heidelpay.payment.Customer;
+import com.heidelpay.payment.GeoLocation;
 import com.heidelpay.payment.communication.HttpCommunicationException;
 import com.heidelpay.payment.communication.json.JsonIdObject;
 import com.heidelpay.payment.communication.json.JsonObject;
 
-/**
- * Wechatpay business object
- * 
- * @author rene.felder
- *
- */
-public class Wechatpay extends AbstractPaymentType implements PaymentType {
+import java.math.BigDecimal;
+import java.net.URL;
+import java.util.Currency;
+
+public class PostFinanceCard extends AbstractPaymentType implements PaymentType {
 
 	@Override
 	public String getTypeUrl() {
-		return "types/wechatpay";
+		return "types/post-finance-card";
 	}
 
 	@Override
-	public PaymentType map(PaymentType wechatpay, JsonObject jsonId) {
-		((Wechatpay) wechatpay).setId(jsonId.getId());
-		((Wechatpay) wechatpay).setRecurring(((JsonIdObject) jsonId).getRecurring());
-		return wechatpay;
+	public PaymentType map(PaymentType postFinanceCard, JsonObject jsonId) {
+		((PostFinanceCard) postFinanceCard).setId(jsonId.getId());
+		((PostFinanceCard) postFinanceCard).setRecurring(((JsonIdObject) jsonId).getRecurring());
+		GeoLocation tempGeoLocation = new GeoLocation(((JsonIdObject) jsonId).getGeoLocation().getClientIp(), ((JsonIdObject) jsonId).getGeoLocation().getCountryIsoA2());
+		((PostFinanceCard) postFinanceCard).setGeoLocation(tempGeoLocation);
+		return postFinanceCard;
 	}
 
 	public Charge charge(BigDecimal amount, Currency currency, URL returnUrl) throws HttpCommunicationException {
 		return getHeidelpay().charge(amount, currency, this, returnUrl);
 	}
+
 	public Charge charge(BigDecimal amount, Currency currency, URL returnUrl, Customer customer) throws HttpCommunicationException {
 		return getHeidelpay().charge(amount, currency, this, returnUrl, customer);
 	}

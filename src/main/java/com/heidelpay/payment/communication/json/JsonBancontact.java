@@ -25,7 +25,4 @@ public class JsonBancontact extends JsonIdObject implements JsonObject {
 	public String getHolder() {
 		return holder;
 	}
-	public void setHolder(String holder) {
-		this.holder = holder;
-	}
 }

@@ -1,5 +1,7 @@
 package com.heidelpay.payment.business;
 
+import static java.util.concurrent.TimeUnit.SECONDS;
+import static org.awaitility.Awaitility.await;
 /*-
  * #%L
  * Heidelpay Java SDK
@@ -29,12 +31,17 @@ import java.text.ParseException;
 import java.time.LocalDate;
 import java.util.Currency;
 
+import org.apache.http.HttpStatus;
 import org.junit.Test;
 
+import com.heidelpay.payment.AbstractTransaction;
 import com.heidelpay.payment.Authorization;
+import com.heidelpay.payment.Basket;
 import com.heidelpay.payment.Customer;
 import com.heidelpay.payment.Payment;
 import com.heidelpay.payment.communication.HttpCommunicationException;
+import com.heidelpay.payment.marketplace.MarketplaceAuthorization;
+import com.heidelpay.payment.marketplace.MarketplacePayment;
 import com.heidelpay.payment.paymenttypes.Card;
 
 public class AuthorizationTest extends AbstractPaymentTest {
@@ -64,7 +71,7 @@ public class AuthorizationTest extends AbstractPaymentTest {
 		assertNotNull(authorize.getId());
 		assertEquals("COR.000.100.112", authorize.getMessage().getCode());
 		assertNotNull(authorize.getMessage().getCustomer());
-		assertEquals(com.heidelpay.payment.AbstractInitPayment.Status.SUCCESS, authorize.getStatus());
+		assertEquals(com.heidelpay.payment.AbstractTransaction.Status.SUCCESS, authorize.getStatus());
 	}
 	
 	@Test
@@ -214,4 +221,56 @@ public class AuthorizationTest extends AbstractPaymentTest {
 		assertEquals(new BigDecimal(1.0000).setScale(4), authorize.getAmount());
 	}
 
+	@Test
+	public void testMarketplaceAuthorize() throws MalformedURLException, HttpCommunicationException {
+		String participantId_1 = MARKETPLACE_PARTICIPANT_ID_1;
+		String participantId_2 = MARKETPLACE_PARTICIPANT_ID_2;
+		
+		//create basket
+		Basket maxBasket = getMaxTestBasket();
+		maxBasket.setAmountTotalDiscount(null);
+		
+		maxBasket.getBasketItems().get(0).setParticipantId(participantId_1);
+		maxBasket.getBasketItems().get(1).setParticipantId(participantId_2);
+		
+		int basketItemCnt = maxBasket.getBasketItems().size();
+		for(int i=0; i<basketItemCnt; i++) {
+			maxBasket.getBasketItems().get(i).setAmountDiscount(null);
+		}
+
+		Basket basket = getHeidelpay(marketplacePrivatekey).createBasket(maxBasket);	
+		
+		//create card
+		Card card = getPaymentTypeCard(NO_3DS_VISA_CARD_NUMBER); //do not change card number except error case
+		card = (Card)getHeidelpay(marketplacePrivatekey).createPaymentType(card);
+		
+		//marketplace authorization
+		MarketplaceAuthorization authorizeRequest = getMarketplaceAuthorization(card.getId(), null, null, null, basket.getId(), null);
+		authorizeRequest.setAmount(maxBasket.getAmountTotalGross());
+		
+		MarketplaceAuthorization authorize = getHeidelpay(marketplacePrivatekey).marketplaceAuthorize(authorizeRequest);
+		assertNotNull(authorize.getId());
+		assertNotNull(authorize);
+		assertEquals(AbstractTransaction.Status.PENDING, authorize.getStatus());
+		assertEquals(participantId_2, authorize.getProcessing().getParticipantId());
+		
+		int redirectStatus = confirmMarketplacePendingTransaction(authorize.getRedirectUrl().toString());
+		await().atLeast(5, SECONDS).atMost(10, SECONDS);
+		assertEquals(HttpStatus.SC_MOVED_TEMPORARILY, redirectStatus);
+		
+		//get marketplace payment
+		MarketplacePayment payment = getHeidelpay(marketplacePrivatekey).fetchMarketplacePayment(authorize.getPayment().getId());
+		assertNotNull(payment);
+		assertNotNull(payment.getId());
+		assertNotNull(payment.getAuthorizationsList());
+		assertEquals(2, payment.getAuthorizationsList().size());
+		assertEquals(Payment.State.PENDING, payment.getPaymentState());
+		
+		//get marketplace authorize
+		authorize = getHeidelpay(marketplacePrivatekey).fetchMarketplaceAuthorization(authorize.getPayment().getId(), authorize.getId());
+		assertNotNull(authorize.getId());
+		assertNotNull(authorize);
+		assertEquals(AbstractTransaction.Status.SUCCESS, authorize.getStatus());
+		assertEquals(participantId_2, authorize.getProcessing().getParticipantId());
+	}
 }

@@ -23,25 +23,22 @@ package com.heidelpay.payment;
 import java.math.BigDecimal;
 import java.net.URL;
 import java.util.Currency;
-import java.util.List;
+import java.util.Date;
 
-/**
- * Business abstract object for Authorization and Charge. Amount, currency and typeId are mandatory parameter to
- * execute an Authorization or Charge.
- * 
- * The returnUrl is mandatory in case of redirectPayments like Sofort, Paypal, Giropay, Creditcard 3DS
- * @author anna.sadriu
- *
- */
-public abstract class AbstractInitPayment extends AbstractPayment {
+import com.heidelpay.payment.communication.JsonFieldIgnore;
+import com.heidelpay.payment.paymenttypes.PaymentType;
 
-	public enum Status {SUCCESS, PENDING, ERRROR}
+public abstract class AbstractTransaction<T extends AbstractPayment> implements PaymentType {
 
+	public enum Status {
+		SUCCESS, PENDING, ERRROR
+	}
+
+	private String id;
 	private BigDecimal amount;
 	private Currency currency;
 	private URL returnUrl;
 	private Boolean card3ds;
-
 	private String orderId;
 	private String typeId;
 	private String customerId;
@@ -50,30 +47,36 @@ public abstract class AbstractInitPayment extends AbstractPayment {
 	private String riskId;
 	private String basketId;
 	private String paymentReference;
-
 	private Status status;
-
 	private URL redirectUrl;
-
 	private Processing processing = new Processing();
-
-	private List<Cancel> cancelList;
-
 	private String traceId;
+	private Message message;
+	private Date date;
+	private String type;
+	
+	@JsonFieldIgnore
+	private T payment;
+	
+	@JsonFieldIgnore
+	private Heidelpay heidelpay;
+	
+	@JsonFieldIgnore
+	private URL resourceUrl;
 
-	public AbstractInitPayment() {
+	public AbstractTransaction() {
 		super();
 	}
 
-	public AbstractInitPayment(Heidelpay heidelpay) {
-		super(heidelpay);
+	public AbstractTransaction(Heidelpay heidelpay) {
+		this.heidelpay = heidelpay;
 	}
 
 	public BigDecimal getAmount() {
 		return amount;
 	}
 
-	public AbstractInitPayment setAmount(BigDecimal amount) {
+	public AbstractTransaction<T> setAmount(BigDecimal amount) {
 		this.amount = amount;
 		return this;
 	}
@@ -82,7 +85,7 @@ public abstract class AbstractInitPayment extends AbstractPayment {
 		return currency;
 	}
 
-	public AbstractInitPayment setCurrency(Currency currency) {
+	public AbstractTransaction<T> setCurrency(Currency currency) {
 		this.currency = currency;
 		return this;
 	}
@@ -91,7 +94,7 @@ public abstract class AbstractInitPayment extends AbstractPayment {
 		return returnUrl;
 	}
 
-	public AbstractInitPayment setReturnUrl(URL returnUrl) {
+	public AbstractTransaction<T> setReturnUrl(URL returnUrl) {
 		this.returnUrl = returnUrl;
 		return this;
 	}
@@ -100,7 +103,7 @@ public abstract class AbstractInitPayment extends AbstractPayment {
 		return card3ds;
 	}
 
-	public AbstractInitPayment setCard3ds(Boolean card3ds) {
+	public AbstractTransaction<T> setCard3ds(Boolean card3ds) {
 		this.card3ds = card3ds;
 		return this;
 	}
@@ -109,7 +112,7 @@ public abstract class AbstractInitPayment extends AbstractPayment {
 		return orderId;
 	}
 
-	public AbstractInitPayment setOrderId(String orderId) {
+	public AbstractTransaction<T> setOrderId(String orderId) {
 		this.orderId = orderId;
 		return this;
 	}
@@ -118,7 +121,7 @@ public abstract class AbstractInitPayment extends AbstractPayment {
 		return typeId;
 	}
 
-	public AbstractInitPayment setTypeId(String typeId) {
+	public AbstractTransaction<T> setTypeId(String typeId) {
 		this.typeId = typeId;
 		return this;
 	}
@@ -127,7 +130,7 @@ public abstract class AbstractInitPayment extends AbstractPayment {
 		return customerId;
 	}
 
-	public AbstractInitPayment setCustomerId(String customerId) {
+	public AbstractTransaction<T> setCustomerId(String customerId) {
 		this.customerId = customerId;
 		return this;
 	}
@@ -136,7 +139,7 @@ public abstract class AbstractInitPayment extends AbstractPayment {
 		return metadataId;
 	}
 
-	public AbstractInitPayment setMetadataId(String metadataId) {
+	public AbstractTransaction<T> setMetadataId(String metadataId) {
 		this.metadataId = metadataId;
 		return this;
 	}
@@ -145,7 +148,7 @@ public abstract class AbstractInitPayment extends AbstractPayment {
 		return paymentId;
 	}
 
-	public AbstractInitPayment setPaymentId(String paymentId) {
+	public AbstractTransaction<T> setPaymentId(String paymentId) {
 		this.paymentId = paymentId;
 		return this;
 	}
@@ -154,7 +157,7 @@ public abstract class AbstractInitPayment extends AbstractPayment {
 		return riskId;
 	}
 
-	public AbstractInitPayment setRiskId(String riskId) {
+	public AbstractTransaction<T> setRiskId(String riskId) {
 		this.riskId = riskId;
 		return this;
 	}
@@ -163,7 +166,7 @@ public abstract class AbstractInitPayment extends AbstractPayment {
 		return basketId;
 	}
 
-	public AbstractInitPayment setBasketId(String basketId) {
+	public AbstractTransaction<T> setBasketId(String basketId) {
 		this.basketId = basketId;
 		return this;
 	}
@@ -172,7 +175,7 @@ public abstract class AbstractInitPayment extends AbstractPayment {
 		return status;
 	}
 
-	public AbstractInitPayment setStatus(Status status) {
+	public AbstractTransaction<T> setStatus(Status status) {
 		this.status = status;
 		return this;
 	}
@@ -189,27 +192,9 @@ public abstract class AbstractInitPayment extends AbstractPayment {
 		return processing;
 	}
 
-	public AbstractInitPayment setProcessing(Processing processing) {
+	public AbstractTransaction<T> setProcessing(Processing processing) {
 		this.processing = processing;
 		return this;
-	}
-
-	public List<Cancel> getCancelList() {
-		return cancelList;
-	}
-
-	public void setCancelList(List<Cancel> cancelList) {
-		this.cancelList = cancelList;
-	}
-
-	public Cancel getCancel(String cancelId) {
-		if (cancelList == null) return null;
-		for (Cancel cancel : cancelList) {
-			if (cancelId.equalsIgnoreCase(cancel.getId())) {
-				return cancel;
-			}
-		}
-		return null;
 	}
 
 	public String getPaymentReference() {
@@ -228,4 +213,59 @@ public abstract class AbstractInitPayment extends AbstractPayment {
 		this.traceId = traceId;
 	}
 
+	public T getPayment() {
+		return payment;
+	}
+
+	public void setPayment(T payment) {
+		this.payment = payment;
+	}
+
+	public Heidelpay getHeidelpay() {
+		return heidelpay;
+	}
+
+	public void setHeidelpay(Heidelpay heidelpay) {
+		this.heidelpay = heidelpay;
+	}
+
+	public String getId() {
+		return id;
+	}
+
+	public void setId(String id) {
+		this.id = id;
+	}
+
+	public Message getMessage() {
+		return message;
+	}
+
+	public void setMessage(Message message) {
+		this.message = message;
+	}
+	
+	public Date getDate() {
+		return date;
+	}
+
+	public void setDate(Date date) {
+		this.date = date;
+	}
+
+	public String getType() {
+		return type;
+	}
+
+	public void setType(String type) {
+		this.type = type;
+	}
+
+	public URL getResourceUrl() {
+		return resourceUrl;
+	}
+
+	public void setResourceUrl(URL resourceUrl) {
+		this.resourceUrl = resourceUrl;
+	}
 }

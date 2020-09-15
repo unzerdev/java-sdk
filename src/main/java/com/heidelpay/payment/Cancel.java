@@ -22,22 +22,16 @@ package com.heidelpay.payment;
 
 import java.math.BigDecimal;
 
-import com.heidelpay.payment.AbstractInitPayment.Status;
 import com.heidelpay.payment.communication.json.JsonObject;
 import com.heidelpay.payment.paymenttypes.PaymentType;
 
 /**
- * Business object for Cancelations
+ * Business object for Cancellations
+ * 
  * @author rene.felder
  *
  */
-public class Cancel extends AbstractPayment {
-	public enum Status {SUCCESS, PENDING, ERRROR}
-	
-	private BigDecimal amount;
-	private Processing processing = new Processing();
-	private Status status;
-	private String paymentReference;
+public class Cancel extends AbstractTransaction<Payment> {
 
 	private BigDecimal amountGross;
 	private BigDecimal amountNet;
@@ -46,25 +40,9 @@ public class Cancel extends AbstractPayment {
 	public Cancel() {
 		super();
 	}
+
 	public Cancel(Heidelpay heidelpay) {
 		super(heidelpay);
-	}
-	
-
-	public BigDecimal getAmount() {
-		return amount;
-	}
-
-	public void setAmount(BigDecimal amount) {
-		this.amount = amount;
-	}
-
-	public Processing getProcessing() {
-		return processing;
-	}
-
-	public void setProcessing(Processing processing) {
-		this.processing = processing;
 	}
 
 	@Override
@@ -75,21 +53,6 @@ public class Cancel extends AbstractPayment {
 	@Override
 	public PaymentType map(PaymentType paymentType, JsonObject jsonObject) {
 		return null;
-	}
-
-	public Status getStatus() {
-		return status;
-	}
-	public void setStatus(Status status) {
-		this.status = status;
-	}
-
-	public String getPaymentReference() {
-		return paymentReference;
-	}
-
-	public void setPaymentReference(String paymentReference) {
-		this.paymentReference = paymentReference;
 	}
 
 	public BigDecimal getAmountGross() {

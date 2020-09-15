@@ -1,5 +1,8 @@
 package com.heidelpay.payment.business;
 
+import static java.util.concurrent.TimeUnit.SECONDS;
+import static org.awaitility.Awaitility.await;
+
 /*-
  * #%L
  * Heidelpay Java SDK
@@ -22,6 +25,32 @@ package com.heidelpay.payment.business;
 
 import static org.junit.Assert.assertEquals;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Currency;
+import java.util.Date;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+import java.util.UUID;
+
+import org.apache.http.HttpResponse;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.impl.client.HttpClients;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+
 import com.heidelpay.payment.Address;
 import com.heidelpay.payment.Authorization;
 import com.heidelpay.payment.Basket;
@@ -37,32 +66,29 @@ import com.heidelpay.payment.PaymentException;
 import com.heidelpay.payment.Processing;
 import com.heidelpay.payment.communication.HttpCommunicationException;
 import com.heidelpay.payment.communication.impl.HttpClientBasedRestCommunication;
+import com.heidelpay.payment.marketplace.MarketplaceAuthorization;
+import com.heidelpay.payment.marketplace.MarketplaceCancelBasket;
+import com.heidelpay.payment.marketplace.MarketplaceCancelBasketItem;
+import com.heidelpay.payment.marketplace.MarketplaceCharge;
 import com.heidelpay.payment.paymenttypes.Card;
 import com.heidelpay.payment.paymenttypes.InvoiceGuaranteed;
 import com.heidelpay.payment.paymenttypes.InvoiceSecured;
 import com.heidelpay.payment.paymenttypes.SepaDirectDebit;
 import com.heidelpay.payment.service.PropertiesUtil;
 
-import java.math.BigDecimal;
-import java.math.RoundingMode;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Currency;
-import java.util.Date;
-import java.util.Locale;
-import java.util.Map;
-import java.util.UUID;
-
 public abstract class AbstractPaymentTest {
-
+	
+	protected static final String NO_3DS_VISA_CARD_NUMBER = "4012888888881881";
+	protected static final String MARKETPLACE_PARTICIPANT_ID_2 = "31HA07BC814FC247577B309FF031D3F0";
+	protected static final String MARKETPLACE_PARTICIPANT_ID_1 = "31HA07BC814FC247577B195E59A99FC6";
+	
 	private final PropertiesUtil properties = new PropertiesUtil();
 
 	public final String publicKey1 = properties.getString(PropertiesUtil.PUBLIC_KEY1);
 	public final String privateKey1 = properties.getString(PropertiesUtil.PRIVATE_KEY1);
 	public final String privateKey2 = properties.getString(PropertiesUtil.PRIVATE_KEY2);
 	public final String privateKey3 = properties.getString(PropertiesUtil.PRIVATE_KEY3);
+	public final String marketplacePrivatekey = properties.getString(PropertiesUtil.MARKETPLACE_PRIVATE_KEY);
 
 	protected String getRandomInvoiceId() {
 		return getRandomId().substring(0, 5);
@@ -120,6 +146,36 @@ public abstract class AbstractPaymentTest {
 		.setMetadataId(metadataId)
 		.setBasketId(basketId)
 		.setCard3ds(card3ds);
+		return authorization;
+	}
+	
+	protected MarketplaceAuthorization getMarketplaceAuthorization(String typeId, String customerId, String orderId, String metadataId, String basketId, Boolean card3ds) throws MalformedURLException {
+		MarketplaceAuthorization authorization = new MarketplaceAuthorization();
+		authorization
+			.setAmount(new BigDecimal(10))
+			.setCurrency(Currency.getInstance("EUR"))
+			.setTypeId(typeId)
+			.setReturnUrl(new URL("https://www.google.com"))
+			.setOrderId(orderId)
+			.setCustomerId(customerId)
+			.setMetadataId(metadataId)
+			.setBasketId(basketId)
+			.setCard3ds(card3ds);
+		return authorization;
+	}
+	
+	protected MarketplaceCharge getMarketplaceCharge(String typeId, String customerId, String orderId, String metadataId, String basketId, Boolean card3ds) throws MalformedURLException {
+		MarketplaceCharge authorization = new MarketplaceCharge();
+		authorization
+			.setAmount(new BigDecimal(10))
+			.setCurrency(Currency.getInstance("EUR"))
+			.setTypeId(typeId)
+			.setReturnUrl(new URL("https://www.google.com"))
+			.setOrderId(orderId)
+			.setCustomerId(customerId)
+			.setMetadataId(metadataId)
+			.setBasketId(basketId)
+			.setCard3ds(card3ds);
 		return authorization;
 	}
 	
@@ -565,4 +621,56 @@ public abstract class AbstractPaymentTest {
 		return basketItem;
 	}
 
+	protected int confirmMarketplacePendingTransaction(String redirectUrl) {
+		try {
+			HttpClient httpClient = HttpClients.custom().useSystemProperties().build();
+			HttpResponse response = httpClient.execute(new HttpGet(redirectUrl));
+			
+			Document html = Jsoup.parse(readHtml(response.getEntity().getContent()));
+			String apiRediretUrl = html.getElementById("authForm").attr("action");
+			
+			response = httpClient.execute(new HttpPost(apiRediretUrl));
+			await().atLeast(5, SECONDS).atMost(10, SECONDS);
+			return response.getStatusLine().getStatusCode();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+		return 500;
+	}
+	
+	private String readHtml(InputStream is) {
+		try {
+			BufferedReader bis = new BufferedReader(new InputStreamReader(is));
+			StringBuilder stringBuilder = new StringBuilder();
+			String s = null;
+			while((s = bis.readLine()) != null) {
+				stringBuilder.append(s.concat("\n"));
+			}
+			bis.close();
+			
+			return stringBuilder.toString();
+		} catch (IOException e) {
+			e.printStackTrace();
+			return "";
+		}
+	}
+	
+	protected MarketplaceCancelBasket buildCancelBasketByParticipant(List<BasketItem> basketItems, String participantId) {
+		MarketplaceCancelBasket cancelBasket = new MarketplaceCancelBasket();
+		
+		List<MarketplaceCancelBasketItem> cancelBasketItems = new ArrayList<MarketplaceCancelBasketItem>();
+		for(BasketItem basketItem : basketItems) {
+			if(participantId.equals(basketItem.getParticipantId())) {
+				MarketplaceCancelBasketItem cancelBasketItem = new MarketplaceCancelBasketItem();
+				cancelBasketItem.setParticipantId(basketItem.getParticipantId());
+				cancelBasketItem.setQuantity(basketItem.getQuantity());
+				cancelBasketItem.setBasketItemReferenceId(basketItem.getBasketItemReferenceId());
+				cancelBasketItem.setAmountGross(basketItem.getAmountGross());
+				cancelBasketItems.add(cancelBasketItem);
+			}
+		}
+		cancelBasket.setItems(cancelBasketItems);
+		return cancelBasket;
+	}
 }

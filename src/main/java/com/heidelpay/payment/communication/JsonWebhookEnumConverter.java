@@ -25,7 +25,6 @@ import java.lang.reflect.Type;
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonDeserializer;
 import com.google.gson.JsonElement;
-import com.google.gson.JsonParseException;
 import com.google.gson.JsonPrimitive;
 import com.google.gson.JsonSerializationContext;
 import com.google.gson.JsonSerializer;
@@ -39,17 +38,13 @@ public class JsonWebhookEnumConverter implements JsonDeserializer<WebhookEventEn
 	}
 
 	@Override
-	public WebhookEventEnum deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
-		String jsonValue = json.getAsJsonPrimitive().getAsString();
-		if (jsonValue == null || "".equalsIgnoreCase(jsonValue)) {
+	public WebhookEventEnum deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) {		
+		if(json == null || json.isJsonNull() || !json.isJsonPrimitive()) {
 			return null;
 		}
 		
-		try {
-			return WebhookEventEnum.fromEventName(jsonValue);
-		} catch (Exception e) {
-			throw new JsonParseException("Cannot parse webhook event " + jsonValue + ".");
-		}
+		String jsonValue = json.getAsString();
+		return WebhookEventEnum.fromEventName(jsonValue);
 	}
 
 }

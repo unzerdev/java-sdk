@@ -1,5 +1,9 @@
 package com.heidelpay.payment.communication.impl;
 
+import static org.apache.http.HttpHeaders.AUTHORIZATION;
+import static org.apache.http.HttpHeaders.CONTENT_TYPE;
+import static org.apache.http.HttpHeaders.USER_AGENT;
+
 /*-
  * #%L
  * Heidelpay Java SDK
@@ -22,8 +26,6 @@ package com.heidelpay.payment.communication.impl;
 
 import java.io.IOException;
 
-import com.heidelpay.payment.communication.AbstractHeidelpayRestCommunication;
-import com.heidelpay.payment.util.SDKInfo;
 import org.apache.http.HttpEntity;
 import org.apache.http.ParseException;
 import org.apache.http.StatusLine;
@@ -43,12 +45,12 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import com.heidelpay.payment.PaymentException;
+import com.heidelpay.payment.communication.AbstractHeidelpayRestCommunication;
 import com.heidelpay.payment.communication.HeidelpayRestCommunication;
 import com.heidelpay.payment.communication.HttpCommunicationException;
 import com.heidelpay.payment.communication.JsonParser;
 import com.heidelpay.payment.communication.json.JsonErrorObject;
-
-import static org.apache.http.HttpHeaders.*;
+import com.heidelpay.payment.util.SDKInfo;
 
 /**
  * @deprecated use {@code HttpClientBasedRestCommunication} as a default
@@ -89,12 +91,12 @@ public class RestCommunication implements HeidelpayRestCommunication {
 	}
 
 	private String makeRequest(HttpEntityEnclosingRequestBase request, Object data) throws HttpCommunicationException {
-		String json = new JsonParser<String>().toJson(data);
-		logger.debug("Request: '" + json + "'");
+		String json = new JsonParser().toJson(data);
+		logger.debug("Request: '%s'", json);
 		HttpEntity entity = new StringEntity(json, "UTF-8");
 		request.setEntity(entity);
 		String response = this.execute(request);
-		logger.debug("Response: '" + json + "'");
+		logger.debug("Response: '%s'", json);
 		return response;
 	}
 
@@ -111,7 +113,7 @@ public class RestCommunication implements HeidelpayRestCommunication {
 			logger.debug(content);
 
 			if (status.getStatusCode() > 201 || status.getStatusCode() < 200) {
-				JsonErrorObject error = new JsonParser<JsonErrorObject>().fromJson(content, JsonErrorObject.class);
+				JsonErrorObject error = new JsonParser().fromJson(content, JsonErrorObject.class);
 				throw new PaymentException(error.getUrl(), status.getStatusCode(), error.getTimestamp(), error.getId(), error.getErrors(), "");
 			}
 			return content;

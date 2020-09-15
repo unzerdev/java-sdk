@@ -58,6 +58,10 @@ public class SepaDirectDebitTest extends AbstractPaymentTest {
 		Charge charge = sdd.charge(BigDecimal.ONE, Currency.getInstance("EUR"), new URL("https://www.google.at"));
 		assertNotNull(charge);
 		assertNotNull(charge.getId());
+		assertNotNull(charge.getProcessing());
+		assertNotNull(charge.getProcessing().getCreatorId());
+		assertNotNull(charge.getProcessing().getIdentification());
+		assertNotNull(charge.getProcessing().getTraceId());
 	}
 
 	@Test

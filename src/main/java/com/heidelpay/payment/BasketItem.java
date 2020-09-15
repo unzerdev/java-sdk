@@ -38,6 +38,7 @@ public class BasketItem {
 	private String subTitle;
 	private URL imageUrl;
 	private String type;
+	private String participantId;
 	
 	public String getBasketItemReferenceId() {
 		return basketItemReferenceId;
@@ -151,5 +152,13 @@ public class BasketItem {
 
 	public void setType(String type) {
 		this.type = type;
+	}
+
+	public String getParticipantId() {
+		return participantId;
+	}
+
+	public void setParticipantId(String participantId) {
+		this.participantId = participantId;
 	}
 }

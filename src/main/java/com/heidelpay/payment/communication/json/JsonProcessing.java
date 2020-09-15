@@ -33,6 +33,10 @@ public class JsonProcessing {
 	private String pdfLink;
 	private String externalOrderId;
 	private String zgReferenceId;
+	private String creatorId;
+	private String identification;
+	private String traceId;
+	private String participantId;
 
 	public String getUniqueId() {
 		return uniqueId;
@@ -89,5 +93,29 @@ public class JsonProcessing {
 
 	public void setZgReferenceId(String zgReferenceId) {
 		this.zgReferenceId = zgReferenceId;
+	}
+	public String getCreatorId() {
+		return creatorId;
+	}
+	public void setCreatorId(String creatorId) {
+		this.creatorId = creatorId;
+	}
+	public String getIdentification() {
+		return identification;
+	}
+	public void setIdentification(String identification) {
+		this.identification = identification;
+	}
+	public String getTraceId() {
+		return traceId;
+	}
+	public void setTraceId(String traceId) {
+		this.traceId = traceId;
+	}
+	public String getParticipantId() {
+		return participantId;
+	}
+	public void setParticipantId(String participantId) {
+		this.participantId = participantId;
 	}
 }

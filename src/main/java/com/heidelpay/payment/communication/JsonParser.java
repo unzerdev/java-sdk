@@ -45,7 +45,7 @@ import com.heidelpay.payment.communication.json.JsonErrorObject;
 /**
  * Provides functions which is interact with json
  */
-public class JsonParser<T> {
+public class JsonParser {
 
 	private static final String ERRORS = "errors";
 	private static final String ERROR_CODE = "code";
@@ -53,7 +53,9 @@ public class JsonParser<T> {
 	private Gson gson;
 
 	public JsonParser() {
-		gson = new GsonBuilder().setPrettyPrinting().registerTypeAdapter(Date.class, new JsonDateTimeConverter())
+		gson = new GsonBuilder().setPrettyPrinting()
+				.addSerializationExclusionStrategy(new JsonFieldIgnoreStragegy())
+				.registerTypeAdapter(Date.class, new JsonDateTimeConverter())
 				.registerTypeAdapter(String.class, new JsonStringConverter())
 				.registerTypeAdapter(BigDecimal.class, new JsonBigDecimalConverter())
 				.registerTypeAdapter(URL.class, new JsonURLConverter())

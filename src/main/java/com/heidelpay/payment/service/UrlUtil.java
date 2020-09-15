@@ -8,7 +8,6 @@ import java.math.BigDecimal;
  * %%
  * Copyright (C) 2018 Heidelpay GmbH
  * %%
- * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  * 
@@ -30,11 +29,11 @@ import java.util.Currency;
 import java.util.Date;
 import java.util.Locale;
 
-import com.heidelpay.payment.exceptions.PropertiesException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import com.heidelpay.payment.Recurring;
+import com.heidelpay.payment.exceptions.PropertiesException;
 import com.heidelpay.payment.paymenttypes.PaymentType;
 
 public class UrlUtil {
@@ -62,7 +61,7 @@ public class UrlUtil {
 		try {
 			return new URL(url);
 		} catch (MalformedURLException e) {
-			logger.error("Url '" + url + "' is not valid: " + e.getMessage());
+			logger.error("Url '%s' is not valid: %s", url , e.getMessage());
 			return null;
 		}
 	}
@@ -73,15 +72,15 @@ public class UrlUtil {
 		appendSlashIfNeeded(stringBuilder);
 		stringBuilder.append(REFUND_URL);
 		String result = stringBuilder.toString();
-		result = result.replaceAll(PLACEHOLDER_PAYMENT_ID, paymentId);
-		return result.replaceAll(PLACEHOLDER_CHARGE_ID, chargeId);
+		result = result.replace(PLACEHOLDER_PAYMENT_ID, paymentId);
+		return result.replace(PLACEHOLDER_CHARGE_ID, chargeId);
 	}
 	public String getPaymentUrl(PaymentType paymentType, String paymentId) {
 		StringBuilder stringBuilder = new StringBuilder();
 		stringBuilder.append(getRestUrlInternal(paymentType));
 		appendSlashIfNeeded(stringBuilder);
 		String result = stringBuilder.toString();
-		return result.replaceAll(PLACEHOLDER_PAYMENT_ID, paymentId);
+		return result.replace(PLACEHOLDER_PAYMENT_ID, paymentId);
 	}
 	public String getPaymentUrl(PaymentType paymentType, String paymentId, String id) {
 		StringBuilder stringBuilder = new StringBuilder();
@@ -89,7 +88,7 @@ public class UrlUtil {
 		appendSlashIfNeeded(stringBuilder);
 		stringBuilder.append(id);
 		String result = stringBuilder.toString();
-		return result.replaceAll(PLACEHOLDER_PAYMENT_ID, paymentId);
+		return result.replace(PLACEHOLDER_PAYMENT_ID, paymentId);
 	}
 	public String getHttpGetUrl(PaymentType paymentType, String id) {
 		StringBuilder stringBuilder = new StringBuilder();
@@ -104,11 +103,11 @@ public class UrlUtil {
 		appendSlashIfNeeded(stringBuilder);
 		stringBuilder.append(RECURRING_URL);
 		String result = stringBuilder.toString();
-		result = result.replaceAll(PLACEHOLDER_TYPE_ID, recurring.getType());
+		result = result.replace(PLACEHOLDER_TYPE_ID, recurring.getTypeId());
 		return result;
 	}
 	public String getRestUrl(PaymentType paymentType) {
-		return getRestUrlInternal(paymentType).replaceAll("<paymentId>/", "");
+		return getRestUrlInternal(paymentType).replace("<paymentId>/", "");
 	}
 	private String getRestUrlInternal(PaymentType paymentType) {
 		StringBuilder stringBuilder = new StringBuilder();

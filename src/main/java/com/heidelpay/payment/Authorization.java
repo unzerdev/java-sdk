@@ -21,6 +21,7 @@ package com.heidelpay.payment;
  */
 
 import java.math.BigDecimal;
+import java.util.List;
 
 import com.heidelpay.payment.communication.HttpCommunicationException;
 import com.heidelpay.payment.communication.json.JsonObject;
@@ -34,9 +35,11 @@ import com.heidelpay.payment.paymenttypes.PaymentType;
  * @author rene.felder
  *
  */
-public class Authorization extends AbstractInitPayment {
+public class Authorization extends AbstractTransaction<Payment> {
 
 	private BigDecimal effectiveInterestRate;
+	
+	private List<Cancel> cancelList;
 
 	public Authorization() {
 		super();
@@ -87,5 +90,23 @@ public class Authorization extends AbstractInitPayment {
 	public Authorization setEffectiveInterestRate(BigDecimal effectiveInterestRate) {
 		this.effectiveInterestRate = effectiveInterestRate;
 		return this;
+	}
+	
+	public List<Cancel> getCancelList() {
+		return cancelList;
+	}
+
+	public void setCancelList(List<Cancel> cancelList) {
+		this.cancelList = cancelList;
+	}
+
+	public Cancel getCancel(String cancelId) {
+		if (cancelList == null) return null;
+		for (Cancel cancel : cancelList) {
+			if (cancelId.equalsIgnoreCase(cancel.getId())) {
+				return cancel;
+			}
+		}
+		return null;
 	}
 }

@@ -1,5 +1,11 @@
 package com.heidelpay.payment.business.paymenttypes;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertThrows;
+
 /*-
  * #%L
  * Heidelpay Java SDK
@@ -26,6 +32,7 @@ import java.net.URL;
 import java.util.Currency;
 
 import org.junit.Test;
+import org.junit.function.ThrowingRunnable;
 
 import com.heidelpay.payment.Authorization;
 import com.heidelpay.payment.Charge;
@@ -37,17 +44,21 @@ import com.heidelpay.payment.communication.HttpCommunicationException;
 import com.heidelpay.payment.communication.impl.HttpClientBasedRestCommunication;
 import com.heidelpay.payment.paymenttypes.Card;
 
-import static org.junit.Assert.*;
-
 public class CardTest extends AbstractPaymentTest {
 
-	@Test(expected=PaymentException.class)
+	@Test
 	public void testCreateCardWithMerchantNotPCIDSSCompliant() throws HttpCommunicationException {
-		Card card = new Card("4444333322221111", "03/20");
-		card.setCvc("123");
-		Heidelpay heidelpay = new Heidelpay(new HttpClientBasedRestCommunication(), privateKey3);
-		card = heidelpay.createPaymentType(card);
-		assertNotNull(card.getId());
+		ThrowingRunnable createCardWithMerchantNotPCIDSSCompliant = new ThrowingRunnable() {
+			@Override
+			public void run() throws Throwable {
+				Card card = new Card("4444333322221111", "03/20");
+				card.setCvc("123");
+				Heidelpay heidelpay = new Heidelpay(new HttpClientBasedRestCommunication(), privateKey3);
+				card = heidelpay.createPaymentType(card);
+			}
+			
+		};
+		assertThrows(PaymentException.class, createCardWithMerchantNotPCIDSSCompliant);
 	}
 
 	@Test

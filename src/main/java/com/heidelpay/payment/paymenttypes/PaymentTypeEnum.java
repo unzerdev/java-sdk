@@ -43,6 +43,8 @@ public enum PaymentTypeEnum {
 	HIRE_PURCHASE_RATE_PLAN("hdd"),
 	INSTALLMENT_SECURED_RATE_PLAN("ins"),
 	BANCONTACT("bct"),
+	PF_CARD("pfc"),
+	PF_EFINANCE("pfe"),
     UNKNOWN("unknown");
 
     private String shortName;

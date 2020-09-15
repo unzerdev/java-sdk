@@ -53,7 +53,7 @@ public class RecurringTest extends AbstractSeleniumTest {
 		Recurring recurring = getHeidelpay().recurring(typeId, new URL("https://www.heidelpay.com"));
 		assertRecurring(recurring, Recurring.Status.PENDING);
 		
-		RemoteWebDriver driver = openUrl(recurring.getRedirectUrl());
+		RemoteWebDriver driver = openUrl(recurring.getRedirectUrl().toString());
 		WebElement sdd = driver.findElement(By.id("code"));
 
 		sdd.sendKeys("secret3");
@@ -115,7 +115,7 @@ public class RecurringTest extends AbstractSeleniumTest {
 		Paypal type = (Paypal)getHeidelpay().fetchPaymentType(paypal.getId());
 		assertEquals(false, type.getRecurring());
 
-		RemoteWebDriver driver = openUrl(recurring.getRedirectUrl());
+		RemoteWebDriver driver = openUrl(recurring.getRedirectUrl().toString());
 		
 		WebElement email = driver.findElement(By.id("email"));
 		email.clear();

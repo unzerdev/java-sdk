@@ -56,7 +56,7 @@ public class PaypageService {
 	
 	public Paypage initialize(Paypage paypage, String url) throws HttpCommunicationException {
 		String response = restCommunication.httpPost(url, heidelpay.getPrivateKey(), jsonToBusinessClassMapper.map(paypage));
-		JsonPaypage jsonPaypage = new JsonParser<JsonPaypage>().fromJson(response, JsonPaypage.class);
+		JsonPaypage jsonPaypage = new JsonParser().fromJson(response, JsonPaypage.class);
 		paypage = jsonToBusinessClassMapper.mapToBusinessObject(paypage, jsonPaypage);
 		return paypage;
 	}

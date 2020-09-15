@@ -33,11 +33,13 @@ public class WebhookService {
 	private HeidelpayRestCommunication restCommunication;
 	private UrlUtil urlUtil;
 	private Heidelpay heidelpay;
+	private JsonParser jsonParser;
 	
 	public WebhookService(Heidelpay heidelpay, HeidelpayRestCommunication restCommunication) {
 		this.heidelpay = heidelpay;
 		this.urlUtil = new UrlUtil(heidelpay.getEndPoint());
 		this.restCommunication = restCommunication;
+		this.jsonParser = new JsonParser();
 	}
 	
 	/**
@@ -49,7 +51,7 @@ public class WebhookService {
 	 */
 	public Webhook registerSingleWebhook(Webhook registerRequest) throws HttpCommunicationException {
 		String response = restCommunication.httpPost(urlUtil.getRestUrl().concat(WEBHOOK_BASE_URL), heidelpay.getPrivateKey(), registerRequest);
-		return new JsonParser<Webhook>().fromJson(response, Webhook.class);
+		return jsonParser.fromJson(response, Webhook.class);
 	}
 	
 	/**
@@ -61,12 +63,12 @@ public class WebhookService {
 	 */
 	public WebhookList registerMultiWebhooks(Webhook registerRequest) throws HttpCommunicationException {
 		String response = restCommunication.httpPost(urlUtil.getRestUrl().concat(WEBHOOK_BASE_URL), heidelpay.getPrivateKey(), registerRequest);
-		return new JsonParser<WebhookList>().fromJson(response, WebhookList.class);
+		return jsonParser.fromJson(response, WebhookList.class);
 	}
 	
 	public WebhookList getWebhooks() throws HttpCommunicationException {
 		String response = restCommunication.httpGet(urlUtil.getRestUrl().concat(WEBHOOK_BASE_URL), heidelpay.getPrivateKey());
-		return new JsonParser<WebhookList>().fromJson(response, WebhookList.class);
+		return jsonParser.fromJson(response, WebhookList.class);
 	}
 	
 	public Webhook deleteSingleWebhook(String webhookId) throws HttpCommunicationException {
@@ -75,7 +77,7 @@ public class WebhookService {
 			deleteId = webhookId;
 		}
 		String response = restCommunication.httpDelete(urlUtil.getRestUrl().concat(WEBHOOK_BASE_URL.concat("/").concat(deleteId)), heidelpay.getPrivateKey());
-		return new JsonParser<Webhook>().fromJson(response, Webhook.class);
+		return jsonParser.fromJson(response, Webhook.class);
 	}
 	
 	/**
@@ -88,11 +90,11 @@ public class WebhookService {
 	 */
 	public WebhookList deleteMultiWebhook() throws HttpCommunicationException {
 		String response = restCommunication.httpDelete(urlUtil.getRestUrl().concat(WEBHOOK_BASE_URL), heidelpay.getPrivateKey());
-		return new JsonParser<WebhookList>().fromJson(response, WebhookList.class);
+		return jsonParser.fromJson(response, WebhookList.class);
 	}
 	
 	public Webhook updateSingleWebhook(String updateId, Webhook updateWebhook) throws HttpCommunicationException {
 		String response = restCommunication.httpPut(urlUtil.getRestUrl().concat(WEBHOOK_BASE_URL.concat("/").concat(updateId)), heidelpay.getPrivateKey(), updateWebhook);
-		return new JsonParser<Webhook>().fromJson(response, Webhook.class);
+		return jsonParser.fromJson(response, Webhook.class);
 	}
 }

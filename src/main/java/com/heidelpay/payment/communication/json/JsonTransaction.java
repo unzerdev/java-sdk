@@ -29,6 +29,8 @@ public class JsonTransaction {
 	private String type;
 	private URL url;
 	private BigDecimal amount;
+	private String participantId;
+	
 	public Date getDate() {
 		return date;
 	}
@@ -53,5 +55,10 @@ public class JsonTransaction {
 	public void setAmount(BigDecimal amount) {
 		this.amount = amount;
 	}
-	
+	public String getParticipantId() {
+		return participantId;
+	}
+	public void setParticipantId(String participantId) {
+		this.participantId = participantId;
+	}
 }

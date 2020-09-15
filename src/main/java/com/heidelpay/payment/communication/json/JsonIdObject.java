@@ -28,7 +28,7 @@ public class JsonIdObject implements JsonObject {
 	public String getId() {
 		return id;
 	}
-
+	
 	public void setId(String id) {
 		this.id = id;
 	}
@@ -37,15 +37,7 @@ public class JsonIdObject implements JsonObject {
 		return recurring;
 	}
 
-	public void setRecurring(Boolean recurring) {
-		this.recurring = recurring;
-	}
-
 	public JsonGeoLocation getGeoLocation() {
 		return geoLocation;
-	}
-
-	public void setGeoLocation(JsonGeoLocation geoLocation) {
-		this.geoLocation = geoLocation;
 	}
 }

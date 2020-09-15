@@ -25,7 +25,6 @@ import com.heidelpay.payment.Linkpay;
 import com.heidelpay.payment.communication.HeidelpayRestCommunication;
 import com.heidelpay.payment.communication.HttpCommunicationException;
 import com.heidelpay.payment.communication.JsonParser;
-import com.heidelpay.payment.communication.impl.HttpClientBasedRestCommunication;
 import com.heidelpay.payment.communication.json.JsonLinkpay;
 import com.heidelpay.payment.communication.mapper.JsonToBusinessClassMapper;
 
@@ -35,16 +34,6 @@ public class LinkpayService {
 	private UrlUtil urlUtil;
 	private JsonToBusinessClassMapper jsonToBusinessClassMapper = new JsonToBusinessClassMapper();
 	private Heidelpay heidelpay;
-
-	/**
-	 * Creates a PaymentService with the @deprecated {@code RestCommunication}
-	 * implementation.
-	 *
-	 * @param heidelpay used Heidelpay object
-	 */
-	public LinkpayService(Heidelpay heidelpay) {
-		this(heidelpay, new HttpClientBasedRestCommunication());
-	}
 
 	/**
 	 * Creates the {@code PaymentService} with the given {@code Heidelpay} facade,
@@ -67,7 +56,7 @@ public class LinkpayService {
 
 	public Linkpay initialize(Linkpay linkpay, String url) throws HttpCommunicationException {
 		String response = restCommunication.httpPost(url, heidelpay.getPrivateKey(), jsonToBusinessClassMapper.map(linkpay));
-		JsonLinkpay jsonLinkpay = new JsonParser<JsonLinkpay>().fromJson(response, JsonLinkpay.class);
+		JsonLinkpay jsonLinkpay = new JsonParser().fromJson(response, JsonLinkpay.class);
 		linkpay = jsonToBusinessClassMapper.mapToBusinessObject(linkpay, jsonLinkpay);
 		return linkpay;
 	}

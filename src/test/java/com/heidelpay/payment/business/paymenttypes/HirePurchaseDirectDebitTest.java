@@ -23,12 +23,6 @@ package com.heidelpay.payment.business.paymenttypes;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
-import com.heidelpay.payment.Authorization;
-import com.heidelpay.payment.Cancel;
-import com.heidelpay.payment.Charge;
-import com.heidelpay.payment.Shipment;
-import com.heidelpay.payment.business.AbstractPaymentTest;
-import com.heidelpay.payment.communication.HttpCommunicationException;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.net.MalformedURLException;
@@ -38,12 +32,17 @@ import java.text.SimpleDateFormat;
 import java.util.Currency;
 import java.util.Date;
 import java.util.List;
+
 import org.apache.commons.lang3.time.DateUtils;
 import org.junit.Test;
-/**
- * @deprecated @deprecated use {@code InstallmentSecuredTest} as a default implementation.
- */
-@Deprecated
+
+import com.heidelpay.payment.Authorization;
+import com.heidelpay.payment.Cancel;
+import com.heidelpay.payment.Charge;
+import com.heidelpay.payment.Shipment;
+import com.heidelpay.payment.business.AbstractPaymentTest;
+import com.heidelpay.payment.communication.HttpCommunicationException;
+
 public class HirePurchaseDirectDebitTest extends AbstractPaymentTest {
 
 	@Test

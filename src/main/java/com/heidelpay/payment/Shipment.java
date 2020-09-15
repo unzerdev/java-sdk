@@ -23,12 +23,10 @@ package com.heidelpay.payment;
 import com.heidelpay.payment.communication.json.JsonObject;
 import com.heidelpay.payment.paymenttypes.PaymentType;
 
-public class Shipment extends AbstractPayment {
+public class Shipment extends AbstractTransaction<Payment> {
 
 	private String invoiceId;
 
-	private String orderId;
-	
 	public Shipment() {
 		super();
 	}
@@ -36,11 +34,7 @@ public class Shipment extends AbstractPayment {
 	public Shipment(String invoiceId, String orderId) {
 		super();
 		this.invoiceId = invoiceId;
-		this.orderId = orderId;
-	}
-	
-	public Shipment(Heidelpay heidelpay) {
-		super(heidelpay);
+		setOrderId(orderId);
 	}
 
 	@Override
@@ -59,13 +53,5 @@ public class Shipment extends AbstractPayment {
 
 	public void setInvoiceId(String invoiceId) {
 		this.invoiceId = invoiceId;
-	}
-
-	public String getOrderId() {
-		return orderId;
-	}
-
-	public void setOrderId(String orderId) {
-		this.orderId = orderId;
 	}
 }

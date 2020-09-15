@@ -1,41 +1,36 @@
 package com.heidelpay.payment;
 
-/*-
- * #%L
- * Heidelpay Java SDK
- * %%
- * Copyright (C) 2018 Heidelpay GmbH
- * %%
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- * 
- *      http://www.apache.org/licenses/LICENSE-2.0
- * 
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- * #L%
- */
+import java.math.BigDecimal;
 
-import java.net.URL;
-import java.util.Date;
-
+import com.heidelpay.payment.communication.HttpCommunicationException;
 import com.heidelpay.payment.paymenttypes.PaymentType;
 
 public abstract class AbstractPayment implements PaymentType {
 	private String id;
-	
-	private transient Payment payment;
-	private transient Heidelpay heidelpay;
-	private transient URL resourceUrl;
-	private transient String type;
-	private Message message;
+	protected static final String CANCEL_IS_ONLY_POSSIBLE_FOR_AN_AUTHORIZATION = "Cancel is only possible for an Authorization";
+	protected static final String PAYMENT_CANCELLATION_NOT_POSSIBLE = "Payment cancellation not possible";
 
-	private Date date;
-	
+	public enum State {
+		COMPLETED, PENDING, CANCELED, PARTLY, PAYMENT_REVIEW, CHARGEBACK
+	}
+
+	private State paymentState;
+	private BigDecimal amountTotal;
+	private BigDecimal amountCharged;
+	private BigDecimal amountCanceled;
+	private BigDecimal amountRemaining;
+	private String orderId;
+	private String customerId;
+	private Customer customer;
+	private String paymentTypeId;
+	private PaymentType paymentType;
+	private String metadataId;
+	private Metadata metadata;
+	private String basketId;
+	private Basket basket;
+
+	private transient Heidelpay heidelpay;
+
 	public AbstractPayment(Heidelpay heidelpay) {
 		super();
 		this.setHeidelpay(heidelpay);
@@ -53,14 +48,6 @@ public abstract class AbstractPayment implements PaymentType {
 		this.id = id;
 	}
 
-	public Payment getPayment() {
-		return payment;
-	}
-
-	public void setPayment(Payment payment) {
-		this.payment = payment;
-	}
-
 	public Heidelpay getHeidelpay() {
 		return heidelpay;
 	}
@@ -69,36 +56,143 @@ public abstract class AbstractPayment implements PaymentType {
 		this.heidelpay = heidelpay;
 	}
 
-	public URL getResourceUrl() {
-		return resourceUrl;
+	public PaymentType getPaymentType() throws HttpCommunicationException {
+		if (paymentType == null) {
+			paymentType = fetchPaymentType(getPaymentTypeId());
+		}
+		return paymentType;
 	}
 
-	public void setResourceUrl(URL resourceUrl) {
-		this.resourceUrl = resourceUrl;
+	public Customer getCustomer() throws HttpCommunicationException {
+		if (customer == null && isNotEmpty(getCustomerId())) {
+			customer = fetchCustomer(getCustomerId());
+		}
+		return customer;
 	}
 
-	public String getType() {
-		return type;
+	public void setCustomer(Customer customer) {
+		this.customer = customer;
 	}
 
-	public void setType(String type) {
-		this.type = type;
+	public String getPaymentTypeId() {
+		return paymentTypeId;
 	}
 
-	public Message getMessage() {
-		return message;
+	public void setPaymentTypeId(String paymentTypeId) {
+		this.paymentTypeId = paymentTypeId;
 	}
 
-	public void setMessage(Message message) {
-		this.message = message;
+	public String getCustomerId() {
+		return customerId;
 	}
 
-	public Date getDate() {
-		return date;
+	public void setCustomerId(String customerId) {
+		this.customerId = customerId;
 	}
 
-	public AbstractPayment setDate(Date date) {
-		this.date = date;
-		return this;
+	public String getMetadataId() {
+		return metadataId;
+	}
+
+	public void setMetadataId(String metadataId) {
+		this.metadataId = metadataId;
+	}
+
+	public Metadata getMetadata() throws HttpCommunicationException {
+		if (metadata == null && isNotEmpty(getMetadataId())) {
+			metadata = fetchMetadata(getMetadataId());
+		}
+		return metadata;
+	}
+
+	public void setMetadata(Metadata metadata) {
+		this.metadata = metadata;
+	}
+
+	public String getBasketId() {
+		return basketId;
+	}
+
+	public void setBasketId(String basketId) {
+		this.basketId = basketId;
+	}
+
+	public Basket getBasket() throws HttpCommunicationException {
+		if (basket == null && isNotEmpty(getBasketId())) {
+			basket = fetchBasket(getBasketId());
+		}
+		return basket;
+	}
+
+	public void setBasket(Basket basket) {
+		this.basket = basket;
+	}
+
+	public State getPaymentState() {
+		return paymentState;
+	}
+
+	public void setPaymentState(State paymentState) {
+		this.paymentState = paymentState;
+	}
+
+	public BigDecimal getAmountTotal() {
+		return amountTotal;
+	}
+
+	public void setAmountTotal(BigDecimal amountTotal) {
+		this.amountTotal = amountTotal;
+	}
+
+	public BigDecimal getAmountCharged() {
+		return amountCharged;
+	}
+
+	public void setAmountCharged(BigDecimal amountCharged) {
+		this.amountCharged = amountCharged;
+	}
+
+	public BigDecimal getAmountCanceled() {
+		return amountCanceled;
+	}
+
+	public void setAmountCanceled(BigDecimal amountCanceled) {
+		this.amountCanceled = amountCanceled;
+	}
+
+	public BigDecimal getAmountRemaining() {
+		return amountRemaining;
+	}
+
+	public void setAmountRemaining(BigDecimal amountRemaining) {
+		this.amountRemaining = amountRemaining;
+	}
+
+	public String getOrderId() {
+		return orderId;
+	}
+
+	public void setOrderId(String orderId) {
+		this.orderId = orderId;
+	}
+
+	protected boolean isNotEmpty(String value) {
+		return value != null && !"".equalsIgnoreCase(value.trim());
+	}
+
+	protected PaymentType fetchPaymentType(String paymentTypeId) throws HttpCommunicationException {
+		return getHeidelpay().fetchPaymentType(paymentTypeId);
+	}
+
+	protected Customer fetchCustomer(String customerId) throws HttpCommunicationException {
+		return getHeidelpay().fetchCustomer(customerId);
+	}
+
+	protected Metadata fetchMetadata(String metadataId) throws HttpCommunicationException {
+		return getHeidelpay().fetchMetadata(metadataId);
+	}
+	
+	protected Basket fetchBasket(String basketId) throws HttpCommunicationException {
+		return getHeidelpay().fetchBasket(basketId);
 	}
 }

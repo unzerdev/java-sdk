@@ -26,6 +26,7 @@ import static org.junit.Assert.assertNotNull;
 import java.math.BigDecimal;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.text.ParseException;
 import java.util.Currency;
 
 import org.junit.Test;
@@ -33,9 +34,11 @@ import org.junit.Test;
 import com.heidelpay.payment.Authorization;
 import com.heidelpay.payment.Cancel;
 import com.heidelpay.payment.Charge;
+import com.heidelpay.payment.Customer;
 import com.heidelpay.payment.Payment;
 import com.heidelpay.payment.PaymentException;
 import com.heidelpay.payment.communication.HttpCommunicationException;
+import com.heidelpay.payment.paymenttypes.Card;
 
 public class PaymentTest extends AbstractPaymentTest {
 
@@ -133,6 +136,34 @@ public class PaymentTest extends AbstractPaymentTest {
 		
 		// Variant 2
 		Authorization authorizationUsingHeidelpay = getHeidelpay().authorize(BigDecimal.ONE, Currency.getInstance("EUR"), createPaymentTypeCard().getId(), new URL("https://www.google.at"));
+		authorizationUsingHeidelpay.getPayment();
+		
+		assertNotNull(authorizationUsingPayment);
+		assertNotNull(authorizationUsingHeidelpay);
+	}
+	
+	@Test
+	public void testAuthorizeWithExistedCustomer() throws HttpCommunicationException, MalformedURLException, ParseException{
+		// Variant 1
+		Payment payment = new Payment(getHeidelpay());
+		Authorization authorizationUsingPayment = payment.authorize(BigDecimal.ONE, Currency.getInstance("EUR"), createPaymentTypeCard().getId(), new URL("https://www.google.at"), createFactoringOKCustomer().getId());
+				
+		Authorization authorizationUsingHeidelpay = getHeidelpay().authorize(BigDecimal.ONE, Currency.getInstance("EUR"), createPaymentTypeCard().getId(), new URL("https://www.google.at"), createFactoringOKCustomer().getId());
+		authorizationUsingHeidelpay.getPayment();
+		
+		assertNotNull(authorizationUsingPayment);
+		assertNotNull(authorizationUsingHeidelpay);
+	}
+	
+	@Test
+	public void testAuthorizeWithNotExistedPaymentTypeAndCustomer() throws HttpCommunicationException, MalformedURLException, ParseException{
+		Customer customerRequest = getMaximumCustomer("");
+		Card cardRequest = getPaymentTypeCard();
+		// Variant 1
+		Payment payment = new Payment(getHeidelpay());
+		Authorization authorizationUsingPayment = payment.authorize(BigDecimal.ONE, Currency.getInstance("EUR"), cardRequest, new URL("https://www.google.at"), customerRequest);
+				
+		Authorization authorizationUsingHeidelpay = getHeidelpay().authorize(BigDecimal.ONE, Currency.getInstance("EUR"), cardRequest, new URL("https://www.google.at"), customerRequest);
 		authorizationUsingHeidelpay.getPayment();
 		
 		assertNotNull(authorizationUsingPayment);

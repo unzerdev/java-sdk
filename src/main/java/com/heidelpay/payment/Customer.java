@@ -29,12 +29,16 @@ import java.util.Date;
  * Business object for Customer together with billingAddress.
  * 
  * firstname and lastname are mandatory to create a new Customer.
+ * 
  * @author rene.felder
  *
  */
-public class Customer extends AbstractPayment {
-	public enum Salutation {MR, MRS, UNKNOWN}
+public class Customer implements PaymentType {
+	public enum Salutation {
+		MR, MRS, UNKNOWN
+	}
 
+	private String id;
 	private String firstname;
 	private String lastname;
 	private Salutation salutation;
@@ -46,7 +50,7 @@ public class Customer extends AbstractPayment {
 	private Address billingAddress;
 	private Address shippingAddress;
 	private String company;
-	
+
 	private CustomerCompanyData companyData;
 
 	public Customer(String firstname, String lastname) {
@@ -176,4 +180,12 @@ public class Customer extends AbstractPayment {
 		this.company = company;
 	}
 
+	@Override
+	public String getId() {
+		return this.id;
+	}
+
+	public void setId(String id) {
+		this.id = id;
+	}
 }

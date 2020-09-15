@@ -45,7 +45,7 @@ public class JsonWebhookEnumListConverter implements JsonDeserializer<List<Webho
 	}
 
 	@Override
-	public List<WebhookEventEnum> deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
+	public List<WebhookEventEnum> deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) {
 		List<WebhookEventEnum> result = new ArrayList<WebhookEventEnum>();
 		try {
 			if(json.isJsonArray()) {

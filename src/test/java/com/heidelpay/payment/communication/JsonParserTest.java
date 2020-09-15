@@ -37,7 +37,7 @@ public class JsonParserTest {
 	@Test
 	public void given_an_error_message_then_payment_exception_is_thrown() {
 		try {
-			JsonParser<JsonCharge> parser = new JsonParser<JsonCharge>();
+			JsonParser parser = new JsonParser();
 			parser.fromJson(TestData.errorJson(), JsonCharge.class);
 
 			fail("Expected PaymentException");
@@ -49,7 +49,7 @@ public class JsonParserTest {
 
 	@Test
 	public void given_an_error_json_then_fromJson_returnes_jsonerrorobject() {
-		assertJsonError(new JsonParser<JsonErrorObject>().fromJson(TestData.errorJson(), JsonErrorObject.class));
+		assertJsonError(new JsonParser().fromJson(TestData.errorJson(), JsonErrorObject.class));
 	}
 
 	private void assertJsonError(JsonErrorObject expectedError) {

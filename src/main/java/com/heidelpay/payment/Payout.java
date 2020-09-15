@@ -23,7 +23,7 @@ package com.heidelpay.payment;
 import com.heidelpay.payment.communication.json.JsonObject;
 import com.heidelpay.payment.paymenttypes.PaymentType;
 
-public class Payout extends AbstractInitPayment {
+public class Payout extends AbstractTransaction<Payment> {
 
 	public Payout() {
 	}

@@ -22,10 +22,12 @@ package com.heidelpay.payment.business;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertThrows;
 
 import java.text.ParseException;
 
 import org.junit.Test;
+import org.junit.function.ThrowingRunnable;
 
 import com.heidelpay.payment.Customer;
 import com.heidelpay.payment.PaymentException;
@@ -103,13 +105,33 @@ public class CustomerTest extends AbstractPaymentTest {
 		assertEquals("Max", fetchedCustomer.getFirstname());
 	}
 	
-	@Test(expected=PaymentException.class)
+	@Test
 	public void testDeleteCustomer() throws HttpCommunicationException, ParseException {
 		Customer customer = getHeidelpay().createCustomer(getMaximumCustomer(getRandomId()));
 		assertNotNull(customer);
 		assertNotNull(customer.getId());
-		getHeidelpay().deleteCustomer(customer.getId());
-		getHeidelpay().fetchCustomer(customer.getId());
+		String deletedCustomerId = getHeidelpay().deleteCustomer(customer.getId());
+		assertEquals(customer.getId(), deletedCustomerId);
 	}
 
+	@Test
+	public void testCreateCustomerWithException() throws HttpCommunicationException, ParseException {
+		ThrowingRunnable createNullCustomer = new ThrowingRunnable() {
+			@Override
+			public void run() throws Throwable {
+				getHeidelpay().createCustomer(null);
+			}
+		};
+		
+		ThrowingRunnable createExistedCustomer = new ThrowingRunnable() {
+			@Override
+			public void run() throws Throwable {
+				Customer customerRequest = new Customer("User", "Test");
+				customerRequest.setId("s-cst-abcdef");
+				getHeidelpay().createCustomer(customerRequest);
+			}
+		};
+		assertThrows(IllegalArgumentException.class, createNullCustomer);
+		assertThrows(PaymentException.class, createExistedCustomer);
+	}
 }

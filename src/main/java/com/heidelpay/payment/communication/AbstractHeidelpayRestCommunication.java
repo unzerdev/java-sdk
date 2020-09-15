@@ -154,9 +154,9 @@ public abstract class AbstractHeidelpayRestCommunication implements HeidelpayRes
 			throw new IllegalArgumentException("Cannot create a http post request with null params");
 		}
 
-		String json = new JsonParser<String>().toJson(data);
+		String json = new JsonParser().toJson(data);
 		logRequestBody(json);
-		request.setContent(new JsonParser<String>().toJson(data), "UTF-8");
+		request.setContent(new JsonParser().toJson(data), "UTF-8");
 
 		return this.execute(request, privateKey);
 
@@ -229,8 +229,7 @@ public abstract class AbstractHeidelpayRestCommunication implements HeidelpayRes
 	}
 
 	private void throwPaymentException(HeidelpayHttpResponse response) {
-		JsonErrorObject error = new JsonParser<JsonErrorObject>().fromJson(response.getContent(),
-				JsonErrorObject.class);
+		JsonErrorObject error = new JsonParser().fromJson(response.getContent(), JsonErrorObject.class);
 		throw new PaymentException(error.getUrl(), response.getStatusCode(), error.getTimestamp(), error.getId(), error.getErrors(), "");
 	}
 

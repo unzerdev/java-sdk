@@ -25,6 +25,8 @@ import java.net.URL;
 import java.util.Currency;
 import java.util.Date;
 
+import com.heidelpay.payment.marketplace.MarketplaceCancelBasket;
+
 public class JsonCancel extends JsonIdObject implements JsonObject {
 	private Boolean isSuccess;
 	private Boolean isPending;
@@ -39,6 +41,7 @@ public class JsonCancel extends JsonIdObject implements JsonObject {
 	
 	private JsonResources resources; 
 	private JsonProcessing processing = new JsonProcessing();
+	private MarketplaceCancelBasket canceledBasket;
 	
 	public JsonCancel() {
 		super();
@@ -135,5 +138,13 @@ public class JsonCancel extends JsonIdObject implements JsonObject {
 
 	public void setPaymentReference(String paymentReference) {
 		this.paymentReference = paymentReference;
+	}
+
+	public MarketplaceCancelBasket getCanceledBasket() {
+		return canceledBasket;
+	}
+
+	public void setCanceledBasket(MarketplaceCancelBasket canceledBasket) {
+		this.canceledBasket = canceledBasket;
 	}
 }

@@ -34,7 +34,7 @@ public class JsonRecurring extends JsonIdObject implements JsonObject {
 	
 	private JsonResources resources; 
 	private JsonProcessing processing = new JsonProcessing();
-	private String redirectUrl;
+	private URL redirectUrl;
 
 	public JsonRecurring() {
 		super();
@@ -107,11 +107,11 @@ public class JsonRecurring extends JsonIdObject implements JsonObject {
 		this.isError = isError;
 	}
 
-	public String getRedirectUrl() {
+	public URL getRedirectUrl() {
 		return redirectUrl;
 	}
 
-	public void setRedirectUrl(String redirectUrl) {
+	public void setRedirectUrl(URL redirectUrl) {
 		this.redirectUrl = redirectUrl;
 	}
 
