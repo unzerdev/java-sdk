@@ -1,5 +1,5 @@
-# heidelpayJava
-Official heidelpay Java Payment SDK
+# Unzer Java SDK
+Official Unzer Java Payment SDK
 
 ## Requirements
 
@@ -10,7 +10,7 @@ Java 1.6 or later.
 <dependency>
   <groupId>com.heidelpay.payment</groupId>
   <artifactId>heidelpayJava</artifactId>
-  <version>1.9.1.0</version>
+  <version>1.11.2.0</version>
 </dependency>
 ```
 
