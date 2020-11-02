@@ -42,11 +42,6 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<additionalparam>-Xdoclint:none</additionalparam>
 		<skip.dependency.check>true</skip.dependency.check>
-		<publickey1>${publickey1}</publickey1>
-		<privatekey1>${privatekey1}</privatekey1>
-		<privatekey2>${privatekey2}</privatekey2>
-		<privatekey3>${privatekey3}</privatekey3>
-		<marketplacePrivatekey>${marketplacePrivatekey}</marketplacePrivatekey>
 	</properties>
 
 	<distributionManagement>
