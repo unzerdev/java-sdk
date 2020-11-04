@@ -4,16 +4,16 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
-	<groupId>com.heidelpay.payment</groupId>
-	<artifactId>heidelpayJava</artifactId>
+	<groupId>com.unzer.payment</groupId>
+	<artifactId>java-sdk</artifactId>
 	<version>1.11.2.0</version>
-	<name>Heidelpay Java SDK</name>
-	<description>Heidelpay Java SDK</description>
-	<url>https://docs.heidelpay.com</url>
+	<name>Unzer Java SDK</name>
+	<description>Unzer Java SDK</description>
+	<url>https://dev.unzer.de/</url>
 
 	<inceptionYear>2018</inceptionYear>
 	<organization>
-		<name>Heidelpay GmbH</name>
+		<name>Unzer E-Com GmbH</name>
 	</organization>
 
 	<licenses>
@@ -25,17 +25,16 @@
 
 	<developers>
 		<developer>
-			<name>Rene Felder</name>
-			<email>info@heidelpay.com</email>
-			<organization>heidelpay GmbH</organization>
-			<organizationUrl>https://www.heidelpay.com/</organizationUrl>
+			<email>support@unzer.com</email>
+			<organization>Unzer E-Com GmbH</organization>
+			<organizationUrl>https://www.unzer.com/</organizationUrl>
 		</developer>
 	</developers>
 
 	<scm>
-		<connection>https://github.com/heidelpay/heidelpayJava.git</connection>
-		<developerConnection>https://github.com/heidelpay/heidelpayJava.git</developerConnection>
-		<url>https://github.com/heidelpay/heidelpayJava.git</url>
+		<connection>https://github.com/unzerdev/java-sdk.git</connection>
+		<developerConnection>https://github.com/unzerdev/java-sdk.git</developerConnection>
+		<url>https://github.com/unzerdev/java-sdk.git</url>
 	</scm>
 
 	<properties>
@@ -274,7 +273,7 @@
 			<version>4.13</version>
 			<scope>test</scope>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>org.jsoup</groupId>
 			<artifactId>jsoup</artifactId>
