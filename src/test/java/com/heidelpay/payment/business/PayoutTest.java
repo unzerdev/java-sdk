@@ -20,7 +20,11 @@ package com.heidelpay.payment.business;
  * #L%
  */
 
-import static org.junit.Assert.*;
+import com.heidelpay.payment.PaymentException;
+import com.heidelpay.payment.Payout;
+import com.heidelpay.payment.communication.HttpCommunicationException;
+import com.heidelpay.payment.paymenttypes.Card;
+import org.junit.Test;
 
 import java.math.BigDecimal;
 import java.net.MalformedURLException;
@@ -28,13 +32,8 @@ import java.net.URL;
 import java.text.ParseException;
 import java.util.Currency;
 
-import org.junit.Test;
-
-import com.heidelpay.payment.Basket;
-import com.heidelpay.payment.PaymentException;
-import com.heidelpay.payment.Payout;
-import com.heidelpay.payment.communication.HttpCommunicationException;
-import com.heidelpay.payment.paymenttypes.Card;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 public class PayoutTest extends AbstractPaymentTest {
 
@@ -65,8 +64,7 @@ public class PayoutTest extends AbstractPaymentTest {
 		assertEquals(payout.getBasketId(), payoutFetched.getBasketId());
 		assertEquals(payout.getCurrency(), payoutFetched.getCurrency());
 		assertEquals(payout.getCustomerId(), payoutFetched.getCustomerId());
-		// Date from fetch is different than date from payout: https://heidelpay.atlassian.net/browse/AHC-1727
-//		assertEquals(payout.getDate(), payoutFetched.getDate());
+		assertEquals(payout.getDate(), payoutFetched.getDate());
 		assertEquals(payout.getId(), payoutFetched.getId());
 		assertEquals(payout.getMetadataId(), payoutFetched.getMetadataId());
 		assertEquals(payout.getOrderId(), payoutFetched.getOrderId());

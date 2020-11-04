@@ -20,18 +20,17 @@ package com.heidelpay.payment.business;
  * #L%
  */
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-
-import java.text.ParseException;
-
-import org.junit.Ignore;
-import org.junit.Test;
-
 import com.heidelpay.payment.Customer;
 import com.heidelpay.payment.CustomerCompanyData;
 import com.heidelpay.payment.PaymentException;
 import com.heidelpay.payment.communication.HttpCommunicationException;
+import org.junit.Ignore;
+import org.junit.Test;
+
+import java.text.ParseException;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 public class BusinessCustomerTest extends AbstractPaymentTest {
 
@@ -96,7 +95,6 @@ public class BusinessCustomerTest extends AbstractPaymentTest {
 	}
 
 	@Test
-	@Ignore ("Bug https://heidelpay.atlassian.net/browse/AHC-1645")
 	public void testUpdateCustomer() throws HttpCommunicationException, ParseException {
 		Customer customer = getHeidelpay().createCustomer(getRegisterdMaximumBusinessCustomer(getRandomId()));
 		assertNotNull(customer);

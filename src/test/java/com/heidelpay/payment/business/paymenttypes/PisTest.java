@@ -20,20 +20,19 @@ package com.heidelpay.payment.business.paymenttypes;
  * #L%
  */
 
-import static org.junit.Assert.assertNotNull;
+import com.heidelpay.payment.Charge;
+import com.heidelpay.payment.business.AbstractPaymentTest;
+import com.heidelpay.payment.communication.HttpCommunicationException;
+import com.heidelpay.payment.paymenttypes.Pis;
+import org.junit.Ignore;
+import org.junit.Test;
 
 import java.math.BigDecimal;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Currency;
 
-import org.junit.Ignore;
-import org.junit.Test;
-
-import com.heidelpay.payment.Charge;
-import com.heidelpay.payment.business.AbstractPaymentTest;
-import com.heidelpay.payment.communication.HttpCommunicationException;
-import com.heidelpay.payment.paymenttypes.Pis;
+import static org.junit.Assert.assertNotNull;
 
 public class PisTest extends AbstractPaymentTest {
 

@@ -1,7 +1,13 @@
 package com.heidelpay.payment.business.paymenttypes;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import com.heidelpay.payment.Authorization;
+import com.heidelpay.payment.Cancel;
+import com.heidelpay.payment.Charge;
+import com.heidelpay.payment.Shipment;
+import com.heidelpay.payment.business.AbstractPaymentTest;
+import com.heidelpay.payment.communication.HttpCommunicationException;
+import org.apache.commons.lang3.time.DateUtils;
+import org.junit.Test;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -13,8 +19,8 @@ import java.util.Currency;
 import java.util.Date;
 import java.util.List;
 
-import org.apache.commons.lang3.time.DateUtils;
-import org.junit.Test;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 /*-
  * #%L
@@ -25,9 +31,9 @@ import org.junit.Test;
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -35,13 +41,6 @@ import org.junit.Test;
  * limitations under the License.
  * #L%
  */
-
-import com.heidelpay.payment.Authorization;
-import com.heidelpay.payment.Cancel;
-import com.heidelpay.payment.Charge;
-import com.heidelpay.payment.Shipment;
-import com.heidelpay.payment.business.AbstractPaymentTest;
-import com.heidelpay.payment.communication.HttpCommunicationException;
 
 public class InstallmentSecuredTest extends AbstractPaymentTest {
 
@@ -277,8 +276,7 @@ public class InstallmentSecuredTest extends AbstractPaymentTest {
 		assertNumberEquals(ratePlan.getEffectiveInterestRate(), ratePlanReturned.getEffectiveInterestRate());
 		assertNumberEquals(ratePlan.getFeeFirstRate(), ratePlanReturned.getFeeFirstRate());
 		assertNumberEquals(ratePlan.getFeePerRate(), ratePlanReturned.getFeePerRate());
-		// IBAN masking will be removed: https://heidelpay.atlassian.net/browse/AHC-1793
-//		assertEquals(ratePlan.getIban(), ratePlanReturned.getIban());
+		assertEquals(ratePlan.getIban(), ratePlanReturned.getIban());
 		assertDateEquals(ratePlan.getInvoiceDate(), ratePlanReturned.getInvoiceDate());
 		assertDateEquals(ratePlan.getInvoiceDueDate(), ratePlanReturned.getInvoiceDueDate());
 		assertNumberEquals(ratePlan.getLastRate(), ratePlanReturned.getLastRate());

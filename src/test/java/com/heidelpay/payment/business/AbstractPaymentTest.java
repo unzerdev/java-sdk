@@ -1,69 +1,7 @@
 package com.heidelpay.payment.business;
 
-import static java.util.concurrent.TimeUnit.SECONDS;
-import static org.awaitility.Awaitility.await;
-
-/*-
- * #%L
- * Heidelpay Java SDK
- * %%
- * Copyright (C) 2018 Heidelpay GmbH
- * %%
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- * 
- *      http://www.apache.org/licenses/LICENSE-2.0
- * 
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- * #L%
- */
-
-import static org.junit.Assert.assertEquals;
-
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.math.BigDecimal;
-import java.math.RoundingMode;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Currency;
-import java.util.Date;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-import java.util.UUID;
-
-import org.apache.http.HttpResponse;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.impl.client.HttpClients;
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
-
-import com.heidelpay.payment.Address;
-import com.heidelpay.payment.Authorization;
-import com.heidelpay.payment.Basket;
-import com.heidelpay.payment.BasketItem;
-import com.heidelpay.payment.Cancel;
-import com.heidelpay.payment.Charge;
-import com.heidelpay.payment.Customer;
+import com.heidelpay.payment.*;
 import com.heidelpay.payment.Customer.Salutation;
-import com.heidelpay.payment.CustomerCompanyData;
-import com.heidelpay.payment.Heidelpay;
-import com.heidelpay.payment.Metadata;
-import com.heidelpay.payment.PaymentException;
-import com.heidelpay.payment.Processing;
 import com.heidelpay.payment.communication.HttpCommunicationException;
 import com.heidelpay.payment.communication.impl.HttpClientBasedRestCommunication;
 import com.heidelpay.payment.marketplace.MarketplaceAuthorization;
@@ -75,6 +13,49 @@ import com.heidelpay.payment.paymenttypes.InvoiceGuaranteed;
 import com.heidelpay.payment.paymenttypes.InvoiceSecured;
 import com.heidelpay.payment.paymenttypes.SepaDirectDebit;
 import com.heidelpay.payment.service.PropertiesUtil;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.impl.client.HttpClients;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.*;
+
+import static java.util.concurrent.TimeUnit.SECONDS;
+import static org.awaitility.Awaitility.await;
+import static org.junit.Assert.assertEquals;
+
+/*-
+ * #%L
+ * Heidelpay Java SDK
+ * %%
+ * Copyright (C) 2018 Heidelpay GmbH
+ * %%
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ * #L%
+ */
 
 public abstract class AbstractPaymentTest {
 	
@@ -582,7 +563,7 @@ public abstract class AbstractPaymentTest {
 		basketItem.setSubTitle("XS in Red");
 		basketItem.setType("goods");
 		try {
-			basketItem.setImageUrl(new URL("https://www.apple.com/v/iphone-xs/d/images/overview/hero_top_device_large_2x.jpg"));
+			basketItem.setImageUrl(new URL("https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/iphone-12-pro-family-hero"));
 		} catch (MalformedURLException e) {
 		}
 		return basketItem;
@@ -603,7 +584,7 @@ public abstract class AbstractPaymentTest {
 		basketItem.setSubTitle("Nicht nur Pros brauchen Power.");
 		basketItem.setType("goods");
 		try {
-			basketItem.setImageUrl(new URL("https://www.apple.com/de/ipad-air/images/overview/hero__gmn7i7gbziqa_large_2x.jpg"));
+			basketItem.setImageUrl(new URL("https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/iphone-12-pro-family-hero"));
 		} catch (MalformedURLException e) {
 		}
 		return basketItem;

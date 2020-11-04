@@ -20,8 +20,14 @@ package com.heidelpay.payment.business.paymenttypes;
  * #L%
  */
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import com.heidelpay.payment.Authorization;
+import com.heidelpay.payment.Cancel;
+import com.heidelpay.payment.Charge;
+import com.heidelpay.payment.Shipment;
+import com.heidelpay.payment.business.AbstractPaymentTest;
+import com.heidelpay.payment.communication.HttpCommunicationException;
+import org.apache.commons.lang3.time.DateUtils;
+import org.junit.Test;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -33,15 +39,8 @@ import java.util.Currency;
 import java.util.Date;
 import java.util.List;
 
-import org.apache.commons.lang3.time.DateUtils;
-import org.junit.Test;
-
-import com.heidelpay.payment.Authorization;
-import com.heidelpay.payment.Cancel;
-import com.heidelpay.payment.Charge;
-import com.heidelpay.payment.Shipment;
-import com.heidelpay.payment.business.AbstractPaymentTest;
-import com.heidelpay.payment.communication.HttpCommunicationException;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 public class HirePurchaseDirectDebitTest extends AbstractPaymentTest {
 
@@ -277,8 +276,7 @@ public class HirePurchaseDirectDebitTest extends AbstractPaymentTest {
 		assertNumberEquals(ratePlan.getEffectiveInterestRate(), ratePlanReturned.getEffectiveInterestRate());
 		assertNumberEquals(ratePlan.getFeeFirstRate(), ratePlanReturned.getFeeFirstRate());
 		assertNumberEquals(ratePlan.getFeePerRate(), ratePlanReturned.getFeePerRate());
-		// IBAN masking will be removed: https://heidelpay.atlassian.net/browse/AHC-1793
-//		assertEquals(ratePlan.getIban(), ratePlanReturned.getIban());
+		assertEquals(ratePlan.getIban(), ratePlanReturned.getIban());
 		assertDateEquals(ratePlan.getInvoiceDate(), ratePlanReturned.getInvoiceDate());
 		assertDateEquals(ratePlan.getInvoiceDueDate(), ratePlanReturned.getInvoiceDueDate());
 		assertNumberEquals(ratePlan.getLastRate(), ratePlanReturned.getLastRate());

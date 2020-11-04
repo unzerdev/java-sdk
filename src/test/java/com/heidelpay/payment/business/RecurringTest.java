@@ -20,10 +20,6 @@ package com.heidelpay.payment.business;
  * #L%
  */
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-
 import com.heidelpay.payment.Charge;
 import com.heidelpay.payment.Customer;
 import com.heidelpay.payment.Metadata;
@@ -32,16 +28,19 @@ import com.heidelpay.payment.communication.HttpCommunicationException;
 import com.heidelpay.payment.paymenttypes.Card;
 import com.heidelpay.payment.paymenttypes.Paypal;
 import com.heidelpay.payment.paymenttypes.SepaDirectDebit;
-import java.math.BigDecimal;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.text.ParseException;
-import java.util.Currency;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.remote.RemoteWebDriver;
+
+import java.math.BigDecimal;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.text.ParseException;
+import java.util.Currency;
+
+import static org.junit.Assert.*;
 
 public class RecurringTest extends AbstractSeleniumTest {
 
@@ -132,7 +131,6 @@ public class RecurringTest extends AbstractSeleniumTest {
 
 	
 	@Test
-	@Ignore("Paypal recurring is set to true even if customer does not login paypal account: https://heidelpay.atlassian.net/browse/AHC-1725")
 	public void testRecurringPaypalWithoutCustomer() throws MalformedURLException, HttpCommunicationException, ParseException {
 		Paypal paypal = new Paypal();
 		paypal = (Paypal) getHeidelpay().createPaymentType(paypal);
@@ -144,7 +142,6 @@ public class RecurringTest extends AbstractSeleniumTest {
 	}
 
 	@Test
-	@Ignore("Paypal recurring is set to true even if customer does not login paypal account: https://heidelpay.atlassian.net/browse/AHC-1725")
 	public void testRecurringPaypalWitCustomerId() throws MalformedURLException, HttpCommunicationException, ParseException {
 		Customer customer = getHeidelpay().createCustomer(getMaximumCustomer(getRandomId()));
 		Paypal paypal = new Paypal();

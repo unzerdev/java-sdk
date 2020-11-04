@@ -20,8 +20,16 @@ package com.heidelpay.payment.business;
  * #L%
  */
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import com.google.gson.GsonBuilder;
+import com.heidelpay.payment.*;
+import com.heidelpay.payment.communication.HttpCommunicationException;
+import com.heidelpay.payment.communication.JsonFieldIgnoreStragegy;
+import com.heidelpay.payment.marketplace.MarketplaceCharge;
+import com.heidelpay.payment.marketplace.MarketplacePayment;
+import com.heidelpay.payment.paymenttypes.Card;
+import com.heidelpay.payment.paymenttypes.SepaDirectDebit;
+import com.heidelpay.payment.paymenttypes.Sofort;
+import org.junit.Test;
 
 import java.math.BigDecimal;
 import java.net.MalformedURLException;
@@ -30,22 +38,7 @@ import java.text.ParseException;
 import java.time.LocalDate;
 import java.util.Currency;
 
-import org.junit.Test;
-
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.heidelpay.payment.AbstractTransaction;
-import com.heidelpay.payment.Basket;
-import com.heidelpay.payment.Charge;
-import com.heidelpay.payment.Customer;
-import com.heidelpay.payment.Payment;
-import com.heidelpay.payment.communication.HttpCommunicationException;
-import com.heidelpay.payment.communication.JsonFieldIgnoreStragegy;
-import com.heidelpay.payment.marketplace.MarketplaceCharge;
-import com.heidelpay.payment.marketplace.MarketplacePayment;
-import com.heidelpay.payment.paymenttypes.Card;
-import com.heidelpay.payment.paymenttypes.SepaDirectDebit;
-import com.heidelpay.payment.paymenttypes.Sofort;
+import static org.junit.Assert.*;
 
 public class ChargeTest extends AbstractPaymentTest {
 
@@ -187,8 +180,7 @@ public class ChargeTest extends AbstractPaymentTest {
 		assertEquals("COR.000.100.112", charge.getMessage().getCode());
 		assertNotNull(charge.getMessage().getCustomer());
 		assertEquals(Charge.Status.SUCCESS, charge.getStatus());
-		// TODO Bug in API, Ticket AHC-1197
-//		assertFalse(charge.getCard3ds());
+		assertFalse(charge.getCard3ds());
 	}
 
 	@Test
@@ -200,8 +192,7 @@ public class ChargeTest extends AbstractPaymentTest {
 		assertEquals("COR.000.200.000", charge.getMessage().getCode());
 		assertNotNull(charge.getMessage().getCustomer());
 		assertEquals(Charge.Status.PENDING, charge.getStatus());
-		// TODO Bug in API, Ticket AHC-1197
-//		assertTrue(charge.getCard3ds());
+		assertTrue(charge.getCard3ds());
 	}
 
 	@Test

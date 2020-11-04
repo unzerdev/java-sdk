@@ -1,15 +1,18 @@
 package com.heidelpay.payment.service;
 
+import com.heidelpay.payment.*;
+import com.heidelpay.payment.business.paymenttypes.HirePurchaseRatePlan;
+import com.heidelpay.payment.business.paymenttypes.InstallmentSecuredRatePlan;
+import com.heidelpay.payment.communication.HeidelpayRestCommunication;
+import com.heidelpay.payment.communication.HttpCommunicationException;
+import com.heidelpay.payment.communication.JsonParser;
+import com.heidelpay.payment.communication.json.*;
+import com.heidelpay.payment.communication.mapper.JsonToBusinessClassMapper;
+import com.heidelpay.payment.paymenttypes.*;
+
 import java.math.BigDecimal;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.Currency;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import com.heidelpay.payment.AbstractPayment;
+import java.util.*;
 
 /*-
  * #%L
@@ -20,9 +23,9 @@ import com.heidelpay.payment.AbstractPayment;
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -30,71 +33,6 @@ import com.heidelpay.payment.AbstractPayment;
  * limitations under the License.
  * #L%
  */
-
-import com.heidelpay.payment.Authorization;
-import com.heidelpay.payment.Basket;
-import com.heidelpay.payment.Cancel;
-import com.heidelpay.payment.Charge;
-import com.heidelpay.payment.Customer;
-import com.heidelpay.payment.Heidelpay;
-import com.heidelpay.payment.Metadata;
-import com.heidelpay.payment.Payment;
-import com.heidelpay.payment.PaymentException;
-import com.heidelpay.payment.Payout;
-import com.heidelpay.payment.Recurring;
-import com.heidelpay.payment.Shipment;
-import com.heidelpay.payment.business.paymenttypes.HirePurchaseRatePlan;
-import com.heidelpay.payment.business.paymenttypes.InstallmentSecuredRatePlan;
-import com.heidelpay.payment.communication.HeidelpayRestCommunication;
-import com.heidelpay.payment.communication.HttpCommunicationException;
-import com.heidelpay.payment.communication.JsonParser;
-import com.heidelpay.payment.communication.json.JsonApplepayResponse;
-import com.heidelpay.payment.communication.json.JsonAuthorization;
-import com.heidelpay.payment.communication.json.JsonBancontact;
-import com.heidelpay.payment.communication.json.JsonCancel;
-import com.heidelpay.payment.communication.json.JsonCard;
-import com.heidelpay.payment.communication.json.JsonCharge;
-import com.heidelpay.payment.communication.json.JsonCustomer;
-import com.heidelpay.payment.communication.json.JsonHirePurchaseRatePlan;
-import com.heidelpay.payment.communication.json.JsonHirePurchaseRatePlanList;
-import com.heidelpay.payment.communication.json.JsonIdObject;
-import com.heidelpay.payment.communication.json.JsonIdeal;
-import com.heidelpay.payment.communication.json.JsonInstallmentSecuredRatePlan;
-import com.heidelpay.payment.communication.json.JsonInstallmentSecuredRatePlanList;
-import com.heidelpay.payment.communication.json.JsonPayment;
-import com.heidelpay.payment.communication.json.JsonPayout;
-import com.heidelpay.payment.communication.json.JsonPaypal;
-import com.heidelpay.payment.communication.json.JsonPis;
-import com.heidelpay.payment.communication.json.JsonRecurring;
-import com.heidelpay.payment.communication.json.JsonSepaDirectDebit;
-import com.heidelpay.payment.communication.json.JsonShipment;
-import com.heidelpay.payment.communication.json.JsonTransaction;
-import com.heidelpay.payment.communication.mapper.JsonToBusinessClassMapper;
-import com.heidelpay.payment.paymenttypes.AbstractPaymentType;
-import com.heidelpay.payment.paymenttypes.Alipay;
-import com.heidelpay.payment.paymenttypes.Applepay;
-import com.heidelpay.payment.paymenttypes.Bancontact;
-import com.heidelpay.payment.paymenttypes.Card;
-import com.heidelpay.payment.paymenttypes.Eps;
-import com.heidelpay.payment.paymenttypes.Giropay;
-import com.heidelpay.payment.paymenttypes.Ideal;
-import com.heidelpay.payment.paymenttypes.Invoice;
-import com.heidelpay.payment.paymenttypes.InvoiceFactoring;
-import com.heidelpay.payment.paymenttypes.InvoiceGuaranteed;
-import com.heidelpay.payment.paymenttypes.InvoiceSecured;
-import com.heidelpay.payment.paymenttypes.PaymentType;
-import com.heidelpay.payment.paymenttypes.PaymentTypeEnum;
-import com.heidelpay.payment.paymenttypes.Paypal;
-import com.heidelpay.payment.paymenttypes.Pis;
-import com.heidelpay.payment.paymenttypes.PostFinanceCard;
-import com.heidelpay.payment.paymenttypes.PostFinanceEFinance;
-import com.heidelpay.payment.paymenttypes.Prepayment;
-import com.heidelpay.payment.paymenttypes.Przelewy24;
-import com.heidelpay.payment.paymenttypes.SepaDirectDebit;
-import com.heidelpay.payment.paymenttypes.SepaDirectDebitGuaranteed;
-import com.heidelpay.payment.paymenttypes.SepaDirectDebitSecured;
-import com.heidelpay.payment.paymenttypes.Sofort;
-import com.heidelpay.payment.paymenttypes.Wechatpay;
 
 public class PaymentService {
 	protected static final String TRANSACTION_TYPE_AUTHORIZATION = "authorize";
@@ -416,7 +354,6 @@ public class PaymentService {
 		paymentType.setHeidelpay(heidelpay);
 		String response = restCommunication.httpGet(urlUtil.getHttpGetUrl(paymentType, typeId),
 				heidelpay.getPrivateKey());
-		// workaround for Bug AHC-265
 		JsonIdObject jsonPaymentType = jsonParser.fromJson(response, getJsonObjectFromTypeId(typeId).getClass());
 		return (T) jsonToBusinessClassMapper.mapToBusinessObject(paymentType, jsonPaymentType);
 	}
