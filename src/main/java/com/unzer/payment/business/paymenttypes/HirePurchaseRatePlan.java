@@ -4,7 +4,7 @@ package com.unzer.payment.business.paymenttypes;
  * #%L
  * Unzer Java SDK
  * %%
- * Copyright (C) 2018 - 2019 Unzer GmbH
+ * Copyright (C) 2020 Unzer E-Com GmbH
  * %%
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,13 +20,6 @@ package com.unzer.payment.business.paymenttypes;
  * #L%
  */
 
-import java.math.BigDecimal;
-import java.net.URL;
-import java.util.ArrayList;
-import java.util.Currency;
-import java.util.Date;
-import java.util.List;
-
 import com.google.gson.annotations.JsonAdapter;
 import com.google.gson.annotations.SerializedName;
 import com.unzer.payment.Authorization;
@@ -36,6 +29,13 @@ import com.unzer.payment.communication.json.JsonHirePurchaseRatePlan;
 import com.unzer.payment.communication.json.JsonObject;
 import com.unzer.payment.paymenttypes.AbstractPaymentType;
 import com.unzer.payment.paymenttypes.PaymentType;
+
+import java.math.BigDecimal;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.Currency;
+import java.util.Date;
+import java.util.List;
 
 /**
  * @deprecated use {@code InstallmentSecuredRatePlan} as a default implementation.

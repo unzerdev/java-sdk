@@ -4,7 +4,7 @@ package com.unzer.payment.business;
  * #%L
  * Unzer Java SDK
  * %%
- * Copyright (C) 2018 - 2019 Unzer GmbH
+ * Copyright (C) 2020 Unzer E-Com GmbH
  * %%
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -246,7 +246,7 @@ public abstract class AbstractSeleniumTest extends AbstractPaymentTest {
 		paypage.setLogoImage("https://www.heidelpay.com/typo3conf/ext/heidelpay_site/Resources/Public/Images/Heidelpay-Logo_mitUnterzeile-orange.svg");
 		paypage.setFullPageImage("https://www.heidelpay.com/fileadmin/content/header-Imges-neu/Header_Phone_12.jpg");
 
-		paypage.setContactUrl(new URL("mailto:rene.felder@heidelpay.com"));
+		paypage.setContactUrl(new URL("mailto:support@unzer.com"));
 		paypage.setHelpUrl(new URL("https://www.heidelpay.com/de/support/"));
 		paypage.setImprintUrl(new URL("https://www.heidelpay.com/de/imprint/"));
 		paypage.setPrivacyPolicyUrl(new URL("https://www.heidelpay.com/de/datenschutz/"));
@@ -274,7 +274,7 @@ public abstract class AbstractSeleniumTest extends AbstractPaymentTest {
 		linkpay.setLogoImage("https://www.heidelpay.com/typo3conf/ext/heidelpay_site/Resources/Public/Images/Heidelpay-Logo_mitUnterzeile-orange.svg");
 		linkpay.setFullPageImage("https://www.heidelpay.com/fileadmin/content/header-Imges-neu/Header_Phone_12.jpg");
 
-		linkpay.setContactUrl(new URL("mailto:rene.felder@heidelpay.com"));
+		linkpay.setContactUrl(new URL("mailto:support@unzer.com"));
 		linkpay.setHelpUrl(new URL("https://www.heidelpay.com/de/support/"));
 		linkpay.setImprintUrl(new URL("https://www.heidelpay.com/de/imprint/"));
 		linkpay.setPrivacyPolicyUrl(new URL("https://www.heidelpay.com/de/datenschutz/"));

@@ -4,7 +4,7 @@ package com.unzer.payment.webhook;
  * #%L
  * Unzer Java SDK
  * %%
- * Copyright (C) 2018 - 2020 Unzer GmbH
+ * Copyright (C) 2020 Unzer E-Com GmbH
  * %%
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,12 +20,12 @@ package com.unzer.payment.webhook;
  * #L%
  */
 
-import java.util.ArrayList;
-import java.util.List;
-
 import com.google.gson.annotations.JsonAdapter;
 import com.unzer.payment.communication.JsonWebhookEnumConverter;
 import com.unzer.payment.communication.JsonWebhookEnumListConverter;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class Webhook {
 	

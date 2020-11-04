@@ -4,7 +4,7 @@ package com.unzer.payment.business;
  * #%L
  * Unzer Java SDK
  * %%
- * Copyright (C) 2018 Unzer GmbH
+ * Copyright (C) 2020 Unzer E-Com GmbH
  * %%
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,7 +21,6 @@ package com.unzer.payment.business;
  */
 
 import com.google.gson.GsonBuilder;
-import com.heidelpay.payment.*;
 import com.unzer.payment.*;
 import com.unzer.payment.communication.HttpCommunicationException;
 import com.unzer.payment.communication.JsonFieldIgnoreStragegy;
@@ -114,7 +113,7 @@ public class ChargeTest extends AbstractPaymentTest {
 	public void testChargeWithCustomerTypeReturnUrl() throws MalformedURLException, HttpCommunicationException {
 		LocalDate locaDateNow = LocalDate.now();
 		Card card = new Card("4444333322221111", "12/" + (locaDateNow.getYear() + 1));
-		Customer customer = new Customer("Rene", "Felder");
+		Customer customer = new Customer("Max", "Mustermann");
 		Charge charge = getUnzer().charge(BigDecimal.ONE, Currency.getInstance("EUR"), card, new URL("https://www.google.at"), customer, false);
 		assertNotNull(charge);
 		assertEquals("COR.000.100.112", charge.getMessage().getCode());

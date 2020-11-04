@@ -3,7 +3,6 @@ package com.unzer.payment.paymenttypes;
 import com.unzer.payment.Charge;
 import com.unzer.payment.Customer;
 import com.unzer.payment.GeoLocation;
-import com.unzer.payment.Heidelpay;
 import com.unzer.payment.Unzer;
 import com.unzer.payment.communication.HttpCommunicationException;
 import com.unzer.payment.communication.json.JsonIdObject;
@@ -17,7 +16,7 @@ import java.util.Currency;
  * #%L
  * Unzer Java SDK
  * %%
- * Copyright (C) 2018 Unzer GmbH
+ * Copyright (C) 2020 Unzer E-Com GmbH
  * %%
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.

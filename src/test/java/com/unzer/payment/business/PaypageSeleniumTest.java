@@ -4,7 +4,7 @@ package com.unzer.payment.business;
  * #%L
  * Unzer Java SDK
  * %%
- * Copyright (C) 2018 - 2019 Unzer GmbH
+ * Copyright (C) 2020 Unzer E-Com GmbH
  * %%
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,16 +20,9 @@ package com.unzer.payment.business;
  * #L%
  */
 
-import static java.util.concurrent.TimeUnit.SECONDS;
-import static org.awaitility.Awaitility.await;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
-
-import java.math.BigDecimal;
-import java.net.MalformedURLException;
-import java.text.ParseException;
-
+import com.unzer.payment.PaymentException;
+import com.unzer.payment.Paypage;
+import com.unzer.payment.communication.HttpCommunicationException;
 import org.junit.After;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -37,9 +30,13 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.remote.RemoteWebDriver;
 
-import com.unzer.payment.PaymentException;
-import com.unzer.payment.Paypage;
-import com.unzer.payment.communication.HttpCommunicationException;
+import java.math.BigDecimal;
+import java.net.MalformedURLException;
+import java.text.ParseException;
+
+import static java.util.concurrent.TimeUnit.SECONDS;
+import static org.awaitility.Awaitility.await;
+import static org.junit.Assert.*;
 
 @Ignore("Selenium Tests do not work in Bamboo. Execute them manually")
 public class PaypageSeleniumTest extends AbstractSeleniumTest {

@@ -4,7 +4,7 @@ package com.unzer.payment.business.paymenttypes;
  * #%L
  * Unzer Java SDK
  * %%
- * Copyright (C) 2018 Unzer GmbH
+ * Copyright (C) 2020 Unzer E-Com GmbH
  * %%
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -239,7 +239,7 @@ public class HirePurchaseDirectDebitTest extends AbstractPaymentTest {
 	private void addIbanInvoiceParameter(HirePurchaseRatePlan ratePlan) {
 		ratePlan.setIban("DE89370400440532013000");
 		ratePlan.setBic("COBADEFFXXX");
-		ratePlan.setAccountHolder("Rene Felder");
+		ratePlan.setAccountHolder("Max Mustermann");
 		ratePlan.setInvoiceDate(DateUtils.addDays(new Date(), 0));
 		ratePlan.setInvoiceDueDate(DateUtils.addDays(new Date(), 10));
 	}

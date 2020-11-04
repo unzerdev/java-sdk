@@ -4,7 +4,7 @@ package com.unzer.payment.business;
  * #%L
  * Unzer Java SDK
  * %%
- * Copyright (C) 2018 Unzer GmbH
+ * Copyright (C) 2020 Unzer E-Com GmbH
  * %%
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,18 +20,15 @@ package com.unzer.payment.business;
  * #L%
  */
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertThrows;
-
-import java.text.ParseException;
-
-import org.junit.Test;
-import org.junit.function.ThrowingRunnable;
-
 import com.unzer.payment.Customer;
 import com.unzer.payment.PaymentException;
 import com.unzer.payment.communication.HttpCommunicationException;
+import org.junit.Test;
+import org.junit.function.ThrowingRunnable;
+
+import java.text.ParseException;
+
+import static org.junit.Assert.*;
 
 public class CustomerTest extends AbstractPaymentTest {
 

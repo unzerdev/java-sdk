@@ -4,7 +4,7 @@ package com.unzer.payment.paymenttypes;
  * #%L
  * Unzer Java SDK
  * %%
- * Copyright (C) 2018 Unzer GmbH
+ * Copyright (C) 2020 Unzer E-Com GmbH
  * %%
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,7 +22,7 @@ package com.unzer.payment.paymenttypes;
 
 /**
  * @deprecated use {@code SepaDirectDebitSecured} as a default implementation.
- * @author rene.felder
+ * @author Unzer E-Com GmbH
  *
  */
 @Deprecated

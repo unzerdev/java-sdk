@@ -4,7 +4,7 @@ package com.unzer.payment;
  * #%L
  * Unzer Java SDK
  * %%
- * Copyright (C) 2018 - 2019 Unzer GmbH
+ * Copyright (C) 2020 Unzer E-Com GmbH
  * %%
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,10 +19,10 @@ package com.unzer.payment;
  * limitations under the License.
  * #L%
  */
+import org.junit.Test;
+
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
-
-import org.junit.Test;
 
 public class PaymentTest {
 

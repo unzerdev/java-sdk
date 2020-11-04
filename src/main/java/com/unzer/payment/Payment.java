@@ -4,7 +4,7 @@ package com.unzer.payment;
  * #%L
  * Unzer Java SDK
  * %%
- * Copyright (C) 2018 Unzer GmbH
+ * Copyright (C) 2020 Unzer E-Com GmbH
  * %%
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -36,7 +36,7 @@ import java.util.List;
  * 
  *  Within the Payment you also find the list of Charges, Cancels and the Authorization object.
  *  
- * @author rene.felder
+ * @author Unzer E-Com GmbH
  *
  */
 public class Payment extends AbstractPayment {

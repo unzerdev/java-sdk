@@ -4,7 +4,7 @@ package com.unzer.payment.business.paymenttypes;
  * #%L
  * Unzer Java SDK
  * %%
- * Copyright (C) 2018 Unzer GmbH
+ * Copyright (C) 2020 Unzer E-Com GmbH
  * %%
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,19 +20,18 @@ package com.unzer.payment.business.paymenttypes;
  * #L%
  */
 
-import static org.junit.Assert.assertNotNull;
+import com.unzer.payment.Charge;
+import com.unzer.payment.business.AbstractPaymentTest;
+import com.unzer.payment.communication.HttpCommunicationException;
+import com.unzer.payment.paymenttypes.Eps;
+import org.junit.Test;
 
 import java.math.BigDecimal;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Currency;
 
-import com.unzer.payment.business.AbstractPaymentTest;
-import com.unzer.payment.paymenttypes.Eps;
-import org.junit.Test;
-
-import com.unzer.payment.Charge;
-import com.unzer.payment.communication.HttpCommunicationException;
+import static org.junit.Assert.assertNotNull;
 
 public class EpsTest extends AbstractPaymentTest {
 

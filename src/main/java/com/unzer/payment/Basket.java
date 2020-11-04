@@ -4,7 +4,7 @@ package com.unzer.payment;
  * #%L
  * Unzer Java SDK
  * %%
- * Copyright (C) 2018 Unzer GmbH
+ * Copyright (C) 2020 Unzer E-Com GmbH
  * %%
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,13 +20,13 @@ package com.unzer.payment;
  * #L%
  */
 
+import com.unzer.payment.communication.json.JsonObject;
+import com.unzer.payment.paymenttypes.PaymentType;
+
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Currency;
 import java.util.List;
-
-import com.unzer.payment.communication.json.JsonObject;
-import com.unzer.payment.paymenttypes.PaymentType;
 
 public class Basket implements PaymentType {
 

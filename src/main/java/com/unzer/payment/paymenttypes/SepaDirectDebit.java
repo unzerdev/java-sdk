@@ -4,7 +4,7 @@ package com.unzer.payment.paymenttypes;
  * #%L
  * Unzer Java SDK
  * %%
- * Copyright (C) 2018 Unzer GmbH
+ * Copyright (C) 2020 Unzer E-Com GmbH
  * %%
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,10 +20,6 @@ package com.unzer.payment.paymenttypes;
  * #L%
  */
 
-import java.math.BigDecimal;
-import java.net.URL;
-import java.util.Currency;
-
 import com.unzer.payment.Basket;
 import com.unzer.payment.Charge;
 import com.unzer.payment.Customer;
@@ -32,9 +28,13 @@ import com.unzer.payment.communication.HttpCommunicationException;
 import com.unzer.payment.communication.json.JsonObject;
 import com.unzer.payment.communication.json.JsonSepaDirectDebit;
 
+import java.math.BigDecimal;
+import java.net.URL;
+import java.util.Currency;
+
 /**
  * Sepa direct debit business object. Iban is mandatory, bic and holder are optional fields 
- * @author rene.felder
+ * @author Unzer E-Com GmbH
  *
  */
 public class SepaDirectDebit extends AbstractPaymentType implements PaymentType {

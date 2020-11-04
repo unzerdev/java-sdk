@@ -41,7 +41,7 @@ import static org.junit.Assert.assertEquals;
  * #%L
  * Unzer Java SDK
  * %%
- * Copyright (C) 2018 Unzer GmbH
+ * Copyright (C) 2020 Unzer E-Com GmbH
  * %%
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -233,7 +233,7 @@ public abstract class AbstractPaymentTest {
 	protected SepaDirectDebit getSepaDirectDebit() {
 		SepaDirectDebit sdd = new SepaDirectDebit("DE89370400440532013000");
 		sdd.setBic("COBADEFFXXX");
-		sdd.setHolder("Rene Felder");
+		sdd.setHolder("Max Mustermann");
 		return sdd;
 	}
 
@@ -258,11 +258,11 @@ public abstract class AbstractPaymentTest {
 	}
 
 	protected Customer getMinimumCustomer() {
-		return new Customer("Rene", "Felder"); 
+		return new Customer("Max", "Mustermann");
 	}
 
 	protected Customer getMinimumRegisteredCustomer() {
-		return new Customer("Unzer GmbH");
+		return new Customer("Unzer E-Com GmbH");
 	}
 
 	protected Customer getMaximumCustomerSameAddress(String customerId) throws ParseException {
@@ -270,26 +270,26 @@ public abstract class AbstractPaymentTest {
 		customer
 		.setCustomerId(customerId)
 		.setSalutation(Salutation.MR)
-		.setEmail("info@unzer.com")
+		.setEmail("support@unzer.com")
 		.setMobile("+43676123456")
 				.setPhone("+49 6221 64 71 100")
 				.setBirthDate(getDate("03.10.1974"))
 		.setBillingAddress(getAddress())
 		.setShippingAddress(getAddress());
-		customer.setCompany("unzer GmbH");
+		customer.setCompany("Unzer E-Com GmbH");
 		return customer;
 	}
 
 	protected Customer getMaximumCustomer(String customerId) throws ParseException {
-		Customer customer = new Customer("Rene", "Felder");
+		Customer customer = new Customer("Max", "Mustermann");
 		customer
 		.setCustomerId(customerId)
 		.setSalutation(Salutation.MR)
-		.setEmail("info@unzer.com")
+		.setEmail("support@unzer.com")
 		.setMobile("+43676123456")
 		.setBirthDate(getDate("03.10.1974"))
 		.setBillingAddress(getAddress())
-		.setShippingAddress(getAddress("Schubert", "Vangerowstraße 18", "Heidelberg", "BW", "69115", "DE"));
+		.setShippingAddress(getAddress("Mustermann", "Vangerowstraße 18", "Heidelberg", "BW", "69115", "DE"));
 		return customer;
 	}
 
@@ -298,7 +298,7 @@ public abstract class AbstractPaymentTest {
 		customer
 						.setCustomerId(customerId)
 						.setSalutation(Salutation.MRS)
-						.setEmail("info@unzer.com")
+						.setEmail("support@unzer.com")
 						.setMobile("+43676123456")
 						.setBirthDate(getDate("08.05.1986"))
 						.setBillingAddress(getAddress())
@@ -311,7 +311,7 @@ public abstract class AbstractPaymentTest {
 		customer
 						.setCustomerId(customerId)
 						.setSalutation(Salutation.UNKNOWN)
-						.setEmail("info@unzer.com")
+						.setEmail("support@unzer.com")
 						.setMobile("+43676123456")
 						.setBirthDate(getDate("01.01.1999"))
 						.setBillingAddress(getAddress())
@@ -328,7 +328,7 @@ public abstract class AbstractPaymentTest {
 
 	protected Customer getRegisterdMaximumBusinessCustomer(String customerId) throws ParseException {
 		Customer customer = getMaximumCustomer(customerId);
-		customer.setCompany("Unzer GmbH");
+		customer.setCompany("Unzer E-Com GmbH");
 		getUnregisteredCompanyData();
 		customer.setCompanyData(getRegisteredCompanyData());
 		return customer;

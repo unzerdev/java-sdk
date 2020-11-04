@@ -4,7 +4,7 @@ package com.unzer.payment.communication.json;
  * #%L
  * Unzer Java SDK
  * %%
- * Copyright (C) 2018 Unzer GmbH
+ * Copyright (C) 2020 Unzer E-Com GmbH
  * %%
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,12 +20,12 @@ package com.unzer.payment.communication.json;
  * #L%
  */
 
+import com.unzer.payment.marketplace.MarketplaceCancelBasket;
+
 import java.math.BigDecimal;
 import java.net.URL;
 import java.util.Currency;
 import java.util.Date;
-
-import com.unzer.payment.marketplace.MarketplaceCancelBasket;
 
 public class JsonCancel extends JsonIdObject implements JsonObject {
 	private Boolean isSuccess;

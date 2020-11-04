@@ -1,19 +1,34 @@
 package com.unzer.payment.business;
 
+import com.unzer.payment.*;
+import com.unzer.payment.communication.HttpCommunicationException;
+import com.unzer.payment.marketplace.MarketplaceAuthorization;
+import com.unzer.payment.marketplace.MarketplaceCancel;
+import com.unzer.payment.marketplace.MarketplacePayment;
+import com.unzer.payment.paymenttypes.Card;
+import org.apache.http.HttpStatus;
+import org.junit.Test;
+
+import java.math.BigDecimal;
+import java.net.MalformedURLException;
+
 import static java.util.concurrent.TimeUnit.SECONDS;
 import static org.awaitility.Awaitility.await;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+
 /*-
  * #%L
  * Unzer Java SDK
  * %%
- * Copyright (C) 2018 Unzer GmbH
+ * Copyright (C) 2020 Unzer E-Com GmbH
  * %%
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -21,26 +36,6 @@ import static org.awaitility.Awaitility.await;
  * limitations under the License.
  * #L%
  */
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-
-import java.math.BigDecimal;
-import java.net.MalformedURLException;
-
-import com.unzer.payment.AbstractTransaction;
-import com.unzer.payment.Cancel;
-import com.unzer.payment.Payment;
-import org.apache.http.HttpStatus;
-import org.junit.Test;
-
-import com.unzer.payment.AbstractPayment;
-import com.unzer.payment.Authorization;
-import com.unzer.payment.Basket;
-import com.unzer.payment.communication.HttpCommunicationException;
-import com.unzer.payment.marketplace.MarketplaceAuthorization;
-import com.unzer.payment.marketplace.MarketplaceCancel;
-import com.unzer.payment.marketplace.MarketplacePayment;
-import com.unzer.payment.paymenttypes.Card;
 
 public class CancelAfterAuthorizationTest extends AbstractPaymentTest {
 

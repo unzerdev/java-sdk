@@ -4,7 +4,7 @@ package com.unzer.payment.communication;
  * #%L
  * Unzer Java SDK
  * %%
- * Copyright (C) 2018 - 2020 Unzer GmbH
+ * Copyright (C) 2020 Unzer E-Com GmbH
  * %%
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,18 +20,12 @@ package com.unzer.payment.communication;
  * #L%
  */
 
+import com.google.gson.*;
+import com.unzer.payment.webhook.WebhookEventEnum;
+
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
-
-import com.google.gson.JsonArray;
-import com.google.gson.JsonDeserializationContext;
-import com.google.gson.JsonDeserializer;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonParseException;
-import com.google.gson.JsonSerializationContext;
-import com.google.gson.JsonSerializer;
-import com.unzer.payment.webhook.WebhookEventEnum;
 
 public class JsonWebhookEnumListConverter implements JsonDeserializer<List<WebhookEventEnum>>, JsonSerializer<List<WebhookEventEnum>> {
 

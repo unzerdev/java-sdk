@@ -4,7 +4,7 @@ package com.unzer.payment.communication.json;
  * #%L
  * Unzer Java SDK
  * %%
- * Copyright (C) 2018 Unzer GmbH
+ * Copyright (C) 2020 Unzer E-Com GmbH
  * %%
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,9 +20,9 @@ package com.unzer.payment.communication.json;
  * #L%
  */
 
-import java.util.List;
-
 import com.unzer.payment.PaymentError;
+
+import java.util.List;
 
 public class JsonErrorObject {
 	private String url;

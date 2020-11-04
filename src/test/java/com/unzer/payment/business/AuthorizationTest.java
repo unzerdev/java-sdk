@@ -24,7 +24,7 @@ import static org.junit.Assert.assertNotNull;
  * #%L
  * Unzer Java SDK
  * %%
- * Copyright (C) 2018 Unzer GmbH
+ * Copyright (C) 2020 Unzer E-Com GmbH
  * %%
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -85,7 +85,7 @@ public class AuthorizationTest extends AbstractPaymentTest {
 	public void testAuthorizeReturnPaymentTypeAndCustomer() throws MalformedURLException, HttpCommunicationException {
 		LocalDate locaDateNow = LocalDate.now();
 		Card card = new Card("4444333322221111", "12/" + (locaDateNow.getYear() + 1));
-		Customer customer = new Customer("Rene", "Felder");
+		Customer customer = new Customer("Max", "Mustermann");
 		Authorization authorize = getUnzer().authorize(BigDecimal.ONE, Currency.getInstance("EUR"), card, new URL("https://www.google.at"), customer, false);
 		Payment payment = authorize.getPayment();
 		assertNotNull(payment.getPaymentType());
@@ -118,7 +118,7 @@ public class AuthorizationTest extends AbstractPaymentTest {
 	public void testAuthorizeWithCustomerTypeReturnUrl() throws MalformedURLException, HttpCommunicationException {
 		LocalDate locaDateNow = LocalDate.now();
 		Card card = new Card("4444333322221111", "12/" + (locaDateNow.getYear() + 1));
-		Customer customer = new Customer("Rene", "Felder");
+		Customer customer = new Customer("Max", "Mustermann");
 		Authorization authorize = getUnzer().authorize(BigDecimal.ONE, Currency.getInstance("EUR"), card, new URL("https://www.google.at"), customer, false);
 		assertNotNull(authorize);
 		assertNotNull(authorize.getId());

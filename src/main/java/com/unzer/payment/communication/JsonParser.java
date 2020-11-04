@@ -15,7 +15,7 @@ package com.unzer.payment.communication;
  * #%L
  * Unzer Java SDK
  * %%
- * Copyright (C) 2018 Unzer GmbH
+ * Copyright (C) 2020 Unzer E-Com GmbH
  * %%
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -31,16 +31,16 @@ package com.unzer.payment.communication;
  * #L%
  */
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.unzer.payment.PaymentException;
+import com.unzer.payment.communication.json.JsonErrorObject;
+
 import java.math.BigDecimal;
 import java.net.URL;
 import java.util.Currency;
 import java.util.Date;
 import java.util.Objects;
-
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.unzer.payment.PaymentException;
-import com.unzer.payment.communication.json.JsonErrorObject;
 
 /**
  * Provides functions which is interact with json

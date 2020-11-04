@@ -4,7 +4,7 @@ package com.unzer.payment.communication.json;
  * #%L
  * Unzer Java SDK
  * %%
- * Copyright (C) 2018 - 2019 Unzer GmbH
+ * Copyright (C) 2020 Unzer E-Com GmbH
  * %%
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -25,7 +25,7 @@ import java.math.BigDecimal;
 /**
  * Alipay business object 
  * 
- * @author rene.felder
+ * @author Unzer E-Com GmbH
  *
  */
 public class JsonApplepayResponse extends JsonIdObject implements JsonObject  {

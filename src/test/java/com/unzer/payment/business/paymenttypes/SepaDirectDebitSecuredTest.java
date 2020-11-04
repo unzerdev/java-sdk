@@ -1,28 +1,31 @@
 package com.unzer.payment.business.paymenttypes;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import com.unzer.payment.Basket;
+import com.unzer.payment.business.AbstractPaymentTest;
+import com.unzer.payment.communication.HttpCommunicationException;
+import com.unzer.payment.paymenttypes.SepaDirectDebitSecured;
+import org.junit.Test;
 
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.text.ParseException;
 import java.util.Currency;
 
-import com.unzer.payment.business.AbstractPaymentTest;
-import org.junit.Test;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 /*-
  * #%L
  * Unzer Java SDK
  * %%
- * Copyright (C) 2018 Unzer GmbH
+ * Copyright (C) 2020 Unzer E-Com GmbH
  * %%
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -30,10 +33,6 @@ import org.junit.Test;
  * limitations under the License.
  * #L%
  */
-
-import com.unzer.payment.Basket;
-import com.unzer.payment.communication.HttpCommunicationException;
-import com.unzer.payment.paymenttypes.SepaDirectDebitSecured;
 
 public class SepaDirectDebitSecuredTest extends AbstractPaymentTest {
 
@@ -79,7 +78,7 @@ public class SepaDirectDebitSecuredTest extends AbstractPaymentTest {
 	private SepaDirectDebitSecured getSepaDirectDebitSecured() {
 		SepaDirectDebitSecured sdd = new SepaDirectDebitSecured("DE89370400440532013000");
 		sdd.setBic("COBADEFFXXX");
-		sdd.setHolder("Rene Felder");
+		sdd.setHolder("Max Mustermann");
 		return sdd;
 	}
 

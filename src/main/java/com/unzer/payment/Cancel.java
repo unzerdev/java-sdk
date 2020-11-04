@@ -4,7 +4,7 @@ package com.unzer.payment;
  * #%L
  * Unzer Java SDK
  * %%
- * Copyright (C) 2018 Unzer GmbH
+ * Copyright (C) 2020 Unzer E-Com GmbH
  * %%
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -28,7 +28,7 @@ import java.math.BigDecimal;
 /**
  * Business object for Cancellations
  * 
- * @author rene.felder
+ * @author Unzer E-Com GmbH
  *
  */
 public class Cancel extends AbstractTransaction<Payment> {

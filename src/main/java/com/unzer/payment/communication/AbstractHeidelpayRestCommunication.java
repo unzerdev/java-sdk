@@ -4,7 +4,7 @@ package com.unzer.payment.communication;
  * #%L
  * Unzer Java SDK
  * %%
- * Copyright (C) 2018 Unzer GmbH
+ * Copyright (C) 2020 Unzer E-Com GmbH
  * %%
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,11 +20,6 @@ package com.unzer.payment.communication;
  * #L%
  */
 
-import java.io.UnsupportedEncodingException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Locale;
-
 import com.unzer.payment.PaymentError;
 import com.unzer.payment.PaymentException;
 import com.unzer.payment.communication.HeidelpayHttpRequest.HeidelpayHttpMethod;
@@ -33,6 +28,10 @@ import com.unzer.payment.communication.json.JsonErrorObject;
 import com.unzer.payment.util.SDKInfo;
 
 import javax.xml.bind.DatatypeConverter;
+import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Locale;
 
 import static org.apache.http.HttpHeaders.*;
 

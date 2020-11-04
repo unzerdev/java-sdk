@@ -4,7 +4,7 @@ package com.unzer.payment.communication;
  * #%L
  * Unzer Java SDK
  * %%
- * Copyright (C) 2018 - 2019 Unzer GmbH
+ * Copyright (C) 2020 Unzer E-Com GmbH
  * %%
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,16 +21,15 @@ package com.unzer.payment.communication;
  */
 
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.fail;
-
 import com.unzer.payment.PaymentError;
-import org.junit.Test;
-
 import com.unzer.payment.PaymentException;
 import com.unzer.payment.TestData;
 import com.unzer.payment.communication.json.JsonCharge;
 import com.unzer.payment.communication.json.JsonErrorObject;
+import org.junit.Test;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
 
 public class JsonParserTest {
 

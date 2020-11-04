@@ -1,42 +1,16 @@
 package com.unzer.payment.communication.impl;
 
-import static org.apache.http.HttpHeaders.AUTHORIZATION;
-import static org.apache.http.HttpHeaders.CONTENT_TYPE;
-import static org.apache.http.HttpHeaders.USER_AGENT;
-
-/*-
- * #%L
- * Unzer Java SDK
- * %%
- * Copyright (C) 2018 Unzer GmbH
- * %%
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- * 
- *      http://www.apache.org/licenses/LICENSE-2.0
- * 
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- * #L%
- */
-
-import java.io.IOException;
-
+import com.unzer.payment.PaymentException;
+import com.unzer.payment.communication.AbstractHeidelpayRestCommunication;
 import com.unzer.payment.communication.HeidelpayRestCommunication;
+import com.unzer.payment.communication.HttpCommunicationException;
+import com.unzer.payment.communication.JsonParser;
+import com.unzer.payment.communication.json.JsonErrorObject;
+import com.unzer.payment.util.SDKInfo;
 import org.apache.http.HttpEntity;
 import org.apache.http.ParseException;
 import org.apache.http.StatusLine;
-import org.apache.http.client.methods.CloseableHttpResponse;
-import org.apache.http.client.methods.HttpDelete;
-import org.apache.http.client.methods.HttpEntityEnclosingRequestBase;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.client.methods.HttpPut;
-import org.apache.http.client.methods.HttpUriRequest;
+import org.apache.http.client.methods.*;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClientBuilder;
@@ -45,12 +19,29 @@ import org.apache.http.util.EntityUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import com.unzer.payment.PaymentException;
-import com.unzer.payment.communication.AbstractHeidelpayRestCommunication;
-import com.unzer.payment.communication.HttpCommunicationException;
-import com.unzer.payment.communication.JsonParser;
-import com.unzer.payment.communication.json.JsonErrorObject;
-import com.unzer.payment.util.SDKInfo;
+import java.io.IOException;
+
+import static org.apache.http.HttpHeaders.*;
+
+/*-
+ * #%L
+ * Unzer Java SDK
+ * %%
+ * Copyright (C) 2020 Unzer E-Com GmbH
+ * %%
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ * #L%
+ */
 
 /**
  * @deprecated use {@code HttpClientBasedRestCommunication} as a default
