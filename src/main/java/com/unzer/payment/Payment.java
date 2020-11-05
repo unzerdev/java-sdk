@@ -55,47 +55,47 @@ public class Payment extends AbstractPayment {
 	}
 	
 	public Charge charge() throws HttpCommunicationException {
-		return getHeidelpay().chargeAuthorization(getId());
+		return getUnzer().chargeAuthorization(getId());
 	}
 
 	public Charge charge(BigDecimal amount) throws HttpCommunicationException {
-		return getHeidelpay().chargeAuthorization(getId(), amount);
+		return getUnzer().chargeAuthorization(getId(), amount);
 	}
 	
 	public Charge charge(BigDecimal amount, Currency currency, String typeId) throws HttpCommunicationException {
-		return getHeidelpay().charge(amount, currency, typeId);
+		return getUnzer().charge(amount, currency, typeId);
 	}
 
 	public Charge charge(BigDecimal amount, Currency currency, String typeId, String customerId) throws HttpCommunicationException {
-		return getHeidelpay().charge(amount, currency, typeId, customerId);
+		return getUnzer().charge(amount, currency, typeId, customerId);
 	}
 
 	public Charge charge(BigDecimal amount, Currency currency, PaymentType paymentType) throws HttpCommunicationException {
-		return getHeidelpay().charge(amount, currency, paymentType);
+		return getUnzer().charge(amount, currency, paymentType);
 	}
 
 	public Charge charge(BigDecimal amount, Currency currency, String typeId, URL returnUrl) throws HttpCommunicationException {
-		return getHeidelpay().charge(amount, currency, typeId, returnUrl);
+		return getUnzer().charge(amount, currency, typeId, returnUrl);
 	}
 
 	public Charge charge(BigDecimal amount, Currency currency, String typeId, URL returnUrl, String customerId) throws HttpCommunicationException {
-		return getHeidelpay().charge(amount, currency, typeId, returnUrl, customerId);
+		return getUnzer().charge(amount, currency, typeId, returnUrl, customerId);
 	}
 
 	public Charge charge(BigDecimal amount, Currency currency, PaymentType paymentType, URL returnUrl, Customer customer) throws HttpCommunicationException {
-		return getHeidelpay().charge(amount, currency, paymentType, returnUrl, customer);
+		return getUnzer().charge(amount, currency, paymentType, returnUrl, customer);
 	}
 
 	public Authorization authorize(BigDecimal amount, Currency currency, String typeId, URL returnUrl) throws HttpCommunicationException {
-		return getHeidelpay().authorize(amount, currency, typeId, returnUrl);
+		return getUnzer().authorize(amount, currency, typeId, returnUrl);
 	}
 
 	public Authorization authorize(BigDecimal amount, Currency currency, String typeId, URL returnUrl, String customerId) throws HttpCommunicationException {
-		return getHeidelpay().authorize(amount, currency, typeId, returnUrl, customerId);
+		return getUnzer().authorize(amount, currency, typeId, returnUrl, customerId);
 	}
 
 	public Authorization authorize(BigDecimal amount, Currency currency, PaymentType paymentType, URL returnUrl, Customer customer) throws HttpCommunicationException {
-		return getHeidelpay().authorize(amount, currency, paymentType, returnUrl, customer);
+		return getUnzer().authorize(amount, currency, paymentType, returnUrl, customer);
 	}
 
 	public Cancel cancel() throws HttpCommunicationException {

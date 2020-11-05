@@ -20,42 +20,42 @@ package com.unzer.payment.communication;
  * #L%
  */
 
-import com.unzer.payment.communication.HeidelpayHttpRequest.HeidelpayHttpMethod;
+import com.unzer.payment.communication.UnzerHttpRequest.UnzerHttpMethod;
 
 import java.util.Locale;
 
-public class MockHeidelpayRestCommunication extends AbstractHeidelpayRestCommunication {
+public class MockUnzerRestCommunication extends AbstractUnzerRestCommunication {
 
-	MockHeidelpayHttpRequest request;
+	MockUnzerHttpRequest request;
 	
 	String responseMockContent;
 	int responseMockStatus;
 	
-	HeidelpayHttpResponse loggedResponse;
-	HeidelpayHttpRequest loggedRequest;
+	UnzerHttpResponse loggedResponse;
+	UnzerHttpRequest loggedRequest;
 	String loggedBody;
 
-	public MockHeidelpayRestCommunication() {
+	public MockUnzerRestCommunication() {
 		super(null);
 	}
 
-	public MockHeidelpayRestCommunication(Locale locale) {
+	public MockUnzerRestCommunication(Locale locale) {
 		super(locale);
 	}
 
 	@Override
-	protected HeidelpayHttpRequest createRequest(String url, HeidelpayHttpMethod method) {
-		return new MockHeidelpayHttpRequest(url, method);
+	protected UnzerHttpRequest createRequest(String url, UnzerHttpMethod method) {
+		return new MockUnzerHttpRequest(url, method);
 	}
 
 	@Override
-	protected HeidelpayHttpResponse doExecute(HeidelpayHttpRequest request) {
-		this.request = (MockHeidelpayHttpRequest) request;
-		return new HeidelpayHttpResponse(responseMockContent, responseMockStatus);
+	protected UnzerHttpResponse doExecute(UnzerHttpRequest request) {
+		this.request = (MockUnzerHttpRequest) request;
+		return new UnzerHttpResponse(responseMockContent, responseMockStatus);
 	}
 
 	@Override
-	protected void logRequest(HeidelpayHttpRequest request) {
+	protected void logRequest(UnzerHttpRequest request) {
 		this.loggedRequest = request;
 	}
 
@@ -65,7 +65,7 @@ public class MockHeidelpayRestCommunication extends AbstractHeidelpayRestCommuni
 	}
 
 	@Override
-	protected void logResponse(HeidelpayHttpResponse response) {
+	protected void logResponse(UnzerHttpResponse response) {
 		this.loggedResponse = response;
 	}
 

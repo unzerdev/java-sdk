@@ -17,9 +17,9 @@ import static org.junit.Assert.*;
 
 /*-
  * #%L
- * Heidelpay Java SDK
+ * Unzer Java SDK
  * %%
- * Copyright (C) 2018 Heidelpay GmbH
+ * Copyright (C) 2018 Unzer E-Com GmbH
  * %%
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.

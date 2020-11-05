@@ -64,7 +64,7 @@ public class SepaDirectDebitSecuredTest extends AbstractPaymentTest {
 		SepaDirectDebitSecured sdd = getUnzer().createPaymentType(getSepaDirectDebitSecured());
 		assertNotNull(sdd.getId());
 		Basket basket = getUnzer().createBasket(getMinTestBasket());
-		sdd.charge(basket.getAmountTotalGross(), Currency.getInstance("EUR"), new URL("https://www.heidelpay.com"), getMaximumCustomerSameAddress(getRandomId()), basket);
+		sdd.charge(basket.getAmountTotalGross(), Currency.getInstance("EUR"), new URL("https://www.unzer.com"), getMaximumCustomerSameAddress(getRandomId()), basket);
 	}
 	
 	private void assertSddEquals(SepaDirectDebitSecured sddOriginal, SepaDirectDebitSecured sddCreated) {

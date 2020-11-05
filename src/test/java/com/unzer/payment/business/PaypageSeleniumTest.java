@@ -115,7 +115,7 @@ public class PaypageSeleniumTest extends AbstractSeleniumTest {
 		sendDataFrameById(driver, "unzer-expiry-iframe", "card-expiry-date", "12/30");
 		sendDataFrameById(driver, "unzer-cvc-iframe", "card-ccv", "123");
 
-		pay(driver, "https://payment.heidelpay.com/v1/redirect/3ds/");
+		pay(driver, "https://payment.unzer.com/v1/redirect/3ds/");
 
 		close();
 
@@ -136,7 +136,7 @@ public class PaypageSeleniumTest extends AbstractSeleniumTest {
 		sendDataFrameById(driver, "unzer-expiry-iframe", "card-expiry-date", "12/30");
 		sendDataFrameById(driver, "unzer-cvc-iframe", "card-ccv", "123");
 
-		pay(driver, "https://payment.heidelpay.com/v1/redirect/3ds/");
+		pay(driver, "https://payment.unzer.com/v1/redirect/3ds/");
 
 		close();
 	}

@@ -6,7 +6,7 @@
  *
  * @link  http://dev.unzer.com/unzer-php-api/
  *
- * @author vukhang
+ * @author Unzer E-Com GmbH
  *
  */
 package com.unzer.payment.communication;

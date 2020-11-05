@@ -20,20 +20,16 @@ package com.unzer.payment.communication.impl;
  * #L%
  */
 
-import java.net.URI;
-
-import com.unzer.payment.communication.HeidelpayHttpRequest;
+import com.unzer.payment.communication.UnzerHttpRequest;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpEntityEnclosingRequest;
-import org.apache.http.client.methods.HttpDelete;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.client.methods.HttpPut;
-import org.apache.http.client.methods.HttpUriRequest;
+import org.apache.http.client.methods.*;
 import org.apache.http.entity.StringEntity;
 
+import java.net.URI;
+
 /**
- * Implementation of the {@code HeidelpayHttpRequest} wrapping an apache
+ * Implementation of the {@code UnzerHttpRequest} wrapping an apache
  * {@code HttpUriRequest}. Currently supported are:
  * <ul>
  * <li>GET: mapped by {@code HttpGet}</li>
@@ -42,35 +38,35 @@ import org.apache.http.entity.StringEntity;
  * <li>DELETE: mapped by {@code HttpDelete}</li>
  * </ul>
  */
-public class HttpClientBasedHttpRequest implements HeidelpayHttpRequest {
+public class HttpClientBasedHttpRequest implements UnzerHttpRequest {
 
 	protected HttpUriRequest request;
-	protected HeidelpayHttpMethod method;
+	protected UnzerHttpMethod method;
 
 	/**
 	 * Creates a {@code HttpClientBasedHttpRequest} wrapping a
-	 * {@code HttpUriRequest} defined by the given {@code HeidelpayHttpMethod}.
+	 * {@code HttpUriRequest} defined by the given {@code UnzerHttpMethod}.
 	 * 
 	 * @param uri
 	 *            - the RUI of the request
 	 * @param method
-	 *            - the {@code HeidelpayHttpMethod} representing one of
+	 *            - the {@code UnzerHttpMethod} representing one of
 	 *            {@code HttpGet}, {@code HttpPost}, {@code HttpPut},
 	 *            {@code HttpDelete}
 	 */
-	public HttpClientBasedHttpRequest(String uri, HeidelpayHttpMethod method) {
+	public HttpClientBasedHttpRequest(String uri, UnzerHttpMethod method) {
 		this.method = method;
 		request = createRequestForMethod(uri, method);
 	}
 
-	private HttpUriRequest createRequestForMethod(String url, HeidelpayHttpMethod method) {
-		if (HeidelpayHttpMethod.GET.equals(method)) {
+	private HttpUriRequest createRequestForMethod(String url, UnzerHttpMethod method) {
+		if (UnzerHttpMethod.GET.equals(method)) {
 			return new HttpGet(url);
-		} else if (HeidelpayHttpMethod.POST.equals(method)) {
+		} else if (UnzerHttpMethod.POST.equals(method)) {
 			return new HttpPost(url);
-		} else if (HeidelpayHttpMethod.PUT.equals(method)) {
+		} else if (UnzerHttpMethod.PUT.equals(method)) {
 			return new HttpPut(url);
-		} else if (HeidelpayHttpMethod.DELETE.equals(method)) {
+		} else if (UnzerHttpMethod.DELETE.equals(method)) {
 			return new HttpDelete(url);
 		} else {
 			throw new IllegalArgumentException("Unsupported HttpMethod given " + method);
@@ -104,7 +100,7 @@ public class HttpClientBasedHttpRequest implements HeidelpayHttpRequest {
 	}
 
 	@Override
-	public HeidelpayHttpMethod getMethod() {
+	public UnzerHttpMethod getMethod() {
 		return this.method;
 	}
 

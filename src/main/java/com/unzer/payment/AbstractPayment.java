@@ -33,7 +33,7 @@ public abstract class AbstractPayment implements PaymentType {
 
 	public AbstractPayment(Unzer unzer) {
 		super();
-		this.setHeidelpay(unzer);
+		this.setUnzer(unzer);
 	}
 
 	public AbstractPayment() {
@@ -48,11 +48,11 @@ public abstract class AbstractPayment implements PaymentType {
 		this.id = id;
 	}
 
-	public Unzer getHeidelpay() {
+	public Unzer getUnzer() {
 		return unzer;
 	}
 
-	public void setHeidelpay(Unzer unzer) {
+	public void setUnzer(Unzer unzer) {
 		this.unzer = unzer;
 	}
 
@@ -181,18 +181,18 @@ public abstract class AbstractPayment implements PaymentType {
 	}
 
 	protected PaymentType fetchPaymentType(String paymentTypeId) throws HttpCommunicationException {
-		return getHeidelpay().fetchPaymentType(paymentTypeId);
+		return getUnzer().fetchPaymentType(paymentTypeId);
 	}
 
 	protected Customer fetchCustomer(String customerId) throws HttpCommunicationException {
-		return getHeidelpay().fetchCustomer(customerId);
+		return getUnzer().fetchCustomer(customerId);
 	}
 
 	protected Metadata fetchMetadata(String metadataId) throws HttpCommunicationException {
-		return getHeidelpay().fetchMetadata(metadataId);
+		return getUnzer().fetchMetadata(metadataId);
 	}
 	
 	protected Basket fetchBasket(String basketId) throws HttpCommunicationException {
-		return getHeidelpay().fetchBasket(basketId);
+		return getUnzer().fetchBasket(basketId);
 	}
 }

@@ -24,10 +24,10 @@ package com.unzer.payment.communication;
  * Defines the rest-communication used by the {@code PaymentService}.
  * 
  * You should not implement this interface directly, the basic communication
- * flow is implemented in the {@code AbstractHeidelpayRestCommunication}.
+ * flow is implemented in the {@code AbstractUnzerRestCommunication}.
  *
  */
-public interface HeidelpayRestCommunication {
+public interface UnzerRestCommunication {
 
 	/**
 	 * Executes a GET Request to the given {@code url} authenticated with the given

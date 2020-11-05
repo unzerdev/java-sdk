@@ -44,7 +44,7 @@ public class PropertiesUtil {
 		try {
 			Properties loadedProperties = new Properties();
 
-			loadedProperties.load(this.getClass().getResourceAsStream("/heidelpay.properties"));
+			loadedProperties.load(this.getClass().getResourceAsStream("/unzer.properties"));
 			this.properties = loadedProperties;
 
 			this.properties.put(PUBLIC_KEY1, System.getProperty(PUBLIC_KEY1));
@@ -53,7 +53,7 @@ public class PropertiesUtil {
 			this.properties.put(PRIVATE_KEY3, System.getProperty(PRIVATE_KEY3));
 			this.properties.put(MARKETPLACE_PRIVATE_KEY, System.getProperty(MARKETPLACE_PRIVATE_KEY));
 		} catch (IOException e) {
-			logger.error("Error loading unzer.properties from Classpath: %s", e.getMessage());
+			logger.error("Error loading unzer.properties from Classpath: {}", e.getMessage());
 			throw new PropertiesException("Error loading unzer.properties from Classpath: " + e.getMessage());
 		}
 	}

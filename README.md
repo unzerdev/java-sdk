@@ -23,7 +23,7 @@ The Unzer class is instantiated using your private or public key:
 ```java
 Unzer unzer = new Unzer("s-priv-xxxxxxxxxx");
 ```
-You can inject a custom implementation of the http-network communication into the Heidelpay constructor. For implementing a custom communication stack, you have to subclass the AbstractHeidelpayRestCommunication class together with a HeidelpayHttpRequest. For an example please refer to the reference implementation HttpClientBasedRestCommunication.
+You can inject a custom implementation of the http-network communication into the Unzer constructor. For implementing a custom communication stack, you have to subclass the AbstractUnzerRestCommunication class together with a UnzerHttpRequest. For an example please refer to the reference implementation HttpClientBasedRestCommunication.
 
 ### Authorize or Charge a payment
 The first step is to create a Payment Type and then do an authorize or charge for this Payment Type
@@ -31,7 +31,7 @@ The first step is to create a Payment Type and then do an authorize or charge fo
 Example for Authorize
 
 ```java
-Heidelpay unzer = new Heidelpay("s-priv-xxxxxxxxxx");
+Unzer unzer = new Unzer("s-priv-xxxxxxxxxx");
 
 // Already created the payment type using our Javascript or Mobile SDK's
 Authorization authorize = unzer.authorize(BigDecimal.ONE, Currency.getInstance("EUR"), "s-crd-fm7tifzkqewy", new URL("https://www.unzer.com"));
@@ -45,7 +45,7 @@ Authorization authorize2 = unzer.authorize(BigDecimal.ONE, Currency.getInstance(
 Example for Charge
 
 ```java
-Heidelpay unzer = new Heidelpay("s-priv-xxxxxxxxxx");
+Unzer unzer = new Unzer("s-priv-xxxxxxxxxx");
 
 // Already created the payment type using our Javascript or Mobile SDK's
 Charge charge = unzer.charge(BigDecimal.ONE, Currency.getInstance("EUR"), "s-sft-fm7tifzkqewy", new URL("https://www.unzer.com"));
@@ -61,7 +61,7 @@ As a result for authorize or charge an Authorization or Charge object will be re
 To query the status of a payment you can fetch the Payment:
 
 ```java
-Heidelpay unzer = new Heidelpay("s-priv-xxxxxxxxxx");
+Unzer unzer = new Unzer("s-priv-xxxxxxxxxx");
 
 Payment payment = unzer.fetchPayment(authorize.getPayment().getId());
 ```
@@ -71,7 +71,7 @@ If you started the payment with an authorize (reservation) then you can do a Cha
 There are different options to Charge after an Authorization:
 
 ```java
-Heidelpay unzer = new Heidelpay("s-priv-xxxxxxxxxx");
+Unzer unzer = new Unzer("s-priv-xxxxxxxxxx");
 
 // Charge using Authorize object
 Authorization authorization = unzer.fetchAuthorization("s-pay-1");
@@ -89,7 +89,7 @@ Charge charge3 = unzer.chargeAuthorization("s-pay-1");
 Cancelling a payment after authorization. There are again three options how to do this:
 
 ```java
-Heidelpay unzer = new Heidelpay("s-priv-xxxxxxxxxx");
+Unzer unzer = new Unzer("s-priv-xxxxxxxxxx");
 
 // Cancel Authorization
 Authorization authorization = unzer.fetchAuthorization("s-pay-1");
@@ -107,7 +107,7 @@ Cancel cancel3 = unzer.cancelAuthorization("s-pay-1");
 Cancelling a charge refunds money from the merchant to the customer. There are several options how to do a refund:
 
 ```java
-Heidelpay unzer = new Heidelpay("s-priv-xxxxxxxxxx");
+Unzer unzer = new Unzer("s-priv-xxxxxxxxxx");
 
 // cancel a charge using Charge object
 Charge charge = unzer.fetchCharge("s-pay-1", "s-chg-1");
@@ -119,10 +119,10 @@ Cancel cancel = unzer.cancelCharge("s-pay-1", "s-chg-1", BigDecimal.ONE);
 
 
 ### Shipment 
-To execute a Shipment you need to call the shipment method in Heidelpay object:
+To execute a Shipment you need to call the shipment method in Unzer object:
 
 ```java
-Heidelpay unzer = new Heidelpay("s-priv-xxxxxxxxxx");
+Unzer unzer = new Unzer("s-priv-xxxxxxxxxx");
 
 Shipment shipment = unzer.shipment(authorize.getPaymentId());
 ```

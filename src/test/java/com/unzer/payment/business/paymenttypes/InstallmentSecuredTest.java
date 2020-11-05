@@ -85,12 +85,12 @@ public class InstallmentSecuredTest extends AbstractPaymentTest {
 		assertNotNull(ratePlanReturned);
 		assertRatePlan(ratePlan, ratePlanReturned);
 		
-		Authorization authorization = ratePlanReturned.authorize(new BigDecimal(370.48), Currency.getInstance("EUR"), new URL("https://www.heidelpay.com"), createMaximumCustomerSameAddress().getId(), createBasket().getId(), ratePlan.getEffectiveInterestRate());
+		Authorization authorization = ratePlanReturned.authorize(new BigDecimal(370.48), Currency.getInstance("EUR"), new URL("https://www.unzer.com"), createMaximumCustomerSameAddress().getId(), createBasket().getId(), ratePlan.getEffectiveInterestRate());
 		assertValidAuthorize(ratePlan, authorization);
 	}
 
 	@Test
-	public void testAuthorizeViaHeidelpayTypeIdWithIban() throws HttpCommunicationException, ParseException, MalformedURLException {
+	public void testAuthorizeViaUnzerTypeIdWithIban() throws HttpCommunicationException, ParseException, MalformedURLException {
 		InstallmentSecuredRatePlan ratePlan = getInstallmentSecuredRatePlan();
 		addIbanInvoiceParameter(ratePlan);
 		InstallmentSecuredRatePlan ratePlanReturned = createInstallmentSecuredType(ratePlan);
@@ -108,7 +108,7 @@ public class InstallmentSecuredTest extends AbstractPaymentTest {
 		assertNotNull(ratePlanReturned);
 		assertRatePlan(ratePlan, ratePlanReturned);
 		
-		Authorization authorization = ratePlanReturned.authorize(new BigDecimal(370.48), Currency.getInstance("EUR"), new URL("https://www.heidelpay.com"), createMaximumCustomerSameAddress().getId(), createBasket().getId(), ratePlan.getEffectiveInterestRate());
+		Authorization authorization = ratePlanReturned.authorize(new BigDecimal(370.48), Currency.getInstance("EUR"), new URL("https://www.unzer.com"), createMaximumCustomerSameAddress().getId(), createBasket().getId(), ratePlan.getEffectiveInterestRate());
 		assertValidAuthorize(ratePlan, authorization);
 		
 		Charge charge = authorization.charge();
@@ -122,7 +122,7 @@ public class InstallmentSecuredTest extends AbstractPaymentTest {
 		assertNotNull(ratePlanReturned);
 		assertRatePlan(ratePlan, ratePlanReturned);
 		
-		Authorization authorization = ratePlanReturned.authorize(new BigDecimal(370.48), Currency.getInstance("EUR"), new URL("https://www.heidelpay.com"), createMaximumCustomerSameAddress().getId(), createBasket().getId(), ratePlan.getEffectiveInterestRate());
+		Authorization authorization = ratePlanReturned.authorize(new BigDecimal(370.48), Currency.getInstance("EUR"), new URL("https://www.unzer.com"), createMaximumCustomerSameAddress().getId(), createBasket().getId(), ratePlan.getEffectiveInterestRate());
 		assertValidAuthorize(ratePlan, authorization);
 		
 		Charge charge = authorization.charge();
@@ -139,7 +139,7 @@ public class InstallmentSecuredTest extends AbstractPaymentTest {
 		assertNotNull(ratePlanReturned);
 		assertRatePlan(ratePlan, ratePlanReturned);
 		
-		Authorization authorization = ratePlanReturned.authorize(new BigDecimal(370.48), Currency.getInstance("EUR"), new URL("https://www.heidelpay.com"), createMaximumCustomerSameAddress().getId(), createBasket().getId(), ratePlan.getEffectiveInterestRate());
+		Authorization authorization = ratePlanReturned.authorize(new BigDecimal(370.48), Currency.getInstance("EUR"), new URL("https://www.unzer.com"), createMaximumCustomerSameAddress().getId(), createBasket().getId(), ratePlan.getEffectiveInterestRate());
 		assertValidAuthorize(ratePlan, authorization);
 		
 		Charge charge = authorization.charge();
@@ -162,7 +162,7 @@ public class InstallmentSecuredTest extends AbstractPaymentTest {
 		assertNotNull(ratePlanReturned);
 		assertRatePlan(ratePlan, ratePlanReturned);
 		
-		Authorization authorization = ratePlanReturned.authorize(new BigDecimal(370.48), Currency.getInstance("EUR"), new URL("https://www.heidelpay.com"), createMaximumCustomerSameAddress().getId(), createBasket().getId(), ratePlan.getEffectiveInterestRate());
+		Authorization authorization = ratePlanReturned.authorize(new BigDecimal(370.48), Currency.getInstance("EUR"), new URL("https://www.unzer.com"), createMaximumCustomerSameAddress().getId(), createBasket().getId(), ratePlan.getEffectiveInterestRate());
 		assertValidAuthorize(ratePlan, authorization);
 		
 		Charge charge = authorization.charge();
@@ -180,7 +180,7 @@ public class InstallmentSecuredTest extends AbstractPaymentTest {
 		assertNotNull(ratePlanReturned);
 		assertRatePlan(ratePlan, ratePlanReturned);
 		
-		Authorization authorization = ratePlanReturned.authorize(new BigDecimal(370.48), Currency.getInstance("EUR"), new URL("https://www.heidelpay.com"), createMaximumCustomerSameAddress().getId(), createBasket().getId(), ratePlan.getEffectiveInterestRate());
+		Authorization authorization = ratePlanReturned.authorize(new BigDecimal(370.48), Currency.getInstance("EUR"), new URL("https://www.unzer.com"), createMaximumCustomerSameAddress().getId(), createBasket().getId(), ratePlan.getEffectiveInterestRate());
 		assertValidAuthorize(ratePlan, authorization);
 		
 		Charge charge = authorization.charge();
@@ -221,7 +221,7 @@ public class InstallmentSecuredTest extends AbstractPaymentTest {
 		.setAmount(getAmount())
 		.setCurrency(Currency.getInstance("EUR"))
 		.setTypeId(typeId)
-		.setReturnUrl(new URL("https://www.heidelpay.com"))
+		.setReturnUrl(new URL("https://www.unzer.com"))
 		.setCustomerId(customerId)
 		.setBasketId(basketId);
 		authorization.setEffectiveInterestRate(effectiveInterestRate);

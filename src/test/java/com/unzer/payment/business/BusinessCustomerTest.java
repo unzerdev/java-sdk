@@ -99,14 +99,14 @@ public class BusinessCustomerTest extends AbstractPaymentTest {
 		Customer customer = getUnzer().createCustomer(getRegisterdMaximumBusinessCustomer(getRandomId()));
 		assertNotNull(customer);
 		assertNotNull(customer.getId());
-		Customer customerToUpdate = new Customer("FelderIT GmbH");
+		Customer customerToUpdate = new Customer("Unzer E-Com GmbH");
 		CustomerCompanyData company = getRegisteredCompanyData();
 		company.setCommercialRegisterNumber("ABC993448 DÜSSELDORF");
 		customerToUpdate.setCompanyData(company);
 		Customer updatedCustomer = getUnzer().updateCustomer(customer.getId(), customerToUpdate);
-		assertEquals("FelderIT GmbH", updatedCustomer.getCompany());
+		assertEquals("Unzer E-Com GmbH", updatedCustomer.getCompany());
 		Customer fetchedCustomer = getUnzer().fetchCustomer(customer.getId());
-		assertEquals("FelderIT GmbH", fetchedCustomer.getCompany());
+		assertEquals("Unzer E-Com GmbH", fetchedCustomer.getCompany());
 		assertEquals("ABC993448 DÜSSELDORF", fetchedCustomer.getCompanyData().getCommercialRegisterNumber());
 	}
 	

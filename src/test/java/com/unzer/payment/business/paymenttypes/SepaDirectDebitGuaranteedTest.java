@@ -63,7 +63,7 @@ public class SepaDirectDebitGuaranteedTest extends AbstractPaymentTest {
 	public void testChargeSepaDirectDebitGuaranteedType() throws HttpCommunicationException, MalformedURLException, ParseException {
 		SepaDirectDebitGuaranteed sdd = getUnzer().createPaymentType(getSepaDirectDebitGuaranteed());
 		assertNotNull(sdd.getId());
-		sdd.charge(BigDecimal.TEN, Currency.getInstance("EUR"), new URL("https://www.heidelpay.com"), getMaximumCustomerSameAddress(getRandomId()));
+		sdd.charge(BigDecimal.TEN, Currency.getInstance("EUR"), new URL("https://www.unzer.com"), getMaximumCustomerSameAddress(getRandomId()));
 	}
 	
 	private void assertSddEquals(SepaDirectDebitGuaranteed sddOriginal, SepaDirectDebitGuaranteed sddCreated) {

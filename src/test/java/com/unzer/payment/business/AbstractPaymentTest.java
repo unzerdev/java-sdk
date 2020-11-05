@@ -75,7 +75,7 @@ public abstract class AbstractPaymentTest {
 		return getRandomId().substring(0, 5);
 	}
 
-	public Unzer getHeidelpayWithEndPoint(String endPoint) {
+	public Unzer getUnzerWithEndPoint(String endPoint) {
 		return new Unzer(privateKey1, null, endPoint);
 	}
 
@@ -121,7 +121,7 @@ public abstract class AbstractPaymentTest {
 		.setAmount(new BigDecimal(10))
 		.setCurrency(Currency.getInstance("EUR"))
 		.setTypeId(typeId)
-		.setReturnUrl(new URL("https://www.heidelpay.com"))
+		.setReturnUrl(new URL("https://www.unzer.com"))
 		.setOrderId(orderId)
 		.setCustomerId(customerId)
 		.setMetadataId(metadataId)
@@ -271,8 +271,8 @@ public abstract class AbstractPaymentTest {
 		.setCustomerId(customerId)
 		.setSalutation(Salutation.MR)
 		.setEmail("support@unzer.com")
-		.setMobile("+43676123456")
-				.setPhone("+49 6221 64 71 100")
+		.setMobile("+43 1 513 66 33 669")
+				.setPhone("+49 (6221) 43101-00")
 				.setBirthDate(getDate("03.10.1974"))
 		.setBillingAddress(getAddress())
 		.setShippingAddress(getAddress());
@@ -286,7 +286,7 @@ public abstract class AbstractPaymentTest {
 		.setCustomerId(customerId)
 		.setSalutation(Salutation.MR)
 		.setEmail("support@unzer.com")
-		.setMobile("+43676123456")
+		.setMobile("+43 1 513 66 33 669")
 		.setBirthDate(getDate("03.10.1974"))
 		.setBillingAddress(getAddress())
 		.setShippingAddress(getAddress("Mustermann", "Vangerowstraße 18", "Heidelberg", "BW", "69115", "DE"));
@@ -299,7 +299,7 @@ public abstract class AbstractPaymentTest {
 						.setCustomerId(customerId)
 						.setSalutation(Salutation.MRS)
 						.setEmail("support@unzer.com")
-						.setMobile("+43676123456")
+						.setMobile("+43 1 513 66 33 669")
 						.setBirthDate(getDate("08.05.1986"))
 						.setBillingAddress(getAddress())
 						.setShippingAddress(getAddress("Schubert", "Vangerowstraße 18", "Heidelberg", "BW", "69115", "DE"));
@@ -312,7 +312,7 @@ public abstract class AbstractPaymentTest {
 						.setCustomerId(customerId)
 						.setSalutation(Salutation.UNKNOWN)
 						.setEmail("support@unzer.com")
-						.setMobile("+43676123456")
+						.setMobile("+43 1 513 66 33 669")
 						.setBirthDate(getDate("01.01.1999"))
 						.setBillingAddress(getAddress())
 						.setShippingAddress(getAddress("Schubert", "Vangerowstraße 18", "Heidelberg", "BW", "69115", "DE"));

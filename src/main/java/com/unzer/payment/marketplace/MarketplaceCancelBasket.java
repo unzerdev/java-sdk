@@ -8,7 +8,7 @@ import java.util.List;
  * The basket item(s) list can contains basket item(s) of single or multiple marketplace participant(s) to be cancelled.
  * <br>
  * <b>Note: <code>basketItemReferenceId</code> must be unique among basket items.</b>
- * @author ngokienthuan
+ * @author Unzer E-Com GmbH
  *
  */
 public class MarketplaceCancelBasket {

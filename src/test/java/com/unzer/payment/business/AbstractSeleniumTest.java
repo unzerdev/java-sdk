@@ -239,18 +239,18 @@ public abstract class AbstractSeleniumTest extends AbstractPaymentTest {
 		paypage.setShopName("Unzer Demo Shop");
 		paypage.setShopDescription("Unzer Demo Shop Description");
 		paypage.setTagline("Unzer Tagline");
-		paypage.setTermsAndConditionUrl(new URL("https://www.heidelpay.com/en/privacy-statement/"));
-		paypage.setPrivacyPolicyUrl(new URL("https://www.heidelpay.com/en/privacy-statement/"));
+		paypage.setTermsAndConditionUrl(new URL("https://www.unzer.com/en/privacy-statement/"));
+		paypage.setPrivacyPolicyUrl(new URL("https://www.unzer.com/en/privacy-statement/"));
 		paypage.setCss(getCssMap());
 
-		paypage.setLogoImage("https://www.heidelpay.com/typo3conf/ext/heidelpay_site/Resources/Public/Images/Heidelpay-Logo_mitUnterzeile-orange.svg");
-		paypage.setFullPageImage("https://www.heidelpay.com/fileadmin/content/header-Imges-neu/Header_Phone_12.jpg");
+		paypage.setLogoImage("https://dev.unzer.de/wp-content/uploads/2020/09/Unzer__PrimaryLogo_Raspberry_RGB-595x272.png");
+		paypage.setFullPageImage("https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/iphone-12-pro-family-hero");
 
 		paypage.setContactUrl(new URL("mailto:support@unzer.com"));
-		paypage.setHelpUrl(new URL("https://www.heidelpay.com/de/support/"));
-		paypage.setImprintUrl(new URL("https://www.heidelpay.com/de/imprint/"));
-		paypage.setPrivacyPolicyUrl(new URL("https://www.heidelpay.com/de/datenschutz/"));
-		paypage.setTermsAndConditionUrl(new URL("https://www.heidelpay.com/de/datenschutz/"));
+		paypage.setHelpUrl(new URL("https://www.unzer.com/en/support/"));
+		paypage.setImprintUrl(new URL("https://www.unzer.com/en/impressum/"));
+		paypage.setPrivacyPolicyUrl(new URL("https://www.unzer.com/en/datenschutz/"));
+		paypage.setTermsAndConditionUrl(new URL("https://www.unzer.com/en/datenschutz/"));
 
 		paypage.setInvoiceId(getRandomId());
 		paypage.setOrderId(getRandomId());
@@ -267,18 +267,18 @@ public abstract class AbstractSeleniumTest extends AbstractPaymentTest {
 		linkpay.setShopName("Unzer Demo Shop");
 		linkpay.setShopDescription("Unzer Demo Shop Description");
 		linkpay.setTagline("Unzer Tagline");
-		linkpay.setTermsAndConditionUrl(new URL("https://www.heidelpay.com/en/privacy-statement/"));
-		linkpay.setPrivacyPolicyUrl(new URL("https://www.heidelpay.com/en/privacy-statement/"));
+		linkpay.setTermsAndConditionUrl(new URL("https://www.unzer.com/en/datenschutz/"));
+		linkpay.setPrivacyPolicyUrl(new URL("https://www.unzer.com/en/datenschutz/"));
 		linkpay.setCss(getCssMap());
 
-		linkpay.setLogoImage("https://www.heidelpay.com/typo3conf/ext/heidelpay_site/Resources/Public/Images/Heidelpay-Logo_mitUnterzeile-orange.svg");
-		linkpay.setFullPageImage("https://www.heidelpay.com/fileadmin/content/header-Imges-neu/Header_Phone_12.jpg");
+		linkpay.setLogoImage("https://dev.unzer.de/wp-content/uploads/2020/09/Unzer__PrimaryLogo_Raspberry_RGB-595x272.png");
+		linkpay.setFullPageImage("https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/iphone-12-pro-family-hero");
 
 		linkpay.setContactUrl(new URL("mailto:support@unzer.com"));
-		linkpay.setHelpUrl(new URL("https://www.heidelpay.com/de/support/"));
-		linkpay.setImprintUrl(new URL("https://www.heidelpay.com/de/imprint/"));
-		linkpay.setPrivacyPolicyUrl(new URL("https://www.heidelpay.com/de/datenschutz/"));
-		linkpay.setTermsAndConditionUrl(new URL("https://www.heidelpay.com/de/datenschutz/"));
+		linkpay.setHelpUrl(new URL("https://www.unzer.com/en/support/"));
+		linkpay.setImprintUrl(new URL("https://www.unzer.com/en/impressum/"));
+		linkpay.setPrivacyPolicyUrl(new URL("https://www.unzer.com/en/datenschutz/"));
+		linkpay.setTermsAndConditionUrl(new URL("https://www.unzer.com/en/datenschutz/"));
 
 		linkpay.setInvoiceId(getRandomId());
 		linkpay.setOrderId(getRandomId());
@@ -341,7 +341,7 @@ public abstract class AbstractSeleniumTest extends AbstractPaymentTest {
 	protected void selectDropDown(RemoteWebDriver driver, String paymentMethod) throws InterruptedException {
 		await().atLeast(1, SECONDS).and().atMost(2, SECONDS);
 
-		WebElement dropdown = driver.findElement(By.xpath("//div[@class='field " + paymentMethod + " sixteen wide']//div[@class='heidelpayChoices__inner']"));
+		WebElement dropdown = driver.findElement(By.xpath("//div[@class='field " + paymentMethod + " sixteen wide']//div[@class='unzerChoices__inner']"));
 		WebDriverWait wait = new WebDriverWait(driver, 5);
         wait.until(ExpectedConditions.visibilityOf(dropdown));
         dropdown.click();

@@ -49,7 +49,7 @@ public class RecurringTest extends AbstractSeleniumTest {
 	public void testRecurringCardWithSelenium() throws MalformedURLException, HttpCommunicationException, ParseException {
 		
 		String typeId = createPaymentTypeCard("4711100000000000").getId();
-		Recurring recurring = getUnzer().recurring(typeId, new URL("https://www.heidelpay.com"));
+		Recurring recurring = getUnzer().recurring(typeId, new URL("https://www.unzer.com"));
 		assertRecurring(recurring, Recurring.Status.PENDING);
 		
 		RemoteWebDriver driver = openUrl(recurring.getRedirectUrl().toString());
@@ -66,7 +66,7 @@ public class RecurringTest extends AbstractSeleniumTest {
 	@Test
 	public void testRecurringCardWithoutCustomer() throws MalformedURLException, HttpCommunicationException, ParseException {
 		String typeId = createPaymentTypeCard().getId();
-		Recurring recurring = getUnzer().recurring(typeId, new URL("https://www.heidelpay.com"));
+		Recurring recurring = getUnzer().recurring(typeId, new URL("https://www.unzer.com"));
 		assertRecurring(recurring, Recurring.Status.PENDING);
 		
 		Card type = (Card) getUnzer().fetchPaymentType(typeId);
@@ -78,7 +78,7 @@ public class RecurringTest extends AbstractSeleniumTest {
 	public void testRecurringCardWitCustomerId() throws MalformedURLException, HttpCommunicationException, ParseException {
 		Customer customer = getUnzer().createCustomer(getMaximumCustomer(getRandomId()));
 		String typeId = createPaymentTypeCard().getId();
-		Recurring recurring = getUnzer().recurring(typeId, customer.getId(), new URL("https://www.heidelpay.com"));
+		Recurring recurring = getUnzer().recurring(typeId, customer.getId(), new URL("https://www.unzer.com"));
 		assertRecurring(recurring, Recurring.Status.PENDING);
 		assertNotNull(recurring.getRedirectUrl());
 
@@ -89,7 +89,7 @@ public class RecurringTest extends AbstractSeleniumTest {
 	@Test
 	public void testRecurringCardWitCustomerWithCustomerId() throws MalformedURLException, HttpCommunicationException, ParseException {
 		Customer customer = getUnzer().createCustomer(getMaximumCustomer(getRandomId()));
-		Recurring recurring = getUnzer().recurring(createPaymentTypeCard().getId(), customer.getCustomerId(), new URL("https://www.heidelpay.com"));
+		Recurring recurring = getUnzer().recurring(createPaymentTypeCard().getId(), customer.getCustomerId(), new URL("https://www.unzer.com"));
 		assertRecurring(recurring, Recurring.Status.PENDING);
 		assertNotNull(recurring.getRedirectUrl());
 	}
@@ -98,7 +98,7 @@ public class RecurringTest extends AbstractSeleniumTest {
 	public void testRecurringCardWitCustomerAndMetadata() throws MalformedURLException, HttpCommunicationException, ParseException {
 		Customer customer = getUnzer().createCustomer(getMaximumCustomer(getRandomId()));
 		Metadata metadata = getUnzer().createMetadata(getTestMetadata());
-		Recurring recurring = getUnzer().recurring(createPaymentTypeCard().getId(), customer.getId(), metadata.getId(), new URL("https://www.heidelpay.com"));
+		Recurring recurring = getUnzer().recurring(createPaymentTypeCard().getId(), customer.getId(), metadata.getId(), new URL("https://www.unzer.com"));
 		assertRecurring(recurring, Recurring.Status.PENDING);
 		assertNotNull(recurring.getRedirectUrl());
 	}
@@ -108,7 +108,7 @@ public class RecurringTest extends AbstractSeleniumTest {
 	public void testRecurringPaypalWithSelenium() throws MalformedURLException, HttpCommunicationException, ParseException {
 		Paypal paypal = new Paypal();
 		paypal = (Paypal) getUnzer().createPaymentType(paypal);
-		Recurring recurring = getUnzer().recurring(paypal.getId(), new URL("https://www.heidelpay.com"));
+		Recurring recurring = getUnzer().recurring(paypal.getId(), new URL("https://www.unzer.com"));
 		assertRecurring(recurring, Recurring.Status.PENDING);
 
 		Paypal type = (Paypal) getUnzer().fetchPaymentType(paypal.getId());
@@ -134,7 +134,7 @@ public class RecurringTest extends AbstractSeleniumTest {
 	public void testRecurringPaypalWithoutCustomer() throws MalformedURLException, HttpCommunicationException, ParseException {
 		Paypal paypal = new Paypal();
 		paypal = (Paypal) getUnzer().createPaymentType(paypal);
-		Recurring recurring = getUnzer().recurring(paypal.getId(), new URL("https://www.heidelpay.com"));
+		Recurring recurring = getUnzer().recurring(paypal.getId(), new URL("https://www.unzer.com"));
 		assertRecurring(recurring, Recurring.Status.PENDING);
 
 		Paypal type = (Paypal) getUnzer().fetchPaymentType(paypal.getId());
@@ -146,7 +146,7 @@ public class RecurringTest extends AbstractSeleniumTest {
 		Customer customer = getUnzer().createCustomer(getMaximumCustomer(getRandomId()));
 		Paypal paypal = new Paypal();
 		paypal = (Paypal) getUnzer().createPaymentType(paypal);
-		Recurring recurring = getUnzer().recurring(paypal.getId(), customer.getId(), new URL("https://www.heidelpay.com"));
+		Recurring recurring = getUnzer().recurring(paypal.getId(), customer.getId(), new URL("https://www.unzer.com"));
 		assertRecurring(recurring, Recurring.Status.PENDING);
 		assertNotNull(recurring.getRedirectUrl());
 
@@ -160,7 +160,7 @@ public class RecurringTest extends AbstractSeleniumTest {
 		Card type = (Card) getUnzer().fetchPaymentType(typeId);
 		assertEquals(false, type.getRecurring());
 
-		Charge charge = getUnzer().charge(BigDecimal.ONE, Currency.getInstance("EUR"), typeId, new URL("https://www.heidelpay.com"), false);
+		Charge charge = getUnzer().charge(BigDecimal.ONE, Currency.getInstance("EUR"), typeId, new URL("https://www.unzer.com"), false);
 		assertNull(charge.getRedirectUrl());
 		
 		type = (Card) getUnzer().fetchPaymentType(typeId);
@@ -173,7 +173,7 @@ public class RecurringTest extends AbstractSeleniumTest {
 		sdd = (SepaDirectDebit) getUnzer().fetchPaymentType(sdd.getId());
 		assertEquals(false, sdd.getRecurring());
 
-		Charge charge = getUnzer().charge(BigDecimal.ONE, Currency.getInstance("EUR"), sdd.getId(), new URL("https://www.heidelpay.com"));
+		Charge charge = getUnzer().charge(BigDecimal.ONE, Currency.getInstance("EUR"), sdd.getId(), new URL("https://www.unzer.com"));
 		assertNull(charge.getRedirectUrl());
 		
 		sdd = (SepaDirectDebit) getUnzer().fetchPaymentType(sdd.getId());

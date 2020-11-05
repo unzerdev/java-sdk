@@ -22,7 +22,6 @@ package com.unzer.payment.communication;
 
 import com.unzer.payment.PaymentError;
 import com.unzer.payment.PaymentException;
-import com.unzer.payment.communication.HeidelpayHttpRequest.HeidelpayHttpMethod;
 import com.unzer.payment.util.SDKInfo;
 import org.junit.Test;
 
@@ -42,8 +41,8 @@ public class AbstractUnzerHttpCommunicationTest {
 	public void testApiErrorsAreTranslatedToPaymentException() throws HttpCommunicationException {
 		
 		PaymentException exception = null;
-		MockHeidelpayRestCommunication rest = setupRest(errorJson(), 409);
-		MockHeidelpayHttpRequest request = new MockHeidelpayHttpRequest("https://heidelpay.com", HeidelpayHttpMethod.GET);
+		MockUnzerRestCommunication rest = setupRest(errorJson(), 409);
+		MockUnzerHttpRequest request = new MockUnzerHttpRequest("https://unzer.com", UnzerHttpRequest.UnzerHttpMethod.GET);
 		try {
 			rest.execute(request, privateKey);
 		} catch(PaymentException e) {
@@ -52,7 +51,7 @@ public class AbstractUnzerHttpCommunicationTest {
 		
 		assertNotNull( exception );
 		assertEquals("2018-09-13 22:47:35", exception.getTimestamp());
-		assertEquals("https://heidelpay.com", exception.getUrl());
+		assertEquals("https://unzer.com", exception.getUrl());
 		assertEquals(new Integer(409), exception.getStatusCode());
 		PaymentError error = exception.getPaymentErrorList().get(0);
 		assertEquals("API.410.200.010", error.getCode());
@@ -63,25 +62,25 @@ public class AbstractUnzerHttpCommunicationTest {
 	@Test
 	public void testhttpGet() throws PaymentException, HttpCommunicationException {
 		
-		MockHeidelpayRestCommunication rest = setupRest(validJsonResponse(), 200);
+		MockUnzerRestCommunication rest = setupRest(validJsonResponse(), 200);
 		
-		String result = rest.httpGet("https://heidelpay.com", privateKey);
+		String result = rest.httpGet("https://unzer.com", privateKey);
 		assertEquals( validJsonResponse(), result);
 		assertLoggingHooks(rest, 200);
 	}
 
 	@Test
 	public void testHttpPost() throws PaymentException, HttpCommunicationException {
-		MockHeidelpayRestCommunication rest = setupRest(validJsonResponse(), 201);
-		String result = rest.httpPost("https://heidelpay.com", privateKey, sampleData());
+		MockUnzerRestCommunication rest = setupRest(validJsonResponse(), 201);
+		String result = rest.httpPost("https://unzer.com", privateKey, sampleData());
 		assertEquals( validJsonResponse(), result);
 		assertLoggingHooks(rest, 201);
 	}
 
 	@Test
 	public void testhttpPut() throws PaymentException, HttpCommunicationException {
-		MockHeidelpayRestCommunication rest = setupRest(validJsonResponse(), 200);
-		String result = rest.httpPut("https://heidelpay.com", privateKey, sampleData());
+		MockUnzerRestCommunication rest = setupRest(validJsonResponse(), 200);
+		String result = rest.httpPut("https://unzer.com", privateKey, sampleData());
 		assertEquals( validJsonResponse(), result);
 		assertLoggingHooks(rest, 200);
 		
@@ -89,13 +88,13 @@ public class AbstractUnzerHttpCommunicationTest {
 
 	@Test
 	public void testhttpDelete() throws PaymentException, HttpCommunicationException {
-		MockHeidelpayRestCommunication rest = setupRest(validJsonResponse(), 200);
-		String result = rest.httpDelete("https://heidelpay.com", privateKey);
+		MockUnzerRestCommunication rest = setupRest(validJsonResponse(), 200);
+		String result = rest.httpDelete("https://unzer.com", privateKey);
 		assertEquals( validJsonResponse(), result);
 		assertLoggingHooks(rest, 200);
 	}
 
-	private void assertLoggingHooks(MockHeidelpayRestCommunication rest, int expectedStatus) {
+	private void assertLoggingHooks(MockUnzerRestCommunication rest, int expectedStatus) {
 		assertEquals(rest.request, rest.loggedRequest);
 		assertEquals(rest.responseMockContent.trim(), rest.loggedResponse.getContent());
 		assertEquals(expectedStatus, rest.loggedResponse.getStatusCode());
@@ -107,9 +106,9 @@ public class AbstractUnzerHttpCommunicationTest {
 	@Test
 	public void testAuthAndUserAgentHeaderAreSetOnGetRequest() throws PaymentException, HttpCommunicationException {
 		
-		MockHeidelpayRestCommunication rest = setupRest(validJsonResponse(), 200);
+		MockUnzerRestCommunication rest = setupRest(validJsonResponse(), 200);
 
-		rest.httpGet("http://heidelpay.com", privateKey);
+		rest.httpGet("http://unzer.com", privateKey);
 
 		assertUserAgentHeader(rest.request);
 		assertAuthorizationHeader(rest.request);
@@ -118,9 +117,9 @@ public class AbstractUnzerHttpCommunicationTest {
 	@Test
 	public void testAuthContentTypeAndUserAgentHeaderAndBodiesContentEncodingAreSetOnPostRequest() throws PaymentException, HttpCommunicationException {
 		
-		MockHeidelpayRestCommunication rest = setupRest(validJsonResponse(), 200);
+		MockUnzerRestCommunication rest = setupRest(validJsonResponse(), 200);
 
-		rest.httpPost("http://heidelpay.com", privateKey, sampleData());
+		rest.httpPost("http://unzer.com", privateKey, sampleData());
 
 		assertUserAgentHeader(rest.request);
 		assertAuthorizationHeader(rest.request);
@@ -131,9 +130,9 @@ public class AbstractUnzerHttpCommunicationTest {
 	@Test
 	public void testAuthContentTypeAndUserAgentHeaderAndBodiesContentEncodingAreSetOnPutRequest() throws PaymentException, HttpCommunicationException {
 		
-		MockHeidelpayRestCommunication rest = setupRest(validJsonResponse(), 200);
+		MockUnzerRestCommunication rest = setupRest(validJsonResponse(), 200);
 
-		rest.httpPut("http://heidelpay.com", privateKey, sampleData());
+		rest.httpPut("http://unzer.com", privateKey, sampleData());
 
 		assertUserAgentHeader(rest.request);
 		assertAuthorizationHeader(rest.request);
@@ -144,34 +143,34 @@ public class AbstractUnzerHttpCommunicationTest {
 	@Test
 	public void testAuthAndUserAgentHeaderAreSetOnDeleteRequest() throws PaymentException, HttpCommunicationException {
 		
-		MockHeidelpayRestCommunication rest = setupRest(validJsonResponse(), 200);
+		MockUnzerRestCommunication rest = setupRest(validJsonResponse(), 200);
 
-		rest.httpDelete("http://heidelpay.com", privateKey);
+		rest.httpDelete("http://unzer.com", privateKey);
 
 		assertUserAgentHeader(rest.request);
 		assertAuthorizationHeader(rest.request);
 		assertContentTypeHeader(rest.request);
 	}
 
-	private void assertUserAgentHeader(MockHeidelpayHttpRequest request) {
-		assertEquals(AbstractHeidelpayRestCommunication.USER_AGENT_PREFIX + " - " + SDKInfo.getVersion(), request.headerMap.get("User-Agent"));
+	private void assertUserAgentHeader(MockUnzerHttpRequest request) {
+		assertEquals(AbstractUnzerRestCommunication.USER_AGENT_PREFIX + " - " + SDKInfo.getVersion(), request.headerMap.get("User-Agent"));
 	}
 
-	private void assertAuthorizationHeader(MockHeidelpayHttpRequest request) {
+	private void assertAuthorizationHeader(MockUnzerHttpRequest request) {
 		assertEquals("Basic " + new String(Base64.getEncoder().encode( (privateKey + ":").getBytes())), request.headerMap.get("Authorization"));
 	}
 	
-	private void assertContentTypeHeader(MockHeidelpayHttpRequest request) {
+	private void assertContentTypeHeader(MockUnzerHttpRequest request) {
 		assertEquals("application/json; charset=UTF-8".trim(), request.headerMap.get("Content-Type").trim());
 	}
 	
-	private void assertBodiesContentEncoding(MockHeidelpayHttpRequest request) {
+	private void assertBodiesContentEncoding(MockUnzerHttpRequest request) {
 		assertEquals("UTF-8", request.contentEncoding);
 	}
 	
 	
-	private MockHeidelpayRestCommunication setupRest(String response, int status) {
-		MockHeidelpayRestCommunication rest = new MockHeidelpayRestCommunication();
+	private MockUnzerRestCommunication setupRest(String response, int status) {
+		MockUnzerRestCommunication rest = new MockUnzerRestCommunication();
 		rest.responseMockStatus = status;
 		rest.responseMockContent = response;
 		
@@ -193,7 +192,7 @@ public class AbstractUnzerHttpCommunicationTest {
 	
 	private String errorJson() {
 		return "{" + 
-				"    \"url\": \"https://heidelpay.com\"," + 
+				"    \"url\": \"https://unzer.com\"," +
 				"    \"timestamp\": \"2018-09-13 22:47:35\"," + 
 				"    \"errors\": [" + 
 				"        {" + 

@@ -129,11 +129,11 @@ public class PaymentTest extends AbstractPaymentTest {
 		Authorization authorizationUsingPayment = payment.authorize(BigDecimal.ONE, Currency.getInstance("EUR"), createPaymentTypeCard().getId(), new URL("https://www.google.at"));
 		
 		// Variant 2
-		Authorization authorizationUsingHeidelpay = getUnzer().authorize(BigDecimal.ONE, Currency.getInstance("EUR"), createPaymentTypeCard().getId(), new URL("https://www.google.at"));
-		authorizationUsingHeidelpay.getPayment();
+		Authorization authorizationUsingUnzer = getUnzer().authorize(BigDecimal.ONE, Currency.getInstance("EUR"), createPaymentTypeCard().getId(), new URL("https://www.google.at"));
+		authorizationUsingUnzer.getPayment();
 		
 		assertNotNull(authorizationUsingPayment);
-		assertNotNull(authorizationUsingHeidelpay);
+		assertNotNull(authorizationUsingUnzer);
 	}
 	
 	@Test
@@ -142,11 +142,11 @@ public class PaymentTest extends AbstractPaymentTest {
 		Payment payment = new Payment(getUnzer());
 		Authorization authorizationUsingPayment = payment.authorize(BigDecimal.ONE, Currency.getInstance("EUR"), createPaymentTypeCard().getId(), new URL("https://www.google.at"), createFactoringOKCustomer().getId());
 				
-		Authorization authorizationUsingHeidelpay = getUnzer().authorize(BigDecimal.ONE, Currency.getInstance("EUR"), createPaymentTypeCard().getId(), new URL("https://www.google.at"), createFactoringOKCustomer().getId());
-		authorizationUsingHeidelpay.getPayment();
+		Authorization authorizationUsingUnzer = getUnzer().authorize(BigDecimal.ONE, Currency.getInstance("EUR"), createPaymentTypeCard().getId(), new URL("https://www.google.at"), createFactoringOKCustomer().getId());
+		authorizationUsingUnzer.getPayment();
 		
 		assertNotNull(authorizationUsingPayment);
-		assertNotNull(authorizationUsingHeidelpay);
+		assertNotNull(authorizationUsingUnzer);
 	}
 	
 	@Test
@@ -157,18 +157,18 @@ public class PaymentTest extends AbstractPaymentTest {
 		Payment payment = new Payment(getUnzer());
 		Authorization authorizationUsingPayment = payment.authorize(BigDecimal.ONE, Currency.getInstance("EUR"), cardRequest, new URL("https://www.google.at"), customerRequest);
 				
-		Authorization authorizationUsingHeidelpay = getUnzer().authorize(BigDecimal.ONE, Currency.getInstance("EUR"), cardRequest, new URL("https://www.google.at"), customerRequest);
-		authorizationUsingHeidelpay.getPayment();
+		Authorization authorizationUsingUnzer = getUnzer().authorize(BigDecimal.ONE, Currency.getInstance("EUR"), cardRequest, new URL("https://www.google.at"), customerRequest);
+		authorizationUsingUnzer.getPayment();
 		
 		assertNotNull(authorizationUsingPayment);
-		assertNotNull(authorizationUsingHeidelpay);
+		assertNotNull(authorizationUsingUnzer);
 	}
 	
 	@Test
 	public void testChargeWithoutAuthorize() throws HttpCommunicationException, MalformedURLException {
 		Charge chargeUsingPayment = new Payment(getUnzer()).charge(BigDecimal.ONE, Currency.getInstance("EUR"), createPaymentTypeCard().getId(), new URL("https://www.google.at"));
-		Charge chargeUsingHeidelpay = getUnzer().charge(BigDecimal.ONE, Currency.getInstance("EUR"), createPaymentTypeCard().getId(), new URL("https://www.google.at"));
+		Charge chargeUsingUnzer = getUnzer().charge(BigDecimal.ONE, Currency.getInstance("EUR"), createPaymentTypeCard().getId(), new URL("https://www.google.at"));
 		assertNotNull(chargeUsingPayment);
-		assertNotNull(chargeUsingHeidelpay);
+		assertNotNull(chargeUsingUnzer);
 	}
 }

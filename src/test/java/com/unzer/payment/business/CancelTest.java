@@ -61,7 +61,7 @@ public class CancelTest extends AbstractPaymentTest {
 	}
 
 	@Test
-	public void testFetchCancelChargeWithHeidelpay() throws MalformedURLException, HttpCommunicationException {
+	public void testFetchCancelChargeWithUnzer() throws MalformedURLException, HttpCommunicationException {
 		Charge initCharge = getUnzer().charge(BigDecimal.ONE, Currency.getInstance("EUR"), createPaymentTypeCard().getId(), new URL("https://www.google.at"), false);
 		Cancel cancelInit = initCharge.cancel();
 		assertEquals("COR.000.100.112", cancelInit.getMessage().getCode());

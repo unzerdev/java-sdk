@@ -21,7 +21,7 @@ package com.unzer.payment.service;
  */
 
 import com.unzer.payment.Unzer;
-import com.unzer.payment.communication.HeidelpayRestCommunication;
+import com.unzer.payment.communication.UnzerRestCommunication;
 import com.unzer.payment.communication.HttpCommunicationException;
 import com.unzer.payment.communication.JsonParser;
 import com.unzer.payment.webhook.Webhook;
@@ -30,12 +30,12 @@ import com.unzer.payment.webhook.WebhookList;
 public class WebhookService {
 	private static final String WEBHOOK_BASE_URL = "webhooks";
 	
-	private HeidelpayRestCommunication restCommunication;
+	private UnzerRestCommunication restCommunication;
 	private UrlUtil urlUtil;
 	private Unzer unzer;
 	private JsonParser jsonParser;
 	
-	public WebhookService(Unzer unzer, HeidelpayRestCommunication restCommunication) {
+	public WebhookService(Unzer unzer, UnzerRestCommunication restCommunication) {
 		this.unzer = unzer;
 		this.urlUtil = new UrlUtil(unzer.getEndPoint());
 		this.restCommunication = restCommunication;

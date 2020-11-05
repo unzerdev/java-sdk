@@ -1,10 +1,9 @@
 package com.unzer.payment.communication.impl;
 
 import com.unzer.payment.PaymentException;
-import com.unzer.payment.communication.AbstractHeidelpayRestCommunication;
-import com.unzer.payment.communication.HeidelpayRestCommunication;
-import com.unzer.payment.communication.HttpCommunicationException;
-import com.unzer.payment.communication.JsonParser;
+import com.unzer.payment.communication.*;
+import com.unzer.payment.communication.AbstractUnzerRestCommunication;
+import com.unzer.payment.communication.UnzerRestCommunication;
 import com.unzer.payment.communication.json.JsonErrorObject;
 import com.unzer.payment.util.SDKInfo;
 import org.apache.http.HttpEntity;
@@ -49,14 +48,14 @@ import static org.apache.http.HttpHeaders.*;
  *
  */
 @Deprecated
-public class RestCommunication implements HeidelpayRestCommunication {
+public class RestCommunication implements UnzerRestCommunication {
 
 	private static final Logger logger = LogManager.getLogger(RestCommunication.class);
 	public static final String BASIC = "Basic ";
 
 	public String httpGet(String url, String privateKey) throws HttpCommunicationException {
 		HttpGet httpGet = getHttpGet(url);
-		httpGet.addHeader(AUTHORIZATION, BASIC + AbstractHeidelpayRestCommunication.addAuthentication(privateKey));
+		httpGet.addHeader(AUTHORIZATION, BASIC + AbstractUnzerRestCommunication.addAuthentication(privateKey));
 		return this.execute(httpGet);
 	}
 
@@ -65,19 +64,19 @@ public class RestCommunication implements HeidelpayRestCommunication {
 			throw new IllegalArgumentException("Cannot create a http post request to an empty URL or with null params");
 		}
 		HttpPost httpPost = getHttpPost(url);
-		httpPost.addHeader(AUTHORIZATION, BASIC + AbstractHeidelpayRestCommunication.addAuthentication(privateKey));
+		httpPost.addHeader(AUTHORIZATION, BASIC + AbstractUnzerRestCommunication.addAuthentication(privateKey));
 		return makeRequest(httpPost, data);
 	}
 
 	public String httpDelete(String url, String privateKey) throws HttpCommunicationException {
 		HttpDelete httpDelete = getHttpDelete(url);
-		httpDelete.addHeader(AUTHORIZATION, BASIC + AbstractHeidelpayRestCommunication.addAuthentication(privateKey));
+		httpDelete.addHeader(AUTHORIZATION, BASIC + AbstractUnzerRestCommunication.addAuthentication(privateKey));
 		return this.execute(httpDelete);
 	}
 
 	public String httpPut(String url, String privateKey, Object data) throws HttpCommunicationException {
 		HttpPut httpPut = getHttpPut(url);
-		httpPut.addHeader(AUTHORIZATION, BASIC + AbstractHeidelpayRestCommunication.addAuthentication(privateKey));
+		httpPut.addHeader(AUTHORIZATION, BASIC + AbstractUnzerRestCommunication.addAuthentication(privateKey));
 		return makeRequest(httpPut, data);
 	}
 

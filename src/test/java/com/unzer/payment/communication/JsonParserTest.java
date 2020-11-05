@@ -59,7 +59,7 @@ public class JsonParserTest {
 
 	private void assertBasicErrorAttributes(String id, String url, String timestamp) {
 		assertEquals("s-err-f2ea241e5e8e4eb3b1513fab12c", id);
-		assertEquals("https://api.heidelpay.com/v1/payments/charges", url);
+		assertEquals("https://api.unzer.com/v1/payments/charges", url);
 		assertEquals("2019-01-09 15:42:24", timestamp);
 
 	}

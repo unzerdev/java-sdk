@@ -24,13 +24,13 @@ import java.net.URI;
 
 /**
  * Abstraction for any http-request executed by the
- * {@code HeidelpayRestCommunication} and its basic implementation in
- * {@code AbstractHeidelpayRestCommunication}.
+ * {@code UnzerRestCommunication} and its basic implementation in
+ * {@code AbstractUnzerRestCommunication}.
  * 
  */
-public interface HeidelpayHttpRequest {
+public interface UnzerHttpRequest {
 
-	enum HeidelpayHttpMethod {
+	enum UnzerHttpMethod {
 		GET, POST, DELETE, PUT
 	}
 
@@ -40,5 +40,5 @@ public interface HeidelpayHttpRequest {
 
 	void setContent(String content, String encoding);
 
-	HeidelpayHttpMethod getMethod();
+	UnzerHttpMethod getMethod();
 }

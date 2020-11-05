@@ -4,7 +4,7 @@ import java.math.BigDecimal;
 
 /**
  * This DTO is part of marketplace cancel request, to request cancel for basket item(s) of one marketplace participant.
- * @author ngokienthuan
+ * @author Unzer E-Com GmbH
  *
  */
 public class MarketplaceCancelBasketItem {

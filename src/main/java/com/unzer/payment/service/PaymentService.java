@@ -3,7 +3,7 @@ package com.unzer.payment.service;
 import com.unzer.payment.*;
 import com.unzer.payment.business.paymenttypes.HirePurchaseRatePlan;
 import com.unzer.payment.business.paymenttypes.InstallmentSecuredRatePlan;
-import com.unzer.payment.communication.HeidelpayRestCommunication;
+import com.unzer.payment.communication.UnzerRestCommunication;
 import com.unzer.payment.communication.HttpCommunicationException;
 import com.unzer.payment.communication.JsonParser;
 import com.unzer.payment.communication.json.*;
@@ -41,7 +41,7 @@ public class PaymentService {
 	protected static final String TRANSACTION_TYPE_CANCEL_AUTHORIZE = "cancel-authorize";
 	protected static final String TRANSACTION_TYPE_CANCEL_CHARGE = "cancel-charge";
 
-	protected HeidelpayRestCommunication restCommunication;
+	protected UnzerRestCommunication restCommunication;
 
 	protected UrlUtil urlUtil;
 	protected JsonToBusinessClassMapper jsonToBusinessClassMapper = new JsonToBusinessClassMapper();
@@ -50,15 +50,15 @@ public class PaymentService {
 
 	/**
 	 * Creates the {@code PaymentService} with the given {@code Unzer} facade,
-	 * bound to the given {@code HeidelpayRestCommunication} implementation used for
+	 * bound to the given {@code UnzerRestCommunication} implementation used for
 	 * http-communication.
 	 *
 	 * @param unzer         - the {@code Unzer} Facade
 	 * @param restCommunication - the implementation of
-	 *                          {@code HeidelpayRestCommunication} to be used for
+	 *                          {@code UnzerRestCommunication} to be used for
 	 *                          network communication.
 	 */
-	public PaymentService(Unzer unzer, HeidelpayRestCommunication restCommunication) {
+	public PaymentService(Unzer unzer, UnzerRestCommunication restCommunication) {
 		super();
 		this.unzer = unzer;
 		this.urlUtil = new UrlUtil(unzer.getEndPoint());
@@ -141,7 +141,7 @@ public class PaymentService {
 		String response = restCommunication.httpPost(urlUtil.getRestUrl(metadata), unzer.getPrivateKey(),
 				metadata.getMetadataMap());
 		Metadata metadataJson = jsonParser.fromJson(response, Metadata.class);
-		metadata.setHeidelpay(unzer);
+		metadata.setUnzer(unzer);
 		metadata.setId(metadataJson.getId());
 		return metadata;
 	}

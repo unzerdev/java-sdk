@@ -25,14 +25,14 @@ import java.net.URISyntaxException;
 import java.util.HashMap;
 import java.util.Map;
 
-public class MockHeidelpayHttpRequest implements HeidelpayHttpRequest {
+public class MockUnzerHttpRequest implements UnzerHttpRequest {
 
 	Map<String, String> headerMap = new HashMap<String, String>();
 	private String uri;
-	private HeidelpayHttpMethod method;
+	private UnzerHttpMethod method;
 	String content, contentEncoding;
 
-	MockHeidelpayHttpRequest(String uri, HeidelpayHttpMethod method) {
+	MockUnzerHttpRequest(String uri, UnzerHttpMethod method) {
 		this.uri = uri;
 		this.method = method;
 	}
@@ -59,7 +59,7 @@ public class MockHeidelpayHttpRequest implements HeidelpayHttpRequest {
 	}
 
 	@Override
-	public HeidelpayHttpMethod getMethod() {
+	public UnzerHttpMethod getMethod() {
 		return method;
 	}
 

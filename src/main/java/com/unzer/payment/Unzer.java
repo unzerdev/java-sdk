@@ -2,7 +2,7 @@ package com.unzer.payment;
 
 import com.unzer.payment.business.paymenttypes.HirePurchaseRatePlan;
 import com.unzer.payment.business.paymenttypes.InstallmentSecuredRatePlan;
-import com.unzer.payment.communication.HeidelpayRestCommunication;
+import com.unzer.payment.communication.UnzerRestCommunication;
 import com.unzer.payment.communication.HttpCommunicationException;
 import com.unzer.payment.communication.impl.HttpClientBasedRestCommunication;
 import com.unzer.payment.marketplace.MarketplaceAuthorization;
@@ -48,11 +48,11 @@ import java.util.Locale;
 /**
  * {@code Unzer} is a facade to the Unzer REST Api. The facade is
  * initialized with your privateKey. For having no forced dependencies you can
- * inject an appropriate implementation of {@code HeidelpayRestCommunication}
+ * inject an appropriate implementation of {@code UnzerRestCommunication}
  * implementing the http-communication Layer. If you are fine with apache's
  * httpClient you can choose the {@code HttpClientBasedRestCommunication}.
  * 
- * @see HeidelpayRestCommunication for details of the http-layer abstraction.
+ * @see UnzerRestCommunication for details of the http-layer abstraction.
  */
 public class Unzer {
 	private String privateKey;
@@ -75,10 +75,10 @@ public class Unzer {
 
 	/**
 	 * Creates an instance of the {@code Unzer}-facade.
-	 * @param restCommunication - an appropriate implementation of {@code HeidelpayRestCommunication}. If you are fine with apache's httpCLient you might choose {@code HttpClientBasedRestCommunication}.
+	 * @param restCommunication - an appropriate implementation of {@code UnzerRestCommunication}. If you are fine with apache's httpCLient you might choose {@code HttpClientBasedRestCommunication}.
 	 * @param privateKey - your private key as generated within the unzer Intelligence Platform (hIP)
 	 */
-	public Unzer(HeidelpayRestCommunication restCommunication, String privateKey) {
+	public Unzer(UnzerRestCommunication restCommunication, String privateKey) {
 		super();
 		this.privateKey = privateKey;
 		this.endPoint = null;
@@ -91,11 +91,11 @@ public class Unzer {
 
 	/**
 	 * Creates an instance of the {@code Unzer}-facade.
-	 * @param restCommunication - an appropriate implementation of {@code HeidelpayRestCommunication}. If you are fine with apache's httpCLient you might choose {@code HttpClientBasedRestCommunication}.
+	 * @param restCommunication - an appropriate implementation of {@code UnzerRestCommunication}. If you are fine with apache's httpCLient you might choose {@code HttpClientBasedRestCommunication}.
 	 * @param privateKey - your private key as generated within the unzer Intelligence Platform (hIP)
 	 * @param endPoint - the endPoint for the outgoing connection, in case of null, the value of unzer.properties will be considered
 	 */
-	public Unzer(HeidelpayRestCommunication restCommunication, String privateKey, String endPoint) {
+	public Unzer(UnzerRestCommunication restCommunication, String privateKey, String endPoint) {
 		super();
 		this.privateKey = privateKey;
 		this.endPoint = endPoint;

@@ -23,14 +23,14 @@ package com.unzer.payment.communication;
 
 /**
  * factory Methods for creating Mocks in a convenient way.
- * @author dirk.dorsch
+ * @author Unzer E-Com GmbH
  *
  */
 public class HttpCommunicationMockUtils {
 
-	public static MockHeidelpayRestCommunication withFixedResponse(String response, int status) {
+	public static MockUnzerRestCommunication withFixedResponse(String response, int status) {
 		
-		MockHeidelpayRestCommunication rest = new MockHeidelpayRestCommunication();
+		MockUnzerRestCommunication rest = new MockUnzerRestCommunication();
 		rest.responseMockStatus = status;
 		rest.responseMockContent = response;
 		

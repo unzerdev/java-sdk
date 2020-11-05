@@ -76,7 +76,7 @@ public class CancelAfterAuthorizationTest extends AbstractPaymentTest {
 	}
 
 	@Test
-	public void partialCancelAfterAuthorizationHeidelpay() throws HttpCommunicationException, MalformedURLException {
+	public void partialCancelAfterAuthorizationUnzer() throws HttpCommunicationException, MalformedURLException {
 		Authorization authorize = getUnzer().authorize(getAuthorization(createPaymentTypeCard().getId(), false));
 		Cancel cancel = getUnzer().cancelAuthorization(authorize.getPaymentId());
 		assertNotNull(cancel);
@@ -85,7 +85,7 @@ public class CancelAfterAuthorizationTest extends AbstractPaymentTest {
 	}
 
 	@Test
-	public void fetchCancelHeidelpay() throws HttpCommunicationException, MalformedURLException {
+	public void fetchCancelUnzer() throws HttpCommunicationException, MalformedURLException {
 		Authorization authorize = getUnzer().authorize(getAuthorization(createPaymentTypeCard().getId(), false));
 		Cancel cancelExecuted = getUnzer().cancelAuthorization(authorize.getPaymentId());
 		assertNotNull(cancelExecuted);

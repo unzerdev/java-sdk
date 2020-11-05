@@ -1,8 +1,7 @@
 package com.unzer.payment.service.marketplace;
 
-import com.unzer.payment.Heidelpay;
 import com.unzer.payment.Unzer;
-import com.unzer.payment.communication.HeidelpayRestCommunication;
+import com.unzer.payment.communication.UnzerRestCommunication;
 import com.unzer.payment.communication.HttpCommunicationException;
 import com.unzer.payment.communication.json.*;
 import com.unzer.payment.marketplace.MarketplaceAuthorization;
@@ -17,7 +16,7 @@ import java.util.List;
 
 public class MarketplacePaymentService extends PaymentService {
 
-	public MarketplacePaymentService(Unzer unzer, HeidelpayRestCommunication restCommunication) {
+	public MarketplacePaymentService(Unzer unzer, UnzerRestCommunication restCommunication) {
 		super(unzer, restCommunication);
 	}
 

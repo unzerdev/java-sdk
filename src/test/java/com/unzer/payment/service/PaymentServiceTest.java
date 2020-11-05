@@ -22,7 +22,7 @@ package com.unzer.payment.service;
 
 
 import com.unzer.payment.*;
-import com.unzer.payment.communication.HeidelpayRestCommunication;
+import com.unzer.payment.communication.UnzerRestCommunication;
 import com.unzer.payment.communication.HttpCommunicationException;
 import com.unzer.payment.communication.HttpCommunicationMockUtils;
 import org.junit.Test;
@@ -34,7 +34,7 @@ public class PaymentServiceTest {
 
 	
 	public PaymentService setUpPaymentService(String json, int status) {
-		HeidelpayRestCommunication rest = HttpCommunicationMockUtils.withFixedResponse(json, status);
+		UnzerRestCommunication rest = HttpCommunicationMockUtils.withFixedResponse(json, status);
 		Unzer unzer = new Unzer(rest, "anykey");
 		return new PaymentService(unzer, rest);
 	}

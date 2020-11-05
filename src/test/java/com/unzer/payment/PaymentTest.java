@@ -28,14 +28,14 @@ public class PaymentTest {
 
 	@Test
 	public void testIsNotEmpty() {
-		Payment payment = new Payment(getHeidelpay());
+		Payment payment = new Payment(getUnzer());
 		assertFalse(payment.isNotEmpty(""));
 		assertFalse(payment.isNotEmpty("   "));
 		assertFalse(payment.isNotEmpty(null));
 		assertTrue(payment.isNotEmpty("a"));
 	}
 
-	private Unzer getHeidelpay() {
+	private Unzer getUnzer() {
 		return null;
 	}
 

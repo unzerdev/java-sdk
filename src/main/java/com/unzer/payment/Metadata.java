@@ -67,10 +67,10 @@ public class Metadata implements PaymentType {
 	public String getTypeUrl() {
 		return "metadata";
 	}
-	public Unzer getHeidelpay() {
+	public Unzer getUnzer() {
 		return unzer;
 	}
-	public void setHeidelpay(Unzer unzer) {
+	public void setUnzer(Unzer unzer) {
 		this.unzer = unzer;
 	}
 	public Map<String, String> getMetadataMap() {

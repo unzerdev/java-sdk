@@ -61,7 +61,7 @@ public class ChargeAfterAuthorizationTest extends AbstractPaymentTest {
 	}
 
 	@Test
-	public void fullChargeAfterAuthorizationHeidelpay() throws HttpCommunicationException, MalformedURLException {
+	public void fullChargeAfterAuthorizationUnzer() throws HttpCommunicationException, MalformedURLException {
 		Authorization authorize = getUnzer().authorize(getAuthorization(createPaymentTypeCard().getId(), false));
 		Charge charge = getUnzer().chargeAuthorization(authorize.getPaymentId());
 		assertNotNull(charge);

@@ -1,7 +1,6 @@
 package com.unzer.payment.marketplace;
 
 import com.unzer.payment.AbstractPayment;
-import com.unzer.payment.Heidelpay;
 import com.unzer.payment.Unzer;
 import com.unzer.payment.communication.HttpCommunicationException;
 import com.unzer.payment.communication.json.JsonObject;
@@ -109,7 +108,7 @@ public class MarketplacePayment extends AbstractPayment {
 	public MarketplacePayment marketplaceFullAuthorizeCancel(String paymentReference) throws HttpCommunicationException {
 		MarketplaceCancel cancel = new MarketplaceCancel();
 		cancel.setPaymentReference(paymentReference);
-		return getHeidelpay().marketplaceFullAuthorizationsCancel(this.getId(), cancel);
+		return getUnzer().marketplaceFullAuthorizationsCancel(this.getId(), cancel);
 	}
 	
 	/**
@@ -123,7 +122,7 @@ public class MarketplacePayment extends AbstractPayment {
 	public MarketplacePayment marketplaceFullChargesCancel(String paymentReference) throws HttpCommunicationException {
 		MarketplaceCancel cancel = new MarketplaceCancel();
 		cancel.setPaymentReference(paymentReference);
-		return getHeidelpay().marketplaceFullChargesCancel(this.getId(), cancel);
+		return getUnzer().marketplaceFullChargesCancel(this.getId(), cancel);
 	}
 	
 	/**
@@ -134,6 +133,6 @@ public class MarketplacePayment extends AbstractPayment {
 	 * @throws HttpCommunicationException
 	 */
 	public MarketplacePayment fullChargeAuthorizations(String paymentReference) throws HttpCommunicationException {
-		return getHeidelpay().marketplaceFullChargeAuthorizations(this.getId(), paymentReference);
+		return getUnzer().marketplaceFullChargeAuthorizations(this.getId(), paymentReference);
 	}
 }

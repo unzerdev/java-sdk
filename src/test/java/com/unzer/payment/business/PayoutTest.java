@@ -40,7 +40,7 @@ public class PayoutTest extends AbstractPaymentTest {
 	@Test
 	public void testPayoutCardMinimal() throws MalformedURLException, HttpCommunicationException {
 		Card card = createPaymentTypeCard();
-		Payout payout = getUnzer().payout(BigDecimal.ONE, Currency.getInstance("EUR"), card.getId(), new URL("https://www.heidelpay.com"));
+		Payout payout = getUnzer().payout(BigDecimal.ONE, Currency.getInstance("EUR"), card.getId(), new URL("https://www.unzer.com"));
 		assertNotNull(payout);
 
 		Payout payoutFetched = getUnzer().fetchPayout(payout.getPaymentId(), payout.getId());
@@ -83,7 +83,7 @@ public class PayoutTest extends AbstractPaymentTest {
 		payout.setCurrency(Currency.getInstance("EUR"));
 		payout.setOrderId(getRandomId());
 		payout.setPaymentReference("My Payment Reference");
-		payout.setReturnUrl(new URL("https://www.heidelpay.com"));
+		payout.setReturnUrl(new URL("https://www.unzer.com"));
 		payout.setTypeId(typeId);
 		payout.setBasketId(getUnzer().createBasket(getMaxTestBasket()).getId());
 		payout.setCustomerId(createMaximumCustomerSameAddress().getId());
