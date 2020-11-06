@@ -7,6 +7,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) a
 
 ### Added
 * Release for rebranded SDK.
+* Changed handling of Keypairs for tests
 
 ### Remove
 * Remove deprecated methods.
