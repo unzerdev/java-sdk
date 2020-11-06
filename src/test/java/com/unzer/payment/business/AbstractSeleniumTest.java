@@ -295,7 +295,7 @@ public abstract class AbstractSeleniumTest extends AbstractPaymentTest {
 	}
 
 	protected String getReturnUrl() {
-		return "https://www.google.at/";
+		return "https://www.unzer.com/";
 	}
 	
 	

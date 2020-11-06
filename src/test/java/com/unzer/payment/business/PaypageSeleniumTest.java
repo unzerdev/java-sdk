@@ -61,7 +61,6 @@ public class PaypageSeleniumTest extends AbstractSeleniumTest {
 
 		assertFalse(isHrefTagPresent(driver, getMaximumPaypage().getContactUrl()));
 		assertFalse(isHrefTagPresent(driver, getMaximumPaypage().getHelpUrl()));
-		assertFalse(isHrefTagPresent(driver, getMaximumPaypage().getImpressumUrl()));
 		assertFalse(isHrefTagPresent(driver, getMaximumPaypage().getPrivacyPolicyUrl()));
 		assertFalse(isHrefTagPresent(driver, getMaximumPaypage().getTermsAndConditionUrl()));
 
@@ -91,11 +90,11 @@ public class PaypageSeleniumTest extends AbstractSeleniumTest {
 
 		assertTrue(isHrefTagPresent(driver, getMaximumPaypage().getContactUrl()));
 		assertTrue(isHrefTagPresent(driver, getMaximumPaypage().getHelpUrl()));
-		assertTrue(isHrefTagPresent(driver, getMaximumPaypage().getImpressumUrl()));
 		assertTrue(isHrefTagPresent(driver, getMaximumPaypage().getPrivacyPolicyUrl()));
 		assertTrue(isHrefTagPresent(driver, getMaximumPaypage().getTermsAndConditionUrl()));
 
-		sendDataByName(driver, "iban", "DE89370400440532013000");
+		sendDataByName(driver, "iban", "DE" +
+				"89370400440532013000");
 		pay(driver, getReturnUrl());
 
 		close();

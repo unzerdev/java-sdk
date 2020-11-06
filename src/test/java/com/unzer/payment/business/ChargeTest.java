@@ -65,7 +65,7 @@ public class ChargeTest extends AbstractPaymentTest {
 	
 	@Test
 	public void testChargeIsSuccess() throws MalformedURLException, HttpCommunicationException {
-		Charge charge = getUnzer().charge(BigDecimal.ONE, Currency.getInstance("EUR"), createPaymentTypeCard().getId(), new URL("https://www.google.at"), false);
+		Charge charge = getUnzer().charge(BigDecimal.ONE, Currency.getInstance("EUR"), createPaymentTypeCard().getId(), new URL("https://www.unzer.com"), false);
 		assertNotNull(charge);
 		assertNotNull(charge.getId());
 		assertEquals("COR.000.100.112", charge.getMessage().getCode());
@@ -93,7 +93,7 @@ public class ChargeTest extends AbstractPaymentTest {
 	public void testChargeWithPaymentType() throws MalformedURLException, HttpCommunicationException {
 		LocalDate locaDateNow = LocalDate.now();
 		Card card = new Card("4444333322221111", "12/" + (locaDateNow.getYear() + 1));
-		Charge charge = getUnzer().charge(BigDecimal.ONE, Currency.getInstance("EUR"), card, new URL("https://www.google.at"), false);
+		Charge charge = getUnzer().charge(BigDecimal.ONE, Currency.getInstance("EUR"), card, new URL("https://www.unzer.com"), false);
 		assertNotNull(charge);
 		assertEquals("COR.000.100.112", charge.getMessage().getCode());
 		assertNotNull(charge.getMessage().getCustomer());
@@ -102,7 +102,7 @@ public class ChargeTest extends AbstractPaymentTest {
 
 	@Test
 	public void testChargeWithReturnUrl() throws MalformedURLException, HttpCommunicationException {
-		Charge charge = getUnzer().charge(BigDecimal.ONE, Currency.getInstance("EUR"), createPaymentTypeCard().getId(), new URL("https://www.google.at"), false);
+		Charge charge = getUnzer().charge(BigDecimal.ONE, Currency.getInstance("EUR"), createPaymentTypeCard().getId(), new URL("https://www.unzer.com"), false);
 		assertNotNull(charge);
 		assertEquals("COR.000.100.112", charge.getMessage().getCode());
 		assertNotNull(charge.getMessage().getCustomer());
@@ -114,7 +114,7 @@ public class ChargeTest extends AbstractPaymentTest {
 		LocalDate locaDateNow = LocalDate.now();
 		Card card = new Card("4444333322221111", "12/" + (locaDateNow.getYear() + 1));
 		Customer customer = new Customer("Max", "Mustermann");
-		Charge charge = getUnzer().charge(BigDecimal.ONE, Currency.getInstance("EUR"), card, new URL("https://www.google.at"), customer, false);
+		Charge charge = getUnzer().charge(BigDecimal.ONE, Currency.getInstance("EUR"), card, new URL("https://www.unzer.com"), customer, false);
 		assertNotNull(charge);
 		assertEquals("COR.000.100.112", charge.getMessage().getCode());
 		assertNotNull(charge.getMessage().getCustomer());
@@ -124,7 +124,7 @@ public class ChargeTest extends AbstractPaymentTest {
 	@Test
 	public void testChargeWithCustomerIdReturnUrl() throws MalformedURLException, HttpCommunicationException, ParseException {
 		Customer customer = getUnzer().createCustomer(getMaximumCustomer(getRandomId()));
-		Charge charge = getUnzer().charge(BigDecimal.ONE, Currency.getInstance("EUR"), createPaymentTypeCard().getId(), new URL("https://www.google.at"), customer.getId(), false);
+		Charge charge = getUnzer().charge(BigDecimal.ONE, Currency.getInstance("EUR"), createPaymentTypeCard().getId(), new URL("https://www.unzer.com"), customer.getId(), false);
 		assertNotNull(charge);
 		assertEquals("COR.000.100.112", charge.getMessage().getCode());
 		assertNotNull(charge.getMessage().getCustomer());
@@ -134,7 +134,7 @@ public class ChargeTest extends AbstractPaymentTest {
 	public void testChargeReturnPayment() throws MalformedURLException, HttpCommunicationException {
 		LocalDate locaDateNow = LocalDate.now();
 		Card card = new Card("4444333322221111", "12/" + (locaDateNow.getYear() + 1));
-		Charge charge = getUnzer().charge(BigDecimal.ONE, Currency.getInstance("EUR"), card, new URL("https://www.google.at"), false);
+		Charge charge = getUnzer().charge(BigDecimal.ONE, Currency.getInstance("EUR"), card, new URL("https://www.unzer.com"), false);
 		assertNotNull(charge);
 		assertEquals("COR.000.100.112", charge.getMessage().getCode());
 		assertNotNull(charge.getMessage().getCustomer());
@@ -145,7 +145,7 @@ public class ChargeTest extends AbstractPaymentTest {
 
 	@Test
 	public void testChargeSofort() throws MalformedURLException, HttpCommunicationException {
-		Charge charge = getUnzer().charge(BigDecimal.ONE, Currency.getInstance("EUR"), new Sofort(), new URL("https://www.google.at"));
+		Charge charge = getUnzer().charge(BigDecimal.ONE, Currency.getInstance("EUR"), new Sofort(), new URL("https://www.unzer.com"));
 		assertNotNull(charge.getRedirectUrl());
 		assertNotNull(charge);
 		assertEquals("COR.000.100.112", charge.getMessage().getCode());

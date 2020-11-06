@@ -54,7 +54,7 @@ public class BancontactTest extends AbstractPaymentTest {
 	@Test
 	public void testChargeBancontactType() throws HttpCommunicationException, MalformedURLException {
 		Bancontact bancontact = getUnzer().createPaymentType(getBancontact());
-		Charge charge = bancontact.charge(BigDecimal.ONE, Currency.getInstance("EUR"), new URL("https://www.google.at"));
+		Charge charge = bancontact.charge(BigDecimal.ONE, Currency.getInstance("EUR"), new URL("https://www.unzer.com"));
 		assertNotNull(charge);
 		assertNotNull(charge.getId());
 		assertNotNull(charge.getRedirectUrl());

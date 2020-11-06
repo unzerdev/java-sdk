@@ -44,7 +44,7 @@ public class IdealTest extends AbstractPaymentTest {
 	@Test
 	public void testChargeIdealType() throws HttpCommunicationException, MalformedURLException {
 		Ideal ideal = getUnzer().createPaymentType(getIdeal());
-		Charge charge = ideal.charge(BigDecimal.ONE, Currency.getInstance("EUR"), new URL("https://www.google.at"));
+		Charge charge = ideal.charge(BigDecimal.ONE, Currency.getInstance("EUR"), new URL("https://www.unzer.com"));
 		assertNotNull(charge);
 		assertNotNull(charge.getId());
 		assertNotNull(charge.getRedirectUrl());

@@ -45,7 +45,7 @@ public class PostFinanceEFinanceTest extends AbstractPaymentTest {
 	@Test
 	public void testChargePostFinanceEFinanceType() throws HttpCommunicationException, MalformedURLException {
 		PostFinanceEFinance pfEFinance = getUnzer().createPaymentType(getPostFinanceEFinance());
-		Charge charge = pfEFinance.charge(BigDecimal.ONE, Currency.getInstance("CHF"), new URL("https://www.google.at"));
+		Charge charge = pfEFinance.charge(BigDecimal.ONE, Currency.getInstance("CHF"), new URL("https://www.unzer.com"));
 		assertNotNull(charge);
 		assertNotNull(charge.getId());
 		assertNotNull(charge.getRedirectUrl());

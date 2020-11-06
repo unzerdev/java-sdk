@@ -20,21 +20,20 @@ package com.unzer.payment.business.paymenttypes;
  * #L%
  */
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import com.unzer.payment.Cancel;
+import com.unzer.payment.Charge;
+import com.unzer.payment.business.AbstractPaymentTest;
+import com.unzer.payment.communication.HttpCommunicationException;
+import com.unzer.payment.paymenttypes.SepaDirectDebit;
+import org.junit.Test;
 
 import java.math.BigDecimal;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Currency;
 
-import com.unzer.payment.Cancel;
-import com.unzer.payment.business.AbstractPaymentTest;
-import org.junit.Test;
-
-import com.unzer.payment.Charge;
-import com.unzer.payment.communication.HttpCommunicationException;
-import com.unzer.payment.paymenttypes.SepaDirectDebit;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 public class SepaDirectDebitTest extends AbstractPaymentTest {
 
@@ -55,7 +54,7 @@ public class SepaDirectDebitTest extends AbstractPaymentTest {
 	@Test
 	public void testChargeSepaDirectDebitType() throws HttpCommunicationException, MalformedURLException {
 		SepaDirectDebit sdd = createPaymentTypeSepaDirectDebit();
-		Charge charge = sdd.charge(BigDecimal.ONE, Currency.getInstance("EUR"), new URL("https://www.google.at"));
+		Charge charge = sdd.charge(BigDecimal.ONE, Currency.getInstance("EUR"), new URL("https://www.unzer.com"));
 		assertNotNull(charge);
 		assertNotNull(charge.getId());
 		assertNotNull(charge.getProcessing());
@@ -76,7 +75,7 @@ public class SepaDirectDebitTest extends AbstractPaymentTest {
 	@Test
 	public void testCancelSepaDirectDebitType() throws HttpCommunicationException, MalformedURLException {
 		SepaDirectDebit sdd = createPaymentTypeSepaDirectDebit();
-		Charge charge = sdd.charge(BigDecimal.ONE, Currency.getInstance("EUR"), new URL("https://www.google.at"));
+		Charge charge = sdd.charge(BigDecimal.ONE, Currency.getInstance("EUR"), new URL("https://www.unzer.com"));
 		assertNotNull(charge);
 		assertNotNull(charge.getId());
 

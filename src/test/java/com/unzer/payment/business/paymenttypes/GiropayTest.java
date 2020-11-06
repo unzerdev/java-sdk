@@ -45,7 +45,7 @@ public class GiropayTest extends AbstractPaymentTest {
 	@Test
 	public void testChargeGiropayType() throws HttpCommunicationException, MalformedURLException {
 		Giropay giropay = getUnzer().createPaymentType(getGiropay());
-		Charge charge = giropay.charge(BigDecimal.ONE, Currency.getInstance("EUR"), new URL("https://www.google.at"));
+		Charge charge = giropay.charge(BigDecimal.ONE, Currency.getInstance("EUR"), new URL("https://www.unzer.com"));
 		assertNotNull(charge);
 		assertNotNull(charge.getId());
 		assertNotNull(charge.getRedirectUrl());

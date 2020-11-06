@@ -45,7 +45,7 @@ public class AlipayTest extends AbstractPaymentTest {
 	@Test
 	public void testChargeAlipayType() throws HttpCommunicationException, MalformedURLException {
 		Alipay alipay = getUnzer().createPaymentType(getAlipay());
-		Charge charge = alipay.charge(BigDecimal.ONE, Currency.getInstance("EUR"), new URL("https://www.google.at"));
+		Charge charge = alipay.charge(BigDecimal.ONE, Currency.getInstance("EUR"), new URL("https://www.unzer.com"));
 		assertNotNull(charge);
 		assertNotNull(charge.getId());
 		assertNotNull(charge.getRedirectUrl());

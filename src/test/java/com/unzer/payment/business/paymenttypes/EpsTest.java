@@ -52,7 +52,7 @@ public class EpsTest extends AbstractPaymentTest {
 	@Test
 	public void testChargeEpsType() throws HttpCommunicationException, MalformedURLException {
 		Eps eps = getUnzer().createPaymentType(getEps());
-		Charge charge = eps.charge(BigDecimal.ONE, Currency.getInstance("EUR"), new URL("https://www.google.at"));
+		Charge charge = eps.charge(BigDecimal.ONE, Currency.getInstance("EUR"), new URL("https://www.unzer.com"));
 		assertNotNull(charge);
 		assertNotNull(charge.getId());
 		assertNotNull(charge.getRedirectUrl());

@@ -2,8 +2,8 @@ package com.unzer.payment;
 
 import com.unzer.payment.business.paymenttypes.HirePurchaseRatePlan;
 import com.unzer.payment.business.paymenttypes.InstallmentSecuredRatePlan;
-import com.unzer.payment.communication.UnzerRestCommunication;
 import com.unzer.payment.communication.HttpCommunicationException;
+import com.unzer.payment.communication.UnzerRestCommunication;
 import com.unzer.payment.communication.impl.HttpClientBasedRestCommunication;
 import com.unzer.payment.marketplace.MarketplaceAuthorization;
 import com.unzer.payment.marketplace.MarketplaceCancel;
@@ -216,7 +216,6 @@ public class Unzer {
 	 * @param currency Currency used for the authorization
 	 * @param typeId Payment type id used for the authorization
 	 * @param returnUrl ReturnURL where after the payment was finished
-	 * @param card3ds Flag to specify whether to force 3ds or not
 	 * @return Authorization with paymentId and authorize id
 	 * @throws HttpCommunicationException in case communication to Unzer didn't work
 	 */

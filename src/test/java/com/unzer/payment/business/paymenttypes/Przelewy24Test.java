@@ -45,7 +45,7 @@ public class Przelewy24Test extends AbstractPaymentTest {
 	@Test
 	public void testChargePrzelewy24Type() throws HttpCommunicationException, MalformedURLException {
 		Przelewy24 p24 = getUnzer().createPaymentType(getPrzelewy24());
-		Charge charge = p24.charge(BigDecimal.ONE, Currency.getInstance("PLN"), new URL("https://www.google.at"));
+		Charge charge = p24.charge(BigDecimal.ONE, Currency.getInstance("PLN"), new URL("https://www.unzer.com"));
 		assertNotNull(charge);
 		assertNotNull(charge.getId());
 		assertNotNull(charge.getRedirectUrl());

@@ -35,7 +35,6 @@ public class PaypageTest extends AbstractSeleniumTest {
 	public void testMaximumPaypage() throws MalformedURLException, HttpCommunicationException {
 		Paypage request = getMaximumPaypage();
 		Paypage response = getUnzer().paypage(request);
-		assertNull(response.getImpressumUrl());
 		assertNull(response.getCard3ds());
 		
 		assertNotNull(response);
@@ -75,7 +74,6 @@ public class PaypageTest extends AbstractSeleniumTest {
 		request.setCss(null);
 		
 		Paypage response = getUnzer().paypage(request);
-		assertNull(response.getImpressumUrl());
 		assertNull(response.getCard3ds());
 
 		assertNotNull(response);

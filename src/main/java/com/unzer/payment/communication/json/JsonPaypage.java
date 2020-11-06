@@ -32,21 +32,13 @@ public class JsonPaypage implements JsonObject {
 	private Currency currency;
 	private URL returnUrl;
 	private String logoImage;
-	@Deprecated
-	private String basketImage;
 	private String fullPageImage;
 	private String shopName;
-	@Deprecated
-	private String descriptionMain;
-	@Deprecated
-	private String descriptionSmall;
 	private String shopDescription;
 	private String tagline;
 	private Map<String, String> css;
 	private URL termsAndConditionUrl;
 	private URL privacyPolicyUrl;
-	@Deprecated
-	private URL impressumUrl;
 	private URL imprintUrl;
 	private URL helpUrl;
 	private URL contactUrl;
@@ -100,14 +92,6 @@ public class JsonPaypage implements JsonObject {
 	public void setLogoImage(String logoImage) {
 		this.logoImage = logoImage;
 	}
-	@Deprecated
-	public String getBasketImage() {
-		return basketImage;
-	}
-	@Deprecated
-	public void setBasketImage(String basketImage) {
-		this.basketImage = basketImage;
-	}
 	public String getFullPageImage() {
 		return fullPageImage;
 	}
@@ -123,22 +107,6 @@ public class JsonPaypage implements JsonObject {
 	public void setShopName(String shopName) {
 		this.shopName = shopName;
 	}
-	@Deprecated
-	public String getDescriptionMain() {
-		return descriptionMain;
-	}
-	@Deprecated
-	public void setDescriptionMain(String descriptionMain) {
-		this.descriptionMain = descriptionMain;
-	}
-	@Deprecated
-	public String getDescriptionSmall() {
-		return descriptionSmall;
-	}
-	@Deprecated
-	public void setDescriptionSmall(String descriptionSmall) {
-		this.descriptionSmall = descriptionSmall;
-	}
 	public URL getTermsAndConditionUrl() {
 		return termsAndConditionUrl;
 	}
@@ -153,14 +121,6 @@ public class JsonPaypage implements JsonObject {
 
 	public void setPrivacyPolicyUrl(URL privacyPolicyUrl) {
 		this.privacyPolicyUrl = privacyPolicyUrl;
-	}
-	@Deprecated
-	public URL getImpressumUrl() {
-		return impressumUrl;
-	}
-	@Deprecated
-	public void setImpressumUrl(URL impressumUrl) {
-		this.impressumUrl = impressumUrl;
 	}
 
 	public URL getHelpUrl() {

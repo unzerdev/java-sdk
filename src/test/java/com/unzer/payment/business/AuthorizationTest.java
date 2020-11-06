@@ -53,7 +53,7 @@ public class AuthorizationTest extends AbstractPaymentTest {
 
 	@Test
 	public void testAuthorizeWithTypeId() throws MalformedURLException, HttpCommunicationException {
-		Authorization authorize = getUnzer().authorize(BigDecimal.ONE, Currency.getInstance("EUR"), createPaymentTypeCard().getId(), new URL("https://www.google.at"), false);
+		Authorization authorize = getUnzer().authorize(BigDecimal.ONE, Currency.getInstance("EUR"), createPaymentTypeCard().getId(), new URL("https://www.unzer.com"), false);
 		assertNotNull(authorize);
 		assertNotNull(authorize.getId());
 		assertEquals("COR.000.100.112", authorize.getMessage().getCode());
@@ -62,7 +62,7 @@ public class AuthorizationTest extends AbstractPaymentTest {
 	
 	@Test
 	public void testAuthorizeSuccess() throws MalformedURLException, HttpCommunicationException {
-		Authorization authorize = getUnzer().authorize(BigDecimal.ONE, Currency.getInstance("EUR"), createPaymentTypeCard().getId(), new URL("https://www.google.at"), false);
+		Authorization authorize = getUnzer().authorize(BigDecimal.ONE, Currency.getInstance("EUR"), createPaymentTypeCard().getId(), new URL("https://www.unzer.com"), false);
 		assertNotNull(authorize);
 		assertNotNull(authorize.getId());
 		assertEquals("COR.000.100.112", authorize.getMessage().getCode());
@@ -74,7 +74,7 @@ public class AuthorizationTest extends AbstractPaymentTest {
 	public void testAuthorizeWithPaymentType() throws MalformedURLException, HttpCommunicationException {
 		LocalDate locaDateNow = LocalDate.now();
 		Card card = new Card("4444333322221111", "12/" + (locaDateNow.getYear() + 1));
-		Authorization authorize = getUnzer().authorize(BigDecimal.ONE, Currency.getInstance("EUR"), card, new URL("https://www.google.at"), false);
+		Authorization authorize = getUnzer().authorize(BigDecimal.ONE, Currency.getInstance("EUR"), card, new URL("https://www.unzer.com"), false);
 		assertNotNull(authorize);
 		assertEquals("COR.000.100.112", authorize.getMessage().getCode());
 		assertNotNull(authorize.getMessage().getCustomer());
@@ -86,7 +86,7 @@ public class AuthorizationTest extends AbstractPaymentTest {
 		LocalDate locaDateNow = LocalDate.now();
 		Card card = new Card("4444333322221111", "12/" + (locaDateNow.getYear() + 1));
 		Customer customer = new Customer("Max", "Mustermann");
-		Authorization authorize = getUnzer().authorize(BigDecimal.ONE, Currency.getInstance("EUR"), card, new URL("https://www.google.at"), customer, false);
+		Authorization authorize = getUnzer().authorize(BigDecimal.ONE, Currency.getInstance("EUR"), card, new URL("https://www.unzer.com"), customer, false);
 		Payment payment = authorize.getPayment();
 		assertNotNull(payment.getPaymentType());
 		assertNotNull(payment.getCustomer());
@@ -98,7 +98,7 @@ public class AuthorizationTest extends AbstractPaymentTest {
 	@Test
 	public void testAuthorizeWithCustomerId() throws MalformedURLException, HttpCommunicationException, ParseException {
 		Customer customer = getUnzer().createCustomer(getMaximumCustomer(getRandomId()));
-		Authorization authorize = getUnzer().authorize(BigDecimal.ONE, Currency.getInstance("EUR"), createPaymentTypeCard().getId(), new URL("https://www.google.at"), customer.getCustomerId(), false);
+		Authorization authorize = getUnzer().authorize(BigDecimal.ONE, Currency.getInstance("EUR"), createPaymentTypeCard().getId(), new URL("https://www.unzer.com"), customer.getCustomerId(), false);
 		assertNotNull(authorize);
 		assertNotNull(authorize.getId());
 		assertEquals("COR.000.100.112", authorize.getMessage().getCode());
@@ -107,7 +107,7 @@ public class AuthorizationTest extends AbstractPaymentTest {
 
 	@Test
 	public void testAuthorizeWithReturnUrl() throws MalformedURLException, HttpCommunicationException {
-		Authorization authorize = getUnzer().authorize(BigDecimal.ONE, Currency.getInstance("EUR"), createPaymentTypeCard().getId(), new URL("https://www.google.at"), false);
+		Authorization authorize = getUnzer().authorize(BigDecimal.ONE, Currency.getInstance("EUR"), createPaymentTypeCard().getId(), new URL("https://www.unzer.com"), false);
 		assertNotNull(authorize);
 		assertNotNull(authorize.getId());
 		assertEquals("COR.000.100.112", authorize.getMessage().getCode());
@@ -119,7 +119,7 @@ public class AuthorizationTest extends AbstractPaymentTest {
 		LocalDate locaDateNow = LocalDate.now();
 		Card card = new Card("4444333322221111", "12/" + (locaDateNow.getYear() + 1));
 		Customer customer = new Customer("Max", "Mustermann");
-		Authorization authorize = getUnzer().authorize(BigDecimal.ONE, Currency.getInstance("EUR"), card, new URL("https://www.google.at"), customer, false);
+		Authorization authorize = getUnzer().authorize(BigDecimal.ONE, Currency.getInstance("EUR"), card, new URL("https://www.unzer.com"), customer, false);
 		assertNotNull(authorize);
 		assertNotNull(authorize.getId());
 		assertEquals("COR.000.100.112", authorize.getMessage().getCode());
@@ -129,7 +129,7 @@ public class AuthorizationTest extends AbstractPaymentTest {
 	@Test
 	public void testAuthorizeWithCustomerIdReturnUrl() throws MalformedURLException, HttpCommunicationException, ParseException {
 		Customer maxCustomer = getMaximumCustomer(getRandomId());
-		Authorization authorize = getUnzer().authorize(BigDecimal.ONE, Currency.getInstance("EUR"), createPaymentTypeCard().getId(), new URL("https://www.google.at"), maxCustomer.getId(), false);
+		Authorization authorize = getUnzer().authorize(BigDecimal.ONE, Currency.getInstance("EUR"), createPaymentTypeCard().getId(), new URL("https://www.unzer.com"), maxCustomer.getId(), false);
 		assertNotNull(authorize);
 		assertNotNull(authorize.getId());
 		assertEquals("COR.000.100.112", authorize.getMessage().getCode());
@@ -138,7 +138,7 @@ public class AuthorizationTest extends AbstractPaymentTest {
 	
 	@Test
 	public void testFetchAuthorization() throws MalformedURLException, HttpCommunicationException {
-		Authorization authorize = getUnzer().authorize(BigDecimal.ONE, Currency.getInstance("EUR"), createPaymentTypeCard().getId(), new URL("https://www.google.at"), false);
+		Authorization authorize = getUnzer().authorize(BigDecimal.ONE, Currency.getInstance("EUR"), createPaymentTypeCard().getId(), new URL("https://www.unzer.com"), false);
 		assertNotNull(authorize);
 		assertNotNull(authorize.getId());
 		Authorization authorization = getUnzer().fetchAuthorization(authorize.getPaymentId());

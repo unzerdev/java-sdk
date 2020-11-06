@@ -113,7 +113,6 @@ public class JsonToBusinessClassMapper {
 		json.setCss(paypage.getCss());
 		json.setTermsAndConditionUrl(paypage.getTermsAndConditionUrl());
 		json.setPrivacyPolicyUrl(paypage.getPrivacyPolicyUrl());
-		json.setImpressumUrl(paypage.getImpressumUrl());
 		json.setImprintUrl(paypage.getImprintUrl());
 		json.setHelpUrl(paypage.getHelpUrl());
 		json.setContactUrl(paypage.getContactUrl());
@@ -258,7 +257,6 @@ public class JsonToBusinessClassMapper {
 		paypage.setCss(json.getCss());
 		paypage.setTermsAndConditionUrl(json.getTermsAndConditionUrl());
 		paypage.setPrivacyPolicyUrl(json.getPrivacyPolicyUrl());
-		paypage.setImpressumUrl(json.getImpressumUrl());
 		paypage.setImprintUrl(json.getImprintUrl());
 		paypage.setHelpUrl(json.getHelpUrl());
 		paypage.setContactUrl(json.getContactUrl());

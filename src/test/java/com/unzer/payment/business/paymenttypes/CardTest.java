@@ -114,7 +114,7 @@ public class CardTest extends AbstractPaymentTest {
 		Card card = new Card("4444333322221111", "03/99");
 		card.setCvc("123");
 		card = getUnzer().createPaymentType(card);
-		Charge charge = card.charge(BigDecimal.ONE, Currency.getInstance("EUR"), new URL("https://www.google.at"));
+		Charge charge = card.charge(BigDecimal.ONE, Currency.getInstance("EUR"), new URL("https://www.unzer.com"));
 		assertNotNull(charge);
 	}
 	

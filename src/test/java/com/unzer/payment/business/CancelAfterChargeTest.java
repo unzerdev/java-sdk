@@ -1,7 +1,24 @@
 package com.unzer.payment.business;
 
+import com.unzer.payment.*;
+import com.unzer.payment.communication.HttpCommunicationException;
+import com.unzer.payment.marketplace.MarketplaceCancel;
+import com.unzer.payment.marketplace.MarketplaceCharge;
+import com.unzer.payment.marketplace.MarketplacePayment;
+import com.unzer.payment.paymenttypes.Card;
+import org.apache.http.HttpStatus;
+import org.junit.Test;
+
+import java.math.BigDecimal;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.Currency;
+
 import static java.util.concurrent.TimeUnit.SECONDS;
 import static org.awaitility.Awaitility.await;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+
 /*-
  * #%L
  * Unzer Java SDK
@@ -11,9 +28,9 @@ import static org.awaitility.Awaitility.await;
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -21,34 +38,12 @@ import static org.awaitility.Awaitility.await;
  * limitations under the License.
  * #L%
  */
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-
-import java.math.BigDecimal;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.util.Currency;
-
-import com.unzer.payment.AbstractTransaction;
-import com.unzer.payment.Cancel;
-import com.unzer.payment.Payment;
-import org.apache.http.HttpStatus;
-import org.junit.Test;
-
-import com.unzer.payment.AbstractPayment;
-import com.unzer.payment.Basket;
-import com.unzer.payment.Charge;
-import com.unzer.payment.communication.HttpCommunicationException;
-import com.unzer.payment.marketplace.MarketplaceCancel;
-import com.unzer.payment.marketplace.MarketplaceCharge;
-import com.unzer.payment.marketplace.MarketplacePayment;
-import com.unzer.payment.paymenttypes.Card;
 
 public class CancelAfterChargeTest extends AbstractPaymentTest {
 
 	@Test
 	public void testFetchChargeWithId() throws MalformedURLException, HttpCommunicationException {
-		Charge initCharge = getUnzer().charge(BigDecimal.ONE, Currency.getInstance("EUR"), createPaymentTypeCard().getId(), new URL("https://www.google.at"), false);
+		Charge initCharge = getUnzer().charge(BigDecimal.ONE, Currency.getInstance("EUR"), createPaymentTypeCard().getId(), new URL("https://www.unzer.com"), false);
 		Charge charge = getUnzer().fetchCharge(initCharge.getPaymentId(),  initCharge.getId());
 		assertNotNull(charge);
 		assertNotNull(charge.getId());
@@ -58,7 +53,7 @@ public class CancelAfterChargeTest extends AbstractPaymentTest {
 
 	@Test
 	public void testFullRefundWithId() throws MalformedURLException, HttpCommunicationException {
-		Charge initCharge = getUnzer().charge(BigDecimal.ONE, Currency.getInstance("EUR"), createPaymentTypeCard().getId(), new URL("https://www.google.at"), false);
+		Charge initCharge = getUnzer().charge(BigDecimal.ONE, Currency.getInstance("EUR"), createPaymentTypeCard().getId(), new URL("https://www.unzer.com"), false);
 		Cancel cancel = getUnzer().cancelCharge(initCharge.getPaymentId(), initCharge.getId());
 		assertNotNull(cancel);
 		assertNotNull(cancel.getId());
@@ -66,7 +61,7 @@ public class CancelAfterChargeTest extends AbstractPaymentTest {
 
 	@Test
 	public void testFullRefundWithCharge() throws MalformedURLException, HttpCommunicationException {
-		Charge initCharge = getUnzer().charge(BigDecimal.ONE, Currency.getInstance("EUR"), createPaymentTypeCard().getId(), new URL("https://www.google.at"), false);
+		Charge initCharge = getUnzer().charge(BigDecimal.ONE, Currency.getInstance("EUR"), createPaymentTypeCard().getId(), new URL("https://www.unzer.com"), false);
 		Charge charge = getUnzer().fetchCharge(initCharge.getPaymentId(), initCharge.getId());
 		Cancel cancel = charge.cancel();
 		assertNotNull(cancel);
@@ -75,14 +70,14 @@ public class CancelAfterChargeTest extends AbstractPaymentTest {
 
 	@Test
 	public void testPartialRefundWithId() throws MalformedURLException, HttpCommunicationException {
-		Charge initCharge = getUnzer().charge(BigDecimal.ONE, Currency.getInstance("EUR"), createPaymentTypeCard().getId(), new URL("https://www.google.at"), false);
+		Charge initCharge = getUnzer().charge(BigDecimal.ONE, Currency.getInstance("EUR"), createPaymentTypeCard().getId(), new URL("https://www.unzer.com"), false);
 		Cancel cancel = getUnzer().cancelCharge(initCharge.getPaymentId(), initCharge.getId(), new BigDecimal(0.1));
 		assertNotNull(cancel);
 	}
 
 	@Test
 	public void testPartialRefundWithCharge() throws MalformedURLException, HttpCommunicationException {
-		Charge initCharge = getUnzer().charge(BigDecimal.ONE, Currency.getInstance("EUR"), createPaymentTypeCard().getId(), new URL("https://www.google.at"), false);
+		Charge initCharge = getUnzer().charge(BigDecimal.ONE, Currency.getInstance("EUR"), createPaymentTypeCard().getId(), new URL("https://www.unzer.com"), false);
 		Charge charge = getUnzer().fetchCharge(initCharge.getPaymentId(), initCharge.getId());
 		Cancel cancelExecuted = charge.cancel(new BigDecimal(0.1));
 		assertNotNull(cancelExecuted);
@@ -92,7 +87,7 @@ public class CancelAfterChargeTest extends AbstractPaymentTest {
 
 	@Test
 	public void testCancelAfterChargeChargeWithPaymentReference() throws MalformedURLException, HttpCommunicationException {
-		Charge initCharge = getUnzer().charge(BigDecimal.ONE, Currency.getInstance("EUR"), createPaymentTypeCard().getId(), new URL("https://www.google.at"), false);
+		Charge initCharge = getUnzer().charge(BigDecimal.ONE, Currency.getInstance("EUR"), createPaymentTypeCard().getId(), new URL("https://www.unzer.com"), false);
 		Cancel cancelReq = new Cancel();
 		cancelReq.setPaymentReference("pmt-ref");
 		Cancel cancelInit = initCharge.cancel(cancelReq);
@@ -108,7 +103,7 @@ public class CancelAfterChargeTest extends AbstractPaymentTest {
 
 	@Test
 	public void testCancelAfterChargeChargeWithCancelObject() throws MalformedURLException, HttpCommunicationException {
-		Charge initCharge = getUnzer().charge(BigDecimal.ONE, Currency.getInstance("EUR"), createPaymentTypeCard().getId(), new URL("https://www.google.at"), false);
+		Charge initCharge = getUnzer().charge(BigDecimal.ONE, Currency.getInstance("EUR"), createPaymentTypeCard().getId(), new URL("https://www.unzer.com"), false);
 		Cancel cancelReq = new Cancel();
 		cancelReq.setPaymentReference("pmt-ref");
 		cancelReq.setAmount(new BigDecimal(1.0));

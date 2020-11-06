@@ -20,43 +20,14 @@ package com.unzer.payment.business;
  * #L%
  */
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import com.unzer.payment.PaymentException;
+import com.unzer.payment.communication.HttpCommunicationException;
+import org.junit.Test;
 
 import java.net.MalformedURLException;
 import java.text.ParseException;
 
-import com.unzer.payment.Shipment;
-import org.junit.Ignore;
-import org.junit.Test;
-
-import com.unzer.payment.Charge;
-import com.unzer.payment.PaymentException;
-import com.unzer.payment.communication.HttpCommunicationException;
-
 public class ShipmentTest extends AbstractPaymentTest {
-
-	// TODO Problem with Merchant configuration
-	@Test
-	@Ignore("Merchant is having problem with insurance provider")
-	public void testAuthorizeWithShipment() throws MalformedURLException, HttpCommunicationException, ParseException {
-		Charge charge = getUnzer().charge(getCharge(createPaymentTypeInvoiceGuaranteed().getId(), createMaximumCustomerSameAddress().getId(), null, null, null));
-		assertNotNull(charge.getId());
-		assertNotNull(charge);
-		Shipment shipment = getUnzer().shipment(charge.getPaymentId());
-		assertNotNull(charge.getId());
-		assertNotNull(charge);
-		assertNotNull(shipment);
-		assertEquals("COR.000.100.112", shipment.getMessage().getCode());
-		assertNotNull(shipment.getMessage().getCustomer());
-	}
-
-	@Deprecated
-	@Test(expected=PaymentException.class)
-	public void testAuthorizeWithShipmentNotSameAddress() throws MalformedURLException, HttpCommunicationException, ParseException {
-		getUnzer().authorize(getAuthorization(createPaymentTypeInvoiceGuaranteed().getId(), createMaximumCustomer().getId()));
-	}
-
 	@Test(expected=PaymentException.class)
 	public void testAuthorizeWithShipmentNotSameAddressWithInvoiceSecured() throws MalformedURLException, HttpCommunicationException, ParseException {
 		getUnzer().authorize(getAuthorization(createPaymentTypeInvoiceSecured().getId(), createMaximumCustomer().getId()));
