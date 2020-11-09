@@ -1,5 +1,5 @@
 # Java-SDK
-Official unzer Java Payment SDK
+Official Unzer Java Payment SDK
 
 ## Requirements
 
