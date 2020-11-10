@@ -1,5 +1,7 @@
-# Java-SDK
-Official Unzer Java Payment SDK
+![Logo](https://dev.unzer.com/wp-content/uploads/2020/09/Unzer__PrimaryLogo_Raspberry_RGB.png)
+
+# Unzer Java Payment SDK
+This SDK provides for an easy way to connect to the Unzer Rest API.
 
 ## Requirements
 
