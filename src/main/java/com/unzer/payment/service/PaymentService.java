@@ -352,7 +352,7 @@ public class PaymentService {
 	public <T extends PaymentType> T fetchPaymentType(String typeId) throws HttpCommunicationException {
 		AbstractPaymentType paymentType = getPaymentTypeFromTypeId(typeId);
 		paymentType.setUnzer(unzer);
-		String response = restCommunication.httpGet(urlUtil.getHttpGetUrl(paymentType, typeId),
+		String response = restCommunication.httpGet(urlUtil.getHttpGetUrl(typeId),
 				unzer.getPrivateKey());
 		JsonIdObject jsonPaymentType = jsonParser.fromJson(response, getJsonObjectFromTypeId(typeId).getClass());
 		return (T) jsonToBusinessClassMapper.mapToBusinessObject(paymentType, jsonPaymentType);
