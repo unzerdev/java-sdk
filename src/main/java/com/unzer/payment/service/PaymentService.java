@@ -1,11 +1,10 @@
 package com.unzer.payment.service;
 
 import com.unzer.payment.*;
-import com.unzer.payment.business.paymenttypes.HirePurchaseRatePlan;
 import com.unzer.payment.business.paymenttypes.InstallmentSecuredRatePlan;
-import com.unzer.payment.communication.UnzerRestCommunication;
 import com.unzer.payment.communication.HttpCommunicationException;
 import com.unzer.payment.communication.JsonParser;
+import com.unzer.payment.communication.UnzerRestCommunication;
 import com.unzer.payment.communication.json.*;
 import com.unzer.payment.communication.mapper.JsonToBusinessClassMapper;
 import com.unzer.payment.paymenttypes.*;
@@ -64,19 +63,6 @@ public class PaymentService {
 		this.urlUtil = new UrlUtil(unzer.getEndPoint());
 		this.restCommunication = restCommunication;
 		this.jsonParser = new JsonParser();
-	}
-
-	/**
-	 * @deprecated use {@code installmentSecuredPlan} as a default implementation.
-	 */
-	@Deprecated
-	public List<HirePurchaseRatePlan> hirePurchasePlan(BigDecimal amount, Currency currency,
-			BigDecimal effectiveInterestRate, Date orderDate) throws HttpCommunicationException {
-		String response = restCommunication.httpGet(
-				urlUtil.getHirePurchaseRateUrl(amount, currency, effectiveInterestRate, orderDate),
-				unzer.getPrivateKey());
-		JsonHirePurchaseRatePlanList json = jsonParser.fromJson(response, JsonHirePurchaseRatePlanList.class);
-		return json.getEntity();
 	}
 
 	public List<InstallmentSecuredRatePlan> installmentSecuredPlan(BigDecimal amount, Currency currency,
@@ -583,7 +569,6 @@ public class PaymentService {
 		case APPLEPAY:
 			return new JsonApplepayResponse();
 		case HIRE_PURCHASE_RATE_PLAN:
-			return new JsonHirePurchaseRatePlan();
 		case INSTALLMENT_SECURED_RATE_PLAN:
 			return new JsonInstallmentSecuredRatePlan();
 		case BANCONTACT:
@@ -612,9 +597,7 @@ public class PaymentService {
 		case INVOICE:
 			return new Invoice();
 		case INVOICE_GUARANTEED:
-			return new InvoiceGuaranteed();
 		case INVOICE_FACTORING:
-			return new InvoiceFactoring();
 		case INVOICE_SECURED:
 			return new InvoiceSecured();
 		case PAYPAL:
@@ -626,7 +609,6 @@ public class PaymentService {
 		case SEPA_DIRECT_DEBIT:
 			return new SepaDirectDebit("");
 		case SEPA_DIRECT_DEBIT_GUARANTEED:
-			return new SepaDirectDebitGuaranteed("");
 		case SEPA_DIRECT_DEBIT_SECURED:
 			return new SepaDirectDebitSecured("");
 		case SOFORT:
@@ -640,7 +622,6 @@ public class PaymentService {
 		case APPLEPAY:
 			return new Applepay();
 		case HIRE_PURCHASE_RATE_PLAN:
-			return new HirePurchaseRatePlan();
 		case INSTALLMENT_SECURED_RATE_PLAN:
 			return new InstallmentSecuredRatePlan();
 		case BANCONTACT:
