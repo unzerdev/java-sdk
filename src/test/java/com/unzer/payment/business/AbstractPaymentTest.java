@@ -202,13 +202,6 @@ public abstract class AbstractPaymentTest {
         return card;
     }
 
-    @Deprecated
-    protected InvoiceGuaranteed createPaymentTypeInvoiceGuaranteed() throws HttpCommunicationException {
-        InvoiceGuaranteed invoice = new InvoiceGuaranteed();
-        invoice = (InvoiceGuaranteed) getUnzer().createPaymentType(invoice);
-        return invoice;
-    }
-
     protected InvoiceSecured createPaymentTypeInvoiceSecured() throws HttpCommunicationException {
         InvoiceSecured invoice = new InvoiceSecured();
         invoice = (InvoiceSecured) getUnzer().createPaymentType(invoice);

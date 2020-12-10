@@ -1,6 +1,5 @@
 package com.unzer.payment;
 
-import com.unzer.payment.business.paymenttypes.HirePurchaseRatePlan;
 import com.unzer.payment.business.paymenttypes.InstallmentSecuredRatePlan;
 import com.unzer.payment.communication.HttpCommunicationException;
 import com.unzer.payment.communication.UnzerRestCommunication;
@@ -1055,14 +1054,6 @@ public class Unzer {
 		recurring.setReturnUrl(returnUrl);
 		recurring.setMetadataId(metadataId);
 		return recurring;
-	}
-
-	/**
-	 * @deprecated use {@code installmentSecuredRates} as a default implementation.
-	 */
-	@Deprecated
-	public List<HirePurchaseRatePlan> hirePurchaseRates(BigDecimal amount, Currency currency, BigDecimal effectiveInterestRate, Date orderDate) throws HttpCommunicationException {
-		return paymentService.hirePurchasePlan(amount, currency, effectiveInterestRate, orderDate);
 	}
 
 	public List<InstallmentSecuredRatePlan> installmentSecuredRates(BigDecimal amount, Currency currency, BigDecimal effectiveInterestRate, Date orderDate) throws HttpCommunicationException {
