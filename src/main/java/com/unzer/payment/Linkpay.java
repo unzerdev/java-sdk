@@ -503,7 +503,7 @@ public class Linkpay implements PaymentType {
 
 	@Override
 	public String toString() {
-		return "\nnet.hpcsoft.mgw.papi.api.linkpay.model.LinkPayResponse{" +
+		return "\nnet.hpcsoft.papi.api.linkpay.model.LinkPayResponse{" +
 				"\n\tid='" + id + '\'' +
 				", \n\tredirectUrl='" + redirectUrl + '\'' +
 				", \n\tversion='" + version + '\'' +
