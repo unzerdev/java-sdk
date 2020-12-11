@@ -49,11 +49,11 @@ public class UrlUtilTest extends AbstractPaymentTest {
     @Test
     public void testGetUrlForPaymentTypeInstallmentSecured() throws HttpCommunicationException {
         String minimalRestUrl = "https://api.unzer.com/v1/types";
-        String maximumRestUrl = "https://api.unzer.com/v1/types/invoice-secured";
+        String maximumRestUrl = "https://api.unzer.com/v1/types/installment-secured";
 
         Unzer unzer = getUnzer();
         UrlUtil urlUtil = new UrlUtil(unzer.getEndPoint());
-        InstallmentSecuredRatePlan installmentSecuredRatePlan = createPaymentTypeInstallmentSecured();
+        InstallmentSecuredRatePlan installmentSecuredRatePlan = createPaymentTypeInstallmentSecuredRatePlan();
 
         assertEquals(String.format("%s/%s", minimalRestUrl, installmentSecuredRatePlan.getId()), urlUtil.getHttpGetUrl(installmentSecuredRatePlan.getId()));
         assertEquals(String.format("%s/%s", maximumRestUrl, installmentSecuredRatePlan.getId()), urlUtil.getHttpGetUrl(installmentSecuredRatePlan, installmentSecuredRatePlan.getId()));

@@ -208,20 +208,21 @@ public abstract class AbstractPaymentTest {
         return invoice;
     }
 
-    protected InstallmentSecuredRatePlan createPaymentTypeInstallmentSecured() throws HttpCommunicationException {
+    protected InstallmentSecuredRatePlan createPaymentTypeInstallmentSecuredRatePlan() throws HttpCommunicationException {
         InstallmentSecuredRatePlan installmentSecuredRatePlan = new InstallmentSecuredRatePlan();
         installmentSecuredRatePlan.setBic(EMPTY_STRING);
         installmentSecuredRatePlan.setAccountHolder(EMPTY_STRING);
         installmentSecuredRatePlan.setIban(EMPTY_STRING);
-        installmentSecuredRatePlan.setTotalAmount(BigDecimal.ONE);
-        installmentSecuredRatePlan.setTotalInterestAmount(BigDecimal.ONE);
-        installmentSecuredRatePlan.setTotalPurchaseAmount(BigDecimal.ONE);
-        installmentSecuredRatePlan.setEffectiveInterestRate(BigDecimal.ONE);
-        installmentSecuredRatePlan.setNominalInterestRate(BigDecimal.ONE);
-        installmentSecuredRatePlan.setFeeFirstRate(BigDecimal.ONE);
-        installmentSecuredRatePlan.setFeePerRate(BigDecimal.ONE);
-        installmentSecuredRatePlan.setMonthlyRate(BigDecimal.ONE);
-        installmentSecuredRatePlan.setLastRate(BigDecimal.ONE);
+        installmentSecuredRatePlan.setTotalAmount(BigDecimal.valueOf(119.96));
+        installmentSecuredRatePlan.setTotalInterestAmount(BigDecimal.valueOf(0.96));
+        installmentSecuredRatePlan.setTotalPurchaseAmount(BigDecimal.valueOf(119));
+        installmentSecuredRatePlan.setEffectiveInterestRate(BigDecimal.valueOf(4.99));
+        installmentSecuredRatePlan.setNominalInterestRate(BigDecimal.valueOf(4.92));
+        installmentSecuredRatePlan.setFeeFirstRate(BigDecimal.valueOf(0));
+        installmentSecuredRatePlan.setFeePerRate(BigDecimal.valueOf(0));
+        installmentSecuredRatePlan.setMonthlyRate(BigDecimal.valueOf(39.99));
+        installmentSecuredRatePlan.setLastRate(BigDecimal.valueOf(39.98));
+        installmentSecuredRatePlan.setNumberOfRates(3);
         installmentSecuredRatePlan.setOrderDate(new Date());
 
 
