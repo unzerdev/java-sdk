@@ -50,18 +50,28 @@ public class Card extends AbstractPaymentType implements PaymentType {
 	private Boolean threeDs;
 	private String method;
 	private String cardHolder;
+	private String email;
 	private CardDetails cardDetails;
 	
 	public Card(String number, String expiryDate) {
 		super();
 		this.number = number;
 		this.expiryDate = expiryDate;
+		this.email = null;
 	}
 	public Card(String number, String expiryDate, String cvc) {
 		super();
 		this.number = number;
 		this.expiryDate = expiryDate;
 		this.cvc = cvc;
+		this.email = null;
+	}
+	public Card(String number, String expiryDate, String cvc, String email) {
+		super();
+		this.number = number;
+		this.expiryDate = expiryDate;
+		this.cvc = cvc;
+		this.email = email;
 	}
 	public String getNumber() {
 		return number;
@@ -100,6 +110,7 @@ public class Card extends AbstractPaymentType implements PaymentType {
 		((Card) card).setBrand(((JsonCard) jsonCard).getBrand());
 		((Card) card).setMethod(((JsonCard) jsonCard).getMethod());
 		((Card) card).setCardHolder(((JsonCard) jsonCard).getCardHolder());
+		((Card) card).setEmail(((JsonCard) jsonCard).getEmail());
 		CardDetails tempCardDetails = mapCardDetails(((JsonCard) jsonCard).getCardDetails());
 		((Card) card).setCardDetails(tempCardDetails);
 		GeoLocation tempGeoLocation = new GeoLocation(((JsonCard) jsonCard).getGeoLocation().getClientIp(), ((JsonCard) jsonCard).getGeoLocation().getCountryIsoA2());
@@ -168,5 +179,13 @@ public class Card extends AbstractPaymentType implements PaymentType {
 
 	public void setCardDetails(CardDetails cardDetails) {
 		this.cardDetails = cardDetails;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
 	}
 }

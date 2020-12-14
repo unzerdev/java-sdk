@@ -31,6 +31,7 @@ public class JsonCard extends JsonIdObject implements JsonObject {
 	private String brand;
 	private String method;
 	private String cardHolder;
+	private String email;
 	private JsonCardDetails cardDetails;
 	
 	public String getNumber() {
@@ -91,5 +92,13 @@ public class JsonCard extends JsonIdObject implements JsonObject {
 
 	public void setBrand(String brand) {
 		this.brand = brand;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
 	}
 }
