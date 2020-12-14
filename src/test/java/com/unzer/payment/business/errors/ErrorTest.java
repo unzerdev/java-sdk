@@ -20,25 +20,17 @@ package com.unzer.payment.business.errors;
  * #L%
  */
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
+import com.unzer.payment.*;
+import com.unzer.payment.business.AbstractPaymentTest;
+import com.unzer.payment.communication.HttpCommunicationException;
+import com.unzer.payment.paymenttypes.Card;
+import org.junit.Test;
 
 import java.net.MalformedURLException;
 import java.text.ParseException;
 import java.util.List;
 
-import com.unzer.payment.PaymentError;
-import com.unzer.payment.business.AbstractPaymentTest;
-import org.junit.Test;
-
-import com.unzer.payment.Authorization;
-import com.unzer.payment.Charge;
-import com.unzer.payment.Customer;
-import com.unzer.payment.PaymentException;
-import com.unzer.payment.communication.HttpCommunicationException;
-import com.unzer.payment.paymenttypes.Card;
+import static org.junit.Assert.*;
 
 public class ErrorTest extends AbstractPaymentTest {
 
@@ -80,7 +72,7 @@ public class ErrorTest extends AbstractPaymentTest {
         } catch (PaymentException e) {
             assertNotNull(e.getPaymentErrorList());
             assertTrue(e.getPaymentErrorList().size() > 0);
-            assertEquals("API.710.000.003", e.getPaymentErrorList().get(0).getCode());
+            assertEquals("API.000.000.003", e.getPaymentErrorList().get(0).getCode());
             assertEquals(
                     "You do not have permission to access this resource. Please contact the owner of the shop.",
                     e.getPaymentErrorList().get(0).getCustomerMessage());
@@ -99,7 +91,7 @@ public class ErrorTest extends AbstractPaymentTest {
         } catch (PaymentException e) {
             assertNotNull(e.getPaymentErrorList());
             assertTrue(e.getPaymentErrorList().size() > 0);
-            assertEquals("API.710.100.001", e.getPaymentErrorList().get(0).getCode());
+            assertEquals("API.500.100.001", e.getPaymentErrorList().get(0).getCode());
             assertEquals("The given payment method " + card.getId() + " is not found.",
                     e.getPaymentErrorList().get(0).getMerchantMessage());
         }

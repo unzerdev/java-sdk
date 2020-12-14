@@ -1,11 +1,13 @@
 package com.unzer.payment.business.paymenttypes;
 
-import com.unzer.payment.Authorization;
-import com.unzer.payment.Cancel;
-import com.unzer.payment.Charge;
-import com.unzer.payment.Shipment;
+import com.unzer.payment.*;
 import com.unzer.payment.business.AbstractPaymentTest;
 import com.unzer.payment.communication.HttpCommunicationException;
+import com.unzer.payment.communication.JsonParser;
+import com.unzer.payment.communication.impl.HttpClientBasedRestCommunication;
+import com.unzer.payment.communication.json.JsonIdObject;
+import com.unzer.payment.service.PaymentService;
+import com.unzer.payment.service.UrlUtil;
 import org.apache.commons.lang3.time.DateUtils;
 import org.junit.Test;
 
@@ -19,8 +21,7 @@ import java.util.Currency;
 import java.util.Date;
 import java.util.List;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.*;
 
 /*-
  * #%L
@@ -313,6 +314,25 @@ public class InstallmentSecuredTest extends AbstractPaymentTest {
 		assertEquals(getBigDecimalFourDigits(3.34), ratePlan.getLastRate());
 		assertEquals(getBigDecimalFourDigits(5.40), getBigDecimalFourDigits(ratePlan.getNominalInterestRate().doubleValue()));
 		assertEquals(orderDate, ratePlan.getOrderDate());
+	}
+
+	@Test
+	public void testAuthorizeHirePurchaseDirectDebit() throws HttpCommunicationException, MalformedURLException, ParseException {
+		Unzer unzer = getUnzer();
+		UrlUtil urlUtil = new UrlUtil(unzer.getEndPoint());
+		HttpClientBasedRestCommunication restCommunication = new HttpClientBasedRestCommunication();
+		JsonParser jsonParser = new JsonParser();
+		PaymentService paymentService = new PaymentService(unzer, restCommunication);
+
+		String response = restCommunication.httpPost("https://api.unzer.com/v1/types/hire-purchase-direct-debit", unzer.getPrivateKey(), getInstallmentSecuredRatePlan());
+		JsonIdObject jsonResponse = jsonParser.fromJson(response, JsonIdObject.class);
+		InstallmentSecuredRatePlan installmentSecuredRatePlan = paymentService.fetchPaymentType(jsonResponse.getId());
+
+		boolean matches = installmentSecuredRatePlan.getId().matches("s-hdd-\\w*");
+		assertTrue(matches);
+
+		Authorization authorize = installmentSecuredRatePlan.authorize(BigDecimal.TEN, Currency.getInstance("EUR"), new URL("https://www.meinShop.de"), getRandomId(), getRandomId(), BigDecimal.ONE);
+		assertNotNull(authorize.getPaymentId());
 	}
 
 	private BigDecimal getBigDecimalFourDigits(double number) {
