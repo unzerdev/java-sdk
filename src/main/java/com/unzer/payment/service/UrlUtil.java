@@ -63,7 +63,7 @@ public class UrlUtil {
 			return null;
 		}
 	}
-	
+
 	public String getRefundUrl(String paymentId, String chargeId) {
 		StringBuilder stringBuilder = new StringBuilder();
 		stringBuilder.append(getRestUrl());
@@ -88,9 +88,16 @@ public class UrlUtil {
 		String result = stringBuilder.toString();
 		return result.replace(PLACEHOLDER_PAYMENT_ID, paymentId);
 	}
-	public String getHttpGetUrl(PaymentType paymentType, String id) {
+    public String getHttpGetUrl(PaymentType paymentType, String id) {
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append(getRestUrl(paymentType));
+        appendSlashIfNeeded(stringBuilder);
+        stringBuilder.append(id);
+        return  stringBuilder.toString();
+    }
+	public String getHttpGetUrl(String id) {
 		StringBuilder stringBuilder = new StringBuilder();
-		stringBuilder.append(getRestUrl(paymentType));
+		stringBuilder.append(getRestUrlWithOutPaymentType());
 		appendSlashIfNeeded(stringBuilder);
 		stringBuilder.append(id);
 		return  stringBuilder.toString();
@@ -107,11 +114,22 @@ public class UrlUtil {
 	public String getRestUrl(PaymentType paymentType) {
 		return getRestUrlInternal(paymentType).replace("<paymentId>/", "");
 	}
+	public String getRestUrlWithOutPaymentType() {
+		return getRestUrlInternal().replace("<paymentId>/", "");
+	}
 	private String getRestUrlInternal(PaymentType paymentType) {
 		StringBuilder stringBuilder = new StringBuilder();
 		stringBuilder.append(getRestUrl());
 		appendSlashIfNeeded(stringBuilder);
 		stringBuilder.append(paymentType.getTypeUrl());
+		return stringBuilder.toString();
+	}
+	private String getRestUrlInternal() {
+		StringBuilder stringBuilder = new StringBuilder();
+		stringBuilder.append(getRestUrl());
+		appendSlashIfNeeded(stringBuilder);
+		stringBuilder.append("types");
+		appendSlashIfNeeded(stringBuilder);
 		return stringBuilder.toString();
 	}
 	public String getRestUrl() {

@@ -12,7 +12,7 @@ Java 1.6 or later.
 <dependency>
   <groupId>com.unzer.payment</groupId>
   <artifactId>java-sdk</artifactId>
-  <version>1.9.1.0</version>
+  <version>1.1.0.0</version>
 </dependency>
 ```
 
@@ -138,8 +138,6 @@ For any issues or questions please get in touch with our support team.
 ### Email
 [support@unzer.com](mailto:support@unzer.com)
 
-### Phone DE
-[+49 6221 43101-00](tel:+49-6221 43101 00)
-
-### Phone AT
-[+43 1 513 66 33 669](tel:+43-1 513 66 33 669)
+### Phone
+* DE: [+49 6221 43101-00](tel:+4962214310100)
+* AT: [+43 1 513 66 33 669](tel:+4315136633669)
