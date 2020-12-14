@@ -5,6 +5,7 @@ import com.unzer.payment.business.AbstractPaymentTest;
 import com.unzer.payment.communication.HttpCommunicationException;
 import com.unzer.payment.communication.impl.HttpClientBasedRestCommunication;
 import com.unzer.payment.paymenttypes.Card;
+import org.apache.logging.log4j.core.util.Assert;
 import org.junit.Test;
 import org.junit.function.ThrowingRunnable;
 
@@ -152,4 +153,23 @@ public class CardTest extends AbstractPaymentTest {
 		assertEquals("card", fetchedCard.getMethod());
 	}
 
+	@Test
+	public void testCardMailNullWhenNotSending() throws HttpCommunicationException, MalformedURLException {
+		Card card = new Card("4444333322221111", "03/99");
+		card.setCvc("123");
+		card = getUnzer().createPaymentType(card);
+
+		Assert.isEmpty(card.getEmail());
+	}
+
+	@Test
+	public void testCardMailNotNullWhenSending() throws HttpCommunicationException, MalformedURLException {
+		Card card = new Card("4444333322221111", "03/99");
+		card.setCvc("123");
+		card.setEmail();
+		card = getUnzer().createPaymentType(card);
+
+		Assert.isEmpty(card.getEmail());
+		assertNotNull(card.getEmail());
+	}
 }
