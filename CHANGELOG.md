@@ -10,7 +10,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) a
   * e.g. `InvoiceGuaranteed` and `InvoiceFactoring` replaced by `InvoiceSecured`
 
 ### Changed
-* Release for rebranded SDK.
+* Rebranded SDK to Unzer.
 * Removed payment type string from URL when fetching a payment type resource.
 * Replace payment methods guaranteed/factoring by secured payment methods, i.e.:
   * `InvoiceGuaranteed` and `InvoiceFactoring` replaced by `InvoiceSecured`
