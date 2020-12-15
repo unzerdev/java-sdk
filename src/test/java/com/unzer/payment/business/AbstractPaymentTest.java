@@ -59,6 +59,9 @@ public abstract class AbstractPaymentTest {
 
 
     protected static final String EMPTY_STRING = "";
+    protected static final String PERSON_STRING = "Mr. Unzer Payment";
+    protected static final String MAIL_STRING = "example@unzer.com";
+    protected static final String INVALID_MAIL_STRING = "example@@@unzer.com";
     protected static final String NO_3DS_VISA_CARD_NUMBER = "4012888888881881";
     protected static final String MARKETPLACE_PARTICIPANT_ID_2 = "31HA07BC814FC247577B309FF031D3F0";
     protected static final String MARKETPLACE_PARTICIPANT_ID_1 = "31HA07BC814FC247577B195E59A99FC6";
