@@ -276,6 +276,10 @@ public abstract class AbstractPaymentTest {
         return getUnzer().createBasket(getMaxTestBasket());
     }
 
+    protected Basket createBasket(BigDecimal amount) throws HttpCommunicationException, ParseException {
+        return getUnzer().createBasket(getMaxTestBasket(amount));
+    }
+
     protected Customer createFactoringOKCustomer() throws HttpCommunicationException, ParseException {
         return getUnzer().createCustomer(getFactoringOKCustomer(getRandomId()));
     }
@@ -545,6 +549,20 @@ public abstract class AbstractPaymentTest {
         basket.setAmountTotalVat(new BigDecimal(380.48 * 0.2).setScale(2, RoundingMode.HALF_UP));
         basket.setAmountTotalDiscount(BigDecimal.TEN);
         basket.setAmountTotalVat(new BigDecimal(5.41));
+        basket.setCurrencyCode(Currency.getInstance("EUR"));
+        basket.setNote("Mistery shopping");
+        basket.setOrderId(getRandomId());
+        basket.addBasketItem(getMaxTestBasketItem1());
+        basket.addBasketItem(getMaxTestBasketItem2());
+        return basket;
+    }
+
+    protected Basket getMaxTestBasket(BigDecimal amount) {
+        Basket basket = new Basket();
+        basket.setAmountTotalGross(amount);
+        basket.setAmountTotalVat(amount.multiply(BigDecimal.valueOf(0.2)).setScale(2, RoundingMode.HALF_UP));
+        basket.setAmountTotalDiscount(BigDecimal.ZERO);
+        basket.setAmountTotalVat(new BigDecimal("7.60"));
         basket.setCurrencyCode(Currency.getInstance("EUR"));
         basket.setNote("Mistery shopping");
         basket.setOrderId(getRandomId());

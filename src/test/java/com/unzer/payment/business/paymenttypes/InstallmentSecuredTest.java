@@ -45,298 +45,309 @@ import static org.junit.Assert.*;
 
 public class InstallmentSecuredTest extends AbstractPaymentTest {
 
-	@Test
-	public void testRateRetrieval() throws HttpCommunicationException, ParseException {
-		BigDecimal effectiveInterestRate = BigDecimal.valueOf(5.5).setScale(4, BigDecimal.ROUND_HALF_UP);
-		Date orderDate = getDate("21.06.2019");
-		List<InstallmentSecuredRatePlan> rateList = getUnzer().installmentSecuredRates(BigDecimal.TEN, Currency.getInstance("EUR"), effectiveInterestRate, orderDate);
-		assertNotNull(rateList);
-		assertEquals(6, rateList.size());
-		assertInstallmentSecuredRatePlan(effectiveInterestRate, orderDate, rateList.get(0));
-	}
+    @Test
+    public void testRateRetrieval() throws HttpCommunicationException, ParseException {
+        BigDecimal effectiveInterestRate = BigDecimal.valueOf(5.5).setScale(4, BigDecimal.ROUND_HALF_UP);
+        Date orderDate = getDate("21.06.2019");
+        List<InstallmentSecuredRatePlan> rateList = getUnzer().installmentSecuredRates(BigDecimal.TEN, Currency.getInstance("EUR"), effectiveInterestRate, orderDate);
+        assertNotNull(rateList);
+        assertEquals(4, rateList.size());
+        assertInstallmentSecuredRatePlan(effectiveInterestRate, orderDate, rateList.get(0));
+    }
 
-	@Test
-	public void testCreateInstallmentSecuredTypeWithIbanInvoiceDate() throws HttpCommunicationException, ParseException {
-		InstallmentSecuredRatePlan ratePlan = getInstallmentSecuredRatePlan();
-		addIbanInvoiceParameter(ratePlan);
-		InstallmentSecuredRatePlan ratePlanReturned = getUnzer().createPaymentType(ratePlan);
-		assertNotNull(ratePlanReturned);
-		assertRatePlan(ratePlan, ratePlanReturned);
-	}
-	
-	@Test
-	public void testCreateInstallmentSecuredTypeIbanLater() throws HttpCommunicationException, ParseException {
-		InstallmentSecuredRatePlan ratePlan = getInstallmentSecuredRatePlan();
-		InstallmentSecuredRatePlan ratePlanReturned = getUnzer().createPaymentType(ratePlan);
-		assertNotNull(ratePlanReturned);
-		assertRatePlan(ratePlan, ratePlanReturned);
-		
-		addIbanInvoiceParameter(ratePlanReturned);
-		InstallmentSecuredRatePlan updatedPlan = getUnzer().updatePaymentType(ratePlanReturned);
-		
-		assertNotNull(updatedPlan);
-		assertRatePlan(ratePlanReturned, updatedPlan);
-	}
-	
-	@Test
-	public void testAuthorizeViaTypeWithIban() throws HttpCommunicationException, ParseException, MalformedURLException {
-		InstallmentSecuredRatePlan ratePlan = getInstallmentSecuredRatePlan();
-		addIbanInvoiceParameter(ratePlan);
-		InstallmentSecuredRatePlan ratePlanReturned = createInstallmentSecuredType(ratePlan);
-		assertNotNull(ratePlanReturned);
-		assertRatePlan(ratePlan, ratePlanReturned);
-		
-		Authorization authorization = ratePlanReturned.authorize(new BigDecimal(370.48), Currency.getInstance("EUR"), new URL("https://www.unzer.com"), createMaximumCustomerSameAddress().getId(), createBasket().getId(), ratePlan.getEffectiveInterestRate());
-		assertValidAuthorize(ratePlan, authorization);
-	}
+    @Test
+    public void testCreateInstallmentSecuredTypeWithIbanInvoiceDate() throws HttpCommunicationException, ParseException {
+        InstallmentSecuredRatePlan ratePlan = getInstallmentSecuredRatePlan();
+        addIbanInvoiceParameter(ratePlan);
+        InstallmentSecuredRatePlan ratePlanReturned = getUnzer().createPaymentType(ratePlan);
+        assertNotNull(ratePlanReturned);
+        assertRatePlan(ratePlan, ratePlanReturned);
+    }
 
-	@Test
-	public void testAuthorizeViaUnzerTypeIdWithIban() throws HttpCommunicationException, ParseException, MalformedURLException {
-		InstallmentSecuredRatePlan ratePlan = getInstallmentSecuredRatePlan();
-		addIbanInvoiceParameter(ratePlan);
-		InstallmentSecuredRatePlan ratePlanReturned = createInstallmentSecuredType(ratePlan);
-		assertNotNull(ratePlanReturned);
-		assertRatePlan(ratePlan, ratePlanReturned);
-		
-		Authorization authorization = getUnzer().authorize(getAuthorization(ratePlanReturned.getId(), createMaximumCustomerSameAddress().getId(), createBasket().getId(), ratePlan.getEffectiveInterestRate()));
-		assertValidAuthorize(ratePlan, authorization);
-	}
-	
-	@Test
-	public void testChargeViaAuthorize() throws HttpCommunicationException, ParseException, MalformedURLException {
-		InstallmentSecuredRatePlan ratePlan = createInstallmentSecuredType(getInstallmentSecuredRatePlan());
-		InstallmentSecuredRatePlan ratePlanReturned = getUnzer().createPaymentType(ratePlan);
-		assertNotNull(ratePlanReturned);
-		assertRatePlan(ratePlan, ratePlanReturned);
-		
-		Authorization authorization = ratePlanReturned.authorize(new BigDecimal(370.48), Currency.getInstance("EUR"), new URL("https://www.unzer.com"), createMaximumCustomerSameAddress().getId(), createBasket().getId(), ratePlan.getEffectiveInterestRate());
-		assertValidAuthorize(ratePlan, authorization);
-		
-		Charge charge = authorization.charge();
-		assertValidCharge(charge);
-	}
+    @Test
+    public void testCreateInstallmentSecuredTypeIbanLater() throws HttpCommunicationException, ParseException {
+        InstallmentSecuredRatePlan ratePlan = getInstallmentSecuredRatePlan();
+        InstallmentSecuredRatePlan ratePlanReturned = getUnzer().createPaymentType(ratePlan);
+        assertNotNull(ratePlanReturned);
+        assertRatePlan(ratePlan, ratePlanReturned);
 
-	@Test
-	public void testFullCancellationBeforeShipment() throws HttpCommunicationException, ParseException, MalformedURLException {
-		InstallmentSecuredRatePlan ratePlan = createInstallmentSecuredType(getInstallmentSecuredRatePlan());
-		InstallmentSecuredRatePlan ratePlanReturned = getUnzer().createPaymentType(ratePlan);
-		assertNotNull(ratePlanReturned);
-		assertRatePlan(ratePlan, ratePlanReturned);
-		
-		Authorization authorization = ratePlanReturned.authorize(new BigDecimal(370.48), Currency.getInstance("EUR"), new URL("https://www.unzer.com"), createMaximumCustomerSameAddress().getId(), createBasket().getId(), ratePlan.getEffectiveInterestRate());
-		assertValidAuthorize(ratePlan, authorization);
-		
-		Charge charge = authorization.charge();
-		assertValidCharge(charge);
-		
-		Cancel cancel = charge.cancel();
-		assertValidCancel(cancel, getAmount());
-	}
+        addIbanInvoiceParameter(ratePlanReturned);
+        InstallmentSecuredRatePlan updatedPlan = getUnzer().updatePaymentType(ratePlanReturned);
 
-	@Test
-	public void testPartialCancellationBeforeShipment() throws HttpCommunicationException, ParseException, MalformedURLException {
-		InstallmentSecuredRatePlan ratePlan = createInstallmentSecuredType(getInstallmentSecuredRatePlan());
-		InstallmentSecuredRatePlan ratePlanReturned = getUnzer().createPaymentType(ratePlan);
-		assertNotNull(ratePlanReturned);
-		assertRatePlan(ratePlan, ratePlanReturned);
-		
-		Authorization authorization = ratePlanReturned.authorize(new BigDecimal(370.48), Currency.getInstance("EUR"), new URL("https://www.unzer.com"), createMaximumCustomerSameAddress().getId(), createBasket().getId(), ratePlan.getEffectiveInterestRate());
-		assertValidAuthorize(ratePlan, authorization);
-		
-		Charge charge = authorization.charge();
-		assertValidCharge(charge);
+        assertNotNull(updatedPlan);
+        assertRatePlan(ratePlanReturned, updatedPlan);
+    }
 
-		Cancel cancelReq = new Cancel();
-		cancelReq.setAmountGross(BigDecimal.TEN);
-		cancelReq.setAmountNet(BigDecimal.TEN);
-		cancelReq.setAmountVat(BigDecimal.TEN);
-		Cancel cancel = charge.cancel(cancelReq);
+    @Test
+    public void testAuthorizeViaTypeWithIban() throws HttpCommunicationException, ParseException, MalformedURLException {
+        InstallmentSecuredRatePlan ratePlan = getInstallmentSecuredRatePlan();
+        addIbanInvoiceParameter(ratePlan);
+        InstallmentSecuredRatePlan ratePlanReturned = createInstallmentSecuredType(ratePlan);
+        assertNotNull(ratePlanReturned);
+        assertRatePlan(ratePlan, ratePlanReturned);
 
-		assertValidCancel(cancel, getBigDecimalFourDigits(370.48));
-	}
+        Authorization authorization = ratePlanReturned.authorize(new BigDecimal(370.48), Currency.getInstance("EUR"), new URL("https://www.unzer.com"), createMaximumCustomerSameAddress().getId(), createBasket().getId(), ratePlan.getEffectiveInterestRate());
+        assertValidAuthorize(ratePlan, authorization);
+    }
 
-	@Test
-	public void testShipment() throws HttpCommunicationException, ParseException, MalformedURLException {
-		InstallmentSecuredRatePlan ratePlan = getInstallmentSecuredRatePlan();
-		addIbanInvoiceParameter(ratePlan);
-		InstallmentSecuredRatePlan ratePlanReturned = getUnzer().createPaymentType(ratePlan);
-		assertNotNull(ratePlanReturned);
-		assertRatePlan(ratePlan, ratePlanReturned);
-		
-		Authorization authorization = ratePlanReturned.authorize(new BigDecimal(370.48), Currency.getInstance("EUR"), new URL("https://www.unzer.com"), createMaximumCustomerSameAddress().getId(), createBasket().getId(), ratePlan.getEffectiveInterestRate());
-		assertValidAuthorize(ratePlan, authorization);
-		
-		Charge charge = authorization.charge();
-		assertValidCharge(charge);
-		
-		Shipment shipment = getUnzer().shipment(charge.getPaymentId());
-		assertValidShipment(shipment);		
-	}
+    @Test
+    public void testAuthorizeViaUnzerTypeIdWithIban() throws HttpCommunicationException, ParseException, MalformedURLException {
+        InstallmentSecuredRatePlan ratePlan = getInstallmentSecuredRatePlan();
+        addIbanInvoiceParameter(ratePlan);
+        InstallmentSecuredRatePlan ratePlanReturned = createInstallmentSecuredType(ratePlan);
+        assertNotNull(ratePlanReturned);
+        assertRatePlan(ratePlan, ratePlanReturned);
 
-	@Test
-	public void testFullCancelAfterShipment() throws HttpCommunicationException, ParseException, MalformedURLException {
-		InstallmentSecuredRatePlan ratePlan = getInstallmentSecuredRatePlan();
-		addIbanInvoiceParameter(ratePlan);
-		InstallmentSecuredRatePlan ratePlanReturned = getUnzer().createPaymentType(ratePlan);
-		assertNotNull(ratePlanReturned);
-		assertRatePlan(ratePlan, ratePlanReturned);
-		
-		Authorization authorization = ratePlanReturned.authorize(new BigDecimal(370.48), Currency.getInstance("EUR"), new URL("https://www.unzer.com"), createMaximumCustomerSameAddress().getId(), createBasket().getId(), ratePlan.getEffectiveInterestRate());
-		assertValidAuthorize(ratePlan, authorization);
-		
-		Charge charge = authorization.charge();
-		assertValidCharge(charge);
-		
-		Shipment shipment = getUnzer().shipment(charge.getPaymentId());
-		assertValidShipment(shipment);		
+        Authorization authorization = getUnzer().authorize(getAuthorization(ratePlanReturned.getId(), createMaximumCustomerSameAddress().getId(), createBasket().getId(), ratePlan.getEffectiveInterestRate()));
+        assertValidAuthorize(ratePlan, authorization);
+    }
 
-		Cancel cancel = charge.cancel();
-		assertValidCancel(cancel, getAmount());
-	}
+    @Test
+    public void testChargeViaAuthorize() throws HttpCommunicationException, ParseException, MalformedURLException {
+        InstallmentSecuredRatePlan ratePlan = createInstallmentSecuredType(getInstallmentSecuredRatePlan());
+        InstallmentSecuredRatePlan ratePlanReturned = getUnzer().createPaymentType(ratePlan);
+        assertNotNull(ratePlanReturned);
+        assertRatePlan(ratePlan, ratePlanReturned);
 
-	private void assertValidShipment(Shipment shipment) {
-		assertNotNull(shipment);
-	}
-	
-	private void assertValidCancel(Cancel cancel, BigDecimal cancellationAmount) {
-		assertNotNull(cancel);
-		assertNotNull(cancel.getProcessing().getUniqueId());
-		assertNotNull(cancel.getProcessing().getShortId());
-		assertNumberEquals(cancellationAmount, cancel.getAmount());
-		assertEquals(Cancel.Status.SUCCESS, cancel.getStatus());
-	}
-	
-	private void assertValidCharge(Charge charge) {
-		assertNotNull(charge);
-		assertNotNull(charge.getProcessing().getExternalOrderId());
-		assertNotNull(charge.getProcessing().getUniqueId());
-		assertNotNull(charge.getProcessing().getShortId());
-		assertNumberEquals(getAmount(), charge.getAmount());
-		assertEquals(Charge.Status.SUCCESS, charge.getStatus());
-	}
+        Authorization authorization = ratePlanReturned.authorize(new BigDecimal(370.48), Currency.getInstance("EUR"), new URL("https://www.unzer.com"), createMaximumCustomerSameAddress().getId(), createBasket().getId(), ratePlan.getEffectiveInterestRate());
+        assertValidAuthorize(ratePlan, authorization);
 
-	
-	protected Authorization getAuthorization(String typeId, String customerId, String basketId, BigDecimal effectiveInterestRate) throws MalformedURLException {
-		Authorization authorization = new Authorization();
-		authorization
-		.setAmount(getAmount())
-		.setCurrency(Currency.getInstance("EUR"))
-		.setTypeId(typeId)
-		.setReturnUrl(new URL("https://www.unzer.com"))
-		.setCustomerId(customerId)
-		.setBasketId(basketId);
-		authorization.setEffectiveInterestRate(effectiveInterestRate);
-		return authorization;
-	}
+        Charge charge = authorization.charge();
+        assertValidCharge(charge);
+    }
 
-	private BigDecimal getAmount() {
-		BigDecimal amount = new BigDecimal(370.4800);
-		return amount.setScale(2, RoundingMode.HALF_UP);
-	}
-	private InstallmentSecuredRatePlan createInstallmentSecuredType(InstallmentSecuredRatePlan ratePlan) throws ParseException, HttpCommunicationException {
-		return getUnzer().createPaymentType(ratePlan);
-	}
+    @Test
+    public void testFullCancellationBeforeShipment() throws HttpCommunicationException, ParseException, MalformedURLException {
+        InstallmentSecuredRatePlan ratePlan = createInstallmentSecuredType(getInstallmentSecuredRatePlan());
+        InstallmentSecuredRatePlan ratePlanReturned = getUnzer().createPaymentType(ratePlan);
+        assertNotNull(ratePlanReturned);
+        assertRatePlan(ratePlan, ratePlanReturned);
 
-	private void addIbanInvoiceParameter(InstallmentSecuredRatePlan ratePlan) {
-		ratePlan.setIban("DE89370400440532013000");
-		ratePlan.setBic("COBADEFFXXX");
-		ratePlan.setAccountHolder("Max Mustermann");
-		ratePlan.setInvoiceDate(DateUtils.addDays(new Date(), 0));
-		ratePlan.setInvoiceDueDate(DateUtils.addDays(new Date(), 10));
-	}
+        Authorization authorization = ratePlanReturned.authorize(new BigDecimal(370.48), Currency.getInstance("EUR"), new URL("https://www.unzer.com"), createMaximumCustomerSameAddress().getId(), createBasket().getId(), ratePlan.getEffectiveInterestRate());
+        assertValidAuthorize(ratePlan, authorization);
 
-	private InstallmentSecuredRatePlan getInstallmentSecuredRatePlan() throws ParseException, HttpCommunicationException {
-		BigDecimal effectiveInterestRate = BigDecimal.valueOf(5.5);
-		Date orderDate = getDate("21.06.2019");
-		List<InstallmentSecuredRatePlan> rateList = getUnzer().installmentSecuredRates(BigDecimal.TEN, Currency.getInstance("EUR"), effectiveInterestRate, orderDate);
-		InstallmentSecuredRatePlan ratePlan = rateList.get(0);
-		return ratePlan;
-	}
+        Charge charge = authorization.charge();
+        assertValidCharge(charge);
 
-	private void assertValidAuthorize(InstallmentSecuredRatePlan ratePlan, Authorization authorization) {
-		assertNotNull(authorization);
-		assertNumberEquals(getAmount(), authorization.getAmount());
-		assertEquals(Authorization.Status.SUCCESS, authorization.getStatus());
-		assertNumberEquals(ratePlan.getEffectiveInterestRate(), authorization.getEffectiveInterestRate());
-		assertNotNull(authorization.getProcessing().getPdfLink());
-		assertNotNull(authorization.getProcessing().getExternalOrderId());
-		assertNotNull(authorization.getProcessing().getExternalOrderId());
-		assertNotNull(authorization.getProcessing().getZgReferenceId());
+        Cancel cancel = charge.cancel();
+        assertValidCancel(cancel, getAmount());
+    }
 
-		assertNotNull(authorization.getPaymentId());
-		assertNotNull(authorization.getCustomerId());
-		assertNotNull(authorization.getBasketId());
-		assertNotNull(authorization.getTypeId());
-	}
-	
-	
-	
-	private void assertRatePlan(InstallmentSecuredRatePlan ratePlan, InstallmentSecuredRatePlan ratePlanReturned) {
-		assertEquals(ratePlan.getAccountHolder(), ratePlanReturned.getAccountHolder());
-		assertEquals(ratePlan.getBic(), ratePlanReturned.getBic());
-		assertNumberEquals(ratePlan.getEffectiveInterestRate(), ratePlanReturned.getEffectiveInterestRate());
-		assertNumberEquals(ratePlan.getFeeFirstRate(), ratePlanReturned.getFeeFirstRate());
-		assertNumberEquals(ratePlan.getFeePerRate(), ratePlanReturned.getFeePerRate());
-		assertEquals(ratePlan.getIban(), ratePlanReturned.getIban());
-		assertDateEquals(ratePlan.getInvoiceDate(), ratePlanReturned.getInvoiceDate());
-		assertDateEquals(ratePlan.getInvoiceDueDate(), ratePlanReturned.getInvoiceDueDate());
-		assertNumberEquals(ratePlan.getLastRate(), ratePlanReturned.getLastRate());
-		assertNumberEquals(ratePlan.getMonthlyRate(), ratePlanReturned.getMonthlyRate());
-		assertNumberEquals(ratePlan.getNominalInterestRate(), ratePlanReturned.getNominalInterestRate());
-		assertEquals(ratePlan.getNumberOfRates(), ratePlanReturned.getNumberOfRates());
-		assertEquals(ratePlan.getOrderDate(), ratePlanReturned.getOrderDate());
-		assertEquals(ratePlan.getRateList(), ratePlanReturned.getRateList());
-		assertNumberEquals(ratePlan.getTotalAmount(), ratePlanReturned.getTotalAmount());
-		assertNumberEquals(ratePlan.getTotalInterestAmount(), ratePlanReturned.getTotalInterestAmount());
-		assertNumberEquals(ratePlan.getTotalPurchaseAmount(), ratePlanReturned.getTotalPurchaseAmount());
-		assertEquals(ratePlan.getTypeUrl(), ratePlanReturned.getTypeUrl());
-	}
+    @Test
+    public void testPartialCancellationBeforeShipment() throws HttpCommunicationException, ParseException, MalformedURLException {
+        InstallmentSecuredRatePlan ratePlan = createInstallmentSecuredType(getInstallmentSecuredRatePlan());
+        InstallmentSecuredRatePlan ratePlanReturned = getUnzer().createPaymentType(ratePlan);
+        assertNotNull(ratePlanReturned);
+        assertRatePlan(ratePlan, ratePlanReturned);
 
-	private void assertDateEquals(Date expected, Date actual) {
-		if (expected == null && actual == null) return;
-		if (expected == null && actual != null) throw new AssertionError("expected is null, but actual is not");
-		if (expected != null && actual == null) throw new AssertionError("expected is not null, but actual is null");
-		if (!getDate(expected).equals(getDate(actual))) throw new AssertionError("expected: '" + getDate(expected) + "', actual: '" + getDate(actual) + "'");
+        Authorization authorization = ratePlanReturned.authorize(new BigDecimal(370.48), Currency.getInstance("EUR"), new URL("https://www.unzer.com"), createMaximumCustomerSameAddress().getId(), createBasket().getId(), ratePlan.getEffectiveInterestRate());
+        assertValidAuthorize(ratePlan, authorization);
 
-	}
-	
-	private String getDate(Date expected) {
-		return new SimpleDateFormat("dd.MM.yyyy").format(expected);
-	}
+        Charge charge = authorization.charge();
+        assertValidCharge(charge);
 
-	private void assertInstallmentSecuredRatePlan(BigDecimal effectiveInterestRate, Date orderDate, InstallmentSecuredRatePlan ratePlan) {
-		assertEquals(3, ratePlan.getNumberOfRates());
-		assertEquals(effectiveInterestRate, ratePlan.getEffectiveInterestRate());
-		assertEquals(new BigDecimal("10.0").setScale(4, BigDecimal.ROUND_HALF_UP), ratePlan.getTotalPurchaseAmount());
-		assertEquals(getBigDecimalFourDigits(0.08), ratePlan.getTotalInterestAmount());
-		assertEquals(ratePlan.getTotalAmount().setScale(4, BigDecimal.ROUND_HALF_UP), ratePlan.getTotalInterestAmount().add(ratePlan.getTotalPurchaseAmount()));
-		assertEquals(getBigDecimalFourDigits(3.37), ratePlan.getMonthlyRate());
-		assertEquals(getBigDecimalFourDigits(3.34), ratePlan.getLastRate());
-		assertEquals(getBigDecimalFourDigits(5.40), getBigDecimalFourDigits(ratePlan.getNominalInterestRate().doubleValue()));
-		assertEquals(orderDate, ratePlan.getOrderDate());
-	}
+        Cancel cancelReq = new Cancel();
+        cancelReq.setAmountGross(BigDecimal.TEN);
+        cancelReq.setAmountNet(BigDecimal.TEN);
+        cancelReq.setAmountVat(BigDecimal.TEN);
+        Cancel cancel = charge.cancel(cancelReq);
 
-	@Test
-	public void testAuthorizeHirePurchaseDirectDebit() throws HttpCommunicationException, MalformedURLException, ParseException {
-		Unzer unzer = getUnzer();
-		UrlUtil urlUtil = new UrlUtil(unzer.getEndPoint());
-		HttpClientBasedRestCommunication restCommunication = new HttpClientBasedRestCommunication();
-		JsonParser jsonParser = new JsonParser();
-		PaymentService paymentService = new PaymentService(unzer, restCommunication);
+        assertValidCancel(cancel, getBigDecimalFourDigits(370.48));
+    }
 
-		String response = restCommunication.httpPost("https://api.unzer.com/v1/types/hire-purchase-direct-debit", unzer.getPrivateKey(), getInstallmentSecuredRatePlan());
-		JsonIdObject jsonResponse = jsonParser.fromJson(response, JsonIdObject.class);
-		InstallmentSecuredRatePlan installmentSecuredRatePlan = paymentService.fetchPaymentType(jsonResponse.getId());
+    @Test
+    public void testShipment() throws HttpCommunicationException, ParseException, MalformedURLException {
+        InstallmentSecuredRatePlan ratePlan = getInstallmentSecuredRatePlan();
+        addIbanInvoiceParameter(ratePlan);
+        InstallmentSecuredRatePlan ratePlanReturned = getUnzer().createPaymentType(ratePlan);
+        assertNotNull(ratePlanReturned);
+        assertRatePlan(ratePlan, ratePlanReturned);
 
-		boolean matches = installmentSecuredRatePlan.getId().matches("s-hdd-\\w*");
-		assertTrue(matches);
+        Authorization authorization = ratePlanReturned.authorize(new BigDecimal(370.48), Currency.getInstance("EUR"), new URL("https://www.unzer.com"), createMaximumCustomerSameAddress().getId(), createBasket().getId(), ratePlan.getEffectiveInterestRate());
+        assertValidAuthorize(ratePlan, authorization);
 
-		Authorization authorize = installmentSecuredRatePlan.authorize(BigDecimal.TEN, Currency.getInstance("EUR"), new URL("https://www.meinShop.de"), getRandomId(), getRandomId(), BigDecimal.ONE);
-		assertNotNull(authorize.getPaymentId());
-	}
+        Charge charge = authorization.charge();
+        assertValidCharge(charge);
 
-	private BigDecimal getBigDecimalFourDigits(double number) {
-		return new BigDecimal(number).setScale(4, BigDecimal.ROUND_HALF_UP);
-	}
+        Shipment shipment = getUnzer().shipment(charge.getPaymentId());
+        assertValidShipment(shipment);
+    }
+
+    @Test
+    public void testFullCancelAfterShipment() throws HttpCommunicationException, ParseException, MalformedURLException {
+        InstallmentSecuredRatePlan ratePlan = getInstallmentSecuredRatePlan();
+        addIbanInvoiceParameter(ratePlan);
+        InstallmentSecuredRatePlan ratePlanReturned = getUnzer().createPaymentType(ratePlan);
+        assertNotNull(ratePlanReturned);
+        assertRatePlan(ratePlan, ratePlanReturned);
+
+        Authorization authorization = ratePlanReturned.authorize(new BigDecimal(370.48), Currency.getInstance("EUR"), new URL("https://www.unzer.com"), createMaximumCustomerSameAddress().getId(), createBasket().getId(), ratePlan.getEffectiveInterestRate());
+        assertValidAuthorize(ratePlan, authorization);
+
+        Charge charge = authorization.charge();
+        assertValidCharge(charge);
+
+        Shipment shipment = getUnzer().shipment(charge.getPaymentId());
+        assertValidShipment(shipment);
+
+        Cancel cancel = charge.cancel();
+        assertValidCancel(cancel, getAmount());
+    }
+
+    private void assertValidShipment(Shipment shipment) {
+        assertNotNull(shipment);
+    }
+
+    private void assertValidCancel(Cancel cancel, BigDecimal cancellationAmount) {
+        assertNotNull(cancel);
+        assertNotNull(cancel.getProcessing().getUniqueId());
+        assertNotNull(cancel.getProcessing().getShortId());
+        assertNumberEquals(cancellationAmount, cancel.getAmount());
+        assertEquals(Cancel.Status.SUCCESS, cancel.getStatus());
+    }
+
+    private void assertValidCharge(Charge charge) {
+        assertNotNull(charge);
+        assertNotNull(charge.getProcessing().getExternalOrderId());
+        assertNotNull(charge.getProcessing().getUniqueId());
+        assertNotNull(charge.getProcessing().getShortId());
+        assertNumberEquals(getAmount(), charge.getAmount());
+        assertEquals(Charge.Status.SUCCESS, charge.getStatus());
+    }
+
+
+    protected Authorization getAuthorization(String typeId, String customerId, String basketId, BigDecimal effectiveInterestRate) throws MalformedURLException {
+        Authorization authorization = new Authorization();
+        authorization
+                .setAmount(getAmount())
+                .setCurrency(Currency.getInstance("EUR"))
+                .setTypeId(typeId)
+                .setReturnUrl(new URL("https://www.unzer.com"))
+                .setCustomerId(customerId)
+                .setBasketId(basketId);
+        authorization.setEffectiveInterestRate(effectiveInterestRate);
+        return authorization;
+    }
+
+    private BigDecimal getAmount() {
+        BigDecimal amount = new BigDecimal(370.4800);
+        return amount.setScale(2, RoundingMode.HALF_UP);
+    }
+
+    private InstallmentSecuredRatePlan createInstallmentSecuredType(InstallmentSecuredRatePlan ratePlan) throws ParseException, HttpCommunicationException {
+        return getUnzer().createPaymentType(ratePlan);
+    }
+
+    private void addIbanInvoiceParameter(InstallmentSecuredRatePlan ratePlan) {
+        ratePlan.setIban("DE89370400440532013000");
+        ratePlan.setBic("COBADEFFXXX");
+        ratePlan.setAccountHolder("Max Mustermann");
+        ratePlan.setInvoiceDate(DateUtils.addDays(new Date(), 0));
+        ratePlan.setInvoiceDueDate(DateUtils.addDays(new Date(), 10));
+    }
+
+    private InstallmentSecuredRatePlan getInstallmentSecuredRatePlan() throws ParseException, HttpCommunicationException {
+        BigDecimal effectiveInterestRate = BigDecimal.valueOf(5.5);
+        Date orderDate = getDate("21.06.2019");
+        List<InstallmentSecuredRatePlan> rateList = getUnzer().installmentSecuredRates(BigDecimal.TEN, Currency.getInstance("EUR"), effectiveInterestRate, orderDate);
+        InstallmentSecuredRatePlan ratePlan = rateList.get(0);
+        return ratePlan;
+    }
+
+    private InstallmentSecuredRatePlan getInstallmentSecuredRatePlan(BigDecimal amount) throws ParseException, HttpCommunicationException {
+        BigDecimal effectiveInterestRate = BigDecimal.valueOf(5.5);
+        Date orderDate = getDate("21.06.2019");
+        List<InstallmentSecuredRatePlan> rateList = getUnzer().installmentSecuredRates(amount, Currency.getInstance("EUR"), effectiveInterestRate, orderDate);
+        InstallmentSecuredRatePlan ratePlan = rateList.get(0);
+        return ratePlan;
+    }
+
+    private void assertValidAuthorize(InstallmentSecuredRatePlan ratePlan, Authorization authorization) {
+        assertNotNull(authorization);
+        assertNumberEquals(getAmount(), authorization.getAmount());
+        assertEquals(Authorization.Status.SUCCESS, authorization.getStatus());
+        assertNumberEquals(ratePlan.getEffectiveInterestRate(), authorization.getEffectiveInterestRate());
+        assertNotNull(authorization.getProcessing().getPdfLink());
+        assertNotNull(authorization.getProcessing().getExternalOrderId());
+        assertNotNull(authorization.getProcessing().getExternalOrderId());
+        assertNotNull(authorization.getProcessing().getZgReferenceId());
+
+        assertNotNull(authorization.getPaymentId());
+        assertNotNull(authorization.getCustomerId());
+        assertNotNull(authorization.getBasketId());
+        assertNotNull(authorization.getTypeId());
+    }
+
+
+    private void assertRatePlan(InstallmentSecuredRatePlan ratePlan, InstallmentSecuredRatePlan ratePlanReturned) {
+        assertEquals(ratePlan.getAccountHolder(), ratePlanReturned.getAccountHolder());
+        assertEquals(ratePlan.getBic(), ratePlanReturned.getBic());
+        assertNumberEquals(ratePlan.getEffectiveInterestRate(), ratePlanReturned.getEffectiveInterestRate());
+        assertNumberEquals(ratePlan.getFeeFirstRate(), ratePlanReturned.getFeeFirstRate());
+        assertNumberEquals(ratePlan.getFeePerRate(), ratePlanReturned.getFeePerRate());
+        assertEquals(ratePlan.getIban(), ratePlanReturned.getIban());
+        assertDateEquals(ratePlan.getInvoiceDate(), ratePlanReturned.getInvoiceDate());
+        assertDateEquals(ratePlan.getInvoiceDueDate(), ratePlanReturned.getInvoiceDueDate());
+        assertNumberEquals(ratePlan.getLastRate(), ratePlanReturned.getLastRate());
+        assertNumberEquals(ratePlan.getMonthlyRate(), ratePlanReturned.getMonthlyRate());
+        assertNumberEquals(ratePlan.getNominalInterestRate(), ratePlanReturned.getNominalInterestRate());
+        assertEquals(ratePlan.getNumberOfRates(), ratePlanReturned.getNumberOfRates());
+        assertEquals(ratePlan.getOrderDate(), ratePlanReturned.getOrderDate());
+        assertEquals(ratePlan.getRateList(), ratePlanReturned.getRateList());
+        assertNumberEquals(ratePlan.getTotalAmount(), ratePlanReturned.getTotalAmount());
+        assertNumberEquals(ratePlan.getTotalInterestAmount(), ratePlanReturned.getTotalInterestAmount());
+        assertNumberEquals(ratePlan.getTotalPurchaseAmount(), ratePlanReturned.getTotalPurchaseAmount());
+        assertEquals(ratePlan.getTypeUrl(), ratePlanReturned.getTypeUrl());
+    }
+
+    private void assertDateEquals(Date expected, Date actual) {
+        if (expected == null && actual == null) return;
+        if (expected == null && actual != null) throw new AssertionError("expected is null, but actual is not");
+        if (expected != null && actual == null) throw new AssertionError("expected is not null, but actual is null");
+        if (!getDate(expected).equals(getDate(actual)))
+            throw new AssertionError("expected: '" + getDate(expected) + "', actual: '" + getDate(actual) + "'");
+
+    }
+
+    private String getDate(Date expected) {
+        return new SimpleDateFormat("dd.MM.yyyy").format(expected);
+    }
+
+    private void assertInstallmentSecuredRatePlan(BigDecimal effectiveInterestRate, Date orderDate, InstallmentSecuredRatePlan ratePlan) {
+        assertEquals(3, ratePlan.getNumberOfRates());
+        assertEquals(effectiveInterestRate, ratePlan.getEffectiveInterestRate());
+        assertEquals(new BigDecimal("10.0").setScale(4, BigDecimal.ROUND_HALF_UP), ratePlan.getTotalPurchaseAmount());
+        assertEquals(getBigDecimalFourDigits(0.08), ratePlan.getTotalInterestAmount());
+        assertEquals(ratePlan.getTotalAmount().setScale(4, BigDecimal.ROUND_HALF_UP), ratePlan.getTotalInterestAmount().add(ratePlan.getTotalPurchaseAmount()));
+        assertEquals(getBigDecimalFourDigits(3.37), ratePlan.getMonthlyRate());
+        assertEquals(getBigDecimalFourDigits(3.34), ratePlan.getLastRate());
+        assertEquals(getBigDecimalFourDigits(5.40), getBigDecimalFourDigits(ratePlan.getNominalInterestRate().doubleValue()));
+        assertEquals(orderDate, ratePlan.getOrderDate());
+    }
+
+    @Test
+    public void testAuthorizeHirePurchaseDirectDebit() throws HttpCommunicationException, MalformedURLException, ParseException {
+        Unzer unzer = getUnzer();
+        UrlUtil urlUtil = new UrlUtil(unzer.getEndPoint());
+        HttpClientBasedRestCommunication restCommunication = new HttpClientBasedRestCommunication();
+        JsonParser jsonParser = new JsonParser();
+        PaymentService paymentService = new PaymentService(unzer, restCommunication);
+        Customer maximumCustomer = createMaximumCustomer();
+        Basket basket = createBasket(BigDecimal.valueOf(380.48));
+
+        String response = restCommunication.httpPost("https://api.unzer.com/v1/types/hire-purchase-direct-debit", unzer.getPrivateKey(), getInstallmentSecuredRatePlan(BigDecimal.valueOf(380.48)));
+        JsonIdObject jsonResponse = jsonParser.fromJson(response, JsonIdObject.class);
+        InstallmentSecuredRatePlan installmentSecuredRatePlan = paymentService.fetchPaymentType(jsonResponse.getId());
+
+        boolean matches = installmentSecuredRatePlan.getId().matches("s-hdd-\\w*");
+        assertTrue(matches);
+
+        Authorization authorize = installmentSecuredRatePlan.authorize(BigDecimal.valueOf(380.48), Currency.getInstance("EUR"), new URL("https://www.meinShop.de"), maximumCustomer.getCustomerId(), basket.getId(), BigDecimal.valueOf(5.5));
+        assertNotNull(authorize.getPaymentId());
+    }
+
+    private BigDecimal getBigDecimalFourDigits(double number) {
+        return new BigDecimal(number).setScale(4, BigDecimal.ROUND_HALF_UP);
+    }
 
 }

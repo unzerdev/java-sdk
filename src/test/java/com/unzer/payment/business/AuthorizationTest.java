@@ -6,6 +6,7 @@ import com.unzer.payment.marketplace.MarketplaceAuthorization;
 import com.unzer.payment.marketplace.MarketplacePayment;
 import com.unzer.payment.paymenttypes.Card;
 import org.apache.http.HttpStatus;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import java.math.BigDecimal;
@@ -217,6 +218,7 @@ public class AuthorizationTest extends AbstractPaymentTest {
 		assertEquals(new BigDecimal(1.0000).setScale(4), authorize.getAmount());
 	}
 
+	@Ignore("Needs further configuration in Testdata")
 	@Test
 	public void testMarketplaceAuthorize() throws MalformedURLException, HttpCommunicationException {
 		String participantId_1 = MARKETPLACE_PARTICIPANT_ID_1;

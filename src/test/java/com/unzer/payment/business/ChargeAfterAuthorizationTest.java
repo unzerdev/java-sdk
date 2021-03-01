@@ -8,6 +8,7 @@ import com.unzer.payment.marketplace.MarketplacePayment;
 import com.unzer.payment.paymenttypes.Card;
 import org.apache.http.HttpStatus;
 import org.junit.Assert;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import java.math.BigDecimal;
@@ -85,7 +86,8 @@ public class ChargeAfterAuthorizationTest extends AbstractPaymentTest {
 		assertNotNull(charge.getId());
 		assertEquals("pmt-ref", charge.getPaymentReference());
 	}
-	
+
+	@Ignore("Needs further configuration in Testdata")
 	@Test
 	public void testMarketplaceFullAuthorizeCharge() throws MalformedURLException, HttpCommunicationException {
 		String participantId_1 = MARKETPLACE_PARTICIPANT_ID_1;
@@ -137,7 +139,8 @@ public class ChargeAfterAuthorizationTest extends AbstractPaymentTest {
 		assertEquals(2, fullCapturePayment.getChargesList().size());
 		assertEquals(Payment.State.COMPLETED, fullCapturePayment.getPaymentState());
 	}
-	
+
+	@Ignore("Needs further configuration in Testdata")
 	@Test
 	public void testMarketplaceAuthorizeCharge() throws MalformedURLException, HttpCommunicationException {
 		String participantId_1 = MARKETPLACE_PARTICIPANT_ID_1;
