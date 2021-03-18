@@ -87,20 +87,9 @@ public class CardTest extends AbstractPaymentTest {
         assertFalse(card.get3ds());
     }
 
-
-    @Test
-    public void testAuthorizeCardType() throws HttpCommunicationException, MalformedURLException {
-        Card card = new Card("4444333322221111", "03/99");
-        card.setCvc("123");
-        card = getUnzer().createPaymentType(card);
-        Authorization authorization = card.authorize(BigDecimal.ONE, Currency.getInstance("EUR"), new URL("https://www.meinShop.de"));
-        assertNotNull(authorization);
-        assertNotNull(authorization.getId());
-    }
-
     @Test
     public void testAuthorizeAndPaymentCardType() throws HttpCommunicationException, MalformedURLException {
-        Card card = new Card("4444333322221111", "03/99").setCvc("123");
+        Card card = new Card("4444333322221111", "03/99");
         card.setCvc("123");
         card = getUnzer().createPaymentType(card);
         Authorization authorization = card.authorize(BigDecimal.ONE, Currency.getInstance("EUR"), new URL("https://www.meinShop.de"));

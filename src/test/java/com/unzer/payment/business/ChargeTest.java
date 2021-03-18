@@ -29,6 +29,7 @@ import com.unzer.payment.marketplace.MarketplacePayment;
 import com.unzer.payment.paymenttypes.Card;
 import com.unzer.payment.paymenttypes.SepaDirectDebit;
 import com.unzer.payment.paymenttypes.Sofort;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import java.math.BigDecimal;
@@ -215,7 +216,8 @@ public class ChargeTest extends AbstractPaymentTest {
 				.create()
 				.toJson(charge).getClass());
 	}
-	
+
+	@Ignore("Needs further configuration in Testdata")
 	@Test
 	public void testMarketplaceChargeWithCard() throws MalformedURLException, HttpCommunicationException {
 		String participantId_1 = MARKETPLACE_PARTICIPANT_ID_1;
@@ -257,7 +259,8 @@ public class ChargeTest extends AbstractPaymentTest {
 		assertEquals(1, payment.getChargesList().size());
 		assertEquals(Payment.State.PENDING, payment.getPaymentState());
 	}
-	
+
+	@Ignore("Needs further configuration in Testdata")
 	@Test
 	public void testMarketplaceChargeWithSepaDirectDebit() throws MalformedURLException, HttpCommunicationException {
 		String participantId_1 = MARKETPLACE_PARTICIPANT_ID_1;
@@ -298,7 +301,8 @@ public class ChargeTest extends AbstractPaymentTest {
 		assertEquals(1, payment.getChargesList().size());
 		assertEquals(Payment.State.COMPLETED, payment.getPaymentState());
 	}
-	
+
+	@Ignore("Needs further configuration in Testdata")
 	@Test
 	public void testMarketplaceChargeWithSofort() throws MalformedURLException, HttpCommunicationException {
 		String participantId_1 = MARKETPLACE_PARTICIPANT_ID_1;
