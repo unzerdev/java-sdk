@@ -28,42 +28,52 @@ import java.io.IOException;
 import java.util.Properties;
 
 public class PropertiesUtil {
-	public static final Logger logger = LogManager.getLogger(PropertiesUtil.class);
-	public static final String REST_ENDPOINT = "rest.endpoint";
-	public static final String REST_VERSION = "rest.version";
+    public static final Logger logger = LogManager.getLogger(PropertiesUtil.class);
+    public static final String REST_ENDPOINT = "rest.endpoint";
+    public static final String REST_VERSION = "rest.version";
 
-	public static final String PUBLIC_KEY1 = "publickey1";
-	public static final String PRIVATE_KEY1 = "privatekey1";
-	public static final String PRIVATE_KEY2 = "privatekey2";
-	public static final String PRIVATE_KEY3 = "privatekey3";
-	public static final String MARKETPLACE_PRIVATE_KEY = "marketplacePrivatekey";
+    public static final String PUBLIC_KEY1 = "publickey1";
+    public static final String PRIVATE_KEY1 = "privatekey1";
+    public static final String PRIVATE_KEY2 = "privatekey2";
+    public static final String PRIVATE_KEY3 = "privatekey3";
+    public static final String MARKETPLACE_PRIVATE_KEY = "marketplacePrivatekey";
 
-	private Properties properties;
+    private Properties properties;
 
-	private void loadProperties() {
-		try {
-			Properties loadedProperties = new Properties();
+    private void loadProperties() {
+        try {
+            Properties loadedProperties = new Properties();
 
-			loadedProperties.load(this.getClass().getResourceAsStream("/unzer.properties"));
-			this.properties = loadedProperties;
+            loadedProperties.load(this.getClass().getResourceAsStream("/unzer.properties"));
+            this.properties = loadedProperties;
 
-			this.properties.put(PUBLIC_KEY1, System.getProperty(PUBLIC_KEY1));
-			this.properties.put(PRIVATE_KEY1, System.getProperty(PRIVATE_KEY1));
-			this.properties.put(PRIVATE_KEY2, System.getProperty(PRIVATE_KEY2));
-			this.properties.put(PRIVATE_KEY3, System.getProperty(PRIVATE_KEY3));
-			this.properties.put(MARKETPLACE_PRIVATE_KEY, System.getProperty(MARKETPLACE_PRIVATE_KEY));
-		} catch (IOException e) {
-			logger.error("Error loading unzer.properties from Classpath: {}", e.getMessage());
-			throw new PropertiesException("Error loading unzer.properties from Classpath: " + e.getMessage());
-		}
-	}
+            if (System.getProperty(PUBLIC_KEY1) != null) {
+                this.properties.put(PUBLIC_KEY1, System.getProperty(PUBLIC_KEY1));
+            }
+            if (System.getProperty(PRIVATE_KEY1) != null) {
+                this.properties.put(PRIVATE_KEY1, System.getProperty(PRIVATE_KEY1));
+            }
+            if (System.getProperty(PRIVATE_KEY2) != null) {
+                this.properties.put(PRIVATE_KEY2, System.getProperty(PRIVATE_KEY2));
+            }
+            if (System.getProperty(PRIVATE_KEY3) != null) {
+                this.properties.put(PRIVATE_KEY3, System.getProperty(PRIVATE_KEY3));
+            }
+            if (System.getProperty(MARKETPLACE_PRIVATE_KEY) != null) {
+                this.properties.put(MARKETPLACE_PRIVATE_KEY, System.getProperty(MARKETPLACE_PRIVATE_KEY));
+            }
+        } catch (IOException e) {
+            logger.error("Error loading unzer.properties from Classpath: {}", e.getMessage());
+            throw new PropertiesException("Error loading unzer.properties from Classpath: " + e.getMessage());
+        }
+    }
 
-	public String getString(String key) {
-		return getProperties().getProperty(key);
-	}
+    public String getString(String key) {
+        return getProperties().getProperty(key);
+    }
 
-	private Properties getProperties() {
-		if (this.properties == null) loadProperties();
-		return properties;
-	}
+    private Properties getProperties() {
+        if (this.properties == null) loadProperties();
+        return properties;
+    }
 }
