@@ -9,6 +9,7 @@ import com.unzer.payment.communication.json.JsonIdObject;
 import com.unzer.payment.service.PaymentService;
 import com.unzer.payment.service.UrlUtil;
 import org.apache.commons.lang3.time.DateUtils;
+import org.junit.Assert;
 import org.junit.Test;
 
 import java.math.BigDecimal;
@@ -51,7 +52,7 @@ public class InstallmentSecuredTest extends AbstractPaymentTest {
         Date orderDate = getDate("21.06.2019");
         List<InstallmentSecuredRatePlan> rateList = getUnzer().installmentSecuredRates(BigDecimal.TEN, Currency.getInstance("EUR"), effectiveInterestRate, orderDate);
         assertNotNull(rateList);
-        assertEquals(4, rateList.size());
+        Assert.assertTrue(rateList.size() > 0);
         assertInstallmentSecuredRatePlan(effectiveInterestRate, orderDate, rateList.get(0));
     }
 
