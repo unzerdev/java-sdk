@@ -7,6 +7,7 @@ import com.unzer.payment.marketplace.MarketplaceCharge;
 import com.unzer.payment.marketplace.MarketplacePayment;
 import com.unzer.payment.paymenttypes.Card;
 import org.apache.http.HttpStatus;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import java.math.BigDecimal;
@@ -120,6 +121,7 @@ public class CancelAfterChargeTest extends AbstractPaymentTest {
 		assertEquals(new BigDecimal(1.0000).setScale(4), cancel.getAmount());
 	}
 
+	@Ignore("Needs further configuration in Testdata")
 	@Test
 	public void testMarketplaceFullCancelChargeWithCard() throws MalformedURLException, HttpCommunicationException {
 		String participantId_1 = MARKETPLACE_PARTICIPANT_ID_1;
@@ -173,7 +175,8 @@ public class CancelAfterChargeTest extends AbstractPaymentTest {
 		assertEquals(2, fullCancelPayment.getChargesList().size());
 		assertEquals(2, fullCancelPayment.getCancelList().size());
 	}
-	
+
+	@Ignore("Needs further configuration in Testdata")
 	@Test
 	public void testMarketplacePartialCancelChargeWithCard() throws MalformedURLException, HttpCommunicationException {
 		String participantId_1 = MARKETPLACE_PARTICIPANT_ID_1;
