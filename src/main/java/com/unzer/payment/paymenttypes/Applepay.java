@@ -9,9 +9,9 @@ package com.unzer.payment.paymenttypes;
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -33,116 +33,135 @@ import java.net.URL;
 import java.util.Currency;
 
 /**
- * Alipay business object 
- * 
- * @author Unzer E-Com GmbH
+ * Alipay business object
  *
+ * @author Unzer E-Com GmbH
  */
 public class Applepay extends AbstractPaymentType implements PaymentType {
-	private String version;
-	private String data;
-	private String signature;
-	private ApplepayHeader header;
+    private String version;
+    private String data;
+    private String signature;
+    private ApplepayHeader header;
 
-	private String number;
-	private String expiryDate;
-	private String currencyCode;
-	private BigDecimal transactionAmount;
+    private String method;
+    private String applicationPrimaryAccountNumber;
+    private String applicationExpirationDate;
+    private String currencyCode;
+    private BigDecimal transactionAmount;
 
-	@Override
-	public String getTypeUrl() {
-		return "types/applepay";
-	}
+    public Applepay() {
+    }
 
-	@Override
-	public PaymentType map(PaymentType applepay, JsonObject jsonApplePay) {
-		((Applepay) applepay).setId(jsonApplePay.getId());
-		((Applepay) applepay).setExpiryDate(((JsonApplepayResponse) jsonApplePay).getApplicationExpirationDate());
-		((Applepay) applepay).setNumber(((JsonApplepayResponse) jsonApplePay).getApplicationPrimaryAccountNumber());
-		((Applepay) applepay).setCurrencyCode(((JsonApplepayResponse) jsonApplePay).getCurrencyCode());
-		((Applepay) applepay).setTransactionAmount(((JsonApplepayResponse) jsonApplePay).getTransactionAmount());
-		((Applepay) applepay).setRecurring(((JsonApplepayResponse) jsonApplePay).getRecurring());
-		GeoLocation tempGeoLocation = new GeoLocation(((JsonApplepayResponse) jsonApplePay).getGeoLocation().getClientIp(), ((JsonApplepayResponse) jsonApplePay).getGeoLocation().getCountryIsoA2());
-		((Applepay) applepay).setGeoLocation(tempGeoLocation);
-		return applepay;
-	}
+    public Applepay(String version, String data, String signature, String currencyCode) {
+        this.version = version;
+        this.data = data;
+        this.signature = signature;
+        this.currencyCode = currencyCode;
+    }
 
-	public Authorization authorize(BigDecimal amount, Currency currency, URL returnUrl) throws HttpCommunicationException {
-		return authorize(amount, currency, returnUrl, null);
-	}
-	public Authorization authorize(BigDecimal amount, Currency currency, URL returnUrl, Customer customer) throws HttpCommunicationException {
-		return getUnzer().authorize(amount, currency, this, returnUrl, customer);
-	}
+    @Override
+    public String getTypeUrl() {
+        return "types/applepay";
+    }
 
-	public Charge charge(BigDecimal amount, Currency currency, URL returnUrl) throws HttpCommunicationException {
-		return getUnzer().charge(amount, currency, this, returnUrl);
-	}
-	public Charge charge(BigDecimal amount, Currency currency, URL returnUrl, Customer customer) throws HttpCommunicationException {
-		return getUnzer().charge(amount, currency, this, returnUrl, customer);
-	}
+    @Override
+    public PaymentType map(PaymentType applepay, JsonObject jsonApplePay) {
+        ((Applepay) applepay).setId(jsonApplePay.getId());
+        ((Applepay) applepay).setApplicationExpirationDate(((JsonApplepayResponse) jsonApplePay).getApplicationExpirationDate());
+        ((Applepay) applepay).setApplicationPrimaryAccountNumber(((JsonApplepayResponse) jsonApplePay).getApplicationPrimaryAccountNumber());
+        ((Applepay) applepay).setCurrencyCode(((JsonApplepayResponse) jsonApplePay).getCurrencyCode());
+        ((Applepay) applepay).setTransactionAmount(((JsonApplepayResponse) jsonApplePay).getTransactionAmount());
+        ((Applepay) applepay).setRecurring(((JsonApplepayResponse) jsonApplePay).getRecurring());
+        GeoLocation tempGeoLocation = new GeoLocation(((JsonApplepayResponse) jsonApplePay).getGeoLocation().getClientIp(), ((JsonApplepayResponse) jsonApplePay).getGeoLocation().getCountryIsoA2());
+        ((Applepay) applepay).setGeoLocation(tempGeoLocation);
+        return applepay;
+    }
 
-	public String getVersion() {
-		return version;
-	}
+    public Authorization authorize(BigDecimal amount, Currency currency, URL returnUrl) throws HttpCommunicationException {
+        return authorize(amount, currency, returnUrl, null);
+    }
 
-	public void setVersion(String version) {
-		this.version = version;
-	}
+    public Authorization authorize(BigDecimal amount, Currency currency, URL returnUrl, Customer customer) throws HttpCommunicationException {
+        return getUnzer().authorize(amount, currency, this, returnUrl, customer);
+    }
 
-	public String getData() {
-		return data;
-	}
+    public Charge charge(BigDecimal amount, Currency currency, URL returnUrl) throws HttpCommunicationException {
+        return getUnzer().charge(amount, currency, this, returnUrl);
+    }
 
-	public void setData(String data) {
-		this.data = data;
-	}
-	
-	public String getSignature() {
-		return signature;
-	}
+    public Charge charge(BigDecimal amount, Currency currency, URL returnUrl, Customer customer) throws HttpCommunicationException {
+        return getUnzer().charge(amount, currency, this, returnUrl, customer);
+    }
 
-	public void setSignature(String signature) {
-		this.signature = signature;
-	}
+    public String getVersion() {
+        return version;
+    }
 
-	public ApplepayHeader getHeader() {
-		return header;
-	}
+    public void setVersion(String version) {
+        this.version = version;
+    }
 
-	public void setHeader(ApplepayHeader header) {
-		this.header = header;
-	}
+    public String getData() {
+        return data;
+    }
 
-	public String getCurrencyCode() {
-		return currencyCode;
-	}
+    public void setData(String data) {
+        this.data = data;
+    }
 
-	public void setCurrencyCode(String currencyCode) {
-		this.currencyCode = currencyCode;
-	}
+    public String getSignature() {
+        return signature;
+    }
 
-	public BigDecimal getTransactionAmount() {
-		return transactionAmount;
-	}
+    public void setSignature(String signature) {
+        this.signature = signature;
+    }
 
-	public void setTransactionAmount(BigDecimal transactionAmount) {
-		this.transactionAmount = transactionAmount;
-	}
+    public ApplepayHeader getHeader() {
+        return header;
+    }
 
-	public String getNumber() {
-		return number;
-	}
+    public void setHeader(ApplepayHeader header) {
+        this.header = header;
+    }
 
-	public void setNumber(String number) {
-		this.number = number;
-	}
+    public String getCurrencyCode() {
+        return currencyCode;
+    }
 
-	public String getExpiryDate() {
-		return expiryDate;
-	}
+    public void setCurrencyCode(String currencyCode) {
+        this.currencyCode = currencyCode;
+    }
 
-	public void setExpiryDate(String expiryDate) {
-		this.expiryDate = expiryDate;
-	}
+    public BigDecimal getTransactionAmount() {
+        return transactionAmount;
+    }
 
+    public void setTransactionAmount(BigDecimal transactionAmount) {
+        this.transactionAmount = transactionAmount;
+    }
+
+    public String getMethod() {
+        return method;
+    }
+
+    public void setMethod(String method) {
+        this.method = method;
+    }
+
+    public String getApplicationPrimaryAccountNumber() {
+        return applicationPrimaryAccountNumber;
+    }
+
+    public void setApplicationPrimaryAccountNumber(String applicationPrimaryAccountNumber) {
+        this.applicationPrimaryAccountNumber = applicationPrimaryAccountNumber;
+    }
+
+    public String getApplicationExpirationDate() {
+        return applicationExpirationDate;
+    }
+
+    public void setApplicationExpirationDate(String applicationExpirationDate) {
+        this.applicationExpirationDate = applicationExpirationDate;
+    }
 }
