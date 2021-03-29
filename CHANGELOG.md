@@ -10,9 +10,9 @@ to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 ### Changed
 
 *   Changed `ApplePay`-Paymenttype accordingly to new Tech-Spec
-    * Added new Parameters to `ApplePay`-Class
-    * Added new Test-Functions for `ApplePay`-Class and `ApplePayHeader`-Class
-    * Added Constructors for `ApplePay`-Class and `ApplePayHeader`-Class with mandatory Parameters
+    *   Added new Parameters to `ApplePay`-Class 
+    *   Added new Test-Functions for `ApplePay`-Class and `ApplePayHeader`-Class 
+    *   Added Constructors for `ApplePay`-Class and `ApplePayHeader`-Class with mandatory Parameters
 
 ## [1.1.0.1][1.1.0.1]
 
@@ -28,20 +28,20 @@ to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
 ### Added
 
-*  Added mapping of old payment type ids to the new payment type resources.
-   * e.g. `InvoiceGuaranteed` and `InvoiceFactoring` replaced by `InvoiceSecured`
-*  Add email property to payment type `card` to meet 3Ds2.x regulations.
+*   Added mapping of old payment type ids to the new payment type resources.
+   *   e.g. `InvoiceGuaranteed` and `InvoiceFactoring` replaced by `InvoiceSecured`
+*   Add email property to payment type `card` to meet 3Ds2.x regulations.
 
 ### Changed
 
-*  Rebranded SDK to Unzer.
-*  Removed payment type string from URL when fetching a payment type resource.
-*  Replace payment methods guaranteed/factoring by secured payment methods, i.e.:
-   * `InvoiceGuaranteed` and `InvoiceFactoring` replaced by `InvoiceSecured`
-   * `SepaDirectDebitGuaranteed` replaced by `SepaDirectDebitSecured`
-   * `HirePurchaseDirectDebit` replaced by `InstallmentSecured`
-   * Basket is now mandatory for all those payment types above.
-*  Several minor changes.
+*   Rebranded SDK to Unzer.
+*   Removed payment type string from URL when fetching a payment type resource.
+*   Replace payment methods guaranteed/factoring by secured payment methods, i.e.:
+   *   `InvoiceGuaranteed` and `InvoiceFactoring` replaced by `InvoiceSecured`
+   *   `SepaDirectDebitGuaranteed` replaced by `SepaDirectDebitSecured`
+   *   `HirePurchaseDirectDebit` replaced by `InstallmentSecured`
+   *   Basket is now mandatory for all those payment types above.
+*   Several minor changes.
 
 ### Fixed
 
