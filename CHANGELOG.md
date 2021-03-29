@@ -10,9 +10,9 @@ to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 ### Changed
 
 *   Changed `ApplePay`-Paymenttype accordingly to new Tech-Spec
-    * Added new Parameters to `ApplePay`-Class 
-    * Added new Test-Functions for `ApplePay`-Class and `ApplePayHeader`-Class 
-    * Added Constructors for `ApplePay`-Class and `ApplePayHeader`-Class with mandatory Parameters
+    *   Added new Parameters to `ApplePay`-Class 
+    *   Added new Test-Functions for `ApplePay`-Class and `ApplePayHeader`-Class 
+    *   Added Constructors for `ApplePay`-Class and `ApplePayHeader`-Class with mandatory Parameters
 
 ## [1.1.0.1][1.1.0.1]
 
@@ -37,28 +37,28 @@ to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 *   Rebranded SDK to Unzer.
 *   Removed payment type string from URL when fetching a payment type resource.
 *   Replace payment methods guaranteed/factoring by secured payment methods, i.e.:
-   *   `InvoiceGuaranteed` and `InvoiceFactoring` replaced by `InvoiceSecured`
-   *   `SepaDirectDebitGuaranteed` replaced by `SepaDirectDebitSecured`
-   *   `HirePurchaseDirectDebit` replaced by `InstallmentSecured`
-   *   Basket is now mandatory for all those payment types above.
+    *   `InvoiceGuaranteed` and `InvoiceFactoring` replaced by `InvoiceSecured`
+    *   `SepaDirectDebitGuaranteed` replaced by `SepaDirectDebitSecured`
+    *   `HirePurchaseDirectDebit` replaced by `InstallmentSecured`
+    *   Basket is now mandatory for all those payment types above.
 *   Several minor changes.
 
 ### Fixed
 
-*  Changed handling of Keypairs for tests
+*   Changed handling of Keypairs for tests
 
 ### Removed
 
-*  Remove deprecated methods.
-   * getBasketImage
-   * setBasketImage
-   * getDescriptionMain
-   * setDescriptionMain
-   * getDescriptionSmall
-   * setDescriptionSmall
-   * cancelAuthorization
-*  Remove deprecated classes
-   * RestCommunication
+*   Remove deprecated methods.
+    *   getBasketImage
+    *   setBasketImage
+    *   getDescriptionMain
+    *   setDescriptionMain
+    *   getDescriptionSmall
+    *   setDescriptionSmall
+    *   cancelAuthorization
+*   Remove deprecated classes
+    *   RestCommunication
 
 [1.1.1.0]: http://github.com/unzerdev/java-sdk/compare/1.1.1.0..1.1.0.1
 
