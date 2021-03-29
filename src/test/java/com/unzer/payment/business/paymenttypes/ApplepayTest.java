@@ -78,7 +78,7 @@ public class ApplepayTest extends AbstractPaymentTest {
         Charge charge = applepay.charge(BigDecimal.ONE, Currency.getInstance("EUR"), new URL("https://www.meinShop.de"));
         assertNotNull(charge);
         assertNotNull(charge.getId());
-        assertEquals(Authorization.Status.SUCCESS, charge.getStatus());
+        assertEquals(Charge.Status.SUCCESS, charge.getStatus());
     }
 
     @Test
@@ -87,7 +87,7 @@ public class ApplepayTest extends AbstractPaymentTest {
         Charge charge = getUnzer().charge(BigDecimal.ONE, Currency.getInstance("EUR"), applepay.getId(), new URL("https://www.meinShop.de"));
         assertNotNull(charge);
         assertNotNull(charge.getId());
-        assertEquals(Authorization.Status.SUCCESS, charge.getStatus());
+        assertEquals(Charge.Status.SUCCESS, charge.getStatus());
     }
 
     @Test
