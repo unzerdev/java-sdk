@@ -9,10 +9,10 @@ to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
 ### Changed
 
-*  Changed `ApplePay`-Paymenttype accordingly to new Tech-Spec
-   * Added new Parameters to `ApplePay`-Class
-   * Added new Test-Functions for `ApplePay`-Class and `ApplePayHeader`-Class
-   * Added Constructors for `ApplePay`-Class and `ApplePayHeader`-Class with mandatory Parameters
+ *  Changed `ApplePay`-Paymenttype accordingly to new Tech-Spec
+     * Added new Parameters to `ApplePay`-Class
+     * Added new Test-Functions for `ApplePay`-Class and `ApplePayHeader`-Class
+     * Added Constructors for `ApplePay`-Class and `ApplePayHeader`-Class with mandatory Parameters
 
 ## [1.1.0.1][1.1.0.1]
 
