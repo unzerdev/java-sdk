@@ -29,7 +29,7 @@ to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 ### Added
 
 *   Added mapping of old payment type ids to the new payment type resources.
-   *   e.g. `InvoiceGuaranteed` and `InvoiceFactoring` replaced by `InvoiceSecured`
+    *   e.g. `InvoiceGuaranteed` and `InvoiceFactoring` replaced by `InvoiceSecured`
 *   Add email property to payment type `card` to meet 3Ds2.x regulations.
 
 ### Changed
