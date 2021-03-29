@@ -5,7 +5,7 @@ This SDK provides for an easy way to connect to the Unzer Rest API.
 
 ## Requirements
 
-Java 1.8 or later.
+Java 1.6 or later.
 
 ## Installation
 ```xml
