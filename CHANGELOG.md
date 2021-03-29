@@ -5,6 +5,15 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) and this project adheres
 to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## [1.1.1.0][1.1.1.0]
+
+### Changed
+
+*  Changed `ApplePay`-Paymenttype accordingly to new Tech-Spec
+   * Added new Parameters to `ApplePay`-Class
+   * Added new Test-Functions for `ApplePay`-Class and `ApplePayHeader`-Class
+   * Added Constructors for `ApplePay`-Class and `ApplePayHeader`-Class with mandatory Parameters
+
 ## [1.1.0.1][1.1.0.1]
 
 ### Fixed
@@ -50,6 +59,8 @@ to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
    * cancelAuthorization
 *  Remove deprecated classes
    * RestCommunication
+
+[1.1.1.0]: http://github.com/unzerdev/java-sdk/compare/1.1.1.0..1.1.0.1
 
 [1.1.0.1]: http://github.com/unzerdev/java-sdk/compare/1.1.0.0..1.1.0.1
 
