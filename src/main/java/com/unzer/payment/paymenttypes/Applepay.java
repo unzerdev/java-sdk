@@ -52,11 +52,10 @@ public class Applepay extends AbstractPaymentType implements PaymentType {
     public Applepay() {
     }
 
-    public Applepay(String version, String data, String signature, String currencyCode) {
+    public Applepay(String version, String data, String signature) {
         this.version = version;
         this.data = data;
         this.signature = signature;
-        this.currencyCode = currencyCode;
     }
 
     @Override
