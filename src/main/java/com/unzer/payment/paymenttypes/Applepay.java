@@ -33,7 +33,7 @@ import java.net.URL;
 import java.util.Currency;
 
 /**
- * Alipay business object
+ * ApplePay business object
  *
  * @author Unzer E-Com GmbH
  */
@@ -52,10 +52,11 @@ public class Applepay extends AbstractPaymentType implements PaymentType {
     public Applepay() {
     }
 
-    public Applepay(String version, String data, String signature) {
+    public Applepay(String version, String data, String signature, ApplepayHeader applepayHeader) {
         this.version = version;
         this.data = data;
         this.signature = signature;
+        this.header = applepayHeader;
     }
 
     @Override
