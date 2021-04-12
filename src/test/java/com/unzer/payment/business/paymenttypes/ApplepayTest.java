@@ -216,7 +216,7 @@ public class ApplepayTest extends AbstractPaymentTest {
     }
 
     private ApplepayHeader getApplePayHeader() {
-        return new ApplepayHeader("MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEWegdcpR2PSrxm3tDG90lbiCxdC4DxqN20eFVgMZ15xOvbuSYR3DJCtgrjxH6T7zddKVo59U3DSYqoC3aQP90iw==", "zqO5Y3ldWWm4NnIkfGCvJILw30rp3y46Jsf21gE8CNg=", "13743d8c88a56a8daa5eb3b517fb578c52e577174e02c417a2c22c474ee6005e");
+        return new ApplepayHeader("MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEvObBjuehAktBfudn9rM3uUmK4S2Nq1h3O9FemVRDvjJf8c8ClVo7dHHaBrgKiYzR0vBS0Yk8f+u62cILj5yqEA==", "zqO5Y3ldWWm4NnIkfGCvJILw30rp3y46Jsf21gE8CNg=", "f4c9127c624f57cf4882911bcdaae3c279bda34bf28d9933bd5615932146ec1e");
     }
 
 }
