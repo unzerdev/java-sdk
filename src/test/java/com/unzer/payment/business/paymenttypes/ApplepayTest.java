@@ -46,10 +46,10 @@ public class ApplepayTest extends AbstractPaymentTest {
 
         Applepay response = getUnzer().createPaymentType(applepay);
         assertNotNull(response.getId());
-        assertNotNull(response.getExpiryDate());
-        assertNotNull(response.getNumber());
-        assertEquals("520424******6937", response.getNumber());
-        assertEquals("09/2022", response.getExpiryDate());
+        assertNotNull(response.getApplicationExpirationDate());
+        assertNotNull(response.getApplicationPrimaryAccountNumber());
+        assertEquals("520424******6937", response.getApplicationPrimaryAccountNumber());
+        assertEquals("09/2022", response.getApplicationExpirationDate());
 
     }
 
