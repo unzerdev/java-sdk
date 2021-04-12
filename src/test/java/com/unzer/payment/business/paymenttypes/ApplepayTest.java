@@ -21,6 +21,7 @@ package com.unzer.payment.business.paymenttypes;
  */
 
 import com.unzer.payment.Authorization;
+import com.unzer.payment.Cancel;
 import com.unzer.payment.Charge;
 import com.unzer.payment.PaymentException;
 import com.unzer.payment.business.AbstractPaymentTest;
@@ -62,12 +63,54 @@ public class ApplepayTest extends AbstractPaymentTest {
 	}
 
 	@Test
+	public void testAuthorizeApplePayTypeAndCancel() throws HttpCommunicationException, MalformedURLException {
+		Applepay applepay = getUnzer().createPaymentType(getApplePay());
+		Authorization authorization = applepay.authorize(BigDecimal.ONE, Currency.getInstance("EUR"), new URL("https://www.meinShop.de"));
+		Cancel cancel = authorization.cancel();
+
+		assertNotNull(cancel);
+		assertNotNull(cancel.getId());
+		assertEquals(Cancel.Status.SUCCESS, cancel.getStatus());
+	}
+
+	@Test
+	public void testAuthorizeApplePayTypeWithBigAmount() throws HttpCommunicationException, MalformedURLException {
+		Applepay applepay = getUnzer().createPaymentType(getApplePay());
+		Authorization authorization = applepay.authorize(BigDecimal.valueOf(10000L), Currency.getInstance("EUR"), new URL("https://www.meinShop.de"));
+		assertNotNull(authorization);
+		assertNotNull(authorization.getId());
+		assertEquals(Authorization.Status.SUCCESS, authorization.getStatus());
+	}
+
+	@Test
+	public void testAuthorizeApplePayTypeWithZeroAmount() throws HttpCommunicationException, MalformedURLException {
+		Applepay applepay = getUnzer().createPaymentType(getApplePay());
+
+		try{
+			applepay.authorize(BigDecimal.ZERO, Currency.getInstance("EUR"), new URL("https://www.meinShop.de"));
+		}catch (PaymentException paymentException){
+			assertEquals(Integer.valueOf(400), paymentException.getStatusCode());
+		}
+	}
+
+	@Test
 	public void testAuthorizeApplePayTypeId() throws HttpCommunicationException, MalformedURLException {
 		Applepay applepay = getUnzer().createPaymentType(getApplePay());
 		Authorization authorization = getUnzer().authorize(BigDecimal.ONE, Currency.getInstance("EUR"), applepay.getId(), new URL("https://www.meinShop.de"));
 		assertNotNull(authorization);
 		assertNotNull(authorization.getId());
 		assertEquals(Authorization.Status.SUCCESS, authorization.getStatus());
+	}
+
+	@Test
+	public void testAuthorizeApplePayTypeIdAndCancel() throws HttpCommunicationException, MalformedURLException {
+		Applepay applepay = getUnzer().createPaymentType(getApplePay());
+		Authorization authorization = getUnzer().authorize(BigDecimal.ONE, Currency.getInstance("EUR"), applepay.getId(), new URL("https://www.meinShop.de"));
+		Cancel cancel = getUnzer().cancelAuthorization(authorization.getPaymentId());
+
+		assertNotNull(cancel);
+		assertNotNull(cancel.getId());
+		assertEquals(Cancel.Status.SUCCESS, cancel.getStatus());
 	}
 
 	@Test
@@ -100,6 +143,17 @@ public class ApplepayTest extends AbstractPaymentTest {
 	}
 
 	@Test
+	public void testChargeApplePayTypeAndCancel() throws HttpCommunicationException, MalformedURLException {
+		Applepay applepay = getUnzer().createPaymentType(getApplePay());
+		Charge charge = applepay.charge(BigDecimal.ONE, Currency.getInstance("EUR"), new URL("https://www.meinShop.de"));
+		Cancel cancel = getUnzer().cancelCharge(charge.getPaymentId(), charge.getId());
+
+		assertNotNull(cancel);
+		assertNotNull(cancel.getId());
+		assertEquals(Cancel.Status.SUCCESS, cancel.getStatus());
+	}
+
+	@Test
 	public void testChargeApplePayTypeWithBigAmount() throws HttpCommunicationException, MalformedURLException {
 		Applepay applepay = getUnzer().createPaymentType(getApplePay());
 		Charge charge = applepay.charge(BigDecimal.valueOf(10000L), Currency.getInstance("EUR"), new URL("https://www.meinShop.de"));
@@ -125,6 +179,17 @@ public class ApplepayTest extends AbstractPaymentTest {
 		assertNotNull(charge);
 		assertNotNull(charge.getId());
 		assertEquals(Authorization.Status.SUCCESS, charge.getStatus());
+	}
+
+	@Test
+	public void testChargeApplePayTypeIdAndCancel() throws HttpCommunicationException, MalformedURLException {
+		Applepay applepay = getUnzer().createPaymentType(getApplePay());
+		Charge charge = getUnzer().charge(BigDecimal.ONE, Currency.getInstance("EUR"), applepay.getId(), new URL("https://www.meinShop.de"));
+		Cancel cancel = getUnzer().cancelCharge(charge.getPaymentId(), charge.getId());
+
+		assertNotNull(cancel);
+		assertNotNull(cancel.getId());
+		assertEquals(Cancel.Status.SUCCESS, cancel.getStatus());
 	}
 
 	@Test
