@@ -54,6 +54,27 @@ public class ApplepayTest extends AbstractPaymentTest {
     }
 
     @Test
+    public void testCreateApplepayTypeAndFetch() throws HttpCommunicationException {
+        Applepay applepay = getApplePay();
+
+        applepay = getUnzer().createPaymentType(applepay);
+
+        assertNotNull(applepay.getId());
+        assertNotNull(applepay.getApplicationExpirationDate());
+        assertNotNull(applepay.getApplicationPrimaryAccountNumber());
+        assertEquals("520424******6937", applepay.getApplicationPrimaryAccountNumber());
+        assertEquals("09/2022", applepay.getApplicationExpirationDate());
+
+        applepay = (Applepay) getUnzer().fetchPaymentType(applepay.getId());
+
+        assertNotNull(applepay.getId());
+        assertNotNull(applepay.getApplicationExpirationDate());
+        assertNotNull(applepay.getApplicationPrimaryAccountNumber());
+        assertEquals("520424******6937", applepay.getApplicationPrimaryAccountNumber());
+        assertEquals("09/2022", applepay.getApplicationExpirationDate());
+    }
+
+    @Test
     public void testAuthorizeApplePayType() throws HttpCommunicationException, MalformedURLException {
         Applepay applepay = getUnzer().createPaymentType(getApplePay());
         Authorization authorization = applepay.authorize(BigDecimal.ONE, Currency.getInstance("EUR"), new URL("https://www.meinShop.de"));
