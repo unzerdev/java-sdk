@@ -143,7 +143,7 @@ public class ApplepayTest extends AbstractPaymentTest {
     }
 
     @Test
-    public void testChargeApplePayTypeAndCancel() throws HttpCommunicationException, MalformedURLException {
+    public void testChargeApplePayTypeAndFullCancel() throws HttpCommunicationException, MalformedURLException {
         Applepay applepay = getUnzer().createPaymentType(getApplePay());
         Charge charge = applepay.charge(BigDecimal.ONE, Currency.getInstance("EUR"), new URL("https://www.meinShop.de"));
         Cancel cancel = getUnzer().cancelCharge(charge.getPaymentId(), charge.getId());
@@ -151,6 +151,32 @@ public class ApplepayTest extends AbstractPaymentTest {
         assertNotNull(cancel);
         assertNotNull(cancel.getId());
         assertEquals(Cancel.Status.SUCCESS, cancel.getStatus());
+    }
+
+    @Test
+    public void testChargeApplePayTypeAndPartialCancel() throws HttpCommunicationException, MalformedURLException {
+        Applepay applepay = getUnzer().createPaymentType(getApplePay());
+        Charge charge = applepay.charge(BigDecimal.TEN, Currency.getInstance("EUR"), new URL("https://www.meinShop.de"));
+        Cancel cancel = getUnzer().cancelCharge(charge.getPaymentId(), charge.getId(), BigDecimal.ONE);
+
+        assertNotNull(cancel);
+        assertNotNull(cancel.getId());
+        assertEquals(Cancel.Status.SUCCESS, cancel.getStatus());
+    }
+
+    @Test
+    public void testChargeApplePayTypeAndPartialAndFullCancel() throws HttpCommunicationException, MalformedURLException {
+        Applepay applepay = getUnzer().createPaymentType(getApplePay());
+        Charge charge = applepay.charge(BigDecimal.TEN, Currency.getInstance("EUR"), new URL("https://www.meinShop.de"));
+        Cancel partialCancel = getUnzer().cancelCharge(charge.getPaymentId(), charge.getId(), BigDecimal.ONE);
+        Cancel remainingCancel = getUnzer().cancelCharge(charge.getPaymentId(), charge.getId());
+
+        assertNotNull(partialCancel);
+        assertNotNull(remainingCancel);
+        assertNotNull(partialCancel.getId());
+        assertNotNull(remainingCancel.getId());
+        assertEquals(Cancel.Status.SUCCESS, partialCancel.getStatus());
+        assertEquals(Cancel.Status.SUCCESS, remainingCancel.getStatus());
     }
 
     @Test
@@ -182,7 +208,7 @@ public class ApplepayTest extends AbstractPaymentTest {
     }
 
     @Test
-    public void testChargeApplePayTypeIdAndCancel() throws HttpCommunicationException, MalformedURLException {
+    public void testChargeApplePayTypeIdAndFullCancel() throws HttpCommunicationException, MalformedURLException {
         Applepay applepay = getUnzer().createPaymentType(getApplePay());
         Charge charge = getUnzer().charge(BigDecimal.ONE, Currency.getInstance("EUR"), applepay.getId(), new URL("https://www.meinShop.de"));
         Cancel cancel = getUnzer().cancelCharge(charge.getPaymentId(), charge.getId());
@@ -190,6 +216,32 @@ public class ApplepayTest extends AbstractPaymentTest {
         assertNotNull(cancel);
         assertNotNull(cancel.getId());
         assertEquals(Cancel.Status.SUCCESS, cancel.getStatus());
+    }
+
+    @Test
+    public void testChargeApplePayTypeIdAndPartialCancel() throws HttpCommunicationException, MalformedURLException {
+        Applepay applepay = getUnzer().createPaymentType(getApplePay());
+        Charge charge = getUnzer().charge(BigDecimal.TEN, Currency.getInstance("EUR"), applepay.getId(), new URL("https://www.meinShop.de"));
+        Cancel cancel = getUnzer().cancelCharge(charge.getPaymentId(), charge.getId(), BigDecimal.ONE);
+
+        assertNotNull(cancel);
+        assertNotNull(cancel.getId());
+        assertEquals(Cancel.Status.SUCCESS, cancel.getStatus());
+    }
+
+    @Test
+    public void testChargeApplePayTypeIdAndPartialAndFullCancel() throws HttpCommunicationException, MalformedURLException {
+        Applepay applepay = getUnzer().createPaymentType(getApplePay());
+        Charge charge = getUnzer().charge(BigDecimal.TEN, Currency.getInstance("EUR"), applepay.getId(), new URL("https://www.meinShop.de"));
+        Cancel partialCancel = getUnzer().cancelCharge(charge.getPaymentId(), charge.getId(), BigDecimal.ONE);
+        Cancel fullCancel = getUnzer().cancelCharge(charge.getPaymentId(), charge.getId(), BigDecimal.ONE);
+
+        assertNotNull(partialCancel);
+        assertNotNull(fullCancel);
+        assertNotNull(partialCancel.getId());
+        assertNotNull(fullCancel.getId());
+        assertEquals(Cancel.Status.SUCCESS, partialCancel.getStatus());
+        assertEquals(Cancel.Status.SUCCESS, fullCancel.getStatus());
     }
 
     @Test
