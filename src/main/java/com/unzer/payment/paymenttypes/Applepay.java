@@ -49,9 +49,6 @@ public class Applepay extends AbstractPaymentType implements PaymentType {
     private String currencyCode;
     private BigDecimal transactionAmount;
 
-    public Applepay() {
-    }
-
     public Applepay(String version, String data, String signature, ApplepayHeader applepayHeader) {
         this.version = version;
         this.data = data;

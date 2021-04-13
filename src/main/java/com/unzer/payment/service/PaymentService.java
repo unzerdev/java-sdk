@@ -620,7 +620,7 @@ public class PaymentService {
 		case WECHATPAY:
 			return new Wechatpay();
 		case APPLEPAY:
-			return new Applepay();
+			return new Applepay(null, null, null, null);
 		case HIRE_PURCHASE_RATE_PLAN:
 		case INSTALLMENT_SECURED_RATE_PLAN:
 			return new InstallmentSecuredRatePlan();
