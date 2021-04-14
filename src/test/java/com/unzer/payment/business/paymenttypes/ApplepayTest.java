@@ -255,7 +255,7 @@ public class ApplepayTest extends AbstractPaymentTest {
         Applepay applepay = getUnzer().createPaymentType(getApplePay());
         Charge charge = getUnzer().charge(BigDecimal.TEN, Currency.getInstance("EUR"), applepay.getId(), new URL("https://www.meinShop.de"));
         Cancel partialCancel = getUnzer().cancelCharge(charge.getPaymentId(), charge.getId(), BigDecimal.ONE);
-        Cancel fullCancel = getUnzer().cancelCharge(charge.getPaymentId(), charge.getId(), BigDecimal.ONE);
+        Cancel fullCancel = getUnzer().cancelCharge(charge.getPaymentId(), charge.getId());
 
         assertNotNull(partialCancel);
         assertNotNull(fullCancel);
