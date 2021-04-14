@@ -12,13 +12,13 @@ public class ApplePayAdapterTest {
 
     @Test(expected = NullPointerException.class)
     public void ifAllParametersAreNullThrowError() throws NoSuchAlgorithmException, IOException, KeyManagementException, URISyntaxException {
-        ApplePayAdapter.validateApplePayMerchant(null, null, null, null);
+        ApplePayAdapterUtil.validateApplePayMerchant(null, null, null, null);
     }
 
     @Test
     public void getPlainDomainName() throws URISyntaxException {
         String url = "https://www.unzer.com/de/";
-        String plainDomainName = ApplePayAdapter.getPlainDomainName(url);
+        String plainDomainName = ApplePayAdapterUtil.getPlainDomainName(url);
         Assert.assertEquals("unzer.com", plainDomainName);
     }
 
@@ -27,7 +27,7 @@ public class ApplePayAdapterTest {
         String validUrl1 = "https://www.apple-pay-gateway.apple.com/";
         String validUrl2 = "https://cn-apple-pay-gateway.apple.com/";
 
-        Assert.assertTrue(ApplePayAdapter.doesUrlContainValidDomainName(validUrl1));
-        Assert.assertTrue(ApplePayAdapter.doesUrlContainValidDomainName(validUrl2));
+        Assert.assertTrue(ApplePayAdapterUtil.doesUrlContainValidDomainName(validUrl1));
+        Assert.assertTrue(ApplePayAdapterUtil.doesUrlContainValidDomainName(validUrl2));
     }
 }

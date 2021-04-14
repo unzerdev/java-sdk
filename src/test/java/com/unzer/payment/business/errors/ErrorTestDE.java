@@ -175,9 +175,6 @@ public class ErrorTestDE extends AbstractPaymentTest {
             assertEquals("API.410.200.002", getCode("API.410.200.002", e.getPaymentErrorList()));
             assertEquals("Länge des Nachnamens unzulässig.", getMerchantMessage("API.410.200.002", e.getPaymentErrorList()));
             assertEquals("Länge des Nachnamens unzulässig.", getCustomerMessage("API.410.200.002", e.getPaymentErrorList()));
-            assertEquals("API.410.200.015", getCode("API.410.200.015", e.getPaymentErrorList()));
-            assertEquals("Format der Telefonnummer ungültig.", getMerchantMessage("API.410.200.015", e.getPaymentErrorList()));
-            assertEquals("Format der Telefonnummer ungültig.", getCustomerMessage("API.410.200.015", e.getPaymentErrorList()));
             assertEquals("API.410.200.013", getCode("API.410.200.013", e.getPaymentErrorList()));
             assertEquals("Format der E-Mail ungültig.", getMerchantMessage("API.410.200.013", e.getPaymentErrorList()));
             assertEquals("Format der E-Mail ungültig.", getCustomerMessage("API.410.200.013", e.getPaymentErrorList()));

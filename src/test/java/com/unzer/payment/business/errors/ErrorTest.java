@@ -176,8 +176,6 @@ public class ErrorTest extends AbstractPaymentTest {
             assertEquals("firstName has invalid length.", getMerchantMessage("API.410.200.005", e.getPaymentErrorList()));
             assertEquals("API.410.200.002", getCode("API.410.200.002", e.getPaymentErrorList()));
             assertEquals("lastName has invalid length.", getMerchantMessage("API.410.200.002", e.getPaymentErrorList()));
-            assertEquals("API.410.200.015", getCode("API.410.200.015", e.getPaymentErrorList()));
-            assertEquals("phone has invalid format.", getMerchantMessage("API.410.200.015", e.getPaymentErrorList()));
             assertEquals("API.410.200.013", getCode("API.410.200.013", e.getPaymentErrorList()));
             assertEquals("email has invalid format.", getMerchantMessage("API.410.200.013", e.getPaymentErrorList()));
         }

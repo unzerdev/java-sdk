@@ -24,9 +24,9 @@ import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
 import java.util.List;
 
-public class ApplePayAdapter {
+public class ApplePayAdapterUtil {
 
-    private ApplePayAdapter() {
+    private ApplePayAdapterUtil() {
 
     }
 
