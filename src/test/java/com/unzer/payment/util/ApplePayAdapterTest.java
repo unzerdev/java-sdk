@@ -26,8 +26,12 @@ public class ApplePayAdapterTest {
     public void doesUrlsContainValidDomainName() throws URISyntaxException {
         String validUrl1 = "https://www.apple-pay-gateway.apple.com/";
         String validUrl2 = "https://cn-apple-pay-gateway.apple.com/";
+        String invalidUrl1 = "https://www.google.com/";
+        String invalidUrl2 = "https://www.amazon.com/";
 
         Assert.assertTrue(ApplePayAdapterUtil.doesUrlContainValidDomainName(validUrl1));
         Assert.assertTrue(ApplePayAdapterUtil.doesUrlContainValidDomainName(validUrl2));
+        Assert.assertFalse(ApplePayAdapterUtil.doesUrlContainValidDomainName(invalidUrl1));
+        Assert.assertFalse(ApplePayAdapterUtil.doesUrlContainValidDomainName(invalidUrl2));
     }
 }
