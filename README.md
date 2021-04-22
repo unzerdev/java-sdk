@@ -17,7 +17,7 @@ Java 1.6 or later.
 ```
 
 ## Documentation
-Documentation is available at https://docs.unzer.com/docs/java-sdk.
+Documentation is available at https://docs.unzer.com/integrate/java-sdk/.
 
 ## SDK Overview
 ### Unzer class
