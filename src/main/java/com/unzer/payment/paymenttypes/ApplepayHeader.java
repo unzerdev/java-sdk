@@ -25,6 +25,9 @@ public class ApplepayHeader {
     private String publicKeyHash;
     private String transactionId;
 
+    public ApplepayHeader() {
+    }
+
     public ApplepayHeader(String ephemeralPublicKey, String publicKeyHash, String transactionId) {
         this.ephemeralPublicKey = ephemeralPublicKey;
         this.publicKeyHash = publicKeyHash;
