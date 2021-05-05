@@ -13,6 +13,7 @@ to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
     *   Added new Parameters to `ApplePay`-Class
     *   Added new Test-Functions for `ApplePay`-Class and `ApplePayHeader`-Class
     *   Added Constructors for `ApplePay`-Class and `ApplePayHeader`-Class with mandatory Parameters
+*   Changed Documentation Link in Readme-File
 
 ## [1.1.0.1][1.1.0.1]
 
