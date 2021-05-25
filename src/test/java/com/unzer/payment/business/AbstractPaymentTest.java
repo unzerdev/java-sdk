@@ -196,7 +196,7 @@ public abstract class AbstractPaymentTest {
     }
 
     protected Card createPaymentTypeCard() throws HttpCommunicationException {
-        return createPaymentTypeCard("4444333322221111");
+        return createPaymentTypeCard("4711100000000000");
     }
 
     protected Card createPaymentTypeCard(String cardnumber) throws HttpCommunicationException {
