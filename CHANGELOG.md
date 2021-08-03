@@ -9,7 +9,7 @@ to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
 ### Changed
 
-    *   Added JAXB as a separate library to support Java newer versions
+    *   Added JAXB as a separate library to support newer Java versions
 
 ## [1.1.1.0][1.1.1.0]
 
