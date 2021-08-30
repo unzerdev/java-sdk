@@ -20,6 +20,8 @@ package com.unzer.payment.communication.json;
  * #L%
  */
 
+import com.unzer.payment.models.AdditionalTransactionData;
+
 import java.math.BigDecimal;
 import java.net.URL;
 import java.util.Currency;
@@ -40,7 +42,7 @@ public class JsonInitPayment extends JsonIdObject implements JsonObject {
 	private Boolean card3ds;
 	private String paymentReference;
 	private BigDecimal effectiveInterestRate;
-
+	private AdditionalTransactionData additionalTransactionData;
 
 	private JsonResources resources;
 	private JsonProcessing processing = new JsonProcessing();
@@ -174,4 +176,11 @@ public class JsonInitPayment extends JsonIdObject implements JsonObject {
 		this.effectiveInterestRate = effectiveInterestRate;
 	}
 
+	public AdditionalTransactionData getAdditionalTransactionData() {
+		return additionalTransactionData;
+	}
+
+	public void setAdditionalTransactionData(AdditionalTransactionData additionalTransactionData) {
+		this.additionalTransactionData = additionalTransactionData;
+	}
 }

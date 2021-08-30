@@ -8,6 +8,7 @@ import com.unzer.payment.marketplace.MarketplaceAuthorization;
 import com.unzer.payment.marketplace.MarketplaceCancel;
 import com.unzer.payment.marketplace.MarketplaceCharge;
 import com.unzer.payment.marketplace.MarketplacePayment;
+import com.unzer.payment.models.AdditionalTransactionData;
 import com.unzer.payment.paymenttypes.PaymentType;
 import com.unzer.payment.service.LinkpayService;
 import com.unzer.payment.service.PaymentService;
@@ -50,7 +51,7 @@ import java.util.Locale;
  * inject an appropriate implementation of {@code UnzerRestCommunication}
  * implementing the http-communication Layer. If you are fine with apache's
  * httpClient you can choose the {@code HttpClientBasedRestCommunication}.
- * 
+ *
  * @see UnzerRestCommunication for details of the http-layer abstraction.
  */
 public class Unzer {
@@ -108,7 +109,7 @@ public class Unzer {
 	/**
 	 * Create a customer if it is not null. In case the customer is null it will
 	 * return null
-	 * 
+	 *
 	 * @param customer used customer for creation
 	 * @return Customer with id
 	 * @throws HttpCommunicationException in case communication to Unzer didn't work
@@ -122,7 +123,7 @@ public class Unzer {
 	/**
 	 * Create a customer. This is only possible for new customers. If the customer
 	 * is already on the system (has an id) this method will throw an Exception.
-	 * 
+	 *
 	 * @param customer Create customer
 	 * @return Customer with Id
 	 * @throws HttpCommunicationException in case communication to Unzer didn't work
@@ -139,7 +140,7 @@ public class Unzer {
 	/**
 	 * Update a customers data. All parameters that are null are ignored. Only the
 	 * non null values are updated.
-	 * 
+	 *
 	 * @param id Customer id to be updated
 	 * @param customer Object ti be used for the update
 	 * @return Customer updated customer
@@ -151,18 +152,18 @@ public class Unzer {
 
 	/**
 	 * Delete a customer at Unzer
-	 * 
+	 *
 	 * @param customerId Customer id to be deleted
 	 * @throws HttpCommunicationException in case communication to Unzer didn't work
 	 */
 	public String deleteCustomer(String customerId) throws HttpCommunicationException {
 		return paymentService.deleteCustomer(customerId);
 	}
-	
+
 	public Metadata createMetadata(Metadata metadata) throws HttpCommunicationException {
 		return paymentService.createMetadata(metadata);
 	}
-	
+
 	public Metadata fetchMetadata(String id) throws HttpCommunicationException {
 		return paymentService.fetchMetadata(id);
 	}
@@ -207,7 +208,7 @@ public class Unzer {
 			return null;
 		}
 	}
-	
+
 	/**
 	 * Authorize call for redirect payments with a returnUrl and existed payment type.
 	 *
@@ -238,7 +239,7 @@ public class Unzer {
 			throws HttpCommunicationException {
 		return authorize(amount, currency, typeId, returnUrl, null, card3ds);
 	}
-	
+
 	/**
 	 * Authorize call for redirect payments with returnUrl and existed payment type.
 	 * The customer must not exist. The customer will be created before executing auhtorization.
@@ -310,7 +311,7 @@ public class Unzer {
 	 * New paymentType and new customer will be created before executing authorization.
 	 ** <br>
 	 * <b>Note:</b> Keypair must have either 3ds channel (card3ds=true) or non-3ds channel (card3ds=false) or both
-	 * 
+	 *
 	 * @param amount Amount used for the authorization
 	 * @param currency Currency used for the authorization
 	 * @param paymentType Payment type used for the authorization
@@ -324,7 +325,7 @@ public class Unzer {
 			Customer customer, Boolean card3ds) throws HttpCommunicationException {
 		return authorize(amount, currency, createPaymentType(paymentType).getId(), returnUrl, getCustomerId(createCustomerIfPresent(customer)), card3ds);
 	}
-	
+
 	/**
 	 * Authorize call for redirect payments with returnUrl, existed payment type and existed customer.
 	 *
@@ -355,28 +356,47 @@ public class Unzer {
 	 * @throws HttpCommunicationException in case communication to Unzer didn't work
 	 */
 	public Authorization authorize(BigDecimal amount, Currency currency, String typeId, URL returnUrl, String customerId, Boolean card3ds) throws HttpCommunicationException {
-		return authorize(getAuthorization(amount, currency, typeId, returnUrl, customerId, card3ds));
+		return authorize(getAuthorization(amount, currency, typeId, returnUrl, customerId, card3ds, null));
+	}
+
+	/**
+	 * Authorize call for redirect payments with returnUrl, existed payment type and existed customer.
+	 * <br>
+	 * <b>Note:</b> Keypair must have either 3ds channel (card3ds=true) or non-3ds channel (card3ds=false) or both
+	 *
+	 * @param amount Amount used for the authorization
+	 * @param currency Currency used for the authorization
+	 * @param typeId Payment type id used for the authorization
+	 * @param returnUrl ReturnURL where after the payment was finished
+	 * @param customerId used for the authorization
+	 * @param card3ds Flag to specify whether to force 3ds or not
+	 * @param additionalTransactionData Additional Transaction Data which extends the Transaction by Type-specific Data
+	 * @return Authorization with paymentId and authorize id
+	 * @throws HttpCommunicationException in case communication to Unzer didn't work
+	 */
+	public Authorization authorize(BigDecimal amount, Currency currency, String typeId, URL returnUrl, String customerId, Boolean card3ds, AdditionalTransactionData additionalTransactionData) throws HttpCommunicationException {
+		return authorize(getAuthorization(amount, currency, typeId, returnUrl, customerId, card3ds, additionalTransactionData));
 	}
 
 	/**
 	 * Authorize call with an Authorization object. The Authorization object must
 	 * have at least an amount, a currency, a typeId.
-	 * 
+	 *
 	 * @param authorization Authorization object.
 	 * <br>
 	 * <b>Note:</b> even if <code>MarketplaceAuthorization</code> is used, (<code>MarketplaceAuthorization extends Authorization</code>), a normal authorization will be executed.
 	 * @return Authorization with paymentId and authorize id
 	 * @throws HttpCommunicationException in case communication to Unzer didn't work
-	 * 
+	 *
 	 */
 	public Authorization authorize(Authorization authorization) throws HttpCommunicationException {
 		return paymentService.authorize(authorization);
 	}
-	
+
 	/**
 	 * Authorize call with an MarketplaceAuthorization object. The Authorization object must
 	 * have at least an amount, a currency, a typeId and basket with participantId.
-	 * 
+	 *
 	 * @param authorization MarketplaceAuthorization request model.
 	 * @return MarketplaceAuthorization with paymentId and authorize id in pending status.
 	 * @throws HttpCommunicationException in case communication to Unzer didn't work
@@ -494,7 +514,7 @@ public class Unzer {
 	 */
 	public Charge charge(BigDecimal amount, Currency currency, String typeId, URL returnUrl, String customerId, String basketId, Boolean card3ds)
 			throws HttpCommunicationException {
-		return charge(getCharge(amount, currency, typeId, returnUrl, customerId, basketId, card3ds));
+		return charge(getCharge(amount, currency, typeId, returnUrl, customerId, basketId, card3ds, null));
 	}
 
 	/**
@@ -512,7 +532,7 @@ public class Unzer {
 	 */
 	public Charge charge(BigDecimal amount, Currency currency, String typeId, URL returnUrl, String customerId, Boolean card3ds)
 			throws HttpCommunicationException {
-		return charge(getCharge(amount, currency, typeId, returnUrl, customerId, null, card3ds));
+		return charge(getCharge(amount, currency, typeId, returnUrl, customerId, null, card3ds, null));
 	}
 
 	/**
@@ -547,7 +567,7 @@ public class Unzer {
 			throws HttpCommunicationException {
 		return charge(amount, currency, createPaymentType(paymentType).getId(), returnUrl, card3ds);
 	}
-	
+
 	/**
 	 * Charge call for redirect payments. The PaymentType will be created within
 	 * this method
@@ -584,11 +604,6 @@ public class Unzer {
 		return charge(amount, currency, createPaymentType(paymentType).getId(), returnUrl,
 				getCustomerId(createCustomerIfPresent(customer)), getBasketId(createBasket(basket)), null);
 	}
-	
-	private String getBasketId(Basket basket) {
-		if (basket != null) return basket.getId();
-		else return null;
-	}
 
 	/**
 	 * Charge call for redirect payments. The PaymentType will be created within
@@ -610,9 +625,66 @@ public class Unzer {
 	}
 
 	/**
+	 * Charge call with a typeId that was created using the Javascript or Mobile SDK
+	 * for redirect payments
+	 *
+	 * @param amount Amount usd for the charge
+	 * @param currency Currency used for the charge
+	 * @param typeId Payment type id used for the charge
+	 * @param returnUrl ReturnURL where after the payment was finished
+	 * @param customerId used for the charge
+	 * @param basketId used for the charge
+	 * @param card3ds Flag to specify whether to force 3ds or not
+	 * @param additionalTransactionData Additional Transaction Data which extends the Transaction by Type-specific Data
+	 * @return Charge with paymentId and authorize id
+	 * @throws HttpCommunicationException in case communication to Unzer didn't work
+	 */
+	public Charge charge(BigDecimal amount, Currency currency, String typeId, URL returnUrl, String customerId, String basketId, Boolean card3ds, AdditionalTransactionData additionalTransactionData)
+			throws HttpCommunicationException {
+		return charge(getCharge(amount, currency, typeId, returnUrl, customerId, basketId, card3ds, additionalTransactionData));
+	}
+
+	/**
+	 * Charge call with a typeId that was created using the Javascript or Mobile SDK
+	 * for redirect payments
+	 *
+	 * @param amount Amount usd for the charge
+	 * @param currency Currency used for the charge
+	 * @param typeId Payment type id used for the charge
+	 * @param returnUrl ReturnURL where after the payment was finished
+	 * @param customerId used for the charge
+	 * @param card3ds Flag to specify whether to force 3ds or not
+	 * @param additionalTransactionData Additional Transaction Data which extends the Transaction by Type-specific Data
+	 * @return Charge with paymentId and authorize id
+	 * @throws HttpCommunicationException in case communication to Unzer didn't work
+	 */
+	public Charge charge(BigDecimal amount, Currency currency, String typeId, URL returnUrl, String customerId, Boolean card3ds, AdditionalTransactionData additionalTransactionData)
+			throws HttpCommunicationException {
+		return charge(getCharge(amount, currency, typeId, returnUrl, customerId, null, card3ds, additionalTransactionData));
+	}
+
+	/**
+	 * Charge call with a typeId that was created using the Javascript or Mobile SDK
+	 * for redirect payments
+	 *
+	 * @param amount Amount usd for the charge
+	 * @param currency Currency used for the charge
+	 * @param typeId Payment type id used for the charge
+	 * @param returnUrl ReturnURL where after the payment was finished
+	 * @param card3ds Flag to specify whether to force 3ds or not
+	 * @param additionalTransactionData Additional Transaction Data which extends the Transaction by Type-specific Data
+	 * @return Charge with paymentId and authorize id
+	 * @throws HttpCommunicationException in case communication to Unzer didn't work
+	 */
+	public Charge charge(BigDecimal amount, Currency currency, String typeId, URL returnUrl, Boolean card3ds, AdditionalTransactionData additionalTransactionData)
+			throws HttpCommunicationException {
+		return charge(getCharge(amount, currency, typeId, returnUrl, null, null, card3ds, additionalTransactionData));
+	}
+
+	/**
 	 * Charge call with a Charge object. At least amount, currency and paymentTypeId
 	 * are mandatory
-	 * 
+	 *
 	 * @param charge Charge object
 	 * @return Charge with paymentId and authorize id
 	 * @throws HttpCommunicationException in case communication to Unzer didn't work
@@ -620,28 +692,28 @@ public class Unzer {
 	public Charge charge(Charge charge) throws HttpCommunicationException {
 		return paymentService.charge(charge);
 	}
-	
+
 	/**
 	 * Charge call with an MarketplaceCharge object. The MarketplaceCharge object must
 	 * have at least an amount, a currency, a typeId and basket with participantId.
-	 * 
+	 *
 	 * @param charge refers to a MarketplaceCharge request model.
 	 * @return MarketplaceCharge with paymentId and charge id in pending status.
-	 * 
+	 *
 	 * @throws HttpCommunicationException in case communication to Unzer didn't work
 	 */
 	public MarketplaceCharge marketplaceCharge(MarketplaceCharge charge) throws HttpCommunicationException {
 		return marketplacePaymentService.marketplaceCharge(charge);
 	}
-	
+
 	/**
 	 * Charge call with MarketplaceCharge for a MarketplaceAuthorization. The MarketplaceCharge object must
 	 * have at least an amount.
-	 * 
+	 *
 	 * @param paymentId refers to a MarketplacePayment id.
 	 * @param authorizeId refers to a MarketplaceAuthorization id.
 	 * @param charge refers to a MarketplaceCharge request model.
-	 * 
+	 *
 	 * @return MarketplaceCharge.
 	 * @throws HttpCommunicationException in case communication to Unzer didn't work
 	 */
@@ -650,7 +722,7 @@ public class Unzer {
 	}
 
 	/**
-	 * Pay out money to the customer. 
+	 * Pay out money to the customer.
 	 * @param amount Amount usd for the payout
 	 * @param currency Currency used for the payout
 	 * @param typeId Payment type id used for the payout
@@ -676,7 +748,7 @@ public class Unzer {
 	}
 	/**
 	 * Charge (Capture) the full amount that was authorized
-	 * 
+	 *
 	 * @param paymentId used for the charge of an authorization
 	 * @return Charge with id
 	 * @throws HttpCommunicationException in case communication to Unzer didn't work
@@ -759,11 +831,11 @@ public class Unzer {
 	public Cancel cancelCharge(String paymentId, String chargeId) throws HttpCommunicationException {
 		return paymentService.cancelCharge(paymentId, chargeId);
 	}
-	
+
 	/**
 	 * Fully cancel for marketplace authorization(s).
 	 * <b>Note:</b>: <code>amount</code> will be ignored due to fully cancel. Only <code>paymentReference</code> is processed.
-	 * 
+	 *
 	 * @param paymentId refers to the payment.
 	 * @param cancel refers to MarketplaceCancel.
 	 * @return MarketplacePayment
@@ -772,11 +844,11 @@ public class Unzer {
 	public MarketplacePayment marketplaceFullAuthorizationsCancel(String paymentId, MarketplaceCancel cancel) throws HttpCommunicationException {
 		return marketplacePaymentService.marketplaceFullAuthorizationsCancel(paymentId, cancel);
 	}
-	
+
 	/**
 	 * Fully cancel for marketplace
 	 * <b>Note:</b>: <code>amount</code> will be ignored due to fully cancel. Only <code>paymentReference</code> is processed.
-	 * 
+	 *
 	 * @param paymentId refers to the payment.
 	 * @param cancel refers to MarketplaceCancel.
 	 * @return MarketplacePayment
@@ -785,10 +857,10 @@ public class Unzer {
 	public MarketplacePayment marketplaceFullChargesCancel(String paymentId, MarketplaceCancel cancel) throws HttpCommunicationException {
 		return marketplacePaymentService.marketplaceFullChargesCancel(paymentId, cancel);
 	}
-	
+
 	/**
 	 * Cancel for one marketplace authorization.
-	 * 
+	 *
 	 * @param paymentId refers to the payment.
 	 * @param authorizeId refers to authorization id to be cancelled.
 	 * @param cancel refers to MarketplaceCancel.
@@ -798,10 +870,10 @@ public class Unzer {
 	public MarketplaceCancel marketplaceAuthorizationCancel(String paymentId, String authorizeId, MarketplaceCancel cancel) throws HttpCommunicationException {
 		return marketplacePaymentService.marketplaceAuthorizationCancel(paymentId, authorizeId, cancel);
 	}
-	
+
 	/**
 	 * Cancel for one marketplace charge.
-	 * 
+	 *
 	 * @param paymentId refers to the payment.
 	 * @param chargeId refers to charge id to be cancelled.
 	 * @param cancel refers to MarketplaceCancel.
@@ -811,11 +883,11 @@ public class Unzer {
 	public MarketplaceCancel marketplaceChargeCancel(String paymentId, String chargeId, MarketplaceCancel cancel) throws HttpCommunicationException {
 		return marketplacePaymentService.marketplaceChargeCancel(paymentId, chargeId, cancel);
 	}
-	
+
 	/**
 	 * Fully charge for marketplace authorization(s).
 	 * <b>Note:</b>: <code>amount</code> will be ignored due to fully charge. Only <code>paymentReference</code> is processed.
-	 * 
+	 *
 	 * @param paymentId refers to the payment.
 	 * @return MarketplacePayment
 	 * @throws HttpCommunicationException
@@ -852,7 +924,7 @@ public class Unzer {
 
 	/**
 	 * Inform about a shipment of goods. From this time the insurance start.
-	 * 
+	 *
 	 * @param paymentId used for the shipment of a payment
 	 * @return Shipment with id
 	 * @throws HttpCommunicationException in case communication to Unzer didn't work
@@ -894,7 +966,7 @@ public class Unzer {
 	 * Load the whole Payment Object for the given paymentId.
 	 * <br><br>
 	 * If this method is being used to fetch marketplace payment, it may cause unexpected response data.
-	 * 
+	 *
 	 * @param paymentId used for fetching a payment
 	 * @return Payment object
 	 * @throws HttpCommunicationException in case communication to Unzer didn't work
@@ -902,12 +974,12 @@ public class Unzer {
 	public Payment fetchPayment(String paymentId) throws HttpCommunicationException {
 		return paymentService.fetchPayment(paymentId);
 	}
-	
+
 	/**
 	 * Load the whole Payment Object for the given marketplace paymentId
 	 * <br><br>
 	 * If this method is being used to fetch normal payment, it may cause unexpected response data.
-	 * 
+	 *
 	 * @param paymentId used for fetching a marketplace payment.
 	 * @return Payment object
 	 * @throws HttpCommunicationException in case communication to Unzer didn't work
@@ -930,7 +1002,7 @@ public class Unzer {
 	/**
 	 * Load the Authorization for the given paymentId. As there is only one
 	 * Authorization for a Payment the Authorization id is not needed.
-	 * 
+	 *
 	 * @param paymentId used for fetching an authorization
 	 * @return Authorization object
 	 * @throws HttpCommunicationException in case communication to Unzer didn't work
@@ -938,10 +1010,10 @@ public class Unzer {
 	public Authorization fetchAuthorization(String paymentId) throws HttpCommunicationException {
 		return paymentService.fetchAuthorization(paymentId);
 	}
-	
+
 	/**
 	 * Load the Marketplace Authorization for the given paymentId.
-	 * 
+	 *
 	 * @param paymentId used for fetching an authorization
 	 * @return MarketplaceAuthorization object
 	 * @throws HttpCommunicationException in case communication to Unzer didn't work
@@ -949,10 +1021,10 @@ public class Unzer {
 	public MarketplaceAuthorization fetchMarketplaceAuthorization(String paymentId, String authorizeId) throws HttpCommunicationException {
 		return marketplacePaymentService.fetchMarketplaceAuthorization(paymentId, authorizeId);
 	}
-	
+
 	/**
 	 * Load the Marketplace Charge for the given paymentId.
-	 * 
+	 *
 	 * @param paymentId used for fetching a charge
 	 * @return MarketplaceCharge object
 	 * @throws HttpCommunicationException in case communication to Unzer didn't work
@@ -963,7 +1035,7 @@ public class Unzer {
 
 	/**
 	 * Load the Charge for the given paymentId and charge Id.
-	 * 
+	 *
 	 * @param paymentId used for fetching a charge
 	 * @param chargeId used for fetching a charge
 	 * @return Charge
@@ -975,7 +1047,7 @@ public class Unzer {
 
 	/**
 	 * Load the Cancel for the given paymentId and cancelId
-	 * 
+	 *
 	 * @param paymentId used for fetching a cancel
 	 * @param cancelId used for fetching a cancel
 	 * @return Cancel
@@ -987,7 +1059,7 @@ public class Unzer {
 
 	/**
 	 * Load the Cancel for the given paymentId, chargeId and cancelId
-	 * 
+	 *
 	 * @param paymentId used for fetching a cancel
 	 * @param chargeId used for fetching a cancel
 	 * @param cancelId used for fetching a cancel
@@ -1000,7 +1072,7 @@ public class Unzer {
 
 	/**
 	 * Load the Customer data for the given customerId
-	 * 
+	 *
 	 * @param customerId used for fetching a customer
 	 * @return Customer object
 	 * @throws HttpCommunicationException in case communication to Unzer didn't work
@@ -1011,7 +1083,7 @@ public class Unzer {
 
 	/**
 	 * Load the PaymentType
-	 * 
+	 *
 	 * @param typeId used for fetching a payment type
 	 * @return PaymentType object
 	 * @throws HttpCommunicationException in case communication to Unzer didn't work
@@ -1021,7 +1093,7 @@ public class Unzer {
 	}
 
 	/**
-	 * Initiates a paypage and returns the redirectUrl and an id to the paypage. The id will be 
+	 * Initiates a paypage and returns the redirectUrl and an id to the paypage. The id will be
 	 * used for embedded paypage within Javascript components, the redirectUrl will be used
 	 * for hosted paypage to redirect customer to this url.
 	 * @param paypage used for initializing a paypage
@@ -1039,14 +1111,19 @@ public class Unzer {
 	public Recurring recurring(String typeId, String customerId, String metadataId, URL returnUrl) throws HttpCommunicationException {
 		return paymentService.recurring(getRecurring(typeId, customerId, metadataId, returnUrl));
 	}
+
+    public Recurring recurring(String typeId, String customerId, String metadataId, URL returnUrl, AdditionalTransactionData additionalTransactionData) throws HttpCommunicationException {
+        return paymentService.recurring(getRecurring(typeId, customerId, metadataId, returnUrl, additionalTransactionData));
+    }
+
 	public Recurring recurring(String typeId, String customerId, URL returnUrl) throws HttpCommunicationException {
 		return recurring(typeId, customerId, null, returnUrl);
 	}
-	
+
 	public Recurring recurring(String typeId, URL returnUrl) throws HttpCommunicationException {
 		return recurring(typeId, null, returnUrl);
 	}
-	
+
 	private Recurring getRecurring(String typeId, String customerId, String metadataId, URL returnUrl) {
 		Recurring recurring = new Recurring();
 		recurring.setCustomerId(customerId);
@@ -1055,6 +1132,16 @@ public class Unzer {
 		recurring.setMetadataId(metadataId);
 		return recurring;
 	}
+
+    private Recurring getRecurring(String typeId, String customerId, String metadataId, URL returnUrl, AdditionalTransactionData additionalTransactionData) {
+        Recurring recurring = new Recurring();
+        recurring.setCustomerId(customerId);
+        recurring.setTypeId(typeId);
+        recurring.setReturnUrl(returnUrl);
+        recurring.setMetadataId(metadataId);
+        recurring.setAdditionalTransactionData(additionalTransactionData);
+        return recurring;
+    }
 
 	public List<InstallmentSecuredRatePlan> installmentSecuredRates(BigDecimal amount, Currency currency, BigDecimal effectiveInterestRate, Date orderDate) throws HttpCommunicationException {
 		return paymentService.installmentSecuredPlan(amount, currency, effectiveInterestRate, orderDate);
@@ -1068,7 +1155,7 @@ public class Unzer {
 		return endPoint;
 	}
 
-	private Charge getCharge(BigDecimal amount, Currency currency, String typeId, URL returnUrl, String customerId, String basketId, Boolean card3ds) {
+	private Charge getCharge(BigDecimal amount, Currency currency, String typeId, URL returnUrl, String customerId, String basketId, Boolean card3ds, AdditionalTransactionData additionalTransactionData) {
 		Charge charge = new Charge();
 		charge
 		.setAmount(amount)
@@ -1077,7 +1164,8 @@ public class Unzer {
 		.setCustomerId(customerId)
 		.setBasketId(basketId)
 		.setReturnUrl(returnUrl)
-		.setCard3ds(card3ds);
+		.setCard3ds(card3ds)
+		.setAdditionalTransactionData(additionalTransactionData);
 		return charge;
 	}
 
@@ -1087,7 +1175,7 @@ public class Unzer {
 		return customer.getId();
 	}
 
-	private Authorization getAuthorization(BigDecimal amount, Currency currency, String paymentTypeId, URL returnUrl, String customerId, Boolean card3ds) {
+	private Authorization getAuthorization(BigDecimal amount, Currency currency, String paymentTypeId, URL returnUrl, String customerId, Boolean card3ds, AdditionalTransactionData additionalTransactionData) {
 		Authorization authorization = new Authorization(this);
 		authorization
 		.setAmount(amount)
@@ -1095,10 +1183,11 @@ public class Unzer {
 		.setReturnUrl(returnUrl)
 		.setTypeId(paymentTypeId)
 		.setCustomerId(customerId)
-		.setCard3ds(card3ds);
+		.setCard3ds(card3ds)
+		.setAdditionalTransactionData(additionalTransactionData);
 		return authorization;
 	}
-	
+
 	/**
 	 * Register single webhook. It may response error if <code><b>event</b></code> & <code><b>eventList</b></code> are both defined.
 	 * @param webhookRequest refers to registration request
@@ -1125,12 +1214,12 @@ public class Unzer {
 	public Webhook registerSingleWebhook(Webhook webhookRequest) throws HttpCommunicationException {
 		return webhookService.registerSingleWebhook(webhookRequest);
 	}
-	
+
 	/**
 	 * Register single webhook. It may response error if <code><b>event</b></code> & <code><b>eventList</b></code> are both defined.
 	 * The URL will be registered to all webhook events.
-	 * 
-	 * @param webhookRequest refers to list of webhook events 
+	 *
+	 * @param webhookRequest refers to list of webhook events
 	 * <br>
 	 * Request example:
 	 * <pre>
@@ -1161,11 +1250,11 @@ public class Unzer {
 	public WebhookList registerMultiWebhooks(Webhook webhookRequest) throws HttpCommunicationException {
 		return webhookService.registerMultiWebhooks(webhookRequest);
 	}
-	
+
 	/**
 	 * Delete single webhook.
 	 * @param webhookId refers to id of a webhook.
-	 * 
+	 *
 	 * @return WebhookList refers to list of ids of which webhooks have been deleted.
 	 * <br>
 	 * Response example:
@@ -1179,10 +1268,10 @@ public class Unzer {
 	public Webhook deleteSingleWebhook(String webhookId) throws HttpCommunicationException {
 		return webhookService.deleteSingleWebhook(webhookId);
 	}
-	
+
 	/**
 	 * Delete list of webhooks. It may return empty list if there is no webhooks to delete.
-	 * 
+	 *
 	 * @return WebhookList refers to list of ids of which webhooks have been deleted.
 	 * <br>
 	 * Response example:
@@ -1200,10 +1289,10 @@ public class Unzer {
 	public WebhookList deleteMultiWebhook() throws HttpCommunicationException {
 		return webhookService.deleteMultiWebhook();
 	}
-	
+
 	/**
 	 * Update URl of a webhook. Only URL is able to be updated
-	 * 
+	 *
 	 * @param updateId: webhook id to be updated
 	 * @param updateWebhook: update request
 	 * @return
@@ -1212,10 +1301,10 @@ public class Unzer {
 	public Webhook updateSingleWebhook(String updateId, Webhook updateWebhook) throws HttpCommunicationException {
 		return webhookService.updateSingleWebhook(updateId, updateWebhook);
 	}
-	
+
 	/**
 	 * Get list of webhooks. It may response empty list if there is no webhook.
-	 * 
+	 *
      * @return WebhookList refers to list of webhooks have been created.
      *  * <br>
      * Response example:
@@ -1237,5 +1326,10 @@ public class Unzer {
 	 */
 	public WebhookList getWebhooks() throws HttpCommunicationException {
 		return webhookService.getWebhooks();
+	}
+
+	private String getBasketId(Basket basket) {
+		if (basket != null) return basket.getId();
+		else return null;
 	}
 }

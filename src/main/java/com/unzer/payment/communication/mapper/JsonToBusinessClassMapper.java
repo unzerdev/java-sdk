@@ -65,6 +65,7 @@ public class JsonToBusinessClassMapper {
 		json.setResources(getResources(abstractInitPayment));
 		json.setCard3ds(abstractInitPayment.getCard3ds());
 		json.setPaymentReference(abstractInitPayment.getPaymentReference());
+		json.setAdditionalTransactionData(abstractInitPayment.getAdditionalTransactionData());
 
 		if (abstractInitPayment instanceof Charge) {
 			json = new JsonCharge(json);
@@ -82,6 +83,7 @@ public class JsonToBusinessClassMapper {
 		JsonRecurring json = new JsonRecurring();
 		json.setReturnUrl(recurring.getReturnUrl());
 		json.setResources(getResources(recurring));
+		json.setAdditionalTransactionData(recurring.getAdditionalTransactionData());
 		return json;
 	}
 
@@ -289,6 +291,7 @@ public class JsonToBusinessClassMapper {
 		recurring.setProcessing(getProcessing(json.getProcessing()));
 		recurring.setRedirectUrl(json.getRedirectUrl());
 		recurring.setReturnUrl(json.getReturnUrl());
+		recurring.setAdditionalTransactionData(json.getAdditionalTransactionData());
 		setStatus(recurring, json.getIsSuccess(), json.getIsPending(), json.getIsError());
 		return recurring;
 	}

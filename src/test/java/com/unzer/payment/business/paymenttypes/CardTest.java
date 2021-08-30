@@ -4,6 +4,9 @@ import com.unzer.payment.*;
 import com.unzer.payment.business.AbstractPaymentTest;
 import com.unzer.payment.communication.HttpCommunicationException;
 import com.unzer.payment.communication.impl.HttpClientBasedRestCommunication;
+import com.unzer.payment.enums.RecurrenceType;
+import com.unzer.payment.models.AdditionalTransactionData;
+import com.unzer.payment.models.CardTransactionData;
 import com.unzer.payment.paymenttypes.Card;
 import org.apache.logging.log4j.core.util.Assert;
 import org.junit.Test;
@@ -105,6 +108,15 @@ public class CardTest extends AbstractPaymentTest {
         card.setCvc("123");
         card = getUnzer().createPaymentType(card);
         Charge charge = card.charge(BigDecimal.ONE, Currency.getInstance("EUR"), new URL("https://www.unzer.com"));
+        assertNotNull(charge);
+    }
+
+    @Test
+    public void testChargeCardTypeWith3ds() throws HttpCommunicationException, MalformedURLException {
+        Card card = new Card(VISA_3DS_ENABLED_CARD_NUMBER, "03/99");
+        card.setCvc("123");
+        card = getUnzer().createPaymentType(card);
+        Charge charge = getUnzer().charge(getCharge(card.getId(), null, null, null, null, true, null));
         assertNotNull(charge);
     }
 
@@ -215,5 +227,148 @@ public class CardTest extends AbstractPaymentTest {
             assertEquals("API.710.100.216", e.getPaymentErrorList().get(0).getCode());
             assertEquals("Email has invalid format.", e.getPaymentErrorList().get(0).getMerchantMessage());
         }
+    }
+
+    @Test
+    public void testCardRegisterRecurring() throws HttpCommunicationException, MalformedURLException {
+        Card card = new Card(VISA_3DS_ENABLED_CARD_NUMBER, "03/99");
+        card.setCvc("123");
+        card = getUnzer().createPaymentType(card);
+
+        Recurring recurring = getUnzer().recurring(card.getId(), null, null, new URL("https://www.meinShop.de"));
+    }
+
+    @Test
+    public void testCardRegisterRecurringAdditionalPaymentInformationScheduled() throws HttpCommunicationException, MalformedURLException {
+        AdditionalTransactionData additionalTransactionData = new AdditionalTransactionData();
+        additionalTransactionData.setCard(new CardTransactionData(RecurrenceType.SCHEDULED));
+
+        Card card = new Card(VISA_3DS_ENABLED_CARD_NUMBER, "03/99");
+        card.setCvc("123");
+        card = getUnzer().createPaymentType(card);
+
+        Recurring recurring = getUnzer().recurring(card.getId(), null, null, new URL("https://www.meinShop.de"), additionalTransactionData);
+        assertEquals(AbstractTransaction.Status.PENDING, recurring.getStatus());
+        assertNotNull(recurring.getAdditionalTransactionData());
+        assertNotNull(recurring.getAdditionalTransactionData().getCard());
+        assertEquals(RecurrenceType.SCHEDULED, recurring.getAdditionalTransactionData().getCard().getRecurrenceType());
+    }
+
+    @Test
+    public void testCardRegisterRecurringAdditionalPaymentInformationUnscheduled() throws HttpCommunicationException, MalformedURLException {
+        AdditionalTransactionData additionalTransactionData = new AdditionalTransactionData();
+        additionalTransactionData.setCard(new CardTransactionData(RecurrenceType.UNSCHEDULED));
+
+        Card card = new Card(VISA_3DS_ENABLED_CARD_NUMBER, "03/99");
+        card.setCvc("123");
+        card = getUnzer().createPaymentType(card);
+
+        Recurring recurring = getUnzer().recurring(card.getId(), null, null, new URL("https://www.meinShop.de"), additionalTransactionData);
+        assertEquals(AbstractTransaction.Status.PENDING, recurring.getStatus());
+        assertNotNull(recurring.getAdditionalTransactionData());
+        assertNotNull(recurring.getAdditionalTransactionData().getCard());
+        assertEquals(RecurrenceType.UNSCHEDULED, recurring.getAdditionalTransactionData().getCard().getRecurrenceType());
+    }
+
+    @Test
+    public void testCardAuthorizeAdditionalTransactionDataRecurrenceOneClick() throws HttpCommunicationException, MalformedURLException {
+        AdditionalTransactionData additionalTransactionData = new AdditionalTransactionData();
+        additionalTransactionData.setCard(new CardTransactionData(RecurrenceType.ONECLICK));
+
+        Card card = new Card(VISA_3DS_ENABLED_CARD_NUMBER, "03/99");
+        card.setCvc("123");
+        card = getUnzer().createPaymentType(card);
+        Authorization authorization = getUnzer().authorize(BigDecimal.ONE, Currency.getInstance("EUR"), card.getId(), new URL("https://www.meinShop.de"), null, true, additionalTransactionData);
+
+        assertTrue(authorization.getCard3ds());
+        assertEquals(AbstractTransaction.Status.PENDING, authorization.getStatus());
+        assertNotNull(authorization.getAdditionalTransactionData());
+        assertNotNull(authorization.getAdditionalTransactionData().getCard());
+        assertEquals(RecurrenceType.ONECLICK, authorization.getAdditionalTransactionData().getCard().getRecurrenceType());
+    }
+
+    @Test
+    public void testCardChargeAdditionalTransactionDataRecurrenceOneClick() throws HttpCommunicationException, MalformedURLException {
+        AdditionalTransactionData additionalTransactionData = new AdditionalTransactionData();
+        additionalTransactionData.setCard(new CardTransactionData(RecurrenceType.ONECLICK));
+
+        Card card = new Card(VISA_3DS_ENABLED_CARD_NUMBER, "03/99");
+        card.setCvc("123");
+        card = getUnzer().createPaymentType(card);
+        Charge charge = getUnzer().charge(BigDecimal.ONE, Currency.getInstance("EUR"), card.getId(), new URL("https://www.meinShop.de"), null, true, additionalTransactionData);
+
+        assertTrue(charge.getCard3ds());
+        assertEquals(AbstractTransaction.Status.PENDING, charge.getStatus());
+        assertNotNull(charge.getAdditionalTransactionData());
+        assertNotNull(charge.getAdditionalTransactionData().getCard());
+        assertEquals(RecurrenceType.ONECLICK, charge.getAdditionalTransactionData().getCard().getRecurrenceType());
+    }
+
+    @Test
+    public void testCardAuthorizeAdditionalTransactionDataRecurrenceScheduled() throws HttpCommunicationException, MalformedURLException {
+        AdditionalTransactionData additionalTransactionData = new AdditionalTransactionData();
+        additionalTransactionData.setCard(new CardTransactionData(RecurrenceType.SCHEDULED));
+
+        Card card = new Card(VISA_3DS_ENABLED_CARD_NUMBER, "03/99");
+        card.setCvc("123");
+        card = getUnzer().createPaymentType(card);
+        Authorization authorization = getUnzer().authorize(BigDecimal.ONE, Currency.getInstance("EUR"), card.getId(), new URL("https://www.meinShop.de"), null, true, additionalTransactionData);
+
+        assertTrue(authorization.getCard3ds());
+        assertEquals(AbstractTransaction.Status.PENDING, authorization.getStatus());
+        assertNotNull(authorization.getAdditionalTransactionData());
+        assertNotNull(authorization.getAdditionalTransactionData().getCard());
+        assertEquals(RecurrenceType.SCHEDULED, authorization.getAdditionalTransactionData().getCard().getRecurrenceType());
+    }
+
+    @Test
+    public void testCardChargeAdditionalTransactionDataRecurrenceScheduled() throws HttpCommunicationException, MalformedURLException {
+        AdditionalTransactionData additionalTransactionData = new AdditionalTransactionData();
+        additionalTransactionData.setCard(new CardTransactionData(RecurrenceType.SCHEDULED));
+
+        Card card = new Card(VISA_3DS_ENABLED_CARD_NUMBER, "03/99");
+        card.setCvc("123");
+        card = getUnzer().createPaymentType(card);
+        Charge charge = getUnzer().charge(BigDecimal.ONE, Currency.getInstance("EUR"), card.getId(), new URL("https://www.meinShop.de"), null, true, additionalTransactionData);
+
+        assertTrue(charge.getCard3ds());
+        assertEquals(AbstractTransaction.Status.PENDING, charge.getStatus());
+        assertNotNull(charge.getAdditionalTransactionData());
+        assertNotNull(charge.getAdditionalTransactionData().getCard());
+        assertEquals(RecurrenceType.SCHEDULED, charge.getAdditionalTransactionData().getCard().getRecurrenceType());
+    }
+
+    @Test
+    public void testCardAuthorizeAdditionalTransactionDataRecurrenceUnscheduled() throws HttpCommunicationException, MalformedURLException {
+        AdditionalTransactionData additionalTransactionData = new AdditionalTransactionData();
+        additionalTransactionData.setCard(new CardTransactionData(RecurrenceType.UNSCHEDULED));
+
+        Card card = new Card(VISA_3DS_ENABLED_CARD_NUMBER, "03/99");
+        card.setCvc("123");
+        card = getUnzer().createPaymentType(card);
+        Authorization authorization = getUnzer().authorize(BigDecimal.ONE, Currency.getInstance("EUR"), card.getId(), new URL("https://www.meinShop.de"), null, true, additionalTransactionData);
+
+        assertTrue(authorization.getCard3ds());
+        assertEquals(AbstractTransaction.Status.PENDING, authorization.getStatus());
+        assertNotNull(authorization.getAdditionalTransactionData());
+        assertNotNull(authorization.getAdditionalTransactionData().getCard());
+        assertEquals(RecurrenceType.UNSCHEDULED, authorization.getAdditionalTransactionData().getCard().getRecurrenceType());
+    }
+
+    @Test
+    public void testCardChargeAdditionalTransactionDataRecurrenceUnscheduled() throws HttpCommunicationException, MalformedURLException {
+        AdditionalTransactionData additionalTransactionData = new AdditionalTransactionData();
+        additionalTransactionData.setCard(new CardTransactionData(RecurrenceType.UNSCHEDULED));
+
+        Card card = new Card(VISA_3DS_ENABLED_CARD_NUMBER, "03/99");
+        card.setCvc("123");
+        card = getUnzer().createPaymentType(card);
+        Charge charge = getUnzer().charge(BigDecimal.ONE, Currency.getInstance("EUR"), card.getId(), new URL("https://www.meinShop.de"), null, true, additionalTransactionData);
+
+        assertTrue(charge.getCard3ds());
+        assertEquals(AbstractTransaction.Status.PENDING, charge.getStatus());
+        assertNotNull(charge.getAdditionalTransactionData());
+        assertNotNull(charge.getAdditionalTransactionData().getCard());
+        assertEquals(RecurrenceType.UNSCHEDULED, charge.getAdditionalTransactionData().getCard().getRecurrenceType());
     }
 }

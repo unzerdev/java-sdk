@@ -20,6 +20,8 @@ package com.unzer.payment.communication.json;
  * #L%
  */
 
+import com.unzer.payment.models.AdditionalTransactionData;
+
 import java.net.URL;
 import java.util.Date;
 
@@ -35,6 +37,7 @@ public class JsonRecurring extends JsonIdObject implements JsonObject {
 	private JsonResources resources; 
 	private JsonProcessing processing = new JsonProcessing();
 	private URL redirectUrl;
+	private AdditionalTransactionData additionalTransactionData;
 
 	public JsonRecurring() {
 		super();
@@ -115,4 +118,11 @@ public class JsonRecurring extends JsonIdObject implements JsonObject {
 		this.redirectUrl = redirectUrl;
 	}
 
+	public AdditionalTransactionData getAdditionalTransactionData() {
+		return additionalTransactionData;
+	}
+
+	public void setAdditionalTransactionData(AdditionalTransactionData additionalTransactionData) {
+		this.additionalTransactionData = additionalTransactionData;
+	}
 }

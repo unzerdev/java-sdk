@@ -43,6 +43,7 @@ public class JsonAuthorization extends JsonInitPayment implements JsonObject {
 		this.setRedirectUrl(json.getRedirectUrl());
 		this.setPaymentReference(json.getPaymentReference());
 		this.setId(json.getId());
+		this.setAdditionalTransactionData(json.getAdditionalTransactionData());
 	}
 
 

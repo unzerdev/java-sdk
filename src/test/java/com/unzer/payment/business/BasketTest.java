@@ -102,7 +102,7 @@ public class BasketTest extends AbstractPaymentTest {
 	@Test
 	public void testChargeWithBasket() throws MalformedURLException, HttpCommunicationException {
 		Basket basket = createMaxTestBasket();
-		Charge chargeReq = getCharge(createPaymentTypeCard().getId(), null, null, null, basket.getId());
+		Charge chargeReq = getCharge(createPaymentTypeCard().getId(), null, null, null, basket.getId(), null);
 		chargeReq.setAmount(basket.getAmountTotalGross().subtract(basket.getAmountTotalDiscount()));
 		Charge charge = getUnzer().charge(chargeReq);
 		Payment payment = getUnzer().fetchPayment(charge.getPayment().getId());
