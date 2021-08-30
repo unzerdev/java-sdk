@@ -5,11 +5,17 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) and this project adheres
 to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## [1.1.2.0][1.1.2.0]
+
+### Added
+
+    *   Enabled to set RecurrenceType for Authorize-, Charge- and Recurring-Requests 
+
 ## [1.1.1.1][1.1.1.1]
 
 ### Changed
 
-    *   Added JAXB as a separate library to support newer Java versions
+*   Added JAXB as a separate library to support newer Java versions
 
 ## [1.1.1.0][1.1.1.0]
 
@@ -66,6 +72,8 @@ to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
     *   cancelAuthorization
 *   Remove deprecated classes
     *   RestCommunication
+
+[1.1.1.1]: http://github.com/unzerdev/java-sdk/compare/1.1.1.0..1.1.2.0
 
 [1.1.1.1]: http://github.com/unzerdev/java-sdk/compare/1.1.1.0..1.1.1.1
 

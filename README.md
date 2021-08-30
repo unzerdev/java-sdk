@@ -12,7 +12,7 @@ Java 1.6 or later.
 <dependency>
   <groupId>com.unzer.payment</groupId>
   <artifactId>java-sdk</artifactId>
-  <version>1.1.1.1</version>
+  <version>1.1.2.1</version>
 </dependency>
 ```
 
