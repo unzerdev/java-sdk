@@ -9,7 +9,8 @@ to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
 ### Added
 
-    *   Enabled to set RecurrenceType for Authorize-, Charge- and Recurring-Requests 
+    *   Enabled to set RecurrenceType for Authorize-, Charge- and Recurring-Requests
+    *   Added SDK-Info to HTTP-Request-Header like SDK-Type ord SDK-Version
 
 ## [1.1.1.1][1.1.1.1]
 
@@ -73,7 +74,7 @@ to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 *   Remove deprecated classes
     *   RestCommunication
 
-[1.1.1.1]: http://github.com/unzerdev/java-sdk/compare/1.1.1.0..1.1.2.0
+[1.1.2.0]: http://github.com/unzerdev/java-sdk/compare/1.1.1.1..1.1.2.0
 
 [1.1.1.1]: http://github.com/unzerdev/java-sdk/compare/1.1.1.0..1.1.1.1
 

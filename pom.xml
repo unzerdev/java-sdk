@@ -6,7 +6,7 @@
 
 	<groupId>com.unzer.payment</groupId>
 	<artifactId>java-sdk</artifactId>
-	<version>1.1.2.1</version>
+	<version>1.1.2.0</version>
 	<name>Unzer Java SDK</name>
 	<description>Unzer Java SDK</description>
 	<url>https://docs.unzer.com/</url>
