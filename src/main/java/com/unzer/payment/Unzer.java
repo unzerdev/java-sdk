@@ -4,11 +4,13 @@ import com.unzer.payment.business.paymenttypes.InstallmentSecuredRatePlan;
 import com.unzer.payment.communication.HttpCommunicationException;
 import com.unzer.payment.communication.UnzerRestCommunication;
 import com.unzer.payment.communication.impl.HttpClientBasedRestCommunication;
+import com.unzer.payment.enums.RecurrenceType;
 import com.unzer.payment.marketplace.MarketplaceAuthorization;
 import com.unzer.payment.marketplace.MarketplaceCancel;
 import com.unzer.payment.marketplace.MarketplaceCharge;
 import com.unzer.payment.marketplace.MarketplacePayment;
 import com.unzer.payment.models.AdditionalTransactionData;
+import com.unzer.payment.models.CardTransactionData;
 import com.unzer.payment.paymenttypes.PaymentType;
 import com.unzer.payment.service.LinkpayService;
 import com.unzer.payment.service.PaymentService;
@@ -374,8 +376,8 @@ public class Unzer {
 	 * @return Authorization with paymentId and authorize id
 	 * @throws HttpCommunicationException in case communication to Unzer didn't work
 	 */
-	public Authorization authorize(BigDecimal amount, Currency currency, String typeId, URL returnUrl, String customerId, Boolean card3ds, AdditionalTransactionData additionalTransactionData) throws HttpCommunicationException {
-		return authorize(getAuthorization(amount, currency, typeId, returnUrl, customerId, card3ds, additionalTransactionData));
+	public Authorization authorize(BigDecimal amount, Currency currency, String typeId, URL returnUrl, String customerId, Boolean card3ds, RecurrenceType recurrenceType) throws HttpCommunicationException {
+		return authorize(getAuthorization(amount, currency, typeId, returnUrl, customerId, card3ds, recurrenceType));
 	}
 
 	/**
@@ -639,9 +641,9 @@ public class Unzer {
 	 * @return Charge with paymentId and authorize id
 	 * @throws HttpCommunicationException in case communication to Unzer didn't work
 	 */
-	public Charge charge(BigDecimal amount, Currency currency, String typeId, URL returnUrl, String customerId, String basketId, Boolean card3ds, AdditionalTransactionData additionalTransactionData)
+	public Charge charge(BigDecimal amount, Currency currency, String typeId, URL returnUrl, String customerId, String basketId, Boolean card3ds, RecurrenceType recurrenceType)
 			throws HttpCommunicationException {
-		return charge(getCharge(amount, currency, typeId, returnUrl, customerId, basketId, card3ds, additionalTransactionData));
+		return charge(getCharge(amount, currency, typeId, returnUrl, customerId, basketId, card3ds, recurrenceType));
 	}
 
 	/**
@@ -658,9 +660,9 @@ public class Unzer {
 	 * @return Charge with paymentId and authorize id
 	 * @throws HttpCommunicationException in case communication to Unzer didn't work
 	 */
-	public Charge charge(BigDecimal amount, Currency currency, String typeId, URL returnUrl, String customerId, Boolean card3ds, AdditionalTransactionData additionalTransactionData)
+	public Charge charge(BigDecimal amount, Currency currency, String typeId, URL returnUrl, String customerId, Boolean card3ds, RecurrenceType recurrenceType)
 			throws HttpCommunicationException {
-		return charge(getCharge(amount, currency, typeId, returnUrl, customerId, null, card3ds, additionalTransactionData));
+		return charge(getCharge(amount, currency, typeId, returnUrl, customerId, null, card3ds, recurrenceType));
 	}
 
 	/**
@@ -676,9 +678,9 @@ public class Unzer {
 	 * @return Charge with paymentId and authorize id
 	 * @throws HttpCommunicationException in case communication to Unzer didn't work
 	 */
-	public Charge charge(BigDecimal amount, Currency currency, String typeId, URL returnUrl, Boolean card3ds, AdditionalTransactionData additionalTransactionData)
+	public Charge charge(BigDecimal amount, Currency currency, String typeId, URL returnUrl, Boolean card3ds, RecurrenceType recurrenceType)
 			throws HttpCommunicationException {
-		return charge(getCharge(amount, currency, typeId, returnUrl, null, null, card3ds, additionalTransactionData));
+		return charge(getCharge(amount, currency, typeId, returnUrl, null, null, card3ds, recurrenceType));
 	}
 
 	/**
@@ -1112,8 +1114,8 @@ public class Unzer {
 		return paymentService.recurring(getRecurring(typeId, customerId, metadataId, returnUrl));
 	}
 
-    public Recurring recurring(String typeId, String customerId, String metadataId, URL returnUrl, AdditionalTransactionData additionalTransactionData) throws HttpCommunicationException {
-        return paymentService.recurring(getRecurring(typeId, customerId, metadataId, returnUrl, additionalTransactionData));
+    public Recurring recurring(String typeId, String customerId, String metadataId, URL returnUrl, RecurrenceType recurrenceType) throws HttpCommunicationException {
+        return paymentService.recurring(getRecurring(typeId, customerId, metadataId, returnUrl, recurrenceType));
     }
 
 	public Recurring recurring(String typeId, String customerId, URL returnUrl) throws HttpCommunicationException {
@@ -1133,13 +1135,19 @@ public class Unzer {
 		return recurring;
 	}
 
-    private Recurring getRecurring(String typeId, String customerId, String metadataId, URL returnUrl, AdditionalTransactionData additionalTransactionData) {
+    private Recurring getRecurring(String typeId, String customerId, String metadataId, URL returnUrl, RecurrenceType recurrenceType) {
         Recurring recurring = new Recurring();
         recurring.setCustomerId(customerId);
         recurring.setTypeId(typeId);
         recurring.setReturnUrl(returnUrl);
         recurring.setMetadataId(metadataId);
-        recurring.setAdditionalTransactionData(additionalTransactionData);
+
+        if(recurrenceType != null){
+            AdditionalTransactionData additionalTransactionData = new AdditionalTransactionData();
+            additionalTransactionData.setCard(new CardTransactionData(recurrenceType));
+            recurring.setAdditionalTransactionData(additionalTransactionData);
+        }
+
         return recurring;
     }
 
@@ -1155,7 +1163,7 @@ public class Unzer {
 		return endPoint;
 	}
 
-	private Charge getCharge(BigDecimal amount, Currency currency, String typeId, URL returnUrl, String customerId, String basketId, Boolean card3ds, AdditionalTransactionData additionalTransactionData) {
+	private Charge getCharge(BigDecimal amount, Currency currency, String typeId, URL returnUrl, String customerId, String basketId, Boolean card3ds, RecurrenceType recurrenceType) {
 		Charge charge = new Charge();
 		charge
 		.setAmount(amount)
@@ -1164,8 +1172,15 @@ public class Unzer {
 		.setCustomerId(customerId)
 		.setBasketId(basketId)
 		.setReturnUrl(returnUrl)
-		.setCard3ds(card3ds)
-		.setAdditionalTransactionData(additionalTransactionData);
+		.setCard3ds(card3ds);
+
+
+        if(recurrenceType != null){
+            AdditionalTransactionData additionalTransactionData = new AdditionalTransactionData();
+            additionalTransactionData.setCard(new CardTransactionData(recurrenceType));
+            charge.setAdditionalTransactionData(additionalTransactionData);
+        }
+
 		return charge;
 	}
 
@@ -1175,7 +1190,7 @@ public class Unzer {
 		return customer.getId();
 	}
 
-	private Authorization getAuthorization(BigDecimal amount, Currency currency, String paymentTypeId, URL returnUrl, String customerId, Boolean card3ds, AdditionalTransactionData additionalTransactionData) {
+	private Authorization getAuthorization(BigDecimal amount, Currency currency, String paymentTypeId, URL returnUrl, String customerId, Boolean card3ds, RecurrenceType recurrenceType) {
 		Authorization authorization = new Authorization(this);
 		authorization
 		.setAmount(amount)
@@ -1183,8 +1198,14 @@ public class Unzer {
 		.setReturnUrl(returnUrl)
 		.setTypeId(paymentTypeId)
 		.setCustomerId(customerId)
-		.setCard3ds(card3ds)
-		.setAdditionalTransactionData(additionalTransactionData);
+		.setCard3ds(card3ds);
+
+		if(recurrenceType != null){
+			AdditionalTransactionData additionalTransactionData = new AdditionalTransactionData();
+			additionalTransactionData.setCard(new CardTransactionData(recurrenceType));
+			authorization.setAdditionalTransactionData(additionalTransactionData);
+		}
+
 		return authorization;
 	}
 
