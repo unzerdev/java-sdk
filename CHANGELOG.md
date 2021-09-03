@@ -12,6 +12,10 @@ to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
     *   Enabled to set RecurrenceType for Authorize-, Charge- and Recurring-Requests
     *   Added SDK-Info to HTTP-Request-Header like SDK-Type ord SDK-Version
 
+### Changed
+
+    *   Several minor improvements.
+
 ## [1.1.1.1][1.1.1.1]
 
 ### Changed
