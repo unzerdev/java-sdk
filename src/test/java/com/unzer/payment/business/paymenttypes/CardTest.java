@@ -5,8 +5,6 @@ import com.unzer.payment.business.AbstractPaymentTest;
 import com.unzer.payment.communication.HttpCommunicationException;
 import com.unzer.payment.communication.impl.HttpClientBasedRestCommunication;
 import com.unzer.payment.enums.RecurrenceType;
-import com.unzer.payment.models.AdditionalTransactionData;
-import com.unzer.payment.models.CardTransactionData;
 import com.unzer.payment.paymenttypes.Card;
 import org.apache.logging.log4j.core.util.Assert;
 import org.junit.Test;
