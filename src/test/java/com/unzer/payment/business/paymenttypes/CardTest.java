@@ -235,7 +235,10 @@ public class CardTest extends AbstractPaymentTest {
         card.setCvc("123");
         card = getUnzer().createPaymentType(card);
 
-        Recurring recurring = getUnzer().recurring(card.getId(), null, null, new URL("https://www.meinShop.de"));
+        Recurring recurring = getUnzer().recurring(card.getId(), new URL("https://www.meinShop.de"));
+        assertNotNull(recurring);
+        assertNotNull(recurring.getRedirectUrl());
+        assertEquals(AbstractTransaction.Status.PENDING, recurring.getStatus());
     }
 
     @Test
