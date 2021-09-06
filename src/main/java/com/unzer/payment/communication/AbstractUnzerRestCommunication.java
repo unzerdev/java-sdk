@@ -42,7 +42,7 @@ import static org.apache.http.HttpHeaders.*;
  * implemented in the {@code AbstractUnzerRestCommunication}, there are
  * extensions-points defined, allowing to inject a custom implementation for the
  * network-communication as well as for logging aspects.
- * <p>
+ *
  * The {@code AbstractUnzerRestCommunication#execute(UnzerHttpRequest)} will already to any requireed non-funcional concerns, like
  * <ul>
  * <li>call logging, as implemented by the inheriting class in the logXxx Methods</li>
