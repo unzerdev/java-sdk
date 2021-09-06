@@ -4,7 +4,7 @@ package com.unzer.payment.communication.json;
  * #%L
  * Unzer Java SDK
  * %%
- * Copyright (C) 2020 Unzer E-Com GmbH
+ * Copyright (C) 2020 - today Unzer E-Com GmbH
  * %%
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,6 +19,8 @@ package com.unzer.payment.communication.json;
  * limitations under the License.
  * #L%
  */
+
+import com.unzer.payment.models.AdditionalTransactionData;
 
 import java.net.URL;
 import java.util.Date;
@@ -35,6 +37,7 @@ public class JsonRecurring extends JsonIdObject implements JsonObject {
 	private JsonResources resources; 
 	private JsonProcessing processing = new JsonProcessing();
 	private URL redirectUrl;
+	private AdditionalTransactionData additionalTransactionData;
 
 	public JsonRecurring() {
 		super();
@@ -115,4 +118,11 @@ public class JsonRecurring extends JsonIdObject implements JsonObject {
 		this.redirectUrl = redirectUrl;
 	}
 
+	public AdditionalTransactionData getAdditionalTransactionData() {
+		return additionalTransactionData;
+	}
+
+	public void setAdditionalTransactionData(AdditionalTransactionData additionalTransactionData) {
+		this.additionalTransactionData = additionalTransactionData;
+	}
 }

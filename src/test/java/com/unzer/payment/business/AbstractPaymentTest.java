@@ -42,7 +42,7 @@ import static org.junit.Assert.assertEquals;
  * #%L
  * Unzer Java SDK
  * %%
- * Copyright (C) 2020 Unzer E-Com GmbH
+ * Copyright (C) 2020 - today Unzer E-Com GmbH
  * %%
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -66,6 +66,7 @@ public abstract class AbstractPaymentTest {
     protected static final String MAIL_STRING = "example@unzer.com";
     protected static final String INVALID_MAIL_STRING = "example@@@unzer.com";
     protected static final String NO_3DS_VISA_CARD_NUMBER = "4012888888881881";
+    protected static final String VISA_3DS_ENABLED_CARD_NUMBER = "4711100000000000";
     protected static final String MARKETPLACE_PARTICIPANT_ID_2 = "31HA07BC814FC247577B309FF031D3F0";
     protected static final String MARKETPLACE_PARTICIPANT_ID_1 = "31HA07BC814FC247577B195E59A99FC6";
 
@@ -171,20 +172,20 @@ public abstract class AbstractPaymentTest {
     }
 
     protected Charge getCharge(String orderId) throws MalformedURLException, HttpCommunicationException {
-        Charge charge = getCharge(createPaymentTypeCard().getId(), null);
+        Charge charge = getCharge(createPaymentTypeCard().getId(), null, null);
         charge.setOrderId(orderId);
         return charge;
     }
 
-    protected Charge getCharge(String orderId, Boolean card3ds) throws MalformedURLException, HttpCommunicationException {
-        return getCharge(createPaymentTypeCard().getId(), null, orderId, null, null, card3ds);
+    protected Charge getCharge(String orderId, Boolean card3ds, AdditionalTransactionData additionalTransactionData) throws MalformedURLException, HttpCommunicationException {
+        return getCharge(createPaymentTypeCard().getId(), null, orderId, null, null, card3ds, additionalTransactionData);
     }
 
-    protected Charge getCharge(String typeId, String customerId, String orderId, String metadataId, String basketId) throws MalformedURLException, HttpCommunicationException {
-        return getCharge(typeId, customerId, orderId, metadataId, basketId, null);
+    protected Charge getCharge(String typeId, String customerId, String orderId, String metadataId, String basketId, AdditionalTransactionData additionalTransactionData) throws MalformedURLException, HttpCommunicationException {
+        return getCharge(typeId, customerId, orderId, metadataId, basketId, null, additionalTransactionData);
     }
 
-    protected Charge getCharge(String typeId, String customerId, String orderId, String metadataId, String basketId, Boolean card3ds) throws MalformedURLException, HttpCommunicationException {
+    protected Charge getCharge(String typeId, String customerId, String orderId, String metadataId, String basketId, Boolean card3ds, AdditionalTransactionData additionalTransactionData) throws MalformedURLException, HttpCommunicationException {
         Charge charge = new Charge();
         charge.setAmount(BigDecimal.ONE)
                 .setCurrency(Currency.getInstance("EUR"))
@@ -194,7 +195,8 @@ public abstract class AbstractPaymentTest {
                 .setCustomerId(customerId)
                 .setMetadataId(metadataId)
                 .setBasketId(basketId)
-                .setCard3ds(card3ds);
+                .setCard3ds(card3ds)
+                .setAdditionalTransactionData(additionalTransactionData);
         return charge;
     }
 

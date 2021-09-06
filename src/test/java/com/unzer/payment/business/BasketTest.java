@@ -4,7 +4,7 @@ package com.unzer.payment.business;
  * #%L
  * Unzer Java SDK
  * %%
- * Copyright (C) 2020 Unzer E-Com GmbH
+ * Copyright (C) 2020 - today Unzer E-Com GmbH
  * %%
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -102,7 +102,7 @@ public class BasketTest extends AbstractPaymentTest {
 	@Test
 	public void testChargeWithBasket() throws MalformedURLException, HttpCommunicationException {
 		Basket basket = createMaxTestBasket();
-		Charge chargeReq = getCharge(createPaymentTypeCard().getId(), null, null, null, basket.getId());
+		Charge chargeReq = getCharge(createPaymentTypeCard().getId(), null, null, null, basket.getId(), null);
 		chargeReq.setAmount(basket.getAmountTotalGross().subtract(basket.getAmountTotalDiscount()));
 		Charge charge = getUnzer().charge(chargeReq);
 		Payment payment = getUnzer().fetchPayment(charge.getPayment().getId());
