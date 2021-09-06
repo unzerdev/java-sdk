@@ -4,7 +4,7 @@ package com.unzer.payment.business;
  * #%L
  * Unzer Java SDK
  * %%
- * Copyright (C) 2020 Unzer E-Com GmbH
+ * Copyright (C) 2020 - today Unzer E-Com GmbH
  * %%
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -147,7 +147,7 @@ public class ChargeTest extends AbstractPaymentTest {
 	@Test
 	public void testChargeOrderId() throws MalformedURLException, HttpCommunicationException {
 		String orderId = getRandomId();
-		Charge charge = getUnzer().charge(getCharge(orderId, false));
+		Charge charge = getUnzer().charge(getCharge(orderId, false, null));
 		assertNotNull(charge);
 		assertEquals("COR.000.100.112", charge.getMessage().getCode());
 		assertNotNull(charge.getMessage().getCustomer());
@@ -163,7 +163,7 @@ public class ChargeTest extends AbstractPaymentTest {
 	@Test
 	public void testChargeWith3dsFalse() throws MalformedURLException, HttpCommunicationException {
 		String orderId = getRandomId();
-		Charge charge = getUnzer().charge(getCharge(orderId, false));
+		Charge charge = getUnzer().charge(getCharge(orderId, false, null));
 		assertNotNull(charge);
 		assertNotNull(charge.getId());
 		assertEquals("COR.000.100.112", charge.getMessage().getCode());
@@ -175,7 +175,7 @@ public class ChargeTest extends AbstractPaymentTest {
 	@Test
 	public void testChargeWith3dsTrue() throws MalformedURLException, HttpCommunicationException {
 		String orderId = getRandomId();
-		Charge charge = getUnzer().charge(getCharge(orderId, true));
+		Charge charge = getUnzer().charge(getCharge(orderId, true, null));
 		assertNotNull(charge);
 		assertNotNull(charge.getId());
 		assertEquals("COR.000.200.000", charge.getMessage().getCode());
@@ -187,7 +187,7 @@ public class ChargeTest extends AbstractPaymentTest {
 	@Test
 	public void testChargeWithPaymentReference() throws MalformedURLException, HttpCommunicationException {
 		String orderId = getRandomId();
-		Charge chargeObj = getCharge(orderId, true);
+		Charge chargeObj = getCharge(orderId, true, null);
 		chargeObj.setPaymentReference("pmt-ref");
 		Charge charge = getUnzer().charge(chargeObj);
 		assertNotNull(charge);
@@ -198,7 +198,7 @@ public class ChargeTest extends AbstractPaymentTest {
 	@Test
 	public void testChargeWithChargeObject() throws MalformedURLException, HttpCommunicationException {
 		String orderId = getRandomId();
-		Charge chargeObj = getCharge(orderId, true);
+		Charge chargeObj = getCharge(orderId, true, null);
 		chargeObj.setPaymentReference("pmt-ref");
 		chargeObj.setAmount(new BigDecimal(1.0));
 		Charge charge = getUnzer().charge(chargeObj);

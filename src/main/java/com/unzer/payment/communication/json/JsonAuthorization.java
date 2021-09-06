@@ -4,7 +4,7 @@ package com.unzer.payment.communication.json;
  * #%L
  * Unzer Java SDK
  * %%
- * Copyright (C) 2020 Unzer E-Com GmbH
+ * Copyright (C) 2020 - today Unzer E-Com GmbH
  * %%
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -43,6 +43,7 @@ public class JsonAuthorization extends JsonInitPayment implements JsonObject {
 		this.setRedirectUrl(json.getRedirectUrl());
 		this.setPaymentReference(json.getPaymentReference());
 		this.setId(json.getId());
+		this.setAdditionalTransactionData(json.getAdditionalTransactionData());
 	}
 
 

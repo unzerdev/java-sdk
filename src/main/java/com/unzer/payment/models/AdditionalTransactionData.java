@@ -1,6 +1,4 @@
-package com.unzer.payment.communication.json;
-
-import com.unzer.payment.Message;
+package com.unzer.payment.models;
 
 /*-
  * #%L
@@ -22,27 +20,19 @@ import com.unzer.payment.Message;
  * #L%
  */
 
-public class JsonMessage implements Message {
-	private String code;
-	private String customer;
-	private String merchant;
-	public String getCode() {
-		return code;
-	}
-	public void setCode(String code) {
-		this.code = code;
-	}
-	public String getCustomer() {
-		return customer;
-	}
-	public void setCustomer(String customer) {
-		this.customer = customer;
-	}
-	public String getMerchant() {
-		return merchant;
-	}
-	public void setMerchant(String merchant) {
-		this.merchant = merchant;
-	}
-	
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import com.fasterxml.jackson.annotation.JsonTypeName;
+
+@JsonTypeName("additionalTransactionDataModel")
+@JsonTypeInfo(include = JsonTypeInfo.As.WRAPPER_OBJECT, use = JsonTypeInfo.Id.NAME)
+public class AdditionalTransactionData {
+    private CardTransactionData card;
+
+    public CardTransactionData getCard() {
+        return card;
+    }
+
+    public void setCard(CardTransactionData card) {
+        this.card = card;
+    }
 }
