@@ -9,6 +9,7 @@ import com.unzer.payment.marketplace.MarketplaceAuthorization;
 import com.unzer.payment.marketplace.MarketplaceCancelBasket;
 import com.unzer.payment.marketplace.MarketplaceCancelBasketItem;
 import com.unzer.payment.marketplace.MarketplaceCharge;
+import com.unzer.payment.models.AdditionalTransactionData;
 import com.unzer.payment.paymenttypes.Card;
 import com.unzer.payment.paymenttypes.InvoiceSecured;
 import com.unzer.payment.paymenttypes.SepaDirectDebit;
