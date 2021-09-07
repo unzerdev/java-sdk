@@ -4,7 +4,7 @@ package com.unzer.payment.business;
  * #%L
  * Unzer Java SDK
  * %%
- * Copyright (C) 2020 Unzer E-Com GmbH
+ * Copyright (C) 2020 - today Unzer E-Com GmbH
  * %%
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -72,7 +72,7 @@ public class MetadataTest extends AbstractPaymentTest {
 	@Test
 	public void testChargeWithMetadata() throws MalformedURLException, HttpCommunicationException {
 		String metadataId = createTestMetadata().getId();
-		Charge charge = getUnzer().charge(getCharge(createPaymentTypeCard().getId(), null, null, metadataId, null));
+		Charge charge = getUnzer().charge(getCharge(createPaymentTypeCard().getId(), null, null, metadataId, null, null));
 		Payment payment = getUnzer().fetchPayment(charge.getPayment().getId());
 		assertNotNull(payment);
 		assertNotNull(payment.getId());

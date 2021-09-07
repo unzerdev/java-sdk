@@ -4,7 +4,7 @@ package com.unzer.payment.communication.json;
  * #%L
  * Unzer Java SDK
  * %%
- * Copyright (C) 2020 Unzer E-Com GmbH
+ * Copyright (C) 2020 - today Unzer E-Com GmbH
  * %%
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,6 +19,8 @@ package com.unzer.payment.communication.json;
  * limitations under the License.
  * #L%
  */
+
+import com.unzer.payment.models.AdditionalTransactionData;
 
 import java.math.BigDecimal;
 import java.net.URL;
@@ -40,7 +42,7 @@ public class JsonInitPayment extends JsonIdObject implements JsonObject {
 	private Boolean card3ds;
 	private String paymentReference;
 	private BigDecimal effectiveInterestRate;
-
+	private AdditionalTransactionData additionalTransactionData;
 
 	private JsonResources resources;
 	private JsonProcessing processing = new JsonProcessing();
@@ -174,4 +176,11 @@ public class JsonInitPayment extends JsonIdObject implements JsonObject {
 		this.effectiveInterestRate = effectiveInterestRate;
 	}
 
+	public AdditionalTransactionData getAdditionalTransactionData() {
+		return additionalTransactionData;
+	}
+
+	public void setAdditionalTransactionData(AdditionalTransactionData additionalTransactionData) {
+		this.additionalTransactionData = additionalTransactionData;
+	}
 }

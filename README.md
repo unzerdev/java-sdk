@@ -5,14 +5,14 @@ This SDK provides for an easy way to connect to the Unzer Rest API.
 
 ## Requirements
 
-Java 1.6 or later.
+Java 1.8 or later.
 
 ## Installation
 ```xml
 <dependency>
   <groupId>com.unzer.payment</groupId>
   <artifactId>java-sdk</artifactId>
-  <version>1.1.1.1</version>
+  <version>1.1.2.0</version>
 </dependency>
 ```
 
