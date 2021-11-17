@@ -7,6 +7,7 @@ import org.junit.Test;
 import java.time.format.DateTimeParseException;
 import java.util.Date;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThrows;
 
 public class JsonDateConverterTest {
@@ -20,7 +21,7 @@ public class JsonDateConverterTest {
         JsonDateConverter jsonDateConverter = new JsonDateConverter();
         Date jsonDate = jsonDateConverter.getDate(jsonObject.get("date"));
         Date expectedDate = new Date(344520000000L);
-        Assert.assertEquals(expectedDate, jsonDate);
+        assertEquals(expectedDate, jsonDate);
     }
 
     @Test
@@ -32,7 +33,7 @@ public class JsonDateConverterTest {
         JsonDateConverter jsonDateConverter = new JsonDateConverter();
         Date jsonDate = jsonDateConverter.getDate(jsonObject.get("date"));
         Date expectedDate = new Date(344476800000L);
-        Assert.assertEquals(expectedDate, jsonDate);
+        assertEquals(expectedDate, jsonDate);
     }
 
     @Test
@@ -42,7 +43,7 @@ public class JsonDateConverterTest {
 
 
         JsonDateConverter jsonDateConverter = new JsonDateConverter();
-        Exception exception = assertThrows(DateTimeParseException.class, () -> {
+        assertThrows(DateTimeParseException.class, () -> {
             Date jsonDate = jsonDateConverter.getDate(jsonObject.get("date"));
         });
     }
@@ -54,7 +55,7 @@ public class JsonDateConverterTest {
 
 
         JsonDateConverter jsonDateConverter = new JsonDateConverter();
-        Exception exception = assertThrows(DateTimeParseException.class, () -> {
+        assertThrows(DateTimeParseException.class, () -> {
             Date jsonDate = jsonDateConverter.getDate(jsonObject.get("date"));
         });
     }
@@ -66,7 +67,7 @@ public class JsonDateConverterTest {
 
 
         JsonDateConverter jsonDateConverter = new JsonDateConverter();
-        Exception exception = assertThrows(DateTimeParseException.class, () -> {
+        assertThrows(DateTimeParseException.class, () -> {
             Date jsonDate = jsonDateConverter.getDate(jsonObject.get("date"));
         });
     }
