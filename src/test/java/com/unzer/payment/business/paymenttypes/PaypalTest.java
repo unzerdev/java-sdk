@@ -50,7 +50,7 @@ public class PaypalTest extends AbstractPaymentTest {
 		paypal.setEmail("test.user@email.com");
 		paypal = (Paypal) getUnzer().createPaymentType(paypal);
 		assertNotNull(paypal.getId());
-		assertEquals("test.user@email.com", paypal.getEmail());
+		assertEquals(null, paypal.getEmail());
 	}
 
 	@Test

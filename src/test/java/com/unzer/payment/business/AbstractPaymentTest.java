@@ -33,6 +33,9 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 import static java.util.concurrent.TimeUnit.SECONDS;
@@ -449,7 +452,10 @@ public abstract class AbstractPaymentTest {
     }
 
     protected Date getDate(String date) throws ParseException {
-        return new SimpleDateFormat("dd.MM.yy").parse(date);
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
+        LocalDate parsedLocalDate = LocalDate.parse(date, formatter);
+        return Date.from(parsedLocalDate.atStartOfDay().atZone(ZoneId.of("UTC")).toInstant());
+        //return new SimpleDateFormat("dd.MM.yy").parse(date);
     }
 
     protected void assertMapEquals(Map<String, String> testMetadataMap, Map<String, String> metadataMap) {
