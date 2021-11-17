@@ -44,7 +44,7 @@ public class JsonDateConverterTest {
 
         JsonDateConverter jsonDateConverter = new JsonDateConverter();
         assertThrows(DateTimeParseException.class, () -> {
-            Date jsonDate = jsonDateConverter.getDate(jsonObject.get("date"));
+            jsonDateConverter.getDate(jsonObject.get("date"));
         });
     }
 
@@ -56,7 +56,7 @@ public class JsonDateConverterTest {
 
         JsonDateConverter jsonDateConverter = new JsonDateConverter();
         assertThrows(DateTimeParseException.class, () -> {
-            Date jsonDate = jsonDateConverter.getDate(jsonObject.get("date"));
+            jsonDateConverter.getDate(jsonObject.get("date"));
         });
     }
 
@@ -68,7 +68,7 @@ public class JsonDateConverterTest {
 
         JsonDateConverter jsonDateConverter = new JsonDateConverter();
         assertThrows(DateTimeParseException.class, () -> {
-            Date jsonDate = jsonDateConverter.getDate(jsonObject.get("date"));
+            jsonDateConverter.getDate(jsonObject.get("date"));
         });
     }
 }
