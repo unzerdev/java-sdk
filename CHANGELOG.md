@@ -9,7 +9,7 @@ to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
 ### Changed
 
-*   Changed the DateTime-Handling from PAPI so that all Timezones will be handled correctly in Parsing and Formatting
+*   Changed the DateTime-Handling from PAPI so that all timezones will be handled correctly in parsing and formatting
 *   Several minor improvements.
 
 ## [1.1.2.0][1.1.2.0]
