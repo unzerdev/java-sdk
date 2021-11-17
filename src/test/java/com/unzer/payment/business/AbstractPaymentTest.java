@@ -246,7 +246,6 @@ public abstract class AbstractPaymentTest {
         SepaDirectDebitSecured sepaDirectDebitSecured = new SepaDirectDebitSecured(iban);
 
 
-
         sepaDirectDebitSecured = getUnzer().createPaymentType(sepaDirectDebitSecured);
         return sepaDirectDebitSecured;
     }
@@ -455,7 +454,6 @@ public abstract class AbstractPaymentTest {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
         LocalDate parsedLocalDate = LocalDate.parse(date, formatter);
         return Date.from(parsedLocalDate.atStartOfDay().atZone(ZoneId.of("UTC")).toInstant());
-        //return new SimpleDateFormat("dd.MM.yy").parse(date);
     }
 
     protected void assertMapEquals(Map<String, String> testMetadataMap, Map<String, String> metadataMap) {
