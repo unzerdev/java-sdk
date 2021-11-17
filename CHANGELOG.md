@@ -5,16 +5,23 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) and this project adheres
 to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## [1.1.2.1][1.1.2.1]
+
+### Changed
+
+*   Changed the DateTime-Handling from PAPI so that all Timezones will be handled correctly in Parsing and Formatting
+*   Several minor improvements.
+
 ## [1.1.2.0][1.1.2.0]
 
 ### Added
 
-    *   Enabled to set RecurrenceType for Authorize-, Charge- and Recurring-Requests
-    *   Added SDK-Info to HTTP-Request-Header like SDK-Type ord SDK-Version
+*   Enabled to set RecurrenceType for Authorize-, Charge- and Recurring-Requests
+*   Added SDK-Info to HTTP-Request-Header like SDK-Type ord SDK-Version
 
 ### Changed
 
-    *   Several minor improvements.
+*   Several minor improvements.
 
 ## [1.1.1.1][1.1.1.1]
 
@@ -77,6 +84,8 @@ to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
     *   cancelAuthorization
 *   Remove deprecated classes
     *   RestCommunication
+
+[1.1.2.1]: http://github.com/unzerdev/java-sdk/compare/1.1.2.0..1.1.2.1
 
 [1.1.2.0]: http://github.com/unzerdev/java-sdk/compare/1.1.1.1..1.1.2.0
 
