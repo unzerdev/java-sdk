@@ -14,26 +14,24 @@ public class JsonDateConverterTest {
 
     @Test
     public void getDateTestFormatDateTime(){
-        System.setProperty("user.timezone", "UTC");
         JsonObject jsonObject = new JsonObject();
         jsonObject.addProperty("date", "1980-12-01 12:00:00");
 
 
         JsonDateConverter jsonDateConverter = new JsonDateConverter();
         Date jsonDate = jsonDateConverter.getDate(jsonObject.get("date"));
-        assertEquals("Mon Dec 01 12:00:00 UTC 1980", jsonDate.toString());
+        assertEquals("Mon Dec 01 13:00:00 CET 1980", jsonDate.toString());
     }
 
     @Test
     public void getDateTestFormatDate(){
-        System.setProperty("user.timezone", "UTC");
         JsonObject jsonObject = new JsonObject();
         jsonObject.addProperty("date", "1980-12-01");
 
 
         JsonDateConverter jsonDateConverter = new JsonDateConverter();
         Date jsonDate = jsonDateConverter.getDate(jsonObject.get("date"));
-        assertEquals("Mon Dec 01 00:00:00 UTC 1980", jsonDate.toString());
+        assertEquals("Mon Dec 01 01:00:00 CET 1980", jsonDate.toString());
     }
 
     @Test
