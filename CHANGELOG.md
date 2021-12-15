@@ -10,6 +10,11 @@ to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 ### Changed
 
 *   Upgrade of the used Log4j Dependencies to fix the Log4j Zero-Day-Exploit
+*   Bumped log4j-Dependency from 2.15.0 to 2.16.0
+*   Bumped Maven-Dependency-Check-Dependency from 5.3.2 to 6.5.0
+*   Bumped httpclient from 4.5.12 to 4.5.13
+*   Bumped junit from 4.13 to 4.13.1
+*   Bumped jsoup from 1.13.1 to 1.14.2
 *   Several minor improvements.
 
 ## [1.1.2.1][1.1.2.1]
