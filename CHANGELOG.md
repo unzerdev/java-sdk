@@ -15,7 +15,7 @@ to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 *   Bumped httpclient from 4.5.12 to 4.5.13
 *   Bumped junit from 4.13 to 4.13.1
 *   Bumped jsoup from 1.13.1 to 1.14.2
-*   Increased Deployment Timeout for Sonatype to 15 Minutes 
+*   Increased Deployment Timeout for Sonatype to 20 Minutes 
 *   Several minor improvements.
 
 ## [1.1.2.2][1.1.2.2]
