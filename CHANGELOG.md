@@ -9,14 +9,19 @@ to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
 ### Changed
 
-*   Switched to "https://s01.oss.sonatype.org" for deployment
+*   POM-File Updates
+*   Several minor improvements.
+
+## [1.1.2.3][1.1.2.3]
+
+### Changed
+
 *   Upgrade of the used Log4j Dependencies to fix the Log4j Zero-Day-Exploit
-*   Increased log4j-Dependency "log4j-core" from 2.15.0 to 2.16.0
-*   Increased log4j-Dependency "log4j-api" from 2.15.0 to 2.16.0
-*   Increased Maven-Dependency-Check-Dependency from 5.3.2 to 6.5.0
-*   Increased httpclient from 4.5.12 to 4.5.13
-*   Increased junit from 4.13 to 4.13.1
-*   Increased jsoup from 1.13.1 to 1.14.2
+*   Bumped log4j-Dependency from 2.15.0 to 2.16.0
+*   Bumped Maven-Dependency-Check-Dependency from 5.3.2 to 6.5.0
+*   Bumped httpclient from 4.5.12 to 4.5.13
+*   Bumped junit from 4.13 to 4.13.1
+*   Bumped jsoup from 1.13.1 to 1.14.2
 *   Increased Deployment Timeout for Sonatype to 20 Minutes 
 *   Several minor improvements.
 
@@ -107,7 +112,9 @@ to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 *   Remove deprecated classes
     *   RestCommunication
 
-[1.1.2.4]: http://github.com/unzerdev/java-sdk/compare/1.1.2.2..1.1.2.4    
+[1.1.2.4]: http://github.com/unzerdev/java-sdk/compare/1.1.2.3..1.1.2.4
+
+[1.1.2.3]: http://github.com/unzerdev/java-sdk/compare/1.1.2.2..1.1.2.3
 
 [1.1.2.2]: http://github.com/unzerdev/java-sdk/compare/1.1.2.1..1.1.2.2
 
