@@ -5,6 +5,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) and this project adheres
 to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## [1.1.2.5][1.1.2.5]
+
+### Changed
+
+*   Upgrade of the used Log4j Dependencies to fix the Log4j Zero-Day-Exploit from 2.16.0 to 2.17.0
+*   Several minor improvements.
+
 ## [1.1.2.4][1.1.2.4]
 
 ### Changed
@@ -111,6 +118,8 @@ to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
     *   cancelAuthorization
 *   Remove deprecated classes
     *   RestCommunication
+
+[1.1.2.5]: http://github.com/unzerdev/java-sdk/compare/1.1.2.4..1.1.2.5
 
 [1.1.2.4]: http://github.com/unzerdev/java-sdk/compare/1.1.2.3..1.1.2.4
 
