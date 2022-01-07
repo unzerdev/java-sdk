@@ -73,6 +73,13 @@ public class InvoiceSecuredTest extends AbstractPaymentTest {
     }
 
     @Test(expected = PaymentException.class)
+    public void testChargeTypeWithInvalidCurrency() throws HttpCommunicationException, MalformedURLException, ParseException {
+        InvoiceSecured invoice = getUnzer().createPaymentType(getInvoiceSecured());
+        Basket basket = getMinTestBasket();
+        Charge chargeResult = invoice.charge(basket.getAmountTotalGross(), Currency.getInstance("PLN"), new URL("https://www.meinShop.de"), getMaximumCustomerSameAddress(getRandomId()), basket, invoice.getId());
+    }
+
+    @Test(expected = PaymentException.class)
     public void testChargeTypeDifferentAddresses() throws HttpCommunicationException, MalformedURLException, ParseException {
         InvoiceSecured invoice = getUnzer().createPaymentType(getInvoiceSecured());
         invoice.charge(BigDecimal.TEN, Currency.getInstance("EUR"), new URL("https://www.meinShop.de"), getMaximumCustomer(getRandomId()));
