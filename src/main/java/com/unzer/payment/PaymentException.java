@@ -76,7 +76,7 @@ public class PaymentException extends RuntimeException {
 	}
 	
 	/**
-	 * Creates a {@code PaymentException} for the given payment error.
+	 * Creates a {@code PaymentException} for the given payment error. Provided Message will be dismissed if {@code List<PaymentError>} has a single Error with a StatusCode of 0
 	 *
 	 * @param errors a list of errors returned from the Api.
 	 * @param message to be thrown
@@ -124,7 +124,7 @@ public class PaymentException extends RuntimeException {
 	}
 
 	private static String toMessage(String url, Integer statusCode, List<PaymentError> errors, String message) {
-		if(message == null || message.isEmpty()) {
+		if(message != null && !message.isEmpty()) {
 			return message;
 		}
 
