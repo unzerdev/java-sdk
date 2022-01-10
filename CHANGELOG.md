@@ -72,6 +72,7 @@ to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
     *   Added new Parameters to `ApplePay`-Class.
     *   Added new Test-Functions for `ApplePay`-Class and `ApplePayHeader`-Class.
     *   Added Constructors for `ApplePay`-Class and `ApplePayHeader`-Class with mandatory Parameters.
+
 *   Changed Documentation Link in Readme-File.
 
 ## [1.1.0.1][1.1.0.1]
@@ -90,6 +91,7 @@ to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
 *   Added mapping of old payment type ids to the new payment type resources.
     *   e.g. `InvoiceGuaranteed` and `InvoiceFactoring` replaced by `InvoiceSecured`.
+
 *   Add email property to payment type `card` to meet 3Ds2.x regulations.
 
 ### Changed
