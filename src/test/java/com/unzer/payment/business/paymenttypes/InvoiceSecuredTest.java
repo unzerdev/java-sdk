@@ -76,7 +76,7 @@ public class InvoiceSecuredTest extends AbstractPaymentTest {
     public void testChargeTypeWithInvalidCurrency() throws HttpCommunicationException, MalformedURLException, ParseException {
         InvoiceSecured invoice = getUnzer().createPaymentType(getInvoiceSecured());
         Basket basket = getMinTestBasket();
-        Charge chargeResult = invoice.charge(basket.getAmountTotalGross(), Currency.getInstance("PLN"), new URL("https://www.meinShop.de"), getMaximumCustomerSameAddress(getRandomId()), basket, invoice.getId());
+        invoice.charge(basket.getAmountTotalGross(), Currency.getInstance("PLN"), new URL("https://www.meinShop.de"), getMaximumCustomerSameAddress(getRandomId()), basket, invoice.getId());
     }
 
     @Test(expected = PaymentException.class)

@@ -5,6 +5,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) and this project adheres
 to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## [1.1.2.5][1.1.2.5]
+
+### Changed
+
+*   Upgrade of the used Log4j Dependencies to fix the Log4j Zero-Day-Exploit from 2.16.0 to 2.17.0
+*   Handling of PaymentException-Message has been changed to now return correct Message on occurrence
+*   Several minor improvements.
+
 ## [1.1.2.4][1.1.2.4]
 
 ### Changed
@@ -22,7 +30,7 @@ to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 *   Bumped httpclient from 4.5.12 to 4.5.13
 *   Bumped junit from 4.13 to 4.13.1
 *   Bumped jsoup from 1.13.1 to 1.14.2
-*   Increased Deployment Timeout for Sonatype to 20 Minutes 
+*   Increased Deployment Timeout for Sonatype to 20 Minutes
 *   Several minor improvements.
 
 ## [1.1.2.2][1.1.2.2]
@@ -111,6 +119,8 @@ to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
     *   cancelAuthorization
 *   Remove deprecated classes
     *   RestCommunication
+
+[1.1.2.5]: http://github.com/unzerdev/java-sdk/compare/1.1.2.4..1.1.2.5
 
 [1.1.2.4]: http://github.com/unzerdev/java-sdk/compare/1.1.2.3..1.1.2.4
 

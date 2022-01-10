@@ -24,13 +24,10 @@ import com.unzer.payment.business.AbstractPaymentTest;
 import com.unzer.payment.communication.HttpCommunicationException;
 import org.junit.Test;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-
 public class PaymentTypeTest extends AbstractPaymentTest {
 
     @Test(expected = PaymentException.class)
-    public void testIsNotEmpty() throws HttpCommunicationException {
+    public void testForInvalidPaymentType() throws HttpCommunicationException {
         Unzer unzer = getUnzer();
         unzer.fetchPaymentType("s-xxx-shdshdbshbv");
     }
