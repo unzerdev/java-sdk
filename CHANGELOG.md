@@ -9,8 +9,8 @@ to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
 ### Changed
 
-*   Upgrade of the used Log4j Dependencies to fix the Log4j Zero-Day-Exploit from 2.16.0 to 2.17.0
-*   Handling of PaymentException-Message has been changed to now return correct Message on occurrence
+*   Upgrade of the used Log4j Dependencies to fix the Log4j Zero-Day-Exploit from 2.16.0 to 2.17.0.
+*   Handling of PaymentException-Message has been changed to now return correct Message on occurrence.
 *   Several minor improvements.
 
 ## [1.1.2.4][1.1.2.4]
