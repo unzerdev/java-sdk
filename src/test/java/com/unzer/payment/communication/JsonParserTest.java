@@ -21,15 +21,11 @@ package com.unzer.payment.communication;
  */
 
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.unzer.payment.*;
 import com.unzer.payment.business.AbstractPaymentTest;
 import com.unzer.payment.communication.json.JsonCharge;
 import com.unzer.payment.communication.json.JsonErrorObject;
 import org.junit.Test;
-
-import java.net.MalformedURLException;
 
 import static org.junit.Assert.*;
 
