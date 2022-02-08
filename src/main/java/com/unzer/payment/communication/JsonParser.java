@@ -115,7 +115,7 @@ public class JsonParser {
 			final ObjectMapper mapper = new ObjectMapper();
 			mapper.readTree(jsonInString);
 			return true;
-		} catch (IOException e) {
+		} catch (IOException | IllegalArgumentException e) {
 			return false;
 		}
 	}

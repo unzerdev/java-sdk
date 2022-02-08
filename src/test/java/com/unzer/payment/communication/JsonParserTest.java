@@ -27,6 +27,8 @@ import com.unzer.payment.communication.json.JsonCharge;
 import com.unzer.payment.communication.json.JsonErrorObject;
 import org.junit.Test;
 
+import java.io.IOException;
+
 import static org.junit.Assert.*;
 
 public class JsonParserTest extends AbstractPaymentTest {
@@ -57,6 +59,21 @@ public class JsonParserTest extends AbstractPaymentTest {
     @Test
     public void testInvalidJson() {
         assertFalse(new JsonParser().isJsonValid("This is an error message!"));
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testNullJson() {
+        new JsonParser().fromJson(null, Payment.class);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testNullClass() {
+        new JsonParser().fromJson("{\"name\": \"value\"}", null);
+    }
+
+    @Test
+    public void testNullValidJson() {
+        assertFalse(new JsonParser().isJsonValid(null));
     }
 
     @Test(expected = IllegalArgumentException.class)
