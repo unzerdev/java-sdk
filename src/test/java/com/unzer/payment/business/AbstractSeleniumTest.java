@@ -243,7 +243,7 @@ public abstract class AbstractSeleniumTest extends AbstractPaymentTest {
 		paypage.setPrivacyPolicyUrl(new URL("https://www.unzer.com/en/privacy-statement/"));
 		paypage.setCss(getCssMap());
 
-		paypage.setLogoImage("https://dev.unzer.de/wp-content/uploads/2020/09/Unzer__PrimaryLogo_Raspberry_RGB-595x272.png");
+		paypage.setLogoImage("https://docs.unzer.com/payment-nutshell/payment-in-nutshell.png");
 		paypage.setFullPageImage("https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/iphone-12-pro-family-hero");
 
 		paypage.setContactUrl(new URL("mailto:support@unzer.com"));
@@ -271,7 +271,7 @@ public abstract class AbstractSeleniumTest extends AbstractPaymentTest {
 		linkpay.setPrivacyPolicyUrl(new URL("https://www.unzer.com/en/datenschutz/"));
 		linkpay.setCss(getCssMap());
 
-		linkpay.setLogoImage("https://dev.unzer.de/wp-content/uploads/2020/09/Unzer__PrimaryLogo_Raspberry_RGB-595x272.png");
+		linkpay.setLogoImage("https://docs.unzer.com/payment-nutshell/payment-in-nutshell.png");
 		linkpay.setFullPageImage("https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/iphone-12-pro-family-hero");
 
 		linkpay.setContactUrl(new URL("mailto:support@unzer.com"));
