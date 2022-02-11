@@ -7,11 +7,12 @@ to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
 ## [1.1.2.6][1.1.2.6]
 
-### Changed
-
+### Added
 *   Added Unzer-Logo and updated the reference in Readme-File.
 *   Added Json-Validation to JsonParser-Class before real Json-Deserialization happens.
 *   Added Twitter-Handle to Readme-File.
+
+### Changed
 *   Several minor improvements.
 
 ## [1.1.2.5][1.1.2.5]
