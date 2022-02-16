@@ -17,7 +17,7 @@ Java 1.8 or later.
 ```
 
 ## Documentation
-Documentation is available at https://docs.unzer.com/integrate/java-sdk/.
+Documentation is available at https://docs.unzer.com/server-side-integration/java-sdk-integration/.
 
 ## SDK Overview
 ### Unzer class
