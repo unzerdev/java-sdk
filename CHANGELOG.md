@@ -13,6 +13,7 @@ to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 *   Added Twitter-Handle to Readme-File.
 
 ### Changed
+*   Documentation-Link in Readme-File has been changed.
 *   Several minor improvements.
 
 ## [1.1.2.5][1.1.2.5]
