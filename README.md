@@ -1,4 +1,4 @@
-![Logo](https://dev.unzer.com/wp-content/uploads/2020/09/Unzer__PrimaryLogo_Raspberry_RGB.png)
+![Logo](unzer_logo.svg)
 
 # Unzer Java Payment SDK
 This SDK provides for an easy way to connect to the Unzer Rest API.
@@ -12,12 +12,12 @@ Java 1.8 or later.
 <dependency>
   <groupId>com.unzer.payment</groupId>
   <artifactId>java-sdk</artifactId>
-  <version>1.1.2.5</version>
+  <version>1.1.2.6</version>
 </dependency>
 ```
 
 ## Documentation
-Documentation is available at https://docs.unzer.com/integrate/java-sdk/.
+Documentation is available at https://docs.unzer.com/server-side-integration/java-sdk-integration/.
 
 ## SDK Overview
 ### Unzer class
@@ -141,3 +141,6 @@ For any issues or questions please get in touch with our support team.
 ### Phone
 * DE: [+49 6221 43101-00](tel:+4962214310100)
 * AT: [+43 1 513 66 33 669](tel:+4315136633669)
+
+### Twitter
+[@UnzerTech](https://twitter.com/UnzerTech)

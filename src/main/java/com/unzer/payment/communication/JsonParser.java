@@ -20,9 +20,9 @@ package com.unzer.payment.communication;
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -31,11 +31,13 @@ package com.unzer.payment.communication;
  * #L%
  */
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.unzer.payment.PaymentException;
 import com.unzer.payment.communication.json.JsonErrorObject;
 
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.net.URL;
 import java.util.Currency;
@@ -64,7 +66,7 @@ public class JsonParser {
 
 	/**
 	 * Provides a function which simple parse object to json
-	 * 
+	 *
 	 * @param model refers to object to be parsed
 	 * @return json method
 	 * @throws IllegalArgumentException if the model is null
@@ -85,9 +87,12 @@ public class JsonParser {
 	 * @return an object of type T
 	 */
 	@SuppressWarnings("hiding")
-	public <T> T fromJson(String json, Class<T> clazz) {
+	public <T> T fromJson(String json, Class<T> clazz) throws IllegalArgumentException, PaymentException {
 		if (Objects.isNull(json) || Objects.isNull(clazz)) {
 			throw new IllegalArgumentException("Null object cannot be parsed!");
+		}
+		if(!isJsonValid(json)) {
+			throw new IllegalArgumentException(String.format("The provided JSON String is not valid! The provided Json was: %s", json));
 		}
 		if (isError(json) && !clazz.isAssignableFrom(JsonErrorObject.class)) {
 			throw toPaymentException(json);
@@ -103,6 +108,16 @@ public class JsonParser {
 
 	private boolean isError(String json) {
 		return json.contains(ERRORS) && json.contains(ERROR_CODE);
+	}
+
+	public boolean isJsonValid(String jsonInString) {
+		try {
+			final ObjectMapper mapper = new ObjectMapper();
+			mapper.readTree(jsonInString);
+			return true;
+		} catch (IOException | IllegalArgumentException e) {
+			return false;
+		}
 	}
 
 }
