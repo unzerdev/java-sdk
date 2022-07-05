@@ -8,8 +8,9 @@ to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 ## [1.1.2.7][1.1.2.7]
 
 ### Changed
-*   Upgrade of the used gson Dependencies from 2.8.6 to 2.8.9 due to vulnerability warning of versions prior to 2.8.9.
-*   Several minor improvements.
+* Upgrade of the used gson Dependencies from 2.8.6 to 2.8.9
+* Upgrade of the used faster-xml dependencies from 2.11.3 to 2.12.7
+* Upgrade of the used log4j dependencies from 2.17.1 to 2.18.0
 
 ## [1.1.2.6][1.1.2.6]
 
