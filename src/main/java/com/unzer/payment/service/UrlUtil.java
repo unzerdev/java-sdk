@@ -56,11 +56,16 @@ public class UrlUtil {
 		this.endPoint = endPoint;
 	}
 
+	/**
+	 * Create URL object from URL string
+	 * @deprecated This method will be removed from future releases. Use {@link java.net.URL#URL(String)} instead
+	 */
+	@Deprecated
 	public URL getUrl(String url) {
 		try {
 			return new URL(url);
 		} catch (MalformedURLException e) {
-			logger.error("Url '%s' is not valid: %s", url , e.getMessage());
+			logger.error("Url '{}' is not valid: {}", url , e.getMessage());
 			return null;
 		}
 	}

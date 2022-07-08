@@ -45,7 +45,7 @@ public class JsonURLConverter
 		try {
 			return new URL(urlValue);
 		} catch (MalformedURLException e) {
-			logger.warn("Invalid URL '" + urlValue + "': " + e.getMessage());
+			logger.warn("Invalid URL '{}': {}", urlValue, e.getMessage());
 			return null;
 		}
 	}
