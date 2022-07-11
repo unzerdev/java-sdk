@@ -5,6 +5,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) and this project adheres
 to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## [1.1.2.7][1.1.2.7]
+
+### Changed
+* Upgrade of the used gson Dependencies from 2.8.6 to 2.8.9
+* Upgrade of the used faster-xml dependencies from 2.11.3 to 2.12.7
+* Upgrade of the used log4j dependencies from 2.17.1 to 2.18.0
+
 ## [1.1.2.6][1.1.2.6]
 
 ### Added
@@ -132,6 +139,8 @@ to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
     *   cancelAuthorization
 *   Remove deprecated classes
     *   RestCommunication
+
+[1.1.2.7]: http://github.com/unzerdev/java-sdk/compare/1.1.2.6..1.1.2.7
 
 [1.1.2.6]: http://github.com/unzerdev/java-sdk/compare/1.1.2.5..1.1.2.6
 
