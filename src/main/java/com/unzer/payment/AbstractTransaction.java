@@ -60,8 +60,9 @@ public abstract class AbstractTransaction<T extends AbstractPayment> implements 
     @JsonFieldIgnore
     private T payment;
 
+    // FIXME: jsonfieldignore doesn't ignore marshalling/unmarshalling
     @JsonFieldIgnore
-    private Unzer unzer;
+    private transient Unzer unzer;
 
     @JsonFieldIgnore
     private URL resourceUrl;

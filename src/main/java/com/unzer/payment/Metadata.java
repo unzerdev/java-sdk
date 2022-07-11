@@ -42,7 +42,8 @@ public class Metadata implements PaymentType {
 	
 	private String id;
 	private Map<String, String> metadataMap;
-	private Unzer unzer;
+
+	private transient Unzer unzer; // FIXME: for what reason unzer-object is part of metadata struct?
 
 	
 	public Metadata addMetadata(String key, String value) {
