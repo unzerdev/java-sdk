@@ -151,7 +151,7 @@ For any issues or questions please get in touch with our support team.
 
 ### Email
 
-<support@unzer.com>
+[support@unzer.com](mailto:support@unzer.com)
 
 ### Phone
 

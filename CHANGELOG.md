@@ -11,19 +11,18 @@ to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 ### Deprecated
 
 *   `com.unzer.payment.service.UrlUtil#getUrl(String)` will not be part of
-    java-sdk,
-    because it has nothing to do with unzer/sdk specific logic. If you rely on
-    this method, please, replace it
-    with `java.net.URL#URL(String)` constructor call
+    java-sdk, because it has nothing to do with unzer/sdk specific logic. If you
+    rely on this method, please, replace it with `java.net.URL#URL(String)`
+    constructor call
 
 ### Removed
 
 *   Remove `log4j-core` from Maven dependencies. **Please, provide logger
     implementation on your own**
-*   Remove `log.error` in catch
-    clause `com.unzer.payment.service.PropertiesUtil#loadProperties()` because the
-    exception
-    with exact same message is thrown after the `log.error` call.
+
+*   Remove `log.error` in catch clause 
+    `com.unzer.payment.service.PropertiesUtil#loadProperties()` because the
+    exception with exact same message is thrown after the `log.error` call.
 
 ### Fixed
 
@@ -46,6 +45,7 @@ to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 *   Added Unzer-Logo and updated the reference in Readme-File.
 *   Added Json-Validation to JsonParser-Class before real Json-Deserialization
     happens.
+
 *   Added Twitter-Handle to Readme-File.
 
 ### Changed
@@ -59,8 +59,10 @@ to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
 *   Upgrade of the used Log4j Dependencies to fix the Log4j Zero-Day-Exploit from
     2.16.0 to 2.17.0.
+
 *   Handling of PaymentException-Message has been changed to now return correct
     Message on occurrence.
+
 *   Several minor improvements.
 
 ## [1.1.2.4][1.1.2.4]
@@ -96,6 +98,7 @@ to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
 *   Changed the DateTime-Handling from PAPI so that all timezones will be handled
     correctly in parsing and formatting.
+
 *   Several minor improvements.
 
 ## [1.1.2.0][1.1.2.0]
