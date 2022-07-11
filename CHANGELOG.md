@@ -2,26 +2,33 @@
 
 All notable changes to this project will be documented in this file.
 
-The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) and this project adheres
+The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
+and this project adheres
 to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased][Unreleased]
 
 ### Deprecated
 
-* `com.unzer.payment.service.UrlUtil#getUrl(String)` will not be part of java-sdk,
-  because it has nothing to do with unzer/sdk specific logic. If you rely on this method, please, replace it
+* `com.unzer.payment.service.UrlUtil#getUrl(String)` will not be part of
+  java-sdk,
+  because it has nothing to do with unzer/sdk specific logic. If you rely on
+  this method, please, replace it
   with `java.net.URL#URL(String)` constructor call
 
 ### Removed
 
-* Remove `log4j-core` from Maven dependencies. **Please, provide logger implementation on your own**
-* Remove `log.error` in catch clause `com.unzer.payment.service.PropertiesUtil#loadProperties()` because the exception
+* Remove `log4j-core` from Maven dependencies. **Please, provide logger
+  implementation on your own**
+* Remove `log.error` in catch
+  clause `com.unzer.payment.service.PropertiesUtil#loadProperties()` because the
+  exception
   with exact same message is thrown after the `log.error` call.
 
 ### Fixed
 
-* Fix log message of `com.unzer.payment.service.UrlUtil#getUrl(String)`. It was not formatted and contained `%s` instead
+* Fix log message of `com.unzer.payment.service.UrlUtil#getUrl(String)`. It was
+  not formatted and contained `%s` instead
   of values
 
 ## [1.1.2.7][1.1.2.7]
@@ -37,7 +44,8 @@ to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 ### Added
 
 * Added Unzer-Logo and updated the reference in Readme-File.
-* Added Json-Validation to JsonParser-Class before real Json-Deserialization happens.
+* Added Json-Validation to JsonParser-Class before real Json-Deserialization
+  happens.
 * Added Twitter-Handle to Readme-File.
 
 ### Changed
@@ -49,8 +57,10 @@ to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
 ### Changed
 
-* Upgrade of the used Log4j Dependencies to fix the Log4j Zero-Day-Exploit from 2.16.0 to 2.17.0.
-* Handling of PaymentException-Message has been changed to now return correct Message on occurrence.
+* Upgrade of the used Log4j Dependencies to fix the Log4j Zero-Day-Exploit from
+  2.16.0 to 2.17.0.
+* Handling of PaymentException-Message has been changed to now return correct
+  Message on occurrence.
 * Several minor improvements.
 
 ## [1.1.2.4][1.1.2.4]
@@ -84,7 +94,8 @@ to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
 ### Changed
 
-* Changed the DateTime-Handling from PAPI so that all timezones will be handled correctly in parsing and formatting.
+* Changed the DateTime-Handling from PAPI so that all timezones will be handled
+  correctly in parsing and formatting.
 * Several minor improvements.
 
 ## [1.1.2.0][1.1.2.0]
@@ -109,9 +120,10 @@ to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 ### Changed
 
 * Changed `ApplePay`-Paymenttype accordingly to new Tech-Spec.
-    * Added new Parameters to `ApplePay`-Class.
-    * Added new Test-Functions for `ApplePay`-Class and `ApplePayHeader`-Class.
-    * Added Constructors for `ApplePay`-Class and `ApplePayHeader`-Class with mandatory Parameters.
+  * Added new Parameters to `ApplePay`-Class.
+  * Added new Test-Functions for `ApplePay`-Class and `ApplePayHeader`-Class.
+  * Added Constructors for `ApplePay`-Class and `ApplePayHeader`-Class with
+    mandatory Parameters.
 
 * Changed Documentation Link in Readme-File.
 
@@ -119,19 +131,22 @@ to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
 ### Fixed
 
-* Fixed the Way how the PAPI-Keypairs are loaded on Unzer Object Creation and eliminated the NullPointerException which
+* Fixed the Way how the PAPI-Keypairs are loaded on Unzer Object Creation and
+  eliminated the NullPointerException which
   was thrown.
 
 ### Changed
 
-* Some Tests were failing because of missing Merchant Configuration of the used Test-Merchant.
+* Some Tests were failing because of missing Merchant Configuration of the used
+  Test-Merchant.
 
 ## [1.1.0.0][1.1.0.0]
 
 ### Added
 
 * Added mapping of old payment type ids to the new payment type resources.
-    * e.g. `InvoiceGuaranteed` and `InvoiceFactoring` replaced by `InvoiceSecured`.
+  * e.g. `InvoiceGuaranteed` and `InvoiceFactoring` replaced
+    by `InvoiceSecured`.
 
 * Add email property to payment type `card` to meet 3Ds2.x regulations.
 
@@ -140,10 +155,10 @@ to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 * Rebranded SDK to Unzer.
 * Removed payment type string from URL when fetching a payment type resource.
 * Replace payment methods guaranteed/factoring by secured payment methods, i.e.:
-    * `InvoiceGuaranteed` and `InvoiceFactoring` replaced by `InvoiceSecured`
-    * `SepaDirectDebitGuaranteed` replaced by `SepaDirectDebitSecured`
-    * `HirePurchaseDirectDebit` replaced by `InstallmentSecured`
-    * Basket is now mandatory for all those payment types above.
+  * `InvoiceGuaranteed` and `InvoiceFactoring` replaced by `InvoiceSecured`
+  * `SepaDirectDebitGuaranteed` replaced by `SepaDirectDebitSecured`
+  * `HirePurchaseDirectDebit` replaced by `InstallmentSecured`
+  * Basket is now mandatory for all those payment types above.
 * Several minor changes.
 
 ### Fixed
@@ -153,15 +168,15 @@ to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 ### Removed
 
 * Remove deprecated methods.
-    * getBasketImage
-    * setBasketImage
-    * getDescriptionMain
-    * setDescriptionMain
-    * getDescriptionSmall
-    * setDescriptionSmall
-    * cancelAuthorization
+  * getBasketImage
+  * setBasketImage
+  * getDescriptionMain
+  * setDescriptionMain
+  * getDescriptionSmall
+  * setDescriptionSmall
+  * cancelAuthorization
 * Remove deprecated classes
-    * RestCommunication
+  * RestCommunication
 
 [1.1.2.7]: http://github.com/unzerdev/java-sdk/compare/1.1.2.6..1.1.2.7
 
