@@ -8,6 +8,11 @@ to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
 ## Unreleased
 
+### Breaking changes 
+
+*   Removed `log4j-core` from Maven dependencies. **Please, provide logger
+    implementation on your own**
+
 ### Deprecated
 
 *   `com.unzer.payment.service.UrlUtil#getUrl(String)` will not be part of
@@ -16,9 +21,6 @@ to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
     constructor call
 
 ### Removed
-
-*   Remove `log4j-core` from Maven dependencies. **Please, provide logger
-    implementation on your own**
 
 *   Remove `log.error` in catch clause 
     `com.unzer.payment.service.PropertiesUtil#loadProperties()` because the
