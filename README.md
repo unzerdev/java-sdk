@@ -14,7 +14,7 @@ Java 1.8 or later.
 <dependency>
   <groupId>com.unzer.payment</groupId>
   <artifactId>java-sdk</artifactId>
-  <version>1.1.2.7</version>
+  <version>1.2.0.0</version>
 </dependency>
 ```
 
