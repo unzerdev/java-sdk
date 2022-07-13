@@ -15,15 +15,10 @@ import java.util.Currency;
  */
 public class Basket {
     private String id;
-
     private Currency currencyCode;
-
     private String orderId;
-
     private BigDecimal totalValueGross;
-
     private String note;
-
     private Collection<BasketItem> basketItems;
 
     /**
