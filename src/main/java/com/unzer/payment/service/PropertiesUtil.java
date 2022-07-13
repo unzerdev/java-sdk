@@ -63,7 +63,6 @@ public class PropertiesUtil {
                 this.properties.put(MARKETPLACE_PRIVATE_KEY, System.getProperty(MARKETPLACE_PRIVATE_KEY));
             }
         } catch (IOException e) {
-            logger.error("Error loading unzer.properties from Classpath: {}", e.getMessage());
             throw new PropertiesException("Error loading unzer.properties from Classpath: " + e.getMessage());
         }
     }

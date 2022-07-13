@@ -59,11 +59,13 @@ import java.util.Locale;
 public class Unzer {
 	private String privateKey;
 	private String endPoint;
-	private PaymentService paymentService;
-	private MarketplacePaymentService marketplacePaymentService;
-	private PaypageService paypageService;
-	private LinkpayService linkpayService;
-	private WebhookService webhookService;
+
+	// TODO: extract privateKey/endPoint or services to separate class
+	private transient PaymentService paymentService;
+	private transient MarketplacePaymentService marketplacePaymentService;
+	private transient PaypageService paypageService;
+	private transient LinkpayService linkpayService;
+	private transient WebhookService webhookService;
 
 	public Unzer(String privateKey) {
 		this(new HttpClientBasedRestCommunication(null), privateKey, null);
