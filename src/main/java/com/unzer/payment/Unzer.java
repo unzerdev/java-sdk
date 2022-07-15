@@ -19,7 +19,6 @@ import com.unzer.payment.service.WebhookService;
 import com.unzer.payment.service.marketplace.MarketplacePaymentService;
 import com.unzer.payment.webhook.Webhook;
 import com.unzer.payment.webhook.WebhookList;
-import com.unzer.payment.v2.Basket;
 
 import java.math.BigDecimal;
 import java.net.URL;

@@ -9,9 +9,9 @@ package com.unzer.payment;
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *
+ * 
  *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * 
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -47,7 +47,7 @@ public abstract class AbstractPayment implements PaymentType {
 	private String metadataId;
 	private Metadata metadata;
 	private String basketId;
-	private com.unzer.payment.v2.Basket basket;
+	private Basket basket;
 
 	private transient Unzer unzer;
 
@@ -137,14 +137,14 @@ public abstract class AbstractPayment implements PaymentType {
 		this.basketId = basketId;
 	}
 
-	public com.unzer.payment.v2.Basket getBasket() throws HttpCommunicationException {
+	public Basket getBasket() throws HttpCommunicationException {
 		if (basket == null && isNotEmpty(getBasketId())) {
 			basket = fetchBasket(getBasketId());
 		}
 		return basket;
 	}
 
-	public void setBasket(com.unzer.payment.v2.Basket basket) {
+	public void setBasket(Basket basket) {
 		this.basket = basket;
 	}
 
@@ -196,7 +196,6 @@ public abstract class AbstractPayment implements PaymentType {
 		this.orderId = orderId;
 	}
 
-	// TODO: This is not behaviour/property of Payment. Move to string utils or somewhere else.
 	protected boolean isNotEmpty(String value) {
 		return value != null && !"".equalsIgnoreCase(value.trim());
 	}
@@ -212,8 +211,8 @@ public abstract class AbstractPayment implements PaymentType {
 	protected Metadata fetchMetadata(String metadataId) throws HttpCommunicationException {
 		return getUnzer().fetchMetadata(metadataId);
 	}
-
-	protected com.unzer.payment.v2.Basket fetchBasket(String basketId) throws HttpCommunicationException {
+	
+	protected Basket fetchBasket(String basketId) throws HttpCommunicationException {
 		return getUnzer().fetchBasket(basketId);
 	}
 }

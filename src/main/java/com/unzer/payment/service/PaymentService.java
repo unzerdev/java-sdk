@@ -118,7 +118,7 @@ public class PaymentService {
 		return fetchCustomer(id);
 	}
 
-	public com.unzer.payment.v2.Basket updateBasket(String id, com.unzer.payment.v2.Basket basket) throws HttpCommunicationException {
+	public Basket updateBasket(String id, Basket basket) throws HttpCommunicationException {
 		restCommunication.httpPut(urlUtil.getHttpGetUrl(basket, id), unzer.getPrivateKey(), basket);
 		return fetchBasket(id);
 	}
@@ -142,15 +142,21 @@ public class PaymentService {
 		return metadata;
 	}
 
-	public com.unzer.payment.v2.Basket createBasket(com.unzer.payment.v2.Basket basket) throws HttpCommunicationException {
+	public Basket createBasket(Basket basket) throws HttpCommunicationException {
 		String response = restCommunication.httpPost(urlUtil.getRestUrl(basket), unzer.getPrivateKey(), basket);
-		return jsonParser.fromJson(response, com.unzer.payment.v2.Basket.class);
+		Basket jsonBasket = jsonParser.fromJson(response, Basket.class);
+		basket.setId(jsonBasket.getId());
+		return basket;
 	}
 
-	public com.unzer.payment.v2.Basket fetchBasket(String id) throws HttpCommunicationException {
-		String response = restCommunication.httpGet(urlUtil.getHttpGetUrl(new Basket(), id),
+	public Basket fetchBasket(String id) throws HttpCommunicationException {
+		Basket basket = new Basket();
+		basket.setId(id);
+		String response = restCommunication.httpGet(urlUtil.getHttpGetUrl(basket, basket.getId()),
 				unzer.getPrivateKey());
-		return jsonParser.fromJson(response, com.unzer.payment.v2.Basket.class);
+		basket = jsonParser.fromJson(response, Basket.class);
+		basket.setId(id);
+		return basket;
 	}
 
 	/**
