@@ -136,7 +136,11 @@ public class BasketItem {
          * @param amountPerUnitGross Amount per unit including VAT. Note: Discount is not included. Don’t include discounts here!
          * @param vat                The VAT value for the basket item in percentage
          */
-        public Builder(String title, Integer quantity, BigDecimal amountPerUnitGross, BigDecimal vat) {
+        public static Builder create(String title, Integer quantity, BigDecimal amountPerUnitGross, BigDecimal vat) {
+            return new Builder(title, quantity, amountPerUnitGross, vat);
+        }
+
+        private Builder(String title, Integer quantity, BigDecimal amountPerUnitGross, BigDecimal vat) {
             this.title = title;
             this.quantity = quantity;
             this.amountPerUnitGross = amountPerUnitGross;

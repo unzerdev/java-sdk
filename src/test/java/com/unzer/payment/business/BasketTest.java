@@ -171,6 +171,4 @@ public class BasketTest extends AbstractPaymentTest {
 			assertEquals(expected, actual);
 		}
 	}
-
-
 }

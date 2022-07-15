@@ -25,6 +25,7 @@ package com.unzer.payment;
  */
 public class UnsupportedPaymentTypeException extends RuntimeException{
 
+	// FIXME: exception is not used
 	private static final long serialVersionUID = -1285106124514039751L;
 
 	public UnsupportedPaymentTypeException(String message) {

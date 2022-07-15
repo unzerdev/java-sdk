@@ -63,8 +63,7 @@ import static org.junit.Assert.assertEquals;
  */
 
 public abstract class AbstractPaymentTest {
-
-
+    // TODO: move it to constants?
     protected static final String EMPTY_STRING = "";
     protected static final String PERSON_STRING = "Mr. Unzer Payment";
     protected static final String MAIL_STRING = "example@unzer.com";
@@ -74,6 +73,7 @@ public abstract class AbstractPaymentTest {
     protected static final String MARKETPLACE_PARTICIPANT_ID_2 = "31HA07BC814FC247577B309FF031D3F0";
     protected static final String MARKETPLACE_PARTICIPANT_ID_1 = "31HA07BC814FC247577B195E59A99FC6";
 
+    // TODO: extract to test properties class
     private final PropertiesUtil properties = new PropertiesUtil();
 
     public final String publicKey1 = properties.getString(PropertiesUtil.PUBLIC_KEY1);
@@ -84,10 +84,6 @@ public abstract class AbstractPaymentTest {
 
     protected String getRandomInvoiceId() {
         return getRandomId().substring(0, 5);
-    }
-
-    public Unzer getUnzerWithEndPoint(String endPoint) {
-        return new Unzer(privateKey1, null, endPoint);
     }
 
     public Unzer getUnzer() {

@@ -19,6 +19,7 @@ import com.unzer.payment.service.WebhookService;
 import com.unzer.payment.service.marketplace.MarketplacePaymentService;
 import com.unzer.payment.webhook.Webhook;
 import com.unzer.payment.webhook.WebhookList;
+import com.unzer.payment.v2.Basket;
 
 import java.math.BigDecimal;
 import java.net.URL;
@@ -374,7 +375,6 @@ public class Unzer {
 	 * @param returnUrl ReturnURL where after the payment was finished
 	 * @param customerId used for the authorization
 	 * @param card3ds Flag to specify whether to force 3ds or not
-	 * @param additionalTransactionData Additional Transaction Data which extends the Transaction by Type-specific Data
 	 * @return Authorization with paymentId and authorize id
 	 * @throws HttpCommunicationException in case communication to Unzer didn't work
 	 */
@@ -639,7 +639,6 @@ public class Unzer {
 	 * @param customerId used for the charge
 	 * @param basketId used for the charge
 	 * @param card3ds Flag to specify whether to force 3ds or not
-	 * @param additionalTransactionData Additional Transaction Data which extends the Transaction by Type-specific Data
 	 * @return Charge with paymentId and authorize id
 	 * @throws HttpCommunicationException in case communication to Unzer didn't work
 	 */
@@ -658,7 +657,6 @@ public class Unzer {
 	 * @param returnUrl ReturnURL where after the payment was finished
 	 * @param customerId used for the charge
 	 * @param card3ds Flag to specify whether to force 3ds or not
-	 * @param additionalTransactionData Additional Transaction Data which extends the Transaction by Type-specific Data
 	 * @return Charge with paymentId and authorize id
 	 * @throws HttpCommunicationException in case communication to Unzer didn't work
 	 */
@@ -676,7 +674,6 @@ public class Unzer {
 	 * @param typeId Payment type id used for the charge
 	 * @param returnUrl ReturnURL where after the payment was finished
 	 * @param card3ds Flag to specify whether to force 3ds or not
-	 * @param additionalTransactionData Additional Transaction Data which extends the Transaction by Type-specific Data
 	 * @return Charge with paymentId and authorize id
 	 * @throws HttpCommunicationException in case communication to Unzer didn't work
 	 */

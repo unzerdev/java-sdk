@@ -1,5 +1,7 @@
 package com.unzer.payment.v2;
 
+import com.unzer.payment.Resource;
+
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -13,7 +15,7 @@ import java.util.Currency;
  * <p>
  * See: <a href="https://docs.unzer.com/server-side-integration/java-sdk-integration/manage-java-resources/java-manage-basket/">Unzer Docs</a>
  */
-public class Basket {
+public class Basket implements Resource {
     private String id;
     private Currency currencyCode;
     private String orderId;
@@ -25,6 +27,10 @@ public class Basket {
      * Used only for serialization/deserialization. To create entity with values use Builder.
      */
     public Basket() {
+    }
+
+    public String getResourceUrl() {
+        return "v2/baskets";
     }
 
     /**
@@ -87,7 +93,11 @@ public class Basket {
          * @param totalValueGross The total basket value (including VAT) of all basket items reduced/deducted by all discounts and vouchers.
          * @param currencyCode    Currency code in ISO_4217 format
          */
-        public Builder(BigDecimal totalValueGross, Currency currencyCode) {
+        public static Builder create(BigDecimal totalValueGross, Currency currencyCode) {
+            return new Builder(totalValueGross, currencyCode);
+        }
+
+        private Builder(BigDecimal totalValueGross, Currency currencyCode) {
             this.totalValueGross = totalValueGross;
             this.currencyCode = currencyCode;
             this.basketItems = new ArrayList<>();
