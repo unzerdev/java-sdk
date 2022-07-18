@@ -19,6 +19,8 @@ import java.net.URL;
 import java.text.ParseException;
 import java.util.Currency;
 
+import static com.unzer.payment.business.BasketV1TestData.getMinTestBasketV1;
+import static com.unzer.payment.util.Uuid.generateUuid;
 import static org.junit.Assert.*;
 
 /*-
@@ -71,7 +73,7 @@ public class SepaDirectDebitSecuredTest extends AbstractPaymentTest {
         SepaDirectDebitSecured sdd = getUnzer().createPaymentType(getSepaDirectDebitSecured());
         assertNotNull(sdd.getId());
         Basket basket = getUnzer().createBasket(getMinTestBasketV1());
-        sdd.charge(basket.getAmountTotalGross(), Currency.getInstance("EUR"), new URL("https://www.unzer.com"), getMaximumCustomerSameAddress(getRandomId()), basket);
+        sdd.charge(basket.getAmountTotalGross(), Currency.getInstance("EUR"), new URL("https://www.unzer.com"), getMaximumCustomerSameAddress(generateUuid()), basket);
     }
 
     private void assertSddEquals(SepaDirectDebitSecured sddOriginal, SepaDirectDebitSecured sddCreated) {
@@ -96,7 +98,7 @@ public class SepaDirectDebitSecuredTest extends AbstractPaymentTest {
         boolean matches = sepaDirectDebitSecured.getId().matches("s-ddg-\\w*");
         assertTrue(matches);
 
-        Charge charge = sepaDirectDebitSecured.charge(BigDecimal.TEN, Currency.getInstance("EUR"), new URL("https://www.meinShop.de"), getMaximumCustomerSameAddress(getRandomId()));
+        Charge charge = sepaDirectDebitSecured.charge(BigDecimal.TEN, Currency.getInstance("EUR"), new URL("https://www.meinShop.de"), getMaximumCustomerSameAddress(generateUuid()));
         assertNotNull(charge.getPaymentId());
     }
 

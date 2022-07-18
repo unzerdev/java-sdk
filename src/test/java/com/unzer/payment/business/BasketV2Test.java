@@ -27,6 +27,8 @@ import org.junit.Test;
 import java.math.BigDecimal;
 import java.net.MalformedURLException;
 
+import static com.unzer.payment.business.BasketV2TestData.getMaxTestBasketV2;
+import static com.unzer.payment.business.BasketV2TestData.getMinTestBasketV2;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;

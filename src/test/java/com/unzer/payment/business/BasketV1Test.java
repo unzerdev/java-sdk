@@ -29,6 +29,8 @@ import java.math.RoundingMode;
 import java.net.MalformedURLException;
 import java.util.List;
 
+import static com.unzer.payment.business.BasketV1TestData.getMaxTestBasketV1;
+import static com.unzer.payment.business.BasketV1TestData.getMinTestBasketV1;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
