@@ -176,8 +176,11 @@ public class Basket implements PaymentType {
     }
 
     @Deprecated
-    protected boolean isV1() {
-        return this.totalValueGross == null // mandatory v2 attribute is null
-                && this.amountTotalGross != null; // mandatory v1 attribute is not null
+    public boolean isV1() {
+        return this.amountTotalGross != null; // mandatory v1 attribute is not null
+    }
+
+    public boolean isV2() {
+        return this.totalValueGross != null; // mandatory v2 attribute is not null
     }
 }

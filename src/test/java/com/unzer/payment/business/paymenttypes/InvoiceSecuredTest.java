@@ -48,7 +48,7 @@ public class InvoiceSecuredTest extends AbstractPaymentTest {
     public void testChargeTypeWithInvoiceId()
             throws HttpCommunicationException, MalformedURLException, ParseException {
         InvoiceSecured invoice = getUnzer().createPaymentType(getInvoiceSecured());
-        Basket basket = getMinTestBasket();
+        Basket basket = getMinTestBasketV1();
         String invoiceId = getRandomInvoiceId();
         Charge charge = invoice.charge(basket.getAmountTotalGross(), Currency.getInstance("EUR"),
                 new URL("https://www.meinShop.de"), getMaximumCustomerSameAddress(getRandomId()), basket,
@@ -67,7 +67,7 @@ public class InvoiceSecuredTest extends AbstractPaymentTest {
     @Test
     public void testChargeType() throws HttpCommunicationException, MalformedURLException, ParseException {
         InvoiceSecured invoice = getUnzer().createPaymentType(getInvoiceSecured());
-        Basket basket = getMinTestBasket();
+        Basket basket = getMinTestBasketV1();
         Charge chargeResult = invoice.charge(basket.getAmountTotalGross(), Currency.getInstance("EUR"), new URL("https://www.meinShop.de"), getMaximumCustomerSameAddress(getRandomId()), basket, invoice.getId());
         assertNotNull(chargeResult);
     }
@@ -75,7 +75,7 @@ public class InvoiceSecuredTest extends AbstractPaymentTest {
     @Test(expected = PaymentException.class)
     public void testChargeTypeWithInvalidCurrency() throws HttpCommunicationException, MalformedURLException, ParseException {
         InvoiceSecured invoice = getUnzer().createPaymentType(getInvoiceSecured());
-        Basket basket = getMinTestBasket();
+        Basket basket = getMinTestBasketV1();
         invoice.charge(basket.getAmountTotalGross(), Currency.getInstance("PLN"), new URL("https://www.meinShop.de"), getMaximumCustomerSameAddress(getRandomId()), basket, invoice.getId());
     }
 
@@ -88,7 +88,7 @@ public class InvoiceSecuredTest extends AbstractPaymentTest {
     @Test
     public void testShipmentInvoiceSecuredType() throws HttpCommunicationException, MalformedURLException, ParseException {
         InvoiceSecured invoice = getUnzer().createPaymentType(getInvoiceSecured());
-        Basket basket = getMinTestBasket();
+        Basket basket = getMinTestBasketV1();
         String invoiceId = new Date().getTime() + "";
         Charge charge = getUnzer().charge(basket.getAmountTotalGross(), Currency.getInstance("EUR"), invoice, new URL("https://www.meinShop.de"), getMaximumCustomerSameAddress(getRandomId()), basket);
         Shipment shipment = getUnzer().shipment(charge.getPaymentId(), invoiceId);
@@ -139,7 +139,7 @@ public class InvoiceSecuredTest extends AbstractPaymentTest {
         boolean matches = invoiceSecured.getId().matches("s-ivf-\\w*");
         assertTrue(matches);
 
-        Charge charge = invoiceSecured.charge(BigDecimal.TEN, Currency.getInstance("EUR"), new URL("https://www.meinShop.de"), getMaximumCustomerSameAddress(getRandomId()), createBasket(), getRandomId());
+        Charge charge = invoiceSecured.charge(BigDecimal.TEN, Currency.getInstance("EUR"), new URL("https://www.meinShop.de"), getMaximumCustomerSameAddress(getRandomId()), createBasketV1(), getRandomId());
         assertNotNull(charge.getPaymentId());
     }
 

@@ -87,7 +87,7 @@ public class InstallmentSecuredTest extends AbstractPaymentTest {
         assertNotNull(ratePlanReturned);
         assertRatePlan(ratePlan, ratePlanReturned);
 
-        Authorization authorization = ratePlanReturned.authorize(new BigDecimal(370.48), Currency.getInstance("EUR"), new URL("https://www.unzer.com"), createMaximumCustomerSameAddress().getId(), createBasket().getId(), ratePlan.getEffectiveInterestRate());
+        Authorization authorization = ratePlanReturned.authorize(new BigDecimal(370.48), Currency.getInstance("EUR"), new URL("https://www.unzer.com"), createMaximumCustomerSameAddress().getId(), createBasketV1().getId(), ratePlan.getEffectiveInterestRate());
         assertValidAuthorize(ratePlan, authorization);
     }
 
@@ -99,7 +99,7 @@ public class InstallmentSecuredTest extends AbstractPaymentTest {
         assertNotNull(ratePlanReturned);
         assertRatePlan(ratePlan, ratePlanReturned);
 
-        Authorization authorization = getUnzer().authorize(getAuthorization(ratePlanReturned.getId(), createMaximumCustomerSameAddress().getId(), createBasket().getId(), ratePlan.getEffectiveInterestRate()));
+        Authorization authorization = getUnzer().authorize(getAuthorization(ratePlanReturned.getId(), createMaximumCustomerSameAddress().getId(), createBasketV1().getId(), ratePlan.getEffectiveInterestRate()));
         assertValidAuthorize(ratePlan, authorization);
     }
 
@@ -110,7 +110,7 @@ public class InstallmentSecuredTest extends AbstractPaymentTest {
         assertNotNull(ratePlanReturned);
         assertRatePlan(ratePlan, ratePlanReturned);
 
-        Authorization authorization = ratePlanReturned.authorize(new BigDecimal(370.48), Currency.getInstance("EUR"), new URL("https://www.unzer.com"), createMaximumCustomerSameAddress().getId(), createBasket().getId(), ratePlan.getEffectiveInterestRate());
+        Authorization authorization = ratePlanReturned.authorize(new BigDecimal(370.48), Currency.getInstance("EUR"), new URL("https://www.unzer.com"), createMaximumCustomerSameAddress().getId(), createBasketV1().getId(), ratePlan.getEffectiveInterestRate());
         assertValidAuthorize(ratePlan, authorization);
 
         Charge charge = authorization.charge();
@@ -124,7 +124,7 @@ public class InstallmentSecuredTest extends AbstractPaymentTest {
         assertNotNull(ratePlanReturned);
         assertRatePlan(ratePlan, ratePlanReturned);
 
-        Authorization authorization = ratePlanReturned.authorize(new BigDecimal(370.48), Currency.getInstance("EUR"), new URL("https://www.unzer.com"), createMaximumCustomerSameAddress().getId(), createBasket().getId(), ratePlan.getEffectiveInterestRate());
+        Authorization authorization = ratePlanReturned.authorize(new BigDecimal(370.48), Currency.getInstance("EUR"), new URL("https://www.unzer.com"), createMaximumCustomerSameAddress().getId(), createBasketV1().getId(), ratePlan.getEffectiveInterestRate());
         assertValidAuthorize(ratePlan, authorization);
 
         Charge charge = authorization.charge();
@@ -141,7 +141,7 @@ public class InstallmentSecuredTest extends AbstractPaymentTest {
         assertNotNull(ratePlanReturned);
         assertRatePlan(ratePlan, ratePlanReturned);
 
-        Authorization authorization = ratePlanReturned.authorize(new BigDecimal(370.48), Currency.getInstance("EUR"), new URL("https://www.unzer.com"), createMaximumCustomerSameAddress().getId(), createBasket().getId(), ratePlan.getEffectiveInterestRate());
+        Authorization authorization = ratePlanReturned.authorize(new BigDecimal(370.48), Currency.getInstance("EUR"), new URL("https://www.unzer.com"), createMaximumCustomerSameAddress().getId(), createBasketV1().getId(), ratePlan.getEffectiveInterestRate());
         assertValidAuthorize(ratePlan, authorization);
 
         Charge charge = authorization.charge();
@@ -164,7 +164,7 @@ public class InstallmentSecuredTest extends AbstractPaymentTest {
         assertNotNull(ratePlanReturned);
         assertRatePlan(ratePlan, ratePlanReturned);
 
-        Authorization authorization = ratePlanReturned.authorize(new BigDecimal(370.48), Currency.getInstance("EUR"), new URL("https://www.unzer.com"), createMaximumCustomerSameAddress().getId(), createBasket().getId(), ratePlan.getEffectiveInterestRate());
+        Authorization authorization = ratePlanReturned.authorize(new BigDecimal(370.48), Currency.getInstance("EUR"), new URL("https://www.unzer.com"), createMaximumCustomerSameAddress().getId(), createBasketV1().getId(), ratePlan.getEffectiveInterestRate());
         assertValidAuthorize(ratePlan, authorization);
 
         Charge charge = authorization.charge();
@@ -182,7 +182,7 @@ public class InstallmentSecuredTest extends AbstractPaymentTest {
         assertNotNull(ratePlanReturned);
         assertRatePlan(ratePlan, ratePlanReturned);
 
-        Authorization authorization = ratePlanReturned.authorize(new BigDecimal(370.48), Currency.getInstance("EUR"), new URL("https://www.unzer.com"), createMaximumCustomerSameAddress().getId(), createBasket().getId(), ratePlan.getEffectiveInterestRate());
+        Authorization authorization = ratePlanReturned.authorize(new BigDecimal(370.48), Currency.getInstance("EUR"), new URL("https://www.unzer.com"), createMaximumCustomerSameAddress().getId(), createBasketV1().getId(), ratePlan.getEffectiveInterestRate());
         assertValidAuthorize(ratePlan, authorization);
 
         Charge charge = authorization.charge();
@@ -334,7 +334,7 @@ public class InstallmentSecuredTest extends AbstractPaymentTest {
         JsonParser jsonParser = new JsonParser();
         PaymentService paymentService = new PaymentService(unzer, restCommunication);
         Customer maximumCustomer = createMaximumCustomer();
-        Basket basket = createBasket(BigDecimal.valueOf(380.48));
+        Basket basket = createBasketV1(BigDecimal.valueOf(380.48));
 
         String response = restCommunication.httpPost("https://api.unzer.com/v1/types/hire-purchase-direct-debit", unzer.getPrivateKey(), getInstallmentSecuredRatePlan(BigDecimal.valueOf(380.48)));
         JsonIdObject jsonResponse = jsonParser.fromJson(response, JsonIdObject.class);

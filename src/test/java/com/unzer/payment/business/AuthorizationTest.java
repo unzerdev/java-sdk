@@ -225,7 +225,7 @@ public class AuthorizationTest extends AbstractPaymentTest {
 		String participantId_2 = MARKETPLACE_PARTICIPANT_ID_2;
 		
 		//create basket
-		Basket maxBasket = getMaxTestBasket();
+		Basket maxBasket = getMaxTestBasketV1();
 		maxBasket.setAmountTotalDiscount(null);
 		
 		maxBasket.getBasketItems().get(0).setParticipantId(participantId_1);

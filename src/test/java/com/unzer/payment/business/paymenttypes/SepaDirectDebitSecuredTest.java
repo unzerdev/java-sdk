@@ -70,7 +70,7 @@ public class SepaDirectDebitSecuredTest extends AbstractPaymentTest {
     public void testChargeSepaDirectDebitSecuredType() throws HttpCommunicationException, MalformedURLException, ParseException {
         SepaDirectDebitSecured sdd = getUnzer().createPaymentType(getSepaDirectDebitSecured());
         assertNotNull(sdd.getId());
-        Basket basket = getUnzer().createBasket(getMinTestBasket());
+        Basket basket = getUnzer().createBasket(getMinTestBasketV1());
         sdd.charge(basket.getAmountTotalGross(), Currency.getInstance("EUR"), new URL("https://www.unzer.com"), getMaximumCustomerSameAddress(getRandomId()), basket);
     }
 

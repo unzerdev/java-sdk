@@ -224,7 +224,7 @@ public abstract class AbstractSeleniumTest extends AbstractPaymentTest {
 		paypage.setCurrency(Currency.getInstance("EUR"));
 		paypage.setReturnUrl(new URL(getReturnUrl()));
 		paypage.setCustomerId(getUnzer().createCustomer(getMaximumCustomerSameAddress(getRandomId())).getId());
-		paypage.setBasketId(getUnzer().createBasket(getMaxTestBasket()).getId());
+		paypage.setBasketId(getUnzer().createBasket(getMaxTestBasketV1()).getId());
 		paypage.setMetadataId(getUnzer().createMetadata(getTestMetadata()).getId());
 		return paypage;
 	}

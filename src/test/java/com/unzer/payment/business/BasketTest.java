@@ -36,7 +36,7 @@ public class BasketTest extends AbstractPaymentTest {
 
 	@Test
 	public void testCreateFetchBasket() throws HttpCommunicationException {
-		Basket maxBasket = getMaxTestBasket();
+		Basket maxBasket = getMaxTestBasketV1();
 		int basketItemCnt = maxBasket.getBasketItems().size();
 		for(int i=0; i<basketItemCnt; i++) {
 			maxBasket.getBasketItems().get(i).setParticipantId("testparticipant" + (i + 1));
@@ -51,7 +51,7 @@ public class BasketTest extends AbstractPaymentTest {
 
 	@Test
 	public void testCreateFetchMinBasket() throws HttpCommunicationException {
-		Basket minBasket = getMinTestBasket();
+		Basket minBasket = getMinTestBasketV1();
 		Basket basket = getUnzer().createBasket(minBasket);
 		Basket basketFetched = getUnzer().fetchBasket(basket.getId());
 		assertNotNull(basketFetched);
@@ -61,10 +61,10 @@ public class BasketTest extends AbstractPaymentTest {
 
 	@Test
 	public void testUpdateBasket() throws HttpCommunicationException {
-		Basket minBasket = getMinTestBasket();
+		Basket minBasket = getMinTestBasketV1();
 		Basket basket = getUnzer().createBasket(minBasket);
 		Basket basketFetched = getUnzer().fetchBasket(basket.getId());
-		Basket maxBasket = getMaxTestBasket();
+		Basket maxBasket = getMaxTestBasketV1();
 		maxBasket.setOrderId(basket.getOrderId());
 		Basket updatedBasket = getUnzer().updateBasket(maxBasket, basket.getId());
 		assertNotNull(basketFetched);
@@ -74,7 +74,7 @@ public class BasketTest extends AbstractPaymentTest {
 
 	@Test
 	public void testUpdateBasketWithFetched() throws HttpCommunicationException {
-		Basket minBasket = getMinTestBasket();
+		Basket minBasket = getMinTestBasketV1();
 		Basket basket = getUnzer().createBasket(minBasket);
 		Basket basketFetched = getUnzer().fetchBasket(basket.getId());
 		basketFetched.setNote("Something changed");
@@ -115,7 +115,7 @@ public class BasketTest extends AbstractPaymentTest {
 	}
 
 	private Basket createMaxTestBasket() throws PaymentException, HttpCommunicationException {
-		return getUnzer().createBasket(getMaxTestBasket());
+		return getUnzer().createBasket(getMaxTestBasketV1());
 	}
 
 

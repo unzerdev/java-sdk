@@ -88,7 +88,7 @@ public class PayoutTest extends AbstractPaymentTest {
         payout.setPaymentReference("My Payment Reference");
         payout.setReturnUrl(new URL("https://www.unzer.com"));
         payout.setTypeId(typeId);
-        payout.setBasketId(getUnzer().createBasket(getMaxTestBasket()).getId());
+        payout.setBasketId(getUnzer().createBasket(getMaxTestBasketV1()).getId());
         payout.setCustomerId(createMaximumCustomerSameAddress().getId());
         payout.setMetadataId(createTestMetadata().getId());
         return payout;

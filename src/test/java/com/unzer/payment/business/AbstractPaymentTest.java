@@ -276,12 +276,12 @@ public abstract class AbstractPaymentTest {
         return getUnzer().createCustomer(getMaximumCustomer(getRandomId()));
     }
 
-    protected Basket createBasket() throws HttpCommunicationException, ParseException {
-        return getUnzer().createBasket(getMaxTestBasket());
+    protected Basket createBasketV1() throws HttpCommunicationException, ParseException {
+        return getUnzer().createBasket(getMaxTestBasketV1());
     }
 
-    protected Basket createBasket(BigDecimal amount) throws HttpCommunicationException, ParseException {
-        return getUnzer().createBasket(getMaxTestBasket(amount));
+    protected Basket createBasketV1(BigDecimal amount) throws HttpCommunicationException, ParseException {
+        return getUnzer().createBasket(getMaxTestBasketV1(amount));
     }
 
     protected Customer createFactoringOKCustomer() throws HttpCommunicationException, ParseException {
@@ -549,7 +549,7 @@ public abstract class AbstractPaymentTest {
         return strText.substring(0, start) + sbMaskString.toString() + strText.substring(start + maskLength);
     }
 
-    protected Basket getMaxTestBasket() {
+    protected Basket getMaxTestBasketV1() {
         Basket basket = new Basket();
         basket.setAmountTotalGross(new BigDecimal(380.48));
         basket.setAmountTotalVat(new BigDecimal(380.48 * 0.2).setScale(2, RoundingMode.HALF_UP));
@@ -558,12 +558,12 @@ public abstract class AbstractPaymentTest {
         basket.setCurrencyCode(Currency.getInstance("EUR"));
         basket.setNote("Mistery shopping");
         basket.setOrderId(getRandomId());
-        basket.addBasketItem(getMaxTestBasketItem1());
-        basket.addBasketItem(getMaxTestBasketItem2());
+        basket.addBasketItem(getMaxTestBasketItem1V1());
+        basket.addBasketItem(getMaxTestBasketItem2V1());
         return basket;
     }
 
-    protected Basket getMaxTestBasket(BigDecimal amount) {
+    protected Basket getMaxTestBasketV1(BigDecimal amount) {
         Basket basket = new Basket();
         basket.setAmountTotalGross(amount);
         basket.setAmountTotalVat(amount.multiply(BigDecimal.valueOf(0.2)).setScale(2, RoundingMode.HALF_UP));
@@ -572,12 +572,12 @@ public abstract class AbstractPaymentTest {
         basket.setCurrencyCode(Currency.getInstance("EUR"));
         basket.setNote("Mistery shopping");
         basket.setOrderId(getRandomId());
-        basket.addBasketItem(getMaxTestBasketItem1());
-        basket.addBasketItem(getMaxTestBasketItem2());
+        basket.addBasketItem(getMaxTestBasketItem1V1());
+        basket.addBasketItem(getMaxTestBasketItem2V1());
         return basket;
     }
 
-    protected Basket getTestBasketForInvoice() {
+    protected Basket getTestBasketV1ForInvoice() {
         Basket basket = new Basket();
         basket.setAmountTotalGross(new BigDecimal(14.49));
         basket.setAmountTotalVat(new BigDecimal(14.49 * 0.2).setScale(2, RoundingMode.HALF_UP));
@@ -586,20 +586,20 @@ public abstract class AbstractPaymentTest {
         basket.setCurrencyCode(Currency.getInstance("EUR"));
         basket.setNote("Mistery shopping");
         basket.setOrderId(getRandomId());
-        basket.addBasketItem(getMaxTestBasketItem1());
+        basket.addBasketItem(getMaxTestBasketItem1V1());
         return basket;
     }
 
-    protected Basket getMinTestBasket() {
+    protected Basket getMinTestBasketV1() {
         Basket basket = new Basket()
                 .setAmountTotalGross(new BigDecimal(500.5))
                 .setCurrencyCode(Currency.getInstance("EUR"))
                 .setOrderId(getRandomId())
-                .addBasketItem(getMinTestBasketItem());
+                .addBasketItem(getMinTestBasketItemV1());
         return basket;
     }
 
-    private BasketItem getMaxTestBasketItem1() {
+    private BasketItem getMaxTestBasketItem1V1() {
         BasketItem basketItem = new BasketItem();
         basketItem.setBasketItemReferenceId("Artikelnummer4711");
         basketItem.setAmountDiscount(BigDecimal.ONE);
@@ -620,7 +620,7 @@ public abstract class AbstractPaymentTest {
         return basketItem;
     }
 
-    private BasketItem getMaxTestBasketItem2() {
+    private BasketItem getMaxTestBasketItem2V1() {
         BasketItem basketItem = new BasketItem();
         basketItem.setBasketItemReferenceId("Artikelnummer4712");
         basketItem.setAmountDiscount(BigDecimal.ONE);
@@ -641,7 +641,7 @@ public abstract class AbstractPaymentTest {
         return basketItem;
     }
 
-    private BasketItem getMinTestBasketItem() {
+    private BasketItem getMinTestBasketItemV1() {
         BasketItem basketItem = new BasketItem()
                 .setBasketItemReferenceId("Artikelnummer4711")
                 .setQuantity(5)
