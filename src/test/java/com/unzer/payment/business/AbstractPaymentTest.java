@@ -276,10 +276,12 @@ public abstract class AbstractPaymentTest {
         return getUnzer().createCustomer(getMaximumCustomer(getRandomId()));
     }
 
+    @Deprecated
     protected Basket createBasketV1() throws HttpCommunicationException, ParseException {
         return getUnzer().createBasket(getMaxTestBasketV1());
     }
 
+    @Deprecated
     protected Basket createBasketV1(BigDecimal amount) throws HttpCommunicationException, ParseException {
         return getUnzer().createBasket(getMaxTestBasketV1(amount));
     }
@@ -549,6 +551,7 @@ public abstract class AbstractPaymentTest {
         return strText.substring(0, start) + sbMaskString.toString() + strText.substring(start + maskLength);
     }
 
+    @Deprecated
     protected Basket getMaxTestBasketV1() {
         Basket basket = new Basket();
         basket.setAmountTotalGross(new BigDecimal(380.48));
@@ -563,6 +566,17 @@ public abstract class AbstractPaymentTest {
         return basket;
     }
 
+    protected Basket getMaxTestBasketV2() {
+        return new Basket()
+                .setTotalValueGross(BigDecimal.valueOf(684.47))
+                .setCurrencyCode(Currency.getInstance("EUR"))
+                .setOrderId(getRandomId())
+                .addBasketItem(getMaxTestBasketItem1V2()) // 14.49 - 1.0
+                .addBasketItem(getMaxTestBasketItem2V2()); // 223.66
+    }
+
+
+    @Deprecated
     protected Basket getMaxTestBasketV1(BigDecimal amount) {
         Basket basket = new Basket();
         basket.setAmountTotalGross(amount);
@@ -577,6 +591,18 @@ public abstract class AbstractPaymentTest {
         return basket;
     }
 
+    protected Basket getMaxTestBasketV2(BigDecimal amount) {
+        return new Basket()
+                .setTotalValueGross(amount)
+                .setCurrencyCode(Currency.getInstance("EUR"))
+                .setNote("Mistery shopping")
+                .setOrderId(getRandomId())
+                .addBasketItem(getMaxTestBasketItem1V2())
+                .addBasketItem(getMaxTestBasketItem2V2());
+    }
+
+
+    @Deprecated
     protected Basket getTestBasketV1ForInvoice() {
         Basket basket = new Basket();
         basket.setAmountTotalGross(new BigDecimal(14.49));
@@ -590,6 +616,16 @@ public abstract class AbstractPaymentTest {
         return basket;
     }
 
+    protected Basket getTestBasketV2ForInvoice() {
+        return new Basket()
+                .setTotalValueGross(BigDecimal.valueOf(14.49))
+                .setCurrencyCode(Currency.getInstance("EUR"))
+                .setOrderId(getRandomId())
+                .addBasketItem(getMaxTestBasketItem1V2());
+    }
+
+
+    @Deprecated
     protected Basket getMinTestBasketV1() {
         Basket basket = new Basket()
                 .setAmountTotalGross(new BigDecimal(500.5))
@@ -599,6 +635,16 @@ public abstract class AbstractPaymentTest {
         return basket;
     }
 
+    protected Basket getMinTestBasketV2() {
+        return new Basket()
+                .setTotalValueGross(BigDecimal.valueOf(500.5))
+                .setCurrencyCode(Currency.getInstance("EUR"))
+                .setOrderId(getRandomId())
+                .addBasketItem(getMinTestBasketItemV2());
+    }
+
+
+    @Deprecated
     private BasketItem getMaxTestBasketItem1V1() {
         BasketItem basketItem = new BasketItem();
         basketItem.setBasketItemReferenceId("Artikelnummer4711");
@@ -620,6 +666,29 @@ public abstract class AbstractPaymentTest {
         return basketItem;
     }
 
+    private BasketItem getMaxTestBasketItem1V2() {
+        return new BasketItem()
+                .setBasketItemReferenceId("Artikelnummer4711")
+                .setAmountPerUnitGross(BigDecimal.valueOf(14.49))
+                .setAmountDiscountPerUnitGross(BigDecimal.ONE)
+                .setQuantity(1)
+                .setTitle("Apple iPhone")
+                .setUnit("Pc.")
+                .setVat(19)
+                .setSubTitle("XS in Red").setType(BasketItem.Type.GOODS)
+                .setImageUrl(unsafeUrl("https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/iphone-12-pro-family-hero"));
+    }
+
+    private URL unsafeUrl(String value) {
+        try {
+            return new URL(value);
+        } catch (MalformedURLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+
+    @Deprecated
     private BasketItem getMaxTestBasketItem2V1() {
         BasketItem basketItem = new BasketItem();
         basketItem.setBasketItemReferenceId("Artikelnummer4712");
@@ -641,6 +710,22 @@ public abstract class AbstractPaymentTest {
         return basketItem;
     }
 
+    private BasketItem getMaxTestBasketItem2V2() {
+        return new BasketItem()
+                .setBasketItemReferenceId("Artikelnummer4712")
+                .setAmountPerUnitGross(BigDecimal.valueOf(223.66))
+                .setQuantity(3)
+                .setTitle("Apple iPad Air")
+                .setUnit("Pc.")
+                .setAmountDiscountPerUnitGross(BigDecimal.ZERO)
+                .setVat(20)
+                .setSubTitle("Nicht nur Pros brauchen Power.")
+                .setType(BasketItem.Type.GOODS)
+                .setImageUrl(unsafeUrl("https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/iphone-12-pro-family-hero"));
+    }
+
+
+    @Deprecated
     private BasketItem getMinTestBasketItemV1() {
         BasketItem basketItem = new BasketItem()
                 .setBasketItemReferenceId("Artikelnummer4711")
@@ -652,6 +737,17 @@ public abstract class AbstractPaymentTest {
         basketItem.setAmountGross(basketItem.getAmountPerUnit().multiply(new BigDecimal(basketItem.getQuantity())));
         return basketItem;
     }
+
+    private BasketItem getMinTestBasketItemV2() {
+        return new BasketItem()
+                .setBasketItemReferenceId("Artikelnummer4711")
+                .setQuantity(5)
+                .setVat(0)
+                .setAmountDiscountPerUnitGross(BigDecimal.ZERO)
+                .setAmountPerUnitGross(BigDecimal.valueOf(100.1))
+                .setTitle("Apple iPhone");
+    }
+
 
     protected int confirmMarketplacePendingTransaction(String redirectUrl) {
         try {

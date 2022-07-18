@@ -56,8 +56,9 @@ public class BasketItem {
 		return subTitle;
 	}
 
-	public void setSubTitle(String subTitle) {
+	public BasketItem setSubTitle(String subTitle) {
 		this.subTitle = subTitle;
+		return this;
 	}
 
 	/**
@@ -67,8 +68,9 @@ public class BasketItem {
 		return imageUrl;
 	}
 
-	public void setImageUrl(URL imageUrl) {
+	public BasketItem setImageUrl(URL imageUrl) {
 		this.imageUrl = imageUrl;
+		return this;
 	}
 
 	/**
@@ -134,16 +136,18 @@ public class BasketItem {
 		return type;
 	}
 
-	public void setType(Type type) {
+	public BasketItem setType(Type type) {
 		this.type = type;
+		return this;
 	}
 
 	/**
 	 * @deprecated Use enum Type instead of plain string
 	 */
 	@Deprecated
-	public void setType(String type) {
+	public BasketItem setType(String type) {
 		this.type = Type.valueOf(type.toUpperCase());
+		return this;
 	}
 
 	/**
@@ -266,7 +270,8 @@ public class BasketItem {
 	}
 
 	@Deprecated
-	public void setParticipantId(String participantId) {
+	public BasketItem setParticipantId(String participantId) {
 		this.participantId = participantId;
+		return this;
 	}
 }

@@ -34,6 +34,7 @@ public class Basket implements PaymentType {
     private Currency currencyCode;
     private String orderId;
     private BigDecimal totalValueGross;
+    @Deprecated
     private String note;
     private List<BasketItem> basketItems = new ArrayList();
 
@@ -95,13 +96,15 @@ public class Basket implements PaymentType {
     /**
      * The total basket value (including VAT) of all basket items reduced/deducted by all discounts and vouchers.
      */
-    public void setTotalValueGross(BigDecimal totalValueGross) {
+    public Basket setTotalValueGross(BigDecimal totalValueGross) {
         this.totalValueGross = totalValueGross;
+        return this;
     }
 
     /**
      * Get additional details of the basket.
      */
+    @Deprecated
     public String getNote() {
         return note;
     }
@@ -110,6 +113,7 @@ public class Basket implements PaymentType {
     /**
      * Set additional details for the basket.
      */
+    @Deprecated
     public Basket setNote(String note) {
         this.note = note;
         return this;
