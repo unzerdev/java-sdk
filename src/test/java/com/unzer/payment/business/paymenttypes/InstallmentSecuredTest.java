@@ -49,7 +49,7 @@ public class InstallmentSecuredTest extends AbstractPaymentTest {
 
     @Test
     public void testRateRetrieval() throws HttpCommunicationException, ParseException {
-        BigDecimal effectiveInterestRate = BigDecimal.valueOf(5.5).setScale(4, RoundingMode.HALF_UP);
+        BigDecimal effectiveInterestRate = new BigDecimal(5.5).setScale(4, RoundingMode.HALF_UP);
         Date orderDate = getDate("21.06.2019");
         List<InstallmentSecuredRatePlan> rateList = getUnzer().installmentSecuredRates(BigDecimal.TEN, Currency.getInstance("EUR"), effectiveInterestRate, orderDate);
         assertNotNull(rateList);
@@ -90,7 +90,7 @@ public class InstallmentSecuredTest extends AbstractPaymentTest {
         assertRatePlan(ratePlan, ratePlanReturned);
 
         Authorization authorization = ratePlanReturned.authorize(
-                BigDecimal.valueOf(370.48),
+                new BigDecimal(370.48),
                 Currency.getInstance("EUR"),
                 unsafeUrl("https://www.unzer.com"),
                 createMaximumCustomerSameAddress().getId(),
@@ -108,7 +108,7 @@ public class InstallmentSecuredTest extends AbstractPaymentTest {
         assertRatePlan(ratePlan, ratePlanReturned);
 
         Authorization authorization = ratePlanReturned.authorize(
-                BigDecimal.valueOf(370.48),
+                new BigDecimal(370.48),
                 Currency.getInstance("EUR"),
                 unsafeUrl("https://www.unzer.com"),
                 createMaximumCustomerSameAddress().getId(),
@@ -168,7 +168,7 @@ public class InstallmentSecuredTest extends AbstractPaymentTest {
         assertRatePlan(ratePlan, ratePlanReturned);
 
         Authorization authorization = ratePlanReturned.authorize(
-                BigDecimal.valueOf(370.48),
+                new BigDecimal(370.48),
                 Currency.getInstance("EUR"),
                 unsafeUrl("https://www.unzer.com"),
                 createMaximumCustomerSameAddress().getId(),
@@ -188,7 +188,7 @@ public class InstallmentSecuredTest extends AbstractPaymentTest {
         assertRatePlan(ratePlan, ratePlanReturned);
 
         Authorization authorization = ratePlanReturned.authorize(
-                BigDecimal.valueOf(370.48),
+                new BigDecimal(370.48),
                 Currency.getInstance("EUR"),
                 unsafeUrl("https://www.unzer.com"),
                 createMaximumCustomerSameAddress().getId(),
@@ -210,7 +210,7 @@ public class InstallmentSecuredTest extends AbstractPaymentTest {
         assertRatePlan(ratePlan, ratePlanReturned);
 
         Authorization authorization = ratePlanReturned.authorize(
-                BigDecimal.valueOf(370.48),
+                new BigDecimal(370.48),
                 Currency.getInstance("EUR"),
                 unsafeUrl("https://www.unzer.com"),
                 createMaximumCustomerSameAddress().getId(),
@@ -233,7 +233,7 @@ public class InstallmentSecuredTest extends AbstractPaymentTest {
         assertRatePlan(ratePlan, ratePlanReturned);
 
         Authorization authorization = ratePlanReturned.authorize(
-                BigDecimal.valueOf(370.48),
+                new BigDecimal(370.48),
                 Currency.getInstance("EUR"),
                 unsafeUrl("https://www.unzer.com"),
                 createMaximumCustomerSameAddress().getId(),
@@ -258,7 +258,7 @@ public class InstallmentSecuredTest extends AbstractPaymentTest {
         assertRatePlan(ratePlan, ratePlanReturned);
 
         Authorization authorization = ratePlanReturned.authorize(
-                BigDecimal.valueOf(370.48),
+                new BigDecimal(370.48),
                 Currency.getInstance("EUR"),
                 unsafeUrl("https://www.unzer.com"),
                 createMaximumCustomerSameAddress().getId(),
@@ -286,7 +286,7 @@ public class InstallmentSecuredTest extends AbstractPaymentTest {
         assertRatePlan(ratePlan, ratePlanReturned);
 
         Authorization authorization = ratePlanReturned.authorize(
-                BigDecimal.valueOf(370.48),
+                new BigDecimal(370.48),
                 Currency.getInstance("EUR"),
                 unsafeUrl("https://www.unzer.com"),
                 createMaximumCustomerSameAddress().getId(),
@@ -316,7 +316,7 @@ public class InstallmentSecuredTest extends AbstractPaymentTest {
         assertRatePlan(ratePlan, ratePlanReturned);
 
         Authorization authorization = ratePlanReturned.authorize(
-                BigDecimal.valueOf(370.48),
+                new BigDecimal(370.48),
                 Currency.getInstance("EUR"),
                 unsafeUrl("https://www.unzer.com"),
                 createMaximumCustomerSameAddress().getId(),
@@ -340,7 +340,7 @@ public class InstallmentSecuredTest extends AbstractPaymentTest {
         assertRatePlan(ratePlan, ratePlanReturned);
 
         Authorization authorization = ratePlanReturned.authorize(
-                BigDecimal.valueOf(370.48),
+                new BigDecimal(370.48),
                 Currency.getInstance("EUR"),
                 unsafeUrl("https://www.unzer.com"),
                 createMaximumCustomerSameAddress().getId(),
@@ -366,7 +366,7 @@ public class InstallmentSecuredTest extends AbstractPaymentTest {
         assertRatePlan(ratePlan, ratePlanReturned);
 
         Authorization authorization = ratePlanReturned.authorize(
-                BigDecimal.valueOf(370.48),
+                new BigDecimal("370.48"),
                 Currency.getInstance("EUR"),
                 unsafeUrl("https://www.unzer.com"),
                 createMaximumCustomerSameAddress().getId(),
@@ -393,7 +393,7 @@ public class InstallmentSecuredTest extends AbstractPaymentTest {
         assertRatePlan(ratePlan, ratePlanReturned);
 
         Authorization authorization = ratePlanReturned.authorize(
-                BigDecimal.valueOf(370.48),
+                new BigDecimal("380.38"),
                 Currency.getInstance("EUR"),
                 unsafeUrl("https://www.unzer.com"),
                 createMaximumCustomerSameAddress().getId(),
@@ -447,7 +447,7 @@ public class InstallmentSecuredTest extends AbstractPaymentTest {
     }
 
     private BigDecimal getAmount() {
-        BigDecimal amount = BigDecimal.valueOf(370.4800);
+        BigDecimal amount = new BigDecimal("370.4800");
         return amount.setScale(2, RoundingMode.HALF_UP);
     }
 
@@ -464,7 +464,7 @@ public class InstallmentSecuredTest extends AbstractPaymentTest {
     }
 
     private InstallmentSecuredRatePlan getInstallmentSecuredRatePlan() throws ParseException, HttpCommunicationException {
-        BigDecimal effectiveInterestRate = BigDecimal.valueOf(5.5);
+        BigDecimal effectiveInterestRate = new BigDecimal(5.5);
         Date orderDate = getDate("21.06.2019");
         List<InstallmentSecuredRatePlan> rateList = getUnzer().installmentSecuredRates(BigDecimal.TEN, Currency.getInstance("EUR"), effectiveInterestRate, orderDate);
         InstallmentSecuredRatePlan ratePlan = rateList.get(0);
@@ -472,7 +472,7 @@ public class InstallmentSecuredTest extends AbstractPaymentTest {
     }
 
     private InstallmentSecuredRatePlan getInstallmentSecuredRatePlan(BigDecimal amount) throws ParseException, HttpCommunicationException {
-        BigDecimal effectiveInterestRate = BigDecimal.valueOf(5.5);
+        BigDecimal effectiveInterestRate = new BigDecimal(5.5);
         Date orderDate = getDate("21.06.2019");
         List<InstallmentSecuredRatePlan> rateList = getUnzer().installmentSecuredRates(amount, Currency.getInstance("EUR"), effectiveInterestRate, orderDate);
         InstallmentSecuredRatePlan ratePlan = rateList.get(0);
@@ -550,13 +550,13 @@ public class InstallmentSecuredTest extends AbstractPaymentTest {
         JsonParser jsonParser = new JsonParser();
         PaymentService paymentService = new PaymentService(unzer, restCommunication);
         Customer maximumCustomer = createMaximumCustomer();
-        Basket basket = createBasket(getMaxTestBasketV1(BigDecimal.valueOf(380.48)));
+        Basket basket = createBasket(getMaxTestBasketV1(new BigDecimal(380.48)));
 
         // FIXME: hardcoded endpoint
         String response = restCommunication.httpPost(
                 "https://api.unzer.com/v1/types/hire-purchase-direct-debit",
                 unzer.getPrivateKey(),
-                getInstallmentSecuredRatePlan(BigDecimal.valueOf(380.48))
+                getInstallmentSecuredRatePlan(new BigDecimal(380.48))
         );
         JsonIdObject jsonResponse = jsonParser.fromJson(response, JsonIdObject.class);
         InstallmentSecuredRatePlan installmentSecuredRatePlan = paymentService.fetchPaymentType(jsonResponse.getId());
@@ -566,12 +566,12 @@ public class InstallmentSecuredTest extends AbstractPaymentTest {
         );
 
         Authorization authorize = installmentSecuredRatePlan.authorize(
-                BigDecimal.valueOf(380.48),
+                new BigDecimal(380.48),
                 Currency.getInstance("EUR"),
                 unsafeUrl("https://www.meinShop.de"),
                 maximumCustomer.getCustomerId(),
                 basket.getId(),
-                BigDecimal.valueOf(5.5));
+                new BigDecimal(5.5));
         assertNotNull(authorize.getPaymentId());
     }
 
@@ -583,13 +583,13 @@ public class InstallmentSecuredTest extends AbstractPaymentTest {
         JsonParser jsonParser = new JsonParser();
         PaymentService paymentService = new PaymentService(unzer, restCommunication);
         Customer maximumCustomer = createMaximumCustomer();
-        Basket basket = createBasket(getMaxTestBasketV1(BigDecimal.valueOf(380.48)));
+        Basket basket = createBasket(getMaxTestBasketV1(new BigDecimal(380.48)));
 
         // FIXME: hardcoded endpoint
         String response = restCommunication.httpPost(
                 "https://api.unzer.com/v1/types/hire-purchase-direct-debit",
                 unzer.getPrivateKey(),
-                getInstallmentSecuredRatePlan(BigDecimal.valueOf(380.48))
+                getInstallmentSecuredRatePlan(new BigDecimal(380.48))
         );
         JsonIdObject jsonResponse = jsonParser.fromJson(response, JsonIdObject.class);
         InstallmentSecuredRatePlan installmentSecuredRatePlan = paymentService.fetchPaymentType(jsonResponse.getId());
@@ -599,17 +599,17 @@ public class InstallmentSecuredTest extends AbstractPaymentTest {
         );
 
         Authorization authorize = installmentSecuredRatePlan.authorize(
-                BigDecimal.valueOf(380.48),
+                new BigDecimal(380.48),
                 Currency.getInstance("EUR"),
                 unsafeUrl("https://www.meinShop.de"),
                 maximumCustomer.getCustomerId(),
                 basket.getId(),
-                BigDecimal.valueOf(5.5));
+                new BigDecimal(5.5));
         assertNotNull(authorize.getPaymentId());
     }
 
     // TODO: remove or extract to separate class
     private BigDecimal getBigDecimalFourDigits(double number) {
-        return BigDecimal.valueOf(number).setScale(4, RoundingMode.HALF_UP);
+        return new BigDecimal(number).setScale(4, RoundingMode.HALF_UP);
     }
 }

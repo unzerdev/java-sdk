@@ -13,7 +13,7 @@ public class BasketV2TestData {
     // TODO: remove unused
     public static Basket getTestBasketV2ForInvoice() {
         return new Basket()
-                .setTotalValueGross(BigDecimal.valueOf(14.49))
+                .setTotalValueGross(new BigDecimal("14.49"))
                 .setCurrencyCode(Currency.getInstance("EUR"))
                 .setOrderId(generateUuid())
                 .addBasketItem(getMaxTestBasketItem1V2());
@@ -21,17 +21,17 @@ public class BasketV2TestData {
 
     public static Basket getMaxTestBasketV2() {
         return new Basket()
-                .setTotalValueGross(BigDecimal.valueOf(684.47))
+                .setTotalValueGross(new BigDecimal("380.48"))
                 .setCurrencyCode(Currency.getInstance("EUR"))
                 .setOrderId(generateUuid())
-                .addBasketItem(getMaxTestBasketItem1V2()) // 14.49 - 1.0
-                .addBasketItem(getMaxTestBasketItem2V2()); // 223.66
+                .addBasketItem(getMaxTestBasketItem1V2()) // 14.48 - 1.0
+                .addBasketItem(getMaxTestBasketItem2V2()); // 366 // 122 * 3
     }
 
     public static BasketItem getMaxTestBasketItem2V2() {
         return new BasketItem()
                 .setBasketItemReferenceId("Artikelnummer4712")
-                .setAmountPerUnitGross(BigDecimal.valueOf(223.66))
+                .setAmountPerUnitGross(new BigDecimal("122"))
                 .setQuantity(3)
                 .setTitle("Apple iPad Air")
                 .setUnit("Pc.")
@@ -46,8 +46,8 @@ public class BasketV2TestData {
     public static BasketItem getMaxTestBasketItem1V2() {
         return new BasketItem()
                 .setBasketItemReferenceId("Artikelnummer4711")
-                .setAmountPerUnitGross(BigDecimal.valueOf(14.49))
-                .setAmountDiscountPerUnitGross(BigDecimal.ONE)
+                .setAmountPerUnitGross(new BigDecimal("24.48"))
+                .setAmountDiscountPerUnitGross(BigDecimal.TEN)
                 .setQuantity(1)
                 .setTitle("Apple iPhone")
                 .setUnit("Pc.")
@@ -72,14 +72,14 @@ public class BasketV2TestData {
                 .setQuantity(5)
                 .setVat(0)
                 .setAmountDiscountPerUnitGross(BigDecimal.ZERO)
-                .setAmountPerUnitGross(BigDecimal.valueOf(100.1))
+                .setAmountPerUnitGross(new BigDecimal("100.1"))
                 .setTitle("Apple iPhone");
     }
 
 
     public static Basket getMinTestBasketV2() {
         return new Basket()
-                .setTotalValueGross(BigDecimal.valueOf(500.5))
+                .setTotalValueGross(new BigDecimal("500.5"))
                 .setCurrencyCode(Currency.getInstance("EUR"))
                 .setOrderId(generateUuid())
                 .addBasketItem(getMinTestBasketItemV2());
