@@ -37,6 +37,7 @@ import java.text.ParseException;
 import java.util.Currency;
 import java.util.Date;
 
+import static com.unzer.payment.business.BasketV1TestData.getMaxTestBasketV1;
 import static com.unzer.payment.business.BasketV1TestData.getMinTestBasketV1;
 import static com.unzer.payment.business.BasketV2TestData.getMaxTestBasketV2;
 import static com.unzer.payment.business.BasketV2TestData.getMinTestBasketV2;
@@ -189,7 +190,13 @@ public class InvoiceSecuredTest extends AbstractPaymentTest {
         boolean matches = invoiceSecured.getId().matches("s-ivf-\\w*");
         assertTrue(matches);
 
-        Charge charge = invoiceSecured.charge(BigDecimal.TEN, Currency.getInstance("EUR"), new URL("https://www.meinShop.de"), getMaximumCustomerSameAddress(generateUuid()), createBasketV1(), generateUuid());
+        Charge charge = invoiceSecured.charge(
+                BigDecimal.TEN,
+                Currency.getInstance("EUR"),
+                new URL("https://www.meinShop.de"),
+                getMaximumCustomerSameAddress(generateUuid()),
+                createBasket(getMaxTestBasketV1()),
+                generateUuid());
         assertNotNull(charge.getPaymentId());
     }
 

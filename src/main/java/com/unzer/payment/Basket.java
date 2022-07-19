@@ -34,10 +34,10 @@ public class Basket implements PaymentType {
     private Currency currencyCode;
     private String orderId;
     private BigDecimal totalValueGross;
-    @Deprecated
-    private String note;
     private List<BasketItem> basketItems = new ArrayList();
 
+    @Deprecated
+    private String note;
     @Deprecated
     private BigDecimal amountTotalGross;
     @Deprecated
@@ -184,6 +184,7 @@ public class Basket implements PaymentType {
         return this.amountTotalGross != null; // mandatory v1 attribute is not null
     }
 
+    @Deprecated
     public boolean isV2() {
         return this.totalValueGross != null; // mandatory v2 attribute is not null
     }

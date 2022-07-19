@@ -9,6 +9,7 @@ import com.unzer.payment.communication.json.JsonIdObject;
 import com.unzer.payment.service.PaymentService;
 import org.apache.commons.lang3.time.DateUtils;
 import org.junit.Assert;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import java.math.BigDecimal;
@@ -99,6 +100,7 @@ public class InstallmentSecuredTest extends AbstractPaymentTest {
         assertValidAuthorize(ratePlan, authorization);
     }
 
+    @Ignore("https://unz.atlassian.net/browse/AHC-5292")
     @Test
     public void testAuthorizeViaTypeWithIbanBasketV2() throws HttpCommunicationException, ParseException {
         InstallmentSecuredRatePlan ratePlan = getInstallmentSecuredRatePlan();
@@ -139,6 +141,7 @@ public class InstallmentSecuredTest extends AbstractPaymentTest {
         assertValidAuthorize(ratePlan, authorization);
     }
 
+    @Ignore("https://unz.atlassian.net/browse/AHC-5292")
     @Test
     public void testAuthorizeViaUnzerTypeIdWithIbanBasketV2() throws HttpCommunicationException, ParseException, MalformedURLException {
         InstallmentSecuredRatePlan ratePlan = getInstallmentSecuredRatePlan();
@@ -180,6 +183,7 @@ public class InstallmentSecuredTest extends AbstractPaymentTest {
         assertValidCharge(charge);
     }
 
+    @Ignore("https://unz.atlassian.net/browse/AHC-5292")
     @Test
     public void testChargeViaAuthorizeBasketV2() throws HttpCommunicationException, ParseException {
         InstallmentSecuredRatePlan ratePlan = createInstallmentSecuredType(getInstallmentSecuredRatePlan());
@@ -225,6 +229,7 @@ public class InstallmentSecuredTest extends AbstractPaymentTest {
         assertValidCancel(cancel, getAmount());
     }
 
+    @Ignore("https://unz.atlassian.net/browse/AHC-5292")
     @Test
     public void testFullCancellationBeforeShipmentBasketV2() throws HttpCommunicationException, ParseException {
         InstallmentSecuredRatePlan ratePlan = createInstallmentSecuredType(getInstallmentSecuredRatePlan());
@@ -278,6 +283,7 @@ public class InstallmentSecuredTest extends AbstractPaymentTest {
         assertValidCancel(cancel, getBigDecimalFourDigits(370.48));
     }
 
+    @Ignore("https://unz.atlassian.net/browse/AHC-5292")
     @Test
     public void testPartialCancellationBeforeShipmentBasketV2() throws HttpCommunicationException, ParseException {
         InstallmentSecuredRatePlan ratePlan = createInstallmentSecuredType(getInstallmentSecuredRatePlan());
@@ -331,6 +337,7 @@ public class InstallmentSecuredTest extends AbstractPaymentTest {
         assertValidShipment(shipment);
     }
 
+    @Ignore("https://unz.atlassian.net/browse/AHC-5292")
     @Test
     public void testShipmentBasketV2() throws HttpCommunicationException, ParseException {
         InstallmentSecuredRatePlan ratePlan = getInstallmentSecuredRatePlan();
@@ -384,6 +391,7 @@ public class InstallmentSecuredTest extends AbstractPaymentTest {
         assertValidCancel(cancel, getAmount());
     }
 
+    @Ignore("Until https://unz.atlassian.net/browse/AHC-5292 is resolved")
     @Test
     public void testFullCancelAfterShipmentBasketV2() throws HttpCommunicationException, ParseException {
         InstallmentSecuredRatePlan ratePlan = getInstallmentSecuredRatePlan();
@@ -576,6 +584,7 @@ public class InstallmentSecuredTest extends AbstractPaymentTest {
     }
 
 
+    @Ignore("https://unz.atlassian.net/browse/AHC-5292")
     @Test
     public void testAuthorizeHirePurchaseDirectDebitBasketV2() throws HttpCommunicationException, ParseException {
         Unzer unzer = getUnzer();

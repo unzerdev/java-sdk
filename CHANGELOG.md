@@ -20,6 +20,20 @@ to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
     rely on this method, please, replace it with `java.net.URL#URL(String)`
     constructor call
 
+*   Deprecated Basket getters/setters: `note`, `amountTotalVat`, `amountTotalGross`,
+    `amountTotalDiscount`
+
+*   Deprecated BasketItem getters/setters: `amountDiscount`, `amountGross`, `amountVat`,
+    `amountPerUnit`, `amountNet`, `participantId`
+
+### Added
+
+*   Basket v2 support:
+
+    *   Basket getters/setters: `totalValueGross`
+
+    *   BasketItem getters/setters: `amountPerUnitGross`, `amountDiscountPerUnitGross`
+
 ### Removed
 
 *   Remove `log.error` in catch clause 
@@ -31,6 +45,10 @@ to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 *   Fix log message of `com.unzer.payment.service.UrlUtil#getUrl(String)`. It was
     not formatted and contained `%s` instead
     of values
+
+### Changed
+
+*   Type of `BasketItem` type field (was `String`, become `BasketItem.Type`)
 
 ## [1.1.2.7][1.1.2.7]
 

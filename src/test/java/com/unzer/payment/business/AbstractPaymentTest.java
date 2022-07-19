@@ -278,16 +278,6 @@ public abstract class AbstractPaymentTest {
         return getUnzer().createBasket(basket);
     }
 
-    @Deprecated
-    protected Basket createBasketV1() throws HttpCommunicationException {
-        return createBasket(getMaxTestBasketV1());
-    }
-
-    @Deprecated
-    protected Basket createBasketV1(BigDecimal amount) throws HttpCommunicationException {
-        return createBasket(getMaxTestBasketV1(amount));
-    }
-
     protected Customer createFactoringOKCustomer() throws HttpCommunicationException, ParseException {
         return getUnzer().createCustomer(getFactoringOKCustomer(generateUuid()));
     }
@@ -528,10 +518,6 @@ public abstract class AbstractPaymentTest {
         BigDecimal bigDecimal = new BigDecimal(number);
         bigDecimal.setScale(4);
         return bigDecimal;
-    }
-
-    protected String maskIban(String text) {
-        return maskString(text, 6, text.length() - 4, '*');
     }
 
     protected static String maskString(String strText, int start, int end, char maskChar) {
