@@ -12,6 +12,8 @@ to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
 *   Removed `log4j-core` from Maven dependencies. **Please, provide logger
     implementation on your own**
+*   Renamed enum value `AbstractTransaction.Status.ERRROR` to `AbstractTransaction.Status.ERROR`
+*   Renamed enum value `Paypage.Status.ERRROR` to `Paypage.Status.ERROR`
 
 ### Deprecated
 

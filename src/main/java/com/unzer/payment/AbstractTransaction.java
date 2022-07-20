@@ -32,7 +32,7 @@ import java.util.Date;
 public abstract class AbstractTransaction<T extends AbstractPayment> implements PaymentType {
 
     public enum Status {
-        SUCCESS, PENDING, ERRROR
+        SUCCESS, PENDING, ERROR
     }
 
     private String id;

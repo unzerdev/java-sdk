@@ -415,7 +415,7 @@ public class JsonToBusinessClassMapper {
 		} else if (isPending) {
 			transaction.setStatus(AbstractTransaction.Status.PENDING);
 		} else if (isError) {
-			transaction.setStatus(AbstractTransaction.Status.ERRROR);
+			transaction.setStatus(AbstractTransaction.Status.ERROR);
 		}
 	}
 
