@@ -56,7 +56,7 @@ public class BasketV2TestData {
                 .setTitle("Apple iPad Air")
                 .setUnit("Pc.")
                 .setAmountDiscountPerUnitGross(BigDecimal.ZERO)
-                .setVat(20)
+                .setVat(BigDecimal.valueOf(20))
                 .setSubTitle("Nicht nur Pros brauchen Power.")
                 .setType(BasketItem.Type.GOODS)
                 .setImageUrl(unsafeUrl("https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/iphone-12-pro-family-hero"));
@@ -71,7 +71,7 @@ public class BasketV2TestData {
                 .setQuantity(1)
                 .setTitle("Apple iPhone")
                 .setUnit("Pc.")
-                .setVat(19)
+                .setVat(BigDecimal.valueOf(19))
                 .setSubTitle("XS in Red").setType(BasketItem.Type.GOODS)
                 .setImageUrl(unsafeUrl("https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/iphone-12-pro-family-hero"));
     }
@@ -90,7 +90,7 @@ public class BasketV2TestData {
         return new BasketItem()
                 .setBasketItemReferenceId("Artikelnummer4711")
                 .setQuantity(5)
-                .setVat(0)
+                .setVat(BigDecimal.ZERO)
                 .setAmountDiscountPerUnitGross(BigDecimal.ZERO)
                 .setAmountPerUnitGross(new BigDecimal("100.1"))
                 .setTitle("Apple iPhone");

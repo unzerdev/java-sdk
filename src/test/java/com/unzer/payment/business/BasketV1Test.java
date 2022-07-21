@@ -9,9 +9,9 @@ package com.unzer.payment.business;
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -22,6 +22,8 @@ package com.unzer.payment.business;
 
 import com.unzer.payment.*;
 import com.unzer.payment.communication.HttpCommunicationException;
+import com.unzer.payment.service.PropertiesUtil;
+import com.unzer.payment.service.UrlUtil;
 import org.junit.Test;
 
 import java.math.BigDecimal;
@@ -31,8 +33,7 @@ import java.util.List;
 
 import static com.unzer.payment.business.BasketV1TestData.getMaxTestBasketV1;
 import static com.unzer.payment.business.BasketV1TestData.getMinTestBasketV1;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.*;
 
 public class BasketV1Test extends AbstractPaymentTest {
 
@@ -85,7 +86,7 @@ public class BasketV1Test extends AbstractPaymentTest {
 		assertNotNull(basketFetched.getId());
 		assertBasketEquals(basketFetched, updatedBasket);
 	}
-	
+
 	@Test
 	public void testAuthorizationWithBasket() throws MalformedURLException, HttpCommunicationException {
 		Basket basket = createMaxTestBasket();
@@ -168,9 +169,18 @@ public class BasketV1Test extends AbstractPaymentTest {
 		assertEquals(expected.getParticipantId(), actual.getParticipantId());
 	}
 
-	private void assertNumberEquals(Integer expected, Integer actual) {
-		if (expected != null) {
-			assertEquals(expected, actual);
-		}
+	@Test
+	public void testBasketV2IsPriorVersion() {
+		Basket basket = new Basket()
+				.setTotalValueGross(BigDecimal.TEN)
+				.setAmountTotalGross(BigDecimal.ONE);
+
+		UrlUtil urlUtil = new UrlUtil(null);
+		String endpoint = new PropertiesUtil().getString(PropertiesUtil.REST_ENDPOINT);
+
+		String url = urlUtil.getPaymentUrl(basket, "id");
+		assertTrue(
+				url.startsWith(endpoint + "/v2/")
+		);
 	}
 }

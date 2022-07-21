@@ -229,7 +229,10 @@ public class BasketItem {
 		VOUCHER,
 
 		@SerializedName("shipment")
-		SHIPMENT
+		SHIPMENT,
+
+		@SerializedName("digital")
+		DIGITAL
 	}
 
 	@Deprecated
