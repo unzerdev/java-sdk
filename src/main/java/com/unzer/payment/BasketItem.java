@@ -32,10 +32,11 @@ public class BasketItem {
 	private String basketItemReferenceId;
 	private Integer quantity;
 	private BigDecimal amountPerUnitGross;
-	private Integer vat;
+	private BigDecimal vat;
 	private Type type;
 	private String unit;
 	private BigDecimal amountDiscountPerUnitGross;
+	private String participantId;
 
 	/**
 	 * The title of the basket item
@@ -136,15 +137,27 @@ public class BasketItem {
 	/**
 	 * The VAT value for the basket item in percentage
 	 */
-	public Integer getVat() {
+	public BigDecimal getVat() {
 		return vat;
 	}
 
 	/**
 	 * The VAT value for the basket item in percentage
 	 */
-	public BasketItem setVat(Integer vat) {
+	public BasketItem setVat(BigDecimal vat) {
 		this.vat = vat;
+		return this;
+	}
+
+
+	/**
+	 * The VAT value for the basket item in percentage.
+	 *
+	 * @deprecated Use {@link #setVat(BigDecimal)} instead
+	 */
+	@Deprecated
+	public BasketItem setVat(Integer vat) {
+		this.vat = BigDecimal.valueOf(vat);
 		return this;
 	}
 
@@ -164,7 +177,7 @@ public class BasketItem {
 	}
 
 	/**
-	 * @deprecated Use enum Type instead of plain string
+	 * @deprecated Use {@link #setType(Type)} instead
 	 */
 	@Deprecated
 	public BasketItem setType(String type) {
@@ -229,8 +242,6 @@ public class BasketItem {
 	private BigDecimal amountPerUnit;
 	@Deprecated
 	private BigDecimal amountNet;
-	@Deprecated
-	private String participantId;
 
 	/**
 	 * @deprecated Use getAmountDiscountPerUnitGross instead
@@ -293,12 +304,10 @@ public class BasketItem {
 		return this;
 	}
 
-	@Deprecated
 	public String getParticipantId() {
 		return participantId;
 	}
 
-	@Deprecated
 	public BasketItem setParticipantId(String participantId) {
 		this.participantId = participantId;
 		return this;

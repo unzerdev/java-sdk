@@ -617,7 +617,6 @@ public class InstallmentSecuredTest extends AbstractPaymentTest {
         assertNotNull(authorize.getPaymentId());
     }
 
-    // TODO: remove or extract to separate class
     private BigDecimal getBigDecimalFourDigits(double number) {
         return new BigDecimal(number).setScale(4, RoundingMode.HALF_UP);
     }

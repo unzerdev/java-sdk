@@ -36,7 +36,6 @@ public class Basket implements PaymentType {
     private BigDecimal totalValueGross;
     private List<BasketItem> basketItems = new ArrayList();
 
-    @Deprecated
     private String note;
     @Deprecated
     private BigDecimal amountTotalGross;
@@ -104,7 +103,6 @@ public class Basket implements PaymentType {
     /**
      * Get additional details of the basket.
      */
-    @Deprecated
     public String getNote() {
         return note;
     }
@@ -113,7 +111,6 @@ public class Basket implements PaymentType {
     /**
      * Set additional details for the basket.
      */
-    @Deprecated
     public Basket setNote(String note) {
         this.note = note;
         return this;
@@ -177,11 +174,6 @@ public class Basket implements PaymentType {
     public Basket setAmountTotalGross(BigDecimal amountTotalGross) {
         this.amountTotalGross = amountTotalGross;
         return this;
-    }
-
-    @Deprecated
-    public boolean isV1() {
-        return this.amountTotalGross != null; // mandatory v1 attribute is not null
     }
 
     @Deprecated

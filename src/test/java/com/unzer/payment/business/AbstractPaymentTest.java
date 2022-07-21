@@ -28,7 +28,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.math.BigDecimal;
-import java.math.RoundingMode;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.text.ParseException;
@@ -37,8 +36,6 @@ import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 
-import static com.unzer.payment.business.BasketV1TestData.getMaxTestBasketV1;
-import static com.unzer.payment.business.BasketV2TestData.getMaxTestBasketItem1V2;
 import static com.unzer.payment.util.Uuid.generateUuid;
 import static java.util.concurrent.TimeUnit.SECONDS;
 import static org.awaitility.Awaitility.await;
@@ -65,7 +62,6 @@ import static org.junit.Assert.assertEquals;
  */
 
 public abstract class AbstractPaymentTest {
-    // TODO: move it to constants?
     protected static final String EMPTY_STRING = "";
     protected static final String PERSON_STRING = "Mr. Unzer Payment";
     protected static final String MAIL_STRING = "example@unzer.com";
@@ -75,7 +71,6 @@ public abstract class AbstractPaymentTest {
     protected static final String MARKETPLACE_PARTICIPANT_ID_2 = "31HA07BC814FC247577B309FF031D3F0";
     protected static final String MARKETPLACE_PARTICIPANT_ID_1 = "31HA07BC814FC247577B195E59A99FC6";
 
-    // TODO: extract to test properties class
     private final PropertiesUtil properties = new PropertiesUtil();
 
     public final String publicKey1 = properties.getString(PropertiesUtil.PUBLIC_KEY1);

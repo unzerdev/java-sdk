@@ -59,8 +59,6 @@ import java.util.Locale;
 public class Unzer {
 	private String privateKey;
 	private String endPoint;
-
-	// TODO: extract privateKey/endPoint or services to separate class
 	private transient PaymentService paymentService;
 	private transient MarketplacePaymentService marketplacePaymentService;
 	private transient PaypageService paypageService;

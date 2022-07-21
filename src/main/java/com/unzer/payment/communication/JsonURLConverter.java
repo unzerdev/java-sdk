@@ -50,7 +50,6 @@ public class JsonURLConverter
             return new URL(urlValue);
         } catch (MalformedURLException e) {
             logger.warn("Invalid URL '{}': {}", urlValue, e.getMessage());
-            // FIXME: throw an exception instead of returning null?
             return null;
         }
     }

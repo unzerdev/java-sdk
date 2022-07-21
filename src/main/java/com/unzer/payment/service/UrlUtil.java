@@ -139,15 +139,13 @@ public class UrlUtil {
         stringBuilder.append(properties.getString(PropertiesUtil.REST_ENDPOINT));
         appendSlashIfNeeded(stringBuilder);
 
-        if (basket.isV1()) {
-            stringBuilder.append("v1");
-        } else if (basket.isV2()) {
+        // v2 is the default Basket resource version
+        if (basket.isV2()) {
             stringBuilder.append("v2");
         } else {
             stringBuilder.append("v1");
-            appendSlashIfNeeded(stringBuilder);
-            stringBuilder.append("migration");
         }
+
         appendSlashIfNeeded(stringBuilder);
         stringBuilder.append(basket.getTypeUrl());
         return stringBuilder.toString();

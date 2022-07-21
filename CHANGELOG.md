@@ -24,11 +24,11 @@ to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
     rely on this method, please, replace it with `java.net.URL#URL(String)`
     constructor call
 
-*   Deprecated Basket getters/setters: `note`, `amountTotalVat`, `amountTotalGross`,
+*   Deprecated Basket getters/setters: `amountTotalVat`, `amountTotalGross`,
     `amountTotalDiscount`
 
 *   Deprecated BasketItem getters/setters: `amountDiscount`, `amountGross`, `amountVat`,
-    `amountPerUnit`, `amountNet`, `participantId`
+    `amountPerUnit`, `amountNet`
 
 ### Added
 

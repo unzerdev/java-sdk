@@ -23,9 +23,9 @@ package com.unzer.payment.paymenttypes;
 import com.unzer.payment.communication.json.JsonObject;
 
 public interface PaymentType {
-    String getTypeUrl(); // TODO extract method to separate interface
+    String getTypeUrl();
 
     String getId();
 
-    PaymentType map(PaymentType paymentType, JsonObject jsonObject); // TODO: remove marshalling logic from business type
+    PaymentType map(PaymentType paymentType, JsonObject jsonObject);
 }
