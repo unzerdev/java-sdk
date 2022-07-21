@@ -54,6 +54,8 @@ to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
 *   Type of `BasketItem` type field (was `String`, become `BasketItem.Type`)
 
+*   Type of `BasketItem` `vat` field (was `Integer`, become `BigDecimal`)
+
 ## [1.1.2.7][1.1.2.7]
 
 ### Changed
