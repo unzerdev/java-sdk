@@ -28,6 +28,7 @@ import org.junit.function.ThrowingRunnable;
 
 import java.text.ParseException;
 
+import static com.unzer.payment.util.Uuid.generateUuid;
 import static org.junit.Assert.*;
 
 public class CustomerTest extends AbstractPaymentTest {
@@ -43,7 +44,7 @@ public class CustomerTest extends AbstractPaymentTest {
 
 	@Test
 	public void testCreateMaximumCustomer() throws HttpCommunicationException, ParseException {
-		Customer maxCustomer = getMaximumCustomer(getRandomId());
+		Customer maxCustomer = getMaximumCustomer(generateUuid());
 		Customer customer = getUnzer().createCustomer(maxCustomer);
 		assertNotNull(customer);
 		assertNotNull(customer.getId());
@@ -52,7 +53,7 @@ public class CustomerTest extends AbstractPaymentTest {
 
 	@Test
 	public void testCreateMaximumMrsCustomer() throws HttpCommunicationException, ParseException {
-		Customer maxMrsCustomer = getMaximumMrsCustomer(getRandomId());
+		Customer maxMrsCustomer = getMaximumMrsCustomer(generateUuid());
 		Customer customer = getUnzer().createCustomer(maxMrsCustomer);
 		assertNotNull(customer);
 		assertNotNull(customer.getId());
@@ -61,7 +62,7 @@ public class CustomerTest extends AbstractPaymentTest {
 
 	@Test
 	public void testCreateMaximumUnknownCustomer() throws HttpCommunicationException, ParseException {
-		Customer unknownMrsCustomer = getMaximumUnknownCustomer(getRandomId());
+		Customer unknownMrsCustomer = getMaximumUnknownCustomer(generateUuid());
 		Customer customer = getUnzer().createCustomer(unknownMrsCustomer);
 		assertNotNull(customer);
 		assertNotNull(customer.getId());
@@ -80,7 +81,7 @@ public class CustomerTest extends AbstractPaymentTest {
 
 	@Test
 	public void testFetchCustomerMaximum() throws HttpCommunicationException, ParseException {
-		Customer expectedCustomer = getMaximumCustomer(getRandomId());
+		Customer expectedCustomer = getMaximumCustomer(generateUuid());
 		Customer customer = getUnzer().createCustomer(expectedCustomer);
 		assertNotNull(customer);
 		assertNotNull(customer.getId());
@@ -91,7 +92,7 @@ public class CustomerTest extends AbstractPaymentTest {
 
 	@Test
 	public void testUpdateCustomer() throws HttpCommunicationException, ParseException {
-		Customer customer = getUnzer().createCustomer(getMaximumCustomer(getRandomId()));
+		Customer customer = getUnzer().createCustomer(getMaximumCustomer(generateUuid()));
 		assertNotNull(customer);
 		assertNotNull(customer.getId());
 		Customer customerToUpdate = new Customer(customer.getFirstname(), customer.getLastname());
@@ -104,7 +105,7 @@ public class CustomerTest extends AbstractPaymentTest {
 	
 	@Test
 	public void testDeleteCustomer() throws HttpCommunicationException, ParseException {
-		Customer customer = getUnzer().createCustomer(getMaximumCustomer(getRandomId()));
+		Customer customer = getUnzer().createCustomer(getMaximumCustomer(generateUuid()));
 		assertNotNull(customer);
 		assertNotNull(customer.getId());
 		String deletedCustomerId = getUnzer().deleteCustomer(customer.getId());

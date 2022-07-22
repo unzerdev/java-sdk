@@ -15,6 +15,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Currency;
 
+import static com.unzer.payment.business.BasketV1TestData.getMaxTestBasketV1;
 import static java.util.concurrent.TimeUnit.SECONDS;
 import static org.awaitility.Awaitility.await;
 import static org.junit.Assert.assertEquals;
@@ -128,7 +129,7 @@ public class CancelAfterChargeTest extends AbstractPaymentTest {
 		String participantId_2 = MARKETPLACE_PARTICIPANT_ID_2;
 		
 		//create basket
-		Basket maxBasket = getMaxTestBasket();
+		Basket maxBasket = getMaxTestBasketV1();
 		maxBasket.setAmountTotalDiscount(null);
 		
 		maxBasket.getBasketItems().get(0).setParticipantId(participantId_1);
@@ -183,7 +184,7 @@ public class CancelAfterChargeTest extends AbstractPaymentTest {
 		String participantId_2 = MARKETPLACE_PARTICIPANT_ID_2;
 		
 		//create basket
-		Basket maxBasket = getMaxTestBasket();
+		Basket maxBasket = getMaxTestBasketV1();
 		maxBasket.setAmountTotalDiscount(null);
 		
 		maxBasket.getBasketItems().get(0).setParticipantId(participantId_1);

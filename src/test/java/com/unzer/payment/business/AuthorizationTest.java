@@ -16,6 +16,8 @@ import java.text.ParseException;
 import java.time.LocalDate;
 import java.util.Currency;
 
+import static com.unzer.payment.business.BasketV1TestData.getMaxTestBasketV1;
+import static com.unzer.payment.util.Uuid.generateUuid;
 import static java.util.concurrent.TimeUnit.SECONDS;
 import static org.awaitility.Awaitility.await;
 import static org.junit.Assert.assertEquals;
@@ -98,7 +100,7 @@ public class AuthorizationTest extends AbstractPaymentTest {
 	
 	@Test
 	public void testAuthorizeWithCustomerId() throws MalformedURLException, HttpCommunicationException, ParseException {
-		Customer customer = getUnzer().createCustomer(getMaximumCustomer(getRandomId()));
+		Customer customer = getUnzer().createCustomer(getMaximumCustomer(generateUuid()));
 		Authorization authorize = getUnzer().authorize(BigDecimal.ONE, Currency.getInstance("EUR"), createPaymentTypeCard().getId(), new URL("https://www.unzer.com"), customer.getCustomerId(), false);
 		assertNotNull(authorize);
 		assertNotNull(authorize.getId());
@@ -129,7 +131,7 @@ public class AuthorizationTest extends AbstractPaymentTest {
 
 	@Test
 	public void testAuthorizeWithCustomerIdReturnUrl() throws MalformedURLException, HttpCommunicationException, ParseException {
-		Customer maxCustomer = getMaximumCustomer(getRandomId());
+		Customer maxCustomer = getMaximumCustomer(generateUuid());
 		Authorization authorize = getUnzer().authorize(BigDecimal.ONE, Currency.getInstance("EUR"), createPaymentTypeCard().getId(), new URL("https://www.unzer.com"), maxCustomer.getId(), false);
 		assertNotNull(authorize);
 		assertNotNull(authorize.getId());
@@ -151,7 +153,7 @@ public class AuthorizationTest extends AbstractPaymentTest {
 	
 	@Test
 	public void testAuthorizeWithOrderId() throws MalformedURLException, HttpCommunicationException {
-		String orderId = getRandomId();
+		String orderId = generateUuid();
 		Authorization authorize = getUnzer().authorize(getAuthorization(createPaymentTypeCard().getId(), null, orderId, null, null, false));
 		assertNotNull(authorize);
 		assertNotNull(authorize.getId());
@@ -166,7 +168,7 @@ public class AuthorizationTest extends AbstractPaymentTest {
 
 	@Test
 	public void testAuthorizeCard3dsFalse() throws MalformedURLException, HttpCommunicationException {
-		String orderId = getRandomId();
+		String orderId = generateUuid();
 		Authorization authorize = getUnzer().authorize(getAuthorization(createPaymentTypeCard().getId(), null, orderId, null, null, false));
 		assertNotNull(authorize);
 		assertNotNull(authorize.getId());
@@ -182,7 +184,7 @@ public class AuthorizationTest extends AbstractPaymentTest {
 
 	@Test
 	public void testAuthorizeCard3dsTrue() throws MalformedURLException, HttpCommunicationException {
-		String orderId = getRandomId();
+		String orderId = generateUuid();
 		Authorization authorize = getUnzer().authorize(getAuthorization(createPaymentTypeCard().getId(), null, orderId, null, null, true));
 		assertNotNull(authorize);
 		assertNotNull(authorize.getId());
@@ -225,7 +227,7 @@ public class AuthorizationTest extends AbstractPaymentTest {
 		String participantId_2 = MARKETPLACE_PARTICIPANT_ID_2;
 		
 		//create basket
-		Basket maxBasket = getMaxTestBasket();
+		Basket maxBasket = getMaxTestBasketV1();
 		maxBasket.setAmountTotalDiscount(null);
 		
 		maxBasket.getBasketItems().get(0).setParticipantId(participantId_1);

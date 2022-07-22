@@ -33,6 +33,7 @@ import java.net.MalformedURLException;
 import java.text.ParseException;
 import java.util.List;
 
+import static com.unzer.payment.util.Uuid.generateUuid;
 import static org.junit.Assert.*;
 
 public class ErrorTestDE extends AbstractPaymentTest {
@@ -143,7 +144,7 @@ public class ErrorTestDE extends AbstractPaymentTest {
     @Test
     public void testinvalidPutCustomer() throws HttpCommunicationException, ParseException {
         try {
-            Customer customer = getUnzerDE().createCustomer(getMaximumCustomer(getRandomId()));
+            Customer customer = getUnzerDE().createCustomer(getMaximumCustomer(generateUuid()));
             Customer customerUpdate = new Customer(customer.getFirstname(), customer.getLastname());
             customerUpdate.setEmail("max");
             getUnzerDE().updateCustomer(customer.getId(), customerUpdate);

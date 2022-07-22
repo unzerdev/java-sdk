@@ -59,8 +59,6 @@ import java.util.Locale;
 public class Unzer {
 	private String privateKey;
 	private String endPoint;
-
-	// TODO: extract privateKey/endPoint or services to separate class
 	private transient PaymentService paymentService;
 	private transient MarketplacePaymentService marketplacePaymentService;
 	private transient PaypageService paypageService;
@@ -374,7 +372,6 @@ public class Unzer {
 	 * @param returnUrl ReturnURL where after the payment was finished
 	 * @param customerId used for the authorization
 	 * @param card3ds Flag to specify whether to force 3ds or not
-	 * @param additionalTransactionData Additional Transaction Data which extends the Transaction by Type-specific Data
 	 * @return Authorization with paymentId and authorize id
 	 * @throws HttpCommunicationException in case communication to Unzer didn't work
 	 */
@@ -639,7 +636,6 @@ public class Unzer {
 	 * @param customerId used for the charge
 	 * @param basketId used for the charge
 	 * @param card3ds Flag to specify whether to force 3ds or not
-	 * @param additionalTransactionData Additional Transaction Data which extends the Transaction by Type-specific Data
 	 * @return Charge with paymentId and authorize id
 	 * @throws HttpCommunicationException in case communication to Unzer didn't work
 	 */
@@ -658,7 +654,6 @@ public class Unzer {
 	 * @param returnUrl ReturnURL where after the payment was finished
 	 * @param customerId used for the charge
 	 * @param card3ds Flag to specify whether to force 3ds or not
-	 * @param additionalTransactionData Additional Transaction Data which extends the Transaction by Type-specific Data
 	 * @return Charge with paymentId and authorize id
 	 * @throws HttpCommunicationException in case communication to Unzer didn't work
 	 */
@@ -676,7 +671,6 @@ public class Unzer {
 	 * @param typeId Payment type id used for the charge
 	 * @param returnUrl ReturnURL where after the payment was finished
 	 * @param card3ds Flag to specify whether to force 3ds or not
-	 * @param additionalTransactionData Additional Transaction Data which extends the Transaction by Type-specific Data
 	 * @return Charge with paymentId and authorize id
 	 * @throws HttpCommunicationException in case communication to Unzer didn't work
 	 */

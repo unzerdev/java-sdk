@@ -14,6 +14,8 @@ import org.junit.Test;
 import java.math.BigDecimal;
 import java.net.MalformedURLException;
 
+import static com.unzer.payment.business.BasketV1TestData.getMaxTestBasketV1;
+import static com.unzer.payment.util.Uuid.generateUuid;
 import static java.util.concurrent.TimeUnit.SECONDS;
 import static org.awaitility.Awaitility.await;
 import static org.junit.Assert.assertEquals;
@@ -50,7 +52,7 @@ public class ChargeAfterAuthorizationTest extends AbstractPaymentTest {
 
 	@Test
 	public void fullChargeAfterAuthorization() throws HttpCommunicationException, MalformedURLException {
-		String orderId = getRandomId();
+		String orderId = generateUuid();
 		Authorization authorize = getUnzer().authorize(getAuthorization(createPaymentTypeCard().getId(), null, orderId, null, null, false));
 		Authorization authorization = getUnzer().fetchAuthorization(authorize.getPaymentId());
 		Charge charge = authorization.charge();
@@ -94,7 +96,7 @@ public class ChargeAfterAuthorizationTest extends AbstractPaymentTest {
 		String participantId_2 = MARKETPLACE_PARTICIPANT_ID_2;
 
 		// create basket
-		Basket maxBasket = getMaxTestBasket();
+		Basket maxBasket = getMaxTestBasketV1();
 		maxBasket.setAmountTotalDiscount(null);
 
 		maxBasket.getBasketItems().get(0).setParticipantId(participantId_1);
@@ -147,7 +149,7 @@ public class ChargeAfterAuthorizationTest extends AbstractPaymentTest {
 		String participantId_2 = MARKETPLACE_PARTICIPANT_ID_2;
 
 		// create basket
-		Basket maxBasket = getMaxTestBasket();
+		Basket maxBasket = getMaxTestBasketV1();
 		maxBasket.setAmountTotalDiscount(null);
 
 		maxBasket.getBasketItems().get(0).setParticipantId(participantId_1);

@@ -9,9 +9,9 @@ package com.unzer.payment;
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -26,182 +26,166 @@ import com.unzer.payment.paymenttypes.PaymentType;
 
 import java.math.BigDecimal;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.Currency;
-import java.util.List;
+import java.util.*;
 
 /**
- * Business object for a Payment. A Payment is the object that holds toghether several 
+ * Business object for a Payment. A Payment is the object that holds toghether several
  * requests over time. This means that a payment belongs to one offer from the merchant.
- * 
- *  Within the Payment you also find the list of Charges, Cancels and the Authorization object.
- *  
- * @author Unzer E-Com GmbH
+ * <p>
+ * Within the Payment you also find the list of Charges, Cancels and the Authorization object.
  *
+ * @author Unzer E-Com GmbH
  */
 public class Payment extends AbstractPayment {
-	
-	private Authorization authorization;
-	private List<Charge> chargesList;
-	private List<Cancel> cancelList;
-	private List<Payout> payoutList;
-	
-	public Payment() {
-		super();
-	}
 
-	public Payment(Unzer unzer) {
-		super(unzer);
-	}
-	
-	public Charge charge() throws HttpCommunicationException {
-		return getUnzer().chargeAuthorization(getId());
-	}
+    private Authorization authorization;
+    private List<Charge> chargesList;
+    private List<Cancel> cancelList;
+    private List<Payout> payoutList;
 
-	public Charge charge(BigDecimal amount) throws HttpCommunicationException {
-		return getUnzer().chargeAuthorization(getId(), amount);
-	}
-	
-	public Charge charge(BigDecimal amount, Currency currency, String typeId) throws HttpCommunicationException {
-		return getUnzer().charge(amount, currency, typeId);
-	}
+    public Payment() {
+        super();
+    }
 
-	public Charge charge(BigDecimal amount, Currency currency, String typeId, String customerId) throws HttpCommunicationException {
-		return getUnzer().charge(amount, currency, typeId, customerId);
-	}
+    public Payment(Unzer unzer) {
+        super(unzer);
+    }
 
-	public Charge charge(BigDecimal amount, Currency currency, PaymentType paymentType) throws HttpCommunicationException {
-		return getUnzer().charge(amount, currency, paymentType);
-	}
+    public Charge charge() throws HttpCommunicationException {
+        return getUnzer().chargeAuthorization(getId());
+    }
 
-	public Charge charge(BigDecimal amount, Currency currency, String typeId, URL returnUrl) throws HttpCommunicationException {
-		return getUnzer().charge(amount, currency, typeId, returnUrl);
-	}
+    public Charge charge(BigDecimal amount) throws HttpCommunicationException {
+        return getUnzer().chargeAuthorization(getId(), amount);
+    }
 
-	public Charge charge(BigDecimal amount, Currency currency, String typeId, URL returnUrl, String customerId) throws HttpCommunicationException {
-		return getUnzer().charge(amount, currency, typeId, returnUrl, customerId);
-	}
+    public Charge charge(BigDecimal amount, Currency currency, String typeId) throws HttpCommunicationException {
+        return getUnzer().charge(amount, currency, typeId);
+    }
 
-	public Charge charge(BigDecimal amount, Currency currency, PaymentType paymentType, URL returnUrl, Customer customer) throws HttpCommunicationException {
-		return getUnzer().charge(amount, currency, paymentType, returnUrl, customer);
-	}
+    public Charge charge(BigDecimal amount, Currency currency, String typeId, String customerId) throws HttpCommunicationException {
+        return getUnzer().charge(amount, currency, typeId, customerId);
+    }
 
-	public Authorization authorize(BigDecimal amount, Currency currency, String typeId, URL returnUrl) throws HttpCommunicationException {
-		return getUnzer().authorize(amount, currency, typeId, returnUrl);
-	}
+    public Charge charge(BigDecimal amount, Currency currency, PaymentType paymentType) throws HttpCommunicationException {
+        return getUnzer().charge(amount, currency, paymentType);
+    }
 
-	public Authorization authorize(BigDecimal amount, Currency currency, String typeId, URL returnUrl, String customerId) throws HttpCommunicationException {
-		return getUnzer().authorize(amount, currency, typeId, returnUrl, customerId);
-	}
+    public Charge charge(BigDecimal amount, Currency currency, String typeId, URL returnUrl) throws HttpCommunicationException {
+        return getUnzer().charge(amount, currency, typeId, returnUrl);
+    }
 
-	public Authorization authorize(BigDecimal amount, Currency currency, PaymentType paymentType, URL returnUrl, Customer customer) throws HttpCommunicationException {
-		return getUnzer().authorize(amount, currency, paymentType, returnUrl, customer);
-	}
+    public Charge charge(BigDecimal amount, Currency currency, String typeId, URL returnUrl, String customerId) throws HttpCommunicationException {
+        return getUnzer().charge(amount, currency, typeId, returnUrl, customerId);
+    }
 
-	public Cancel cancel() throws HttpCommunicationException {
-		if (getAuthorization() == null) {
-			List<PaymentError> paymentErrorList = new ArrayList<PaymentError>();
-			paymentErrorList.add(new PaymentError(
-							CANCEL_IS_ONLY_POSSIBLE_FOR_AN_AUTHORIZATION,
-							PAYMENT_CANCELLATION_NOT_POSSIBLE,
-							""));
+    public Charge charge(BigDecimal amount, Currency currency, PaymentType paymentType, URL returnUrl, Customer customer) throws HttpCommunicationException {
+        return getUnzer().charge(amount, currency, paymentType, returnUrl, customer);
+    }
 
-			throw new PaymentException(paymentErrorList, "");
-		}
-		return getAuthorization().cancel();
-	}
+    public Authorization authorize(BigDecimal amount, Currency currency, String typeId, URL returnUrl) throws HttpCommunicationException {
+        return getUnzer().authorize(amount, currency, typeId, returnUrl);
+    }
 
-	public Cancel cancel(BigDecimal amount) throws HttpCommunicationException {
-		if (getAuthorization() == null) {
-			List<PaymentError> paymentErrorList = new ArrayList<PaymentError>();
-			paymentErrorList.add(new PaymentError(
-							CANCEL_IS_ONLY_POSSIBLE_FOR_AN_AUTHORIZATION,
-							PAYMENT_CANCELLATION_NOT_POSSIBLE,
-							""));
+    public Authorization authorize(BigDecimal amount, Currency currency, String typeId, URL returnUrl, String customerId) throws HttpCommunicationException {
+        return getUnzer().authorize(amount, currency, typeId, returnUrl, customerId);
+    }
 
-			throw new PaymentException(paymentErrorList, "");
-		}
-		return getAuthorization().cancel(amount);
-	}
-	
-	public Authorization getAuthorization() {
-		return authorization;
-	}
+    public Authorization authorize(BigDecimal amount, Currency currency, PaymentType paymentType, URL returnUrl, Customer customer) throws HttpCommunicationException {
+        return getUnzer().authorize(amount, currency, paymentType, returnUrl, customer);
+    }
 
-	public Charge getCharge(String chargeId) {
-		if (chargesList == null) return null;
-		for (Charge charge : chargesList) {
-			if (chargeId.equalsIgnoreCase(charge.getId())) {
-				return charge;
-			}
-		}
-		return null;
-	}
+    public Cancel cancel() throws HttpCommunicationException {
+        if (getAuthorization() == null) {
+            List<PaymentError> paymentErrorList = new ArrayList<PaymentError>();
+            paymentErrorList.add(new PaymentError(CANCEL_IS_ONLY_POSSIBLE_FOR_AN_AUTHORIZATION, PAYMENT_CANCELLATION_NOT_POSSIBLE, ""));
 
-	public Charge getCharge(int index) {
-		return getChargesList().get(index);
-	}
+            throw new PaymentException(paymentErrorList, "");
+        }
+        return getAuthorization().cancel();
+    }
 
-	public Payout getPayout(String payoutId) {
-		if (payoutList == null) return null;
-		for (Payout payout : payoutList) {
-			if (payoutId.equalsIgnoreCase(payout.getId())) {
-				return payout;
-			}
-		}
-		return null;
-	}
+    public Cancel cancel(BigDecimal amount) throws HttpCommunicationException {
+        if (getAuthorization() == null) {
+            List<PaymentError> paymentErrorList = new ArrayList<>();
+            paymentErrorList.add(new PaymentError(CANCEL_IS_ONLY_POSSIBLE_FOR_AN_AUTHORIZATION, PAYMENT_CANCELLATION_NOT_POSSIBLE, ""));
 
-	public List<Cancel> getCancelList() {
-		return cancelList;
-	}
+            throw new PaymentException(paymentErrorList, "");
+        }
+        return getAuthorization().cancel(amount);
+    }
 
-	public Cancel getCancel(String cancelId) {
-		if (getCancelList() == null) return null;
-		for (Cancel cancel : getCancelList()) {
-			if (cancelId.equalsIgnoreCase(cancel.getId())) {
-				return cancel;
-			}
-		}
-		return null;
-	}
+    public Authorization getAuthorization() {
+        return authorization;
+    }
 
-	public Cancel getCancel() {
-		return new Cancel();
-	}
+    public Charge getCharge(String chargeId) {
+        return findById(chargesList, chargeId);
+    }
+
+    public Charge getCharge(int index) {
+        return getChargesList().get(index);
+    }
+
+    public Payout getPayout(String payoutId) {
+        return findById(payoutList, payoutId);
+    }
+
+    public List<Cancel> getCancelList() {
+        return cancelList;
+    }
+
+    public Cancel getCancel(String cancelId) {
+        return findById(cancelList, cancelId);
+    }
+
+    public Cancel getCancel() {
+        return new Cancel();
+    }
 
 
-	@Override
-	public String getTypeUrl() {
-		return "payments";
-	}
+    @Override
+    public String getTypeUrl() {
+        return "payments";
+    }
 
-	@Override
-	public PaymentType map(PaymentType paymentType, JsonObject jsonObject) {
-		return null;
-	}
+    @Override
+    public PaymentType map(PaymentType paymentType, JsonObject jsonObject) {
+        return null;
+    }
 
-	public List<Charge> getChargesList() {
-		return chargesList;
-	}
+    public List<Charge> getChargesList() {
+        return chargesList;
+    }
 
-	public void setChargesList(List<Charge> chargesList) {
-		this.chargesList = chargesList;
-	}
+    public void setChargesList(List<Charge> chargesList) {
+        this.chargesList = chargesList;
+    }
 
-	public void setAuthorization(Authorization authorization) {
-		this.authorization = authorization;
-	}
+    public void setAuthorization(Authorization authorization) {
+        this.authorization = authorization;
+    }
 
-	public void setCancelList(List<Cancel> cancelList) {
-		this.cancelList = cancelList;
-	}
+    public void setCancelList(List<Cancel> cancelList) {
+        this.cancelList = cancelList;
+    }
 
-	public List<Payout> getPayoutList() {
-		return payoutList;
-	}
+    public List<Payout> getPayoutList() {
+        return payoutList;
+    }
 
-	public void setPayoutList(List<Payout> payoutList) {
-		this.payoutList = payoutList;
-	}
+    public void setPayoutList(List<Payout> payoutList) {
+        this.payoutList = payoutList;
+    }
+
+    private <T extends PaymentType> T findById(Collection<T> collection, String id) {
+        if (collection == null) {
+            return null;
+        }
+
+        return collection.stream()
+                .filter(e -> e.getId().equalsIgnoreCase(id))
+                .findAny()
+                .orElse(null);
+    }
 }

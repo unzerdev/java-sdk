@@ -33,6 +33,8 @@ import java.net.URL;
 import java.text.ParseException;
 import java.util.Currency;
 
+import static com.unzer.payment.business.BasketV1TestData.getMaxTestBasketV1;
+import static com.unzer.payment.util.Uuid.generateUuid;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
@@ -84,11 +86,11 @@ public class PayoutTest extends AbstractPaymentTest {
         Payout payout = new Payout();
         payout.setAmount(new BigDecimal(856.4900));
         payout.setCurrency(Currency.getInstance("EUR"));
-        payout.setOrderId(getRandomId());
+        payout.setOrderId(generateUuid());
         payout.setPaymentReference("My Payment Reference");
         payout.setReturnUrl(new URL("https://www.unzer.com"));
         payout.setTypeId(typeId);
-        payout.setBasketId(getUnzer().createBasket(getMaxTestBasket()).getId());
+        payout.setBasketId(getUnzer().createBasket(getMaxTestBasketV1()).getId());
         payout.setCustomerId(createMaximumCustomerSameAddress().getId());
         payout.setMetadataId(createTestMetadata().getId());
         return payout;

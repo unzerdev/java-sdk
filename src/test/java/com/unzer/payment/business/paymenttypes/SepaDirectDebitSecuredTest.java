@@ -10,15 +10,16 @@ import com.unzer.payment.communication.impl.HttpClientBasedRestCommunication;
 import com.unzer.payment.communication.json.JsonIdObject;
 import com.unzer.payment.paymenttypes.SepaDirectDebitSecured;
 import com.unzer.payment.service.PaymentService;
-import com.unzer.payment.service.UrlUtil;
 import org.junit.Test;
 
 import java.math.BigDecimal;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.text.ParseException;
 import java.util.Currency;
 
+import static com.unzer.payment.business.BasketV1TestData.getMinTestBasketV1;
+import static com.unzer.payment.business.BasketV2TestData.getMinTestBasketV2;
+import static com.unzer.payment.util.Url.unsafeUrl;
+import static com.unzer.payment.util.Uuid.generateUuid;
 import static org.junit.Assert.*;
 
 /*-
@@ -67,11 +68,26 @@ public class SepaDirectDebitSecuredTest extends AbstractPaymentTest {
     }
 
     @Test
-    public void testChargeSepaDirectDebitSecuredType() throws HttpCommunicationException, MalformedURLException, ParseException {
+    @Deprecated
+    public void testChargeSepaDirectDebitSecuredTypeBasketV1() throws HttpCommunicationException, ParseException {
         SepaDirectDebitSecured sdd = getUnzer().createPaymentType(getSepaDirectDebitSecured());
         assertNotNull(sdd.getId());
-        Basket basket = getUnzer().createBasket(getMinTestBasket());
-        sdd.charge(basket.getAmountTotalGross(), Currency.getInstance("EUR"), new URL("https://www.unzer.com"), getMaximumCustomerSameAddress(getRandomId()), basket);
+        Basket basket = getUnzer().createBasket(getMinTestBasketV1());
+        sdd.charge(basket.getAmountTotalGross(), Currency.getInstance("EUR"), unsafeUrl("https://www.unzer.com"), getMaximumCustomerSameAddress(generateUuid()), basket);
+    }
+
+    @Test
+    public void testChargeSepaDirectDebitSecuredTypeBasketV2() throws HttpCommunicationException, ParseException {
+        SepaDirectDebitSecured sdd = getUnzer().createPaymentType(getSepaDirectDebitSecured());
+        assertNotNull(sdd.getId());
+        Basket basket = getUnzer().createBasket(getMinTestBasketV2());
+        sdd.charge(
+                basket.getTotalValueGross(),
+                Currency.getInstance("EUR"),
+                unsafeUrl("https://www.unzer.com"),
+                getMaximumCustomerSameAddress(generateUuid()),
+                basket
+        );
     }
 
     private void assertSddEquals(SepaDirectDebitSecured sddOriginal, SepaDirectDebitSecured sddCreated) {
@@ -82,9 +98,8 @@ public class SepaDirectDebitSecuredTest extends AbstractPaymentTest {
     }
 
     @Test
-    public void testChargeSepaDirectDebitGuaranteed() throws HttpCommunicationException, MalformedURLException, ParseException {
+    public void testChargeSepaDirectDebitGuaranteed() throws HttpCommunicationException, ParseException {
         Unzer unzer = getUnzer();
-        UrlUtil urlUtil = new UrlUtil(unzer.getEndPoint());
         HttpClientBasedRestCommunication restCommunication = new HttpClientBasedRestCommunication();
         JsonParser jsonParser = new JsonParser();
         PaymentService paymentService = new PaymentService(unzer, restCommunication);
@@ -96,7 +111,7 @@ public class SepaDirectDebitSecuredTest extends AbstractPaymentTest {
         boolean matches = sepaDirectDebitSecured.getId().matches("s-ddg-\\w*");
         assertTrue(matches);
 
-        Charge charge = sepaDirectDebitSecured.charge(BigDecimal.TEN, Currency.getInstance("EUR"), new URL("https://www.meinShop.de"), getMaximumCustomerSameAddress(getRandomId()));
+        Charge charge = sepaDirectDebitSecured.charge(BigDecimal.TEN, Currency.getInstance("EUR"), unsafeUrl("https://www.meinShop.de"), getMaximumCustomerSameAddress(generateUuid()));
         assertNotNull(charge.getPaymentId());
     }
 

@@ -6,13 +6,15 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres
 to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
-## Unreleased
+## [1.2.0.0][1.2.0.0]
 
 ### Breaking changes 
 
 *   Removed `log4j-core` from Maven dependencies. **Please, provide logger
     implementation on your own**
+
 *   Renamed enum value `AbstractTransaction.Status.ERRROR` to `AbstractTransaction.Status.ERROR`
+
 *   Renamed enum value `Paypage.Status.ERRROR` to `Paypage.Status.ERROR`
 
 ### Deprecated
@@ -21,6 +23,20 @@ to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
     java-sdk, because it has nothing to do with unzer/sdk specific logic. If you
     rely on this method, please, replace it with `java.net.URL#URL(String)`
     constructor call
+
+*   Deprecated Basket getters/setters: `amountTotalVat`, `amountTotalGross`,
+    `amountTotalDiscount`
+
+*   Deprecated BasketItem getters/setters: `amountDiscount`, `amountGross`, `amountVat`,
+    `amountPerUnit`, `amountNet`
+
+### Added
+
+*   Basket v2 support:
+
+    *   Basket getters/setters: `totalValueGross`
+
+    *   BasketItem getters/setters: `amountPerUnitGross`, `amountDiscountPerUnitGross`
 
 ### Removed
 
@@ -33,6 +49,12 @@ to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 *   Fix log message of `com.unzer.payment.service.UrlUtil#getUrl(String)`. It was
     not formatted and contained `%s` instead
     of values
+
+### Changed
+
+*   Type of `BasketItem` type field (was `String`, become `BasketItem.Type`)
+
+*   Type of `BasketItem` `vat` field (was `Integer`, become `BigDecimal`)
 
 ## [1.1.2.7][1.1.2.7]
 
@@ -182,6 +204,8 @@ to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
     *   cancelAuthorization
 *   Remove deprecated classes
     *   RestCommunication
+
+[1.2.0.0]: http://github.com/unzerdev/java-sdk/compare/1.1.2.7..1.2.0.0
 
 [1.1.2.7]: http://github.com/unzerdev/java-sdk/compare/1.1.2.6..1.1.2.7
 

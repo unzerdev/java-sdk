@@ -29,6 +29,7 @@ import org.junit.Test;
 
 import java.text.ParseException;
 
+import static com.unzer.payment.util.Uuid.generateUuid;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
@@ -45,7 +46,7 @@ public class BusinessCustomerTest extends AbstractPaymentTest {
 
 	@Test
 	public void testCreateRegisteredMaximumBusinessCustomer() throws HttpCommunicationException, ParseException {
-		Customer maxCustomer = getRegisterdMaximumBusinessCustomer(getRandomId());
+		Customer maxCustomer = getRegisterdMaximumBusinessCustomer(generateUuid());
 		Customer customer = getUnzer().createCustomer(maxCustomer);
 		assertNotNull(customer);
 		assertNotNull(customer.getId());
@@ -54,7 +55,7 @@ public class BusinessCustomerTest extends AbstractPaymentTest {
 	
 	@Test
 	public void testFetchRegisteredMaximumBusinessCustomer() throws HttpCommunicationException, ParseException {
-		Customer customer = getRegisterdMaximumBusinessCustomer(getRandomId());
+		Customer customer = getRegisterdMaximumBusinessCustomer(generateUuid());
 		customer = getUnzer().createCustomer(customer);
 		assertNotNull(customer);
 		assertNotNull(customer.getId());
@@ -96,7 +97,7 @@ public class BusinessCustomerTest extends AbstractPaymentTest {
 
 	@Test
 	public void testUpdateCustomer() throws HttpCommunicationException, ParseException {
-		Customer customer = getUnzer().createCustomer(getRegisterdMaximumBusinessCustomer(getRandomId()));
+		Customer customer = getUnzer().createCustomer(getRegisterdMaximumBusinessCustomer(generateUuid()));
 		assertNotNull(customer);
 		assertNotNull(customer.getId());
 		Customer customerToUpdate = new Customer("Unzer E-Com GmbH");
@@ -112,7 +113,7 @@ public class BusinessCustomerTest extends AbstractPaymentTest {
 	
 	@Test(expected=PaymentException.class)
 	public void testDeleteCustomer() throws HttpCommunicationException, ParseException {
-		Customer customer = getUnzer().createCustomer(getRegisterdMaximumBusinessCustomer(getRandomId()));
+		Customer customer = getUnzer().createCustomer(getRegisterdMaximumBusinessCustomer(generateUuid()));
 		assertNotNull(customer);
 		assertNotNull(customer.getId());
 		getUnzer().deleteCustomer(customer.getId());
