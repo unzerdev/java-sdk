@@ -21,4 +21,7 @@ jobs:
           distribution: 'temurin'
           cache: maven
       - name: Run unit tests
-        run: mvn -B package --file pom.xml -Dpublickey1=${PAPI_PUBLIC_KEY} -Dprivatekey1=${PAPI_PRIVATE_KEY} -Dprivatekey2=${PAPI_PRIVATE_KEY} -Dprivatekey3=${PAPI_PRIVATE_KEY} -DmarketplacePrivatekey=${PAPI_PRIVATE_KEY}
+        env:
+          PAPI_PUBLIC_KEY: ${{secrets.PAPI_PUBLIC_KEY}}
+          PAPI_PRIVATE_KEY: ${{secrets.PAPI_PRIVATE_KEY}}
+        run: mvn -B package --file pom.xml -Dpublickey1=$PAPI_PUBLIC_KEY -Dprivatekey1=$PAPI_PRIVATE_KEY -Dprivatekey2=$PAPI_PRIVATE_KEY -Dprivatekey3=$PAPI_PRIVATE_KEY -DmarketplacePrivatekey=$PAPI_PRIVATE_KEY
