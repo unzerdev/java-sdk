@@ -205,6 +205,8 @@ to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 *   Remove deprecated classes
     *   RestCommunication
 
+[1.2.0.0]: http://github.com/unzerdev/java-sdk/compare/1.1.2.7..1.2.0.0
+
 [1.1.2.7]: http://github.com/unzerdev/java-sdk/compare/1.1.2.6..1.1.2.7
 
 [1.1.2.6]: http://github.com/unzerdev/java-sdk/compare/1.1.2.5..1.1.2.6
