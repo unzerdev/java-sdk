@@ -20,12 +20,8 @@ jobs:
           java-version: '11'
           distribution: 'temurin'
           cache: maven
-      - name: Check output
-        env:
-          TOP_SECRET: ${{ secrets.TOP_SECRET }}
-        run:
-          echo "Hello $TOP_SECRET"
-
+      - name: Set timezone
+        run: sudo timedatectl set-timezone Europe/Berlin
       - name: Run unit tests
         env:
           PAPI_PUBLIC_KEY: ${{ secrets.PAPI_PUBLIC_KEY }}
