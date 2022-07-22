@@ -81,12 +81,13 @@ public class BasketV1TestData {
 
     @Deprecated
     public static Basket getMinTestBasketV1() {
-        Basket basket = new Basket()
-                .setAmountTotalGross(new BigDecimal(500.5))
+        return new Basket()
+                .setAmountTotalGross(new BigDecimal("500.5"))
                 .setCurrencyCode(Currency.getInstance("EUR"))
                 .setOrderId(generateUuid())
+                .setAmountTotalVat(BigDecimal.ZERO)
+                .setAmountTotalDiscount(BigDecimal.ZERO)
                 .addBasketItem(getMinTestBasketItemV1());
-        return basket;
     }
 
     @Deprecated
@@ -138,8 +139,10 @@ public class BasketV1TestData {
         BasketItem basketItem = new BasketItem()
                 .setBasketItemReferenceId("Artikelnummer4711")
                 .setQuantity(5)
-                .setAmountPerUnit(new BigDecimal(100.1))
-                .setAmountNet(new BigDecimal(420.1))
+                .setAmountPerUnit(new BigDecimal("100.1"))
+                .setAmountNet(new BigDecimal("420.1"))
+                .setVat(BigDecimal.ZERO)
+                .setAmountDiscount(BigDecimal.ZERO)
                 .setTitle("Apple iPhone");
 
         basketItem.setAmountGross(basketItem.getAmountPerUnit().multiply(new BigDecimal(basketItem.getQuantity())));
