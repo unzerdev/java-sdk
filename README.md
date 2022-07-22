@@ -1,4 +1,4 @@
-![Logo](unzer_logo.svg)
+![Logo](docs/images/unzer_logo.svg)
 
 # Unzer Java Payment SDK
 
