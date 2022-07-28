@@ -161,8 +161,9 @@ public class Basket implements PaymentType {
     }
 
     @Deprecated
-    public void setAmountTotalVat(BigDecimal amountTotalVat) {
+    public Basket setAmountTotalVat(BigDecimal amountTotalVat) {
         this.amountTotalVat = amountTotalVat;
+        return this;
     }
 
     @Deprecated
