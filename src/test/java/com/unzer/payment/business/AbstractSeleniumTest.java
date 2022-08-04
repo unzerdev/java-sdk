@@ -43,6 +43,8 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+import static com.unzer.payment.business.BasketV1TestData.getMaxTestBasketV1;
+import static com.unzer.payment.util.Uuid.generateUuid;
 import static java.util.concurrent.TimeUnit.SECONDS;
 import static org.awaitility.Awaitility.await;
 import static org.junit.Assert.*;
@@ -223,8 +225,8 @@ public abstract class AbstractSeleniumTest extends AbstractPaymentTest {
 		paypage.setAmount(new BigDecimal(amount));
 		paypage.setCurrency(Currency.getInstance("EUR"));
 		paypage.setReturnUrl(new URL(getReturnUrl()));
-		paypage.setCustomerId(getUnzer().createCustomer(getMaximumCustomerSameAddress(getRandomId())).getId());
-		paypage.setBasketId(getUnzer().createBasket(getMaxTestBasket()).getId());
+		paypage.setCustomerId(getUnzer().createCustomer(getMaximumCustomerSameAddress(generateUuid())).getId());
+		paypage.setBasketId(getUnzer().createBasket(getMaxTestBasketV1()).getId());
 		paypage.setMetadataId(getUnzer().createMetadata(getTestMetadata()).getId());
 		return paypage;
 	}
@@ -252,8 +254,8 @@ public abstract class AbstractSeleniumTest extends AbstractPaymentTest {
 		paypage.setPrivacyPolicyUrl(new URL("https://www.unzer.com/en/datenschutz/"));
 		paypage.setTermsAndConditionUrl(new URL("https://www.unzer.com/en/datenschutz/"));
 
-		paypage.setInvoiceId(getRandomId());
-		paypage.setOrderId(getRandomId());
+		paypage.setInvoiceId(generateUuid());
+		paypage.setOrderId(generateUuid());
 		return paypage;
 	}
 
@@ -280,8 +282,8 @@ public abstract class AbstractSeleniumTest extends AbstractPaymentTest {
 		linkpay.setPrivacyPolicyUrl(new URL("https://www.unzer.com/en/datenschutz/"));
 		linkpay.setTermsAndConditionUrl(new URL("https://www.unzer.com/en/datenschutz/"));
 
-		linkpay.setInvoiceId(getRandomId());
-		linkpay.setOrderId(getRandomId());
+		linkpay.setInvoiceId(generateUuid());
+		linkpay.setOrderId(generateUuid());
 		return linkpay;
 	}
 

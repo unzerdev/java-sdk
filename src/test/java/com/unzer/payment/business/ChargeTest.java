@@ -39,6 +39,8 @@ import java.text.ParseException;
 import java.time.LocalDate;
 import java.util.Currency;
 
+import static com.unzer.payment.business.BasketV1TestData.getMaxTestBasketV1;
+import static com.unzer.payment.util.Uuid.generateUuid;
 import static org.junit.Assert.*;
 
 public class ChargeTest extends AbstractPaymentTest {
@@ -112,7 +114,7 @@ public class ChargeTest extends AbstractPaymentTest {
 
 	@Test
 	public void testChargeWithCustomerIdReturnUrl() throws MalformedURLException, HttpCommunicationException, ParseException {
-		Customer customer = getUnzer().createCustomer(getMaximumCustomer(getRandomId()));
+		Customer customer = getUnzer().createCustomer(getMaximumCustomer(generateUuid()));
 		Charge charge = getUnzer().charge(BigDecimal.ONE, Currency.getInstance("EUR"), createPaymentTypeCard().getId(), new URL("https://www.unzer.com"), customer.getId(), false);
 		assertNotNull(charge);
 		assertEquals("COR.000.100.112", charge.getMessage().getCode());
@@ -146,7 +148,7 @@ public class ChargeTest extends AbstractPaymentTest {
 	
 	@Test
 	public void testChargeOrderId() throws MalformedURLException, HttpCommunicationException {
-		String orderId = getRandomId();
+		String orderId = generateUuid();
 		Charge charge = getUnzer().charge(getCharge(orderId, false, null));
 		assertNotNull(charge);
 		assertEquals("COR.000.100.112", charge.getMessage().getCode());
@@ -162,7 +164,7 @@ public class ChargeTest extends AbstractPaymentTest {
 
 	@Test
 	public void testChargeWith3dsFalse() throws MalformedURLException, HttpCommunicationException {
-		String orderId = getRandomId();
+		String orderId = generateUuid();
 		Charge charge = getUnzer().charge(getCharge(orderId, false, null));
 		assertNotNull(charge);
 		assertNotNull(charge.getId());
@@ -174,7 +176,7 @@ public class ChargeTest extends AbstractPaymentTest {
 
 	@Test
 	public void testChargeWith3dsTrue() throws MalformedURLException, HttpCommunicationException {
-		String orderId = getRandomId();
+		String orderId = generateUuid();
 		Charge charge = getUnzer().charge(getCharge(orderId, true, null));
 		assertNotNull(charge);
 		assertNotNull(charge.getId());
@@ -186,7 +188,7 @@ public class ChargeTest extends AbstractPaymentTest {
 
 	@Test
 	public void testChargeWithPaymentReference() throws MalformedURLException, HttpCommunicationException {
-		String orderId = getRandomId();
+		String orderId = generateUuid();
 		Charge chargeObj = getCharge(orderId, true, null);
 		chargeObj.setPaymentReference("pmt-ref");
 		Charge charge = getUnzer().charge(chargeObj);
@@ -197,7 +199,7 @@ public class ChargeTest extends AbstractPaymentTest {
 
 	@Test
 	public void testChargeWithChargeObject() throws MalformedURLException, HttpCommunicationException {
-		String orderId = getRandomId();
+		String orderId = generateUuid();
 		Charge chargeObj = getCharge(orderId, true, null);
 		chargeObj.setPaymentReference("pmt-ref");
 		chargeObj.setAmount(new BigDecimal(1.0));
@@ -224,7 +226,7 @@ public class ChargeTest extends AbstractPaymentTest {
 		String participantId_2 = MARKETPLACE_PARTICIPANT_ID_2;
 		
 		//create basket
-		Basket maxBasket = getMaxTestBasket();
+		Basket maxBasket = getMaxTestBasketV1();
 		maxBasket.setAmountTotalDiscount(null);
 		
 		maxBasket.getBasketItems().get(0).setParticipantId(participantId_1);
@@ -267,7 +269,7 @@ public class ChargeTest extends AbstractPaymentTest {
 		String participantId_2 = MARKETPLACE_PARTICIPANT_ID_2;
 		
 		//create basket
-		Basket maxBasket = getMaxTestBasket();
+		Basket maxBasket = getMaxTestBasketV1();
 		maxBasket.setAmountTotalDiscount(null);
 		
 		maxBasket.getBasketItems().get(0).setParticipantId(participantId_1);
@@ -309,7 +311,7 @@ public class ChargeTest extends AbstractPaymentTest {
 		String participantId_2 = MARKETPLACE_PARTICIPANT_ID_2;
 		
 		//create basket
-		Basket maxBasket = getMaxTestBasket();
+		Basket maxBasket = getMaxTestBasketV1();
 		maxBasket.setAmountTotalDiscount(null);
 		
 		maxBasket.getBasketItems().get(0).setParticipantId(participantId_1);

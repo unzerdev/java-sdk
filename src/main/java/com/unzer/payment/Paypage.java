@@ -30,7 +30,7 @@ import java.util.Map;
 
 public class Paypage implements PaymentType {
 
-	public enum Status {SUCCESS, PENDING, ERRROR}
+	public enum Status {SUCCESS, PENDING, ERROR}
 
 	private String id;
 	private BigDecimal amount;

@@ -6,7 +6,7 @@ import com.unzer.payment.communication.HttpCommunicationException;
 import com.unzer.payment.communication.impl.HttpClientBasedRestCommunication;
 import com.unzer.payment.enums.RecurrenceType;
 import com.unzer.payment.paymenttypes.Card;
-import org.apache.logging.log4j.core.util.Assert;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.function.ThrowingRunnable;
 
@@ -47,7 +47,7 @@ public class CardTest extends AbstractPaymentTest {
                 Card card = new Card("4444333322221111", "03/20");
                 card.setCvc("123");
                 Unzer unzer = new Unzer(new HttpClientBasedRestCommunication(), privateKey3);
-                card = unzer.createPaymentType(card);
+                unzer.createPaymentType(card);
             }
 
         };
@@ -68,10 +68,10 @@ public class CardTest extends AbstractPaymentTest {
         assertEquals("CREDIT", card.getCardDetails().getAccount());
         assertEquals("US", card.getCardDetails().getCountryIsoA2());
         assertEquals("UNITED STATES", card.getCardDetails().getCountryName());
-        assertEquals(null, card.getCardDetails().getCardType());
-        assertEquals(null, card.getCardDetails().getIssuerName());
-        assertEquals(null, card.getCardDetails().getIssuerUrl());
-        assertEquals(null, card.getCardDetails().getIssuerPhoneNumber());
+        assertNull(card.getCardDetails().getCardType());
+        assertNull(card.getCardDetails().getIssuerName());
+        assertNull(card.getCardDetails().getIssuerUrl());
+        assertNull(card.getCardDetails().getIssuerPhoneNumber());
         assertEquals("card", card.getMethod());
     }
 
@@ -159,7 +159,6 @@ public class CardTest extends AbstractPaymentTest {
         card = getUnzer().createPaymentType(card);
 
         assertNull(card.getEmail());
-        Assert.isEmpty(card.getEmail());
     }
 
     @Test
@@ -170,13 +169,14 @@ public class CardTest extends AbstractPaymentTest {
         card.setCardHolder(PERSON_STRING);
         card = getUnzer().createPaymentType(card);
 
-        Assert.isNonEmpty(card.getEmail());
+        assertFalse(card.getEmail().isEmpty());
         assertEquals(MAIL_STRING, card.getEmail());
         assertNotNull(card.getEmail());
     }
 
+    @Ignore("PAPI disallows removing email")
     @Test
-    public void testCardMailEmptyWhenOverridingWithNull() throws HttpCommunicationException, MalformedURLException {
+    public void testCardMailEmptyWhenOverridingWithNull() throws HttpCommunicationException {
         Card card = new Card("4444333322221111", "03/99");
         card.setCvc("123");
         card.setEmail(MAIL_STRING);
@@ -190,7 +190,7 @@ public class CardTest extends AbstractPaymentTest {
         card = getUnzer().updatePaymentType(card);
 
         assertNotNull(card.getEmail());
-        Assert.isEmpty(card.getEmail());
+        assertTrue(card.getEmail().isEmpty());
     }
 
     @Test
@@ -207,7 +207,7 @@ public class CardTest extends AbstractPaymentTest {
         card.setCardHolder(PERSON_STRING);
         card = getUnzer().updatePaymentType(card);
 
-        Assert.isNonEmpty(card.getEmail());
+        assertFalse(card.getEmail().isEmpty());
         assertEquals(MAIL_STRING, card.getEmail());
         assertNotNull(card.getEmail());
     }

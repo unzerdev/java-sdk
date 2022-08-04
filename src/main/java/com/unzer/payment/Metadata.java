@@ -28,6 +28,10 @@ import java.util.Map;
 import java.util.TreeMap;
 
 public class Metadata implements PaymentType {
+	private String id;
+	private Map<String, String> metadataMap;
+	private Unzer unzer;
+
 	public Metadata() {
 		this(false);
 	}
@@ -39,11 +43,6 @@ public class Metadata implements PaymentType {
 			metadataMap = new LinkedHashMap<String, String>();
 		}
 	}
-	
-	private String id;
-	private Map<String, String> metadataMap;
-	private Unzer unzer;
-
 	
 	public Metadata addMetadata(String key, String value) {
 		getMetadataMap().put(key, value);

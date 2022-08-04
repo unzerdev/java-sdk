@@ -9,9 +9,9 @@ package com.unzer.payment.business;
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -22,6 +22,8 @@ package com.unzer.payment.business;
 
 import com.unzer.payment.*;
 import com.unzer.payment.communication.HttpCommunicationException;
+import com.unzer.payment.service.PropertiesUtil;
+import com.unzer.payment.service.UrlUtil;
 import org.junit.Test;
 
 import java.math.BigDecimal;
@@ -29,14 +31,15 @@ import java.math.RoundingMode;
 import java.net.MalformedURLException;
 import java.util.List;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static com.unzer.payment.business.BasketV1TestData.getMaxTestBasketV1;
+import static com.unzer.payment.business.BasketV1TestData.getMinTestBasketV1;
+import static org.junit.Assert.*;
 
-public class BasketTest extends AbstractPaymentTest {
+public class BasketV1Test extends AbstractPaymentTest {
 
 	@Test
 	public void testCreateFetchBasket() throws HttpCommunicationException {
-		Basket maxBasket = getMaxTestBasket();
+		Basket maxBasket = getMaxTestBasketV1();
 		int basketItemCnt = maxBasket.getBasketItems().size();
 		for(int i=0; i<basketItemCnt; i++) {
 			maxBasket.getBasketItems().get(i).setParticipantId("testparticipant" + (i + 1));
@@ -51,7 +54,7 @@ public class BasketTest extends AbstractPaymentTest {
 
 	@Test
 	public void testCreateFetchMinBasket() throws HttpCommunicationException {
-		Basket minBasket = getMinTestBasket();
+		Basket minBasket = getMinTestBasketV1();
 		Basket basket = getUnzer().createBasket(minBasket);
 		Basket basketFetched = getUnzer().fetchBasket(basket.getId());
 		assertNotNull(basketFetched);
@@ -61,10 +64,10 @@ public class BasketTest extends AbstractPaymentTest {
 
 	@Test
 	public void testUpdateBasket() throws HttpCommunicationException {
-		Basket minBasket = getMinTestBasket();
+		Basket minBasket = getMinTestBasketV1();
 		Basket basket = getUnzer().createBasket(minBasket);
 		Basket basketFetched = getUnzer().fetchBasket(basket.getId());
-		Basket maxBasket = getMaxTestBasket();
+		Basket maxBasket = getMaxTestBasketV1();
 		maxBasket.setOrderId(basket.getOrderId());
 		Basket updatedBasket = getUnzer().updateBasket(maxBasket, basket.getId());
 		assertNotNull(basketFetched);
@@ -74,7 +77,7 @@ public class BasketTest extends AbstractPaymentTest {
 
 	@Test
 	public void testUpdateBasketWithFetched() throws HttpCommunicationException {
-		Basket minBasket = getMinTestBasket();
+		Basket minBasket = getMinTestBasketV1();
 		Basket basket = getUnzer().createBasket(minBasket);
 		Basket basketFetched = getUnzer().fetchBasket(basket.getId());
 		basketFetched.setNote("Something changed");
@@ -83,7 +86,7 @@ public class BasketTest extends AbstractPaymentTest {
 		assertNotNull(basketFetched.getId());
 		assertBasketEquals(basketFetched, updatedBasket);
 	}
-	
+
 	@Test
 	public void testAuthorizationWithBasket() throws MalformedURLException, HttpCommunicationException {
 		Basket basket = createMaxTestBasket();
@@ -115,7 +118,7 @@ public class BasketTest extends AbstractPaymentTest {
 	}
 
 	private Basket createMaxTestBasket() throws PaymentException, HttpCommunicationException {
-		return getUnzer().createBasket(getMaxTestBasket());
+		return getUnzer().createBasket(getMaxTestBasketV1());
 	}
 
 
@@ -166,11 +169,18 @@ public class BasketTest extends AbstractPaymentTest {
 		assertEquals(expected.getParticipantId(), actual.getParticipantId());
 	}
 
-	private void assertNumberEquals(Integer expected, Integer actual) {
-		if (expected != null) {
-			assertEquals(expected, actual);
-		}
+	@Test
+	public void testBasketV2IsPriorVersion() {
+		Basket basket = new Basket()
+				.setTotalValueGross(BigDecimal.TEN)
+				.setAmountTotalGross(BigDecimal.ONE);
+
+		UrlUtil urlUtil = new UrlUtil(null);
+		String endpoint = new PropertiesUtil().getString(PropertiesUtil.REST_ENDPOINT);
+
+		String url = urlUtil.getPaymentUrl(basket, "id");
+		assertTrue(
+				url.startsWith(endpoint + "/v2/")
+		);
 	}
-
-
 }

@@ -28,16 +28,15 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.math.BigDecimal;
-import java.math.RoundingMode;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 
+import static com.unzer.payment.util.Uuid.generateUuid;
 import static java.util.concurrent.TimeUnit.SECONDS;
 import static org.awaitility.Awaitility.await;
 import static org.junit.Assert.assertEquals;
@@ -63,8 +62,6 @@ import static org.junit.Assert.assertEquals;
  */
 
 public abstract class AbstractPaymentTest {
-
-
     protected static final String EMPTY_STRING = "";
     protected static final String PERSON_STRING = "Mr. Unzer Payment";
     protected static final String MAIL_STRING = "example@unzer.com";
@@ -83,11 +80,7 @@ public abstract class AbstractPaymentTest {
     public final String marketplacePrivatekey = properties.getString(PropertiesUtil.MARKETPLACE_PRIVATE_KEY);
 
     protected String getRandomInvoiceId() {
-        return getRandomId().substring(0, 5);
-    }
-
-    public Unzer getUnzerWithEndPoint(String endPoint) {
-        return new Unzer(privateKey1, null, endPoint);
+        return generateUuid().substring(0, 5);
     }
 
     public Unzer getUnzer() {
@@ -272,28 +265,20 @@ public abstract class AbstractPaymentTest {
         return sdd;
     }
 
-    protected String getRandomId() {
-        return UUID.randomUUID().toString().substring(0, 8);
-    }
-
     protected Customer createMaximumCustomer() throws HttpCommunicationException, ParseException {
-        return getUnzer().createCustomer(getMaximumCustomer(getRandomId()));
+        return getUnzer().createCustomer(getMaximumCustomer(generateUuid()));
     }
 
-    protected Basket createBasket() throws HttpCommunicationException, ParseException {
-        return getUnzer().createBasket(getMaxTestBasket());
-    }
-
-    protected Basket createBasket(BigDecimal amount) throws HttpCommunicationException, ParseException {
-        return getUnzer().createBasket(getMaxTestBasket(amount));
+    protected Basket createBasket(Basket basket) throws HttpCommunicationException {
+        return getUnzer().createBasket(basket);
     }
 
     protected Customer createFactoringOKCustomer() throws HttpCommunicationException, ParseException {
-        return getUnzer().createCustomer(getFactoringOKCustomer(getRandomId()));
+        return getUnzer().createCustomer(getFactoringOKCustomer(generateUuid()));
     }
 
     protected Customer createMaximumCustomerSameAddress() throws HttpCommunicationException, ParseException {
-        return getUnzer().createCustomer(getMaximumCustomerSameAddress(getRandomId()));
+        return getUnzer().createCustomer(getMaximumCustomerSameAddress(generateUuid()));
     }
 
     protected Customer getMinimumCustomer() {
@@ -382,7 +367,7 @@ public abstract class AbstractPaymentTest {
     }
 
     protected Customer getUnRegisterdMaximumBusinessCustomer() throws ParseException {
-        Customer customer = getMaximumCustomer(getRandomId());
+        Customer customer = getMaximumCustomer(generateUuid());
         customer.setCompanyData(getUnregisteredCompanyData());
         return customer;
     }
@@ -530,10 +515,6 @@ public abstract class AbstractPaymentTest {
         return bigDecimal;
     }
 
-    protected String maskIban(String text) {
-        return maskString(text, 6, text.length() - 4, '*');
-    }
-
     protected static String maskString(String strText, int start, int end, char maskChar) {
         if (strText == null) return null;
         if (strText.equals("")) return "";
@@ -551,110 +532,6 @@ public abstract class AbstractPaymentTest {
         }
 
         return strText.substring(0, start) + sbMaskString.toString() + strText.substring(start + maskLength);
-    }
-
-    protected Basket getMaxTestBasket() {
-        Basket basket = new Basket();
-        basket.setAmountTotalGross(new BigDecimal(380.48));
-        basket.setAmountTotalVat(new BigDecimal(380.48 * 0.2).setScale(2, RoundingMode.HALF_UP));
-        basket.setAmountTotalDiscount(BigDecimal.TEN);
-        basket.setAmountTotalVat(new BigDecimal(5.41));
-        basket.setCurrencyCode(Currency.getInstance("EUR"));
-        basket.setNote("Mistery shopping");
-        basket.setOrderId(getRandomId());
-        basket.addBasketItem(getMaxTestBasketItem1());
-        basket.addBasketItem(getMaxTestBasketItem2());
-        return basket;
-    }
-
-    protected Basket getMaxTestBasket(BigDecimal amount) {
-        Basket basket = new Basket();
-        basket.setAmountTotalGross(amount);
-        basket.setAmountTotalVat(amount.multiply(BigDecimal.valueOf(0.2)).setScale(2, RoundingMode.HALF_UP));
-        basket.setAmountTotalDiscount(BigDecimal.ZERO);
-        basket.setAmountTotalVat(new BigDecimal("7.60"));
-        basket.setCurrencyCode(Currency.getInstance("EUR"));
-        basket.setNote("Mistery shopping");
-        basket.setOrderId(getRandomId());
-        basket.addBasketItem(getMaxTestBasketItem1());
-        basket.addBasketItem(getMaxTestBasketItem2());
-        return basket;
-    }
-
-    protected Basket getTestBasketForInvoice() {
-        Basket basket = new Basket();
-        basket.setAmountTotalGross(new BigDecimal(14.49));
-        basket.setAmountTotalVat(new BigDecimal(14.49 * 0.2).setScale(2, RoundingMode.HALF_UP));
-        basket.setAmountTotalDiscount(BigDecimal.ONE);
-        basket.setAmountTotalVat(new BigDecimal(3.41));
-        basket.setCurrencyCode(Currency.getInstance("EUR"));
-        basket.setNote("Mistery shopping");
-        basket.setOrderId(getRandomId());
-        basket.addBasketItem(getMaxTestBasketItem1());
-        return basket;
-    }
-
-    protected Basket getMinTestBasket() {
-        Basket basket = new Basket()
-                .setAmountTotalGross(new BigDecimal(500.5))
-                .setCurrencyCode(Currency.getInstance("EUR"))
-                .setOrderId(getRandomId())
-                .addBasketItem(getMinTestBasketItem());
-        return basket;
-    }
-
-    private BasketItem getMaxTestBasketItem1() {
-        BasketItem basketItem = new BasketItem();
-        basketItem.setBasketItemReferenceId("Artikelnummer4711");
-        basketItem.setAmountDiscount(BigDecimal.ONE);
-        basketItem.setAmountGross(new BigDecimal(14.49));
-        basketItem.setAmountNet(new BigDecimal(13.49));
-        basketItem.setAmountPerUnit(new BigDecimal(14.49));
-        basketItem.setAmountVat(new BigDecimal(1.4));
-        basketItem.setQuantity(1);
-        basketItem.setTitle("Apple iPhone");
-        basketItem.setUnit("Pc.");
-        basketItem.setVat(19);
-        basketItem.setSubTitle("XS in Red");
-        basketItem.setType("goods");
-        try {
-            basketItem.setImageUrl(new URL("https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/iphone-12-pro-family-hero"));
-        } catch (MalformedURLException e) {
-        }
-        return basketItem;
-    }
-
-    private BasketItem getMaxTestBasketItem2() {
-        BasketItem basketItem = new BasketItem();
-        basketItem.setBasketItemReferenceId("Artikelnummer4712");
-        basketItem.setAmountDiscount(BigDecimal.ONE);
-        basketItem.setAmountGross(new BigDecimal(365.99));
-        basketItem.setAmountNet(new BigDecimal(307.55));
-        basketItem.setAmountPerUnit(new BigDecimal(223.66));
-        basketItem.setAmountVat(new BigDecimal(58.44));
-        basketItem.setQuantity(3);
-        basketItem.setTitle("Apple iPad Air");
-        basketItem.setUnit("Pc.");
-        basketItem.setVat(20);
-        basketItem.setSubTitle("Nicht nur Pros brauchen Power.");
-        basketItem.setType("goods");
-        try {
-            basketItem.setImageUrl(new URL("https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/iphone-12-pro-family-hero"));
-        } catch (MalformedURLException e) {
-        }
-        return basketItem;
-    }
-
-    private BasketItem getMinTestBasketItem() {
-        BasketItem basketItem = new BasketItem()
-                .setBasketItemReferenceId("Artikelnummer4711")
-                .setQuantity(5)
-                .setAmountPerUnit(new BigDecimal(100.1))
-                .setAmountNet(new BigDecimal(420.1))
-                .setTitle("Apple iPhone");
-
-        basketItem.setAmountGross(basketItem.getAmountPerUnit().multiply(new BigDecimal(basketItem.getQuantity())));
-        return basketItem;
     }
 
     protected int confirmMarketplacePendingTransaction(String redirectUrl) {
