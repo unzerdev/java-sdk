@@ -6,6 +6,11 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres
 to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## [1.2.1.0][1.2.1.0]
+### Added
+
+* Add payment type Paylater Invoice. See more at [Unzer Docs](https://docs.unzer.com/payment-methods/unzer-invoice-upl/)
+
 ## [1.2.0.0][1.2.0.0]
 
 ### Breaking changes 
@@ -204,6 +209,8 @@ to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
     *   cancelAuthorization
 *   Remove deprecated classes
     *   RestCommunication
+
+[1.2.1.0]: http://github.com/unzerdev/java-sdk/compare/1.2.0.0..1.2.1.0
 
 [1.2.0.0]: http://github.com/unzerdev/java-sdk/compare/1.1.2.7..1.2.0.0
 

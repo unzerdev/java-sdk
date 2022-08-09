@@ -36,7 +36,7 @@ import static org.junit.Assert.assertNotNull;
 public class InvoiceTest extends AbstractPaymentTest {
 
 	@Test
-	public void testCreateInvoiceManatoryType() throws HttpCommunicationException {
+	public void testCreateInvoiceMandatoryType() throws HttpCommunicationException {
 		Invoice invoice = getUnzer().createPaymentType(getInvoice());
 		assertNotNull(invoice.getId());
 	}
@@ -61,6 +61,4 @@ public class InvoiceTest extends AbstractPaymentTest {
 	private Invoice getInvoice() {
 		return new Invoice();
 	}
-
-
 }

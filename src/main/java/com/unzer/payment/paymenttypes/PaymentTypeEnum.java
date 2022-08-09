@@ -45,6 +45,7 @@ public enum PaymentTypeEnum {
 	BANCONTACT("bct"),
 	PF_CARD("pfc"),
 	PF_EFINANCE("pfe"),
+    UNZER_PAYLATER_INVOICE("piv"),
     UNKNOWN("unknown");
 
     private String shortName;

@@ -568,6 +568,7 @@ public class PaymentService {
             case WECHATPAY:
             case PF_CARD:
             case PF_EFINANCE:
+            case UNZER_PAYLATER_INVOICE:
                 return new JsonIdObject();
             case PAYPAL:
                 return new JsonPaypal();
@@ -645,6 +646,8 @@ public class PaymentService {
                 return new PostFinanceCard();
             case PF_EFINANCE:
                 return new PostFinanceEFinance();
+            case UNZER_PAYLATER_INVOICE:
+                return new PaylaterInvoice();
             default:
                 throw new PaymentException("Type '" + typeId + "' is currently not supported by the SDK");
         }
