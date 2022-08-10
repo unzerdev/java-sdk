@@ -37,7 +37,7 @@ public class WebhookService {
 	
 	public WebhookService(Unzer unzer, UnzerRestCommunication restCommunication) {
 		this.unzer = unzer;
-		this.urlUtil = new UrlUtil(unzer.getEndPoint());
+		this.urlUtil = new UrlUtil(unzer.getPrivateKey());
 		this.restCommunication = restCommunication;
 		this.jsonParser = new JsonParser();
 	}

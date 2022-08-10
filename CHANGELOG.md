@@ -6,6 +6,16 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres
 to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## UNRELEASED
+
+### Breaking changes
+* Removed arguments `privatekey1`, `privatekey2`, `privatekey3`, `publickey1`, `marketplacekey`
+and corresponding constants `PUBLIC_KEY1`, `PRIVATE_KEY1`, `PRIVATE_KEY2`, `PRIVATE_KEY3`, `MARKETPLACE_PRIVATE_KEY`.
+* Removed `rest.endpoint` and `rest.version` parameters. Use `unzer.environment` instead.
+
+### Changed
+* Renamed `com.unzer.payment.service.PropertyUtils` to `com.unzer.payment.service.Configuration`.
+
 ## [1.2.0.0][1.2.0.0]
 
 ### Breaking changes 
@@ -41,7 +51,7 @@ to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 ### Removed
 
 *   Remove `log.error` in catch clause 
-    `com.unzer.payment.service.PropertiesUtil#loadProperties()` because the
+    `com.unzer.payment.service.Configuration#loadProperties()` because the
     exception with exact same message is thrown after the `log.error` call.
 
 ### Fixed

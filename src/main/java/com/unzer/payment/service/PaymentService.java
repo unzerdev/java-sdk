@@ -61,7 +61,7 @@ public class PaymentService {
     public PaymentService(Unzer unzer, UnzerRestCommunication restCommunication) {
         super();
         this.unzer = unzer;
-        this.urlUtil = new UrlUtil(unzer.getEndPoint());
+        this.urlUtil = new UrlUtil(unzer.getPrivateKey());
         this.restCommunication = restCommunication;
         this.jsonParser = new JsonParser();
     }

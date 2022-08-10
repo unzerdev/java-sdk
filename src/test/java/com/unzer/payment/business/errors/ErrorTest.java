@@ -25,6 +25,7 @@ import com.unzer.payment.business.AbstractPaymentTest;
 import com.unzer.payment.communication.HttpCommunicationException;
 import com.unzer.payment.paymenttypes.Card;
 import org.junit.Test;
+import org.junit.function.ThrowingRunnable;
 
 import java.net.MalformedURLException;
 import java.text.ParseException;
@@ -83,6 +84,7 @@ public class ErrorTest extends AbstractPaymentTest {
     // You do not have the permission to access the paymentmethod with the id
     // s-crd-jy8xfchnfte2.
     // Payment type '/types/s-crd-jbrjthrghag2' not found
+    //FIXME tests nothing
     @Test
     public void testInvalidAccess() throws HttpCommunicationException {
         Card card = createPaymentTypeCard();

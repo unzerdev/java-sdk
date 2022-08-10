@@ -2,14 +2,11 @@ package com.unzer.payment.service;
 
 import com.unzer.payment.Basket;
 import com.unzer.payment.Recurring;
-import com.unzer.payment.exceptions.PropertiesException;
 import com.unzer.payment.paymenttypes.PaymentType;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.math.BigDecimal;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.Currency;
@@ -38,38 +35,17 @@ import java.util.Locale;
 
 public class UrlUtil {
     private static final String PLACEHOLDER_CHARGE_ID = "<chargeId>";
-
     private static final String PLACEHOLDER_PAYMENT_ID = "<paymentId>";
-
     private static final String PLACEHOLDER_TYPE_ID = "<typeId>";
-
     private static final String REFUND_URL = "payments/<paymentId>/charges/<chargeId>/cancels";
-
     private static final String RECURRING_URL = "types/<typeId>/recurring";
 
     public static final Logger logger = LogManager.getLogger(UrlUtil.class);
 
-    private final PropertiesUtil properties = new PropertiesUtil();
+    private final String apiEndpoint;
 
-    private String endPoint;
-
-    public UrlUtil(String endPoint) {
-        this.endPoint = endPoint;
-    }
-
-    /**
-     * Create URL object from URL string
-     *
-     * @deprecated This method will be removed from future releases. Use {@link java.net.URL#URL(String)} instead
-     */
-    @Deprecated
-    public URL getUrl(String url) {
-        try {
-            return new URL(url);
-        } catch (MalformedURLException e) {
-            logger.error("Url '{}' is not valid: {}", url, e.getMessage());
-            return null;
-        }
+    public UrlUtil(String privateKey) {
+        this.apiEndpoint = Configuration.resolveApiEndpoint(privateKey);
     }
 
     public String getRefundUrl(String paymentId, String chargeId) {
@@ -133,10 +109,33 @@ public class UrlUtil {
         return getRestUrlInternal().replace("<paymentId>/", "");
     }
 
+    public String getApiEndpoint() {
+        return apiEndpoint;
+    }
+
+    public String getRestUrl() {
+        StringBuilder stringBuilder = new StringBuilder(apiEndpoint);
+        appendSlashIfNeeded(stringBuilder);
+        stringBuilder.append("v1");
+        appendSlashIfNeeded(stringBuilder);
+        return stringBuilder.toString();
+    }
+
+    public String getHirePurchaseRateUrl(BigDecimal amount, Currency currency, BigDecimal effectiveInterestRate, Date orderDate) {
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append(getRestUrl());
+        stringBuilder.append("types/hire-purchase-direct-debit/plans?");
+        stringBuilder.append("amount=").append(getBigDecimal(amount)).append("&");
+        stringBuilder.append("currency=").append(currency.getCurrencyCode()).append("&");
+        stringBuilder.append("effectiveInterest=").append(getBigDecimal(effectiveInterestRate)).append("&");
+        stringBuilder.append("orderDate=").append(getDate(orderDate));
+        return stringBuilder.toString();
+    }
+
     @Deprecated
     private String getRestUrlInternal(Basket basket) {
         StringBuilder stringBuilder = new StringBuilder();
-        stringBuilder.append(properties.getString(PropertiesUtil.REST_ENDPOINT));
+        stringBuilder.append(apiEndpoint);
         appendSlashIfNeeded(stringBuilder);
 
         // v2 is the default Basket resource version
@@ -173,37 +172,10 @@ public class UrlUtil {
         return stringBuilder.toString();
     }
 
-    public String getRestUrl() {
-        if (endPoint != null && !endPoint.isEmpty()) {
-            return endPoint;
-        } else {
-            StringBuilder stringBuilder = new StringBuilder();
-            stringBuilder.append(properties.getString(PropertiesUtil.REST_ENDPOINT));
-            if (stringBuilder.length() == 0) {
-                throw new PropertiesException("Properties file unzer.properties is empty");
-            }
-            appendSlashIfNeeded(stringBuilder);
-            stringBuilder.append(properties.getString(PropertiesUtil.REST_VERSION));
-            appendSlashIfNeeded(stringBuilder);
-            return stringBuilder.toString();
-        }
-    }
-
     private void appendSlashIfNeeded(StringBuilder stringBuilder) {
         if (stringBuilder.charAt(stringBuilder.length() - 1) != '/') {
             stringBuilder.append("/");
         }
-    }
-
-    public String getHirePurchaseRateUrl(BigDecimal amount, Currency currency, BigDecimal effectiveInterestRate, Date orderDate) {
-        StringBuilder stringBuilder = new StringBuilder();
-        stringBuilder.append(getRestUrl());
-        stringBuilder.append("types/hire-purchase-direct-debit/plans?");
-        stringBuilder.append("amount=").append(getBigDecimal(amount)).append("&");
-        stringBuilder.append("currency=").append(currency.getCurrencyCode()).append("&");
-        stringBuilder.append("effectiveInterest=").append(getBigDecimal(effectiveInterestRate)).append("&");
-        stringBuilder.append("orderDate=").append(getDate(orderDate));
-        return stringBuilder.toString();
     }
 
     private String getDate(Date date) {

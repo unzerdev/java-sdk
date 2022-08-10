@@ -39,7 +39,7 @@ public class UrlUtilTest extends AbstractPaymentTest {
         String maximumRestUrl = "https://api.unzer.com/v1/types/invoice-secured";
 
         Unzer unzer = getUnzer();
-        UrlUtil urlUtil = new UrlUtil(unzer.getEndPoint());
+        UrlUtil urlUtil = new UrlUtil(unzer.getPrivateKey());
         InvoiceSecured invoiceSecured = createPaymentTypeInvoiceSecured();
 
         assertEquals(String.format("%s/%s", minimalRestUrl, invoiceSecured.getId()), urlUtil.getHttpGetUrl(invoiceSecured.getId()));
@@ -52,7 +52,7 @@ public class UrlUtilTest extends AbstractPaymentTest {
         String maximumRestUrl = "https://api.unzer.com/v1/types/installment-secured";
 
         Unzer unzer = getUnzer();
-        UrlUtil urlUtil = new UrlUtil(unzer.getEndPoint());
+        UrlUtil urlUtil = new UrlUtil(unzer.getPrivateKey());
         InstallmentSecuredRatePlan installmentSecuredRatePlan = createPaymentTypeInstallmentSecuredRatePlan();
 
         assertEquals(String.format("%s/%s", minimalRestUrl, installmentSecuredRatePlan.getId()), urlUtil.getHttpGetUrl(installmentSecuredRatePlan.getId()));
@@ -65,7 +65,7 @@ public class UrlUtilTest extends AbstractPaymentTest {
         String maximumRestUrl = "https://api.unzer.com/v1/types/sepa-direct-debit-secured";
 
         Unzer unzer = getUnzer();
-        UrlUtil urlUtil = new UrlUtil(unzer.getEndPoint());
+        UrlUtil urlUtil = new UrlUtil(unzer.getPrivateKey());
         SepaDirectDebitSecured sepaDirectDebitSecured = createPaymentTypeSepaDirectDebitSecured("DE89370400440532013000");
 
         assertEquals(String.format("%s/%s", minimalRestUrl, sepaDirectDebitSecured.getId()), urlUtil.getHttpGetUrl(sepaDirectDebitSecured.getId()));

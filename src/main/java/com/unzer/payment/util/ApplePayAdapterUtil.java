@@ -22,7 +22,7 @@ package com.unzer.payment.util;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.unzer.payment.ApplePaySession;
-import com.unzer.payment.service.PropertiesUtil;
+import com.unzer.payment.service.Configuration;
 import org.apache.http.HttpEntity;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpPost;
@@ -85,9 +85,8 @@ public class ApplePayAdapterUtil {
     }
 
     public static boolean doesUrlContainValidDomainName(String merchantValidationURL) throws URISyntaxException {
-        PropertiesUtil propertiesUtil = new PropertiesUtil();
         String merchantValidationUrlDomain = getPlainDomainName(merchantValidationURL);
-        List<String> validApplePayDomains = Arrays.asList(propertiesUtil.getString("applepay.validValidationUrls").split(","));
+        List<String> validApplePayDomains = Arrays.asList(Configuration.getProperty("applepay.validValidationUrls").split(","));
 
         return validApplePayDomains.contains(merchantValidationUrlDomain);
     }

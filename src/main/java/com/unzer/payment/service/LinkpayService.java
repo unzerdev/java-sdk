@@ -44,9 +44,8 @@ public class LinkpayService {
 	 * @param restCommunication - the implementation of {@code UnzerRestCommunication} to be used for network communication.
 	 */
 	public LinkpayService(Unzer unzer, UnzerRestCommunication restCommunication) {
-		super();
 		this.unzer = unzer;
-		this.urlUtil = new UrlUtil(unzer.getEndPoint());
+		this.urlUtil = new UrlUtil(unzer.getPrivateKey());
 		this.restCommunication = restCommunication;
 	}
 

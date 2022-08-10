@@ -14,7 +14,6 @@ import com.unzer.payment.paymenttypes.Card;
 import com.unzer.payment.paymenttypes.InvoiceSecured;
 import com.unzer.payment.paymenttypes.SepaDirectDebit;
 import com.unzer.payment.paymenttypes.SepaDirectDebitSecured;
-import com.unzer.payment.service.PropertiesUtil;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
@@ -62,6 +61,11 @@ import static org.junit.Assert.assertEquals;
  */
 
 public abstract class AbstractPaymentTest {
+    private static final String PUBLIC_KEY1 = "publickey1";
+    private static final String PRIVATE_KEY1 = "privatekey1";
+    private static final String PRIVATE_KEY2 = "privatekey2";
+    private static final String PRIVATE_KEY3 = "privatekey3";
+
     protected static final String EMPTY_STRING = "";
     protected static final String PERSON_STRING = "Mr. Unzer Payment";
     protected static final String MAIL_STRING = "example@unzer.com";
@@ -71,13 +75,25 @@ public abstract class AbstractPaymentTest {
     protected static final String MARKETPLACE_PARTICIPANT_ID_2 = "31HA07BC814FC247577B309FF031D3F0";
     protected static final String MARKETPLACE_PARTICIPANT_ID_1 = "31HA07BC814FC247577B195E59A99FC6";
 
-    private final PropertiesUtil properties = new PropertiesUtil();
+    private final Map<String, String> keys;
+    private static final String MARKETPLACE_PRIVATE_KEY = "marketplacePrivatekey";
 
-    public final String publicKey1 = properties.getString(PropertiesUtil.PUBLIC_KEY1);
-    public final String privateKey1 = properties.getString(PropertiesUtil.PRIVATE_KEY1);
-    public final String privateKey2 = properties.getString(PropertiesUtil.PRIVATE_KEY2);
-    public final String privateKey3 = properties.getString(PropertiesUtil.PRIVATE_KEY3);
-    public final String marketplacePrivatekey = properties.getString(PropertiesUtil.MARKETPLACE_PRIVATE_KEY);
+    {
+        keys = new HashMap<>();
+        Arrays.asList(PUBLIC_KEY1, PRIVATE_KEY1, PRIVATE_KEY2, PRIVATE_KEY3, MARKETPLACE_PRIVATE_KEY)
+                .forEach(envVar -> {
+                    if (System.getProperty(envVar) != null) {
+                        this.keys.put(envVar, System.getProperty(envVar));
+                    }
+                });
+    }
+
+    public final String publicKey1 = keys.get(PUBLIC_KEY1);
+    public final String privateKey1 = keys.get(PRIVATE_KEY1);
+    public final String privateKey2 = keys.get(PRIVATE_KEY2);
+    public final String privateKey3 = keys.get(PRIVATE_KEY3);
+    public final String marketplacePrivatekey = keys.get(MARKETPLACE_PRIVATE_KEY);
+
 
     protected String getRandomInvoiceId() {
         return generateUuid().substring(0, 5);

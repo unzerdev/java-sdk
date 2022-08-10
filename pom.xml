@@ -8,7 +8,7 @@
     <artifactId>java-sdk</artifactId>
     <version>1.2.0.0</version>
     <name>Unzer Java SDK</name>
-    <description>Unzer Java SDK</description>
+    <description>Unzer Java SDK provides an easy way to connect to the Unzer Rest API.</description>
     <url>https://docs.unzer.com/</url>
 
     <inceptionYear>2020</inceptionYear>
@@ -167,27 +167,6 @@
                     </execution>
                 </executions>
             </plugin>
-            <!--            <plugin>
-                            <groupId>org.codehaus.mojo</groupId>
-                            <artifactId>license-maven-plugin</artifactId>
-                            <version>2.0.0</version>
-                            <executions>
-                                <execution>
-                                    <id>first</id>
-                                    <goals>
-                                        <goal>update-file-header</goal>
-                                    </goals>
-                                    <phase>process-sources</phase>
-                                    <configuration>
-                                        <licenseName>apache_v2</licenseName>
-                                        <roots>
-                                            <root>src/main/java</root>
-                                            <root>src/test/java</root>
-                                        </roots>
-                                    </configuration>
-                                </execution>
-                            </executions>
-                        </plugin>-->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-gpg-plugin</artifactId>
