@@ -28,9 +28,9 @@ import java.util.Properties;
 public class Configuration {
     private static final String API_ENVIRONMENT = "unzer.environment";
     private static final String PRODUCTION_ENDPOINT = "https://api.unzer.com";
+    private static final String SANDBOX_ENDPOINT = "https://sbx-api.unzer.com";
     private static final String DEVELOPMENT_ENDPOINT = "https://dev-api.unzer.com";
     private static final String STAGING_ENDPOINT = "https://stg-api.unzer.com";
-    private static final String SANDBOX_ENDPOINT = "https://sbx-api.unzer.com";
     private static final String DEVELOPMENT_ENVIRONMENT = "DEV";
     private static final String STAGING_ENVIRONMENT = "STG";
     private static final char PRODUCTION_KEY_PREFIX = 'p';

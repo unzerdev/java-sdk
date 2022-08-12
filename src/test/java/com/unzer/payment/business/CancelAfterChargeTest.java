@@ -140,24 +140,24 @@ public class CancelAfterChargeTest extends AbstractPaymentTest {
 			maxBasket.getBasketItems().get(i).setAmountDiscount(null);
 		}
 
-		Basket basket = getUnzer(marketplacePrivatekey).createBasket(maxBasket);
+		Basket basket = getUnzer(Keys.MARKETPLACE_KEY).createBasket(maxBasket);
 		
 		//create card
 		Card card = getPaymentTypeCard(NO_3DS_VISA_CARD_NUMBER); //do not change card number except error case
-		card = (Card) getUnzer(marketplacePrivatekey).createPaymentType(card);
+		card = (Card) getUnzer(Keys.MARKETPLACE_KEY).createPaymentType(card);
 		
 		//marketplace charge
 		MarketplaceCharge chargeRequest = getMarketplaceCharge(card.getId(), null, null, null, basket.getId(), null);
 		chargeRequest.setAmount(maxBasket.getAmountTotalGross());
 		
-		MarketplaceCharge charge = getUnzer(marketplacePrivatekey).marketplaceCharge(chargeRequest);
+		MarketplaceCharge charge = getUnzer(Keys.MARKETPLACE_KEY).marketplaceCharge(chargeRequest);
 		assertNotNull(charge.getId());
 		assertNotNull(charge);
 		assertEquals(AbstractTransaction.Status.PENDING, charge.getStatus());
 		assertEquals(participantId_2, charge.getProcessing().getParticipantId());
 		
 		//get marketplace payment
-		MarketplacePayment payment = getUnzer(marketplacePrivatekey).fetchMarketplacePayment(charge.getPayment().getId());
+		MarketplacePayment payment = getUnzer(Keys.MARKETPLACE_KEY).fetchMarketplacePayment(charge.getPayment().getId());
 		assertNotNull(payment);
 		assertNotNull(payment.getId());
 		assertNotNull(payment.getAuthorizationsList());
@@ -195,17 +195,17 @@ public class CancelAfterChargeTest extends AbstractPaymentTest {
 			maxBasket.getBasketItems().get(i).setAmountDiscount(null);
 		}
 
-		Basket basket = getUnzer(marketplacePrivatekey).createBasket(maxBasket);
+		Basket basket = getUnzer(Keys.MARKETPLACE_KEY).createBasket(maxBasket);
 		
 		//create card
 		Card card = getPaymentTypeCard(NO_3DS_VISA_CARD_NUMBER); //do not change card number except error case
-		card = (Card) getUnzer(marketplacePrivatekey).createPaymentType(card);
+		card = (Card) getUnzer(Keys.MARKETPLACE_KEY).createPaymentType(card);
 		
 		//marketplace charge
 		MarketplaceCharge chargeRequest = getMarketplaceCharge(card.getId(), null, null, null, basket.getId(), null);
 		chargeRequest.setAmount(maxBasket.getAmountTotalGross());
 		
-		MarketplaceCharge charge = getUnzer(marketplacePrivatekey).marketplaceCharge(chargeRequest);
+		MarketplaceCharge charge = getUnzer(Keys.MARKETPLACE_KEY).marketplaceCharge(chargeRequest);
 		assertNotNull(charge.getId());
 		assertNotNull(charge);
 		assertEquals(AbstractTransaction.Status.PENDING, charge.getStatus());
@@ -217,7 +217,7 @@ public class CancelAfterChargeTest extends AbstractPaymentTest {
 		assertEquals(HttpStatus.SC_MOVED_TEMPORARILY, redirectStatus);
 		
 		//get marketplace payment
-		MarketplacePayment payment = getUnzer(marketplacePrivatekey).fetchMarketplacePayment(charge.getPayment().getId());
+		MarketplacePayment payment = getUnzer(Keys.MARKETPLACE_KEY).fetchMarketplacePayment(charge.getPayment().getId());
 		assertNotNull(payment);
 		assertNotNull(payment.getId());
 		assertNotNull(payment.getAuthorizationsList());

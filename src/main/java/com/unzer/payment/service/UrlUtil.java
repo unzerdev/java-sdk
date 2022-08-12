@@ -3,8 +3,6 @@ package com.unzer.payment.service;
 import com.unzer.payment.Basket;
 import com.unzer.payment.Recurring;
 import com.unzer.payment.paymenttypes.PaymentType;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 import java.math.BigDecimal;
 import java.text.NumberFormat;
@@ -39,8 +37,6 @@ public class UrlUtil {
     private static final String PLACEHOLDER_TYPE_ID = "<typeId>";
     private static final String REFUND_URL = "payments/<paymentId>/charges/<chargeId>/cancels";
     private static final String RECURRING_URL = "types/<typeId>/recurring";
-
-    public static final Logger logger = LogManager.getLogger(UrlUtil.class);
 
     private final String apiEndpoint;
 

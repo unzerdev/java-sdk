@@ -2,7 +2,6 @@ package com.unzer.payment.business;
 
 import com.unzer.payment.*;
 import com.unzer.payment.Customer.Salutation;
-import com.unzer.payment.business.paymenttypes.InstallmentSecuredRatePlan;
 import com.unzer.payment.communication.HttpCommunicationException;
 import com.unzer.payment.communication.impl.HttpClientBasedRestCommunication;
 import com.unzer.payment.marketplace.MarketplaceAuthorization;
@@ -11,7 +10,6 @@ import com.unzer.payment.marketplace.MarketplaceCancelBasketItem;
 import com.unzer.payment.marketplace.MarketplaceCharge;
 import com.unzer.payment.models.AdditionalTransactionData;
 import com.unzer.payment.paymenttypes.Card;
-import com.unzer.payment.paymenttypes.InvoiceSecured;
 import com.unzer.payment.paymenttypes.SepaDirectDebit;
 import com.unzer.payment.paymenttypes.SepaDirectDebitSecured;
 import org.apache.http.HttpResponse;
@@ -61,12 +59,6 @@ import static org.junit.Assert.assertEquals;
  */
 
 public abstract class AbstractPaymentTest {
-    private static final String PUBLIC_KEY1 = "publickey1";
-    private static final String PRIVATE_KEY1 = "privatekey1";
-    private static final String PRIVATE_KEY2 = "privatekey2";
-    private static final String PRIVATE_KEY3 = "privatekey3";
-
-    protected static final String EMPTY_STRING = "";
     protected static final String PERSON_STRING = "Mr. Unzer Payment";
     protected static final String MAIL_STRING = "example@unzer.com";
     protected static final String INVALID_MAIL_STRING = "example@@@unzer.com";
@@ -75,36 +67,17 @@ public abstract class AbstractPaymentTest {
     protected static final String MARKETPLACE_PARTICIPANT_ID_2 = "31HA07BC814FC247577B309FF031D3F0";
     protected static final String MARKETPLACE_PARTICIPANT_ID_1 = "31HA07BC814FC247577B195E59A99FC6";
 
-    private final Map<String, String> keys;
-    private static final String MARKETPLACE_PRIVATE_KEY = "marketplacePrivatekey";
-
-    {
-        keys = new HashMap<>();
-        Arrays.asList(PUBLIC_KEY1, PRIVATE_KEY1, PRIVATE_KEY2, PRIVATE_KEY3, MARKETPLACE_PRIVATE_KEY)
-                .forEach(envVar -> {
-                    if (System.getProperty(envVar) != null) {
-                        this.keys.put(envVar, System.getProperty(envVar));
-                    }
-                });
-    }
-
-    public final String publicKey1 = keys.get(PUBLIC_KEY1);
-    public final String privateKey1 = keys.get(PRIVATE_KEY1);
-    public final String privateKey2 = keys.get(PRIVATE_KEY2);
-    public final String privateKey3 = keys.get(PRIVATE_KEY3);
-    public final String marketplacePrivatekey = keys.get(MARKETPLACE_PRIVATE_KEY);
-
 
     protected String getRandomInvoiceId() {
         return generateUuid().substring(0, 5);
     }
 
     public Unzer getUnzer() {
-        return new Unzer(privateKey1);
+        return new Unzer(Keys.KEY_WITHOUT_3DS);
     }
 
     public Unzer getUnzerDE() {
-        return new Unzer(privateKey1, Locale.GERMANY);
+        return new Unzer(Keys.KEY_WITHOUT_3DS, Locale.GERMANY);
     }
 
     public Unzer getUnzer(String key) {
@@ -221,34 +194,6 @@ public abstract class AbstractPaymentTest {
         Card card = getPaymentTypeCard(cardnumber);
         card = (Card) getUnzer().createPaymentType(card);
         return card;
-    }
-
-    protected InvoiceSecured createPaymentTypeInvoiceSecured() throws HttpCommunicationException {
-        InvoiceSecured invoice = new InvoiceSecured();
-        invoice = (InvoiceSecured) getUnzer().createPaymentType(invoice);
-        return invoice;
-    }
-
-    protected InstallmentSecuredRatePlan createPaymentTypeInstallmentSecuredRatePlan() throws HttpCommunicationException {
-        InstallmentSecuredRatePlan installmentSecuredRatePlan = new InstallmentSecuredRatePlan();
-        installmentSecuredRatePlan.setBic(EMPTY_STRING);
-        installmentSecuredRatePlan.setAccountHolder(EMPTY_STRING);
-        installmentSecuredRatePlan.setIban(EMPTY_STRING);
-        installmentSecuredRatePlan.setTotalAmount(BigDecimal.valueOf(119.96));
-        installmentSecuredRatePlan.setTotalInterestAmount(BigDecimal.valueOf(0.96));
-        installmentSecuredRatePlan.setTotalPurchaseAmount(BigDecimal.valueOf(119));
-        installmentSecuredRatePlan.setEffectiveInterestRate(BigDecimal.valueOf(4.99));
-        installmentSecuredRatePlan.setNominalInterestRate(BigDecimal.valueOf(4.92));
-        installmentSecuredRatePlan.setFeeFirstRate(BigDecimal.valueOf(0));
-        installmentSecuredRatePlan.setFeePerRate(BigDecimal.valueOf(0));
-        installmentSecuredRatePlan.setMonthlyRate(BigDecimal.valueOf(39.99));
-        installmentSecuredRatePlan.setLastRate(BigDecimal.valueOf(39.98));
-        installmentSecuredRatePlan.setNumberOfRates(3);
-        installmentSecuredRatePlan.setOrderDate(new Date());
-
-
-        installmentSecuredRatePlan = getUnzer().createPaymentType(installmentSecuredRatePlan);
-        return installmentSecuredRatePlan;
     }
 
     protected SepaDirectDebitSecured createPaymentTypeSepaDirectDebitSecured(String iban) throws HttpCommunicationException {

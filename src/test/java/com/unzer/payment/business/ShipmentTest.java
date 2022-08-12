@@ -21,7 +21,9 @@ package com.unzer.payment.business;
  */
 
 import com.unzer.payment.PaymentException;
+import com.unzer.payment.Unzer;
 import com.unzer.payment.communication.HttpCommunicationException;
+import com.unzer.payment.paymenttypes.InvoiceSecured;
 import org.junit.Test;
 
 import java.net.MalformedURLException;
@@ -30,7 +32,9 @@ import java.text.ParseException;
 public class ShipmentTest extends AbstractPaymentTest {
 	@Test(expected=PaymentException.class)
 	public void testAuthorizeWithShipmentNotSameAddressWithInvoiceSecured() throws MalformedURLException, HttpCommunicationException, ParseException {
-		getUnzer().authorize(getAuthorization(createPaymentTypeInvoiceSecured().getId(), createMaximumCustomer().getId()));
+		Unzer unzer = getUnzer();
+		InvoiceSecured paymentTypeInvoiceSecured = unzer.createPaymentType(new InvoiceSecured());
+		unzer.authorize(getAuthorization(paymentTypeInvoiceSecured.getId(), createMaximumCustomer().getId()));
 	}
 
 }

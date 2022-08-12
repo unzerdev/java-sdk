@@ -9,9 +9,9 @@ package com.unzer.payment.business.errors;
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -22,10 +22,10 @@ package com.unzer.payment.business.errors;
 
 import com.unzer.payment.*;
 import com.unzer.payment.business.AbstractPaymentTest;
+import com.unzer.payment.business.Keys;
 import com.unzer.payment.communication.HttpCommunicationException;
 import com.unzer.payment.paymenttypes.Card;
 import org.junit.Test;
-import org.junit.function.ThrowingRunnable;
 
 import java.net.MalformedURLException;
 import java.text.ParseException;
@@ -35,17 +35,17 @@ import static com.unzer.payment.util.Uuid.generateUuid;
 import static org.junit.Assert.*;
 
 public class ErrorTest extends AbstractPaymentTest {
-
     @Test
-    public void testKeyMissing() throws MalformedURLException, HttpCommunicationException {
-        try {
-            getUnzer(null).authorize(getAuthorization(""));
-        } catch (PaymentException e) {
-            assertNotNull(e.getPaymentErrorList());
-            assertTrue(e.getPaymentErrorList().size() > 0);
-            assertEquals("API.000.000.001", e.getPaymentErrorList().get(0).getCode());
-            assertEquals("PrivateKey/PublicKey is missing", e.getPaymentErrorList().get(0).getMerchantMessage());
-        }
+    public void testKeyMissing() throws HttpCommunicationException {
+        assertThrows(
+                IllegalArgumentException.class,
+                () -> new Unzer(null)
+        );
+
+        assertThrows(
+                IllegalArgumentException.class,
+                () -> new Unzer("")
+        );
     }
 
     // The given key something is unknown or invalid.
@@ -70,7 +70,7 @@ public class ErrorTest extends AbstractPaymentTest {
     @Test
     public void testPCILevelSaqA() throws HttpCommunicationException {
         try {
-            getUnzer(publicKey1).createPaymentType(getPaymentTypeCard()); // Prod Sandbox
+            getUnzer(Keys.PUBLIC_KEY).createPaymentType(getPaymentTypeCard()); // Prod Sandbox
         } catch (PaymentException e) {
             assertNotNull(e.getPaymentErrorList());
             assertTrue(e.getPaymentErrorList().size() > 0);
@@ -89,7 +89,7 @@ public class ErrorTest extends AbstractPaymentTest {
     public void testInvalidAccess() throws HttpCommunicationException {
         Card card = createPaymentTypeCard();
         try {
-            getUnzer(privateKey2).fetchPaymentType(card.getId());  // Prod-Sandbox
+            getUnzer(Keys.KEY_WITH_3DS).fetchPaymentType(card.getId());  // Prod-Sandbox
 
         } catch (PaymentException e) {
             assertNotNull(e.getPaymentErrorList());

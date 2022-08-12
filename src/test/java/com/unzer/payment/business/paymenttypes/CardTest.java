@@ -2,6 +2,7 @@ package com.unzer.payment.business.paymenttypes;
 
 import com.unzer.payment.*;
 import com.unzer.payment.business.AbstractPaymentTest;
+import com.unzer.payment.business.Keys;
 import com.unzer.payment.communication.HttpCommunicationException;
 import com.unzer.payment.communication.impl.HttpClientBasedRestCommunication;
 import com.unzer.payment.enums.RecurrenceType;
@@ -46,7 +47,7 @@ public class CardTest extends AbstractPaymentTest {
             public void run() throws Throwable {
                 Card card = new Card("4444333322221111", "03/20");
                 card.setCvc("123");
-                Unzer unzer = new Unzer(new HttpClientBasedRestCommunication(), privateKey3);
+                Unzer unzer = new Unzer(new HttpClientBasedRestCommunication(), Keys.PRIVATE_KEY_3);
                 unzer.createPaymentType(card);
             }
 

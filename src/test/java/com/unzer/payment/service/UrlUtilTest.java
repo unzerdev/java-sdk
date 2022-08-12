@@ -21,54 +21,48 @@ package com.unzer.payment.service;
  */
 
 
-import com.unzer.payment.Unzer;
 import com.unzer.payment.business.AbstractPaymentTest;
+import com.unzer.payment.business.Keys;
 import com.unzer.payment.business.paymenttypes.InstallmentSecuredRatePlan;
 import com.unzer.payment.communication.HttpCommunicationException;
 import com.unzer.payment.paymenttypes.InvoiceSecured;
+import com.unzer.payment.paymenttypes.PaymentType;
 import com.unzer.payment.paymenttypes.SepaDirectDebitSecured;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
 
 public class UrlUtilTest extends AbstractPaymentTest {
+    private static final String sbxTypesUrl = "https://sbx-api.unzer.com/v1/types/";
+    private static final String id = "random-id";
 
     @Test
-    public void testGetUrlForPaymentTypeInvoiceSecured() throws HttpCommunicationException {
-        String minimalRestUrl = "https://api.unzer.com/v1/types";
-        String maximumRestUrl = "https://api.unzer.com/v1/types/invoice-secured";
-
-        Unzer unzer = getUnzer();
-        UrlUtil urlUtil = new UrlUtil(unzer.getPrivateKey());
-        InvoiceSecured invoiceSecured = createPaymentTypeInvoiceSecured();
-
-        assertEquals(String.format("%s/%s", minimalRestUrl, invoiceSecured.getId()), urlUtil.getHttpGetUrl(invoiceSecured.getId()));
-        assertEquals(String.format("%s/%s", maximumRestUrl, invoiceSecured.getId()), urlUtil.getHttpGetUrl(invoiceSecured, invoiceSecured.getId()));
+    public void testUnknownPaymentType() {
+        assertEquals(
+                sbxTypesUrl + id,
+                new UrlUtil(Keys.KEY_WITHOUT_3DS).getHttpGetUrl(id)
+        );
     }
 
     @Test
-    public void testGetUrlForPaymentTypeInstallmentSecured() throws HttpCommunicationException {
-        String minimalRestUrl = "https://api.unzer.com/v1/types";
-        String maximumRestUrl = "https://api.unzer.com/v1/types/installment-secured";
+    public void testGetUrlForPaymentTypeInvoiceSecured() {
+        runTest(new InvoiceSecured(), "invoice-secured/");
+    }
 
-        Unzer unzer = getUnzer();
-        UrlUtil urlUtil = new UrlUtil(unzer.getPrivateKey());
-        InstallmentSecuredRatePlan installmentSecuredRatePlan = createPaymentTypeInstallmentSecuredRatePlan();
-
-        assertEquals(String.format("%s/%s", minimalRestUrl, installmentSecuredRatePlan.getId()), urlUtil.getHttpGetUrl(installmentSecuredRatePlan.getId()));
-        assertEquals(String.format("%s/%s", maximumRestUrl, installmentSecuredRatePlan.getId()), urlUtil.getHttpGetUrl(installmentSecuredRatePlan, installmentSecuredRatePlan.getId()));
+    @Test
+    public void testGetUrlForPaymentTypeInstallmentSecured() {
+        runTest(new InstallmentSecuredRatePlan(), "installment-secured/");
     }
 
     @Test
     public void testGetUrlForPaymentTypeSepaDirectDebitSecured() throws HttpCommunicationException {
-        String minimalRestUrl = "https://api.unzer.com/v1/types";
-        String maximumRestUrl = "https://api.unzer.com/v1/types/sepa-direct-debit-secured";
+        runTest(new SepaDirectDebitSecured(""), "sepa-direct-debit-secured/");
+    }
 
-        Unzer unzer = getUnzer();
-        UrlUtil urlUtil = new UrlUtil(unzer.getPrivateKey());
-        SepaDirectDebitSecured sepaDirectDebitSecured = createPaymentTypeSepaDirectDebitSecured("DE89370400440532013000");
-
-        assertEquals(String.format("%s/%s", minimalRestUrl, sepaDirectDebitSecured.getId()), urlUtil.getHttpGetUrl(sepaDirectDebitSecured.getId()));
-        assertEquals(String.format("%s/%s", maximumRestUrl, sepaDirectDebitSecured.getId()), urlUtil.getHttpGetUrl(sepaDirectDebitSecured, sepaDirectDebitSecured.getId()));
+    private void runTest(PaymentType type, String typePartUrl) {
+        assertEquals(
+                sbxTypesUrl + typePartUrl + id,
+                new UrlUtil(Keys.KEY_WITHOUT_3DS).getHttpGetUrl(type, id)
+        );
     }
 }
