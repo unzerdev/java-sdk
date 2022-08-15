@@ -221,8 +221,6 @@ public class UrlUtil {
      * @return API endpoint
      */
     private String resolveApiEndpoint(String privateKey) {
-        // TODO: add test for resolution
-
         // Production keys are always routed to production endpoint
         if (privateKey.charAt(0) == PRODUCTION_KEY_PREFIX) {
             return PRODUCTION_ENDPOINT;
