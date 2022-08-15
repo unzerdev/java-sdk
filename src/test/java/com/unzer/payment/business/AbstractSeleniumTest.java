@@ -317,7 +317,7 @@ public abstract class AbstractSeleniumTest extends AbstractPaymentTest {
 			driver.findElement(by);
 			fail("Element with name '" + by + "' found");
 		} catch (NoSuchElementException e) {
-			; // That is what we expect
+            // That is what we expect
 		}
 	}
 

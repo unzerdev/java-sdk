@@ -49,8 +49,8 @@ public class PaypageTest extends AbstractSeleniumTest {
 		assertEquals(request.getTagline(), response.getTagline());
 		assertEquals(request.getTermsAndConditionUrl().toString(), response.getTermsAndConditionUrl().toString());
 		assertEquals(request.getPrivacyPolicyUrl().toString(), response.getPrivacyPolicyUrl().toString());
-		assertEquals(request.getLogoImage().toString(), response.getLogoImage().toString());
-		assertEquals(request.getFullPageImage().toString(), response.getFullPageImage().toString());
+		assertEquals(request.getLogoImage(), response.getLogoImage());
+		assertEquals(request.getFullPageImage(), response.getFullPageImage());
 		assertEquals(request.getContactUrl().toString(), response.getContactUrl().toString());
 		assertEquals(request.getHelpUrl().toString(), response.getHelpUrl().toString());
 		assertEquals(request.getImprintUrl().toString(), response.getImprintUrl().toString());
@@ -88,8 +88,8 @@ public class PaypageTest extends AbstractSeleniumTest {
 		assertEquals(request.getTagline(), response.getTagline());
 		assertEquals(request.getTermsAndConditionUrl().toString(), response.getTermsAndConditionUrl().toString());
 		assertEquals(request.getPrivacyPolicyUrl().toString(), response.getPrivacyPolicyUrl().toString());
-		assertEquals(request.getLogoImage().toString(), response.getLogoImage().toString());
-		assertEquals(request.getFullPageImage().toString(), response.getFullPageImage().toString());
+		assertEquals(request.getLogoImage(), response.getLogoImage());
+		assertEquals(request.getFullPageImage(), response.getFullPageImage());
 		assertEquals(request.getContactUrl().toString(), response.getContactUrl().toString());
 		assertEquals(request.getHelpUrl().toString(), response.getHelpUrl().toString());
 		assertEquals(request.getImprintUrl().toString(), response.getImprintUrl().toString());

@@ -37,7 +37,7 @@ public class IdealTest extends AbstractPaymentTest {
 
 	@Test
 	public void testCreateIdealManatoryType() throws HttpCommunicationException {
-		Ideal ideal = (Ideal) getUnzer().createPaymentType(getIdeal());
+		Ideal ideal = getUnzer().createPaymentType(getIdeal());
 		assertNotNull(ideal.getId());
 	}
 

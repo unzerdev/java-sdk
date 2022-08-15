@@ -152,7 +152,7 @@ public class CancelAfterAuthorizationTest extends AbstractPaymentTest {
 
 		// create card
 		Card card = getPaymentTypeCard(NO_3DS_VISA_CARD_NUMBER); //do not change card number except error case
-		card = (Card) getUnzer(marketplacePrivatekey).createPaymentType(card);
+		card = getUnzer(marketplacePrivatekey).createPaymentType(card);
 
 		// marketplace authorization
 		MarketplaceAuthorization authorizeRequest = getMarketplaceAuthorization(card.getId(), null, null, null,
@@ -200,7 +200,7 @@ public class CancelAfterAuthorizationTest extends AbstractPaymentTest {
 
 		// create card
 		Card card = getPaymentTypeCard(NO_3DS_VISA_CARD_NUMBER); //do not change card number except error case
-		card = (Card) getUnzer(marketplacePrivatekey).createPaymentType(card);
+		card = getUnzer(marketplacePrivatekey).createPaymentType(card);
 
 		// marketplace authorization
 		MarketplaceAuthorization authorizeRequest = getMarketplaceAuthorization(card.getId(), null, null, null,

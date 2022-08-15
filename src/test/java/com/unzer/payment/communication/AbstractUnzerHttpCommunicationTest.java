@@ -35,7 +35,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 public class AbstractUnzerHttpCommunicationTest {
 
 
-	private String privateKey = "samplekey";
+	private final String privateKey = "samplekey";
 	
 	@Test
 	public void testApiErrorsAreTranslatedToPaymentException() throws HttpCommunicationException {

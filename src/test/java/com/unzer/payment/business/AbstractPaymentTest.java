@@ -203,13 +203,13 @@ public abstract class AbstractPaymentTest {
 
     protected Card createPaymentTypeCard(String cardnumber) throws HttpCommunicationException {
         Card card = getPaymentTypeCard(cardnumber);
-        card = (Card) getUnzer().createPaymentType(card);
+        card = getUnzer().createPaymentType(card);
         return card;
     }
 
     protected InvoiceSecured createPaymentTypeInvoiceSecured() throws HttpCommunicationException {
         InvoiceSecured invoice = new InvoiceSecured();
-        invoice = (InvoiceSecured) getUnzer().createPaymentType(invoice);
+        invoice = getUnzer().createPaymentType(invoice);
         return invoice;
     }
 
@@ -531,7 +531,7 @@ public abstract class AbstractPaymentTest {
             sbMaskString.append(maskChar);
         }
 
-        return strText.substring(0, start) + sbMaskString.toString() + strText.substring(start + maskLength);
+        return strText.substring(0, start) + sbMaskString + strText.substring(start + maskLength);
     }
 
     protected int confirmMarketplacePendingTransaction(String redirectUrl) {

@@ -40,7 +40,7 @@ public class PaypalTest extends AbstractPaymentTest {
 	@Test
 	public void testCreatePaypalMandatoryType() throws HttpCommunicationException {
 		Paypal paypal = new Paypal();
-		paypal = (Paypal) getUnzer().createPaymentType(paypal);
+		paypal = getUnzer().createPaymentType(paypal);
 		assertNotNull(paypal.getId());
 	}
 	
@@ -48,7 +48,7 @@ public class PaypalTest extends AbstractPaymentTest {
 	public void testCreatePaypalWithEmail() throws HttpCommunicationException {
 		Paypal paypal = new Paypal();
 		paypal.setEmail("test.user@email.com");
-		paypal = (Paypal) getUnzer().createPaymentType(paypal);
+		paypal = getUnzer().createPaymentType(paypal);
 		assertNotNull(paypal.getId());
 		assertEquals("test.user@email.com", paypal.getEmail());
 	}

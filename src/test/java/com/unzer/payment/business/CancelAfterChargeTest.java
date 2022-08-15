@@ -144,7 +144,7 @@ public class CancelAfterChargeTest extends AbstractPaymentTest {
 		
 		//create card
 		Card card = getPaymentTypeCard(NO_3DS_VISA_CARD_NUMBER); //do not change card number except error case
-		card = (Card) getUnzer(marketplacePrivatekey).createPaymentType(card);
+		card = getUnzer(marketplacePrivatekey).createPaymentType(card);
 		
 		//marketplace charge
 		MarketplaceCharge chargeRequest = getMarketplaceCharge(card.getId(), null, null, null, basket.getId(), null);
@@ -199,7 +199,7 @@ public class CancelAfterChargeTest extends AbstractPaymentTest {
 		
 		//create card
 		Card card = getPaymentTypeCard(NO_3DS_VISA_CARD_NUMBER); //do not change card number except error case
-		card = (Card) getUnzer(marketplacePrivatekey).createPaymentType(card);
+		card = getUnzer(marketplacePrivatekey).createPaymentType(card);
 		
 		//marketplace charge
 		MarketplaceCharge chargeRequest = getMarketplaceCharge(card.getId(), null, null, null, basket.getId(), null);

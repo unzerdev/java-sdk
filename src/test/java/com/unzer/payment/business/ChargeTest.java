@@ -241,7 +241,7 @@ public class ChargeTest extends AbstractPaymentTest {
 		
 		//create card
 		Card card = getPaymentTypeCard(NO_3DS_VISA_CARD_NUMBER); //do not change card number except error case
-		card = (Card) getUnzer(marketplacePrivatekey).createPaymentType(card);
+		card = getUnzer(marketplacePrivatekey).createPaymentType(card);
 		
 		//marketplace charge
 		MarketplaceCharge chargeRequest = getMarketplaceCharge(card.getId(), null, null, null, basket.getId(), null);
@@ -284,7 +284,7 @@ public class ChargeTest extends AbstractPaymentTest {
 		
 		//create SepaDirectDebit
 		SepaDirectDebit sdd = getSepaDirectDebit();
-		sdd = (SepaDirectDebit) getUnzer(marketplacePrivatekey).createPaymentType(sdd);
+		sdd = getUnzer(marketplacePrivatekey).createPaymentType(sdd);
 		
 		//marketplace charge
 		MarketplaceCharge chargeRequest = getMarketplaceCharge(sdd.getId(), null, null, null, basket.getId(), null);
@@ -326,7 +326,7 @@ public class ChargeTest extends AbstractPaymentTest {
 		
 		//create sofort
 		Sofort sofort = new Sofort();
-		sofort = (Sofort) getUnzer(marketplacePrivatekey).createPaymentType(sofort);
+		sofort = getUnzer(marketplacePrivatekey).createPaymentType(sofort);
 		
 		//marketplace charge
 		MarketplaceCharge chargeRequest = getMarketplaceCharge(sofort.getId(), null, null, null, basket.getId(), null);

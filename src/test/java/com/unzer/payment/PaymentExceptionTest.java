@@ -25,8 +25,7 @@ import org.junit.jupiter.api.Test;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class PaymentExceptionTest {
 
@@ -34,14 +33,14 @@ public class PaymentExceptionTest {
     @Test
     public void testMessageIsNotNull() {
         PaymentException paymentException = new PaymentException("An Error occurred!");
-        assertTrue(paymentException.getMessage() != null);
+        assertNotNull(paymentException.getMessage());
         assertEquals("An Error occurred!", paymentException.getMessage());
     }
 
     @Test
     public void testMessageIsEmpty() {
         PaymentException paymentException = new PaymentException("");
-        assertTrue(paymentException.getMessage() != null);
+        assertNotNull(paymentException.getMessage());
         assertEquals("Unzer responded with 0 when calling . ", paymentException.getMessage());
     }
 
