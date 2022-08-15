@@ -7,8 +7,8 @@ import com.unzer.payment.marketplace.MarketplaceCancel;
 import com.unzer.payment.marketplace.MarketplacePayment;
 import com.unzer.payment.paymenttypes.Card;
 import org.apache.http.HttpStatus;
-import org.junit.Ignore;
-import org.junit.Test;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
 
 import java.math.BigDecimal;
 import java.net.MalformedURLException;
@@ -16,8 +16,8 @@ import java.net.MalformedURLException;
 import static com.unzer.payment.business.BasketV1TestData.getMaxTestBasketV1;
 import static java.util.concurrent.TimeUnit.SECONDS;
 import static org.awaitility.Awaitility.await;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 /*-
  * #%L
@@ -130,7 +130,7 @@ public class CancelAfterAuthorizationTest extends AbstractPaymentTest {
 		assertEquals("pmt-ref", cancel.getPaymentReference());
 	}
 
-	@Ignore("Needs further configuration in Testdata")
+	@Disabled("Needs further configuration in Testdata")
 	@Test
 	public void testMarketplaceFullAuthorizeCancel() throws MalformedURLException, HttpCommunicationException {
 		String participantId_1 = MARKETPLACE_PARTICIPANT_ID_1;
@@ -178,7 +178,7 @@ public class CancelAfterAuthorizationTest extends AbstractPaymentTest {
 		assertEquals(2, fullCancelPayment.getCancelList().size());
 	}
 
-	@Ignore("Needs further configuration in Testdata")
+	@Disabled("Needs further configuration in Testdata")
 	@Test
 	public void testMarketplacePartialAuthorizeCancel() throws MalformedURLException, HttpCommunicationException {
 		String participantId_1 = MARKETPLACE_PARTICIPANT_ID_1;

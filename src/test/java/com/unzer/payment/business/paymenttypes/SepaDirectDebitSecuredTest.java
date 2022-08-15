@@ -10,7 +10,7 @@ import com.unzer.payment.communication.impl.HttpClientBasedRestCommunication;
 import com.unzer.payment.communication.json.JsonIdObject;
 import com.unzer.payment.paymenttypes.SepaDirectDebitSecured;
 import com.unzer.payment.service.PaymentService;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.math.BigDecimal;
 import java.text.ParseException;
@@ -20,7 +20,7 @@ import static com.unzer.payment.business.BasketV1TestData.getMinTestBasketV1;
 import static com.unzer.payment.business.BasketV2TestData.getMinTestBasketV2;
 import static com.unzer.payment.util.Url.unsafeUrl;
 import static com.unzer.payment.util.Uuid.generateUuid;
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 /*-
  * #%L

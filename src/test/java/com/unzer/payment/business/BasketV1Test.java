@@ -24,7 +24,7 @@ import com.unzer.payment.*;
 import com.unzer.payment.communication.HttpCommunicationException;
 import com.unzer.payment.service.PropertiesUtil;
 import com.unzer.payment.service.UrlUtil;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -33,7 +33,7 @@ import java.util.List;
 
 import static com.unzer.payment.business.BasketV1TestData.getMaxTestBasketV1;
 import static com.unzer.payment.business.BasketV1TestData.getMinTestBasketV1;
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class BasketV1Test extends AbstractPaymentTest {
 

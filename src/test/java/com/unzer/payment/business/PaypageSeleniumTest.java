@@ -23,9 +23,9 @@ package com.unzer.payment.business;
 import com.unzer.payment.PaymentException;
 import com.unzer.payment.Paypage;
 import com.unzer.payment.communication.HttpCommunicationException;
-import org.junit.After;
-import org.junit.Ignore;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.remote.RemoteWebDriver;
@@ -36,12 +36,12 @@ import java.text.ParseException;
 
 import static java.util.concurrent.TimeUnit.SECONDS;
 import static org.awaitility.Awaitility.await;
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
-@Ignore("Selenium Tests do not work in Bamboo. Execute them manually")
+@Disabled("Selenium Tests do not work in Bamboo. Execute them manually")
 public class PaypageSeleniumTest extends AbstractSeleniumTest {
 
-	@After
+	@AfterEach
 	public void tearDown(){
 		close();
 	}
@@ -71,7 +71,7 @@ public class PaypageSeleniumTest extends AbstractSeleniumTest {
 	}
 
 	@Test
-	@Ignore ("Description is not shown?")
+	@Disabled ("Description is not shown?")
 	public void testMaximumPaypage() throws MalformedURLException, HttpCommunicationException {
 		Paypage paypage = getUnzer().paypage(getMaximumPaypage());
 		assertNotNull(paypage);
@@ -169,7 +169,7 @@ public class PaypageSeleniumTest extends AbstractSeleniumTest {
 	}
 
 	@Test
-	@Ignore("Works in Debug mode but not in run mode?")
+	@Disabled("Works in Debug mode but not in run mode?")
 	public void testSDDGuaranteedWithCustomerReferencePaypage() throws MalformedURLException, HttpCommunicationException, PaymentException, ParseException {
 		Paypage paypage = getUnzer().paypage(getMinimumWithReferencesPaypage("866.49"));
 		assertNotNull(paypage);
@@ -187,7 +187,7 @@ public class PaypageSeleniumTest extends AbstractSeleniumTest {
 	}
 
 	@Test
-	@Ignore ("currently B2B is configured")
+	@Disabled ("currently B2B is configured")
 	public void testSDDGuaranteedWithoutCustomerReferencePaypage() throws MalformedURLException, HttpCommunicationException, PaymentException {
 		Paypage paypage = getUnzer().paypage(getMinimumPaypage(BigDecimal.TEN));
 		assertNotNull(paypage);
@@ -228,7 +228,7 @@ public class PaypageSeleniumTest extends AbstractSeleniumTest {
 	}
 
 	@Test
-	@Ignore("Works in Debug mode but not in run mode?")
+	@Disabled("Works in Debug mode but not in run mode?")
 	public void testInvoiceFactoringWithCustomerReferencePaypage() throws MalformedURLException, HttpCommunicationException, PaymentException, ParseException {
 		Paypage paypage = getUnzer().paypage(getMinimumWithReferencesPaypage("866.49"));
 		assertNotNull(paypage);
@@ -272,7 +272,7 @@ public class PaypageSeleniumTest extends AbstractSeleniumTest {
 	}
 
 	@Test
-	@Ignore("Problem with PIS URL for Tipico")
+	@Disabled("Problem with PIS URL for Tipico")
 	public void testPisPaypage() throws MalformedURLException, HttpCommunicationException {
 		Paypage paypage = getUnzer().paypage(getMinimumPaypage());
 		assertNotNull(paypage);

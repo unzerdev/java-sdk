@@ -22,12 +22,12 @@ package com.unzer.payment.business;
 
 import com.unzer.payment.Paypage;
 import com.unzer.payment.communication.HttpCommunicationException;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.net.MalformedURLException;
 import java.util.Arrays;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class PaypageTest extends AbstractSeleniumTest {
 

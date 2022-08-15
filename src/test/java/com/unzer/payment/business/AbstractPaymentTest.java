@@ -39,7 +39,7 @@ import java.util.*;
 import static com.unzer.payment.util.Uuid.generateUuid;
 import static java.util.concurrent.TimeUnit.SECONDS;
 import static org.awaitility.Awaitility.await;
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /*-
  * #%L

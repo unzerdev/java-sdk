@@ -29,8 +29,8 @@ import com.unzer.payment.marketplace.MarketplacePayment;
 import com.unzer.payment.paymenttypes.Card;
 import com.unzer.payment.paymenttypes.SepaDirectDebit;
 import com.unzer.payment.paymenttypes.Sofort;
-import org.junit.Ignore;
-import org.junit.Test;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
 
 import java.math.BigDecimal;
 import java.net.MalformedURLException;
@@ -41,7 +41,7 @@ import java.util.Currency;
 
 import static com.unzer.payment.business.BasketV1TestData.getMaxTestBasketV1;
 import static com.unzer.payment.util.Uuid.generateUuid;
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class ChargeTest extends AbstractPaymentTest {
 
@@ -219,7 +219,7 @@ public class ChargeTest extends AbstractPaymentTest {
 				.toJson(charge).getClass());
 	}
 
-	@Ignore("Needs further configuration in Testdata")
+	@Disabled("Needs further configuration in Testdata")
 	@Test
 	public void testMarketplaceChargeWithCard() throws MalformedURLException, HttpCommunicationException {
 		String participantId_1 = MARKETPLACE_PARTICIPANT_ID_1;
@@ -262,7 +262,7 @@ public class ChargeTest extends AbstractPaymentTest {
 		assertEquals(Payment.State.PENDING, payment.getPaymentState());
 	}
 
-	@Ignore("Needs further configuration in Testdata")
+	@Disabled("Needs further configuration in Testdata")
 	@Test
 	public void testMarketplaceChargeWithSepaDirectDebit() throws MalformedURLException, HttpCommunicationException {
 		String participantId_1 = MARKETPLACE_PARTICIPANT_ID_1;
@@ -304,7 +304,7 @@ public class ChargeTest extends AbstractPaymentTest {
 		assertEquals(Payment.State.COMPLETED, payment.getPaymentState());
 	}
 
-	@Ignore("Needs further configuration in Testdata")
+	@Disabled("Needs further configuration in Testdata")
 	@Test
 	public void testMarketplaceChargeWithSofort() throws MalformedURLException, HttpCommunicationException {
 		String participantId_1 = MARKETPLACE_PARTICIPANT_ID_1;
