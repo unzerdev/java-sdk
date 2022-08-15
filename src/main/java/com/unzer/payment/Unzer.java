@@ -83,7 +83,7 @@ public class Unzer {
      *
      * @param restCommunication - an appropriate implementation of {@code UnzerRestCommunication}. If you are fine with apache's httpCLient you might choose {@code HttpClientBasedRestCommunication}.
      * @param privateKey        - your private key as generated within the unzer Intelligence Platform (hIP)
-     * @param endPoint          - the endPoint for the outgoing connection, in case of null, the value of unzer.properties will be considered
+     * @param endPoint          - parameter is ignored
      * @deprecated Endpoint cannot be set. Please, use constructors without endpoint parameter.
      */
     @Deprecated
@@ -1156,7 +1156,7 @@ public class Unzer {
 
     @Deprecated
     public String getEndPoint() {
-        return Configuration.resolveApiEndpoint(this.privateKey);
+        return new UrlUtil(this.privateKey).getApiEndpoint();
     }
 
     private Charge getCharge(BigDecimal amount, Currency currency, String typeId, URL returnUrl, String customerId, String basketId, Boolean card3ds, RecurrenceType recurrenceType) {

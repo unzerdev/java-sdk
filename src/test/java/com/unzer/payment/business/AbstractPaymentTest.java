@@ -11,7 +11,6 @@ import com.unzer.payment.marketplace.MarketplaceCharge;
 import com.unzer.payment.models.AdditionalTransactionData;
 import com.unzer.payment.paymenttypes.Card;
 import com.unzer.payment.paymenttypes.SepaDirectDebit;
-import com.unzer.payment.paymenttypes.SepaDirectDebitSecured;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
@@ -192,16 +191,8 @@ public abstract class AbstractPaymentTest {
 
     protected Card createPaymentTypeCard(String cardnumber) throws HttpCommunicationException {
         Card card = getPaymentTypeCard(cardnumber);
-        card = (Card) getUnzer().createPaymentType(card);
+        card = getUnzer().createPaymentType(card);
         return card;
-    }
-
-    protected SepaDirectDebitSecured createPaymentTypeSepaDirectDebitSecured(String iban) throws HttpCommunicationException {
-        SepaDirectDebitSecured sepaDirectDebitSecured = new SepaDirectDebitSecured(iban);
-
-
-        sepaDirectDebitSecured = getUnzer().createPaymentType(sepaDirectDebitSecured);
-        return sepaDirectDebitSecured;
     }
 
     protected Card getPaymentTypeCard() {

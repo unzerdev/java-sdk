@@ -9,12 +9,12 @@ to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 ## UNRELEASED
 
 ### Breaking changes
-* Removed arguments `privatekey1`, `privatekey2`, `privatekey3`, `publickey1`, `marketplacekey`
+* Removed properties `privatekey1`, `privatekey2`, `privatekey3`, `publickey1`, `marketplacekey`
 and corresponding constants `PUBLIC_KEY1`, `PRIVATE_KEY1`, `PRIVATE_KEY2`, `PRIVATE_KEY3`, `MARKETPLACE_PRIVATE_KEY`.
-* Removed `rest.endpoint` and `rest.version` parameters. Use `unzer.environment` instead.
-
-### Changed
-* Renamed `com.unzer.payment.service.PropertyUtils` to `com.unzer.payment.service.Configuration`.
+* Removed properties `rest.endpoint` and `rest.version` from `unzer.properties`. Use `UNZER_PAPI_ENV` to setup API url.
+* Removed property `applepay.validValidationUrls` from `unzer.properties`. Use `com.unzer.payment.util.ApplePayAdapterUtil.replaceValidationUrls` instead
+* Removed class `com.unzer.payment.service.PropertiesUtil`.
+* Changed method `com.unzer.payment.util.ApplePayAdapterUtil.getPlainDomainName()` modifier to private.
 
 ## [1.2.0.0][1.2.0.0]
 

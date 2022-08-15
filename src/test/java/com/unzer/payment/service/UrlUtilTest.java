@@ -28,13 +28,46 @@ import com.unzer.payment.communication.HttpCommunicationException;
 import com.unzer.payment.paymenttypes.InvoiceSecured;
 import com.unzer.payment.paymenttypes.PaymentType;
 import com.unzer.payment.paymenttypes.SepaDirectDebitSecured;
+import org.junit.Rule;
 import org.junit.Test;
+import uk.org.webcompere.systemstubs.rules.EnvironmentVariablesRule;
 
 import static org.junit.Assert.assertEquals;
 
 public class UrlUtilTest extends AbstractPaymentTest {
+    @Rule
+    public EnvironmentVariablesRule environmentVariablesRule = new EnvironmentVariablesRule();
+
     private static final String sbxTypesUrl = "https://sbx-api.unzer.com/v1/types/";
     private static final String id = "random-id";
+
+    @Test
+    public void whenProductionKey_returnsProductionEndpoint() {
+        runDifferentEnvironmentTest("p-random-key", "", "https://api.unzer.com");
+    }
+
+    @Test
+    public void whenSbxKeyDevEnv_returnsDevEndpoint() {
+        runDifferentEnvironmentTest("s-random-key", "dev", "https://dev-api.unzer.com");
+    }
+
+    @Test
+    public void whenSbxKeyStgEnv_returnsStgEndpoint() {
+        runDifferentEnvironmentTest("s-random-key", "stg", "https://stg-api.unzer.com");
+    }
+
+    @Test
+    public void whenSbxKey_returnsSbxEndpoint() {
+        runDifferentEnvironmentTest("s-random-key", "", "https://sbx-api.unzer.com");
+    }
+
+    private void runDifferentEnvironmentTest(String key, String env, String expectedEndpoint) {
+        environmentVariablesRule.set("UNZER_PAPI_ENV", env);
+        assertEquals(
+                expectedEndpoint,
+                new UrlUtil(key).getApiEndpoint()
+        );
+    }
 
     @Test
     public void testUnknownPaymentType() {
@@ -46,20 +79,20 @@ public class UrlUtilTest extends AbstractPaymentTest {
 
     @Test
     public void testGetUrlForPaymentTypeInvoiceSecured() {
-        runTest(new InvoiceSecured(), "invoice-secured/");
+        runGetHttpGetUrlTest(new InvoiceSecured(), "invoice-secured/");
     }
 
     @Test
     public void testGetUrlForPaymentTypeInstallmentSecured() {
-        runTest(new InstallmentSecuredRatePlan(), "installment-secured/");
+        runGetHttpGetUrlTest(new InstallmentSecuredRatePlan(), "installment-secured/");
     }
 
     @Test
     public void testGetUrlForPaymentTypeSepaDirectDebitSecured() throws HttpCommunicationException {
-        runTest(new SepaDirectDebitSecured(""), "sepa-direct-debit-secured/");
+        runGetHttpGetUrlTest(new SepaDirectDebitSecured(""), "sepa-direct-debit-secured/");
     }
 
-    private void runTest(PaymentType type, String typePartUrl) {
+    private void runGetHttpGetUrlTest(PaymentType type, String typePartUrl) {
         assertEquals(
                 sbxTypesUrl + typePartUrl + id,
                 new UrlUtil(Keys.KEY_WITHOUT_3DS).getHttpGetUrl(type, id)

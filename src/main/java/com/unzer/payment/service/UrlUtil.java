@@ -10,6 +10,7 @@ import java.text.SimpleDateFormat;
 import java.util.Currency;
 import java.util.Date;
 import java.util.Locale;
+import java.util.Optional;
 
 /*-
  * #%L
@@ -32,16 +33,27 @@ import java.util.Locale;
  */
 
 public class UrlUtil {
+    private static final String PRODUCTION_ENDPOINT = "https://api.unzer.com";
+    private static final String SANDBOX_ENDPOINT = "https://sbx-api.unzer.com";
+    private static final String DEVELOPMENT_ENDPOINT = "https://dev-api.unzer.com";
+    private static final String STAGING_ENDPOINT = "https://stg-api.unzer.com";
+    private static final String DEVELOPMENT_ENVIRONMENT = "DEV";
+    private static final String STAGING_ENVIRONMENT = "STG";
+    private static final char PRODUCTION_KEY_PREFIX = 'p';
+    private static final String PAPI_ENV_NAME = "UNZER_PAPI_ENV";
+
     private static final String PLACEHOLDER_CHARGE_ID = "<chargeId>";
     private static final String PLACEHOLDER_PAYMENT_ID = "<paymentId>";
     private static final String PLACEHOLDER_TYPE_ID = "<typeId>";
     private static final String REFUND_URL = "payments/<paymentId>/charges/<chargeId>/cancels";
     private static final String RECURRING_URL = "types/<typeId>/recurring";
+    private static final String APIVERSION_2 = "v2";
+    private static final String APIVERSION_1 = "v1";
 
     private final String apiEndpoint;
 
     public UrlUtil(String privateKey) {
-        this.apiEndpoint = Configuration.resolveApiEndpoint(privateKey);
+        this.apiEndpoint = resolveApiEndpoint(privateKey);
     }
 
     public String getRefundUrl(String paymentId, String chargeId) {
@@ -98,11 +110,11 @@ public class UrlUtil {
     }
 
     public String getRestUrl(PaymentType paymentType) {
-        return getRestUrlInternal(paymentType).replace("<paymentId>/", "");
+        return getRestUrlInternal(paymentType).replace(PLACEHOLDER_PAYMENT_ID + "/", "");
     }
 
     public String getRestUrlWithOutPaymentType() {
-        return getRestUrlInternal().replace("<paymentId>/", "");
+        return getRestUrlInternal().replace(PLACEHOLDER_PAYMENT_ID + "/", "");
     }
 
     public String getApiEndpoint() {
@@ -112,7 +124,7 @@ public class UrlUtil {
     public String getRestUrl() {
         StringBuilder stringBuilder = new StringBuilder(apiEndpoint);
         appendSlashIfNeeded(stringBuilder);
-        stringBuilder.append("v1");
+        stringBuilder.append(APIVERSION_1);
         appendSlashIfNeeded(stringBuilder);
         return stringBuilder.toString();
     }
@@ -136,9 +148,9 @@ public class UrlUtil {
 
         // v2 is the default Basket resource version
         if (basket.isV2()) {
-            stringBuilder.append("v2");
+            stringBuilder.append(APIVERSION_2);
         } else {
-            stringBuilder.append("v1");
+            stringBuilder.append(APIVERSION_1);
         }
 
         appendSlashIfNeeded(stringBuilder);
@@ -186,4 +198,47 @@ public class UrlUtil {
         return df.format(decimal);
     }
 
+    /**
+     * API endpoint depends on key type and a configured environment.
+     * <p/>
+     * <table>
+     *     <tr><th>Key type</th><th>Configured environment</th><th>Endpoint</th></tr>
+     *   <tr>
+     *     <td> Production </td> <td> [any] </td> <td>PROD: https://api.unzer.com</td>
+     *   </tr>
+     *   <tr>
+     *     <td> Non-production </td> <td> dev </td> <td>DEV: https://dev-api.unzer.com</td>
+     *   </tr>
+     *   <tr>
+     *     <td> Non-production </td> <td> stg </td> <td>STG: https://stg-api.unzer.com</td>
+     *   </tr>
+     *   <tr>
+     *     <td> Non-production </td> <td> [not dev/stg] </td> <td>SBX: https://sbx-api.unzer.com</td>
+     *   </tr>
+     * </table>
+     *
+     * @param privateKey private key to access API
+     * @return API endpoint
+     */
+    private String resolveApiEndpoint(String privateKey) {
+        // TODO: add test for resolution
+
+        // Production keys are always routed to production endpoint
+        if (privateKey.charAt(0) == PRODUCTION_KEY_PREFIX) {
+            return PRODUCTION_ENDPOINT;
+        }
+
+        String restEnv = Optional.ofNullable(System.getenv(PAPI_ENV_NAME))
+                .orElse("")
+                .toUpperCase();
+
+        switch (restEnv) {
+            case DEVELOPMENT_ENVIRONMENT:
+                return DEVELOPMENT_ENDPOINT;
+            case STAGING_ENVIRONMENT:
+                return STAGING_ENDPOINT;
+            default:
+                return SANDBOX_ENDPOINT;
+        }
+    }
 }
