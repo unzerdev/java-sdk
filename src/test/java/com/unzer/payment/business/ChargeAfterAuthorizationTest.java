@@ -7,9 +7,8 @@ import com.unzer.payment.marketplace.MarketplaceCharge;
 import com.unzer.payment.marketplace.MarketplacePayment;
 import com.unzer.payment.paymenttypes.Card;
 import org.apache.http.HttpStatus;
-import org.junit.Assert;
-import org.junit.Ignore;
-import org.junit.Test;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
 
 import java.math.BigDecimal;
 import java.net.MalformedURLException;
@@ -18,8 +17,8 @@ import static com.unzer.payment.business.BasketV1TestData.getMaxTestBasketV1;
 import static com.unzer.payment.util.Uuid.generateUuid;
 import static java.util.concurrent.TimeUnit.SECONDS;
 import static org.awaitility.Awaitility.await;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 /*-
  * #%L
@@ -89,7 +88,7 @@ public class ChargeAfterAuthorizationTest extends AbstractPaymentTest {
 		assertEquals("pmt-ref", charge.getPaymentReference());
 	}
 
-	@Ignore("Needs further configuration in Testdata")
+	@Disabled("Needs further configuration in Testdata")
 	@Test
 	public void testMarketplaceFullAuthorizeCharge() throws MalformedURLException, HttpCommunicationException {
 		String participantId_1 = MARKETPLACE_PARTICIPANT_ID_1;
@@ -111,7 +110,7 @@ public class ChargeAfterAuthorizationTest extends AbstractPaymentTest {
 
 		// create card
 		Card card = getPaymentTypeCard(NO_3DS_VISA_CARD_NUMBER); //do not change card number except error case
-		card = (Card) getUnzer(marketplacePrivatekey).createPaymentType(card);
+		card = getUnzer(marketplacePrivatekey).createPaymentType(card);
 
 		// marketplace authorization
 		MarketplaceAuthorization authorizeRequest = getMarketplaceAuthorization(card.getId(), null, null, null,
@@ -121,7 +120,7 @@ public class ChargeAfterAuthorizationTest extends AbstractPaymentTest {
 		MarketplaceAuthorization authorize = getUnzer(marketplacePrivatekey).marketplaceAuthorize(authorizeRequest);
 		assertNotNull(authorize.getId());
 		assertNotNull(authorize);
-		Assert.assertEquals(AbstractTransaction.Status.PENDING, authorize.getStatus());
+		assertEquals(AbstractTransaction.Status.PENDING, authorize.getStatus());
 		assertEquals(participantId_2, authorize.getProcessing().getParticipantId());
 		
 		//confirm authorization
@@ -142,7 +141,7 @@ public class ChargeAfterAuthorizationTest extends AbstractPaymentTest {
 		assertEquals(Payment.State.COMPLETED, fullCapturePayment.getPaymentState());
 	}
 
-	@Ignore("Needs further configuration in Testdata")
+	@Disabled("Needs further configuration in Testdata")
 	@Test
 	public void testMarketplaceAuthorizeCharge() throws MalformedURLException, HttpCommunicationException {
 		String participantId_1 = MARKETPLACE_PARTICIPANT_ID_1;
@@ -164,7 +163,7 @@ public class ChargeAfterAuthorizationTest extends AbstractPaymentTest {
 
 		// create card
 		Card card = getPaymentTypeCard(NO_3DS_VISA_CARD_NUMBER); //do not change card number except error case
-		card = (Card) getUnzer(marketplacePrivatekey).createPaymentType(card);
+		card = getUnzer(marketplacePrivatekey).createPaymentType(card);
 
 		// marketplace authorization
 		MarketplaceAuthorization authorizeRequest = getMarketplaceAuthorization(card.getId(), null, null, null,

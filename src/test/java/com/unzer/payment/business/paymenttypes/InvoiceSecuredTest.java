@@ -28,7 +28,7 @@ import com.unzer.payment.communication.impl.HttpClientBasedRestCommunication;
 import com.unzer.payment.communication.json.JsonIdObject;
 import com.unzer.payment.paymenttypes.InvoiceSecured;
 import com.unzer.payment.service.PaymentService;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.math.BigDecimal;
 import java.net.MalformedURLException;
@@ -43,9 +43,7 @@ import static com.unzer.payment.business.BasketV2TestData.getMaxTestBasketV2;
 import static com.unzer.payment.business.BasketV2TestData.getMinTestBasketV2;
 import static com.unzer.payment.util.Url.unsafeUrl;
 import static com.unzer.payment.util.Uuid.generateUuid;
-import static junit.framework.TestCase.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class InvoiceSecuredTest extends AbstractPaymentTest {
 
@@ -101,26 +99,33 @@ public class InvoiceSecuredTest extends AbstractPaymentTest {
     }
 
 
-    @Test(expected = PaymentException.class)
+    @Test
     @Deprecated
-    public void testChargeTypeWithInvalidCurrencyBasketV1() throws HttpCommunicationException, MalformedURLException, ParseException {
+    public void testChargeTypeWithInvalidCurrencyBasketV1() throws HttpCommunicationException {
         InvoiceSecured invoice = getUnzer().createPaymentType(getInvoiceSecured());
         Basket basket = getMinTestBasketV1();
-        invoice.charge(basket.getAmountTotalGross(), Currency.getInstance("PLN"), new URL("https://www.meinShop.de"), getMaximumCustomerSameAddress(generateUuid()), basket, invoice.getId());
+
+        assertThrows(PaymentException.class, () -> {
+            invoice.charge(basket.getAmountTotalGross(), Currency.getInstance("PLN"), new URL("https://www.meinShop.de"), getMaximumCustomerSameAddress(generateUuid()), basket, invoice.getId());
+        });
     }
 
-    @Test(expected = PaymentException.class)
-    public void testChargeTypeWithInvalidCurrencyBasketV2() throws HttpCommunicationException, MalformedURLException, ParseException {
+    @Test
+    public void testChargeTypeWithInvalidCurrencyBasketV2() throws HttpCommunicationException {
         InvoiceSecured invoice = getUnzer().createPaymentType(getInvoiceSecured());
         Basket basket = getMinTestBasketV2();
-        invoice.charge(basket.getTotalValueGross(), Currency.getInstance("PLN"), new URL("https://www.meinShop.de"), getMaximumCustomerSameAddress(generateUuid()), basket, invoice.getId());
+        assertThrows(PaymentException.class, () -> {
+            invoice.charge(basket.getTotalValueGross(), Currency.getInstance("PLN"), new URL("https://www.meinShop.de"), getMaximumCustomerSameAddress(generateUuid()), basket, invoice.getId());
+        });
     }
 
 
-    @Test(expected = PaymentException.class)
-    public void testChargeTypeDifferentAddresses() throws HttpCommunicationException, MalformedURLException, ParseException {
+    @Test
+    public void testChargeTypeDifferentAddresses() throws HttpCommunicationException {
         InvoiceSecured invoice = getUnzer().createPaymentType(getInvoiceSecured());
-        invoice.charge(BigDecimal.TEN, Currency.getInstance("EUR"), new URL("https://www.meinShop.de"), getMaximumCustomer(generateUuid()));
+        assertThrows(PaymentException.class, () -> {
+            invoice.charge(BigDecimal.TEN, Currency.getInstance("EUR"), new URL("https://www.meinShop.de"), getMaximumCustomer(generateUuid()));
+        });
     }
 
     @Test

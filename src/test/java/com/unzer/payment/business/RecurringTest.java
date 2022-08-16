@@ -28,8 +28,8 @@ import com.unzer.payment.communication.HttpCommunicationException;
 import com.unzer.payment.paymenttypes.Card;
 import com.unzer.payment.paymenttypes.Paypal;
 import com.unzer.payment.paymenttypes.SepaDirectDebit;
-import org.junit.Ignore;
-import org.junit.Test;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.remote.RemoteWebDriver;
@@ -41,12 +41,12 @@ import java.text.ParseException;
 import java.util.Currency;
 
 import static com.unzer.payment.util.Uuid.generateUuid;
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class RecurringTest extends AbstractSeleniumTest {
 
 	@Test
-	@Ignore("Does not work on Bamboo")
+	@Disabled("Does not work on Bamboo")
 	public void testRecurringCardWithSelenium() throws MalformedURLException, HttpCommunicationException, ParseException {
 		
 		String typeId = createPaymentTypeCard("4711100000000000").getId();
@@ -105,10 +105,10 @@ public class RecurringTest extends AbstractSeleniumTest {
 	}
 	
 	@Test
-	@Ignore("Does not work on Bamboo")
+	@Disabled("Does not work on Bamboo")
 	public void testRecurringPaypalWithSelenium() throws MalformedURLException, HttpCommunicationException, ParseException {
 		Paypal paypal = new Paypal();
-		paypal = (Paypal) getUnzer().createPaymentType(paypal);
+		paypal = getUnzer().createPaymentType(paypal);
 		Recurring recurring = getUnzer().recurring(paypal.getId(), new URL("https://www.unzer.com"));
 		assertRecurring(recurring, Recurring.Status.PENDING);
 
@@ -134,7 +134,7 @@ public class RecurringTest extends AbstractSeleniumTest {
 	@Test
 	public void testRecurringPaypalWithoutCustomer() throws MalformedURLException, HttpCommunicationException, ParseException {
 		Paypal paypal = new Paypal();
-		paypal = (Paypal) getUnzer().createPaymentType(paypal);
+		paypal = getUnzer().createPaymentType(paypal);
 		Recurring recurring = getUnzer().recurring(paypal.getId(), new URL("https://www.unzer.com"));
 		assertRecurring(recurring, Recurring.Status.PENDING);
 
@@ -146,7 +146,7 @@ public class RecurringTest extends AbstractSeleniumTest {
 	public void testRecurringPaypalWitCustomerId() throws MalformedURLException, HttpCommunicationException, ParseException {
 		Customer customer = getUnzer().createCustomer(getMaximumCustomer(generateUuid()));
 		Paypal paypal = new Paypal();
-		paypal = (Paypal) getUnzer().createPaymentType(paypal);
+		paypal = getUnzer().createPaymentType(paypal);
 		Recurring recurring = getUnzer().recurring(paypal.getId(), customer.getId(), new URL("https://www.unzer.com"));
 		assertRecurring(recurring, Recurring.Status.PENDING);
 		assertNotNull(recurring.getRedirectUrl());

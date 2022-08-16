@@ -20,15 +20,15 @@ package com.unzer.payment.business;
  * #L%
  */
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 import com.unzer.payment.Linkpay;
 import com.unzer.payment.communication.HttpCommunicationException;
 import java.net.MalformedURLException;
 import java.util.Arrays;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 public class LinkpayTest extends AbstractSeleniumTest {
 

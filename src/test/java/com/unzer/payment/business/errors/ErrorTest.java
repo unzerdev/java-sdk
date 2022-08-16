@@ -24,14 +24,14 @@ import com.unzer.payment.*;
 import com.unzer.payment.business.AbstractPaymentTest;
 import com.unzer.payment.communication.HttpCommunicationException;
 import com.unzer.payment.paymenttypes.Card;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.net.MalformedURLException;
 import java.text.ParseException;
 import java.util.List;
 
 import static com.unzer.payment.util.Uuid.generateUuid;
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class ErrorTest extends AbstractPaymentTest {
 

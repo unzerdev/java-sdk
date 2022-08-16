@@ -24,15 +24,15 @@ import com.unzer.payment.Charge;
 import com.unzer.payment.business.AbstractPaymentTest;
 import com.unzer.payment.communication.HttpCommunicationException;
 import com.unzer.payment.paymenttypes.Pis;
-import org.junit.Ignore;
-import org.junit.Test;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
 
 import java.math.BigDecimal;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Currency;
 
-import static org.junit.Assert.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 public class PisTest extends AbstractPaymentTest {
 
@@ -75,7 +75,7 @@ public class PisTest extends AbstractPaymentTest {
 	}
 
 	@Test
-	@Ignore("AHC-3615 PIS holder not in response when doing a POST/GET")
+	@Disabled("AHC-3615 PIS holder not in response when doing a POST/GET")
 	public void testFetchPisTypeWithHolderBicIban() throws HttpCommunicationException {
 		Pis fetchedPis = (Pis) getUnzer().fetchPaymentType("s-pis-ivt4ibypi0zk");
 		assertNotNull(fetchedPis.getId());

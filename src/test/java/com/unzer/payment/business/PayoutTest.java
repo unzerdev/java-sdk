@@ -24,8 +24,8 @@ import com.unzer.payment.PaymentException;
 import com.unzer.payment.Payout;
 import com.unzer.payment.communication.HttpCommunicationException;
 import com.unzer.payment.paymenttypes.Card;
-import org.junit.Ignore;
-import org.junit.Test;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
 
 import java.math.BigDecimal;
 import java.net.MalformedURLException;
@@ -35,12 +35,12 @@ import java.util.Currency;
 
 import static com.unzer.payment.business.BasketV1TestData.getMaxTestBasketV1;
 import static com.unzer.payment.util.Uuid.generateUuid;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 public class PayoutTest extends AbstractPaymentTest {
 
-    @Ignore("Further Configuration needed")
+    @Disabled("Further Configuration needed")
     @Test
     public void testPayoutCardMinimal() throws MalformedURLException, HttpCommunicationException {
         Card card = createPaymentTypeCard();
@@ -51,7 +51,7 @@ public class PayoutTest extends AbstractPaymentTest {
         assertPayoutEqual(payout, payoutFetched);
     }
 
-    @Ignore("Further Configuration needed")
+    @Disabled("Further Configuration needed")
     @Test
     public void testPayoutCardWithAllData() throws MalformedURLException, HttpCommunicationException, ParseException {
         Card card = createPaymentTypeCard();
