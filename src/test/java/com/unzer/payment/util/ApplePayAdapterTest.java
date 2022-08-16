@@ -9,9 +9,9 @@ package com.unzer.payment.util;
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -20,26 +20,30 @@ package com.unzer.payment.util;
  * #L%
  */
 
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.security.KeyManagementException;
 import java.security.NoSuchAlgorithmException;
 
+import static org.junit.jupiter.api.Assertions.*;
+
 public class ApplePayAdapterTest {
 
-    @Test(expected = NullPointerException.class)
-    public void ifAllParametersAreNullThrowError() throws NoSuchAlgorithmException, IOException, KeyManagementException, URISyntaxException {
-        ApplePayAdapterUtil.validateApplePayMerchant(null, null, null, null);
+    @Test
+    public void ifAllParametersAreNullThrowError() {
+        assertThrows(NullPointerException.class, () -> {
+            ApplePayAdapterUtil.validateApplePayMerchant(null, null, null, null);
+        });
     }
 
     @Test
     public void getPlainDomainName() throws URISyntaxException {
         String url = "https://www.unzer.com/de/";
         String plainDomainName = ApplePayAdapterUtil.getPlainDomainName(url);
-        Assert.assertEquals("unzer.com", plainDomainName);
+        assertEquals("unzer.com", plainDomainName);
     }
 
     @Test
@@ -49,9 +53,9 @@ public class ApplePayAdapterTest {
         String invalidUrl1 = "https://www.google.com/";
         String invalidUrl2 = "https://www.amazon.com/";
 
-        Assert.assertTrue(ApplePayAdapterUtil.doesUrlContainValidDomainName(validUrl1));
-        Assert.assertTrue(ApplePayAdapterUtil.doesUrlContainValidDomainName(validUrl2));
-        Assert.assertFalse(ApplePayAdapterUtil.doesUrlContainValidDomainName(invalidUrl1));
-        Assert.assertFalse(ApplePayAdapterUtil.doesUrlContainValidDomainName(invalidUrl2));
+        assertTrue(ApplePayAdapterUtil.doesUrlContainValidDomainName(validUrl1));
+        assertTrue(ApplePayAdapterUtil.doesUrlContainValidDomainName(validUrl2));
+        assertFalse(ApplePayAdapterUtil.doesUrlContainValidDomainName(invalidUrl1));
+        assertFalse(ApplePayAdapterUtil.doesUrlContainValidDomainName(invalidUrl2));
     }
 }

@@ -20,28 +20,29 @@ package com.unzer.payment.webhook;
  * #L%
  */
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
 
 import java.util.Arrays;
 import java.util.List;
 
 import com.unzer.payment.business.AbstractPaymentTest;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
 
 import com.unzer.payment.communication.HttpCommunicationException;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 public class WebhookTest extends AbstractPaymentTest {
 	
-	@Before
+	@BeforeEach
 	public void clearDataBeforeTest() throws HttpCommunicationException {
 		WebhookList deleteResult = getUnzer().deleteMultiWebhook();
 		assertNotNull(deleteResult);
 	}
 	
-	@After
+	@AfterEach
 	public void clearDataAfterTest() throws HttpCommunicationException {
 		WebhookList deleteResult = getUnzer().deleteMultiWebhook();
 		assertNotNull(deleteResult);

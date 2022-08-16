@@ -20,7 +20,7 @@ package com.unzer.payment.business.paymenttypes;
  * #L%
  */
 
-import static org.junit.Assert.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import java.math.BigDecimal;
 import java.net.MalformedURLException;
@@ -28,7 +28,7 @@ import java.net.URL;
 import java.util.Currency;
 
 import com.unzer.payment.business.AbstractPaymentTest;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import com.unzer.payment.Charge;
 import com.unzer.payment.communication.HttpCommunicationException;

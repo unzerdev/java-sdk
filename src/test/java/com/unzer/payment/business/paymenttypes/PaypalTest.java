@@ -5,15 +5,15 @@ import com.unzer.payment.Charge;
 import com.unzer.payment.business.AbstractPaymentTest;
 import com.unzer.payment.communication.HttpCommunicationException;
 import com.unzer.payment.paymenttypes.Paypal;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.math.BigDecimal;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Currency;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 /*-
  * #%L
@@ -40,7 +40,7 @@ public class PaypalTest extends AbstractPaymentTest {
 	@Test
 	public void testCreatePaypalMandatoryType() throws HttpCommunicationException {
 		Paypal paypal = new Paypal();
-		paypal = (Paypal) getUnzer().createPaymentType(paypal);
+		paypal = getUnzer().createPaymentType(paypal);
 		assertNotNull(paypal.getId());
 	}
 	
@@ -48,7 +48,7 @@ public class PaypalTest extends AbstractPaymentTest {
 	public void testCreatePaypalWithEmail() throws HttpCommunicationException {
 		Paypal paypal = new Paypal();
 		paypal.setEmail("test.user@email.com");
-		paypal = (Paypal) getUnzer().createPaymentType(paypal);
+		paypal = getUnzer().createPaymentType(paypal);
 		assertNotNull(paypal.getId());
 		assertEquals("test.user@email.com", paypal.getEmail());
 	}

@@ -47,7 +47,7 @@ import static com.unzer.payment.business.BasketV1TestData.getMaxTestBasketV1;
 import static com.unzer.payment.util.Uuid.generateUuid;
 import static java.util.concurrent.TimeUnit.SECONDS;
 import static org.awaitility.Awaitility.await;
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 public abstract class AbstractSeleniumTest extends AbstractPaymentTest {
 
@@ -317,7 +317,7 @@ public abstract class AbstractSeleniumTest extends AbstractPaymentTest {
 			driver.findElement(by);
 			fail("Element with name '" + by + "' found");
 		} catch (NoSuchElementException e) {
-			; // That is what we expect
+            // That is what we expect
 		}
 	}
 

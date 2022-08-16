@@ -25,12 +25,12 @@ import com.unzer.payment.Charge;
 import com.unzer.payment.Metadata;
 import com.unzer.payment.Payment;
 import com.unzer.payment.communication.HttpCommunicationException;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.net.MalformedURLException;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 public class MetadataTest extends AbstractPaymentTest {
 
