@@ -4,6 +4,7 @@ import com.unzer.payment.Charge;
 import com.unzer.payment.business.AbstractPaymentTest;
 import com.unzer.payment.communication.HttpCommunicationException;
 import com.unzer.payment.paymenttypes.PaylaterInvoice;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.math.BigDecimal;
@@ -21,10 +22,12 @@ public class PaylaterInvoiceTest extends AbstractPaymentTest {
     }
 
     @Test
+    @Disabled
     public void testChargePaylaterType() throws HttpCommunicationException {
         PaylaterInvoice paylaterInvoice = getUnzer().createPaymentType(new PaylaterInvoice());
 
-        Charge charge = getUnzer().charge(BigDecimal.ONE,
+        Charge charge = getUnzer().charge(
+                BigDecimal.ONE,
                 Currency.getInstance("EUR"),
                 paylaterInvoice
         );

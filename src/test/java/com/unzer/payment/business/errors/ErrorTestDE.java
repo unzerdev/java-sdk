@@ -79,7 +79,7 @@ public class ErrorTestDE extends AbstractPaymentTest {
     // Payment type '/types/s-crd-jbrjthrghag2' not found
     @Test
     public void testInvalidAccess() throws HttpCommunicationException {
-        Card card = createPaymentTypeCard();
+        Card card = createPaymentTypeCard(getUnzer(), "4711100000000000");
         try {
             getUnzerDE(privateKey1).fetchPaymentType(card.getId());  // Prod-Sandbox
 
@@ -100,7 +100,7 @@ public class ErrorTestDE extends AbstractPaymentTest {
     @Test
     public void testMissingReturnUrl() throws MalformedURLException, HttpCommunicationException {
         try {
-            Authorization authorization = getAuthorization(createPaymentTypeCard().getId());
+            Authorization authorization = getAuthorization(createPaymentTypeCard(getUnzer(), "4711100000000000").getId());
             authorization.setReturnUrl(null);
             getUnzerDE().authorize(authorization);
         } catch (PaymentException e) {

@@ -169,13 +169,13 @@ public abstract class AbstractPaymentTest {
     }
 
     protected Charge getCharge(String orderId) throws MalformedURLException, HttpCommunicationException {
-        Charge charge = getCharge(createPaymentTypeCard().getId(), null, null);
+        Charge charge = getCharge(createPaymentTypeCard(getUnzer(), "4711100000000000").getId(), null, null);
         charge.setOrderId(orderId);
         return charge;
     }
 
     protected Charge getCharge(String orderId, Boolean card3ds, AdditionalTransactionData additionalTransactionData) throws MalformedURLException, HttpCommunicationException {
-        return getCharge(createPaymentTypeCard().getId(), null, orderId, null, null, card3ds, additionalTransactionData);
+        return getCharge(createPaymentTypeCard(getUnzer(), "4711100000000000").getId(), null, orderId, null, null, card3ds, additionalTransactionData);
     }
 
     protected Charge getCharge(String typeId, String customerId, String orderId, String metadataId, String basketId, AdditionalTransactionData additionalTransactionData) throws MalformedURLException, HttpCommunicationException {
@@ -197,13 +197,9 @@ public abstract class AbstractPaymentTest {
         return charge;
     }
 
-    protected Card createPaymentTypeCard() throws HttpCommunicationException {
-        return createPaymentTypeCard("4711100000000000");
-    }
-
-    protected Card createPaymentTypeCard(String cardnumber) throws HttpCommunicationException {
+    protected Card createPaymentTypeCard(Unzer unzer, String cardnumber) throws HttpCommunicationException {
         Card card = getPaymentTypeCard(cardnumber);
-        card = getUnzer().createPaymentType(card);
+        card = unzer.createPaymentType(card);
         return card;
     }
 
