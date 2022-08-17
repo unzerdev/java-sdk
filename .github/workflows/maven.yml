@@ -25,4 +25,5 @@ jobs:
         env:
           PAPI_PUBLIC_KEY: ${{ secrets.PAPI_PUBLIC_KEY }}
           PAPI_PRIVATE_KEY: ${{ secrets.PAPI_PRIVATE_KEY }}
-        run: mvn -B test --file pom.xml -Dpublickey1="$PAPI_PUBLIC_KEY" -Dprivatekey1="$PAPI_PRIVATE_KEY" -Dprivatekey2="$PAPI_PRIVATE_KEY" -Dprivatekey3="$PAPI_PRIVATE_KEY" -DmarketplacePrivatekey="$PAPI_PRIVATE_KEY"
+          PAPI_PRIVATE_KEY_NO_3DS: ${{ secrets.PAPI_PRIVATE_KEY_NO_3DS }}
+        run: mvn -B test --file pom.xml -Dpublickey1="$PAPI_PUBLIC_KEY" -Dprivatekey1="$PAPI_PRIVATE_KEY" -Dprivatekey2="$PAPI_PRIVATE_KEY_NO_3DS" -Dprivatekey3="$PAPI_PRIVATE_KEY" -DmarketplacePrivatekey="$PAPI_PRIVATE_KEY"
