@@ -2,21 +2,19 @@ package com.unzer.payment.business.paymenttypes;
 
 import com.unzer.payment.*;
 import com.unzer.payment.business.AbstractPaymentTest;
-import com.unzer.payment.business.Keys;
 import com.unzer.payment.communication.HttpCommunicationException;
 import com.unzer.payment.communication.impl.HttpClientBasedRestCommunication;
 import com.unzer.payment.enums.RecurrenceType;
 import com.unzer.payment.paymenttypes.Card;
-import org.junit.Ignore;
-import org.junit.Test;
-import org.junit.function.ThrowingRunnable;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
 
 import java.math.BigDecimal;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Currency;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 /*-
  * #%L
@@ -41,18 +39,13 @@ import static org.junit.Assert.*;
 public class CardTest extends AbstractPaymentTest {
 
     @Test
-    public void testCreateCardWithMerchantNotPCIDSSCompliant() throws HttpCommunicationException {
-        ThrowingRunnable createCardWithMerchantNotPCIDSSCompliant = new ThrowingRunnable() {
-            @Override
-            public void run() throws Throwable {
-                Card card = new Card("4444333322221111", "03/20");
-                card.setCvc("123");
-                Unzer unzer = new Unzer(new HttpClientBasedRestCommunication(), Keys.PRIVATE_KEY_3);
-                unzer.createPaymentType(card);
-            }
-
-        };
-        assertThrows(PaymentException.class, createCardWithMerchantNotPCIDSSCompliant);
+    public void testCreateCardWithMerchantNotPCIDSSCompliant() {
+        assertThrows(PaymentException.class, () -> {
+            Card card = new Card("4444333322221111", "03/20");
+            card.setCvc("123");
+            Unzer unzer = new Unzer(new HttpClientBasedRestCommunication(), privateKey3);
+            unzer.createPaymentType(card);
+        });
     }
 
     @Test
@@ -175,7 +168,7 @@ public class CardTest extends AbstractPaymentTest {
         assertNotNull(card.getEmail());
     }
 
-    @Ignore("PAPI disallows removing email")
+    @Disabled("PAPI disallows removing email")
     @Test
     public void testCardMailEmptyWhenOverridingWithNull() throws HttpCommunicationException {
         Card card = new Card("4444333322221111", "03/99");

@@ -28,8 +28,8 @@ import java.util.Map;
 public class MockUnzerHttpRequest implements UnzerHttpRequest {
 
 	Map<String, String> headerMap = new HashMap<String, String>();
-	private String uri;
-	private UnzerHttpMethod method;
+	private final String uri;
+	private final UnzerHttpMethod method;
 	String content, contentEncoding;
 
 	MockUnzerHttpRequest(String uri, UnzerHttpMethod method) {

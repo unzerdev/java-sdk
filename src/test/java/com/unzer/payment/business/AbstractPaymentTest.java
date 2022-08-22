@@ -35,7 +35,7 @@ import java.util.*;
 import static com.unzer.payment.util.Uuid.generateUuid;
 import static java.util.concurrent.TimeUnit.SECONDS;
 import static org.awaitility.Awaitility.await;
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /*-
  * #%L
@@ -483,7 +483,7 @@ public abstract class AbstractPaymentTest {
             sbMaskString.append(maskChar);
         }
 
-        return strText.substring(0, start) + sbMaskString.toString() + strText.substring(start + maskLength);
+        return strText.substring(0, start) + sbMaskString + strText.substring(start + maskLength);
     }
 
     protected int confirmMarketplacePendingTransaction(String redirectUrl) {

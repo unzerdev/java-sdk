@@ -7,8 +7,8 @@ import com.unzer.payment.marketplace.MarketplaceCharge;
 import com.unzer.payment.marketplace.MarketplacePayment;
 import com.unzer.payment.paymenttypes.Card;
 import org.apache.http.HttpStatus;
-import org.junit.Ignore;
-import org.junit.Test;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
 
 import java.math.BigDecimal;
 import java.net.MalformedURLException;
@@ -18,8 +18,8 @@ import java.util.Currency;
 import static com.unzer.payment.business.BasketV1TestData.getMaxTestBasketV1;
 import static java.util.concurrent.TimeUnit.SECONDS;
 import static org.awaitility.Awaitility.await;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 /*-
  * #%L
@@ -122,7 +122,7 @@ public class CancelAfterChargeTest extends AbstractPaymentTest {
 		assertEquals(new BigDecimal(1.0000).setScale(4), cancel.getAmount());
 	}
 
-	@Ignore("Needs further configuration in Testdata")
+	@Disabled("Needs further configuration in Testdata")
 	@Test
 	public void testMarketplaceFullCancelChargeWithCard() throws MalformedURLException, HttpCommunicationException {
 		String participantId_1 = MARKETPLACE_PARTICIPANT_ID_1;
@@ -140,24 +140,24 @@ public class CancelAfterChargeTest extends AbstractPaymentTest {
 			maxBasket.getBasketItems().get(i).setAmountDiscount(null);
 		}
 
-		Basket basket = getUnzer(Keys.MARKETPLACE_KEY).createBasket(maxBasket);
+		Basket basket = getUnzer(marketplacePrivatekey).createBasket(maxBasket);
 		
 		//create card
 		Card card = getPaymentTypeCard(NO_3DS_VISA_CARD_NUMBER); //do not change card number except error case
-		card = (Card) getUnzer(Keys.MARKETPLACE_KEY).createPaymentType(card);
+		card = getUnzer(marketplacePrivatekey).createPaymentType(card);
 		
 		//marketplace charge
 		MarketplaceCharge chargeRequest = getMarketplaceCharge(card.getId(), null, null, null, basket.getId(), null);
 		chargeRequest.setAmount(maxBasket.getAmountTotalGross());
 		
-		MarketplaceCharge charge = getUnzer(Keys.MARKETPLACE_KEY).marketplaceCharge(chargeRequest);
+		MarketplaceCharge charge = getUnzer(marketplacePrivatekey).marketplaceCharge(chargeRequest);
 		assertNotNull(charge.getId());
 		assertNotNull(charge);
 		assertEquals(AbstractTransaction.Status.PENDING, charge.getStatus());
 		assertEquals(participantId_2, charge.getProcessing().getParticipantId());
 		
 		//get marketplace payment
-		MarketplacePayment payment = getUnzer(Keys.MARKETPLACE_KEY).fetchMarketplacePayment(charge.getPayment().getId());
+		MarketplacePayment payment = getUnzer(marketplacePrivatekey).fetchMarketplacePayment(charge.getPayment().getId());
 		assertNotNull(payment);
 		assertNotNull(payment.getId());
 		assertNotNull(payment.getAuthorizationsList());
@@ -177,7 +177,7 @@ public class CancelAfterChargeTest extends AbstractPaymentTest {
 		assertEquals(2, fullCancelPayment.getCancelList().size());
 	}
 
-	@Ignore("Needs further configuration in Testdata")
+	@Disabled("Needs further configuration in Testdata")
 	@Test
 	public void testMarketplacePartialCancelChargeWithCard() throws MalformedURLException, HttpCommunicationException {
 		String participantId_1 = MARKETPLACE_PARTICIPANT_ID_1;
@@ -195,17 +195,17 @@ public class CancelAfterChargeTest extends AbstractPaymentTest {
 			maxBasket.getBasketItems().get(i).setAmountDiscount(null);
 		}
 
-		Basket basket = getUnzer(Keys.MARKETPLACE_KEY).createBasket(maxBasket);
+		Basket basket = getUnzer(marketplacePrivatekey).createBasket(maxBasket);
 		
 		//create card
 		Card card = getPaymentTypeCard(NO_3DS_VISA_CARD_NUMBER); //do not change card number except error case
-		card = (Card) getUnzer(Keys.MARKETPLACE_KEY).createPaymentType(card);
+		card = getUnzer(marketplacePrivatekey).createPaymentType(card);
 		
 		//marketplace charge
 		MarketplaceCharge chargeRequest = getMarketplaceCharge(card.getId(), null, null, null, basket.getId(), null);
 		chargeRequest.setAmount(maxBasket.getAmountTotalGross());
 		
-		MarketplaceCharge charge = getUnzer(Keys.MARKETPLACE_KEY).marketplaceCharge(chargeRequest);
+		MarketplaceCharge charge = getUnzer(marketplacePrivatekey).marketplaceCharge(chargeRequest);
 		assertNotNull(charge.getId());
 		assertNotNull(charge);
 		assertEquals(AbstractTransaction.Status.PENDING, charge.getStatus());
@@ -217,7 +217,7 @@ public class CancelAfterChargeTest extends AbstractPaymentTest {
 		assertEquals(HttpStatus.SC_MOVED_TEMPORARILY, redirectStatus);
 		
 		//get marketplace payment
-		MarketplacePayment payment = getUnzer(Keys.MARKETPLACE_KEY).fetchMarketplacePayment(charge.getPayment().getId());
+		MarketplacePayment payment = getUnzer(marketplacePrivatekey).fetchMarketplacePayment(charge.getPayment().getId());
 		assertNotNull(payment);
 		assertNotNull(payment.getId());
 		assertNotNull(payment.getAuthorizationsList());

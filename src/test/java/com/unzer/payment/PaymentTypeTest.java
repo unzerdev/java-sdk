@@ -21,15 +21,17 @@ package com.unzer.payment;
  */
 
 import com.unzer.payment.business.AbstractPaymentTest;
-import com.unzer.payment.communication.HttpCommunicationException;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class PaymentTypeTest extends AbstractPaymentTest {
 
-    @Test(expected = PaymentException.class)
-    public void testForInvalidPaymentType() throws HttpCommunicationException {
-        Unzer unzer = getUnzer();
-        unzer.fetchPaymentType("s-xxx-shdshdbshbv");
+    @Test
+    public void testForInvalidPaymentType() {
+        assertThrows(PaymentException.class, () -> {
+            getUnzer().fetchPaymentType("s-xxx-shdshdbshbv");
+        });
     }
 
 }
