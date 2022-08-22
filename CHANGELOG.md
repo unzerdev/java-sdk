@@ -9,11 +9,9 @@ to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 ## UNRELEASED
 
 ### Breaking changes
-* Removed properties `privatekey1`, `privatekey2`, `privatekey3`, `publickey1`, `marketplacekey`
-and corresponding constants `PUBLIC_KEY1`, `PRIVATE_KEY1`, `PRIVATE_KEY2`, `PRIVATE_KEY3`, `MARKETPLACE_PRIVATE_KEY`.
-* Removed properties `rest.endpoint` and `rest.version` from `unzer.properties`. Use `UNZER_PAPI_ENV` to setup API url.
+* Removed class `com.unzer.payment.service.PropertiesUtil`, unzer.properties file and `privatekey1`, `privatekey2`, `privatekey3`, `publickey1`, `marketplacekey`
+and corresponding constants `PUBLIC_KEY1`, `PRIVATE_KEY1`, `PRIVATE_KEY2`, `PRIVATE_KEY3`, `MARKETPLACE_PRIVATE_KEY`. Since this properties were used only for internal testing purpose. 
 * Removed property `applepay.validValidationUrls` from `unzer.properties`. Use `com.unzer.payment.util.ApplePayAdapterUtil.replaceValidationUrls` instead
-* Removed class `com.unzer.payment.service.PropertiesUtil`.
 * Changed method `com.unzer.payment.util.ApplePayAdapterUtil.getPlainDomainName()` modifier to private.
 
 ## [1.2.0.0][1.2.0.0]
@@ -50,8 +48,8 @@ and corresponding constants `PUBLIC_KEY1`, `PRIVATE_KEY1`, `PRIVATE_KEY2`, `PRIV
 
 ### Removed
 
-*   Remove `log.error` in catch clause 
-    `com.unzer.payment.service.Configuration#loadProperties()` because the
+*   Remove `log.error` in catch clause
+    `com.unzer.payment.service.PropertiesUtil#loadProperties()` because the
     exception with exact same message is thrown after the `log.error` call.
 
 ### Fixed
