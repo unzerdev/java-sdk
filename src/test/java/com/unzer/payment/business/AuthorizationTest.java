@@ -17,6 +17,7 @@ import java.time.LocalDate;
 import java.util.Currency;
 
 import static com.unzer.payment.business.BasketV1TestData.getMaxTestBasketV1;
+import static com.unzer.payment.business.Keys.MARKETPLACE_KEY;
 import static com.unzer.payment.util.Uuid.generateUuid;
 import static java.util.concurrent.TimeUnit.SECONDS;
 import static org.awaitility.Awaitility.await;
@@ -238,17 +239,17 @@ public class AuthorizationTest extends AbstractPaymentTest {
 			maxBasket.getBasketItems().get(i).setAmountDiscount(null);
 		}
 
-		Basket basket = getUnzer(marketplacePrivatekey).createBasket(maxBasket);
+		Basket basket = getUnzer(MARKETPLACE_KEY).createBasket(maxBasket);
 		
 		//create card
 		Card card = getPaymentTypeCard(NO_3DS_VISA_CARD_NUMBER); //do not change card number except error case
-		card = getUnzer(marketplacePrivatekey).createPaymentType(card);
+		card = getUnzer(MARKETPLACE_KEY).createPaymentType(card);
 		
 		//marketplace authorization
 		MarketplaceAuthorization authorizeRequest = getMarketplaceAuthorization(card.getId(), null, null, null, basket.getId(), null);
 		authorizeRequest.setAmount(maxBasket.getAmountTotalGross());
 		
-		MarketplaceAuthorization authorize = getUnzer(marketplacePrivatekey).marketplaceAuthorize(authorizeRequest);
+		MarketplaceAuthorization authorize = getUnzer(MARKETPLACE_KEY).marketplaceAuthorize(authorizeRequest);
 		assertNotNull(authorize.getId());
 		assertNotNull(authorize);
 		assertEquals(AbstractTransaction.Status.PENDING, authorize.getStatus());
@@ -259,7 +260,7 @@ public class AuthorizationTest extends AbstractPaymentTest {
 		assertEquals(HttpStatus.SC_MOVED_TEMPORARILY, redirectStatus);
 		
 		//get marketplace payment
-		MarketplacePayment payment = getUnzer(marketplacePrivatekey).fetchMarketplacePayment(authorize.getPayment().getId());
+		MarketplacePayment payment = getUnzer(MARKETPLACE_KEY).fetchMarketplacePayment(authorize.getPayment().getId());
 		assertNotNull(payment);
 		assertNotNull(payment.getId());
 		assertNotNull(payment.getAuthorizationsList());
@@ -267,7 +268,7 @@ public class AuthorizationTest extends AbstractPaymentTest {
 		assertEquals(Payment.State.PENDING, payment.getPaymentState());
 		
 		//get marketplace authorize
-		authorize = getUnzer(marketplacePrivatekey).fetchMarketplaceAuthorization(authorize.getPayment().getId(), authorize.getId());
+		authorize = getUnzer(MARKETPLACE_KEY).fetchMarketplaceAuthorization(authorize.getPayment().getId(), authorize.getId());
 		assertNotNull(authorize.getId());
 		assertNotNull(authorize);
 		assertEquals(AbstractTransaction.Status.SUCCESS, authorize.getStatus());

@@ -20,29 +20,22 @@ package com.unzer.payment.util;
  * #L%
  */
 
-import org.junit.jupiter.api.Assertions;
+
 import org.junit.jupiter.api.Test;
 
-import java.io.IOException;
 import java.net.URISyntaxException;
-import java.security.KeyManagementException;
-import java.security.NoSuchAlgorithmException;
 
+import static com.unzer.payment.util.ApplePayAdapterUtil.doesUrlContainValidDomainName;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class ApplePayAdapterTest {
     @Test
     public void ifAllParametersAreNullThrowError() {
-        assertThrows(NullPointerException.class, () -> {
-            ApplePayAdapterUtil.validateApplePayMerchant(null, null, null, null);
-        });
-    }
-
-    @Test
-    public void getPlainDomainName() throws URISyntaxException {
-        String url = "https://www.unzer.com/de/";
-        String plainDomainName = ApplePayAdapterUtil.getPlainDomainName(url);
-        assertEquals("unzer.com", plainDomainName);
+        assertThrows(NullPointerException.class, () -> ApplePayAdapterUtil.validateApplePayMerchant(
+                null,
+                null,
+                null,
+                null));
     }
 
     @Test
@@ -50,9 +43,14 @@ public class ApplePayAdapterTest {
         assertTrue(doesUrlContainValidDomainName("https://www.apple-pay-gateway.apple.com/"));
         assertTrue(doesUrlContainValidDomainName("https://cn-apple-pay-gateway.apple.com/"));
 
-        assertTrue(ApplePayAdapterUtil.doesUrlContainValidDomainName(validUrl1));
-        assertTrue(ApplePayAdapterUtil.doesUrlContainValidDomainName(validUrl2));
-        assertFalse(ApplePayAdapterUtil.doesUrlContainValidDomainName(invalidUrl1));
-        assertFalse(ApplePayAdapterUtil.doesUrlContainValidDomainName(invalidUrl2));
+        assertFalse(doesUrlContainValidDomainName("https://www.google.com/"));
+        assertFalse(doesUrlContainValidDomainName("https://www.amazon.com/"));
+    }
+
+    @Test
+    public void customValidationUrls() throws URISyntaxException {
+        ApplePayAdapterUtil.setCustomAppleValidationUrls("google.com");
+        assertTrue(doesUrlContainValidDomainName("https://www.google.com"));
+        assertFalse(doesUrlContainValidDomainName("https://www.apple-pay-gateway.apple.com/"));
     }
 }
