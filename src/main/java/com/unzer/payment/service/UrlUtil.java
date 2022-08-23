@@ -189,6 +189,14 @@ public class UrlUtil {
         }
     }
 
+    public String getEndpoint() {
+        if (endPoint != null && !endPoint.isEmpty()) {
+            return endPoint;
+        } else {
+            return properties.getString(PropertiesUtil.REST_ENDPOINT);
+        }
+    }
+
     private void appendSlashIfNeeded(StringBuilder stringBuilder) {
         if (stringBuilder.charAt(stringBuilder.length() - 1) != '/') {
             stringBuilder.append("/");

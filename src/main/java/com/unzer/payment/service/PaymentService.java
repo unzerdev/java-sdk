@@ -7,6 +7,8 @@ import com.unzer.payment.communication.JsonParser;
 import com.unzer.payment.communication.UnzerRestCommunication;
 import com.unzer.payment.communication.json.*;
 import com.unzer.payment.communication.mapper.JsonToBusinessClassMapper;
+import com.unzer.payment.models.PaylaterInvoiceConfig;
+import com.unzer.payment.models.PaylaterInvoiceConfigRequest;
 import com.unzer.payment.paymenttypes.*;
 import org.apache.http.HttpStatus;
 
@@ -655,5 +657,11 @@ public class PaymentService {
 
     private String getTypeIdentifier(String typeId) {
         return typeId.substring(2, 5);
+    }
+
+    public PaylaterInvoiceConfig fetchPaymentTypeConfig(PaylaterInvoiceConfigRequest configRequest) throws HttpCommunicationException {
+        String url = this.urlUtil.getEndpoint() + configRequest.getRequestUrl();
+        String response = this.restCommunication.httpGet(url, unzer.getPrivateKey());
+        return this.jsonParser.fromJson(response, PaylaterInvoiceConfig.class);
     }
 }
