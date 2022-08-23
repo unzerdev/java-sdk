@@ -28,7 +28,6 @@ package com.unzer.payment.communication;
  *
  */
 public interface UnzerRestCommunication {
-
 	/**
 	 * Executes a GET Request to the given {@code url} authenticated with the given
 	 * {@code privateKey}.

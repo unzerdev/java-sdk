@@ -59,6 +59,7 @@ import java.util.Locale;
 public class Unzer {
 	private String privateKey;
 	private String endPoint;
+	private String clientIp;
 	private transient PaymentService paymentService;
 	private transient MarketplacePaymentService marketplacePaymentService;
 	private transient PaypageService paypageService;
@@ -66,13 +67,13 @@ public class Unzer {
 	private transient WebhookService webhookService;
 
 	public Unzer(String privateKey) {
-		this(new HttpClientBasedRestCommunication(null), privateKey, null);
+		this(privateKey, null, null);
 	}
 	public Unzer(String privateKey, Locale locale) {
-		this(new HttpClientBasedRestCommunication(locale), privateKey, null);
+		this(privateKey, locale, null);
 	}
 	public Unzer(String privateKey, Locale locale, String endPoint) {
-		this(new HttpClientBasedRestCommunication(locale), privateKey, endPoint);
+		this(new HttpClientBasedRestCommunication(locale), privateKey, endPoint, null);
 	}
 
 	/**
@@ -81,26 +82,32 @@ public class Unzer {
 	 * @param privateKey - your private key as generated within the unzer Intelligence Platform (hIP)
 	 */
 	public Unzer(UnzerRestCommunication restCommunication, String privateKey) {
-		super();
-		this.privateKey = privateKey;
-		this.endPoint = null;
-		this.paymentService = new PaymentService(this, restCommunication);
-		this.marketplacePaymentService = new MarketplacePaymentService(this, restCommunication);
-		this.paypageService = new PaypageService(this, restCommunication);
-		this.linkpayService = new LinkpayService(this, restCommunication);
-		this.webhookService = new WebhookService(this, restCommunication);
+		this(restCommunication, privateKey, null, null);
 	}
 
 	/**
 	 * Creates an instance of the {@code Unzer}-facade.
+	 *
 	 * @param restCommunication - an appropriate implementation of {@code UnzerRestCommunication}. If you are fine with apache's httpCLient you might choose {@code HttpClientBasedRestCommunication}.
-	 * @param privateKey - your private key as generated within the unzer Intelligence Platform (hIP)
-	 * @param endPoint - the endPoint for the outgoing connection, in case of null, the value of unzer.properties will be considered
+	 * @param privateKey        - your private key as generated within the unzer Intelligence Platform (hIP)
+	 * @param endPoint          - the endPoint for the outgoing connection, in case of null, the value of unzer.properties will be considered
 	 */
 	public Unzer(UnzerRestCommunication restCommunication, String privateKey, String endPoint) {
-		super();
+		this(restCommunication, privateKey, endPoint, null);
+	}
+
+	/**
+	 * Creates an instance of the {@code Unzer}-facade.
+	 *
+	 * @param restCommunication - an appropriate implementation of {@code UnzerRestCommunication}. If you are fine with apache's httpCLient you might choose {@code HttpClientBasedRestCommunication}.
+	 * @param privateKey        - your private key as generated within the unzer Intelligence Platform (hIP)
+	 * @param endPoint          - the endPoint for the outgoing connection, in case of null, the value of unzer.properties will be considered
+	 * @param clientIp
+	 */
+	public Unzer(UnzerRestCommunication restCommunication, String privateKey, String endPoint, String clientIp) {
 		this.privateKey = privateKey;
 		this.endPoint = endPoint;
+		this.clientIp = clientIp;
 		this.paymentService = new PaymentService(this, restCommunication);
 		this.marketplacePaymentService = new MarketplacePaymentService(this, restCommunication);
 		this.paypageService = new PaypageService(this, restCommunication);

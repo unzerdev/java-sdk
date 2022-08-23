@@ -9,7 +9,16 @@ to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 ## [1.2.1.0][1.2.1.0]
 ### Added
 
-* Add payment type Paylater Invoice. See more at [Unzer Docs](https://docs.unzer.com/payment-methods/unzer-invoice-upl/)
+* Added payment type Paylater Invoice. See more at [Unzer Docs](https://docs.unzer.com/payment-methods/unzer-invoice-upl/)
+* Added ability to set client IP.
+
+### Removed
+
+* Removed unused `com.unzer.payment.UnsupportedPaymentTypeException`
+
+### Deprecated
+
+* Deprecated `com.unzer.payment.util.SDKInfo.getVersion()`. Use `com.unzer.payment.util.SDKInfo.VERSION` instead.
 
 ## [1.2.0.0][1.2.0.0]
 
