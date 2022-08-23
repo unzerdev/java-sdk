@@ -285,7 +285,7 @@ public abstract class AbstractPaymentTest {
         return new Customer("Unzer E-Com GmbH");
     }
 
-    protected Customer getMaximumCustomerSameAddress(String customerId) throws ParseException {
+    protected Customer getMaximumCustomerSameAddress(String customerId) {
         Customer customer = new Customer("Peter", "Universum");
         customer
                 .setCustomerId(customerId)
@@ -431,7 +431,7 @@ public abstract class AbstractPaymentTest {
         return metadata;
     }
 
-    protected Date getDate(String date) throws ParseException {
+    protected Date getDate(String date) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
         LocalDate parsedLocalDate = LocalDate.parse(date, formatter);
         return Date.from(parsedLocalDate.atStartOfDay().atZone(ZoneId.of("UTC")).toInstant());
