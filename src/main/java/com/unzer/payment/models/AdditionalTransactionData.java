@@ -27,14 +27,33 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeInfo(include = JsonTypeInfo.As.WRAPPER_OBJECT, use = JsonTypeInfo.Id.NAME)
 public class AdditionalTransactionData {
     private CardTransactionData card;
-
     private ShippingTransactionData shipping;
+    private RiskData riskData;
 
     public CardTransactionData getCard() {
         return card;
     }
 
-    public void setCard(CardTransactionData card) {
+    public AdditionalTransactionData setCard(CardTransactionData card) {
         this.card = card;
+        return this;
+    }
+
+    public ShippingTransactionData getShipping() {
+        return shipping;
+    }
+
+    public AdditionalTransactionData setShipping(ShippingTransactionData shipping) {
+        this.shipping = shipping;
+        return this;
+    }
+
+    public RiskData getRiskData() {
+        return riskData;
+    }
+
+    public AdditionalTransactionData setRiskData(RiskData riskData) {
+        this.riskData = riskData;
+        return this;
     }
 }

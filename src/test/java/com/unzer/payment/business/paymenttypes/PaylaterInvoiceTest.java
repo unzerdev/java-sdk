@@ -1,10 +1,32 @@
 package com.unzer.payment.business.paymenttypes;
 
+/*-
+ * #%L
+ * Unzer Java SDK
+ * %%
+ * Copyright (C) 2020 - today Unzer E-Com GmbH
+ * %%
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ * #L%
+ */
+
 import com.unzer.payment.*;
 import com.unzer.payment.business.AbstractPaymentTest;
 import com.unzer.payment.communication.HttpCommunicationException;
+import com.unzer.payment.models.AdditionalTransactionData;
 import com.unzer.payment.models.CustomerType;
 import com.unzer.payment.models.PaylaterInvoiceConfig;
+import com.unzer.payment.models.RiskData;
 import com.unzer.payment.paymenttypes.PaylaterInvoice;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DynamicTest;
@@ -45,45 +67,108 @@ public class PaylaterInvoiceTest extends AbstractPaymentTest {
         assertNotNull(charge.getRedirectUrl());
     }
 
-    @Test
-    public void testPaylaterCanbeAuthorized() throws HttpCommunicationException {
-        Unzer unzer = getUnzer();
+    @TestFactory
+    public Collection<DynamicTest> testAuthorizePaylater() {
+        class TestCase {
+            final String name;
+            final PaylaterInvoice paylaterInvoice;
+            final Basket basket;
+            final Customer customer;
+            final Authorization authorization;
 
-        PaylaterInvoice paylaterInvoice = unzer.createPaymentType(new PaylaterInvoice());
-        Basket basket = unzer.createBasket(
-                new Basket()
-                        .setTotalValueGross(new BigDecimal("500.5"))
-                        .setCurrencyCode(Currency.getInstance("EUR"))
-                        .setOrderId(generateUuid())
-                        .addBasketItem(
-                                new BasketItem()
-                                        .setBasketItemReferenceId("Artikelnummer4711")
-                                        .setQuantity(5)
-                                        .setVat(BigDecimal.ZERO)
-                                        .setAmountDiscountPerUnitGross(BigDecimal.ZERO)
-                                        .setAmountPerUnitGross(new BigDecimal("100.1"))
-                                        .setTitle("Apple iPhone")
-                        )
-        );
-        Customer customer = unzer.createCustomer(getMaximumCustomerSameAddress(generateUuid()));
+            public TestCase(String name, PaylaterInvoice paylaterInvoice, Basket basket, Customer customer, Authorization authorization) {
+                this.name = name;
+                this.paylaterInvoice = paylaterInvoice;
+                this.basket = basket;
+                this.customer = customer;
+                this.authorization = authorization;
+            }
+        }
 
-        Authorization authorization = (Authorization) new Authorization()
-                .setAmount(BigDecimal.valueOf(99.99))
-                .setCurrency(Currency.getInstance("EUR"))
-                .setTypeId(paylaterInvoice.getId())
-                .setReturnUrl(unsafeUrl("https://unzer.com"))
-                .setBasketId(basket.getId())
-                .setCustomerId(customer.getId());
+        return Stream.of(
+                new TestCase(
+                        "with risk data",
+                        new PaylaterInvoice(),
+                        new Basket()
+                                .setTotalValueGross(new BigDecimal("500.5"))
+                                .setCurrencyCode(Currency.getInstance("EUR"))
+                                .setOrderId(generateUuid())
+                                .addBasketItem(
+                                        new BasketItem()
+                                                .setBasketItemReferenceId("Artikelnummer4711")
+                                                .setQuantity(5)
+                                                .setVat(BigDecimal.ZERO)
+                                                .setAmountDiscountPerUnitGross(BigDecimal.ZERO)
+                                                .setAmountPerUnitGross(new BigDecimal("100.1"))
+                                                .setTitle("Apple iPhone")
+                                ),
+                        getMaximumCustomerSameAddress(generateUuid()),
+                        (Authorization) new Authorization()
+                                .setAmount(BigDecimal.valueOf(99.99))
+                                .setCurrency(Currency.getInstance("EUR"))
+                                .setReturnUrl(unsafeUrl("https://unzer.com"))
+                                .setAdditionalTransactionData(
+                                        new AdditionalTransactionData()
+                                                .setRiskData(
+                                                        new RiskData()
+                                                                .setConfirmedAmount(2569.0)
+                                                                .setConfirmedOrders(14)
+                                                                .setRegistrationLevel(RiskData.RegistrationLevel.REGISTERED)
+                                                                .setCustomerGroup(RiskData.CustomerGroup.GOOD)
+                                                                .setRegistrationDate(new Date())
+                                                )
+                                )
+                ),
+                new TestCase(
+                        "no risk data",
+                        new PaylaterInvoice(),
+                        new Basket()
+                                .setTotalValueGross(new BigDecimal("500.5"))
+                                .setCurrencyCode(Currency.getInstance("EUR"))
+                                .setOrderId(generateUuid())
+                                .addBasketItem(
+                                        new BasketItem()
+                                                .setBasketItemReferenceId("Artikelnummer4711")
+                                                .setQuantity(5)
+                                                .setVat(BigDecimal.ZERO)
+                                                .setAmountDiscountPerUnitGross(BigDecimal.ZERO)
+                                                .setAmountPerUnitGross(new BigDecimal("100.1"))
+                                                .setTitle("Apple iPhone")
+                                ),
+                        getMaximumCustomerSameAddress(generateUuid()),
+                        (Authorization) new Authorization()
+                                .setAmount(BigDecimal.valueOf(99.99))
+                                .setCurrency(Currency.getInstance("EUR"))
+                                .setReturnUrl(unsafeUrl("https://unzer.com"))
+                )
+        ).map(tc -> dynamicTest(tc.name, () -> {
+            Unzer unzer = getUnzer();
 
-        Authorization response = unzer.authorize(authorization);
+            PaylaterInvoice paylaterInvoice = unzer.createPaymentType(tc.paylaterInvoice);
+            if (tc.basket != null) {
+                Basket basket = unzer.createBasket(tc.basket);
+                tc.authorization.setBasketId(basket.getId());
+            }
 
-        assertNotNull(response);
-        assertNotNull(response.getId());
-        assertFalse(response.getId().isEmpty());
-        assertEquals(AbstractTransaction.Status.SUCCESS, authorization.getStatus());
+            if (tc.customer != null) {
+                Customer customer = unzer.createCustomer(tc.customer);
+                tc.authorization.setCustomerId(customer.getId());
+
+                if (tc.authorization.getAdditionalTransactionData() != null && tc.authorization.getAdditionalTransactionData().getRiskData() != null) {
+                    tc.authorization.getAdditionalTransactionData().getRiskData().setCustomerId(customer.getCustomerId());
+                }
+            }
+            tc.authorization.setTypeId(paylaterInvoice.getId());
+
+            Authorization response = unzer.authorize(tc.authorization);
+
+            assertNotNull(response);
+            assertNotNull(response.getId());
+            assertFalse(response.getId().isEmpty());
+            assertEquals(AbstractTransaction.Status.SUCCESS, response.getStatus());
+        })).collect(Collectors.toList());
     }
 
-    // clientIpCanBeManuallySetForPaylaterInvoiceType
 
     @Test
     public void testFetchPaylaterType() throws HttpCommunicationException {
@@ -93,6 +178,8 @@ public class PaylaterInvoiceTest extends AbstractPaymentTest {
         PaylaterInvoice fetchedPaylaterInvoice = (PaylaterInvoice) getUnzer().fetchPaymentType(paylaterInvoice.getId());
         assertNotNull(fetchedPaylaterInvoice.getId());
     }
+
+    // TODO: upl is cancelable
 
     @TestFactory
     public Collection<DynamicTest> testFetchConfig() {
