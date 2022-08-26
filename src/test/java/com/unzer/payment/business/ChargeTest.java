@@ -82,9 +82,10 @@ public class ChargeTest extends AbstractPaymentTest {
 
 	@Test
 	public void testChargeWithPaymentType() throws MalformedURLException, HttpCommunicationException {
+		Unzer unzer = getUnzer(privateKey2);
 		LocalDate locaDateNow = LocalDate.now();
 		Card card = new Card("4444333322221111", "12/" + (locaDateNow.getYear() + 1));
-		Charge charge = getUnzer().charge(BigDecimal.ONE, Currency.getInstance("EUR"), card, new URL("https://www.unzer.com"), false);
+		Charge charge = unzer.charge(BigDecimal.ONE, Currency.getInstance("EUR"), card, new URL("https://www.unzer.com"), false);
 		assertNotNull(charge);
 		assertEquals("COR.000.100.112", charge.getMessage().getCode());
 		assertNotNull(charge.getMessage().getCustomer());
@@ -102,10 +103,11 @@ public class ChargeTest extends AbstractPaymentTest {
 
 	@Test
 	public void testChargeWithCustomerTypeReturnUrl() throws MalformedURLException, HttpCommunicationException {
+		Unzer unzer = getUnzer(privateKey2);
 		LocalDate locaDateNow = LocalDate.now();
 		Card card = new Card("4444333322221111", "12/" + (locaDateNow.getYear() + 1));
 		Customer customer = new Customer("Max", "Mustermann");
-		Charge charge = getUnzer().charge(BigDecimal.ONE, Currency.getInstance("EUR"), card, new URL("https://www.unzer.com"), customer, false);
+		Charge charge = unzer.charge(BigDecimal.ONE, Currency.getInstance("EUR"), card, new URL("https://www.unzer.com"), customer, false);
 		assertNotNull(charge);
 		assertEquals("COR.000.100.112", charge.getMessage().getCode());
 		assertNotNull(charge.getMessage().getCustomer());
@@ -123,9 +125,10 @@ public class ChargeTest extends AbstractPaymentTest {
 
 	@Test
 	public void testChargeReturnPayment() throws MalformedURLException, HttpCommunicationException {
+		Unzer unzer = getUnzer(privateKey2);
 		LocalDate locaDateNow = LocalDate.now();
 		Card card = new Card("4444333322221111", "12/" + (locaDateNow.getYear() + 1));
-		Charge charge = getUnzer().charge(BigDecimal.ONE, Currency.getInstance("EUR"), card, new URL("https://www.unzer.com"), false);
+		Charge charge = unzer.charge(BigDecimal.ONE, Currency.getInstance("EUR"), card, new URL("https://www.unzer.com"), false);
 		assertNotNull(charge);
 		assertEquals("COR.000.100.112", charge.getMessage().getCode());
 		assertNotNull(charge.getMessage().getCustomer());

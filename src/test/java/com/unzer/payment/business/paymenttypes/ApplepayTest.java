@@ -22,10 +22,7 @@ package com.unzer.payment.business.paymenttypes;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.unzer.payment.Authorization;
-import com.unzer.payment.Cancel;
-import com.unzer.payment.Charge;
-import com.unzer.payment.PaymentException;
+import com.unzer.payment.*;
 import com.unzer.payment.business.AbstractPaymentTest;
 import com.unzer.payment.communication.HttpCommunicationException;
 import com.unzer.payment.paymenttypes.Applepay;
@@ -255,9 +252,10 @@ public class ApplepayTest extends AbstractPaymentTest {
 
     @Test
     public void testChargeApplePayTypeIdAndPartialCancel() throws HttpCommunicationException, MalformedURLException {
-        Applepay applepay = getUnzer().createPaymentType(getApplePay());
-        Charge charge = getUnzer().charge(BigDecimal.TEN, Currency.getInstance("EUR"), applepay.getId(), new URL("https://www.meinShop.de"));
-        Cancel cancel = getUnzer().cancelCharge(charge.getPaymentId(), charge.getId(), BigDecimal.ONE);
+        Unzer unzer = getUnzer();
+        Applepay applepay = unzer.createPaymentType(getApplePay());
+        Charge charge = unzer.charge(BigDecimal.TEN, Currency.getInstance("EUR"), applepay.getId(), new URL("https://www.meinShop.de"));
+        Cancel cancel = unzer.cancelCharge(charge.getPaymentId(), charge.getId(), BigDecimal.ONE);
 
         assertNotNull(cancel);
         assertNotNull(cancel.getId());

@@ -75,9 +75,10 @@ public class AuthorizationTest extends AbstractPaymentTest {
 	
 	@Test
 	public void testAuthorizeWithPaymentType() throws MalformedURLException, HttpCommunicationException {
+		Unzer unzer = getUnzer(privateKey2);
 		LocalDate locaDateNow = LocalDate.now();
 		Card card = new Card("4444333322221111", "12/" + (locaDateNow.getYear() + 1));
-		Authorization authorize = getUnzer().authorize(BigDecimal.ONE, Currency.getInstance("EUR"), card, new URL("https://www.unzer.com"), false);
+		Authorization authorize = unzer.authorize(BigDecimal.ONE, Currency.getInstance("EUR"), card, new URL("https://www.unzer.com"), false);
 		assertNotNull(authorize);
 		assertEquals("COR.000.100.112", authorize.getMessage().getCode());
 		assertNotNull(authorize.getMessage().getCustomer());
@@ -86,10 +87,11 @@ public class AuthorizationTest extends AbstractPaymentTest {
 
 	@Test
 	public void testAuthorizeReturnPaymentTypeAndCustomer() throws MalformedURLException, HttpCommunicationException {
+		Unzer unzer = getUnzer(privateKey2);
 		LocalDate locaDateNow = LocalDate.now();
 		Card card = new Card("4444333322221111", "12/" + (locaDateNow.getYear() + 1));
 		Customer customer = new Customer("Max", "Mustermann");
-		Authorization authorize = getUnzer().authorize(BigDecimal.ONE, Currency.getInstance("EUR"), card, new URL("https://www.unzer.com"), customer, false);
+		Authorization authorize = unzer.authorize(BigDecimal.ONE, Currency.getInstance("EUR"), card, new URL("https://www.unzer.com"), customer, false);
 		Payment payment = authorize.getPayment();
 		assertNotNull(payment.getPaymentType());
 		assertNotNull(payment.getCustomer());
@@ -119,10 +121,11 @@ public class AuthorizationTest extends AbstractPaymentTest {
 
 	@Test
 	public void testAuthorizeWithCustomerTypeReturnUrl() throws MalformedURLException, HttpCommunicationException {
+		Unzer unzer = getUnzer(privateKey2);
 		LocalDate locaDateNow = LocalDate.now();
 		Card card = new Card("4444333322221111", "12/" + (locaDateNow.getYear() + 1));
 		Customer customer = new Customer("Max", "Mustermann");
-		Authorization authorize = getUnzer().authorize(BigDecimal.ONE, Currency.getInstance("EUR"), card, new URL("https://www.unzer.com"), customer, false);
+		Authorization authorize = unzer.authorize(BigDecimal.ONE, Currency.getInstance("EUR"), card, new URL("https://www.unzer.com"), customer, false);
 		assertNotNull(authorize);
 		assertNotNull(authorize.getId());
 		assertEquals("COR.000.100.112", authorize.getMessage().getCode());

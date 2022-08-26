@@ -128,11 +128,12 @@ public class PaymentTest extends AbstractPaymentTest {
     @Test
     public void testAuthorize() throws HttpCommunicationException, MalformedURLException {
         // Variant 1
-        Payment payment = new Payment(getUnzer());
-        Authorization authorizationUsingPayment = payment.authorize(BigDecimal.ONE, Currency.getInstance("EUR"), createPaymentTypeCard(getUnzer(), "4711100000000000").getId(), new URL("https://www.unzer.com"));
+        Unzer unzer = getUnzer();
+        Payment payment = new Payment(unzer);
+        Authorization authorizationUsingPayment = payment.authorize(BigDecimal.ONE, Currency.getInstance("EUR"), createPaymentTypeCard(unzer, "4711100000000000").getId(), new URL("https://www.unzer.com"));
 
         // Variant 2
-        Authorization authorizationUsingUnzer = getUnzer().authorize(BigDecimal.ONE, Currency.getInstance("EUR"), createPaymentTypeCard(getUnzer(), "4711100000000000").getId(), new URL("https://www.unzer.com"));
+        Authorization authorizationUsingUnzer = unzer.authorize(BigDecimal.ONE, Currency.getInstance("EUR"), createPaymentTypeCard(unzer, "4711100000000000").getId(), new URL("https://www.unzer.com"));
         authorizationUsingUnzer.getPayment();
 
         assertNotNull(authorizationUsingPayment);
