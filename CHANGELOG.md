@@ -11,6 +11,7 @@ to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
 * Added payment type Paylater Invoice. See more at [Unzer Docs](https://docs.unzer.com/payment-methods/unzer-invoice-upl/)
 * Added ability to set client IP.
+* Added `com.unzer.payment.Unzer.cancelCharge(java.lang.String, java.math.BigDecimal)` to cancel Paylater charges.
 
 ### Removed
 
@@ -19,8 +20,10 @@ to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 ### Deprecated
 
 * Deprecated `com.unzer.payment.util.SDKInfo.getVersion()`. Use `com.unzer.payment.util.SDKInfo.VERSION` instead.
+* Deprecated payment type `com.unzer.payment.paymenttypes.InvoiceSecured`. Use `com.unzer.payment.paymenttypes.PaylaterInvoice` instead
 
 ### Changed
+
 * Changed type of `com.unzer.payment.Customer.shippingAddress` and according getter/setter: `com.unzer.payment.Address` -> `com.unzer.payment.ShippingAddress`. Use `ShippingAddress.of(Address, Type)` to adapt
 
 ## [1.2.0.0][1.2.0.0]
