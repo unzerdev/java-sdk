@@ -913,6 +913,18 @@ public class Unzer {
     }
 
     /**
+     * Cancel (Refund) partial Charge
+     *
+     * @param paymentId used for the cancel of a charge
+     * @param amount    used for the cancel of a charge
+     * @return Cancel with id
+     * @throws HttpCommunicationException in case communication to Unzer didn't work
+     */
+    public Cancel cancelCharge(String paymentId, BigDecimal amount) throws HttpCommunicationException {
+        return paymentService.cancelCharge(paymentId, null, amount);
+    }
+
+    /**
      * Cancel (Refund) charge with Cancel object
      *
      * @param paymentId used for the cancel of a charge

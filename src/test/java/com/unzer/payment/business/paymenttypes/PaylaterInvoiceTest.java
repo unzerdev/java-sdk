@@ -28,13 +28,11 @@ import com.unzer.payment.models.CustomerType;
 import com.unzer.payment.models.PaylaterInvoiceConfig;
 import com.unzer.payment.models.RiskData;
 import com.unzer.payment.paymenttypes.PaylaterInvoice;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DynamicTest;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestFactory;
 
 import java.math.BigDecimal;
-import java.text.ParseException;
 import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -50,6 +48,15 @@ public class PaylaterInvoiceTest extends AbstractPaymentTest {
     public void testCreatePaylaterType() throws HttpCommunicationException {
         PaylaterInvoice paylaterInvoice = getUnzer().createPaymentType(new PaylaterInvoice());
         assertNotNull(paylaterInvoice.getId());
+    }
+
+    @Test
+    public void testFetchPaylaterType() throws HttpCommunicationException {
+        PaylaterInvoice paylaterInvoice = getUnzer().createPaymentType(new PaylaterInvoice());
+        assertNotNull(paylaterInvoice.getId());
+
+        PaylaterInvoice fetchedPaylaterInvoice = (PaylaterInvoice) getUnzer().fetchPaymentType(paylaterInvoice.getId());
+        assertNotNull(fetchedPaylaterInvoice.getId());
     }
 
     @TestFactory
@@ -164,17 +171,232 @@ public class PaylaterInvoiceTest extends AbstractPaymentTest {
         })).collect(Collectors.toList());
     }
 
+    @TestFactory
+    public Collection<DynamicTest> testCancelAuthorization() {
+        class TestCase {
+            final String name;
+            final PaylaterInvoice paylaterInvoice;
+            final Basket basket;
+            final Customer customer;
+            final BigDecimal amount;
+            final Authorization authorization;
+            final String errorCode;
 
-    @Test
-    public void testFetchPaylaterType() throws HttpCommunicationException {
-        PaylaterInvoice paylaterInvoice = getUnzer().createPaymentType(new PaylaterInvoice());
-        assertNotNull(paylaterInvoice.getId());
+            public TestCase(String name, PaylaterInvoice paylaterInvoice, Basket basket, Customer customer, BigDecimal amount, Authorization authorization, String errorCode) {
+                this.name = name;
+                this.paylaterInvoice = paylaterInvoice;
+                this.basket = basket;
+                this.customer = customer;
+                this.amount = amount;
+                this.authorization = authorization;
+                this.errorCode = errorCode;
+            }
+        }
 
-        PaylaterInvoice fetchedPaylaterInvoice = (PaylaterInvoice) getUnzer().fetchPaymentType(paylaterInvoice.getId());
-        assertNotNull(fetchedPaylaterInvoice.getId());
+        return Stream.of(
+                new TestCase(
+                        "full refund",
+                        new PaylaterInvoice(),
+                        new Basket()
+                                .setTotalValueGross(new BigDecimal("500.5"))
+                                .setCurrencyCode(Currency.getInstance("EUR"))
+                                .setOrderId(generateUuid())
+                                .addBasketItem(
+                                        new BasketItem()
+                                                .setBasketItemReferenceId("Artikelnummer4711")
+                                                .setQuantity(5)
+                                                .setVat(BigDecimal.ZERO)
+                                                .setAmountDiscountPerUnitGross(BigDecimal.ZERO)
+                                                .setAmountPerUnitGross(new BigDecimal("100.1"))
+                                                .setTitle("Apple iPhone")
+                                ),
+                        getMaximumCustomerSameAddress(generateUuid()),
+                        BigDecimal.valueOf(500.5),
+                        (Authorization) new Authorization()
+                                .setAmount(BigDecimal.valueOf(500.5))
+                                .setCurrency(Currency.getInstance("EUR"))
+                                .setReturnUrl(unsafeUrl("https://unzer.com")),
+                        null
+                ),
+                new TestCase(
+                        "partial refund - fails",
+                        new PaylaterInvoice(),
+                        new Basket()
+                                .setTotalValueGross(new BigDecimal("500.5"))
+                                .setCurrencyCode(Currency.getInstance("EUR"))
+                                .setOrderId(generateUuid())
+                                .addBasketItem(
+                                        new BasketItem()
+                                                .setBasketItemReferenceId("Artikelnummer4711")
+                                                .setQuantity(5)
+                                                .setVat(BigDecimal.ZERO)
+                                                .setAmountDiscountPerUnitGross(BigDecimal.ZERO)
+                                                .setAmountPerUnitGross(new BigDecimal("100.1"))
+                                                .setTitle("Apple iPhone")
+                                ),
+                        getMaximumCustomerSameAddress(generateUuid()),
+                        BigDecimal.TEN,
+                        (Authorization) new Authorization()
+                                .setAmount(BigDecimal.valueOf(500.5))
+                                .setCurrency(Currency.getInstance("EUR"))
+                                .setReturnUrl(unsafeUrl("https://unzer.com")),
+                        "API.340.540.108" // Partial refund is not allowed
+                )
+        ).map(tc -> dynamicTest(tc.name, () -> {
+            Unzer unzer = getUnzer();
+
+            PaylaterInvoice paylaterInvoice = unzer.createPaymentType(tc.paylaterInvoice);
+            if (tc.basket != null) {
+                Basket basket = unzer.createBasket(tc.basket);
+                tc.authorization.setBasketId(basket.getId());
+            }
+
+            if (tc.customer != null) {
+                Customer customer = unzer.createCustomer(tc.customer);
+                tc.authorization.setCustomerId(customer.getId());
+
+                if (tc.authorization.getAdditionalTransactionData() != null && tc.authorization.getAdditionalTransactionData().getRiskData() != null) {
+                    tc.authorization.getAdditionalTransactionData().getRiskData().setCustomerId(customer.getCustomerId());
+                }
+            }
+            tc.authorization.setTypeId(paylaterInvoice.getId());
+
+            // Authorize
+            Authorization responseAuthorization = unzer.authorize(tc.authorization);
+
+            assertNotNull(responseAuthorization);
+            assertNotNull(responseAuthorization.getId());
+            assertFalse(responseAuthorization.getId().isEmpty());
+            assertEquals(AbstractTransaction.Status.SUCCESS, responseAuthorization.getStatus());
+            assertNotNull(responseAuthorization.getPaymentId());
+            assertFalse(responseAuthorization.getPaymentId().isEmpty());
+
+            // Cancel authorization (reversal)
+            if (tc.errorCode == null) {
+                Cancel cancelResponse = unzer.cancelAuthorization(responseAuthorization.getPaymentId(), tc.amount);
+                assertNotNull(cancelResponse);
+                assertEquals(AbstractTransaction.Status.SUCCESS, cancelResponse.getStatus());
+                assertNotNull(cancelResponse.getId());
+            } else {
+                PaymentException ex = assertThrows(PaymentException.class, () -> {
+                    unzer.cancelAuthorization(responseAuthorization.getPaymentId(), tc.amount);
+                });
+                assertEquals(tc.errorCode, ex.getPaymentErrorList().get(0).getCode());
+
+            }
+        })).collect(Collectors.toList());
     }
 
-    // TODO: upl is cancelable
+    @TestFactory
+    public Collection<DynamicTest> testCancelCharge() {
+        class TestCase {
+            final String name;
+            final PaylaterInvoice paylaterInvoice;
+            final Basket basket;
+            final Customer customer;
+            final BigDecimal amount;
+            final Authorization authorization;
+
+            public TestCase(String name, PaylaterInvoice paylaterInvoice, Basket basket, Customer customer, BigDecimal amount, Authorization authorization) {
+                this.name = name;
+                this.paylaterInvoice = paylaterInvoice;
+                this.basket = basket;
+                this.customer = customer;
+                this.amount = amount;
+                this.authorization = authorization;
+            }
+        }
+
+        return Stream.of(
+                new TestCase(
+                        "total refund",
+                        new PaylaterInvoice(),
+                        new Basket()
+                                .setTotalValueGross(new BigDecimal("500.5"))
+                                .setCurrencyCode(Currency.getInstance("EUR"))
+                                .setOrderId(generateUuid())
+                                .addBasketItem(
+                                        new BasketItem()
+                                                .setBasketItemReferenceId("Artikelnummer4711")
+                                                .setQuantity(5)
+                                                .setVat(BigDecimal.ZERO)
+                                                .setAmountDiscountPerUnitGross(BigDecimal.ZERO)
+                                                .setAmountPerUnitGross(new BigDecimal("100.1"))
+                                                .setTitle("Apple iPhone")
+                                ),
+                        getMaximumCustomerSameAddress(generateUuid()),
+                        BigDecimal.valueOf(500.5),
+                        (Authorization) new Authorization()
+                                .setAmount(BigDecimal.valueOf(500.5))
+                                .setCurrency(Currency.getInstance("EUR"))
+                                .setReturnUrl(unsafeUrl("https://unzer.com"))
+                ),
+                new TestCase(
+                        "partial refund",
+                        new PaylaterInvoice(),
+                        new Basket()
+                                .setTotalValueGross(new BigDecimal("500.5"))
+                                .setCurrencyCode(Currency.getInstance("EUR"))
+                                .setOrderId(generateUuid())
+                                .addBasketItem(
+                                        new BasketItem()
+                                                .setBasketItemReferenceId("Artikelnummer4711")
+                                                .setQuantity(5)
+                                                .setVat(BigDecimal.ZERO)
+                                                .setAmountDiscountPerUnitGross(BigDecimal.ZERO)
+                                                .setAmountPerUnitGross(new BigDecimal("100.1"))
+                                                .setTitle("Apple iPhone")
+                                ),
+                        getMaximumCustomerSameAddress(generateUuid()),
+                        BigDecimal.TEN,
+                        (Authorization) new Authorization()
+                                .setAmount(BigDecimal.valueOf(500.5))
+                                .setCurrency(Currency.getInstance("EUR"))
+                                .setReturnUrl(unsafeUrl("https://unzer.com"))
+                )
+        ).map(tc -> dynamicTest(tc.name, () -> {
+            Unzer unzer = getUnzer();
+
+            PaylaterInvoice paylaterInvoice = unzer.createPaymentType(tc.paylaterInvoice);
+            if (tc.basket != null) {
+                Basket basket = unzer.createBasket(tc.basket);
+                tc.authorization.setBasketId(basket.getId());
+            }
+
+            if (tc.customer != null) {
+                Customer customer = unzer.createCustomer(tc.customer);
+                tc.authorization.setCustomerId(customer.getId());
+
+                if (tc.authorization.getAdditionalTransactionData() != null && tc.authorization.getAdditionalTransactionData().getRiskData() != null) {
+                    tc.authorization.getAdditionalTransactionData().getRiskData().setCustomerId(customer.getCustomerId());
+                }
+            }
+            tc.authorization.setTypeId(paylaterInvoice.getId());
+
+            // Authorize
+            Authorization responseAuthorization = unzer.authorize(tc.authorization);
+
+            assertNotNull(responseAuthorization);
+            assertNotNull(responseAuthorization.getId());
+            assertFalse(responseAuthorization.getId().isEmpty());
+            assertEquals(AbstractTransaction.Status.SUCCESS, responseAuthorization.getStatus());
+            assertNotNull(responseAuthorization.getPaymentId());
+            assertFalse(responseAuthorization.getPaymentId().isEmpty());
+
+            // Charge
+            Charge responseCharge = unzer.chargeAuthorization(responseAuthorization.getPaymentId());
+            assertNotNull(responseCharge);
+            assertEquals(AbstractTransaction.Status.SUCCESS, responseCharge.getStatus());
+            assertNotNull(responseCharge.getId());
+
+            // Cancel charge v1/payments/{PAYMENT_ID}/charges/cancels
+            Cancel cancelResponse = unzer.cancelCharge(responseCharge.getPaymentId(), tc.amount);
+            assertNotNull(cancelResponse);
+            assertEquals(AbstractTransaction.Status.SUCCESS, cancelResponse.getStatus());
+            assertNotNull(cancelResponse.getId());
+            assertEquals(tc.amount.setScale(3), cancelResponse.getAmount().setScale(3));
+        })).collect(Collectors.toList());
+    }
 
     @TestFactory
     public Collection<DynamicTest> testFetchConfig() {
