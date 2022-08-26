@@ -25,27 +25,47 @@ public class ShippingTransactionData {
     private String deliveryService;
     private String returnTrackingId;
 
+    /**
+     * Tracking ID from shipping from merchant to customer
+     */
     public String getDeliveryTrackingId() {
         return deliveryTrackingId;
     }
 
-    public void setDeliveryTrackingId(String deliveryTrackingId) {
+    /**
+     * Tracking ID from shipping from merchant to customer
+     */
+    public ShippingTransactionData setDeliveryTrackingId(String deliveryTrackingId) {
         this.deliveryTrackingId = deliveryTrackingId;
+        return this;
     }
 
+    /**
+     * Delivery service from shipment from merchant to customer.
+     */
     public String getDeliveryService() {
         return deliveryService;
     }
 
-    public void setDeliveryService(String deliveryService) {
+    /**
+     * Delivery service from shipment from merchant to customer.
+     */    public ShippingTransactionData setDeliveryService(String deliveryService) {
         this.deliveryService = deliveryService;
+        return this;
     }
 
+    /**
+     * Tracking ID from shipping from merchant to customer
+     */
     public String getReturnTrackingId() {
         return returnTrackingId;
     }
 
-    public void setReturnTrackingId(String returnTrackingId) {
+    /**
+     * Tracking ID from shipping from merchant to customer
+     */
+    public ShippingTransactionData setReturnTrackingId(String returnTrackingId) {
         this.returnTrackingId = returnTrackingId;
+        return this;
     }
 }

@@ -20,6 +20,9 @@ to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
 * Deprecated `com.unzer.payment.util.SDKInfo.getVersion()`. Use `com.unzer.payment.util.SDKInfo.VERSION` instead.
 
+### Changed
+* Changed type of `com.unzer.payment.Customer.shippingAddress` and according getter/setter: `com.unzer.payment.Address` -> `com.unzer.payment.ShippingAddress`. Use `ShippingAddress.of(Address, Type)` to adapt
+
 ## [1.2.0.0][1.2.0.0]
 
 ### Breaking changes 

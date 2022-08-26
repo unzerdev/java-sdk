@@ -52,23 +52,8 @@ public class PaylaterInvoiceTest extends AbstractPaymentTest {
         assertNotNull(paylaterInvoice.getId());
     }
 
-    @Test
-    public void testChargePaylaterType() throws HttpCommunicationException {
-        PaylaterInvoice paylaterInvoice = getUnzer().createPaymentType(new PaylaterInvoice());
-
-        Charge charge = getUnzer().charge(
-                BigDecimal.ONE,
-                Currency.getInstance("EUR"),
-                paylaterInvoice
-        );
-
-        assertNotNull(charge);
-        assertNotNull(charge.getId());
-        assertNotNull(charge.getRedirectUrl());
-    }
-
     @TestFactory
-    public Collection<DynamicTest> testAuthorizePaylater() {
+    public Collection<DynamicTest> testAuthorizeAndChargePaylater() {
         class TestCase {
             final String name;
             final PaylaterInvoice paylaterInvoice;
@@ -104,7 +89,7 @@ public class PaylaterInvoiceTest extends AbstractPaymentTest {
                                 ),
                         getMaximumCustomerSameAddress(generateUuid()),
                         (Authorization) new Authorization()
-                                .setAmount(BigDecimal.valueOf(99.99))
+                                .setAmount(BigDecimal.valueOf(500.5))
                                 .setCurrency(Currency.getInstance("EUR"))
                                 .setReturnUrl(unsafeUrl("https://unzer.com"))
                                 .setAdditionalTransactionData(
@@ -137,7 +122,7 @@ public class PaylaterInvoiceTest extends AbstractPaymentTest {
                                 ),
                         getMaximumCustomerSameAddress(generateUuid()),
                         (Authorization) new Authorization()
-                                .setAmount(BigDecimal.valueOf(99.99))
+                                .setAmount(BigDecimal.valueOf(500.5))
                                 .setCurrency(Currency.getInstance("EUR"))
                                 .setReturnUrl(unsafeUrl("https://unzer.com"))
                 )
@@ -160,12 +145,22 @@ public class PaylaterInvoiceTest extends AbstractPaymentTest {
             }
             tc.authorization.setTypeId(paylaterInvoice.getId());
 
-            Authorization response = unzer.authorize(tc.authorization);
+            // Authorize
+            Authorization responseAuthorization = unzer.authorize(tc.authorization);
 
-            assertNotNull(response);
-            assertNotNull(response.getId());
-            assertFalse(response.getId().isEmpty());
-            assertEquals(AbstractTransaction.Status.SUCCESS, response.getStatus());
+            assertNotNull(responseAuthorization);
+            assertNotNull(responseAuthorization.getId());
+            assertFalse(responseAuthorization.getId().isEmpty());
+            assertEquals(AbstractTransaction.Status.SUCCESS, responseAuthorization.getStatus());
+            assertNotNull(responseAuthorization.getPaymentId());
+            assertFalse(responseAuthorization.getPaymentId().isEmpty());
+
+            // Charge
+            Charge responseCharge = unzer.chargeAuthorization(responseAuthorization.getPaymentId());
+            assertNotNull(responseCharge);
+            assertEquals(AbstractTransaction.Status.SUCCESS, responseCharge.getStatus());
+            assertNotNull(responseCharge.getId());
+
         })).collect(Collectors.toList());
     }
 
