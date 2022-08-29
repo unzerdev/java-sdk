@@ -37,11 +37,6 @@ import java.util.Currency;
 @Deprecated
 public class InvoiceSecured extends AbstractPaymentType implements PaymentType {
 
-    @Deprecated
-    public InvoiceSecured() {
-        super();
-    }
-
     @Override
     public String getTypeUrl() {
         return "types/invoice-secured";
