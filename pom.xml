@@ -231,7 +231,7 @@
                 <configuration>
                     <licenseSets>
                         <licenseSet>
-                            <header>license-header.txt</header>
+                            <header>LICENSE</header>
                             <excludes>
                                 <exclude>**/*.md</exclude>
                                 <exclude>**/*.xml</exclude>
