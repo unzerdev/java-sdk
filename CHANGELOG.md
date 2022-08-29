@@ -7,10 +7,13 @@ and this project adheres
 to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
 ## [1.2.1.0][1.2.1.0]
+
+This release brings Unzer Paylater Invoice payment type support to Java SDK.
+
 ### Added
 
 * Added payment type Paylater Invoice. See more at [Unzer Docs](https://docs.unzer.com/payment-methods/unzer-invoice-upl/)
-* Added ability to set client IP.
+* Added ability to set client IP. Use `com.unzer.payment.communication.impl.HttpClientBasedRestCommunication.HttpClientBasedRestCommunication(java.util.Locale, java.lang.String)` and `com.unzer.payment.Unzer.Unzer(java.lang.String, java.util.Locale, java.lang.String, java.lang.String)` to set client ip.
 * Added `com.unzer.payment.Unzer.cancelCharge(java.lang.String, java.math.BigDecimal)` to cancel Paylater charges.
 
 ### Removed
@@ -20,7 +23,7 @@ to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 ### Deprecated
 
 * Deprecated `com.unzer.payment.util.SDKInfo.getVersion()`. Use `com.unzer.payment.util.SDKInfo.VERSION` instead.
-* Deprecated payment type `com.unzer.payment.paymenttypes.InvoiceSecured`. Use `com.unzer.payment.paymenttypes.PaylaterInvoice` instead
+* Deprecated payment type `com.unzer.payment.paymenttypes.InvoiceSecured` and `com.unzer.payment.paymenttypes.InvoiceSecured`. Use `com.unzer.payment.paymenttypes.PaylaterInvoice` instead
 
 ### Changed
 

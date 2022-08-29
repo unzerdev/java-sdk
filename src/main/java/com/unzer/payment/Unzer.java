@@ -73,7 +73,18 @@ public class Unzer {
     }
 
     public Unzer(String privateKey, Locale locale, String endPoint) {
-        this(new HttpClientBasedRestCommunication(locale), privateKey, endPoint, null);
+        this(privateKey, locale, endPoint, null);
+    }
+
+    /**
+     * Creates an instance of the {@code Unzer}-facade.
+     *
+     * @param clientIp   -  sets CLIENT_IP header for Payment API request
+     * @param privateKey - your private key as generated within the unzer Intelligence Platform (hIP)
+     * @param endPoint   - the endPoint for the outgoing connection, in case of null, the value of unzer.properties will be considered
+     */
+    public Unzer(String privateKey, Locale locale, String endPoint, String clientIp) {
+        this(new HttpClientBasedRestCommunication(locale, clientIp), privateKey, endPoint);
     }
 
     /**
@@ -83,7 +94,7 @@ public class Unzer {
      * @param privateKey        - your private key as generated within the unzer Intelligence Platform (hIP)
      */
     public Unzer(UnzerRestCommunication restCommunication, String privateKey) {
-        this(restCommunication, privateKey, null, null);
+        this(restCommunication, privateKey, null);
     }
 
     /**
@@ -94,18 +105,6 @@ public class Unzer {
      * @param endPoint          - the endPoint for the outgoing connection, in case of null, the value of unzer.properties will be considered
      */
     public Unzer(UnzerRestCommunication restCommunication, String privateKey, String endPoint) {
-        this(restCommunication, privateKey, endPoint, null);
-    }
-
-    /**
-     * Creates an instance of the {@code Unzer}-facade.
-     *
-     * @param restCommunication - an appropriate implementation of {@code UnzerRestCommunication}. If you are fine with apache's httpCLient you might choose {@code HttpClientBasedRestCommunication}.
-     * @param privateKey        - your private key as generated within the unzer Intelligence Platform (hIP)
-     * @param endPoint          - the endPoint for the outgoing connection, in case of null, the value of unzer.properties will be considered
-     * @param clientIp
-     */
-    public Unzer(UnzerRestCommunication restCommunication, String privateKey, String endPoint, String clientIp) {
         this.privateKey = privateKey;
         this.endPoint = endPoint;
         this.paymentService = new PaymentService(this, restCommunication);
@@ -1241,22 +1240,22 @@ public class Unzer {
      *                       <br>
      *                       Request example:
      *                       <pre>
-     *                       {
-     *                          "url": "https://domain.com",
-     *                          "event": "types"
-     *                       }
-     *                       <pre>
-     *                       @return Webhook refers to webhook has been created.
-     *                       <br>
-     *                       Response example:
-     *                       <pre>
-     *                       {
-     *                          "id": "s-whk-61873",
-     *                          "url": "https://domain.com",
-     *                          "event": "types"
-     *                       }
-     *                       <pre>
-     *                       @throws HttpCommunicationException
+     *                                                                   {
+     *                                                                      "url": "https://domain.com",
+     *                                                                      "event": "types"
+     *                                                                   }
+     *                                                                   <pre>
+     *                                                                   @return Webhook refers to webhook has been created.
+     *                                                                   <br>
+     *                                                                   Response example:
+     *                                                                   <pre>
+     *                                                                   {
+     *                                                                      "id": "s-whk-61873",
+     *                                                                      "url": "https://domain.com",
+     *                                                                      "event": "types"
+     *                                                                   }
+     *                                                                   <pre>
+     *                                                                   @throws HttpCommunicationException
      */
     public Webhook registerSingleWebhook(Webhook webhookRequest) throws HttpCommunicationException {
         return webhookService.registerSingleWebhook(webhookRequest);
@@ -1270,29 +1269,29 @@ public class Unzer {
      *                       <br>
      *                       Request example:
      *                       <pre>
-     *                       {
-     *                         "url": "https://domain.com",
-     *                         "eventList": ["types", "payments"]
-     *                       }
-     *                       <pre>
-     *                       @return WebhookList refers to list of webhooks have been created.
-     *                        * <br>
-     *                       Response example:
-     *                       <pre>
-     *                       {
-     *                          "events":[{
-     *                             "id": "s-whk-61873",
-     *                             "url": "https://domain.com",
-     *                             "event": "types"
-     *                          },
-     *                          {
-     *                             "id": "s-whk-61874",
-     *                             "url": "https://domain.com",
-     *                             "event": "payments"
-     *                          }]
-     *                       }
-     *                       <pre>
-     *                       @throws HttpCommunicationException
+     *                                                                   {
+     *                                                                     "url": "https://domain.com",
+     *                                                                     "eventList": ["types", "payments"]
+     *                                                                   }
+     *                                                                   <pre>
+     *                                                                   @return WebhookList refers to list of webhooks have been created.
+     *                                                                    * <br>
+     *                                                                   Response example:
+     *                                                                   <pre>
+     *                                                                   {
+     *                                                                      "events":[{
+     *                                                                         "id": "s-whk-61873",
+     *                                                                         "url": "https://domain.com",
+     *                                                                         "event": "types"
+     *                                                                      },
+     *                                                                      {
+     *                                                                         "id": "s-whk-61874",
+     *                                                                         "url": "https://domain.com",
+     *                                                                         "event": "payments"
+     *                                                                      }]
+     *                                                                   }
+     *                                                                   <pre>
+     *                                                                   @throws HttpCommunicationException
      */
     public WebhookList registerMultiWebhooks(Webhook webhookRequest) throws HttpCommunicationException {
         return webhookService.registerMultiWebhooks(webhookRequest);
