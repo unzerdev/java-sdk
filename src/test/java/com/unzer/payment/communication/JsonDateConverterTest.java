@@ -12,7 +12,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 public class JsonDateConverterTest {
 
     @Test
-    public void getDateTestFormatDateTime(){
+    public void getDateTestFormatDateTime() {
         JsonObject jsonObject = new JsonObject();
         jsonObject.addProperty("date", "1980-12-01 12:00:00");
 
@@ -23,7 +23,7 @@ public class JsonDateConverterTest {
     }
 
     @Test
-    public void getDateTestFormatDate(){
+    public void getDateTestFormatDate() {
         JsonObject jsonObject = new JsonObject();
         jsonObject.addProperty("date", "1980-12-01");
 
@@ -34,7 +34,7 @@ public class JsonDateConverterTest {
     }
 
     @Test
-    public void getDateTestWrongFormat(){
+    public void getDateTestWrongFormat() {
         JsonObject jsonObject = new JsonObject();
         jsonObject.addProperty("date", "1980-12-01 12:00");
 
@@ -46,7 +46,7 @@ public class JsonDateConverterTest {
     }
 
     @Test
-    public void getDateTestInvalidDate(){
+    public void getDateTestInvalidDate() {
         JsonObject jsonObject = new JsonObject();
         jsonObject.addProperty("date", "2000-12-32");
 
@@ -58,7 +58,7 @@ public class JsonDateConverterTest {
     }
 
     @Test
-    public void getDateTestInvalidDateTime(){
+    public void getDateTestInvalidDateTime() {
         JsonObject jsonObject = new JsonObject();
         jsonObject.addProperty("date", "2000-12-31 25:00:00");
 

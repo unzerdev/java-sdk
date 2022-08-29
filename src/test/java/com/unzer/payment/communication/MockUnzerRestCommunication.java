@@ -1,24 +1,5 @@
 package com.unzer.payment.communication;
 
-/*-
- * #%L
- * Unzer Java SDK
- * %%
- * Copyright (C) 2020 - today Unzer E-Com GmbH
- * %%
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- * 
- *      http://www.apache.org/licenses/LICENSE-2.0
- * 
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- * #L%
- */
 
 import com.unzer.payment.communication.UnzerHttpRequest.UnzerHttpMethod;
 
@@ -26,49 +7,48 @@ import java.util.Locale;
 
 public class MockUnzerRestCommunication extends AbstractUnzerRestCommunication {
 
-	MockUnzerHttpRequest request;
-	
-	String responseMockContent;
-	int responseMockStatus;
-	
-	UnzerHttpResponse loggedResponse;
-	UnzerHttpRequest loggedRequest;
-	String loggedBody;
+    MockUnzerHttpRequest request;
 
-	public MockUnzerRestCommunication() {
-		super(null);
-	}
+    String responseMockContent;
+    int responseMockStatus;
 
-	public MockUnzerRestCommunication(Locale locale) {
-		super(locale);
-	}
+    UnzerHttpResponse loggedResponse;
+    UnzerHttpRequest loggedRequest;
+    String loggedBody;
 
-	@Override
-	protected UnzerHttpRequest createRequest(String url, UnzerHttpMethod method) {
-		return new MockUnzerHttpRequest(url, method);
-	}
+    public MockUnzerRestCommunication() {
+        super(null);
+    }
 
-	@Override
-	protected UnzerHttpResponse doExecute(UnzerHttpRequest request) {
-		this.request = (MockUnzerHttpRequest) request;
-		return new UnzerHttpResponse(responseMockContent, responseMockStatus);
-	}
+    public MockUnzerRestCommunication(Locale locale) {
+        super(locale);
+    }
 
-	@Override
-	protected void logRequest(UnzerHttpRequest request) {
-		this.loggedRequest = request;
-	}
+    @Override
+    protected UnzerHttpRequest createRequest(String url, UnzerHttpMethod method) {
+        return new MockUnzerHttpRequest(url, method);
+    }
 
-	@Override
-	protected void logRequestBody(String body) {
-		this.loggedBody = body;
-	}
+    @Override
+    protected UnzerHttpResponse doExecute(UnzerHttpRequest request) {
+        this.request = (MockUnzerHttpRequest) request;
+        return new UnzerHttpResponse(responseMockContent, responseMockStatus);
+    }
 
-	@Override
-	protected void logResponse(UnzerHttpResponse response) {
-		this.loggedResponse = response;
-	}
+    @Override
+    protected void logRequest(UnzerHttpRequest request) {
+        this.loggedRequest = request;
+    }
 
-	
-	
+    @Override
+    protected void logRequestBody(String body) {
+        this.loggedBody = body;
+    }
+
+    @Override
+    protected void logResponse(UnzerHttpResponse response) {
+        this.loggedResponse = response;
+    }
+
+
 }

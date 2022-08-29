@@ -224,10 +224,6 @@
                 </executions>
             </plugin>
 
-            <!-- Updates licence header.
-            This plugin is simpler than org.codehaus.mojo, and it does not require additional symbols
-            to determine license part of file
-                      -->
             <plugin>
                 <groupId>com.mycila</groupId>
                 <artifactId>license-maven-plugin</artifactId>

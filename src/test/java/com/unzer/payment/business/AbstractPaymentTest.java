@@ -41,25 +41,6 @@ import static java.util.concurrent.TimeUnit.SECONDS;
 import static org.awaitility.Awaitility.await;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-/*-
- * #%L
- * Unzer Java SDK
- * %%
- * Copyright (C) 2020 - today Unzer E-Com GmbH
- * %%
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- * #L%
- */
 
 public abstract class AbstractPaymentTest {
     protected static final String EMPTY_STRING = "";
@@ -78,6 +59,25 @@ public abstract class AbstractPaymentTest {
     public final String privateKey2 = properties.getString(PropertiesUtil.PRIVATE_KEY2);
     public final String privateKey3 = properties.getString(PropertiesUtil.PRIVATE_KEY3);
     public final String marketplacePrivatekey = properties.getString(PropertiesUtil.MARKETPLACE_PRIVATE_KEY);
+
+    protected static String maskString(String strText, int start, int end, char maskChar) {
+        if (strText == null) return null;
+        if (strText.equals("")) return "";
+        if (start < 0) start = 0;
+        if (end > strText.length()) end = strText.length();
+
+        int maskLength = end - start;
+
+        if (maskLength == 0) return strText;
+
+        StringBuilder sbMaskString = new StringBuilder(maskLength);
+
+        for (int i = 0; i < maskLength; i++) {
+            sbMaskString.append(maskChar);
+        }
+
+        return strText.substring(0, start) + sbMaskString + strText.substring(start + maskLength);
+    }
 
     protected String getRandomInvoiceId() {
         return generateUuid().substring(0, 5);
@@ -513,25 +513,6 @@ public abstract class AbstractPaymentTest {
         BigDecimal bigDecimal = new BigDecimal(number);
         bigDecimal.setScale(4);
         return bigDecimal;
-    }
-
-    protected static String maskString(String strText, int start, int end, char maskChar) {
-        if (strText == null) return null;
-        if (strText.equals("")) return "";
-        if (start < 0) start = 0;
-        if (end > strText.length()) end = strText.length();
-
-        int maskLength = end - start;
-
-        if (maskLength == 0) return strText;
-
-        StringBuilder sbMaskString = new StringBuilder(maskLength);
-
-        for (int i = 0; i < maskLength; i++) {
-            sbMaskString.append(maskChar);
-        }
-
-        return strText.substring(0, start) + sbMaskString + strText.substring(start + maskLength);
     }
 
     protected int confirmMarketplacePendingTransaction(String redirectUrl) {
