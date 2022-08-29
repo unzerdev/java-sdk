@@ -1,73 +1,53 @@
 package com.unzer.payment.paymenttypes;
 
-/*-
- * #%L
- * Unzer Java SDK
- * %%
- * Copyright (C) 2020 - today Unzer E-Com GmbH
- * %%
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- * 
- *      http://www.apache.org/licenses/LICENSE-2.0
- * 
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- * #L%
- */
-
 import com.unzer.payment.GeoLocation;
 import com.unzer.payment.Unzer;
 
 public abstract class AbstractPaymentType implements PaymentType {
-	private String id;
-	private Boolean recurring;
-	private GeoLocation geoLocation;
-	
-	private transient Unzer unzer;
-	
-	public AbstractPaymentType(Unzer unzer) {
-		super();
-		this.setUnzer(unzer);
-	}
+    private String id;
+    private Boolean recurring;
+    private GeoLocation geoLocation;
 
-	public AbstractPaymentType() {
-		super();
-	}
+    private transient Unzer unzer;
 
-	public String getId() {
-		return id;
-	}
+    public AbstractPaymentType(Unzer unzer) {
+        super();
+        this.setUnzer(unzer);
+    }
 
-	public void setId(String id) {
-		this.id = id;
-	}
+    public AbstractPaymentType() {
+        super();
+    }
 
-	public Unzer getUnzer() {
-		return unzer;
-	}
+    public String getId() {
+        return id;
+    }
 
-	public void setUnzer(Unzer unzer) {
-		this.unzer = unzer;
-	}
+    public void setId(String id) {
+        this.id = id;
+    }
 
-	public Boolean getRecurring() {
-		return recurring;
-	}
+    public Unzer getUnzer() {
+        return unzer;
+    }
 
-	public void setRecurring(Boolean recurring) {
-		this.recurring = recurring;
-	}
+    public void setUnzer(Unzer unzer) {
+        this.unzer = unzer;
+    }
 
-	public GeoLocation getGeoLocation() {
-		return geoLocation;
-	}
+    public Boolean getRecurring() {
+        return recurring;
+    }
 
-	public void setGeoLocation(GeoLocation geoLocation) {
-		this.geoLocation = geoLocation;
-	}
+    public void setRecurring(Boolean recurring) {
+        this.recurring = recurring;
+    }
+
+    public GeoLocation getGeoLocation() {
+        return geoLocation;
+    }
+
+    public void setGeoLocation(GeoLocation geoLocation) {
+        this.geoLocation = geoLocation;
+    }
 }

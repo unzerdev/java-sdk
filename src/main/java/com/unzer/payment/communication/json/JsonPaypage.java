@@ -5,317 +5,299 @@ import java.net.URL;
 import java.util.Currency;
 import java.util.Map;
 
-/*-
- * #%L
- * Unzer Java SDK
- * %%
- * Copyright (C) 2020 - today Unzer E-Com GmbH
- * %%
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- * 
- *      http://www.apache.org/licenses/LICENSE-2.0
- * 
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- * #L%
- */
-
 public class JsonPaypage implements JsonObject {
-	private String id;
-	
-	private BigDecimal amount;
-	private Currency currency;
-	private URL returnUrl;
-	private String logoImage;
-	private String fullPageImage;
-	private String shopName;
-	private String shopDescription;
-	private String tagline;
-	private Map<String, String> css;
-	private URL termsAndConditionUrl;
-	private URL privacyPolicyUrl;
-	private URL imprintUrl;
-	private URL helpUrl;
-	private URL contactUrl;
-	private String invoiceId;
-	private String orderId;
-	private String card3ds;
-	private String billingAddressRequired = "false";
-	private String shippingAddressRequired = "false";
-	private Map<String, String> additionalAttributes;
-	private JsonResources resources;
-	private String redirectUrl;
-	private String action;
-	private String[] excludeTypes;
+    private String id;
 
-	public String getId() {
-		return id;
-	}
+    private BigDecimal amount;
+    private Currency currency;
+    private URL returnUrl;
+    private String logoImage;
+    private String fullPageImage;
+    private String shopName;
+    private String shopDescription;
+    private String tagline;
+    private Map<String, String> css;
+    private URL termsAndConditionUrl;
+    private URL privacyPolicyUrl;
+    private URL imprintUrl;
+    private URL helpUrl;
+    private URL contactUrl;
+    private String invoiceId;
+    private String orderId;
+    private String card3ds;
+    private String billingAddressRequired = "false";
+    private String shippingAddressRequired = "false";
+    private Map<String, String> additionalAttributes;
+    private JsonResources resources;
+    private String redirectUrl;
+    private String action;
+    private String[] excludeTypes;
 
-	public void setId(String id) {
-		this.id = id;
-	}
+    public String getId() {
+        return id;
+    }
 
-	public BigDecimal getAmount() {
-		return amount;
-	}
+    public void setId(String id) {
+        this.id = id;
+    }
 
-	public void setAmount(BigDecimal amount) {
-		this.amount = amount;
-	}
+    public BigDecimal getAmount() {
+        return amount;
+    }
 
-	public Currency getCurrency() {
-		return currency;
-	}
+    public void setAmount(BigDecimal amount) {
+        this.amount = amount;
+    }
 
-	public void setCurrency(Currency currency) {
-		this.currency = currency;
-	}
+    public Currency getCurrency() {
+        return currency;
+    }
 
-	public URL getReturnUrl() {
-		return returnUrl;
-	}
+    public void setCurrency(Currency currency) {
+        this.currency = currency;
+    }
 
-	public void setReturnUrl(URL returnUrl) {
-		this.returnUrl = returnUrl;
-	}
+    public URL getReturnUrl() {
+        return returnUrl;
+    }
 
-	public String getLogoImage() {
-		return logoImage;
-	}
+    public void setReturnUrl(URL returnUrl) {
+        this.returnUrl = returnUrl;
+    }
 
-	public void setLogoImage(String logoImage) {
-		this.logoImage = logoImage;
-	}
-	public String getFullPageImage() {
-		return fullPageImage;
-	}
+    public String getLogoImage() {
+        return logoImage;
+    }
 
-	public void setFullPageImage(String fullPageImage) {
-		this.fullPageImage = fullPageImage;
-	}
+    public void setLogoImage(String logoImage) {
+        this.logoImage = logoImage;
+    }
 
-	public String getShopName() {
-		return shopName;
-	}
+    public String getFullPageImage() {
+        return fullPageImage;
+    }
 
-	public void setShopName(String shopName) {
-		this.shopName = shopName;
-	}
-	public URL getTermsAndConditionUrl() {
-		return termsAndConditionUrl;
-	}
+    public void setFullPageImage(String fullPageImage) {
+        this.fullPageImage = fullPageImage;
+    }
 
-	public void setTermsAndConditionUrl(URL termsAndConditionUrl) {
-		this.termsAndConditionUrl = termsAndConditionUrl;
-	}
+    public String getShopName() {
+        return shopName;
+    }
 
-	public URL getPrivacyPolicyUrl() {
-		return privacyPolicyUrl;
-	}
+    public void setShopName(String shopName) {
+        this.shopName = shopName;
+    }
 
-	public void setPrivacyPolicyUrl(URL privacyPolicyUrl) {
-		this.privacyPolicyUrl = privacyPolicyUrl;
-	}
+    public URL getTermsAndConditionUrl() {
+        return termsAndConditionUrl;
+    }
 
-	public URL getHelpUrl() {
-		return helpUrl;
-	}
+    public void setTermsAndConditionUrl(URL termsAndConditionUrl) {
+        this.termsAndConditionUrl = termsAndConditionUrl;
+    }
 
-	public void setHelpUrl(URL helpUrl) {
-		this.helpUrl = helpUrl;
-	}
+    public URL getPrivacyPolicyUrl() {
+        return privacyPolicyUrl;
+    }
 
-	public URL getContactUrl() {
-		return contactUrl;
-	}
+    public void setPrivacyPolicyUrl(URL privacyPolicyUrl) {
+        this.privacyPolicyUrl = privacyPolicyUrl;
+    }
 
-	public void setContactUrl(URL contactUrl) {
-		this.contactUrl = contactUrl;
-	}
+    public URL getHelpUrl() {
+        return helpUrl;
+    }
 
-	public String getOrderId() {
-		return orderId;
-	}
+    public void setHelpUrl(URL helpUrl) {
+        this.helpUrl = helpUrl;
+    }
 
-	public void setOrderId(String orderId) {
-		this.orderId = orderId;
-	}
+    public URL getContactUrl() {
+        return contactUrl;
+    }
 
-	public JsonResources getResources() {
-		return resources;
-	}
+    public void setContactUrl(URL contactUrl) {
+        this.contactUrl = contactUrl;
+    }
 
-	public void setResources(JsonResources resources) {
-		this.resources = resources;
-	}
+    public String getOrderId() {
+        return orderId;
+    }
 
-	public String getRedirectUrl() {
-		return redirectUrl;
-	}
+    public void setOrderId(String orderId) {
+        this.orderId = orderId;
+    }
 
-	public void setRedirectUrl(String redirectUrl) {
-		this.redirectUrl = redirectUrl;
-	}
+    public JsonResources getResources() {
+        return resources;
+    }
 
-	/**
-	 * @return the shopDescription
-	 */
-	public String getShopDescription() {
-		return shopDescription;
-	}
+    public void setResources(JsonResources resources) {
+        this.resources = resources;
+    }
 
-	/**
-	 * @param shopDescription the shopDescription to set
-	 */
-	public void setShopDescription(String shopDescription) {
-		this.shopDescription = shopDescription;
-	}
+    public String getRedirectUrl() {
+        return redirectUrl;
+    }
 
-	/**
-	 * @return the tagline
-	 */
-	public String getTagline() {
-		return tagline;
-	}
+    public void setRedirectUrl(String redirectUrl) {
+        this.redirectUrl = redirectUrl;
+    }
 
-	/**
-	 * @param tagline the tagline to set
-	 */
-	public void setTagline(String tagline) {
-		this.tagline = tagline;
-	}
+    /**
+     * @return the shopDescription
+     */
+    public String getShopDescription() {
+        return shopDescription;
+    }
 
-	/**
-	 * @return the imprintUrl
-	 */
-	public URL getImprintUrl() {
-		return imprintUrl;
-	}
+    /**
+     * @param shopDescription the shopDescription to set
+     */
+    public void setShopDescription(String shopDescription) {
+        this.shopDescription = shopDescription;
+    }
 
-	/**
-	 * @param imprintUrl the imprintUrl to set
-	 */
-	public void setImprintUrl(URL imprintUrl) {
-		this.imprintUrl = imprintUrl;
-	}
+    /**
+     * @return the tagline
+     */
+    public String getTagline() {
+        return tagline;
+    }
 
-	/**
-	 * @return the invoiceId
-	 */
-	public String getInvoiceId() {
-		return invoiceId;
-	}
+    /**
+     * @param tagline the tagline to set
+     */
+    public void setTagline(String tagline) {
+        this.tagline = tagline;
+    }
 
-	/**
-	 * @param invoiceId the invoiceId to set
-	 */
-	public void setInvoiceId(String invoiceId) {
-		this.invoiceId = invoiceId;
-	}
+    /**
+     * @return the imprintUrl
+     */
+    public URL getImprintUrl() {
+        return imprintUrl;
+    }
 
-	/**
-	 * @return the card3ds
-	 */
-	public String getCard3ds() {
-		return card3ds;
-	}
+    /**
+     * @param imprintUrl the imprintUrl to set
+     */
+    public void setImprintUrl(URL imprintUrl) {
+        this.imprintUrl = imprintUrl;
+    }
 
-	/**
-	 * @param card3ds the card3ds to set
-	 */
-	public void setCard3ds(String card3ds) {
-		this.card3ds = card3ds;
-	}
+    /**
+     * @return the invoiceId
+     */
+    public String getInvoiceId() {
+        return invoiceId;
+    }
 
-	/**
-	 * @return the billingAddressRequired
-	 */
-	public String getBillingAddressRequired() {
-		return billingAddressRequired;
-	}
+    /**
+     * @param invoiceId the invoiceId to set
+     */
+    public void setInvoiceId(String invoiceId) {
+        this.invoiceId = invoiceId;
+    }
 
-	/**
-	 * @param billingAddressRequired the billingAddressRequired to set
-	 */
-	public void setBillingAddressRequired(String billingAddressRequired) {
-		this.billingAddressRequired = billingAddressRequired;
-	}
+    /**
+     * @return the card3ds
+     */
+    public String getCard3ds() {
+        return card3ds;
+    }
 
-	/**
-	 * @return the shippingAddressRequired
-	 */
-	public String getShippingAddressRequired() {
-		return shippingAddressRequired;
-	}
+    /**
+     * @param card3ds the card3ds to set
+     */
+    public void setCard3ds(String card3ds) {
+        this.card3ds = card3ds;
+    }
 
-	/**
-	 * @param shippingAddressRequired the shippingAddressRequired to set
-	 */
-	public void setShippingAddressRequired(String shippingAddressRequired) {
-		this.shippingAddressRequired = shippingAddressRequired;
-	}
+    /**
+     * @return the billingAddressRequired
+     */
+    public String getBillingAddressRequired() {
+        return billingAddressRequired;
+    }
 
-	/**
-	 * @return the additionalAttributes
-	 */
-	public Map<String, String> getAdditionalAttributes() {
-		return additionalAttributes;
-	}
+    /**
+     * @param billingAddressRequired the billingAddressRequired to set
+     */
+    public void setBillingAddressRequired(String billingAddressRequired) {
+        this.billingAddressRequired = billingAddressRequired;
+    }
 
-	/**
-	 * @param additionalAttributes the additionalAttributes to set
-	 */
-	public void setAdditionalAttributes(Map<String, String> additionalAttributes) {
-		this.additionalAttributes = additionalAttributes;
-	}
+    /**
+     * @return the shippingAddressRequired
+     */
+    public String getShippingAddressRequired() {
+        return shippingAddressRequired;
+    }
 
-	/**
-	 * @return the action
-	 */
-	public String getAction() {
-		return action;
-	}
+    /**
+     * @param shippingAddressRequired the shippingAddressRequired to set
+     */
+    public void setShippingAddressRequired(String shippingAddressRequired) {
+        this.shippingAddressRequired = shippingAddressRequired;
+    }
 
-	/**
-	 * @param action the action to set
-	 */
-	public void setAction(String action) {
-		this.action = action;
-	}
+    /**
+     * @return the additionalAttributes
+     */
+    public Map<String, String> getAdditionalAttributes() {
+        return additionalAttributes;
+    }
 
-	/**
-	 * @return the excludeTypes
-	 */
-	public String[] getExcludeTypes() {
-		return excludeTypes;
-	}
+    /**
+     * @param additionalAttributes the additionalAttributes to set
+     */
+    public void setAdditionalAttributes(Map<String, String> additionalAttributes) {
+        this.additionalAttributes = additionalAttributes;
+    }
 
-	/**
-	 * @param excludeTypes the excludeTypes to set
-	 */
-	public void setExcludeTypes(String[] excludeTypes) {
-		this.excludeTypes = excludeTypes;
-	}
+    /**
+     * @return the action
+     */
+    public String getAction() {
+        return action;
+    }
 
-	/**
-	 * @return the css
-	 */
-	public Map<String, String> getCss() {
-		return css;
-	}
+    /**
+     * @param action the action to set
+     */
+    public void setAction(String action) {
+        this.action = action;
+    }
 
-	/**
-	 * @param css the css to set
-	 */
-	public void setCss(Map<String, String> css) {
-		this.css = css;
-	}
+    /**
+     * @return the excludeTypes
+     */
+    public String[] getExcludeTypes() {
+        return excludeTypes;
+    }
 
-	
+    /**
+     * @param excludeTypes the excludeTypes to set
+     */
+    public void setExcludeTypes(String[] excludeTypes) {
+        this.excludeTypes = excludeTypes;
+    }
+
+    /**
+     * @return the css
+     */
+    public Map<String, String> getCss() {
+        return css;
+    }
+
+    /**
+     * @param css the css to set
+     */
+    public void setCss(Map<String, String> css) {
+        this.css = css;
+    }
+
+
 }

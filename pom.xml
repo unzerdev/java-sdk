@@ -223,6 +223,29 @@
                     </execution>
                 </executions>
             </plugin>
+
+            <!-- Updates licence header.
+            This plugin is simpler than org.codehaus.mojo, and it does not require additional symbols
+            to determine license part of file
+                      -->
+            <plugin>
+                <groupId>com.mycila</groupId>
+                <artifactId>license-maven-plugin</artifactId>
+                <version>4.1</version>
+                <configuration>
+                    <licenseSets>
+                        <licenseSet>
+                            <header>license-header.txt</header>
+                            <excludes>
+                                <exclude>**/*.md</exclude>
+                                <exclude>**/*.xml</exclude>
+                                <exclude>src/test/resources/**</exclude>
+                                <exclude>src/main/resources/**</exclude>
+                            </excludes>
+                        </licenseSet>
+                    </licenseSets>
+                </configuration>
+            </plugin>
         </plugins>
     </build>
 
@@ -266,13 +289,6 @@
 
 
         <!-- Test dependencies       -->
-        <dependency>
-            <groupId>org.junit.jupiter</groupId>
-            <artifactId>junit-jupiter-engine</artifactId>
-            <version>${junit.version}</version>
-            <scope>test</scope>
-        </dependency>
-
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-engine</artifactId>

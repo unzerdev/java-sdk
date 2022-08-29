@@ -1,32 +1,15 @@
 package com.unzer.payment;
 
-/*-
- * #%L
- * Unzer Java SDK
- * %%
- * Copyright (C) 2020 - today Unzer E-Com GmbH
- * %%
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- * #L%
- */
-
 import com.unzer.payment.communication.HttpCommunicationException;
 import com.unzer.payment.communication.json.JsonObject;
 import com.unzer.payment.paymenttypes.PaymentType;
 
 import java.math.BigDecimal;
 import java.net.URL;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Currency;
+import java.util.List;
 
 /**
  * Business object for a Payment. A Payment is the object that holds toghether several
@@ -119,6 +102,10 @@ public class Payment extends AbstractPayment {
         return authorization;
     }
 
+    public void setAuthorization(Authorization authorization) {
+        this.authorization = authorization;
+    }
+
     public Charge getCharge(String chargeId) {
         return findById(chargesList, chargeId);
     }
@@ -135,6 +122,10 @@ public class Payment extends AbstractPayment {
         return cancelList;
     }
 
+    public void setCancelList(List<Cancel> cancelList) {
+        this.cancelList = cancelList;
+    }
+
     public Cancel getCancel(String cancelId) {
         return findById(cancelList, cancelId);
     }
@@ -142,7 +133,6 @@ public class Payment extends AbstractPayment {
     public Cancel getCancel() {
         return new Cancel();
     }
-
 
     @Override
     public String getTypeUrl() {
@@ -160,14 +150,6 @@ public class Payment extends AbstractPayment {
 
     public void setChargesList(List<Charge> chargesList) {
         this.chargesList = chargesList;
-    }
-
-    public void setAuthorization(Authorization authorization) {
-        this.authorization = authorization;
-    }
-
-    public void setCancelList(List<Cancel> cancelList) {
-        this.cancelList = cancelList;
     }
 
     public List<Payout> getPayoutList() {

@@ -1,218 +1,196 @@
 package com.unzer.payment;
 
-/*-
- * #%L
- * Unzer Java SDK
- * %%
- * Copyright (C) 2020 - today Unzer E-Com GmbH
- * %%
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- * 
- *      http://www.apache.org/licenses/LICENSE-2.0
- * 
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- * #L%
- */
-
 import com.unzer.payment.communication.HttpCommunicationException;
 import com.unzer.payment.paymenttypes.PaymentType;
 
 import java.math.BigDecimal;
 
 public abstract class AbstractPayment implements PaymentType {
-	private String id;
-	protected static final String CANCEL_IS_ONLY_POSSIBLE_FOR_AN_AUTHORIZATION = "Cancel is only possible for an Authorization";
-	protected static final String PAYMENT_CANCELLATION_NOT_POSSIBLE = "Payment cancellation not possible";
+    protected static final String CANCEL_IS_ONLY_POSSIBLE_FOR_AN_AUTHORIZATION = "Cancel is only possible for an Authorization";
+    protected static final String PAYMENT_CANCELLATION_NOT_POSSIBLE = "Payment cancellation not possible";
+    private String id;
+    private State paymentState;
+    private BigDecimal amountTotal;
+    private BigDecimal amountCharged;
+    private BigDecimal amountCanceled;
+    private BigDecimal amountRemaining;
+    private String orderId;
+    private String customerId;
+    private Customer customer;
+    private String paymentTypeId;
+    private PaymentType paymentType;
+    private String metadataId;
+    private Metadata metadata;
+    private String basketId;
+    private Basket basket;
+    private transient Unzer unzer;
 
-	public enum State {
-		COMPLETED, PENDING, CANCELED, PARTLY, PAYMENT_REVIEW, CHARGEBACK
-	}
+    public AbstractPayment(Unzer unzer) {
+        super();
+        this.setUnzer(unzer);
+    }
 
-	private State paymentState;
-	private BigDecimal amountTotal;
-	private BigDecimal amountCharged;
-	private BigDecimal amountCanceled;
-	private BigDecimal amountRemaining;
-	private String orderId;
-	private String customerId;
-	private Customer customer;
-	private String paymentTypeId;
-	private PaymentType paymentType;
-	private String metadataId;
-	private Metadata metadata;
-	private String basketId;
-	private Basket basket;
+    public AbstractPayment() {
+        super();
+    }
 
-	private transient Unzer unzer;
+    public String getId() {
+        return id;
+    }
 
-	public AbstractPayment(Unzer unzer) {
-		super();
-		this.setUnzer(unzer);
-	}
+    public void setId(String id) {
+        this.id = id;
+    }
 
-	public AbstractPayment() {
-		super();
-	}
+    public Unzer getUnzer() {
+        return unzer;
+    }
 
-	public String getId() {
-		return id;
-	}
+    public void setUnzer(Unzer unzer) {
+        this.unzer = unzer;
+    }
 
-	public void setId(String id) {
-		this.id = id;
-	}
+    public PaymentType getPaymentType() throws HttpCommunicationException {
+        if (paymentType == null) {
+            paymentType = fetchPaymentType(getPaymentTypeId());
+        }
+        return paymentType;
+    }
 
-	public Unzer getUnzer() {
-		return unzer;
-	}
+    public Customer getCustomer() throws HttpCommunicationException {
+        if (customer == null && isNotEmpty(getCustomerId())) {
+            customer = fetchCustomer(getCustomerId());
+        }
+        return customer;
+    }
 
-	public void setUnzer(Unzer unzer) {
-		this.unzer = unzer;
-	}
+    public void setCustomer(Customer customer) {
+        this.customer = customer;
+    }
 
-	public PaymentType getPaymentType() throws HttpCommunicationException {
-		if (paymentType == null) {
-			paymentType = fetchPaymentType(getPaymentTypeId());
-		}
-		return paymentType;
-	}
+    public String getPaymentTypeId() {
+        return paymentTypeId;
+    }
 
-	public Customer getCustomer() throws HttpCommunicationException {
-		if (customer == null && isNotEmpty(getCustomerId())) {
-			customer = fetchCustomer(getCustomerId());
-		}
-		return customer;
-	}
+    public void setPaymentTypeId(String paymentTypeId) {
+        this.paymentTypeId = paymentTypeId;
+    }
 
-	public void setCustomer(Customer customer) {
-		this.customer = customer;
-	}
+    public String getCustomerId() {
+        return customerId;
+    }
 
-	public String getPaymentTypeId() {
-		return paymentTypeId;
-	}
+    public void setCustomerId(String customerId) {
+        this.customerId = customerId;
+    }
 
-	public void setPaymentTypeId(String paymentTypeId) {
-		this.paymentTypeId = paymentTypeId;
-	}
+    public String getMetadataId() {
+        return metadataId;
+    }
 
-	public String getCustomerId() {
-		return customerId;
-	}
+    public void setMetadataId(String metadataId) {
+        this.metadataId = metadataId;
+    }
 
-	public void setCustomerId(String customerId) {
-		this.customerId = customerId;
-	}
+    public Metadata getMetadata() throws HttpCommunicationException {
+        if (metadata == null && isNotEmpty(getMetadataId())) {
+            metadata = fetchMetadata(getMetadataId());
+        }
+        return metadata;
+    }
 
-	public String getMetadataId() {
-		return metadataId;
-	}
+    public void setMetadata(Metadata metadata) {
+        this.metadata = metadata;
+    }
 
-	public void setMetadataId(String metadataId) {
-		this.metadataId = metadataId;
-	}
+    public String getBasketId() {
+        return basketId;
+    }
 
-	public Metadata getMetadata() throws HttpCommunicationException {
-		if (metadata == null && isNotEmpty(getMetadataId())) {
-			metadata = fetchMetadata(getMetadataId());
-		}
-		return metadata;
-	}
+    public void setBasketId(String basketId) {
+        this.basketId = basketId;
+    }
 
-	public void setMetadata(Metadata metadata) {
-		this.metadata = metadata;
-	}
+    public Basket getBasket() throws HttpCommunicationException {
+        if (basket == null && isNotEmpty(getBasketId())) {
+            basket = fetchBasket(getBasketId());
+        }
+        return basket;
+    }
 
-	public String getBasketId() {
-		return basketId;
-	}
+    public void setBasket(Basket basket) {
+        this.basket = basket;
+    }
 
-	public void setBasketId(String basketId) {
-		this.basketId = basketId;
-	}
+    public State getPaymentState() {
+        return paymentState;
+    }
 
-	public Basket getBasket() throws HttpCommunicationException {
-		if (basket == null && isNotEmpty(getBasketId())) {
-			basket = fetchBasket(getBasketId());
-		}
-		return basket;
-	}
+    public void setPaymentState(State paymentState) {
+        this.paymentState = paymentState;
+    }
 
-	public void setBasket(Basket basket) {
-		this.basket = basket;
-	}
+    public BigDecimal getAmountTotal() {
+        return amountTotal;
+    }
 
-	public State getPaymentState() {
-		return paymentState;
-	}
+    public void setAmountTotal(BigDecimal amountTotal) {
+        this.amountTotal = amountTotal;
+    }
 
-	public void setPaymentState(State paymentState) {
-		this.paymentState = paymentState;
-	}
+    public BigDecimal getAmountCharged() {
+        return amountCharged;
+    }
 
-	public BigDecimal getAmountTotal() {
-		return amountTotal;
-	}
+    public void setAmountCharged(BigDecimal amountCharged) {
+        this.amountCharged = amountCharged;
+    }
 
-	public void setAmountTotal(BigDecimal amountTotal) {
-		this.amountTotal = amountTotal;
-	}
+    public BigDecimal getAmountCanceled() {
+        return amountCanceled;
+    }
 
-	public BigDecimal getAmountCharged() {
-		return amountCharged;
-	}
+    public void setAmountCanceled(BigDecimal amountCanceled) {
+        this.amountCanceled = amountCanceled;
+    }
 
-	public void setAmountCharged(BigDecimal amountCharged) {
-		this.amountCharged = amountCharged;
-	}
+    public BigDecimal getAmountRemaining() {
+        return amountRemaining;
+    }
 
-	public BigDecimal getAmountCanceled() {
-		return amountCanceled;
-	}
+    public void setAmountRemaining(BigDecimal amountRemaining) {
+        this.amountRemaining = amountRemaining;
+    }
 
-	public void setAmountCanceled(BigDecimal amountCanceled) {
-		this.amountCanceled = amountCanceled;
-	}
+    public String getOrderId() {
+        return orderId;
+    }
 
-	public BigDecimal getAmountRemaining() {
-		return amountRemaining;
-	}
+    public void setOrderId(String orderId) {
+        this.orderId = orderId;
+    }
 
-	public void setAmountRemaining(BigDecimal amountRemaining) {
-		this.amountRemaining = amountRemaining;
-	}
+    protected boolean isNotEmpty(String value) {
+        return value != null && !"".equalsIgnoreCase(value.trim());
+    }
 
-	public String getOrderId() {
-		return orderId;
-	}
+    protected PaymentType fetchPaymentType(String paymentTypeId) throws HttpCommunicationException {
+        return getUnzer().fetchPaymentType(paymentTypeId);
+    }
 
-	public void setOrderId(String orderId) {
-		this.orderId = orderId;
-	}
+    protected Customer fetchCustomer(String customerId) throws HttpCommunicationException {
+        return getUnzer().fetchCustomer(customerId);
+    }
 
-	protected boolean isNotEmpty(String value) {
-		return value != null && !"".equalsIgnoreCase(value.trim());
-	}
+    protected Metadata fetchMetadata(String metadataId) throws HttpCommunicationException {
+        return getUnzer().fetchMetadata(metadataId);
+    }
 
-	protected PaymentType fetchPaymentType(String paymentTypeId) throws HttpCommunicationException {
-		return getUnzer().fetchPaymentType(paymentTypeId);
-	}
+    protected Basket fetchBasket(String basketId) throws HttpCommunicationException {
+        return getUnzer().fetchBasket(basketId);
+    }
 
-	protected Customer fetchCustomer(String customerId) throws HttpCommunicationException {
-		return getUnzer().fetchCustomer(customerId);
-	}
-
-	protected Metadata fetchMetadata(String metadataId) throws HttpCommunicationException {
-		return getUnzer().fetchMetadata(metadataId);
-	}
-	
-	protected Basket fetchBasket(String basketId) throws HttpCommunicationException {
-		return getUnzer().fetchBasket(basketId);
-	}
+    public enum State {
+        COMPLETED, PENDING, CANCELED, PARTLY, PAYMENT_REVIEW, CHARGEBACK
+    }
 }
