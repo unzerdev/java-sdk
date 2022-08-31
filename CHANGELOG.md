@@ -23,7 +23,7 @@ This release brings Unzer Paylater Invoice payment type support to Java SDK.
 ### Deprecated
 
 * Deprecated `com.unzer.payment.util.SDKInfo.getVersion()`. Use `com.unzer.payment.util.SDKInfo.VERSION` instead.
-* Deprecated payment type `com.unzer.payment.paymenttypes.Invoice` and `com.unzer.payment.paymenttypes.InvoiceSecured`. Use `com.unzer.payment.paymenttypes.PaylaterInvoice` instead
+* Deprecated payment type `com.unzer.payment.paymenttypes.InvoiceSecured`. Use `com.unzer.payment.paymenttypes.PaylaterInvoice` instead.
 * Deprecated `com.unzer.payment.Customer.setShippingAddress(com.unzer.payment.Address)`. Use `com.unzer.payment.Customer.setShippingAddress(com.unzer.payment.ShippingAddress)` instead
 
 ### Changed
