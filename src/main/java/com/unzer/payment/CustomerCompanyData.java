@@ -21,60 +21,64 @@ package com.unzer.payment;
  */
 
 import com.google.gson.annotations.SerializedName;
-import com.unzer.payment.communication.json.JSonCompanyInfo;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class CustomerCompanyData {
+    private CompanyType companyType;
+    private Owner owner;
+    private RegistrationType registrationType;
+    private String commercialRegisterNumber;
+    private CommercialSector commercialSector;
+
     public CompanyType getCompanyType() {
         return companyType;
     }
 
-    public void setCompanyType(CompanyType companyType) {
+    public CustomerCompanyData setCompanyType(CompanyType companyType) {
         this.companyType = companyType;
+        return this;
     }
 
     public Owner getOwner() {
         return owner;
     }
 
-    public void setOwner(Owner owner) {
+    public CustomerCompanyData setOwner(Owner owner) {
         this.owner = owner;
+        return this;
     }
-
-    public enum RegistrationType {REGISTERED, NOT_REGISTERED}
-
-    private RegistrationType registrationType;
-    private String commercialRegisterNumber;
-    private CommercialSector commercialSector;
-    private CompanyType companyType;
-    private Owner owner;
 
     public RegistrationType getRegistrationType() {
         return registrationType;
     }
 
-    public void setRegistrationType(RegistrationType registrationType) {
+    public CustomerCompanyData setRegistrationType(RegistrationType registrationType) {
         this.registrationType = registrationType;
+        return this;
     }
 
     public String getCommercialRegisterNumber() {
         return commercialRegisterNumber;
     }
 
-    public void setCommercialRegisterNumber(String commercialRegisterNumber) {
+    public CustomerCompanyData setCommercialRegisterNumber(String commercialRegisterNumber) {
         this.commercialRegisterNumber = commercialRegisterNumber;
+        return this;
     }
 
     public CommercialSector getCommercialSector() {
         return commercialSector;
     }
 
-    public void setCommercialSector(CommercialSector commercialSector) {
+    public CustomerCompanyData setCommercialSector(CommercialSector commercialSector) {
         this.commercialSector = commercialSector;
+        return this;
     }
+
+    public enum RegistrationType {REGISTERED, NOT_REGISTERED}
 
     public enum CompanyType {
         @SerializedName("authority")
@@ -90,13 +94,11 @@ public class CustomerCompanyData {
     }
 
     public static class Owner {
+        private final static SimpleDateFormat yyyy_MM_dd_DateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        private final static SimpleDateFormat dd_MM_yyyyDateFormat = new SimpleDateFormat("dd.MM.yyyy");
         private String firstname;
         private String lastname;
         private String birthdate;
-
-        private final static SimpleDateFormat yyyy_MM_dd_DateFormat = new SimpleDateFormat("yyyy-MM-dd");
-        private final static SimpleDateFormat dd_MM_yyyyDateFormat = new SimpleDateFormat("dd.MM.yyyy");
-
 
         public String getFirstname() {
             return firstname;
