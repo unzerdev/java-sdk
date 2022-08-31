@@ -164,6 +164,12 @@ public class Customer implements PaymentType {
 		return this;
 	}
 
+	@Deprecated
+	public Customer setShippingAddress(Address shippingAddress) {
+		this.shippingAddress = ShippingAddress.of(shippingAddress, null);
+		return this;
+	}
+
 	public void setCompanyData(CustomerCompanyData companyData) {
 		this.companyData = companyData;
 	}
