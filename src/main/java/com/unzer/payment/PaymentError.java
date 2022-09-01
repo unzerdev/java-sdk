@@ -20,9 +20,11 @@ public class PaymentError {
     private String merchantMessage;
     private String customerMessage;
     private String code;
+
     public PaymentError() {
         super();
     }
+
     public PaymentError(String merchantMessage, String customerMessage, String code) {
         super();
         this.merchantMessage = merchantMessage;

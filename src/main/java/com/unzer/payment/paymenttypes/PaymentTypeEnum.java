@@ -20,7 +20,6 @@ public enum PaymentTypeEnum {
     EPS("eps"),
     GIROPAY("gro"),
     IDEAL("idl"),
-    @Deprecated
     INVOICE("ivc"),
     @Deprecated
     INVOICE_GUARANTEED("ivg"),
@@ -49,7 +48,7 @@ public enum PaymentTypeEnum {
 
     private String shortName;
 
-    private PaymentTypeEnum(String shortName) {
+    PaymentTypeEnum(String shortName) {
         this.shortName = shortName;
     }
 

@@ -31,7 +31,8 @@ public class JSonCompanyInfo {
     private CustomerCompanyData.Owner owner;
 
     public String getRegistrationType() {
-        return registrationType;}
+        return registrationType;
+    }
 
 
     public void setRegistrationType(String registrationType) {
@@ -43,11 +44,13 @@ public class JSonCompanyInfo {
     }
 
     public void setCommercialRegisterNumber(String commercialRegisterNumber) {
-        this.commercialRegisterNumber = commercialRegisterNumber;}
+        this.commercialRegisterNumber = commercialRegisterNumber;
+    }
 
 
     public String getFunction() {
-        return function;}
+        return function;
+    }
 
 
     public void setFunction(String function) {
