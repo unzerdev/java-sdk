@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 Unzer E-Com GmbH
+ * Copyright 2020-today Unzer E-Com GmbH
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -153,7 +153,11 @@ public class Customer implements PaymentType {
 		return this;
 	}
 
-	@Deprecatedpublic Customer setShippingAddress(Address shippingAddress) {
+    /**
+     * @deprecated use {@link #setShippingAddress(ShippingAddress)} instead
+     */
+	@Deprecated
+    public Customer setShippingAddress(Address shippingAddress) {
         this.shippingAddress = ShippingAddress.of(shippingAddress, null);
         return this;
     }

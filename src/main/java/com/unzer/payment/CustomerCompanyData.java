@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 Unzer E-Com GmbH
+ * Copyright 2020-today Unzer E-Com GmbH
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -72,8 +72,6 @@ public class CustomerCompanyData {
         this.commercialSector = commercialSector;
     return this;
     }
-
-    public enum RegistrationType {REGISTERED, NOT_REGISTERED}
 
     public enum CompanyType {
         @SerializedName("authority")

@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 Unzer E-Com GmbH
+ * Copyright 2020-today Unzer E-Com GmbH
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -46,15 +46,18 @@ public class InvoiceSecured extends AbstractPaymentType implements PaymentType {
         return invoiceSecured;
     }
 
-    @Deprecatedpublic Charge charge(BigDecimal amount, Currency currency, URL returnUrl) throws HttpCommunicationException {
+    @Deprecated
+    public Charge charge(BigDecimal amount, Currency currency, URL returnUrl) throws HttpCommunicationException {
         return charge(amount, currency, returnUrl, null);
     }
 
-    @Deprecatedpublic Charge charge(BigDecimal amount, Currency currency, URL returnUrl, Customer customer) throws HttpCommunicationException {
+    @Deprecated
+    public Charge charge(BigDecimal amount, Currency currency, URL returnUrl, Customer customer) throws HttpCommunicationException {
         return getUnzer().charge(amount, currency, this, returnUrl, customer);
     }
 
-    @Deprecatedpublic Charge charge(BigDecimal amount, Currency currency, URL returnUrl, Customer customer, Basket basket, String invoiceId) throws HttpCommunicationException {
+    @Deprecated
+    public Charge charge(BigDecimal amount, Currency currency, URL returnUrl, Customer customer, Basket basket, String invoiceId) throws HttpCommunicationException {
         return getUnzer().charge(getCharge(amount, currency, this, returnUrl, customer, basket, invoiceId));
     }
 
@@ -70,5 +73,4 @@ public class InvoiceSecured extends AbstractPaymentType implements PaymentType {
                 .setBasketId(getUnzer().createBasket(basket).getId()))
                 .setInvoiceId(invoiceId);
     }
-
 }
