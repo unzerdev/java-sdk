@@ -22,6 +22,8 @@ import com.unzer.payment.communication.JsonParser;
 import com.unzer.payment.communication.UnzerRestCommunication;
 import com.unzer.payment.communication.json.*;
 import com.unzer.payment.communication.mapper.JsonToBusinessClassMapper;
+import com.unzer.payment.models.PaylaterInvoiceConfig;
+import com.unzer.payment.models.PaylaterInvoiceConfigRequest;
 import com.unzer.payment.paymenttypes.*;
 
 import java.math.BigDecimal;
@@ -562,6 +564,7 @@ public class PaymentService {
             case WECHATPAY:
             case PF_CARD:
             case PF_EFINANCE:
+            case UNZER_PAYLATER_INVOICE:
                 return new JsonIdObject();
             case PAYPAL:
                 return new JsonPaypal();
@@ -639,6 +642,8 @@ public class PaymentService {
                 return new PostFinanceCard();
             case PF_EFINANCE:
                 return new PostFinanceEFinance();
+            case UNZER_PAYLATER_INVOICE:
+                return new PaylaterInvoice();
             default:
                 throw new PaymentException("Type '" + typeId + "' is currently not supported by the SDK");
         }
@@ -646,5 +651,11 @@ public class PaymentService {
 
     private String getTypeIdentifier(String typeId) {
         return typeId.substring(2, 5);
+    }
+
+    public PaylaterInvoiceConfig fetchPaymentTypeConfig(PaylaterInvoiceConfigRequest configRequest) throws HttpCommunicationException {
+        String url = this.urlUtil.getEndpoint() + configRequest.getRequestUrl();
+        String response = this.restCommunication.httpGet(url, unzer.getPrivateKey());
+        return this.jsonParser.fromJson(response, PaylaterInvoiceConfig.class);
     }
 }

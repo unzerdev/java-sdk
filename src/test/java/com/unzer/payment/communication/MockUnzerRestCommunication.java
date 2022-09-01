@@ -32,11 +32,11 @@ public class MockUnzerRestCommunication extends AbstractUnzerRestCommunication {
     String loggedBody;
 
     public MockUnzerRestCommunication() {
-        super(null);
+        this(null,null);
     }
 
-    public MockUnzerRestCommunication(Locale locale) {
-        super(locale);
+    public MockUnzerRestCommunication(Locale locale, String clientIp) {
+        super(locale, clientIp);
     }
 
     @Override

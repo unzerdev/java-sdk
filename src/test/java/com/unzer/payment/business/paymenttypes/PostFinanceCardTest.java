@@ -17,6 +17,7 @@ package com.unzer.payment.business.paymenttypes;
 
 
 import com.unzer.payment.Charge;
+import com.unzer.payment.Unzer;
 import com.unzer.payment.business.AbstractPaymentTest;
 import com.unzer.payment.communication.HttpCommunicationException;
 import com.unzer.payment.paymenttypes.PostFinanceCard;
@@ -34,13 +35,14 @@ public class PostFinanceCardTest extends AbstractPaymentTest {
     @Test
     public void testCreatePostFinanceCardMandatoryType() throws HttpCommunicationException {
         PostFinanceCard pfCard = new PostFinanceCard();
-        pfCard = getUnzer().createPaymentType(pfCard);
+        pfCard = getUnzer(privateKey3).createPaymentType(pfCard);
         assertNotNull(pfCard.getId());
     }
 
     @Test
     public void testChargePostFinanceCardType() throws HttpCommunicationException, MalformedURLException {
-        PostFinanceCard pfCard = getUnzer().createPaymentType(getPostFinanceCard());
+        Unzer unzer = getUnzer(privateKey3);
+		PostFinanceCard pfCard = unzer.createPaymentType(getPostFinanceCard());
         Charge charge = pfCard.charge(BigDecimal.ONE, Currency.getInstance("CHF"), new URL("https://www.google.at"));
         assertNotNull(charge);
         assertNotNull(charge.getId());
@@ -49,9 +51,10 @@ public class PostFinanceCardTest extends AbstractPaymentTest {
 
     @Test
     public void testFetchPostFinanceCardType() throws HttpCommunicationException {
-        PostFinanceCard pfCard = getUnzer().createPaymentType(getPostFinanceCard());
+        Unzer unzer = getUnzer(privateKey3);
+		PostFinanceCard pfCard = unzer.createPaymentType(getPostFinanceCard());
         assertNotNull(pfCard.getId());
-        PostFinanceCard fetchedPostFinanceCard = (PostFinanceCard) getUnzer().fetchPaymentType(pfCard.getId());
+        PostFinanceCard fetchedPostFinanceCard = (PostFinanceCard) unzer.fetchPaymentType(pfCard.getId());
         assertNotNull(fetchedPostFinanceCard.getId());
     }
 

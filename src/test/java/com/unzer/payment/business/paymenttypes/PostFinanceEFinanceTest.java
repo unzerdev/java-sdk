@@ -17,6 +17,7 @@ package com.unzer.payment.business.paymenttypes;
 
 
 import com.unzer.payment.Charge;
+import com.unzer.payment.Unzer;
 import com.unzer.payment.business.AbstractPaymentTest;
 import com.unzer.payment.communication.HttpCommunicationException;
 import com.unzer.payment.paymenttypes.PostFinanceEFinance;
@@ -34,13 +35,14 @@ public class PostFinanceEFinanceTest extends AbstractPaymentTest {
     @Test
     public void testCreatePostFinanceEFinanceMandatoryType() throws HttpCommunicationException {
         PostFinanceEFinance pfEFinance = new PostFinanceEFinance();
-        pfEFinance = getUnzer().createPaymentType(pfEFinance);
+        pfEFinance = getUnzer(privateKey3).createPaymentType(pfEFinance);
         assertNotNull(pfEFinance.getId());
     }
 
     @Test
     public void testChargePostFinanceEFinanceType() throws HttpCommunicationException, MalformedURLException {
-        PostFinanceEFinance pfEFinance = getUnzer().createPaymentType(getPostFinanceEFinance());
+        Unzer unzer = getUnzer(privateKey3);
+		PostFinanceEFinance pfEFinance = unzer.createPaymentType(getPostFinanceEFinance());
         Charge charge = pfEFinance.charge(BigDecimal.ONE, Currency.getInstance("CHF"), new URL("https://www.unzer.com"));
         assertNotNull(charge);
         assertNotNull(charge.getId());
@@ -49,9 +51,10 @@ public class PostFinanceEFinanceTest extends AbstractPaymentTest {
 
     @Test
     public void testFetchPostFinanceEFinanceType() throws HttpCommunicationException {
-        PostFinanceEFinance pfEFinance = getUnzer().createPaymentType(getPostFinanceEFinance());
+        Unzer unzer = getUnzer(privateKey3);
+		PostFinanceEFinance pfEFinance = unzer.createPaymentType(getPostFinanceEFinance());
         assertNotNull(pfEFinance.getId());
-        PostFinanceEFinance fetchedPostFinanceEFinance = (PostFinanceEFinance) getUnzer().fetchPaymentType(pfEFinance.getId());
+        PostFinanceEFinance fetchedPostFinanceEFinance = (PostFinanceEFinance) unzer.fetchPaymentType(pfEFinance.getId());
         assertNotNull(fetchedPostFinanceEFinance.getId());
     }
 

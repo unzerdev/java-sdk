@@ -40,7 +40,7 @@ public class ChargeAfterAuthorizationTest extends AbstractPaymentTest {
 
     @Test
     public void fetchAuthorization() throws HttpCommunicationException, MalformedURLException {
-        Authorization authorize = getUnzer().authorize(getAuthorization(createPaymentTypeCard().getId()));
+        Authorization authorize = getUnzer().authorize(getAuthorization(createPaymentTypeCard(getUnzer(), "4711100000000000").getId()));
         Authorization authorization = getUnzer().fetchAuthorization(authorize.getPaymentId());
         assertNotNull(authorization);
     }
@@ -48,7 +48,7 @@ public class ChargeAfterAuthorizationTest extends AbstractPaymentTest {
     @Test
     public void fullChargeAfterAuthorization() throws HttpCommunicationException, MalformedURLException {
         String orderId = generateUuid();
-        Authorization authorize = getUnzer().authorize(getAuthorization(createPaymentTypeCard().getId(), null, orderId, null, null, false));
+        Authorization authorize = getUnzer().authorize(getAuthorization(createPaymentTypeCard(getUnzer(), "4711100000000000").getId(), null, orderId, null, null, false));
         Authorization authorization = getUnzer().fetchAuthorization(authorize.getPaymentId());
         Charge charge = authorization.charge();
         assertNotNull(charge);
@@ -60,7 +60,7 @@ public class ChargeAfterAuthorizationTest extends AbstractPaymentTest {
 
     @Test
     public void fullChargeAfterAuthorizationUnzer() throws HttpCommunicationException, MalformedURLException {
-        Authorization authorize = getUnzer().authorize(getAuthorization(createPaymentTypeCard().getId(), false));
+        Authorization authorize = getUnzer().authorize(getAuthorization(createPaymentTypeCard(getUnzer(), "4711100000000000").getId(), false));
         Charge charge = getUnzer().chargeAuthorization(authorize.getPaymentId());
         assertNotNull(charge);
         assertNotNull(charge.getId());
@@ -68,7 +68,7 @@ public class ChargeAfterAuthorizationTest extends AbstractPaymentTest {
 
     @Test
     public void partialChargeAfterAuthorization() throws HttpCommunicationException, MalformedURLException {
-        Authorization authorize = getUnzer().authorize(getAuthorization(createPaymentTypeCard().getId(), false));
+        Authorization authorize = getUnzer().authorize(getAuthorization(createPaymentTypeCard(getUnzer(), "4711100000000000").getId(), false));
         Authorization authorization = getUnzer().fetchAuthorization(authorize.getPaymentId());
         Charge charge = authorization.charge(new BigDecimal(0.1));
         assertNotNull(charge);
@@ -77,7 +77,7 @@ public class ChargeAfterAuthorizationTest extends AbstractPaymentTest {
 
     @Test
     public void chargeAfterAuthorizationWithPaymentReference() throws HttpCommunicationException, MalformedURLException {
-        Authorization authorize = getUnzer().authorize(getAuthorization(createPaymentTypeCard().getId(), false));
+        Authorization authorize = getUnzer().authorize(getAuthorization(createPaymentTypeCard(getUnzer(), "4711100000000000").getId(), false));
         Charge charge = authorize.charge(new BigDecimal(1.0), "pmt-ref");
         assertNotNull(charge);
         assertNotNull(charge.getId());

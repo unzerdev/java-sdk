@@ -41,7 +41,7 @@ public class CancelAfterChargeTest extends AbstractPaymentTest {
 
     @Test
     public void testFetchChargeWithId() throws MalformedURLException, HttpCommunicationException {
-        Charge initCharge = getUnzer().charge(BigDecimal.ONE, Currency.getInstance("EUR"), createPaymentTypeCard().getId(), new URL("https://www.unzer.com"), false);
+        Charge initCharge = getUnzer().charge(BigDecimal.ONE, Currency.getInstance("EUR"), createPaymentTypeCard(getUnzer(), "4711100000000000").getId(), new URL("https://www.unzer.com"), false);
         Charge charge = getUnzer().fetchCharge(initCharge.getPaymentId(), initCharge.getId());
         assertNotNull(charge);
         assertNotNull(charge.getId());
@@ -51,7 +51,7 @@ public class CancelAfterChargeTest extends AbstractPaymentTest {
 
     @Test
     public void testFullRefundWithId() throws MalformedURLException, HttpCommunicationException {
-        Charge initCharge = getUnzer().charge(BigDecimal.ONE, Currency.getInstance("EUR"), createPaymentTypeCard().getId(), new URL("https://www.unzer.com"), false);
+        Charge initCharge = getUnzer().charge(BigDecimal.ONE, Currency.getInstance("EUR"), createPaymentTypeCard(getUnzer(), "4711100000000000").getId(), new URL("https://www.unzer.com"), false);
         Cancel cancel = getUnzer().cancelCharge(initCharge.getPaymentId(), initCharge.getId());
         assertNotNull(cancel);
         assertNotNull(cancel.getId());
@@ -59,7 +59,7 @@ public class CancelAfterChargeTest extends AbstractPaymentTest {
 
     @Test
     public void testFullRefundWithCharge() throws MalformedURLException, HttpCommunicationException {
-        Charge initCharge = getUnzer().charge(BigDecimal.ONE, Currency.getInstance("EUR"), createPaymentTypeCard().getId(), new URL("https://www.unzer.com"), false);
+        Charge initCharge = getUnzer().charge(BigDecimal.ONE, Currency.getInstance("EUR"), createPaymentTypeCard(getUnzer(), "4711100000000000").getId(), new URL("https://www.unzer.com"), false);
         Charge charge = getUnzer().fetchCharge(initCharge.getPaymentId(), initCharge.getId());
         Cancel cancel = charge.cancel();
         assertNotNull(cancel);
@@ -68,14 +68,14 @@ public class CancelAfterChargeTest extends AbstractPaymentTest {
 
     @Test
     public void testPartialRefundWithId() throws MalformedURLException, HttpCommunicationException {
-        Charge initCharge = getUnzer().charge(BigDecimal.ONE, Currency.getInstance("EUR"), createPaymentTypeCard().getId(), new URL("https://www.unzer.com"), false);
+        Charge initCharge = getUnzer().charge(BigDecimal.ONE, Currency.getInstance("EUR"), createPaymentTypeCard(getUnzer(), "4711100000000000").getId(), new URL("https://www.unzer.com"), false);
         Cancel cancel = getUnzer().cancelCharge(initCharge.getPaymentId(), initCharge.getId(), new BigDecimal(0.1));
         assertNotNull(cancel);
     }
 
     @Test
     public void testPartialRefundWithCharge() throws MalformedURLException, HttpCommunicationException {
-        Charge initCharge = getUnzer().charge(BigDecimal.ONE, Currency.getInstance("EUR"), createPaymentTypeCard().getId(), new URL("https://www.unzer.com"), false);
+        Charge initCharge = getUnzer().charge(BigDecimal.ONE, Currency.getInstance("EUR"), createPaymentTypeCard(getUnzer(), "4711100000000000").getId(), new URL("https://www.unzer.com"), false);
         Charge charge = getUnzer().fetchCharge(initCharge.getPaymentId(), initCharge.getId());
         Cancel cancelExecuted = charge.cancel(new BigDecimal(0.1));
         assertNotNull(cancelExecuted);
@@ -85,7 +85,7 @@ public class CancelAfterChargeTest extends AbstractPaymentTest {
 
     @Test
     public void testCancelAfterChargeChargeWithPaymentReference() throws MalformedURLException, HttpCommunicationException {
-        Charge initCharge = getUnzer().charge(BigDecimal.ONE, Currency.getInstance("EUR"), createPaymentTypeCard().getId(), new URL("https://www.unzer.com"), false);
+        Charge initCharge = getUnzer().charge(BigDecimal.ONE, Currency.getInstance("EUR"), createPaymentTypeCard(getUnzer(), "4711100000000000").getId(), new URL("https://www.unzer.com"), false);
         Cancel cancelReq = new Cancel();
         cancelReq.setPaymentReference("pmt-ref");
         Cancel cancelInit = initCharge.cancel(cancelReq);
@@ -101,7 +101,7 @@ public class CancelAfterChargeTest extends AbstractPaymentTest {
 
     @Test
     public void testCancelAfterChargeChargeWithCancelObject() throws MalformedURLException, HttpCommunicationException {
-        Charge initCharge = getUnzer().charge(BigDecimal.ONE, Currency.getInstance("EUR"), createPaymentTypeCard().getId(), new URL("https://www.unzer.com"), false);
+        Charge initCharge = getUnzer().charge(BigDecimal.ONE, Currency.getInstance("EUR"), createPaymentTypeCard(getUnzer(), "4711100000000000").getId(), new URL("https://www.unzer.com"), false);
         Cancel cancelReq = new Cancel();
         cancelReq.setPaymentReference("pmt-ref");
         cancelReq.setAmount(new BigDecimal(1.0));

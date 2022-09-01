@@ -54,7 +54,7 @@ public class MetadataTest extends AbstractPaymentTest {
     @Test
     public void testAuthorizationWithMetadata() throws MalformedURLException, HttpCommunicationException {
         String metadataId = createTestMetadata().getId();
-        Authorization authorize = getUnzer().authorize(getAuthorization(createPaymentTypeCard().getId(), null, metadataId));
+        Authorization authorize = getUnzer().authorize(getAuthorization(createPaymentTypeCard(getUnzer(), "4711100000000000").getId(), null, metadataId));
         Payment payment = getUnzer().fetchPayment(authorize.getPayment().getId());
         assertNotNull(payment);
         assertNotNull(payment.getId());
@@ -68,7 +68,7 @@ public class MetadataTest extends AbstractPaymentTest {
     @Test
     public void testChargeWithMetadata() throws MalformedURLException, HttpCommunicationException {
         String metadataId = createTestMetadata().getId();
-        Charge charge = getUnzer().charge(getCharge(createPaymentTypeCard().getId(), null, null, metadataId, null, null));
+        Charge charge = getUnzer().charge(getCharge(createPaymentTypeCard(getUnzer(), "4711100000000000").getId(), null, null, metadataId, null, null));
         Payment payment = getUnzer().fetchPayment(charge.getPayment().getId());
         assertNotNull(payment);
         assertNotNull(payment.getId());

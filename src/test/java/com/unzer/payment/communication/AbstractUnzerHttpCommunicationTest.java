@@ -21,9 +21,7 @@ import com.unzer.payment.PaymentException;
 import com.unzer.payment.util.SDKInfo;
 import org.junit.jupiter.api.Test;
 
-import java.util.Base64;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -148,8 +146,28 @@ public class AbstractUnzerHttpCommunicationTest {
         assertContentTypeHeader(rest.request);
     }
 
-    private void assertUserAgentHeader(MockUnzerHttpRequest request) {
-        assertEquals(AbstractUnzerRestCommunication.USER_AGENT_PREFIX + " - " + SDKInfo.getVersion(), request.headerMap.get("User-Agent"));
+    @Test
+    public void testClientIpHeader() throws HttpCommunicationException {
+        MockUnzerRestCommunication rest = new MockUnzerRestCommunication(Locale.ITALY, "192.168.1.1");
+        rest.responseMockStatus = 200;
+        rest.responseMockContent = validJsonResponse();
+
+        rest.httpGet("https://unzer.com", privateKey);
+
+        Map<String, String> expectedHeaders = new HashMap<>();
+        expectedHeaders.put("Authorization", "Basic " + new String(Base64.getEncoder().encode((privateKey + ":").getBytes())));
+        expectedHeaders.put("JAVA-VERSION", System.getProperty("java.version"));
+        expectedHeaders.put("User-Agent", "UnzerJava - " + SDKInfo.VERSION);
+        expectedHeaders.put("CLIENTIP", "192.168.1.1");
+        expectedHeaders.put("Accept-Language", "it");
+        expectedHeaders.put("SDK-TYPE", "UnzerJava");
+        expectedHeaders.put("SDK-VERSION", SDKInfo.VERSION);
+        expectedHeaders.put("Content-Type", "application/json; charset=UTF-8");
+
+        assertNotNull(rest.request);
+        assertEquals(expectedHeaders, rest.request.headerMap);
+    }private void assertUserAgentHeader(MockUnzerHttpRequest request) {
+        assertEquals(AbstractUnzerRestCommunication.USER_AGENT_PREFIX + " - " + SDKInfo.VERSION, request.headerMap.get("User-Agent"));
     }
 
     private void assertAuthorizationHeader(MockUnzerHttpRequest request) {

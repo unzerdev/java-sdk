@@ -38,7 +38,7 @@ public class Customer implements PaymentType {
     private String phone;
     private String mobile;
     private Address billingAddress;
-    private Address shippingAddress;
+    private ShippingAddress shippingAddress;
     private String company;
     private CustomerCompanyData companyData;
 
@@ -144,12 +144,17 @@ public class Customer implements PaymentType {
         return null;
     }
 
-    public Address getShippingAddress() {
+    public ShippingAddress getShippingAddress() {
         return shippingAddress;
     }
 
-    public Customer setShippingAddress(Address shippingAddress) {
-        this.shippingAddress = shippingAddress;
+    public Customer setShippingAddress(ShippingAddress shippingAddress) {
+		this.shippingAddress = shippingAddress;
+		return this;
+	}
+
+	@Deprecatedpublic Customer setShippingAddress(Address shippingAddress) {
+        this.shippingAddress = ShippingAddress.of(shippingAddress, null);
         return this;
     }
 

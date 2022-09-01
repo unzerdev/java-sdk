@@ -40,11 +40,15 @@ public class HttpClientBasedRestCommunication extends AbstractUnzerRestCommunica
     private static final Logger logger = LogManager.getLogger(HttpClientBasedRestCommunication.class);
 
     public HttpClientBasedRestCommunication() {
-        super(null);
+        this(null,null);
     }
 
     public HttpClientBasedRestCommunication(Locale locale) {
-        super(locale);
+        this(locale, null);
+	}
+
+	public HttpClientBasedRestCommunication(Locale locale, String clientIp) {
+		super(locale, clientIp);
     }
 
     @Override
@@ -78,10 +82,7 @@ public class HttpClientBasedRestCommunication extends AbstractUnzerRestCommunica
             response = getHttpClient().execute(((HttpClientBasedHttpRequest) request).getRequest());
             return new UnzerHttpResponse(EntityUtils.toString(response.getEntity()),
                     response.getStatusLine().getStatusCode());
-        } catch (IOException e) {
-            throw new HttpCommunicationException(
-                    "Error communicating to " + request.getURI() + ": Detail: " + e.getMessage());
-        } catch (ParseException e) {
+        } catch (IOException |ParseException e) {
             throw new HttpCommunicationException(
                     "Error communicating to " + request.getURI() + ": Detail: " + e.getMessage());
         } finally {

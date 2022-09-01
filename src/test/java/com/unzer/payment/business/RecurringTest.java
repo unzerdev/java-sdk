@@ -45,7 +45,7 @@ public class RecurringTest extends AbstractSeleniumTest {
     @Disabled("Does not work on Bamboo")
     public void testRecurringCardWithSelenium() throws MalformedURLException, HttpCommunicationException, ParseException {
 
-        String typeId = createPaymentTypeCard("4711100000000000").getId();
+        String typeId = createPaymentTypeCard(getUnzer(), "4711100000000000").getId();
         Recurring recurring = getUnzer().recurring(typeId, new URL("https://www.unzer.com"));
         assertRecurring(recurring, Recurring.Status.PENDING);
 
@@ -62,7 +62,7 @@ public class RecurringTest extends AbstractSeleniumTest {
 
     @Test
     public void testRecurringCardWithoutCustomer() throws MalformedURLException, HttpCommunicationException, ParseException {
-        String typeId = createPaymentTypeCard().getId();
+        String typeId = createPaymentTypeCard(getUnzer(), "4711100000000000").getId();
         Recurring recurring = getUnzer().recurring(typeId, new URL("https://www.unzer.com"));
         assertRecurring(recurring, Recurring.Status.PENDING);
 
@@ -74,7 +74,7 @@ public class RecurringTest extends AbstractSeleniumTest {
     @Test
     public void testRecurringCardWitCustomerId() throws MalformedURLException, HttpCommunicationException, ParseException {
         Customer customer = getUnzer().createCustomer(getMaximumCustomer(generateUuid()));
-        String typeId = createPaymentTypeCard().getId();
+        String typeId = createPaymentTypeCard(getUnzer(), "4711100000000000").getId();
         Recurring recurring = getUnzer().recurring(typeId, customer.getId(), new URL("https://www.unzer.com"));
         assertRecurring(recurring, Recurring.Status.PENDING);
         assertNotNull(recurring.getRedirectUrl());
@@ -86,7 +86,7 @@ public class RecurringTest extends AbstractSeleniumTest {
     @Test
     public void testRecurringCardWitCustomerWithCustomerId() throws MalformedURLException, HttpCommunicationException, ParseException {
         Customer customer = getUnzer().createCustomer(getMaximumCustomer(generateUuid()));
-        Recurring recurring = getUnzer().recurring(createPaymentTypeCard().getId(), customer.getCustomerId(), new URL("https://www.unzer.com"));
+        Recurring recurring = getUnzer().recurring(createPaymentTypeCard(getUnzer(), "4711100000000000").getId(), customer.getCustomerId(), new URL("https://www.unzer.com"));
         assertRecurring(recurring, Recurring.Status.PENDING);
         assertNotNull(recurring.getRedirectUrl());
     }
@@ -95,7 +95,7 @@ public class RecurringTest extends AbstractSeleniumTest {
     public void testRecurringCardWitCustomerAndMetadata() throws MalformedURLException, HttpCommunicationException, ParseException {
         Customer customer = getUnzer().createCustomer(getMaximumCustomer(generateUuid()));
         Metadata metadata = getUnzer().createMetadata(getTestMetadata());
-        Recurring recurring = getUnzer().recurring(createPaymentTypeCard().getId(), customer.getId(), metadata.getId(), new URL("https://www.unzer.com"));
+        Recurring recurring = getUnzer().recurring(createPaymentTypeCard(getUnzer(), "4711100000000000").getId(), customer.getId(), metadata.getId(), new URL("https://www.unzer.com"));
         assertRecurring(recurring, Recurring.Status.PENDING);
         assertNotNull(recurring.getRedirectUrl());
     }
@@ -153,7 +153,7 @@ public class RecurringTest extends AbstractSeleniumTest {
 
     @Test
     public void testRecurringCardDuringCharge() throws MalformedURLException, HttpCommunicationException, ParseException {
-        String typeId = createPaymentTypeCard().getId();
+        String typeId = createPaymentTypeCard(getUnzer(), "4711100000000000").getId();
         Card type = (Card) getUnzer().fetchPaymentType(typeId);
         assertEquals(false, type.getRecurring());
 

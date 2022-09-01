@@ -46,7 +46,7 @@ public class InvoiceSecuredTest extends AbstractPaymentTest {
     @Test
     @Deprecated
     public void testChargeTypeWithInvoiceIdBasketV1()
-            throws HttpCommunicationException, MalformedURLException, ParseException {
+            throws HttpCommunicationException, MalformedURLException {
         InvoiceSecured invoice = getUnzer().createPaymentType(getInvoiceSecured());
         Basket basket = getMinTestBasketV1();
         String invoiceId = getRandomInvoiceId();
@@ -79,7 +79,7 @@ public class InvoiceSecuredTest extends AbstractPaymentTest {
 
     @Test
     @Deprecated
-    public void testChargeTypeBasketV1() throws HttpCommunicationException, MalformedURLException, ParseException {
+    public void testChargeTypeBasketV1() throws HttpCommunicationException, MalformedURLException {
         InvoiceSecured invoice = getUnzer().createPaymentType(getInvoiceSecured());
         Basket basket = getMinTestBasketV1();
         Charge chargeResult = invoice.charge(basket.getAmountTotalGross(), Currency.getInstance("EUR"), new URL("https://www.meinShop.de"), getMaximumCustomerSameAddress(generateUuid()), basket, invoice.getId());
@@ -225,6 +225,7 @@ public class InvoiceSecuredTest extends AbstractPaymentTest {
     }
 
 
+    @Deprecated
     private InvoiceSecured getInvoiceSecured() {
         return new InvoiceSecured();
     }

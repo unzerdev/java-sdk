@@ -15,16 +15,24 @@
  */
 package com.unzer.payment.communication.json;
 
+import com.google.gson.annotations.SerializedName;
+import com.unzer.payment.CustomerCompanyData;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 public class JSonCompanyInfo {
 
     private String registrationType;
     private String commercialRegisterNumber;
     private String function;
-    private String commercialSector;
+    private String commercialSector;private CustomerCompanyData.CompanyType companyType;
+    private CustomerCompanyData.Owner owner;
 
     public String getRegistrationType() {
-        return registrationType;
-    }
+        return registrationType;}
+
 
     public void setRegistrationType(String registrationType) {
         this.registrationType = registrationType;
@@ -35,12 +43,12 @@ public class JSonCompanyInfo {
     }
 
     public void setCommercialRegisterNumber(String commercialRegisterNumber) {
-        this.commercialRegisterNumber = commercialRegisterNumber;
-    }
+        this.commercialRegisterNumber = commercialRegisterNumber;}
+
 
     public String getFunction() {
-        return function;
-    }
+        return function;}
+
 
     public void setFunction(String function) {
         this.function = function;
@@ -54,5 +62,11 @@ public class JSonCompanyInfo {
         this.commercialSector = commercialSector;
     }
 
+public CustomerCompanyData.CompanyType getCompanyType() {
+        return companyType;
+    }
 
+    public void setCompanyType(CustomerCompanyData.CompanyType companyType) {
+        this.companyType = companyType;
+    }
 }

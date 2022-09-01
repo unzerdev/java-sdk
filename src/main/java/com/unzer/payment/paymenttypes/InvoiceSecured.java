@@ -29,6 +29,7 @@ import java.util.Currency;
 /**
  * Invoice secured is an Invoice payment with guarantee for the Merchant
  */
+@Deprecated
 public class InvoiceSecured extends AbstractPaymentType implements PaymentType {
 
     @Override
@@ -45,18 +46,19 @@ public class InvoiceSecured extends AbstractPaymentType implements PaymentType {
         return invoiceSecured;
     }
 
-    public Charge charge(BigDecimal amount, Currency currency, URL returnUrl) throws HttpCommunicationException {
+    @Deprecatedpublic Charge charge(BigDecimal amount, Currency currency, URL returnUrl) throws HttpCommunicationException {
         return charge(amount, currency, returnUrl, null);
     }
 
-    public Charge charge(BigDecimal amount, Currency currency, URL returnUrl, Customer customer) throws HttpCommunicationException {
+    @Deprecatedpublic Charge charge(BigDecimal amount, Currency currency, URL returnUrl, Customer customer) throws HttpCommunicationException {
         return getUnzer().charge(amount, currency, this, returnUrl, customer);
     }
 
-    public Charge charge(BigDecimal amount, Currency currency, URL returnUrl, Customer customer, Basket basket, String invoiceId) throws HttpCommunicationException {
+    @Deprecatedpublic Charge charge(BigDecimal amount, Currency currency, URL returnUrl, Customer customer, Basket basket, String invoiceId) throws HttpCommunicationException {
         return getUnzer().charge(getCharge(amount, currency, this, returnUrl, customer, basket, invoiceId));
     }
 
+    @Deprecated
     private Charge getCharge(BigDecimal amount, Currency currency, InvoiceSecured invoiceSecured, URL returnUrl,
                              Customer customer, Basket basket, String invoiceId) throws HttpCommunicationException {
         return ((Charge) new Charge()

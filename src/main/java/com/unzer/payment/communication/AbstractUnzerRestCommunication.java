@@ -54,11 +54,20 @@ public abstract class AbstractUnzerRestCommunication implements UnzerRestCommuni
     public static final String BASIC = "Basic ";
     static final String USER_AGENT_PREFIX = "UnzerJava";
     private static final String CONTENT_TYPE_JSON = "application/json; charset=UTF-8";
-
-    private Locale locale;
+    private static final String CLIENTIP_HEADER = "CLIENTIP";
+    private static final String SDK_TYPE_HEADER = "SDK-TYPE";
+    private static final String SDK_VERSION_HEADER = "SDK-VERSION";
+    private static final String JAVA_VERSION_HEADER = "JAVA-VERSION";
+    private final Locale locale;
+    private final String clientIp;
 
     public AbstractUnzerRestCommunication(Locale locale) {
+        this(locale, null);
+    }
+
+    public AbstractUnzerRestCommunication(Locale locale, String clientIp) {
         this.locale = locale;
+        this.clientIp = clientIp;
     }
 
     public static String addAuthentication(String privateKey) {
@@ -187,7 +196,7 @@ public abstract class AbstractUnzerRestCommunication implements UnzerRestCommuni
     }
 
     private void addUserAgent(UnzerHttpRequest request) {
-        request.addHeader(USER_AGENT, USER_AGENT_PREFIX + " - " + SDKInfo.getVersion());
+        request.addHeader(USER_AGENT, USER_AGENT_PREFIX + " - " + SDKInfo.VERSION);
     }
 
     private void addUnzerAuthentication(String privateKey, UnzerHttpRequest request) {
@@ -200,10 +209,16 @@ public abstract class AbstractUnzerRestCommunication implements UnzerRestCommuni
         }
     }
 
+    private void addClientIpHeader(UnzerHttpRequest request) {
+        if (this.clientIp != null && !this.clientIp.isEmpty()) {
+            request.addHeader(CLIENTIP_HEADER, clientIp);
+        }
+    }
+
     private void addSDKInfo(UnzerHttpRequest request) {
-        request.addHeader("SDK-TYPE", USER_AGENT_PREFIX);
-        request.addHeader("SDK-VERSION", SDKInfo.getVersion());
-        request.addHeader("JAVA-VERSION", System.getProperty("java.version"));
+        request.addHeader(SDK_TYPE_HEADER, USER_AGENT_PREFIX);
+        request.addHeader(SDK_VERSION_HEADER, SDKInfo.VERSION);
+        request.addHeader(JAVA_VERSION_HEADER, System.getProperty("java.version"));
     }
 
     String execute(UnzerHttpRequest request, String privateKey) throws HttpCommunicationException {
@@ -211,6 +226,7 @@ public abstract class AbstractUnzerRestCommunication implements UnzerRestCommuni
         addUnzerAuthentication(privateKey, request);
         addAcceptLanguageHeader(request);
         addSDKInfo(request);
+        addClientIpHeader(request);
         setContentType(request);
 
         logRequest(request);

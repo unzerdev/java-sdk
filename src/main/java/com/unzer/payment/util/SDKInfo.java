@@ -24,25 +24,24 @@ public class SDKInfo {
 
     private static final String SDK_VERSION_KEY = "sdk.version";
 
-    private static String version = null;
 
-    private SDKInfo() {
-    }
 
-    public static String getVersion() {
-        if (version == null) {
-            initProperties();
-        }
-        return version;
-    }
-
-    private static void initProperties() {
+    public final static String VERSION;
+	static  {
         try {
             Properties properties = new Properties();
             properties.load(SDKInfo.class.getResourceAsStream("/version.properties"));
-            version = properties.getProperty(SDK_VERSION_KEY);
+            VERSION = properties.getProperty(SDK_VERSION_KEY);
         } catch (IOException e) {
             throw new PropertiesException("Error loading version.properties from Classpath: " + e.getMessage());
         }
-    }
+    }private SDKInfo() {}
+
+	/**
+	 * @deprecated Use {@link #VERSION} instead
+	 */
+	@Deprecated
+	public static String getVersion() {
+		return VERSION;
+	}
 }

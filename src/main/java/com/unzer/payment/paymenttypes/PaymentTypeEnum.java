@@ -20,9 +20,13 @@ public enum PaymentTypeEnum {
     EPS("eps"),
     GIROPAY("gro"),
     IDEAL("idl"),
+    @Deprecated
     INVOICE("ivc"),
+    @Deprecated
     INVOICE_GUARANTEED("ivg"),
-    INVOICE_FACTORING("ivf"),
+    @Deprecated
+	INVOICE_FACTORING("ivf"),
+	@Deprecated
     INVOICE_SECURED("ivs"),
     PAYPAL("ppl"),
     PREPAYMENT("ppy"),
@@ -40,6 +44,7 @@ public enum PaymentTypeEnum {
     BANCONTACT("bct"),
     PF_CARD("pfc"),
     PF_EFINANCE("pfe"),
+    UNZER_PAYLATER_INVOICE("piv"),
     UNKNOWN("unknown");
 
     private String shortName;

@@ -39,7 +39,7 @@ public class PayoutTest extends AbstractPaymentTest {
     @Disabled("Further Configuration needed")
     @Test
     public void testPayoutCardMinimal() throws MalformedURLException, HttpCommunicationException {
-        Card card = createPaymentTypeCard();
+        Card card = createPaymentTypeCard(getUnzer(), "4711100000000000");
         Payout payout = getUnzer().payout(BigDecimal.ONE, Currency.getInstance("EUR"), card.getId(), new URL("https://www.unzer.com"));
         assertNotNull(payout);
 
@@ -50,7 +50,7 @@ public class PayoutTest extends AbstractPaymentTest {
     @Disabled("Further Configuration needed")
     @Test
     public void testPayoutCardWithAllData() throws MalformedURLException, HttpCommunicationException, ParseException {
-        Card card = createPaymentTypeCard();
+        Card card = createPaymentTypeCard(getUnzer(), "4711100000000000");
         Payout payout = getUnzer().payout(getTestPayout(card.getId()));
         assertNotNull(payout);
         assertNotNull(payout.getId());
