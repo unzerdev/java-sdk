@@ -8,9 +8,7 @@ on:
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
-
     steps:
       - uses: actions/checkout@v3
       - name: Set up JDK 11
@@ -26,4 +24,5 @@ jobs:
           PAPI_PUBLIC_KEY: ${{ secrets.PAPI_PUBLIC_KEY }}
           PAPI_PRIVATE_KEY: ${{ secrets.PAPI_PRIVATE_KEY }}
           PAPI_PRIVATE_KEY_NO_3DS: ${{ secrets.PAPI_PRIVATE_KEY_NO_3DS }}
-        run: mvn -B test --file pom.xml -Dpublickey1="$PAPI_PUBLIC_KEY" -Dprivatekey1="$PAPI_PRIVATE_KEY" -Dprivatekey2="$PAPI_PRIVATE_KEY_NO_3DS" -Dprivatekey3="$PAPI_PRIVATE_KEY" -DmarketplacePrivatekey="$PAPI_PRIVATE_KEY"
+          PAPI_PRIVATE_JAVA_MERCH_KEY: ${{ secrets.PAPI_PRIVATE_JAVA_MERCH_KEY }}
+        run: mvn -B test --file pom.xml -Dpublickey1="$PAPI_PUBLIC_KEY" -Dprivatekey1="$PAPI_PRIVATE_KEY" -Dprivatekey2="$PAPI_PRIVATE_KEY_NO_3DS" -Dprivatekey3="$PAPI_PRIVATE_JAVA_MERCH_KEY" -DmarketplacePrivatekey="$PAPI_PRIVATE_KEY"

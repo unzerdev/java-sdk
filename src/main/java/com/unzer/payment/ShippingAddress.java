@@ -14,6 +14,12 @@ public class ShippingAddress extends Address {
         return this;
     }
 
+    /**
+     * Creates ShippingAddress object from Address object.
+     * @param address
+     * @param shippingType optional. could be null
+     * @return
+     */
     public static ShippingAddress of(Address address, Type shippingType) {
         return (ShippingAddress) new ShippingAddress()
                 .setShippingType(shippingType)
