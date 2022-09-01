@@ -1,3 +1,18 @@
+/*
+ * Copyright 2020-today Unzer E-Com GmbH
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package com.unzer.payment;
 
 import com.unzer.payment.business.paymenttypes.InstallmentSecuredRatePlan;
@@ -25,26 +40,6 @@ import java.util.Currency;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
-
-/*-
- * #%L
- * Unzer Java SDK
- * %%
- * Copyright (C) 2020 - today Unzer E-Com GmbH
- * %%
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- * #L%
- */
 
 /**
  * {@code Unzer} is a facade to the Unzer REST Api. The facade is
@@ -94,7 +89,9 @@ public class Unzer {
      * @param privateKey        - your private key as generated within the unzer Intelligence Platform (hIP)
      */
     public Unzer(UnzerRestCommunication restCommunication, String privateKey) {
+
         this(restCommunication, privateKey, null);
+
     }
 
     /**
@@ -105,6 +102,7 @@ public class Unzer {
      * @param endPoint          - the endPoint for the outgoing connection, in case of null, the value of unzer.properties will be considered
      */
     public Unzer(UnzerRestCommunication restCommunication, String privateKey, String endPoint) {
+
         this.privateKey = privateKey;
         this.endPoint = endPoint;
         this.paymentService = new PaymentService(this, restCommunication);

@@ -1,24 +1,19 @@
-package com.unzer.payment.communication;
-
-/*-
- * #%L
- * Unzer Java SDK
- * %%
- * Copyright (C) 2020 - today Unzer E-Com GmbH
- * %%
+/*
+ * Copyright 2020-today Unzer E-Com GmbH
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
- *      http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- * #L%
  */
+package com.unzer.payment.communication;
 
 import com.google.gson.*;
 
@@ -27,16 +22,16 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class JsonDateTimeConverter extends JsonDateConverter
-		implements JsonDeserializer<Date>, JsonSerializer<Date> {
+        implements JsonDeserializer<Date>, JsonSerializer<Date> {
 
-	@Override
-	public Date deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) {
-		return getDate(json);
-	}
+    @Override
+    public Date deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) {
+        return getDate(json);
+    }
 
-	@Override
-	public JsonElement serialize(Date src, Type typeOfSrc, JsonSerializationContext context) {
-		return new JsonPrimitive(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(src));
-	}
+    @Override
+    public JsonElement serialize(Date src, Type typeOfSrc, JsonSerializationContext context) {
+        return new JsonPrimitive(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(src));
+    }
 
 }

@@ -1,24 +1,20 @@
-package com.unzer.payment.business;
-
-/*-
- * #%L
- * Unzer Java SDK
- * %%
- * Copyright (C) 2022 - today Unzer E-Com GmbH
- * %%
+/*
+ * Copyright 2020-today Unzer E-Com GmbH
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- * #L%
  */
+package com.unzer.payment.business;
+
 
 import com.unzer.payment.Basket;
 import com.unzer.payment.BasketItem;
@@ -29,7 +25,6 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Currency;
 
-import static com.unzer.payment.util.Url.unsafeUrl;
 import static com.unzer.payment.util.Uuid.generateUuid;
 
 public class BasketV1TestData {
@@ -62,22 +57,6 @@ public class BasketV1TestData {
         basket.addBasketItem(getMaxTestBasketItem2V1());
         return basket;
     }
-
-    // TODO: remove unused
-    @Deprecated
-    protected Basket getTestBasketV1ForInvoice() {
-        Basket basket = new Basket();
-        basket.setAmountTotalGross(new BigDecimal(14.49));
-        basket.setAmountTotalVat(new BigDecimal(14.49 * 0.2).setScale(2, RoundingMode.HALF_UP));
-        basket.setAmountTotalDiscount(BigDecimal.ONE);
-        basket.setAmountTotalVat(new BigDecimal(3.41));
-        basket.setCurrencyCode(Currency.getInstance("EUR"));
-        basket.setNote("Mistery shopping");
-        basket.setOrderId(generateUuid());
-        basket.addBasketItem(getMaxTestBasketItem1V1());
-        return basket;
-    }
-
 
     @Deprecated
     public static Basket getMinTestBasketV1() {
@@ -147,5 +126,19 @@ public class BasketV1TestData {
 
         basketItem.setAmountGross(basketItem.getAmountPerUnit().multiply(new BigDecimal(basketItem.getQuantity())));
         return basketItem;
+    }
+
+    @Deprecated
+    protected Basket getTestBasketV1ForInvoice() {
+        Basket basket = new Basket();
+        basket.setAmountTotalGross(new BigDecimal(14.49));
+        basket.setAmountTotalVat(new BigDecimal(14.49 * 0.2).setScale(2, RoundingMode.HALF_UP));
+        basket.setAmountTotalDiscount(BigDecimal.ONE);
+        basket.setAmountTotalVat(new BigDecimal(3.41));
+        basket.setCurrencyCode(Currency.getInstance("EUR"));
+        basket.setNote("Mistery shopping");
+        basket.setOrderId(generateUuid());
+        basket.addBasketItem(getMaxTestBasketItem1V1());
+        return basket;
     }
 }

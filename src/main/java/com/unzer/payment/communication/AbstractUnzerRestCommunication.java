@@ -1,24 +1,19 @@
-package com.unzer.payment.communication;
-
-/*-
- * #%L
- * Unzer Java SDK
- * %%
- * Copyright (C) 2020 - today Unzer E-Com GmbH
- * %%
+/*
+ * Copyright 2020-today Unzer E-Com GmbH
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- * #L%
  */
+package com.unzer.payment.communication;
 
 import com.unzer.payment.PaymentError;
 import com.unzer.payment.PaymentException;
@@ -73,6 +68,29 @@ public abstract class AbstractUnzerRestCommunication implements UnzerRestCommuni
     public AbstractUnzerRestCommunication(Locale locale, String clientIp) {
         this.locale = locale;
         this.clientIp = clientIp;
+    }
+
+    public static String addAuthentication(String privateKey) {
+        if (privateKey == null) {
+            List<PaymentError> paymentErrorList = new ArrayList<PaymentError>();
+            paymentErrorList.add(new PaymentError(
+                    "PrivateKey/PublicKey is missing",
+                    "There was a problem authenticating your request.Please contact us for more information.",
+                    "API.000.000.001"));
+
+            throw new PaymentException(paymentErrorList, "");
+        }
+        if (!privateKey.endsWith(":")) {
+            privateKey = privateKey + ":";
+        }
+        String privateKeyBase64;
+        try {
+            privateKeyBase64 = DatatypeConverter.printBase64Binary(privateKey.getBytes("UTF-8"));
+        } catch (UnsupportedEncodingException e) {
+            throw new PaymentException("Unsupported encoding for the private key: Base64!");
+        }
+
+        return privateKeyBase64;
     }
 
     /**
@@ -183,29 +201,6 @@ public abstract class AbstractUnzerRestCommunication implements UnzerRestCommuni
 
     private void addUnzerAuthentication(String privateKey, UnzerHttpRequest request) {
         request.addHeader(AUTHORIZATION, BASIC + addAuthentication(privateKey));
-    }
-
-    public static String addAuthentication(String privateKey) {
-        if (privateKey == null) {
-            List<PaymentError> paymentErrorList = new ArrayList<PaymentError>();
-            paymentErrorList.add(new PaymentError(
-                    "PrivateKey/PublicKey is missing",
-                    "There was a problem authenticating your request.Please contact us for more information.",
-                    "API.000.000.001"));
-
-            throw new PaymentException(paymentErrorList, "");
-        }
-        if (!privateKey.endsWith(":")) {
-            privateKey = privateKey + ":";
-        }
-        String privateKeyBase64;
-        try {
-            privateKeyBase64 = DatatypeConverter.printBase64Binary(privateKey.getBytes("UTF-8"));
-        } catch (UnsupportedEncodingException e) {
-            throw new PaymentException("Unsupported encoding for the private key: Base64!");
-        }
-
-        return privateKeyBase64;
     }
 
     private void addAcceptLanguageHeader(UnzerHttpRequest request) {
