@@ -24,13 +24,13 @@ import java.math.BigDecimal;
  * Business object for Cancellations
  *
  * @author Unzer E-Com GmbH
- *
  */
 public class Cancel extends AbstractTransaction<Payment> {
 
     private BigDecimal amountGross;
     private BigDecimal amountNet;
     private BigDecimal amountVat;
+    private ReasonCode reasonCode;
 
     public Cancel() {
         super();
@@ -72,5 +72,18 @@ public class Cancel extends AbstractTransaction<Payment> {
 
     public void setAmountVat(BigDecimal amountVat) {
         this.amountVat = amountVat;
+    }
+
+    public ReasonCode getReasonCode() {
+        return reasonCode;
+    }
+
+    public Cancel setReasonCode(ReasonCode reasonCode) {
+        this.reasonCode = reasonCode;
+        return this;
+    }
+
+    public enum ReasonCode {
+        CANCEL, RETURN, CREDIT
     }
 }

@@ -15,6 +15,8 @@
  */
 package com.unzer.payment;
 
+import java.util.Objects;
+
 public class PaymentError {
 
     private String merchantMessage;
@@ -61,4 +63,23 @@ public class PaymentError {
         return "{merchantMessage:" + merchantMessage + ", customerMessage:" + customerMessage + ", code:" + code + "}";
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        PaymentError that = (PaymentError) o;
+
+        return Objects.equals(merchantMessage, that.merchantMessage) &&
+                Objects.equals(customerMessage, that.customerMessage) &&
+                Objects.equals(code, that.code) ;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = merchantMessage != null ? merchantMessage.hashCode() : 0;
+        result = 31 * result + (customerMessage != null ? customerMessage.hashCode() : 0);
+        result = 31 * result + (code != null ? code.hashCode() : 0);
+        return result;
+    }
 }

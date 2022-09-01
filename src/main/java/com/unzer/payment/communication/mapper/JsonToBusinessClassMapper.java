@@ -57,6 +57,10 @@ public class JsonToBusinessClassMapper {
         JsonCharge json = new JsonCharge();
         json.setAmount(cancel.getAmount());
         json.setPaymentReference(cancel.getPaymentReference());
+
+        if (cancel.getReasonCode() != null) {
+            json.setReasonCode(cancel.getReasonCode().toString());
+        }
         return json;
     }
 
