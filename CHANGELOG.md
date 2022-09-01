@@ -19,6 +19,7 @@ This release brings Unzer Paylater Invoice payment type support to Java SDK.
 ### Fixed
 
 * Fixed: customer salutation is null, because of marshalling/unmarshalling issue.
+* Fixed: cancel InvoiceSecured charge failed with error `API.340.100.024: Reason code is mandatory for the payment type INVOICE_SECURED`. Please, use `com.unzer.payment.Cancel.setReasonCode` to set reason code and `com.unzer.payment.Unzer.cancelCharge(java.lang.String, java.lang.String, com.unzer.payment.Cancel)` to cancel InvoiceSecured charge. 
 
 ### Removed
 

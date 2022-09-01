@@ -281,7 +281,7 @@ public class InvoiceSecuredTest extends AbstractPaymentTest {
         );
 
         PaymentException exception = assertThrows(PaymentException.class, () -> {
-            Cancel cancel = unzer.cancelCharge(
+            unzer.cancelCharge(
                     charge.getPaymentId(),
                     charge.getId(),
                     (Cancel) new Cancel(unzer)
