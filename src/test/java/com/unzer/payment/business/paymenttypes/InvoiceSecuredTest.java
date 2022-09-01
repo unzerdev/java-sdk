@@ -24,14 +24,19 @@ import com.unzer.payment.communication.impl.HttpClientBasedRestCommunication;
 import com.unzer.payment.communication.json.JsonIdObject;
 import com.unzer.payment.paymenttypes.InvoiceSecured;
 import com.unzer.payment.service.PaymentService;
+import org.junit.jupiter.api.DynamicTest;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestFactory;
 
 import java.math.BigDecimal;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.text.ParseException;
+import java.util.Collection;
 import java.util.Currency;
 import java.util.Date;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import static com.unzer.payment.business.BasketV1TestData.getMaxTestBasketV1;
 import static com.unzer.payment.business.BasketV1TestData.getMinTestBasketV1;
@@ -40,6 +45,7 @@ import static com.unzer.payment.business.BasketV2TestData.getMinTestBasketV2;
 import static com.unzer.payment.util.Url.unsafeUrl;
 import static com.unzer.payment.util.Uuid.generateUuid;
 import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.DynamicTest.dynamicTest;
 
 public class InvoiceSecuredTest extends AbstractPaymentTest {
 
@@ -222,6 +228,70 @@ public class InvoiceSecuredTest extends AbstractPaymentTest {
                 createBasket(getMaxTestBasketV2()),
                 generateUuid());
         assertNotNull(charge.getPaymentId());
+    }
+
+    @TestFactory
+    public Collection<DynamicTest> testCancelInvoiceSecured() {
+        return Stream.of(Cancel.ReasonCode.RETURN, Cancel.ReasonCode.RETURN, Cancel.ReasonCode.CREDIT)
+                .map(rc -> dynamicTest(rc.name(), () -> {
+                    Unzer unzer = getUnzer();
+                    InvoiceSecured paymentType = unzer.createPaymentType(new InvoiceSecured());
+                    Basket basket = getMaxTestBasketV2();
+                    String invoiceId = getRandomInvoiceId();
+                    Charge charge = paymentType.charge(
+                            basket.getTotalValueGross(),
+                            Currency.getInstance("EUR"),
+                            unsafeUrl("https://www.meinShop.de"),
+                            getMaximumCustomerSameAddress(generateUuid()),
+                            basket,
+                            invoiceId
+                    );
+                    Cancel cancel = unzer.cancelCharge(
+                            charge.getPaymentId(),
+                            charge.getId(),
+                            (Cancel) new Cancel(unzer)
+                                    .setReasonCode(rc)
+                                    .setAmount(basket.getTotalValueGross())
+                    );
+                    assertNotNull(cancel);
+                    assertNotNull(cancel.getId());
+                    assertEquals(Cancel.Status.SUCCESS, cancel.getStatus());
+                })).collect(Collectors.toList());
+    }
+
+    @Test
+    public void testCancelFailsWithoutReasonCode() throws HttpCommunicationException {
+        PaymentError expectedError = new PaymentError(
+                "Reason code is mandatory for the payment type INVOICE_SECURED",
+                "Reason code is mandatory for the payment type INVOICE_SECURED. Please contact us for more information.",
+                "API.340.100.024"
+        );
+
+        Unzer unzer = getUnzer();
+        InvoiceSecured paymentType = unzer.createPaymentType(new InvoiceSecured());
+        Basket basket = getMaxTestBasketV2();
+        String invoiceId = getRandomInvoiceId();
+        Charge charge = paymentType.charge(
+                basket.getTotalValueGross(),
+                Currency.getInstance("EUR"),
+                unsafeUrl("https://www.meinShop.de"),
+                getMaximumCustomerSameAddress(generateUuid()),
+                basket,
+                invoiceId
+        );
+
+        PaymentException exception = assertThrows(PaymentException.class, () -> {
+            unzer.cancelCharge(
+                    charge.getPaymentId(),
+                    charge.getId(),
+                    (Cancel) new Cancel(unzer)
+                            .setAmount(basket.getTotalValueGross())
+            );
+        });
+        assertEquals(1, exception.getPaymentErrorList().size());
+        PaymentError actualError = exception.getPaymentErrorList().get(0);
+
+        assertEquals(expectedError, actualError);
     }
 
 

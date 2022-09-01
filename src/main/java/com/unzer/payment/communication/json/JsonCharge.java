@@ -15,9 +15,12 @@
  */
 package com.unzer.payment.communication.json;
 
+import com.unzer.payment.Cancel;
+
 public class JsonCharge extends JsonInitPayment implements JsonObject {
 
     private String invoiceId;
+    private String reasonCode;
 
     public JsonCharge() {
         super();
@@ -51,4 +54,7 @@ public class JsonCharge extends JsonInitPayment implements JsonObject {
         this.invoiceId = invoiceId;
     }
 
+    public void setReasonCode(String reasonCode) {
+        this.reasonCode = reasonCode;
+    }
 }
