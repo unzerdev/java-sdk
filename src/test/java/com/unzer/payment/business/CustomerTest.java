@@ -18,13 +18,20 @@ package com.unzer.payment.business;
 
 import com.unzer.payment.Customer;
 import com.unzer.payment.PaymentException;
+import com.unzer.payment.Unzer;
 import com.unzer.payment.communication.HttpCommunicationException;
+import org.junit.jupiter.api.DynamicTest;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestFactory;
 
 import java.text.ParseException;
+import java.util.Collection;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import static com.unzer.payment.util.Uuid.generateUuid;
 import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.DynamicTest.dynamicTest;
 
 public class CustomerTest extends AbstractPaymentTest {
 
@@ -117,5 +124,34 @@ public class CustomerTest extends AbstractPaymentTest {
             customerRequest.setId("s-cst-abcdef");
             getUnzer().createCustomer(customerRequest);
         });
+    }
+
+    @TestFactory
+    public Collection<DynamicTest> testCustomerSalutation() {
+        class TestCase {
+            final Customer customer;
+            final Customer.Salutation expectedSalutation;
+
+            public TestCase(Customer customer, Customer.Salutation expectedSalutation) {
+                this.customer = customer;
+                this.expectedSalutation = expectedSalutation;
+            }
+        }
+        return Stream.of(
+                new TestCase(new Customer("Abc", "Def"), Customer.Salutation.UNKNOWN),
+                new TestCase(new Customer("Abc", "Def").setSalutation(null), Customer.Salutation.UNKNOWN),
+                new TestCase(new Customer("Abc", "Def").setSalutation(Customer.Salutation.MR), Customer.Salutation.MR),
+                new TestCase(new Customer("Abc", "Def").setSalutation(Customer.Salutation.MRS), Customer.Salutation.MRS),
+                new TestCase(new Customer("Abc", "Def").setSalutation(Customer.Salutation.UNKNOWN), Customer.Salutation.UNKNOWN)
+
+        ).map(tc -> dynamicTest("salutation " + tc.expectedSalutation, () -> {
+            Unzer unzer = getUnzer();
+
+            Customer createdCustomer = unzer.createCustomer(tc.customer);
+            assertEquals(tc.expectedSalutation, createdCustomer.getSalutation());
+
+            Customer fetchedCustomer = unzer.fetchCustomer(createdCustomer.getId());
+            assertEquals(tc.expectedSalutation, fetchedCustomer.getSalutation());
+        })).collect(Collectors.toList());
     }
 }

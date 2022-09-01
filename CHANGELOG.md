@@ -16,6 +16,10 @@ This release brings Unzer Paylater Invoice payment type support to Java SDK.
 * Added ability to set client IP. Use `com.unzer.payment.communication.impl.HttpClientBasedRestCommunication.HttpClientBasedRestCommunication(java.util.Locale, java.lang.String)` and `com.unzer.payment.Unzer.Unzer(java.lang.String, java.util.Locale, java.lang.String, java.lang.String)` to set client ip.
 * Added `com.unzer.payment.Unzer.cancelCharge(java.lang.String, java.math.BigDecimal)` to cancel Paylater charges.
 
+### Fixed
+
+* Fixed: customer salutation is null, because of marshalling/unmarshalling issue.
+
 ### Removed
 
 * Removed unused `com.unzer.payment.UnsupportedPaymentTypeException`

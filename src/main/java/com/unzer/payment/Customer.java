@@ -15,6 +15,7 @@
  */
 package com.unzer.payment;
 
+import com.google.gson.annotations.SerializedName;
 import com.unzer.payment.communication.json.JsonObject;
 import com.unzer.payment.paymenttypes.PaymentType;
 
@@ -188,6 +189,11 @@ public class Customer implements PaymentType {
     }
 
     public enum Salutation {
-        MR, MRS, UNKNOWN
+        @SerializedName("mr")
+        MR,
+        @SerializedName("mrs")
+        MRS,
+        @SerializedName("unknown")
+        UNKNOWN
     }
 }
