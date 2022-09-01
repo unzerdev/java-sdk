@@ -25,6 +25,7 @@ import java.util.Date;
 import com.google.gson.annotations.JsonAdapter;
 import com.unzer.payment.Address;
 import com.unzer.payment.Customer.Salutation;
+import com.unzer.payment.ShippingAddress;
 import com.unzer.payment.communication.JsonDateConverter;
 
 public class JsonCustomer extends JsonIdObject implements JsonObject {
@@ -40,7 +41,7 @@ public class JsonCustomer extends JsonIdObject implements JsonObject {
 	private String phone;
 	private String mobile;
 	private Address billingAddress;
-	private Address shippingAddress;
+	private ShippingAddress shippingAddress;
 
 	private JSonCompanyInfo companyInfo;
 	
@@ -116,11 +117,11 @@ public class JsonCustomer extends JsonIdObject implements JsonObject {
 		this.billingAddress = billingAddress;
 	}
 
-	public Address getShippingAddress() {
+	public ShippingAddress getShippingAddress() {
 		return shippingAddress;
 	}
 
-	public void setShippingAddress(Address shippingAddress) {
+	public void setShippingAddress(ShippingAddress shippingAddress) {
 		this.shippingAddress = shippingAddress;
 	}
 

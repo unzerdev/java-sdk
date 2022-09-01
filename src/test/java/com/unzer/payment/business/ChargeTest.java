@@ -47,7 +47,7 @@ public class ChargeTest extends AbstractPaymentTest {
 
 	@Test
 	public void testChargeWithTypeId() throws MalformedURLException, HttpCommunicationException {
-		Charge charge = getUnzer().charge(BigDecimal.ONE, Currency.getInstance("EUR"), createPaymentTypeCard().getId(), new URL("https://integration.splitit.com//gateways/Proxy/Execute?publicToken=9e517919-9e3d-4d5f-825e-99f7712eefd1"), false);
+		Charge charge = getUnzer().charge(BigDecimal.ONE, Currency.getInstance("EUR"), createPaymentTypeCard(getUnzer(), "4711100000000000").getId(), new URL("https://integration.splitit.com//gateways/Proxy/Execute?publicToken=9e517919-9e3d-4d5f-825e-99f7712eefd1"), false);
 		assertNotNull(charge);
 		assertNotNull(charge.getId());
 		assertEquals("COR.000.100.112", charge.getMessage().getCode());
@@ -56,7 +56,7 @@ public class ChargeTest extends AbstractPaymentTest {
 	
 	@Test
 	public void testChargeIsSuccess() throws MalformedURLException, HttpCommunicationException {
-		Charge charge = getUnzer().charge(BigDecimal.ONE, Currency.getInstance("EUR"), createPaymentTypeCard().getId(), new URL("https://www.unzer.com"), false);
+		Charge charge = getUnzer().charge(BigDecimal.ONE, Currency.getInstance("EUR"), createPaymentTypeCard(getUnzer(), "4711100000000000").getId(), new URL("https://www.unzer.com"), false);
 		assertNotNull(charge);
 		assertNotNull(charge.getId());
 		assertEquals("COR.000.100.112", charge.getMessage().getCode());
@@ -82,9 +82,10 @@ public class ChargeTest extends AbstractPaymentTest {
 
 	@Test
 	public void testChargeWithPaymentType() throws MalformedURLException, HttpCommunicationException {
+		Unzer unzer = getUnzer(privateKey2);
 		LocalDate locaDateNow = LocalDate.now();
 		Card card = new Card("4444333322221111", "12/" + (locaDateNow.getYear() + 1));
-		Charge charge = getUnzer().charge(BigDecimal.ONE, Currency.getInstance("EUR"), card, new URL("https://www.unzer.com"), false);
+		Charge charge = unzer.charge(BigDecimal.ONE, Currency.getInstance("EUR"), card, new URL("https://www.unzer.com"), false);
 		assertNotNull(charge);
 		assertEquals("COR.000.100.112", charge.getMessage().getCode());
 		assertNotNull(charge.getMessage().getCustomer());
@@ -93,7 +94,7 @@ public class ChargeTest extends AbstractPaymentTest {
 
 	@Test
 	public void testChargeWithReturnUrl() throws MalformedURLException, HttpCommunicationException {
-		Charge charge = getUnzer().charge(BigDecimal.ONE, Currency.getInstance("EUR"), createPaymentTypeCard().getId(), new URL("https://www.unzer.com"), false);
+		Charge charge = getUnzer().charge(BigDecimal.ONE, Currency.getInstance("EUR"), createPaymentTypeCard(getUnzer(), "4711100000000000").getId(), new URL("https://www.unzer.com"), false);
 		assertNotNull(charge);
 		assertEquals("COR.000.100.112", charge.getMessage().getCode());
 		assertNotNull(charge.getMessage().getCustomer());
@@ -102,10 +103,11 @@ public class ChargeTest extends AbstractPaymentTest {
 
 	@Test
 	public void testChargeWithCustomerTypeReturnUrl() throws MalformedURLException, HttpCommunicationException {
+		Unzer unzer = getUnzer(privateKey2);
 		LocalDate locaDateNow = LocalDate.now();
 		Card card = new Card("4444333322221111", "12/" + (locaDateNow.getYear() + 1));
 		Customer customer = new Customer("Max", "Mustermann");
-		Charge charge = getUnzer().charge(BigDecimal.ONE, Currency.getInstance("EUR"), card, new URL("https://www.unzer.com"), customer, false);
+		Charge charge = unzer.charge(BigDecimal.ONE, Currency.getInstance("EUR"), card, new URL("https://www.unzer.com"), customer, false);
 		assertNotNull(charge);
 		assertEquals("COR.000.100.112", charge.getMessage().getCode());
 		assertNotNull(charge.getMessage().getCustomer());
@@ -115,7 +117,7 @@ public class ChargeTest extends AbstractPaymentTest {
 	@Test
 	public void testChargeWithCustomerIdReturnUrl() throws MalformedURLException, HttpCommunicationException, ParseException {
 		Customer customer = getUnzer().createCustomer(getMaximumCustomer(generateUuid()));
-		Charge charge = getUnzer().charge(BigDecimal.ONE, Currency.getInstance("EUR"), createPaymentTypeCard().getId(), new URL("https://www.unzer.com"), customer.getId(), false);
+		Charge charge = getUnzer().charge(BigDecimal.ONE, Currency.getInstance("EUR"), createPaymentTypeCard(getUnzer(), "4711100000000000").getId(), new URL("https://www.unzer.com"), customer.getId(), false);
 		assertNotNull(charge);
 		assertEquals("COR.000.100.112", charge.getMessage().getCode());
 		assertNotNull(charge.getMessage().getCustomer());
@@ -123,9 +125,10 @@ public class ChargeTest extends AbstractPaymentTest {
 
 	@Test
 	public void testChargeReturnPayment() throws MalformedURLException, HttpCommunicationException {
+		Unzer unzer = getUnzer(privateKey2);
 		LocalDate locaDateNow = LocalDate.now();
 		Card card = new Card("4444333322221111", "12/" + (locaDateNow.getYear() + 1));
-		Charge charge = getUnzer().charge(BigDecimal.ONE, Currency.getInstance("EUR"), card, new URL("https://www.unzer.com"), false);
+		Charge charge = unzer.charge(BigDecimal.ONE, Currency.getInstance("EUR"), card, new URL("https://www.unzer.com"), false);
 		assertNotNull(charge);
 		assertEquals("COR.000.100.112", charge.getMessage().getCode());
 		assertNotNull(charge.getMessage().getCustomer());
@@ -212,7 +215,7 @@ public class ChargeTest extends AbstractPaymentTest {
 
 	@Test
 	public void testChargeObjectIsParsableWithGson() throws HttpCommunicationException, MalformedURLException {
-		Charge charge = getUnzer().charge(BigDecimal.ONE, Currency.getInstance("EUR"), createPaymentTypeCard().getId(), new URL("https://integration.splitit.com//gateways/Proxy/Execute?publicToken=9e517919-9e3d-4d5f-825e-99f7712eefd1"), false);
+		Charge charge = getUnzer().charge(BigDecimal.ONE, Currency.getInstance("EUR"), createPaymentTypeCard(getUnzer(), "4711100000000000").getId(), new URL("https://integration.splitit.com//gateways/Proxy/Execute?publicToken=9e517919-9e3d-4d5f-825e-99f7712eefd1"), false);
 		assertEquals(String.class, new GsonBuilder()
 				.addSerializationExclusionStrategy(new JsonFieldIgnoreStragegy())
 				.create()

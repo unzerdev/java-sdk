@@ -98,8 +98,8 @@ public class SepaDirectDebitSecuredTest extends AbstractPaymentTest {
     }
 
     @Test
-    public void testChargeSepaDirectDebitGuaranteed() throws HttpCommunicationException, ParseException {
-        Unzer unzer = getUnzer();
+    public void testChargeSepaDirectDebitGuaranteed() throws HttpCommunicationException {
+        Unzer unzer = getUnzer(privateKey3);
         HttpClientBasedRestCommunication restCommunication = new HttpClientBasedRestCommunication();
         JsonParser jsonParser = new JsonParser();
         PaymentService paymentService = new PaymentService(unzer, restCommunication);

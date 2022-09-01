@@ -186,8 +186,9 @@ public abstract class AbstractTransaction<T extends AbstractPayment> implements 
         return additionalTransactionData;
     }
 
-    public void setAdditionalTransactionData(AdditionalTransactionData additionalTransactionData) {
+    public AbstractTransaction<T> setAdditionalTransactionData(AdditionalTransactionData additionalTransactionData) {
         this.additionalTransactionData = additionalTransactionData;
+        return this;
     }
 
     public URL getRedirectUrl() {
@@ -211,71 +212,80 @@ public abstract class AbstractTransaction<T extends AbstractPayment> implements 
         return paymentReference;
     }
 
-    public void setPaymentReference(String paymentReference) {
+    public AbstractTransaction<T> setPaymentReference(String paymentReference) {
         this.paymentReference = paymentReference;
+        return this;
     }
 
     public String getTraceId() {
         return traceId;
     }
 
-    public void setTraceId(String traceId) {
+    public AbstractTransaction<T> setTraceId(String traceId) {
         this.traceId = traceId;
+        return this;
     }
 
     public T getPayment() {
         return payment;
     }
 
-    public void setPayment(T payment) {
+    public AbstractTransaction<T> setPayment(T payment) {
         this.payment = payment;
+        return this;
     }
 
     public Unzer getUnzer() {
         return unzer;
     }
 
-    public void setUnzer(Unzer unzer) {
+    public AbstractTransaction<T> setUnzer(Unzer unzer) {
         this.unzer = unzer;
+        return this;
     }
 
     public String getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public AbstractTransaction<T> setId(String id) {
         this.id = id;
+        return this;
     }
 
     public Message getMessage() {
         return message;
     }
 
-    public void setMessage(Message message) {
+    public AbstractTransaction<T> setMessage(Message message) {
         this.message = message;
+        return this;
     }
 
     public Date getDate() {
         return date;
     }
 
-    public void setDate(Date date) {
+    public AbstractTransaction<T> setDate(Date date) {
         this.date = date;
+        return this;
     }
 
     public String getType() {
         return type;
     }
 
-    public void setType(String type) {
+    public AbstractTransaction<T> setType(String type) {
         this.type = type;
+        return this;
     }
 
     public URL getResourceUrl() {
         return resourceUrl;
     }
 
-    public void setResourceUrl(URL resourceUrl) {
+    public AbstractTransaction<T> setResourceUrl(URL resourceUrl) {
         this.resourceUrl = resourceUrl;
+        return this;
     }
 }

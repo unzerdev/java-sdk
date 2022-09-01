@@ -90,7 +90,7 @@ public class BasketV1Test extends AbstractPaymentTest {
 	@Test
 	public void testAuthorizationWithBasket() throws MalformedURLException, HttpCommunicationException {
 		Basket basket = createMaxTestBasket();
-		Authorization authorization = getAuthorization(createPaymentTypeCard().getId(), null, null, null, basket.getId());
+		Authorization authorization = getAuthorization(createPaymentTypeCard(getUnzer(), "4711100000000000").getId(), null, null, null, basket.getId());
 		authorization.setAmount(basket.getAmountTotalGross().subtract(basket.getAmountTotalDiscount()));
 		Authorization authorize = getUnzer().authorize(authorization);
 		Payment payment = getUnzer().fetchPayment(authorize.getPayment().getId());
@@ -105,7 +105,7 @@ public class BasketV1Test extends AbstractPaymentTest {
 	@Test
 	public void testChargeWithBasket() throws MalformedURLException, HttpCommunicationException {
 		Basket basket = createMaxTestBasket();
-		Charge chargeReq = getCharge(createPaymentTypeCard().getId(), null, null, null, basket.getId(), null);
+		Charge chargeReq = getCharge(createPaymentTypeCard(getUnzer(), "4711100000000000").getId(), null, null, null, basket.getId(), null);
 		chargeReq.setAmount(basket.getAmountTotalGross().subtract(basket.getAmountTotalDiscount()));
 		Charge charge = getUnzer().charge(chargeReq);
 		Payment payment = getUnzer().fetchPayment(charge.getPayment().getId());

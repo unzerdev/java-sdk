@@ -37,7 +37,7 @@ public class PaymentTest extends AbstractPaymentTest {
 
     @Test
     public void testFetchPaymentWithAuthorization() throws MalformedURLException, HttpCommunicationException {
-        Authorization authorize = getUnzer().authorize(getAuthorization(createPaymentTypeCard().getId()));
+        Authorization authorize = getUnzer().authorize(getAuthorization(createPaymentTypeCard(getUnzer(), "4711100000000000").getId()));
         Payment payment = getUnzer().fetchPayment(authorize.getPayment().getId());
         assertNotNull(payment);
         assertNotNull(payment.getId());
@@ -48,7 +48,7 @@ public class PaymentTest extends AbstractPaymentTest {
 
     @Test
     public void testFullChargeAfterAuthorize() throws MalformedURLException, HttpCommunicationException {
-        Authorization authorize = getUnzer().authorize(getAuthorization(createPaymentTypeCard().getId(), false));
+        Authorization authorize = getUnzer().authorize(getAuthorization(createPaymentTypeCard(getUnzer(), "4711100000000000").getId(), false));
         Payment payment = getUnzer().fetchPayment(authorize.getPayment().getId());
         Charge charge = payment.charge();
         assertNotNull(charge);
@@ -57,7 +57,7 @@ public class PaymentTest extends AbstractPaymentTest {
 
     @Test
     public void testFetchPaymentWithCharges() throws MalformedURLException, HttpCommunicationException {
-        Authorization authorize = getUnzer().authorize(getAuthorization(createPaymentTypeCard().getId(), false));
+        Authorization authorize = getUnzer().authorize(getAuthorization(createPaymentTypeCard(getUnzer(), "4711100000000000").getId(), false));
         Payment payment = getUnzer().fetchPayment(authorize.getPayment().getId());
         assertNotNull(payment);
         assertNotNull(payment.getId());
@@ -76,7 +76,7 @@ public class PaymentTest extends AbstractPaymentTest {
 
     @Test
     public void testPartialChargeAfterAuthorize() throws MalformedURLException, HttpCommunicationException {
-        Authorization authorize = getUnzer().authorize(getAuthorization(createPaymentTypeCard().getId(), false));
+        Authorization authorize = getUnzer().authorize(getAuthorization(createPaymentTypeCard(getUnzer(), "4711100000000000").getId(), false));
         Payment payment = getUnzer().fetchPayment(authorize.getPayment().getId());
         Charge charge = payment.charge(BigDecimal.ONE);
         assertNotNull(charge);
@@ -86,21 +86,22 @@ public class PaymentTest extends AbstractPaymentTest {
 
     @Test
     public void testFullCancelAuthorize() throws MalformedURLException, HttpCommunicationException {
-        Authorization authorize = getUnzer().authorize(getAuthorization(createPaymentTypeCard().getId()));
-        Payment payment = getUnzer().fetchPayment(authorize.getPayment().getId());
+        Unzer unzer = getUnzer(privateKey2);
+
+        Card card = createPaymentTypeCard(unzer, "4711100000000000");
+        Authorization authorize = unzer.authorize(getAuthorization(card.getId()));
+        Payment payment = unzer.fetchPayment(authorize.getPayment().getId());
+
         Cancel cancel = payment.getAuthorization().cancel();
         assertNotNull(cancel);
         assertEquals("s-cnl-1", cancel.getId());
         assertEquals(authorize.getAmount(), cancel.getAmount());
-
-        assertThrows(PaymentException.class, () -> {
-            payment.cancel();
-        });
+        assertThrows(PaymentException.class, payment::cancel);
     }
 
     @Test
     public void testPartialCancelAuthorize() throws MalformedURLException, HttpCommunicationException {
-        Authorization authorize = getUnzer().authorize(getAuthorization(createPaymentTypeCard().getId(), false));
+        Authorization authorize = getUnzer().authorize(getAuthorization(createPaymentTypeCard(getUnzer(), "4711100000000000").getId(), false));
         Payment payment = getUnzer().fetchPayment(authorize.getPayment().getId());
         Cancel cancel = payment.cancel(BigDecimal.ONE);
         assertNotNull(cancel);
@@ -110,7 +111,7 @@ public class PaymentTest extends AbstractPaymentTest {
 
     @Test
     public void testFullCancelOnCharge() throws HttpCommunicationException, MalformedURLException {
-        Charge charge = getUnzer().charge(BigDecimal.ONE, Currency.getInstance("EUR"), createPaymentTypeCard().getId(), new URL("https://www.unzer.com"), false);
+        Charge charge = getUnzer().charge(BigDecimal.ONE, Currency.getInstance("EUR"), createPaymentTypeCard(getUnzer(), "4711100000000000").getId(), new URL("https://www.unzer.com"), false);
         Payment payment = getUnzer().fetchPayment(charge.getPaymentId());
         Cancel cancel = payment.getCharge("s-chg-1").cancel();
         assertNotNull(cancel);
@@ -118,7 +119,7 @@ public class PaymentTest extends AbstractPaymentTest {
 
     @Test
     public void testPartialCancelOnCharge() throws HttpCommunicationException, MalformedURLException {
-        Charge charge = getUnzer().charge(BigDecimal.ONE, Currency.getInstance("EUR"), createPaymentTypeCard().getId(), new URL("https://www.unzer.com"), false);
+        Charge charge = getUnzer().charge(BigDecimal.ONE, Currency.getInstance("EUR"), createPaymentTypeCard(getUnzer(), "4711100000000000").getId(), new URL("https://www.unzer.com"), false);
         Payment payment = getUnzer().fetchPayment(charge.getPaymentId());
         Cancel cancel = payment.getCharge(0).cancel(BigDecimal.ONE);
         assertNotNull(cancel);
@@ -127,11 +128,12 @@ public class PaymentTest extends AbstractPaymentTest {
     @Test
     public void testAuthorize() throws HttpCommunicationException, MalformedURLException {
         // Variant 1
-        Payment payment = new Payment(getUnzer());
-        Authorization authorizationUsingPayment = payment.authorize(BigDecimal.ONE, Currency.getInstance("EUR"), createPaymentTypeCard().getId(), new URL("https://www.unzer.com"));
+        Unzer unzer = getUnzer();
+        Payment payment = new Payment(unzer);
+        Authorization authorizationUsingPayment = payment.authorize(BigDecimal.ONE, Currency.getInstance("EUR"), createPaymentTypeCard(unzer, "4711100000000000").getId(), new URL("https://www.unzer.com"));
 
         // Variant 2
-        Authorization authorizationUsingUnzer = getUnzer().authorize(BigDecimal.ONE, Currency.getInstance("EUR"), createPaymentTypeCard().getId(), new URL("https://www.unzer.com"));
+        Authorization authorizationUsingUnzer = unzer.authorize(BigDecimal.ONE, Currency.getInstance("EUR"), createPaymentTypeCard(unzer, "4711100000000000").getId(), new URL("https://www.unzer.com"));
         authorizationUsingUnzer.getPayment();
 
         assertNotNull(authorizationUsingPayment);
@@ -142,9 +144,9 @@ public class PaymentTest extends AbstractPaymentTest {
     public void testAuthorizeWithExistedCustomer() throws HttpCommunicationException, MalformedURLException, ParseException {
         // Variant 1
         Payment payment = new Payment(getUnzer());
-        Authorization authorizationUsingPayment = payment.authorize(BigDecimal.ONE, Currency.getInstance("EUR"), createPaymentTypeCard().getId(), new URL("https://www.unzer.com"), createFactoringOKCustomer().getId());
+        Authorization authorizationUsingPayment = payment.authorize(BigDecimal.ONE, Currency.getInstance("EUR"), createPaymentTypeCard(getUnzer(), "4711100000000000").getId(), new URL("https://www.unzer.com"), createFactoringOKCustomer().getId());
 
-        Authorization authorizationUsingUnzer = getUnzer().authorize(BigDecimal.ONE, Currency.getInstance("EUR"), createPaymentTypeCard().getId(), new URL("https://www.unzer.com"), createFactoringOKCustomer().getId());
+        Authorization authorizationUsingUnzer = getUnzer().authorize(BigDecimal.ONE, Currency.getInstance("EUR"), createPaymentTypeCard(getUnzer(), "4711100000000000").getId(), new URL("https://www.unzer.com"), createFactoringOKCustomer().getId());
         authorizationUsingUnzer.getPayment();
 
         assertNotNull(authorizationUsingPayment);
@@ -168,8 +170,8 @@ public class PaymentTest extends AbstractPaymentTest {
 
     @Test
     public void testChargeWithoutAuthorize() throws HttpCommunicationException, MalformedURLException {
-        Charge chargeUsingPayment = new Payment(getUnzer()).charge(BigDecimal.ONE, Currency.getInstance("EUR"), createPaymentTypeCard().getId(), new URL("https://www.unzer.com"));
-        Charge chargeUsingUnzer = getUnzer().charge(BigDecimal.ONE, Currency.getInstance("EUR"), createPaymentTypeCard().getId(), new URL("https://www.unzer.com"));
+        Charge chargeUsingPayment = new Payment(getUnzer()).charge(BigDecimal.ONE, Currency.getInstance("EUR"), createPaymentTypeCard(getUnzer(), "4711100000000000").getId(), new URL("https://www.unzer.com"));
+        Charge chargeUsingUnzer = getUnzer().charge(BigDecimal.ONE, Currency.getInstance("EUR"), createPaymentTypeCard(getUnzer(), "4711100000000000").getId(), new URL("https://www.unzer.com"));
         assertNotNull(chargeUsingPayment);
         assertNotNull(chargeUsingUnzer);
     }
