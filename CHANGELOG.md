@@ -6,6 +6,35 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres
 to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## [1.2.1.0][1.2.1.0]
+
+This release brings Unzer Paylater Invoice payment type support to Java SDK.
+
+### Added
+
+* Added payment type Paylater Invoice. See more at [Unzer Docs](https://docs.unzer.com/payment-methods/unzer-invoice-upl/)
+* Added ability to set client IP. Use `com.unzer.payment.communication.impl.HttpClientBasedRestCommunication.HttpClientBasedRestCommunication(java.util.Locale, java.lang.String)` and `com.unzer.payment.Unzer.Unzer(java.lang.String, java.util.Locale, java.lang.String, java.lang.String)` to set client ip.
+* Added `com.unzer.payment.Unzer.cancelCharge(java.lang.String, java.math.BigDecimal)` to cancel Paylater charges.
+
+### Fixed
+
+* Fixed: customer salutation is null, because of marshalling/unmarshalling issue.
+* Fixed: cancel InvoiceSecured charge failed with error `API.340.100.024: Reason code is mandatory for the payment type INVOICE_SECURED`. Please, use `com.unzer.payment.Cancel.setReasonCode` to set reason code and `com.unzer.payment.Unzer.cancelCharge(java.lang.String, java.lang.String, com.unzer.payment.Cancel)` to cancel InvoiceSecured charge. 
+
+### Removed
+
+* Removed unused `com.unzer.payment.UnsupportedPaymentTypeException`
+
+### Deprecated
+
+* Deprecated `com.unzer.payment.util.SDKInfo.getVersion()`. Use `com.unzer.payment.util.SDKInfo.VERSION` instead.
+* Deprecated payment type `com.unzer.payment.paymenttypes.InvoiceSecured`. Use `com.unzer.payment.paymenttypes.PaylaterInvoice` instead.
+* Deprecated `com.unzer.payment.Customer.setShippingAddress(com.unzer.payment.Address)`. Use `com.unzer.payment.Customer.setShippingAddress(com.unzer.payment.ShippingAddress)` instead
+
+### Changed
+
+* Changed type of `com.unzer.payment.Customer.shippingAddress` and according getter/setter: `com.unzer.payment.Address` -> `com.unzer.payment.ShippingAddress`. Use `ShippingAddress.of(Address, Type)` to adapt
+
 ## [1.2.0.0][1.2.0.0]
 
 ### Breaking changes 
@@ -204,6 +233,8 @@ to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
     *   cancelAuthorization
 *   Remove deprecated classes
     *   RestCommunication
+
+[1.2.1.0]: http://github.com/unzerdev/java-sdk/compare/1.2.0.0..1.2.1.0
 
 [1.2.0.0]: http://github.com/unzerdev/java-sdk/compare/1.1.2.7..1.2.0.0
 

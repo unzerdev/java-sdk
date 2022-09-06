@@ -1,3 +1,18 @@
+/*
+ * Copyright 2020-today Unzer E-Com GmbH
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package com.unzer.payment.business.paymenttypes;
 
 import com.unzer.payment.*;
@@ -8,9 +23,8 @@ import com.unzer.payment.communication.impl.HttpClientBasedRestCommunication;
 import com.unzer.payment.communication.json.JsonIdObject;
 import com.unzer.payment.service.PaymentService;
 import org.apache.commons.lang3.time.DateUtils;
-import org.junit.Assert;
-import org.junit.Ignore;
-import org.junit.Test;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -24,27 +38,8 @@ import java.util.List;
 import static com.unzer.payment.business.BasketV1TestData.getMaxTestBasketV1;
 import static com.unzer.payment.business.BasketV2TestData.getMaxTestBasketV2;
 import static com.unzer.payment.util.Url.unsafeUrl;
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
-/*-
- * #%L
- * Unzer Java SDK
- * %%
- * Copyright (C) 2020 - today Unzer E-Com GmbH
- * %%
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- * #L%
- */
 
 public class InstallmentSecuredTest extends AbstractPaymentTest {
 
@@ -54,7 +49,7 @@ public class InstallmentSecuredTest extends AbstractPaymentTest {
         Date orderDate = getDate("21.06.2019");
         List<InstallmentSecuredRatePlan> rateList = getUnzer().installmentSecuredRates(BigDecimal.TEN, Currency.getInstance("EUR"), effectiveInterestRate, orderDate);
         assertNotNull(rateList);
-        Assert.assertTrue(rateList.size() > 0);
+        assertTrue(rateList.size() > 0);
         assertInstallmentSecuredRatePlan(effectiveInterestRate, orderDate, rateList.get(0));
     }
 
@@ -100,7 +95,7 @@ public class InstallmentSecuredTest extends AbstractPaymentTest {
         assertValidAuthorize(ratePlan, authorization);
     }
 
-    @Ignore("https://unz.atlassian.net/browse/AHC-5292")
+    @Disabled("https://unz.atlassian.net/browse/AHC-5292")
     @Test
     public void testAuthorizeViaTypeWithIbanBasketV2() throws HttpCommunicationException, ParseException {
         InstallmentSecuredRatePlan ratePlan = getInstallmentSecuredRatePlan();
@@ -141,7 +136,7 @@ public class InstallmentSecuredTest extends AbstractPaymentTest {
         assertValidAuthorize(ratePlan, authorization);
     }
 
-    @Ignore("https://unz.atlassian.net/browse/AHC-5292")
+    @Disabled("https://unz.atlassian.net/browse/AHC-5292")
     @Test
     public void testAuthorizeViaUnzerTypeIdWithIbanBasketV2() throws HttpCommunicationException, ParseException, MalformedURLException {
         InstallmentSecuredRatePlan ratePlan = getInstallmentSecuredRatePlan();
@@ -183,7 +178,7 @@ public class InstallmentSecuredTest extends AbstractPaymentTest {
         assertValidCharge(charge);
     }
 
-    @Ignore("https://unz.atlassian.net/browse/AHC-5292")
+    @Disabled("https://unz.atlassian.net/browse/AHC-5292")
     @Test
     public void testChargeViaAuthorizeBasketV2() throws HttpCommunicationException, ParseException {
         InstallmentSecuredRatePlan ratePlan = createInstallmentSecuredType(getInstallmentSecuredRatePlan());
@@ -229,7 +224,7 @@ public class InstallmentSecuredTest extends AbstractPaymentTest {
         assertValidCancel(cancel, getAmount());
     }
 
-    @Ignore("https://unz.atlassian.net/browse/AHC-5292")
+    @Disabled("https://unz.atlassian.net/browse/AHC-5292")
     @Test
     public void testFullCancellationBeforeShipmentBasketV2() throws HttpCommunicationException, ParseException {
         InstallmentSecuredRatePlan ratePlan = createInstallmentSecuredType(getInstallmentSecuredRatePlan());
@@ -283,7 +278,7 @@ public class InstallmentSecuredTest extends AbstractPaymentTest {
         assertValidCancel(cancel, getBigDecimalFourDigits(370.48));
     }
 
-    @Ignore("https://unz.atlassian.net/browse/AHC-5292")
+    @Disabled("https://unz.atlassian.net/browse/AHC-5292")
     @Test
     public void testPartialCancellationBeforeShipmentBasketV2() throws HttpCommunicationException, ParseException {
         InstallmentSecuredRatePlan ratePlan = createInstallmentSecuredType(getInstallmentSecuredRatePlan());
@@ -337,7 +332,7 @@ public class InstallmentSecuredTest extends AbstractPaymentTest {
         assertValidShipment(shipment);
     }
 
-    @Ignore("https://unz.atlassian.net/browse/AHC-5292")
+    @Disabled("https://unz.atlassian.net/browse/AHC-5292")
     @Test
     public void testShipmentBasketV2() throws HttpCommunicationException, ParseException {
         InstallmentSecuredRatePlan ratePlan = getInstallmentSecuredRatePlan();
@@ -391,7 +386,7 @@ public class InstallmentSecuredTest extends AbstractPaymentTest {
         assertValidCancel(cancel, getAmount());
     }
 
-    @Ignore("Until https://unz.atlassian.net/browse/AHC-5292 is resolved")
+    @Disabled("Until https://unz.atlassian.net/browse/AHC-5292 is resolved")
     @Test
     public void testFullCancelAfterShipmentBasketV2() throws HttpCommunicationException, ParseException {
         InstallmentSecuredRatePlan ratePlan = getInstallmentSecuredRatePlan();
@@ -584,7 +579,7 @@ public class InstallmentSecuredTest extends AbstractPaymentTest {
     }
 
 
-    @Ignore("https://unz.atlassian.net/browse/AHC-5292")
+    @Disabled("https://unz.atlassian.net/browse/AHC-5292")
     @Test
     public void testAuthorizeHirePurchaseDirectDebitBasketV2() throws HttpCommunicationException, ParseException {
         Unzer unzer = getUnzer();

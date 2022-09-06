@@ -1,3 +1,18 @@
+/*
+ * Copyright 2020-today Unzer E-Com GmbH
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package com.unzer.payment.service;
 
 import com.unzer.payment.*;
@@ -7,32 +22,13 @@ import com.unzer.payment.communication.JsonParser;
 import com.unzer.payment.communication.UnzerRestCommunication;
 import com.unzer.payment.communication.json.*;
 import com.unzer.payment.communication.mapper.JsonToBusinessClassMapper;
+import com.unzer.payment.models.PaylaterInvoiceConfig;
+import com.unzer.payment.models.PaylaterInvoiceConfigRequest;
 import com.unzer.payment.paymenttypes.*;
-import org.apache.http.HttpStatus;
 
 import java.math.BigDecimal;
 import java.net.URL;
 import java.util.*;
-
-/*-
- * #%L
- * Unzer Java SDK
- * %%
- * Copyright (C) 2020 - today Unzer E-Com GmbH
- * %%
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- * #L%
- */
 
 public class PaymentService {
     protected static final String TRANSACTION_TYPE_AUTHORIZATION = "authorize";
@@ -568,6 +564,7 @@ public class PaymentService {
             case WECHATPAY:
             case PF_CARD:
             case PF_EFINANCE:
+            case UNZER_PAYLATER_INVOICE:
                 return new JsonIdObject();
             case PAYPAL:
                 return new JsonPaypal();
@@ -645,6 +642,8 @@ public class PaymentService {
                 return new PostFinanceCard();
             case PF_EFINANCE:
                 return new PostFinanceEFinance();
+            case UNZER_PAYLATER_INVOICE:
+                return new PaylaterInvoice();
             default:
                 throw new PaymentException("Type '" + typeId + "' is currently not supported by the SDK");
         }
@@ -652,5 +651,11 @@ public class PaymentService {
 
     private String getTypeIdentifier(String typeId) {
         return typeId.substring(2, 5);
+    }
+
+    public PaylaterInvoiceConfig fetchPaymentTypeConfig(PaylaterInvoiceConfigRequest configRequest) throws HttpCommunicationException {
+        String url = this.urlUtil.getEndpoint() + configRequest.getRequestUrl();
+        String response = this.restCommunication.httpGet(url, unzer.getPrivateKey());
+        return this.jsonParser.fromJson(response, PaylaterInvoiceConfig.class);
     }
 }

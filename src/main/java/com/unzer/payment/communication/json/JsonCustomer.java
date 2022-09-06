@@ -1,143 +1,139 @@
-package com.unzer.payment.communication.json;
-
-/*-
- * #%L
- * Unzer Java SDK
- * %%
- * Copyright (C) 2020 - today Unzer E-Com GmbH
- * %%
+/*
+ * Copyright 2020-today Unzer E-Com GmbH
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
- *      http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- * #L%
  */
-
-import java.util.Date;
+package com.unzer.payment.communication.json;
 
 import com.google.gson.annotations.JsonAdapter;
 import com.unzer.payment.Address;
 import com.unzer.payment.Customer.Salutation;
+import com.unzer.payment.ShippingAddress;
 import com.unzer.payment.communication.JsonDateConverter;
 
+import java.util.Date;
+
 public class JsonCustomer extends JsonIdObject implements JsonObject {
-	private String firstname;
-	private String lastname;
-	private String company;
-	private Salutation salutation;
-	private String customerId;
-	
-	@JsonAdapter(JsonDateConverter.class)
-	private Date birthDate;
-	private String email;
-	private String phone;
-	private String mobile;
-	private Address billingAddress;
-	private Address shippingAddress;
+    private String firstname;
+    private String lastname;
+    private String company;
+    private Salutation salutation;
+    private String customerId;
 
-	private JSonCompanyInfo companyInfo;
-	
-	public String getFirstname() {
-		return firstname;
-	}
+    @JsonAdapter(JsonDateConverter.class)
+    private Date birthDate;
+    private String email;
+    private String phone;
+    private String mobile;
+    private Address billingAddress;
+    private ShippingAddress shippingAddress;
 
-	public void setFirstname(String firstname) {
-		this.firstname = firstname;
-	}
+    private JSonCompanyInfo companyInfo;
 
-	public String getLastname() {
-		return lastname;
-	}
+    public String getFirstname() {
+        return firstname;
+    }
 
-	public void setLastname(String lastname) {
-		this.lastname = lastname;
-	}
+    public void setFirstname(String firstname) {
+        this.firstname = firstname;
+    }
 
-	public Salutation getSalutation() {
-		return salutation;
-	}
+    public String getLastname() {
+        return lastname;
+    }
 
-	public void setSalutation(Salutation salutation) {
-		this.salutation = salutation;
-	}
+    public void setLastname(String lastname) {
+        this.lastname = lastname;
+    }
 
-	public String getCustomerId() {
-		return customerId;
-	}
+    public Salutation getSalutation() {
+        return salutation;
+    }
 
-	public void setCustomerId(String customerId) {
-		this.customerId = customerId;
-	}
+    public void setSalutation(Salutation salutation) {
+        this.salutation = salutation;
+    }
 
-	public Date getBirthDate() {
-		return birthDate;
-	}
+    public String getCustomerId() {
+        return customerId;
+    }
 
-	public void setBirthDate(Date birthDate) {
-		this.birthDate = birthDate;
-	}
+    public void setCustomerId(String customerId) {
+        this.customerId = customerId;
+    }
 
-	public String getEmail() {
-		return email;
-	}
+    public Date getBirthDate() {
+        return birthDate;
+    }
 
-	public void setEmail(String email) {
-		this.email = email;
-	}
+    public void setBirthDate(Date birthDate) {
+        this.birthDate = birthDate;
+    }
 
-	public String getPhone() {
-		return phone;
-	}
+    public String getEmail() {
+        return email;
+    }
 
-	public void setPhone(String phone) {
-		this.phone = phone;
-	}
+    public void setEmail(String email) {
+        this.email = email;
+    }
 
-	public String getMobile() {
-		return mobile;
-	}
+    public String getPhone() {
+        return phone;
+    }
 
-	public void setMobile(String mobile) {
-		this.mobile = mobile;
-	}
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
 
-	public Address getBillingAddress() {
-		return billingAddress;
-	}
+    public String getMobile() {
+        return mobile;
+    }
 
-	public void setBillingAddress(Address billingAddress) {
-		this.billingAddress = billingAddress;
-	}
+    public void setMobile(String mobile) {
+        this.mobile = mobile;
+    }
 
-	public Address getShippingAddress() {
-		return shippingAddress;
-	}
+    public Address getBillingAddress() {
+        return billingAddress;
+    }
 
-	public void setShippingAddress(Address shippingAddress) {
-		this.shippingAddress = shippingAddress;
-	}
+    public void setBillingAddress(Address billingAddress) {
+        this.billingAddress = billingAddress;
+    }
 
-	public JSonCompanyInfo getCompanyInfo() {
-		return companyInfo;
-	}
+    public ShippingAddress getShippingAddress() {
+        return shippingAddress;
+    }
 
-	public void setCompanyInfo(JSonCompanyInfo companyInfo) {
-		this.companyInfo = companyInfo;
-	}
+    public void setShippingAddress(ShippingAddress shippingAddress) {
+        this.shippingAddress = shippingAddress;
+    }
 
-	public String getCompany() {
-		return company;
-	}
+    public JSonCompanyInfo getCompanyInfo() {
+        return companyInfo;
+    }
 
-	public void setCompany(String company) {
-		this.company = company;
-	}
+    public void setCompanyInfo(JSonCompanyInfo companyInfo) {
+        this.companyInfo = companyInfo;
+    }
+
+    public String getCompany() {
+        return company;
+    }
+
+    public void setCompany(String company) {
+        this.company = company;
+    }
 
 }

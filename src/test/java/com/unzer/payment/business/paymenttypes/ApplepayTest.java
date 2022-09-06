@@ -1,44 +1,38 @@
-package com.unzer.payment.business.paymenttypes;
-
-/*-
- * #%L
- * Unzer Java SDK
- * %%
- * Copyright (C) 2020 - today Unzer E-Com GmbH
- * %%
+/*
+ * Copyright 2020-today Unzer E-Com GmbH
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- * #L%
  */
+package com.unzer.payment.business.paymenttypes;
+
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.unzer.payment.Authorization;
-import com.unzer.payment.Cancel;
-import com.unzer.payment.Charge;
-import com.unzer.payment.PaymentException;
+import com.unzer.payment.*;
 import com.unzer.payment.business.AbstractPaymentTest;
 import com.unzer.payment.communication.HttpCommunicationException;
 import com.unzer.payment.paymenttypes.Applepay;
 import com.unzer.payment.paymenttypes.ApplepayHeader;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.math.BigDecimal;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Currency;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+
 
 public class ApplepayTest extends AbstractPaymentTest {
 
@@ -254,9 +248,10 @@ public class ApplepayTest extends AbstractPaymentTest {
 
     @Test
     public void testChargeApplePayTypeIdAndPartialCancel() throws HttpCommunicationException, MalformedURLException {
-        Applepay applepay = getUnzer().createPaymentType(getApplePay());
-        Charge charge = getUnzer().charge(BigDecimal.TEN, Currency.getInstance("EUR"), applepay.getId(), new URL("https://www.meinShop.de"));
-        Cancel cancel = getUnzer().cancelCharge(charge.getPaymentId(), charge.getId(), BigDecimal.ONE);
+        Unzer unzer = getUnzer();
+        Applepay applepay = unzer.createPaymentType(getApplePay());
+        Charge charge = unzer.charge(BigDecimal.TEN, Currency.getInstance("EUR"), applepay.getId(), new URL("https://www.meinShop.de"));
+        Cancel cancel = unzer.cancelCharge(charge.getPaymentId(), charge.getId(), BigDecimal.ONE);
 
         assertNotNull(cancel);
         assertNotNull(cancel.getId());

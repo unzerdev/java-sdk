@@ -6,7 +6,7 @@
 
     <groupId>com.unzer.payment</groupId>
     <artifactId>java-sdk</artifactId>
-    <version>1.2.0.0</version>
+    <version>1.2.1.0</version>
     <name>Unzer Java SDK</name>
     <description>Unzer Java SDK</description>
     <url>https://docs.unzer.com/</url>
@@ -43,6 +43,7 @@
         <skip.dependency.check>true</skip.dependency.check>
         <log4j.version>2.18.0</log4j.version>
         <jackson.version>2.12.7</jackson.version>
+        <junit.version>5.9.0</junit.version>
     </properties>
 
     <distributionManagement>
@@ -102,7 +103,7 @@
             <plugin>
                 <groupId>org.jacoco</groupId>
                 <artifactId>jacoco-maven-plugin</artifactId>
-                <version>0.8.5</version>
+                <version>0.8.8</version>
                 <configuration>
                     <excludes>
                         <exclude>**/*Test.*</exclude>
@@ -132,7 +133,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.8.1</version>
+                <version>3.10.1</version>
                 <configuration>
                     <source>1.8</source>
                     <target>1.8</target>
@@ -141,7 +142,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-javadoc-plugin</artifactId>
-                <version>3.2.0</version>
+                <version>3.4.0</version>
                 <configuration>
                     <doclint>none</doclint>
                 </configuration>
@@ -167,27 +168,7 @@
                     </execution>
                 </executions>
             </plugin>
-            <!--            <plugin>
-                            <groupId>org.codehaus.mojo</groupId>
-                            <artifactId>license-maven-plugin</artifactId>
-                            <version>2.0.0</version>
-                            <executions>
-                                <execution>
-                                    <id>first</id>
-                                    <goals>
-                                        <goal>update-file-header</goal>
-                                    </goals>
-                                    <phase>process-sources</phase>
-                                    <configuration>
-                                        <licenseName>apache_v2</licenseName>
-                                        <roots>
-                                            <root>src/main/java</root>
-                                            <root>src/test/java</root>
-                                        </roots>
-                                    </configuration>
-                                </execution>
-                            </executions>
-                        </plugin>-->
+
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-gpg-plugin</artifactId>
@@ -208,6 +189,7 @@
                     </execution>
                 </executions>
             </plugin>
+
             <plugin>
                 <groupId>org.sonatype.plugins</groupId>
                 <artifactId>nexus-staging-maven-plugin</artifactId>
@@ -241,6 +223,35 @@
                     </execution>
                 </executions>
             </plugin>
+
+            <plugin>
+                <groupId>com.mycila</groupId>
+                <artifactId>license-maven-plugin</artifactId>
+                <version>4.1</version>
+                <configuration>
+                    <licenseSets>
+                        <licenseSet>
+                            <header>LICENSE</header>
+                            <excludes>
+                                <exclude>**/*.md</exclude>
+                                <exclude>**/*.xml</exclude>
+                                <exclude>selenium/**</exclude>
+                                <exclude>src/test/resources/**</exclude>
+                                <exclude>src/main/resources/**</exclude>
+                            </excludes>
+                        </licenseSet>
+                    </licenseSets>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>check-license-headers</id>
+                        <phase>validate</phase>
+                        <goals>
+                            <goal>check</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
         </plugins>
     </build>
 
@@ -256,9 +267,24 @@
         <dependency>
             <groupId>com.google.code.gson</groupId>
             <artifactId>gson</artifactId>
-            <version>2.8.9</version>
+            <version>2.9.1</version>
         </dependency>
 
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-core</artifactId>
+            <version>${jackson.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+            <version>${jackson.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>javax.xml.bind</groupId>
+            <artifactId>jaxb-api</artifactId>
+            <version>2.3.1</version>
+        </dependency>
 
         <!-- HTTP Client Library -->
         <dependency>
@@ -267,11 +293,26 @@
             <version>4.5.13</version>
         </dependency>
 
-        <!-- Test dependencies -->
+
+        <!-- Test dependencies       -->
         <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <version>4.13.1</version>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-engine</artifactId>
+            <version>${junit.version}</version>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.awaitility</groupId>
+            <artifactId>awaitility</artifactId>
+            <version>4.0.2</version>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.awaitility</groupId>
+            <artifactId>awaitility-proxy</artifactId>
+            <version>3.1.6</version>
             <scope>test</scope>
         </dependency>
 
@@ -289,7 +330,6 @@
             <scope>test</scope>
         </dependency>
 
-
         <!-- UI Test dependencies Selenium -->
         <dependency>
             <groupId>org.seleniumhq.selenium</groupId>
@@ -297,45 +337,19 @@
             <version>3.141.59</version>
             <scope>test</scope>
         </dependency>
+
         <dependency>
             <groupId>org.seleniumhq.selenium</groupId>
             <artifactId>selenium-server</artifactId>
             <version>3.141.59</version>
             <scope>test</scope>
         </dependency>
+
         <dependency>
             <groupId>org.seleniumhq.selenium</groupId>
             <artifactId>htmlunit-driver</artifactId>
             <version>2.39.0</version>
             <scope>test</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>org.awaitility</groupId>
-            <artifactId>awaitility</artifactId>
-            <version>4.0.2</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.awaitility</groupId>
-            <artifactId>awaitility-proxy</artifactId>
-            <version>3.1.6</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>com.fasterxml.jackson.core</groupId>
-            <artifactId>jackson-core</artifactId>
-            <version>${jackson.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>com.fasterxml.jackson.core</groupId>
-            <artifactId>jackson-databind</artifactId>
-            <version>${jackson.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>javax.xml.bind</groupId>
-            <artifactId>jaxb-api</artifactId>
-            <version>2.3.1</version>
         </dependency>
     </dependencies>
 </project>

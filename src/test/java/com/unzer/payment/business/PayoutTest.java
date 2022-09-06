@@ -1,31 +1,27 @@
-package com.unzer.payment.business;
-
-/*-
- * #%L
- * Unzer Java SDK
- * %%
- * Copyright (C) 2020 - today Unzer E-Com GmbH
- * %%
+/*
+ * Copyright 2020-today Unzer E-Com GmbH
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- * #L%
  */
+package com.unzer.payment.business;
+
 
 import com.unzer.payment.PaymentException;
 import com.unzer.payment.Payout;
 import com.unzer.payment.communication.HttpCommunicationException;
 import com.unzer.payment.paymenttypes.Card;
-import org.junit.Ignore;
-import org.junit.Test;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
 
 import java.math.BigDecimal;
 import java.net.MalformedURLException;
@@ -35,15 +31,15 @@ import java.util.Currency;
 
 import static com.unzer.payment.business.BasketV1TestData.getMaxTestBasketV1;
 import static com.unzer.payment.util.Uuid.generateUuid;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 public class PayoutTest extends AbstractPaymentTest {
 
-    @Ignore("Further Configuration needed")
+    @Disabled("Further Configuration needed")
     @Test
     public void testPayoutCardMinimal() throws MalformedURLException, HttpCommunicationException {
-        Card card = createPaymentTypeCard();
+        Card card = createPaymentTypeCard(getUnzer(), "4711100000000000");
         Payout payout = getUnzer().payout(BigDecimal.ONE, Currency.getInstance("EUR"), card.getId(), new URL("https://www.unzer.com"));
         assertNotNull(payout);
 
@@ -51,10 +47,10 @@ public class PayoutTest extends AbstractPaymentTest {
         assertPayoutEqual(payout, payoutFetched);
     }
 
-    @Ignore("Further Configuration needed")
+    @Disabled("Further Configuration needed")
     @Test
     public void testPayoutCardWithAllData() throws MalformedURLException, HttpCommunicationException, ParseException {
-        Card card = createPaymentTypeCard();
+        Card card = createPaymentTypeCard(getUnzer(), "4711100000000000");
         Payout payout = getUnzer().payout(getTestPayout(card.getId()));
         assertNotNull(payout);
         assertNotNull(payout.getId());

@@ -1,31 +1,27 @@
-package com.unzer.payment.business;
-
-/*-
- * #%L
- * Unzer Java SDK
- * %%
- * Copyright (C) 2020 - today Unzer E-Com GmbH
- * %%
+/*
+ * Copyright 2020-today Unzer E-Com GmbH
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
- *      http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- * #L%
  */
+package com.unzer.payment.business;
+
 
 import com.unzer.payment.PaymentException;
 import com.unzer.payment.Paypage;
 import com.unzer.payment.communication.HttpCommunicationException;
-import org.junit.After;
-import org.junit.Ignore;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.remote.RemoteWebDriver;
@@ -36,294 +32,294 @@ import java.text.ParseException;
 
 import static java.util.concurrent.TimeUnit.SECONDS;
 import static org.awaitility.Awaitility.await;
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
-@Ignore("Selenium Tests do not work in Bamboo. Execute them manually")
+@Disabled("Selenium Tests do not work in Bamboo. Execute them manually")
 public class PaypageSeleniumTest extends AbstractSeleniumTest {
 
-	@After
-	public void tearDown(){
-		close();
-	}
+    @AfterEach
+    public void tearDown() {
+        close();
+    }
 
-	@Test
-	public void testSddPaypage() throws MalformedURLException, HttpCommunicationException {
-		Paypage paypage = getUnzer().paypage(getMinimumPaypage());
-		assertNotNull(paypage);
-		assertNotNull(paypage.getId());
-		assertNotNull(paypage.getRedirectUrl());
+    @Test
+    public void testSddPaypage() throws MalformedURLException, HttpCommunicationException {
+        Paypage paypage = getUnzer().paypage(getMinimumPaypage());
+        assertNotNull(paypage);
+        assertNotNull(paypage.getId());
+        assertNotNull(paypage.getRedirectUrl());
 
-		RemoteWebDriver driver = openUrl(paypage.getRedirectUrl());
-		choosePaymentMethod(driver, "payment-type-name-sepa-direct-debit");
+        RemoteWebDriver driver = openUrl(paypage.getRedirectUrl());
+        choosePaymentMethod(driver, "payment-type-name-sepa-direct-debit");
 
-		assertFalse(isAltTagPresent(driver, "logo"));
-		//assertFalse(isH1TagPresent(driver, getMaximumPaypage().getDescriptionMain())); 		// DescriptionMain
+        assertFalse(isAltTagPresent(driver, "logo"));
+        //assertFalse(isH1TagPresent(driver, getMaximumPaypage().getDescriptionMain())); 		// DescriptionMain
 
-		assertFalse(isHrefTagPresent(driver, getMaximumPaypage().getContactUrl()));
-		assertFalse(isHrefTagPresent(driver, getMaximumPaypage().getHelpUrl()));
-		assertFalse(isHrefTagPresent(driver, getMaximumPaypage().getPrivacyPolicyUrl()));
-		assertFalse(isHrefTagPresent(driver, getMaximumPaypage().getTermsAndConditionUrl()));
+        assertFalse(isHrefTagPresent(driver, getMaximumPaypage().getContactUrl()));
+        assertFalse(isHrefTagPresent(driver, getMaximumPaypage().getHelpUrl()));
+        assertFalse(isHrefTagPresent(driver, getMaximumPaypage().getPrivacyPolicyUrl()));
+        assertFalse(isHrefTagPresent(driver, getMaximumPaypage().getTermsAndConditionUrl()));
 
-		sendDataByXpath(driver, "//*[contains(@name, 'iban')]", "DE89370400440532013000");
-		pay(driver, getReturnUrl());
+        sendDataByXpath(driver, "//*[contains(@name, 'iban')]", "DE89370400440532013000");
+        pay(driver, getReturnUrl());
 
-		close();
-	}
+        close();
+    }
 
-	@Test
-	@Ignore ("Description is not shown?")
-	public void testMaximumPaypage() throws MalformedURLException, HttpCommunicationException {
-		Paypage paypage = getUnzer().paypage(getMaximumPaypage());
-		assertNotNull(paypage);
-		assertNotNull(paypage.getId());
-		assertNotNull(paypage.getRedirectUrl());
+    @Test
+    @Disabled("Description is not shown?")
+    public void testMaximumPaypage() throws MalformedURLException, HttpCommunicationException {
+        Paypage paypage = getUnzer().paypage(getMaximumPaypage());
+        assertNotNull(paypage);
+        assertNotNull(paypage.getId());
+        assertNotNull(paypage.getRedirectUrl());
 
-		RemoteWebDriver driver = openUrl(paypage.getRedirectUrl());
-		choosePaymentMethod(driver, "payment-type-name-sepa-direct-debit");
-		
-		assertTrue(isAltTagPresent(driver, "logo")); 				// Logo Image
-		assertTrue(isStyleTagPresent(driver, "background-image"));  // Full page image
+        RemoteWebDriver driver = openUrl(paypage.getRedirectUrl());
+        choosePaymentMethod(driver, "payment-type-name-sepa-direct-debit");
+
+        assertTrue(isAltTagPresent(driver, "logo"));                // Logo Image
+        assertTrue(isStyleTagPresent(driver, "background-image"));  // Full page image
 //		assertTrue(isAltTagPresent(driver, "basketImage")); 		// Basket Image Basket image is not implemented yet
 
 //		assertTrue(isH1TagPresent(driver, getMaximumPaypage().getShopName())); 				// ShopName Bug https://heidelpay.atlassian.net/browse/AHC-1620
 //		assertTrue(isH1TagPresent(driver, getMaximumPaypage().getDescriptionSmall())); 		// DescriptionSmall Bug https://heidelpay.atlassian.net/browse/AHC-1636
 
-		assertTrue(isHrefTagPresent(driver, getMaximumPaypage().getContactUrl()));
-		assertTrue(isHrefTagPresent(driver, getMaximumPaypage().getHelpUrl()));
-		assertTrue(isHrefTagPresent(driver, getMaximumPaypage().getPrivacyPolicyUrl()));
-		assertTrue(isHrefTagPresent(driver, getMaximumPaypage().getTermsAndConditionUrl()));
+        assertTrue(isHrefTagPresent(driver, getMaximumPaypage().getContactUrl()));
+        assertTrue(isHrefTagPresent(driver, getMaximumPaypage().getHelpUrl()));
+        assertTrue(isHrefTagPresent(driver, getMaximumPaypage().getPrivacyPolicyUrl()));
+        assertTrue(isHrefTagPresent(driver, getMaximumPaypage().getTermsAndConditionUrl()));
 
-		sendDataByName(driver, "iban", "DE" +
-				"89370400440532013000");
-		pay(driver, getReturnUrl());
+        sendDataByName(driver, "iban", "DE" +
+                "89370400440532013000");
+        pay(driver, getReturnUrl());
 
-		close();
-	}
+        close();
+    }
 
-	@Test
-	public void testCardPaypageWithout3DS() throws MalformedURLException, HttpCommunicationException {
-		Paypage paypage = getUnzer().paypage(getMinimumPaypage());
-		assertNotNull(paypage);
-		assertNotNull(paypage.getId());
-		assertNotNull(paypage.getRedirectUrl());
+    @Test
+    public void testCardPaypageWithout3DS() throws MalformedURLException, HttpCommunicationException {
+        Paypage paypage = getUnzer().paypage(getMinimumPaypage());
+        assertNotNull(paypage);
+        assertNotNull(paypage.getId());
+        assertNotNull(paypage.getRedirectUrl());
 
-		RemoteWebDriver driver = openUrl(paypage.getRedirectUrl());
-		choosePaymentMethod(driver, "payment-type-name-card");
+        RemoteWebDriver driver = openUrl(paypage.getRedirectUrl());
+        choosePaymentMethod(driver, "payment-type-name-card");
 
-		sendDataFrameById(driver, "unzer-number-iframe", "card-number", "4444333322221111");
-		sendDataFrameById(driver, "unzer-expiry-iframe", "card-expiry-date", "12/30");
-		sendDataFrameById(driver, "unzer-cvc-iframe", "card-ccv", "123");
+        sendDataFrameById(driver, "unzer-number-iframe", "card-number", "4444333322221111");
+        sendDataFrameById(driver, "unzer-expiry-iframe", "card-expiry-date", "12/30");
+        sendDataFrameById(driver, "unzer-cvc-iframe", "card-ccv", "123");
 
-		pay(driver, "https://payment.unzer.com/v1/redirect/3ds/");
+        pay(driver, "https://payment.unzer.com/v1/redirect/3ds/");
 
-		close();
+        close();
 
-	}
+    }
 
-	// Not possible to specify card3ds=true
-	@Test
-	public void testCardPaypageWith3DS() throws MalformedURLException, HttpCommunicationException {
-		Paypage paypage = getUnzer().paypage(getMinimumPaypage());
-		assertNotNull(paypage);
-		assertNotNull(paypage.getId());
-		assertNotNull(paypage.getRedirectUrl());
+    // Not possible to specify card3ds=true
+    @Test
+    public void testCardPaypageWith3DS() throws MalformedURLException, HttpCommunicationException {
+        Paypage paypage = getUnzer().paypage(getMinimumPaypage());
+        assertNotNull(paypage);
+        assertNotNull(paypage.getId());
+        assertNotNull(paypage.getRedirectUrl());
 
-		RemoteWebDriver driver = openUrl(paypage.getRedirectUrl());
-		choosePaymentMethod(driver, "payment-type-name-card");
+        RemoteWebDriver driver = openUrl(paypage.getRedirectUrl());
+        choosePaymentMethod(driver, "payment-type-name-card");
 
-		sendDataFrameById(driver, "unzer-number-iframe", "card-number", "4444333322221111");
-		sendDataFrameById(driver, "unzer-expiry-iframe", "card-expiry-date", "12/30");
-		sendDataFrameById(driver, "unzer-cvc-iframe", "card-ccv", "123");
+        sendDataFrameById(driver, "unzer-number-iframe", "card-number", "4444333322221111");
+        sendDataFrameById(driver, "unzer-expiry-iframe", "card-expiry-date", "12/30");
+        sendDataFrameById(driver, "unzer-cvc-iframe", "card-ccv", "123");
 
-		pay(driver, "https://payment.unzer.com/v1/redirect/3ds/");
+        pay(driver, "https://payment.unzer.com/v1/redirect/3ds/");
 
-		close();
-	}
+        close();
+    }
 
-	@Test
-	public void testSofortPaypage() throws MalformedURLException, HttpCommunicationException {
-		Paypage paypage = getUnzer().paypage(getMinimumPaypage());
-		assertNotNull(paypage);
-		assertNotNull(paypage.getId());
-		assertNotNull(paypage.getRedirectUrl());
+    @Test
+    public void testSofortPaypage() throws MalformedURLException, HttpCommunicationException {
+        Paypage paypage = getUnzer().paypage(getMinimumPaypage());
+        assertNotNull(paypage);
+        assertNotNull(paypage.getId());
+        assertNotNull(paypage.getRedirectUrl());
 
-		RemoteWebDriver driver = openUrl(paypage.getRedirectUrl());
-		choosePaymentMethod(driver, "payment-type-name-sofort");
-		pay(driver, "https://www.sofort.com/payment/start");
+        RemoteWebDriver driver = openUrl(paypage.getRedirectUrl());
+        choosePaymentMethod(driver, "payment-type-name-sofort");
+        pay(driver, "https://www.sofort.com/payment/start");
 
-		close();
-	}
+        close();
+    }
 
-	@Test
-	public void testGiropayPaypage() throws MalformedURLException, HttpCommunicationException {
-		Paypage paypage = getUnzer().paypage(getMinimumPaypage());
-		assertNotNull(paypage);
-		assertNotNull(paypage.getId());
-		assertNotNull(paypage.getRedirectUrl());
+    @Test
+    public void testGiropayPaypage() throws MalformedURLException, HttpCommunicationException {
+        Paypage paypage = getUnzer().paypage(getMinimumPaypage());
+        assertNotNull(paypage);
+        assertNotNull(paypage.getId());
+        assertNotNull(paypage.getRedirectUrl());
 
-		RemoteWebDriver driver = openUrl(paypage.getRedirectUrl());
-		choosePaymentMethod(driver, "payment-type-name-giropay");
-		pay(driver, "https://giropay.starfinanz.de/ftgbank/bankselection");
+        RemoteWebDriver driver = openUrl(paypage.getRedirectUrl());
+        choosePaymentMethod(driver, "payment-type-name-giropay");
+        pay(driver, "https://giropay.starfinanz.de/ftgbank/bankselection");
 
-		close();
-	}
+        close();
+    }
 
-	@Test
-	@Ignore("Works in Debug mode but not in run mode?")
-	public void testSDDGuaranteedWithCustomerReferencePaypage() throws MalformedURLException, HttpCommunicationException, PaymentException, ParseException {
-		Paypage paypage = getUnzer().paypage(getMinimumWithReferencesPaypage("866.49"));
-		assertNotNull(paypage);
-		assertNotNull(paypage.getId());
-		assertNotNull(paypage.getRedirectUrl());
+    @Test
+    @Disabled("Works in Debug mode but not in run mode?")
+    public void testSDDGuaranteedWithCustomerReferencePaypage() throws MalformedURLException, HttpCommunicationException, PaymentException, ParseException {
+        Paypage paypage = getUnzer().paypage(getMinimumWithReferencesPaypage("866.49"));
+        assertNotNull(paypage);
+        assertNotNull(paypage.getId());
+        assertNotNull(paypage.getRedirectUrl());
 
-		RemoteWebDriver driver = openUrl(paypage.getRedirectUrl());
-		choosePaymentMethod(driver, "payment-type-name-sepa-direct-debit-guaranteed");
+        RemoteWebDriver driver = openUrl(paypage.getRedirectUrl());
+        choosePaymentMethod(driver, "payment-type-name-sepa-direct-debit-guaranteed");
 
-		sendDataByXpath(driver, "//div[@id='sepa-direct-debit-guaranteed']/div/div/div/input", "DE89370400440532013000");
+        sendDataByXpath(driver, "//div[@id='sepa-direct-debit-guaranteed']/div/div/div/input", "DE89370400440532013000");
 
-		pay(driver, getReturnUrl(), "Pay € 866.49");
+        pay(driver, getReturnUrl(), "Pay € 866.49");
 
-		close();
-	}
+        close();
+    }
 
-	@Test
-	@Ignore ("currently B2B is configured")
-	public void testSDDGuaranteedWithoutCustomerReferencePaypage() throws MalformedURLException, HttpCommunicationException, PaymentException {
-		Paypage paypage = getUnzer().paypage(getMinimumPaypage(BigDecimal.TEN));
-		assertNotNull(paypage);
-		assertNotNull(paypage.getId());
-		assertNotNull(paypage.getRedirectUrl());
+    @Test
+    @Disabled("currently B2B is configured")
+    public void testSDDGuaranteedWithoutCustomerReferencePaypage() throws MalformedURLException, HttpCommunicationException, PaymentException {
+        Paypage paypage = getUnzer().paypage(getMinimumPaypage(BigDecimal.TEN));
+        assertNotNull(paypage);
+        assertNotNull(paypage.getId());
+        assertNotNull(paypage.getRedirectUrl());
 
-		RemoteWebDriver driver = openUrl(paypage.getRedirectUrl());
-		choosePaymentMethod(driver, "payment-type-name-sepa-direct-debit-guaranteed");
+        RemoteWebDriver driver = openUrl(paypage.getRedirectUrl());
+        choosePaymentMethod(driver, "payment-type-name-sepa-direct-debit-guaranteed");
 
-		assertTrue(isDivTextPresent(driver, "Personal data"));
-		assertTrue(isLabelPresent(driver, "Salutation"));
-		assertTrue(isLabelPresent(driver, "First Name"));
-		assertTrue(isLabelPresent(driver, "Last Name"));
-		assertTrue(isLabelPresent(driver, "Birthday"));
-		assertTrue(isLabelPresent(driver, "Street"));
-		assertTrue(isLabelPresent(driver, "Postal Code"));
-		assertTrue(isLabelPresent(driver, "State"));
-		assertTrue(isLabelPresent(driver, "City"));
-		assertTrue(isLabelPresent(driver, "Country"));
+        assertTrue(isDivTextPresent(driver, "Personal data"));
+        assertTrue(isLabelPresent(driver, "Salutation"));
+        assertTrue(isLabelPresent(driver, "First Name"));
+        assertTrue(isLabelPresent(driver, "Last Name"));
+        assertTrue(isLabelPresent(driver, "Birthday"));
+        assertTrue(isLabelPresent(driver, "Street"));
+        assertTrue(isLabelPresent(driver, "Postal Code"));
+        assertTrue(isLabelPresent(driver, "State"));
+        assertTrue(isLabelPresent(driver, "City"));
+        assertTrue(isLabelPresent(driver, "Country"));
 
-		await().atLeast(1, SECONDS).and().atMost(2, SECONDS);
+        await().atLeast(1, SECONDS).and().atMost(2, SECONDS);
 
-		getWebElementByXpath(driver, "//div[@id='customer-sepa-direct-debit-guaranteed']//input[@name='salutation' and @value='mr']").click();
-		sendDataByXpath(driver, "//div[@id='sepa-direct-debit-guaranteed']/div/div/div/input", "DE89370400440532013000");
-		sendDataByXpath(driver, "//div[@id='customer-sepa-direct-debit-guaranteed']//input[@name='firstname']", "Peter");
-		sendDataByXpath(driver, "//div[@id='customer-sepa-direct-debit-guaranteed']//input[@name='lastname']", "Universum");
-		sendDataByXpath(driver, "//div[@id='customer-sepa-direct-debit-guaranteed']//input[@name='birthDate']", "1974-12-24");
-		sendDataByXpath(driver, "//div[@id='customer-sepa-direct-debit-guaranteed']//input[@name='street']", "Hugo-Junkers-Str. 5");
-		sendDataByXpath(driver, "//div[@id='customer-sepa-direct-debit-guaranteed']//input[@name='zip']", "60386");
-		sendDataByXpath(driver, "//div[@id='customer-sepa-direct-debit-guaranteed']//input[@name='state']", "DE-BO");
-		sendDataByXpath(driver, "//div[@id='customer-sepa-direct-debit-guaranteed']//input[@name='zip']", "60386");
-		sendDataByXpath(driver, "//div[@id='customer-sepa-direct-debit-guaranteed']//input[@name='city']", "Frankfurt am Main");
-		sendDataByXpath(driver, "//div[@id='customer-sepa-direct-debit-guaranteed']//input[@name='zip']", "60386");
+        getWebElementByXpath(driver, "//div[@id='customer-sepa-direct-debit-guaranteed']//input[@name='salutation' and @value='mr']").click();
+        sendDataByXpath(driver, "//div[@id='sepa-direct-debit-guaranteed']/div/div/div/input", "DE89370400440532013000");
+        sendDataByXpath(driver, "//div[@id='customer-sepa-direct-debit-guaranteed']//input[@name='firstname']", "Peter");
+        sendDataByXpath(driver, "//div[@id='customer-sepa-direct-debit-guaranteed']//input[@name='lastname']", "Universum");
+        sendDataByXpath(driver, "//div[@id='customer-sepa-direct-debit-guaranteed']//input[@name='birthDate']", "1974-12-24");
+        sendDataByXpath(driver, "//div[@id='customer-sepa-direct-debit-guaranteed']//input[@name='street']", "Hugo-Junkers-Str. 5");
+        sendDataByXpath(driver, "//div[@id='customer-sepa-direct-debit-guaranteed']//input[@name='zip']", "60386");
+        sendDataByXpath(driver, "//div[@id='customer-sepa-direct-debit-guaranteed']//input[@name='state']", "DE-BO");
+        sendDataByXpath(driver, "//div[@id='customer-sepa-direct-debit-guaranteed']//input[@name='zip']", "60386");
+        sendDataByXpath(driver, "//div[@id='customer-sepa-direct-debit-guaranteed']//input[@name='city']", "Frankfurt am Main");
+        sendDataByXpath(driver, "//div[@id='customer-sepa-direct-debit-guaranteed']//input[@name='zip']", "60386");
 
-		pay(driver, getReturnUrl(), "Pay € 10.00");
+        pay(driver, getReturnUrl(), "Pay € 10.00");
 
-		close();
-	}
+        close();
+    }
 
-	@Test
-	@Ignore("Works in Debug mode but not in run mode?")
-	public void testInvoiceFactoringWithCustomerReferencePaypage() throws MalformedURLException, HttpCommunicationException, PaymentException, ParseException {
-		Paypage paypage = getUnzer().paypage(getMinimumWithReferencesPaypage("866.49"));
-		assertNotNull(paypage);
-		assertNotNull(paypage.getId());
-		assertNotNull(paypage.getRedirectUrl());
+    @Test
+    @Disabled("Works in Debug mode but not in run mode?")
+    public void testInvoiceFactoringWithCustomerReferencePaypage() throws MalformedURLException, HttpCommunicationException, PaymentException, ParseException {
+        Paypage paypage = getUnzer().paypage(getMinimumWithReferencesPaypage("866.49"));
+        assertNotNull(paypage);
+        assertNotNull(paypage.getId());
+        assertNotNull(paypage.getRedirectUrl());
 
-		RemoteWebDriver driver = openUrl(paypage.getRedirectUrl());
-		choosePaymentMethod(driver, "payment-type-name-invoice-factoring");
-        
-		pay(driver, getReturnUrl(), "Pay € 866.49");
+        RemoteWebDriver driver = openUrl(paypage.getRedirectUrl());
+        choosePaymentMethod(driver, "payment-type-name-invoice-factoring");
 
-		close();
-	}
+        pay(driver, getReturnUrl(), "Pay € 866.49");
 
-	@Test
-	public void testPaypalPaypage() throws MalformedURLException, HttpCommunicationException {
-		Paypage paypage = getUnzer().paypage(getMinimumPaypage());
-		assertNotNull(paypage);
-		assertNotNull(paypage.getId());
-		assertNotNull(paypage.getRedirectUrl());
+        close();
+    }
 
-		RemoteWebDriver driver = openUrl(paypage.getRedirectUrl());
-		choosePaymentMethod(driver, "payment-type-name-paypal");
-		pay(driver, "https://www.sandbox.paypal.com/");
+    @Test
+    public void testPaypalPaypage() throws MalformedURLException, HttpCommunicationException {
+        Paypage paypage = getUnzer().paypage(getMinimumPaypage());
+        assertNotNull(paypage);
+        assertNotNull(paypage.getId());
+        assertNotNull(paypage.getRedirectUrl());
 
-		close();
-	}
+        RemoteWebDriver driver = openUrl(paypage.getRedirectUrl());
+        choosePaymentMethod(driver, "payment-type-name-paypal");
+        pay(driver, "https://www.sandbox.paypal.com/");
 
-	@Test
-	public void testPrepaymentPaypage() throws MalformedURLException, HttpCommunicationException {
-		Paypage paypage = getUnzer().paypage(getMinimumPaypage());
-		assertNotNull(paypage);
-		assertNotNull(paypage.getId());
-		assertNotNull(paypage.getRedirectUrl());
+        close();
+    }
 
-		RemoteWebDriver driver = openUrl(paypage.getRedirectUrl());
-		choosePaymentMethod(driver, "payment-type-name-prepayment");
-		pay(driver, getReturnUrl());
+    @Test
+    public void testPrepaymentPaypage() throws MalformedURLException, HttpCommunicationException {
+        Paypage paypage = getUnzer().paypage(getMinimumPaypage());
+        assertNotNull(paypage);
+        assertNotNull(paypage.getId());
+        assertNotNull(paypage.getRedirectUrl());
 
-		close();
-	}
+        RemoteWebDriver driver = openUrl(paypage.getRedirectUrl());
+        choosePaymentMethod(driver, "payment-type-name-prepayment");
+        pay(driver, getReturnUrl());
 
-	@Test
-	@Ignore("Problem with PIS URL for Tipico")
-	public void testPisPaypage() throws MalformedURLException, HttpCommunicationException {
-		Paypage paypage = getUnzer().paypage(getMinimumPaypage());
-		assertNotNull(paypage);
-		assertNotNull(paypage.getId());
-		assertNotNull(paypage.getRedirectUrl());
+        close();
+    }
 
-		RemoteWebDriver driver = openUrl(paypage.getRedirectUrl());
-		choosePaymentMethod(driver, "payment-type-name-pis");
-		pay(driver, "https://www.flexipay-direct.com/checkout");
+    @Test
+    @Disabled("Problem with PIS URL for Tipico")
+    public void testPisPaypage() throws MalformedURLException, HttpCommunicationException {
+        Paypage paypage = getUnzer().paypage(getMinimumPaypage());
+        assertNotNull(paypage);
+        assertNotNull(paypage.getId());
+        assertNotNull(paypage.getRedirectUrl());
 
-		close();
-	}
+        RemoteWebDriver driver = openUrl(paypage.getRedirectUrl());
+        choosePaymentMethod(driver, "payment-type-name-pis");
+        pay(driver, "https://www.flexipay-direct.com/checkout");
 
-	@Test
-	public void testIdealPaypage() throws MalformedURLException, HttpCommunicationException, InterruptedException {
-		Paypage paypage = getUnzer().paypage(getMinimumPaypage());
-		assertNotNull(paypage);
-		assertNotNull(paypage.getId());
-		assertNotNull(paypage.getRedirectUrl());
-		RemoteWebDriver driver = openUrl(paypage.getRedirectUrl());
-		
+        close();
+    }
 
-		choosePaymentMethod(driver, "payment-type-name-ideal");
-		
-		selectDropDown(driver, "ideal");
+    @Test
+    public void testIdealPaypage() throws MalformedURLException, HttpCommunicationException, InterruptedException {
+        Paypage paypage = getUnzer().paypage(getMinimumPaypage());
+        assertNotNull(paypage);
+        assertNotNull(paypage.getId());
+        assertNotNull(paypage.getRedirectUrl());
+        RemoteWebDriver driver = openUrl(paypage.getRedirectUrl());
 
-		WebElement item = driver.findElement(By.xpath("//div[contains(text(),'Test Issuer Simulation V3 - ING')]"));
-		item.click();
-		
-		pay(driver, "https://idealtest.rabobank.nl/ideal/issuerSim.do");
 
-		close();
-	}
+        choosePaymentMethod(driver, "payment-type-name-ideal");
 
-	@Test
-	public void testEPSPaypage() throws MalformedURLException, HttpCommunicationException, InterruptedException {
-		Paypage paypage = getUnzer().paypage(getMinimumPaypage());
-		assertNotNull(paypage);
-		assertNotNull(paypage.getId());
-		assertNotNull(paypage.getRedirectUrl());
+        selectDropDown(driver, "ideal");
 
-		RemoteWebDriver driver = openUrl(paypage.getRedirectUrl());
-		choosePaymentMethod(driver, "payment-type-name-eps");
+        WebElement item = driver.findElement(By.xpath("//div[contains(text(),'Test Issuer Simulation V3 - ING')]"));
+        item.click();
 
-		selectDropDown(driver, "eps");
-        
-		WebElement item = driver.findElement(By.xpath("//div[@data-value='GIBAATWGXXX']"));
-		item.click();
-		pay(driver, "https://login.fat.sparkasse.at/sts/oauth/authorize");
+        pay(driver, "https://idealtest.rabobank.nl/ideal/issuerSim.do");
 
-		close();
-	}
+        close();
+    }
+
+    @Test
+    public void testEPSPaypage() throws MalformedURLException, HttpCommunicationException, InterruptedException {
+        Paypage paypage = getUnzer().paypage(getMinimumPaypage());
+        assertNotNull(paypage);
+        assertNotNull(paypage.getId());
+        assertNotNull(paypage.getRedirectUrl());
+
+        RemoteWebDriver driver = openUrl(paypage.getRedirectUrl());
+        choosePaymentMethod(driver, "payment-type-name-eps");
+
+        selectDropDown(driver, "eps");
+
+        WebElement item = driver.findElement(By.xpath("//div[@data-value='GIBAATWGXXX']"));
+        item.click();
+        pay(driver, "https://login.fat.sparkasse.at/sts/oauth/authorize");
+
+        close();
+    }
 
 }

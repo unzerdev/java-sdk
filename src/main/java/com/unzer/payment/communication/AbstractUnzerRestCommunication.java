@@ -1,24 +1,19 @@
-package com.unzer.payment.communication;
-
-/*-
- * #%L
- * Unzer Java SDK
- * %%
- * Copyright (C) 2020 - today Unzer E-Com GmbH
- * %%
+/*
+ * Copyright 2020-today Unzer E-Com GmbH
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- * #L%
  */
+package com.unzer.payment.communication;
 
 import com.unzer.payment.PaymentError;
 import com.unzer.payment.PaymentException;
@@ -42,7 +37,7 @@ import static org.apache.http.HttpHeaders.*;
  * implemented in the {@code AbstractUnzerRestCommunication}, there are
  * extensions-points defined, allowing to inject a custom implementation for the
  * network-communication as well as for logging aspects.
- *
+ * <p>
  * The {@code AbstractUnzerRestCommunication#execute(UnzerHttpRequest)} will already to any requireed non-funcional concerns, like
  * <ul>
  * <li>call logging, as implemented by the inheriting class in the logXxx Methods</li>
@@ -59,11 +54,43 @@ public abstract class AbstractUnzerRestCommunication implements UnzerRestCommuni
     public static final String BASIC = "Basic ";
     static final String USER_AGENT_PREFIX = "UnzerJava";
     private static final String CONTENT_TYPE_JSON = "application/json; charset=UTF-8";
-
-    private Locale locale;
+    private static final String CLIENTIP_HEADER = "CLIENTIP";
+    private static final String SDK_TYPE_HEADER = "SDK-TYPE";
+    private static final String SDK_VERSION_HEADER = "SDK-VERSION";
+    private static final String JAVA_VERSION_HEADER = "JAVA-VERSION";
+    private final Locale locale;
+    private final String clientIp;
 
     public AbstractUnzerRestCommunication(Locale locale) {
+        this(locale, null);
+    }
+
+    public AbstractUnzerRestCommunication(Locale locale, String clientIp) {
         this.locale = locale;
+        this.clientIp = clientIp;
+    }
+
+    public static String addAuthentication(String privateKey) {
+        if (privateKey == null) {
+            List<PaymentError> paymentErrorList = new ArrayList<PaymentError>();
+            paymentErrorList.add(new PaymentError(
+                    "PrivateKey/PublicKey is missing",
+                    "There was a problem authenticating your request.Please contact us for more information.",
+                    "API.000.000.001"));
+
+            throw new PaymentException(paymentErrorList, "");
+        }
+        if (!privateKey.endsWith(":")) {
+            privateKey = privateKey + ":";
+        }
+        String privateKeyBase64;
+        try {
+            privateKeyBase64 = DatatypeConverter.printBase64Binary(privateKey.getBytes("UTF-8"));
+        } catch (UnsupportedEncodingException e) {
+            throw new PaymentException("Unsupported encoding for the private key: Base64!");
+        }
+
+        return privateKeyBase64;
     }
 
     /**
@@ -169,34 +196,11 @@ public abstract class AbstractUnzerRestCommunication implements UnzerRestCommuni
     }
 
     private void addUserAgent(UnzerHttpRequest request) {
-        request.addHeader(USER_AGENT, USER_AGENT_PREFIX + " - " + SDKInfo.getVersion());
+        request.addHeader(USER_AGENT, USER_AGENT_PREFIX + " - " + SDKInfo.VERSION);
     }
 
     private void addUnzerAuthentication(String privateKey, UnzerHttpRequest request) {
         request.addHeader(AUTHORIZATION, BASIC + addAuthentication(privateKey));
-    }
-
-    public static String addAuthentication(String privateKey) {
-        if (privateKey == null) {
-            List<PaymentError> paymentErrorList = new ArrayList<PaymentError>();
-            paymentErrorList.add(new PaymentError(
-                    "PrivateKey/PublicKey is missing",
-                    "There was a problem authenticating your request.Please contact us for more information.",
-                    "API.000.000.001"));
-
-            throw new PaymentException(paymentErrorList, "");
-        }
-        if (!privateKey.endsWith(":")) {
-            privateKey = privateKey + ":";
-        }
-        String privateKeyBase64;
-        try {
-            privateKeyBase64 = DatatypeConverter.printBase64Binary(privateKey.getBytes("UTF-8"));
-        } catch (UnsupportedEncodingException e) {
-            throw new PaymentException("Unsupported encoding for the private key: Base64!");
-        }
-
-        return privateKeyBase64;
     }
 
     private void addAcceptLanguageHeader(UnzerHttpRequest request) {
@@ -205,10 +209,16 @@ public abstract class AbstractUnzerRestCommunication implements UnzerRestCommuni
         }
     }
 
+    private void addClientIpHeader(UnzerHttpRequest request) {
+        if (this.clientIp != null && !this.clientIp.isEmpty()) {
+            request.addHeader(CLIENTIP_HEADER, clientIp);
+        }
+    }
+
     private void addSDKInfo(UnzerHttpRequest request) {
-        request.addHeader("SDK-TYPE", USER_AGENT_PREFIX);
-        request.addHeader("SDK-VERSION", SDKInfo.getVersion());
-        request.addHeader("JAVA-VERSION", System.getProperty("java.version"));
+        request.addHeader(SDK_TYPE_HEADER, USER_AGENT_PREFIX);
+        request.addHeader(SDK_VERSION_HEADER, SDKInfo.VERSION);
+        request.addHeader(JAVA_VERSION_HEADER, System.getProperty("java.version"));
     }
 
     String execute(UnzerHttpRequest request, String privateKey) throws HttpCommunicationException {
@@ -216,6 +226,7 @@ public abstract class AbstractUnzerRestCommunication implements UnzerRestCommuni
         addUnzerAuthentication(privateKey, request);
         addAcceptLanguageHeader(request);
         addSDKInfo(request);
+        addClientIpHeader(request);
         setContentType(request);
 
         logRequest(request);

@@ -1,24 +1,19 @@
-package com.unzer.payment;
-
-/*-
- * #%L
- * Unzer Java SDK
- * %%
- * Copyright (C) 2020 - today Unzer E-Com GmbH
- * %%
+/*
+ * Copyright 2020-today Unzer E-Com GmbH
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
- *      http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- * #L%
  */
+package com.unzer.payment;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,132 +23,132 @@ import java.util.List;
  */
 public class PaymentException extends RuntimeException {
 
-	private static final String EMPTY_STRING = "";
-	private static final int STATUS_CODE_ZERO = 0;
-	private final transient List<PaymentError> paymentErrorList;
-	private final String timestamp;
-	private final String url;
-	private final Integer statusCode;
-	private final String id;
+    private static final String EMPTY_STRING = "";
+    private static final int STATUS_CODE_ZERO = 0;
+    private final transient List<PaymentError> paymentErrorList;
+    private final String timestamp;
+    private final String url;
+    private final Integer statusCode;
+    private final String id;
 
-	/**
-	 * Creates an unspecific {@code PaymentException}, however should be avoided, specific Exceptions are preferred.
-	 * @param message the message
-	 */
-	public PaymentException(String message) {
-		this(EMPTY_STRING, STATUS_CODE_ZERO, EMPTY_STRING, EMPTY_STRING, new ArrayList<PaymentError>(), message);
-	}
-	
-	/**
-	 * Creates a {@code PaymentException} from the given values.
-	 * 
-	 * @param url the url called but respond with an error.
-	 * @param statusCode the http status code
-	 * @param timestamp the timestamp the cal was made
-	 * @param id the id for referencing the error
-	 * @param errors the list of {@code PaymentError}.
-	 * @param message to be thrown
-	 */
-	public PaymentException(String url, Integer statusCode, String timestamp, String id, List<PaymentError> errors, String message) {
-		super(toMessage(url, statusCode, errors, message));
-		this.timestamp = timestamp;
-		this.url = url;
-		this.paymentErrorList = errors;
-		this.statusCode = statusCode;
-		this.id = id;
-	}
+    /**
+     * Creates an unspecific {@code PaymentException}, however should be avoided, specific Exceptions are preferred.
+     *
+     * @param message the message
+     */
+    public PaymentException(String message) {
+        this(EMPTY_STRING, STATUS_CODE_ZERO, EMPTY_STRING, EMPTY_STRING, new ArrayList<PaymentError>(), message);
+    }
 
-	/**
-	 * Creates a {@code PaymentException} from the given values.
-	 * @param id the error id as returned from the api
-	 * @param url called endpoint causing the error
-	 * @param timestamp timestamp the call was made
-	 * @param errors a list of errors returned from the Api.
-	 * @param message to be thrown
-	 */
-	public PaymentException(String id, String url, String timestamp, List<PaymentError> errors, String message) {
-		this(url, STATUS_CODE_ZERO, timestamp, id, errors, message);
-	}
-	
-	/**
-	 * Creates a {@code PaymentException} for the given payment error. Provided Message will be dismissed if {@code List<PaymentError>} has a single Error with a StatusCode of 0
-	 *
-	 * @param errors a list of errors returned from the Api.
-	 * @param message to be thrown
-	 */
-	public PaymentException(List<PaymentError> errors, String message) {
-		this(EMPTY_STRING, STATUS_CODE_ZERO, EMPTY_STRING, EMPTY_STRING, errors, (errors != null && errors.size() == 1) ? errors.get(STATUS_CODE_ZERO).getMerchantMessage() : message);
-	}
+    /**
+     * Creates a {@code PaymentException} from the given values.
+     *
+     * @param url        the url called but respond with an error.
+     * @param statusCode the http status code
+     * @param timestamp  the timestamp the cal was made
+     * @param id         the id for referencing the error
+     * @param errors     the list of {@code PaymentError}.
+     * @param message    to be thrown
+     */
+    public PaymentException(String url, Integer statusCode, String timestamp, String id, List<PaymentError> errors, String message) {
+        super(toMessage(url, statusCode, errors, message));
+        this.timestamp = timestamp;
+        this.url = url;
+        this.paymentErrorList = errors;
+        this.statusCode = statusCode;
+        this.id = id;
+    }
 
-	/**
-	 * Returns the details of the api/payment error as List of {@code PaymentError}s.
-	 *
-	 * @return List of {@code PaymentError}s
-	 */
-	public List<PaymentError> getPaymentErrorList() {
-		return paymentErrorList;
-	}
+    /**
+     * Creates a {@code PaymentException} from the given values.
+     *
+     * @param id        the error id as returned from the api
+     * @param url       called endpoint causing the error
+     * @param timestamp timestamp the call was made
+     * @param errors    a list of errors returned from the Api.
+     * @param message   to be thrown
+     */
+    public PaymentException(String id, String url, String timestamp, List<PaymentError> errors, String message) {
+        this(url, STATUS_CODE_ZERO, timestamp, id, errors, message);
+    }
 
-	/**
-	 * Returns the timestamp the api-call was made, or the error occurred at the sdk.
-	 *
-	 * @return timestamp the api-call was made, or the error occurred at the sdk.
-	 */
-	public String getTimestamp() {
-		return timestamp;
-	}
+    /**
+     * Creates a {@code PaymentException} for the given payment error. Provided Message will be dismissed if {@code List<PaymentError>} has a single Error with a StatusCode of 0
+     *
+     * @param errors  a list of errors returned from the Api.
+     * @param message to be thrown
+     */
+    public PaymentException(List<PaymentError> errors, String message) {
+        this(EMPTY_STRING, STATUS_CODE_ZERO, EMPTY_STRING, EMPTY_STRING, errors, (errors != null && errors.size() == 1) ? errors.get(STATUS_CODE_ZERO).getMerchantMessage() : message);
+    }
 
-	/**
-	 * 
-	 * @return the url called but returned with an error.
-	 */
-	public String getUrl() {
-		return url;
-	}
+    private static String toMessage(String url, Integer statusCode, List<PaymentError> errors, String message) {
+        if (message != null && !message.isEmpty()) {
+            return message;
+        }
 
-	/**
-	 * 
-	 * @return the http-status call
-	 */
-	public Integer getStatusCode() {
-		return statusCode;
-	}
+        StringBuilder sb = new StringBuilder();
+        if (url != null && statusCode != null) {
+            sb.append("Unzer responded with ");
+            sb.append(statusCode);
+            sb.append(" when calling ");
+            sb.append(url);
+            sb.append(". ");
+        }
 
-	public String getId() {
-		return id;
-	}
+        return withErrors(sb, errors).toString();
+    }
 
-	private static String toMessage(String url, Integer statusCode, List<PaymentError> errors, String message) {
-		if(message != null && !message.isEmpty()) {
-			return message;
-		}
+    private static StringBuilder withErrors(StringBuilder sb, List<PaymentError> errors) {
+        if (errors == null || errors.isEmpty()) {
+            return sb;
+        }
+        sb.append("[");
+        for (int i = STATUS_CODE_ZERO; i < errors.size(); i++) {
+            sb.append(errors.get(i).toString());
+            if (i < errors.size() - 1) {
+                sb.append(",");
+            } else {
+                sb.append("]");
+            }
+        }
+        return sb;
+    }
 
-		StringBuilder sb = new StringBuilder();
-		if (url != null && statusCode != null) {
-			sb.append("Unzer responded with ");
-			sb.append(statusCode);
-			sb.append(" when calling ");
-			sb.append(url);
-			sb.append(". ");
-		}
+    /**
+     * Returns the details of the api/payment error as List of {@code PaymentError}s.
+     *
+     * @return List of {@code PaymentError}s
+     */
+    public List<PaymentError> getPaymentErrorList() {
+        return paymentErrorList;
+    }
 
-		return withErrors(sb, errors).toString();
-	}
+    /**
+     * Returns the timestamp the api-call was made, or the error occurred at the sdk.
+     *
+     * @return timestamp the api-call was made, or the error occurred at the sdk.
+     */
+    public String getTimestamp() {
+        return timestamp;
+    }
 
-	private static StringBuilder withErrors(StringBuilder sb, List<PaymentError> errors) {
-		if (errors == null || errors.isEmpty()) {
-			return sb;
-		}
-		sb.append("[");
-		for (int i = STATUS_CODE_ZERO; i < errors.size(); i++) {
-			sb.append(errors.get(i).toString());
-			if (i < errors.size() - 1) {
-				sb.append(",");
-			} else {
-				sb.append("]");
-			}
-		}
-		return sb;
-	}
+    /**
+     * @return the url called but returned with an error.
+     */
+    public String getUrl() {
+        return url;
+    }
+
+    /**
+     * @return the http-status call
+     */
+    public Integer getStatusCode() {
+        return statusCode;
+    }
+
+    public String getId() {
+        return id;
+    }
 
 }

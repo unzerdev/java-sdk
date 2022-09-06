@@ -1,3 +1,18 @@
+/*
+ * Copyright 2020-today Unzer E-Com GmbH
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package com.unzer.payment.business;
 
 import com.unzer.payment.*;
@@ -39,27 +54,8 @@ import java.util.*;
 import static com.unzer.payment.util.Uuid.generateUuid;
 import static java.util.concurrent.TimeUnit.SECONDS;
 import static org.awaitility.Awaitility.await;
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
-/*-
- * #%L
- * Unzer Java SDK
- * %%
- * Copyright (C) 2020 - today Unzer E-Com GmbH
- * %%
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- * #L%
- */
 
 public abstract class AbstractPaymentTest {
     protected static final String EMPTY_STRING = "";
@@ -78,6 +74,25 @@ public abstract class AbstractPaymentTest {
     public final String privateKey2 = properties.getString(PropertiesUtil.PRIVATE_KEY2);
     public final String privateKey3 = properties.getString(PropertiesUtil.PRIVATE_KEY3);
     public final String marketplacePrivatekey = properties.getString(PropertiesUtil.MARKETPLACE_PRIVATE_KEY);
+
+    protected static String maskString(String strText, int start, int end, char maskChar) {
+        if (strText == null) return null;
+        if (strText.equals("")) return "";
+        if (start < 0) start = 0;
+        if (end > strText.length()) end = strText.length();
+
+        int maskLength = end - start;
+
+        if (maskLength == 0) return strText;
+
+        StringBuilder sbMaskString = new StringBuilder(maskLength);
+
+        for (int i = 0; i < maskLength; i++) {
+            sbMaskString.append(maskChar);
+        }
+
+        return strText.substring(0, start) + sbMaskString + strText.substring(start + maskLength);
+    }
 
     protected String getRandomInvoiceId() {
         return generateUuid().substring(0, 5);
@@ -169,13 +184,13 @@ public abstract class AbstractPaymentTest {
     }
 
     protected Charge getCharge(String orderId) throws MalformedURLException, HttpCommunicationException {
-        Charge charge = getCharge(createPaymentTypeCard().getId(), null, null);
+        Charge charge = getCharge(createPaymentTypeCard(getUnzer(), "4711100000000000").getId(), null, null);
         charge.setOrderId(orderId);
         return charge;
     }
 
     protected Charge getCharge(String orderId, Boolean card3ds, AdditionalTransactionData additionalTransactionData) throws MalformedURLException, HttpCommunicationException {
-        return getCharge(createPaymentTypeCard().getId(), null, orderId, null, null, card3ds, additionalTransactionData);
+        return getCharge(createPaymentTypeCard(getUnzer(), "4711100000000000").getId(), null, orderId, null, null, card3ds, additionalTransactionData);
     }
 
     protected Charge getCharge(String typeId, String customerId, String orderId, String metadataId, String basketId, AdditionalTransactionData additionalTransactionData) throws MalformedURLException, HttpCommunicationException {
@@ -197,19 +212,15 @@ public abstract class AbstractPaymentTest {
         return charge;
     }
 
-    protected Card createPaymentTypeCard() throws HttpCommunicationException {
-        return createPaymentTypeCard("4711100000000000");
-    }
-
-    protected Card createPaymentTypeCard(String cardnumber) throws HttpCommunicationException {
+    protected Card createPaymentTypeCard(Unzer unzer, String cardnumber) throws HttpCommunicationException {
         Card card = getPaymentTypeCard(cardnumber);
-        card = (Card) getUnzer().createPaymentType(card);
+        card = unzer.createPaymentType(card);
         return card;
     }
 
     protected InvoiceSecured createPaymentTypeInvoiceSecured() throws HttpCommunicationException {
         InvoiceSecured invoice = new InvoiceSecured();
-        invoice = (InvoiceSecured) getUnzer().createPaymentType(invoice);
+        invoice = getUnzer().createPaymentType(invoice);
         return invoice;
     }
 
@@ -265,7 +276,7 @@ public abstract class AbstractPaymentTest {
         return sdd;
     }
 
-    protected Customer createMaximumCustomer() throws HttpCommunicationException, ParseException {
+    protected Customer createMaximumCustomer() throws HttpCommunicationException {
         return getUnzer().createCustomer(getMaximumCustomer(generateUuid()));
     }
 
@@ -277,7 +288,7 @@ public abstract class AbstractPaymentTest {
         return getUnzer().createCustomer(getFactoringOKCustomer(generateUuid()));
     }
 
-    protected Customer createMaximumCustomerSameAddress() throws HttpCommunicationException, ParseException {
+    protected Customer createMaximumCustomerSameAddress() throws HttpCommunicationException {
         return getUnzer().createCustomer(getMaximumCustomerSameAddress(generateUuid()));
     }
 
@@ -289,7 +300,7 @@ public abstract class AbstractPaymentTest {
         return new Customer("Unzer E-Com GmbH");
     }
 
-    protected Customer getMaximumCustomerSameAddress(String customerId) throws ParseException {
+    protected Customer getMaximumCustomerSameAddress(String customerId) {
         Customer customer = new Customer("Peter", "Universum");
         customer
                 .setCustomerId(customerId)
@@ -299,12 +310,14 @@ public abstract class AbstractPaymentTest {
                 .setPhone("+4962214310100")
                 .setBirthDate(getDate("03.10.1974"))
                 .setBillingAddress(getAddress())
-                .setShippingAddress(getAddress());
+                .setShippingAddress(
+                        ShippingAddress.of(getAddress(), ShippingAddress.Type.EQUALS_BILLING)
+                );
         customer.setCompany("Unzer E-Com GmbH");
         return customer;
     }
 
-    protected Customer getMaximumCustomer(String customerId) throws ParseException {
+    protected Customer getMaximumCustomer(String customerId) {
         Customer customer = new Customer("Max", "Mustermann");
         customer
                 .setCustomerId(customerId)
@@ -313,11 +326,16 @@ public abstract class AbstractPaymentTest {
                 .setMobile("+4315136633669")
                 .setBirthDate(getDate("03.10.1974"))
                 .setBillingAddress(getAddress())
-                .setShippingAddress(getAddress("Mustermann", "Vangerowstraße 18", "Heidelberg", "BW", "69115", "DE"));
+                .setShippingAddress(
+                        ShippingAddress.of(
+                                getAddress("Mustermann", "Vangerowstraße 18", "Heidelberg", "BW", "69115", "DE"),
+                                ShippingAddress.Type.DIFFERENT_ADDRESSES
+                        )
+                );
         return customer;
     }
 
-    protected Customer getMaximumMrsCustomer(String customerId) throws ParseException {
+    protected Customer getMaximumMrsCustomer(String customerId) {
         Customer customer = new Customer("Anna", "Sadriu");
         customer
                 .setCustomerId(customerId)
@@ -326,7 +344,12 @@ public abstract class AbstractPaymentTest {
                 .setMobile("+4315136633669")
                 .setBirthDate(getDate("08.05.1986"))
                 .setBillingAddress(getAddress())
-                .setShippingAddress(getAddress("Schubert", "Vangerowstraße 18", "Heidelberg", "BW", "69115", "DE"));
+                .setShippingAddress(
+                        ShippingAddress.of(
+                                getAddress("Schubert", "Vangerowstraße 18", "Heidelberg", "BW", "69115", "DE"),
+                                ShippingAddress.Type.DIFFERENT_ADDRESSES
+                        )
+                );
         return customer;
     }
 
@@ -339,7 +362,12 @@ public abstract class AbstractPaymentTest {
                 .setMobile("+4315136633669")
                 .setBirthDate(getDate("01.01.1999"))
                 .setBillingAddress(getAddress())
-                .setShippingAddress(getAddress("Schubert", "Vangerowstraße 18", "Heidelberg", "BW", "69115", "DE"));
+                .setShippingAddress(
+                        ShippingAddress.of(
+                                getAddress("Schubert", "Vangerowstraße 18", "Heidelberg", "BW", "69115", "DE"),
+                                ShippingAddress.Type.DIFFERENT_ADDRESSES
+                        )
+                );
         return customer;
     }
 
@@ -391,7 +419,9 @@ public abstract class AbstractPaymentTest {
                 .setSalutation(Salutation.MR)
                 .setBirthDate(getDate("22.11.1980"))
                 .setBillingAddress(getFactoringOKAddress())
-                .setShippingAddress(getFactoringOKAddress());
+                .setShippingAddress(
+                        ShippingAddress.of(getFactoringOKAddress(), ShippingAddress.Type.EQUALS_BILLING)
+                );
         return customer;
     }
 
@@ -427,15 +457,14 @@ public abstract class AbstractPaymentTest {
     }
 
     protected Metadata getTestMetadata(boolean sorted) {
-        Metadata metadata = new Metadata(sorted)
+        return new Metadata(sorted)
                 .addMetadata("invoice-nr", "Rg-2018-11-1")
                 .addMetadata("shop-id", "4711")
                 .addMetadata("delivery-date", "24.12.2018")
                 .addMetadata("reason", "X-mas present");
-        return metadata;
     }
 
-    protected Date getDate(String date) throws ParseException {
+    protected Date getDate(String date) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
         LocalDate parsedLocalDate = LocalDate.parse(date, formatter);
         return Date.from(parsedLocalDate.atStartOfDay().atZone(ZoneId.of("UTC")).toInstant());
@@ -513,25 +542,6 @@ public abstract class AbstractPaymentTest {
         BigDecimal bigDecimal = new BigDecimal(number);
         bigDecimal.setScale(4);
         return bigDecimal;
-    }
-
-    protected static String maskString(String strText, int start, int end, char maskChar) {
-        if (strText == null) return null;
-        if (strText.equals("")) return "";
-        if (start < 0) start = 0;
-        if (end > strText.length()) end = strText.length();
-
-        int maskLength = end - start;
-
-        if (maskLength == 0) return strText;
-
-        StringBuilder sbMaskString = new StringBuilder(maskLength);
-
-        for (int i = 0; i < maskLength; i++) {
-            sbMaskString.append(maskChar);
-        }
-
-        return strText.substring(0, start) + sbMaskString.toString() + strText.substring(start + maskLength);
     }
 
     protected int confirmMarketplacePendingTransaction(String redirectUrl) {

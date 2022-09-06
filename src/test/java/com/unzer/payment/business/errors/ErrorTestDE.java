@@ -1,24 +1,20 @@
-package com.unzer.payment.business.errors;
-
-/*-
- * #%L
- * Unzer Java SDK
- * %%
- * Copyright (C) 2020 - today Unzer E-Com GmbH
- * %%
+/*
+ * Copyright 2020-today Unzer E-Com GmbH
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
- *      http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- * #L%
  */
+package com.unzer.payment.business.errors;
+
 
 import com.unzer.payment.Authorization;
 import com.unzer.payment.Customer;
@@ -27,14 +23,14 @@ import com.unzer.payment.PaymentException;
 import com.unzer.payment.business.AbstractPaymentTest;
 import com.unzer.payment.communication.HttpCommunicationException;
 import com.unzer.payment.paymenttypes.Card;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.net.MalformedURLException;
 import java.text.ParseException;
 import java.util.List;
 
 import static com.unzer.payment.util.Uuid.generateUuid;
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class ErrorTestDE extends AbstractPaymentTest {
 
@@ -79,7 +75,7 @@ public class ErrorTestDE extends AbstractPaymentTest {
     // Payment type '/types/s-crd-jbrjthrghag2' not found
     @Test
     public void testInvalidAccess() throws HttpCommunicationException {
-        Card card = createPaymentTypeCard();
+        Card card = createPaymentTypeCard(getUnzer(), "4711100000000000");
         try {
             getUnzerDE(privateKey1).fetchPaymentType(card.getId());  // Prod-Sandbox
 
@@ -100,7 +96,7 @@ public class ErrorTestDE extends AbstractPaymentTest {
     @Test
     public void testMissingReturnUrl() throws MalformedURLException, HttpCommunicationException {
         try {
-            Authorization authorization = getAuthorization(createPaymentTypeCard().getId());
+            Authorization authorization = getAuthorization(createPaymentTypeCard(getUnzer(), "4711100000000000").getId());
             authorization.setReturnUrl(null);
             getUnzerDE().authorize(authorization);
         } catch (PaymentException e) {
