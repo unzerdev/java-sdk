@@ -25,10 +25,10 @@ import java.util.Arrays;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class PaypageTest extends AbstractSeleniumTest {
+public class PaypageTest extends AbstractPaymentTest {
 
     @Test
-    public void testMaximumPaypage() throws MalformedURLException, HttpCommunicationException {
+    public void testMaximumPaypage() throws HttpCommunicationException, MalformedURLException {
         Paypage request = getMaximumPaypage();
         Paypage response = getUnzer().paypage(request);
         assertNull(response.getCard3ds());
