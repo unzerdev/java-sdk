@@ -20,6 +20,8 @@ import com.unzer.payment.communication.json.*;
 import com.unzer.payment.marketplace.MarketplaceCancel;
 import com.unzer.payment.paymenttypes.PaymentType;
 
+import java.util.Locale;
+
 public class JsonToBusinessClassMapper {
 
     public JsonObject map(AbstractTransaction<? extends AbstractPayment> abstractInitPayment) {
@@ -28,6 +30,7 @@ public class JsonToBusinessClassMapper {
         json.setCurrency(abstractInitPayment.getCurrency());
         json.setReturnUrl(abstractInitPayment.getReturnUrl());
         json.setOrderId(abstractInitPayment.getOrderId());
+        // TODO: set typeId
         json.setResources(getResources(abstractInitPayment));
         json.setCard3ds(abstractInitPayment.getCard3ds());
         json.setPaymentReference(abstractInitPayment.getPaymentReference());
@@ -321,6 +324,11 @@ public class JsonToBusinessClassMapper {
         json.setFirstname(customer.getFirstname());
         json.setLastname(customer.getLastname());
         json.setCompany(customer.getCompany());
+
+        if (customer.getLanguage() != null) {
+            json.setLanguage(customer.getLanguage().getLanguage());
+        }
+
         json.setCustomerId(customer.getCustomerId());
         json.setEmail(customer.getEmail());
         json.setMobile(customer.getMobile());
@@ -340,6 +348,11 @@ public class JsonToBusinessClassMapper {
         customer.setLastname(json.getLastname());
         customer.setCompany(json.getCompany());
         customer.setCustomerId(json.getCustomerId());
+
+        if(json.getLanguage() != null && !json.getLanguage().isEmpty()) {
+            customer.setLanguage(new Locale(json.getLanguage()));
+        }
+
         customer.setEmail(json.getEmail());
         customer.setMobile(json.getMobile());
         customer.setPhone(json.getPhone());

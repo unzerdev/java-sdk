@@ -25,6 +25,16 @@ public class AdditionalTransactionData {
     private ShippingTransactionData shipping;
     private RiskData riskData;
 
+    /**
+     * URL to the merchant's Terms and Conditions Page
+     */
+    private String termsAndConditionUrl;
+
+    /**
+     * URL to the merchant's Privacy Policy Page
+     */
+    private String privacyPolicyUrl;
+
     public CardTransactionData getCard() {
         return card;
     }
@@ -49,6 +59,36 @@ public class AdditionalTransactionData {
 
     public AdditionalTransactionData setRiskData(RiskData riskData) {
         this.riskData = riskData;
+        return this;
+    }
+
+    /**
+     * URL to the merchant's Terms and Conditions Page
+     */
+    public String getTermsAndConditionsUrl() {
+        return termsAndConditionUrl;
+    }
+
+    /**
+     * URL to the merchant's Terms and Conditions Page
+     */
+    public AdditionalTransactionData setTermsAndConditionsUrl(String termsAndConditionsUrl) {
+        this.termsAndConditionUrl = termsAndConditionsUrl;
+        return this;
+    }
+
+    /**
+     * URL to the merchant's Privacy Policy Page
+     */
+    public String getPrivacyPolicyUrl() {
+        return privacyPolicyUrl;
+    }
+
+    /**
+     * URL to the merchant's Privacy Policy Page
+     */
+    public AdditionalTransactionData setPrivacyPolicyUrl(String privacyPolicyUrl) {
+        this.privacyPolicyUrl = privacyPolicyUrl;
         return this;
     }
 }

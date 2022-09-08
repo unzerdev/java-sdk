@@ -324,12 +324,14 @@ public abstract class AbstractPaymentTest {
                 .setSalutation(Salutation.MR)
                 .setEmail("support@unzer.com")
                 .setMobile("+4315136633669")
+                .setPhone("+4962216471100")
                 .setBirthDate(getDate("03.10.1974"))
                 .setBillingAddress(getAddress())
+                .setLanguage(Locale.GERMAN)
                 .setShippingAddress(
                         ShippingAddress.of(
                                 getAddress("Mustermann", "Vangerowstraße 18", "Heidelberg", "BW", "69115", "DE"),
-                                ShippingAddress.Type.DIFFERENT_ADDRESSES
+                                ShippingAddress.Type.DIFFERENT_ADDRESS
                         )
                 );
         return customer;
@@ -347,7 +349,7 @@ public abstract class AbstractPaymentTest {
                 .setShippingAddress(
                         ShippingAddress.of(
                                 getAddress("Schubert", "Vangerowstraße 18", "Heidelberg", "BW", "69115", "DE"),
-                                ShippingAddress.Type.DIFFERENT_ADDRESSES
+                                ShippingAddress.Type.DIFFERENT_ADDRESS
                         )
                 );
         return customer;
@@ -365,7 +367,7 @@ public abstract class AbstractPaymentTest {
                 .setShippingAddress(
                         ShippingAddress.of(
                                 getAddress("Schubert", "Vangerowstraße 18", "Heidelberg", "BW", "69115", "DE"),
-                                ShippingAddress.Type.DIFFERENT_ADDRESSES
+                                ShippingAddress.Type.DIFFERENT_ADDRESS
                         )
                 );
         return customer;

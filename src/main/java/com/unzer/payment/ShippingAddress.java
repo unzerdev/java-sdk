@@ -49,8 +49,8 @@ public class ShippingAddress extends Address {
     public enum Type {
         @SerializedName("equals-billing")
         EQUALS_BILLING,
-        @SerializedName("different-addresses")
-        DIFFERENT_ADDRESSES,
+        @SerializedName("different-address")
+        DIFFERENT_ADDRESS,
         @SerializedName("branch-pickup")
         BRANCH_PICKUP,
         @SerializedName("post-office-pickup")

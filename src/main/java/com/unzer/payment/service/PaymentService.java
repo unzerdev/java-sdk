@@ -565,6 +565,7 @@ public class PaymentService {
             case PF_CARD:
             case PF_EFINANCE:
             case UNZER_PAYLATER_INVOICE:
+            case KLARNA:
                 return new JsonIdObject();
             case PAYPAL:
                 return new JsonPaypal();
@@ -644,6 +645,8 @@ public class PaymentService {
                 return new PostFinanceEFinance();
             case UNZER_PAYLATER_INVOICE:
                 return new PaylaterInvoice();
+            case KLARNA:
+                return new Klarna();
             default:
                 throw new PaymentException("Type '" + typeId + "' is currently not supported by the SDK");
         }
