@@ -20,9 +20,13 @@ import com.unzer.payment.business.AbstractPaymentTest;
 import com.unzer.payment.communication.HttpCommunicationException;
 import com.unzer.payment.models.AdditionalTransactionData;
 import com.unzer.payment.paymenttypes.Klarna;
-import org.junit.jupiter.api.DynamicTest;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestFactory;
+import io.github.bonigarcia.wdm.WebDriverManager;
+import org.junit.jupiter.api.*;
+import org.openqa.selenium.By;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.math.BigDecimal;
 import java.util.*;
@@ -36,6 +40,33 @@ import static org.junit.jupiter.api.DynamicTest.dynamicTest;
 
 
 public class KlarnaTest extends AbstractPaymentTest {
+    private ChromeDriver driver;
+    private WebDriverWait wait;
+
+    @BeforeAll
+    static void setup() {
+        WebDriverManager.chromedriver().setup();
+    }
+
+    void driverSetup() {
+        ChromeOptions chromeOptions = new ChromeOptions()
+                .addArguments(
+                        "--ignore-certificate-errors",
+                        "--headless"
+                );
+
+        driver = new ChromeDriver(chromeOptions);
+        wait = new WebDriverWait(driver, 2000);
+
+    }
+
+    @AfterEach
+    void closeDriver() {
+        if (driver != null) {
+            driver.close();
+        }
+    }
+
     @Test
     public void testCreatePaymentType() throws HttpCommunicationException {
         Klarna klarna = getUnzer().createPaymentType(new Klarna());
@@ -191,15 +222,25 @@ public class KlarnaTest extends AbstractPaymentTest {
 
             // Authorize
             if (tc.expectedErrors == null) {
-                Authorization responseAuthorization = unzer.authorize(tc.authorization);
+                Authorization createdAuth = unzer.authorize(tc.authorization);
 
-                assertNotNull(responseAuthorization);
-                assertNotNull(responseAuthorization.getId());
-                assertFalse(responseAuthorization.getId().isEmpty());
-                assertNotEquals(AbstractTransaction.Status.ERROR, responseAuthorization.getStatus());
-                assertNotNull(responseAuthorization.getPaymentId());
-                assertFalse(responseAuthorization.getPaymentId().isEmpty());
-                assertNotNull(responseAuthorization.getRedirectUrl());
+                assertNotNull(createdAuth);
+                assertNotNull(createdAuth.getId());
+                assertFalse(createdAuth.getId().isEmpty());
+                assertNotEquals(AbstractTransaction.Status.ERROR, createdAuth.getStatus());
+                assertNotNull(createdAuth.getPaymentId());
+                assertFalse(createdAuth.getPaymentId().isEmpty());
+                assertNotNull(createdAuth.getRedirectUrl());
+
+                performKlarnaAuthorization(createdAuth.getRedirectUrl().toString());
+
+                Authorization succeedAuth = unzer.fetchAuthorization(createdAuth.getPaymentId());
+                assertNotNull(succeedAuth);
+                assertEquals(AbstractTransaction.Status.SUCCESS, succeedAuth.getStatus());
+
+                Charge charge = unzer.chargeAuthorization(succeedAuth.getPaymentId());
+                assertNotNull(charge);
+                assertEquals(AbstractTransaction.Status.SUCCESS, charge.getStatus());
             } else {
                 PaymentException ex = assertThrows(PaymentException.class, () -> unzer.authorize(tc.authorization));
                 assertEquals(tc.expectedErrors.size(), ex.getPaymentErrorList().size());
@@ -208,15 +249,22 @@ public class KlarnaTest extends AbstractPaymentTest {
                         ex.getPaymentErrorList().stream().sorted(Comparator.comparing(PaymentError::getCode)).collect(Collectors.toList())
                 );
             }
-
-            // Charge is not possible without browser
-            //
-            // Actions to perform:
-            // * Click button:id=buy-button
-            // * Click button:id=onConfirm
-            // * Find input:id=one-time-code -> Enter 999998
-            // * Click button:id=invoice_kp-purchase-review-continue-button
-            // * Get redirected
         })).collect(Collectors.toList());
+    }
+
+    private void performKlarnaAuthorization(String redirectUrl) {
+        driverSetup();
+        driver.get(redirectUrl);
+        wait.until(ExpectedConditions.urlContains("https://pay.playground.klarna.com/"));
+        wait.until(ExpectedConditions.elementToBeClickable(By.id("buy-button")));
+        driver.findElement(By.id("buy-button")).click();
+        driver.switchTo().frame("klarna-hpp-instance-fullscreen");
+        wait.until(ExpectedConditions.elementToBeClickable(By.id("onContinue")));
+        driver.findElement(By.id("onContinue")).click();
+        wait.until(ExpectedConditions.elementToBeClickable(By.id("otp_field")));
+        driver.findElement(By.id("otp_field")).sendKeys("999998");
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("invoice_kp-purchase-review-continue-button")));
+        driver.findElement(By.id("invoice_kp-purchase-review-continue-button")).click();
+        wait.until(ExpectedConditions.urlContains("unzer.com"));
     }
 }
