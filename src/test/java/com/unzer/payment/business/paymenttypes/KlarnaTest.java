@@ -28,9 +28,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestFactory;
 
 import java.math.BigDecimal;
-import java.util.Collection;
-import java.util.Currency;
-import java.util.Locale;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -58,30 +56,30 @@ public class KlarnaTest extends AbstractPaymentTest {
     }
 
     @TestFactory
-    public Collection<DynamicTest> testAuthorizeAndCharge() {
+    public Collection<DynamicTest> testAuthorize() {
         class TestCase {
             final String name;
             final Customer customer;
             final Basket basket;
             final Authorization authorization;
-            final PaymentError expectedError;
+            final Collection<PaymentError> expectedErrors;
 
-            public TestCase(String name, Customer customer, Basket basket, Authorization authorization, PaymentError expectedError) {
+            public TestCase(String name, Customer customer, Basket basket, Authorization authorization, Collection<PaymentError> expectedErrors) {
                 this.name = name;
                 this.authorization = authorization;
                 this.customer = customer;
                 this.basket = basket;
-                this.expectedError = expectedError;
+                this.expectedErrors = expectedErrors;
             }
         }
 
         return Stream.of(
-                // TODO: add english
-                // TODO: no language
                 new TestCase(
                         "with terms urls",
+
                         getMaximumCustomer(generateUuid())
                                 .setCompany("Unzer GmbH"),
+
                         new Basket()
                                 .setTotalValueGross(new BigDecimal("500.5"))
                                 .setCurrencyCode(Currency.getInstance("EUR"))
@@ -103,29 +101,82 @@ public class KlarnaTest extends AbstractPaymentTest {
                                         .setPrivacyPolicyUrl("https://en.wikipedia.org/wiki/Policy")
                                         .setTermsAndConditionsUrl("https://en.wikipedia.org/wiki/Terms_of_service")
                         ),
+
                         null
-                )//,
-//                new TestCase(
-//                        "without additional data",
-//                        getMaximumCustomer(generateUuid()),
-//                        new Basket()
-//                                .setTotalValueGross(new BigDecimal("500.5"))
-//                                .setCurrencyCode(Currency.getInstance("EUR"))
-//                                .setOrderId(generateUuid())
-//                                .addBasketItem(
-//                                        new BasketItem()
-//                                                .setBasketItemReferenceId("Artikelnummer4711")
-//                                                .setQuantity(5)
-//                                                .setVat(BigDecimal.ZERO)
-//                                                .setAmountDiscountPerUnitGross(BigDecimal.ZERO)
-//                                                .setAmountPerUnitGross(new BigDecimal("100.1"))
-//                                                .setTitle("Apple iPhone")
-//                                ), (Authorization) new Authorization()
-//                        .setAmount(BigDecimal.valueOf(500.5))
-//                        .setCurrency(Currency.getInstance("EUR"))
-//                        .setReturnUrl(unsafeUrl("https://unzer.com")),
-//                        null
-//                )
+                ),
+                new TestCase(
+                        "without terms urls",
+
+                        getMaximumCustomer(generateUuid())
+                                .setCompany("Unzer GmbH"),
+
+                        new Basket()
+                                .setTotalValueGross(new BigDecimal("500.5"))
+                                .setCurrencyCode(Currency.getInstance("EUR"))
+                                .setOrderId(generateUuid())
+                                .addBasketItem(
+                                        new BasketItem()
+                                                .setBasketItemReferenceId("Artikelnummer4711")
+                                                .setQuantity(5)
+                                                .setVat(BigDecimal.ZERO)
+                                                .setAmountDiscountPerUnitGross(BigDecimal.ZERO)
+                                                .setAmountPerUnitGross(new BigDecimal("100.1"))
+                                                .setTitle("Apple iPhone")
+                                ), (Authorization) new Authorization()
+                        .setAmount(BigDecimal.valueOf(500.5))
+                        .setCurrency(Currency.getInstance("EUR"))
+                        .setReturnUrl(unsafeUrl("https://unzer.com")),
+
+                        Arrays.asList(
+                                new PaymentError(
+                                        "additionalTransactionData.termsAndConditionUrl is missing.",
+                                        "An error occurred. Please contact us for more information.",
+                                        "API.320.200.209"
+                                ),
+                                new PaymentError(
+                                        "additionalTransactionData.privacyPolicyUrl is missing.",
+                                        "An error occurred. Please contact us for more information.",
+                                        "API.320.200.210"
+                                )
+                        )
+                ),
+                new TestCase(
+                        "without language",
+
+                        getMaximumCustomer(generateUuid())
+                                .setLanguage(null)
+                                .setCompany("Unzer GmbH"),
+
+                        new Basket()
+                                .setTotalValueGross(new BigDecimal("500.5"))
+                                .setCurrencyCode(Currency.getInstance("EUR"))
+                                .setOrderId(generateUuid())
+                                .addBasketItem(
+                                        new BasketItem()
+                                                .setBasketItemReferenceId("Artikelnummer4711")
+                                                .setQuantity(5)
+                                                .setVat(BigDecimal.ZERO)
+                                                .setAmountDiscountPerUnitGross(BigDecimal.ZERO)
+                                                .setAmountPerUnitGross(new BigDecimal("100.1"))
+                                                .setTitle("Apple iPhone")
+                                ), (Authorization) new Authorization()
+                        .setAmount(BigDecimal.valueOf(500.5))
+                        .setCurrency(Currency.getInstance("EUR"))
+                        .setReturnUrl(unsafeUrl("https://unzer.com"))
+                        .setAdditionalTransactionData(
+                                new AdditionalTransactionData()
+                                        .setPrivacyPolicyUrl("https://en.wikipedia.org/wiki/Policy")
+                                        .setTermsAndConditionsUrl("https://en.wikipedia.org/wiki/Terms_of_service")
+                        ),
+
+                        Collections.singletonList(
+                                new PaymentError(
+                                        "system error( possible incorrect/missing input data)",
+                                        "An unexpected error occurred. Please contact us for more information.",
+                                        "COR.100.370.111"
+                                )
+                        )
+                )
         ).map(tc -> dynamicTest(tc.name, () -> {
             Unzer unzer = getUnzer();
 
@@ -140,22 +191,35 @@ public class KlarnaTest extends AbstractPaymentTest {
                 tc.authorization.setBasketId(basket.getId());
             }
 
+
             // Authorize
-            Authorization responseAuthorization = unzer.authorize(tc.authorization);
+            if (tc.expectedErrors == null) {
+                Authorization responseAuthorization = unzer.authorize(tc.authorization);
 
-            assertNotNull(responseAuthorization);
-            assertNotNull(responseAuthorization.getId());
-            assertFalse(responseAuthorization.getId().isEmpty());
-            assertNotEquals(AbstractTransaction.Status.ERROR, responseAuthorization.getStatus());
-            assertNotNull(responseAuthorization.getPaymentId());
-            assertFalse(responseAuthorization.getPaymentId().isEmpty());
+                assertNotNull(responseAuthorization);
+                assertNotNull(responseAuthorization.getId());
+                assertFalse(responseAuthorization.getId().isEmpty());
+                assertNotEquals(AbstractTransaction.Status.ERROR, responseAuthorization.getStatus());
+                assertNotNull(responseAuthorization.getPaymentId());
+                assertFalse(responseAuthorization.getPaymentId().isEmpty());
+                assertNotNull(responseAuthorization.getRedirectUrl());
+            } else {
+                PaymentException ex = assertThrows(PaymentException.class, () -> unzer.authorize(tc.authorization));
+                assertEquals(tc.expectedErrors.size(), ex.getPaymentErrorList().size());
+                assertEquals(
+                        tc.expectedErrors.stream().sorted(Comparator.comparing(PaymentError::getCode)).collect(Collectors.toList()),
+                        ex.getPaymentErrorList().stream().sorted(Comparator.comparing(PaymentError::getCode)).collect(Collectors.toList())
+                );
+            }
 
-            // Charge
-//            Charge responseCharge = unzer.chargeAuthorization(responseAuthorization.getPaymentId());
-//            assertNotNull(responseCharge);
-//            assertEquals(AbstractTransaction.Status.SUCCESS, responseCharge.getStatus());
-//            assertNotNull(responseCharge.getId());
-
+            // Charge is not possible without browser
+            //
+            // Actions to perform:
+            // * Click button:id=buy-button
+            // * Click button:id=onConfirm
+            // * Find input:id=one-time-code -> Enter 999998
+            // * Click button:id=invoice_kp-purchase-review-continue-button
+            // * Get redirected
         })).collect(Collectors.toList());
     }
 
