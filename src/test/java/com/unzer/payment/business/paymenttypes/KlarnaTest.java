@@ -20,9 +20,14 @@ import com.unzer.payment.business.AbstractPaymentTest;
 import com.unzer.payment.communication.HttpCommunicationException;
 import com.unzer.payment.models.AdditionalTransactionData;
 import com.unzer.payment.paymenttypes.Klarna;
+import com.unzer.payment.util.Integration;
 import io.github.bonigarcia.wdm.WebDriverManager;
-import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.DynamicTest;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestFactory;
 import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -40,31 +45,21 @@ import static org.junit.jupiter.api.DynamicTest.dynamicTest;
 
 
 public class KlarnaTest extends AbstractPaymentTest {
-    private ChromeDriver driver;
-    private WebDriverWait wait;
-
     @BeforeAll
     static void setup() {
         WebDriverManager.chromedriver().setup();
     }
 
-    void driverSetup() {
+    private AbstractMap.SimpleEntry<WebDriver, WebDriverWait> driverSetup() {
         ChromeOptions chromeOptions = new ChromeOptions()
                 .addArguments(
                         "--ignore-certificate-errors",
                         "--headless"
                 );
+        ChromeDriver driver = new ChromeDriver(chromeOptions);
+        WebDriverWait wait = new WebDriverWait(driver, 60);
 
-        driver = new ChromeDriver(chromeOptions);
-        wait = new WebDriverWait(driver, 2000);
-
-    }
-
-    @AfterEach
-    void closeDriver() {
-        if (driver != null) {
-            driver.close();
-        }
+        return new AbstractMap.SimpleEntry<>(driver, wait);
     }
 
     @Test
@@ -83,8 +78,9 @@ public class KlarnaTest extends AbstractPaymentTest {
         assertNotNull(fetched.getId());
     }
 
+    @Integration
     @TestFactory
-    public Collection<DynamicTest> testAuthorize() {
+    public Collection<DynamicTest> testAuthorizeAndCharge() {
         class TestCase {
             final String name;
             final Customer customer;
@@ -244,27 +240,235 @@ public class KlarnaTest extends AbstractPaymentTest {
             } else {
                 PaymentException ex = assertThrows(PaymentException.class, () -> unzer.authorize(tc.authorization));
                 assertEquals(tc.expectedErrors.size(), ex.getPaymentErrorList().size());
-                assertEquals(
-                        tc.expectedErrors.stream().sorted(Comparator.comparing(PaymentError::getCode)).collect(Collectors.toList()),
-                        ex.getPaymentErrorList().stream().sorted(Comparator.comparing(PaymentError::getCode)).collect(Collectors.toList())
-                );
+                assertEquals(sorted(tc.expectedErrors), sorted(ex.getPaymentErrorList()));
             }
         })).collect(Collectors.toList());
     }
 
+    @Integration
+    @TestFactory
+    public Collection<DynamicTest> testCancelAuthorize() {
+        final BigDecimal totalAmount = BigDecimal.valueOf(500.5);
+        class TestCase {
+            final String name;
+            final BigDecimal amount;
+            final Collection<PaymentError> expectedErrors;
+
+            public TestCase(String name, BigDecimal amount, Collection<PaymentError> expectedErrors) {
+                this.name = name;
+                this.amount = amount;
+                this.expectedErrors = expectedErrors;
+            }
+        }
+
+        return Stream.of(
+                        new TestCase(
+                                "full amount",
+                                totalAmount,
+                                null
+                        ),
+                        new TestCase(
+                                "partial cancel",
+                                totalAmount.subtract(BigDecimal.TEN),
+                                Collections.singletonList(
+                                        new PaymentError(
+                                                "Partial reversal for payment type klarna is not supported.",
+                                                "An error occurred. Please contact us for more information.",
+                                                "API.340.540.108"
+                                        )
+                                )
+                        ),
+                        new TestCase(
+                                "exceeded amount",
+                                totalAmount.add(BigDecimal.TEN),
+                                Collections.singletonList(
+                                        new PaymentError(
+                                                "The amount of 510.5 to be reversed exceeds the authorized amount of 500.5",
+                                                "An error occurred. Please contact us for more information.",
+                                                "API.340.100.017"
+                                        )
+                                )
+                        )
+                ).map(tc -> dynamicTest(tc.name, () -> {
+                            Unzer unzer = getUnzer();
+
+                            Customer customer = unzer.createCustomer(getMaximumCustomer(generateUuid()).setCompany("Unzer GmbH"));
+                            Basket basket = unzer.createBasket(new Basket()
+                                    .setTotalValueGross(totalAmount)
+                                    .setCurrencyCode(Currency.getInstance("EUR"))
+                                    .setOrderId(generateUuid())
+                                    .addBasketItem(
+                                            new BasketItem()
+                                                    .setBasketItemReferenceId("Artikelnummer4711")
+                                                    .setQuantity(5)
+                                                    .setVat(BigDecimal.ZERO)
+                                                    .setAmountDiscountPerUnitGross(BigDecimal.ZERO)
+                                                    .setAmountPerUnitGross(new BigDecimal("100.1"))
+                                                    .setTitle("Apple iPhone")
+                                    )
+                            );
+
+
+                            Klarna type = unzer.createPaymentType(new Klarna());
+
+                            Authorization authorization = (Authorization) new Authorization()
+                                    .setAmount(totalAmount)
+                                    .setTypeId(type.getId())
+                                    .setCustomerId(customer.getId())
+                                    .setBasketId(basket.getId())
+                                    .setCurrency(Currency.getInstance("EUR"))
+                                    .setReturnUrl(unsafeUrl("https://unzer.com"))
+                                    .setAdditionalTransactionData(
+                                            new AdditionalTransactionData()
+                                                    .setPrivacyPolicyUrl("https://en.wikipedia.org/wiki/Policy")
+                                                    .setTermsAndConditionsUrl("https://en.wikipedia.org/wiki/Terms_of_service")
+                                    );
+
+
+                            // Authorize
+                            Authorization createdAuth = unzer.authorize(authorization);
+
+                            assertNotNull(createdAuth.getId());
+                            performKlarnaAuthorization(createdAuth.getRedirectUrl().toString());
+
+                            Authorization succeedAuth = unzer.fetchAuthorization(createdAuth.getPaymentId());
+
+                            if (tc.expectedErrors == null) {
+                                Cancel cancel = unzer.cancelAuthorization(succeedAuth.getPaymentId(), tc.amount);
+                                assertEquals(AbstractTransaction.Status.SUCCESS, cancel.getStatus());
+                            } else {
+                                PaymentException ex = assertThrows(PaymentException.class, () -> unzer.cancelAuthorization(succeedAuth.getPaymentId(), tc.amount));
+                                assertEquals(sorted(tc.expectedErrors), sorted(ex.getPaymentErrorList()));
+                            }
+                        })
+                )
+                .collect(Collectors.toList());
+    }
+
+    @Integration
+    @TestFactory
+    public Collection<DynamicTest> testCancelCharge() {
+        final BigDecimal totalAmount = BigDecimal.valueOf(500.5);
+        class TestCase {
+            final String name;
+            final BigDecimal amount;
+            final Collection<PaymentError> expectedErrors;
+
+            public TestCase(String name, BigDecimal amount, Collection<PaymentError> expectedErrors) {
+                this.name = name;
+                this.amount = amount;
+                this.expectedErrors = expectedErrors;
+            }
+        }
+
+        return Stream.of(
+                        new TestCase(
+                                "full amount",
+                                totalAmount,
+                                null
+                        ),
+                        new TestCase(
+                                "partial cancel",
+                                totalAmount.subtract(BigDecimal.TEN),
+                                null
+                        ),
+                        new TestCase(
+                                "exceeded amount",
+                                totalAmount.add(BigDecimal.TEN),
+                                Collections.singletonList(
+                                        new PaymentError(
+                                                "Already charged.",
+                                                "Already charged. Please contact us for more information.",
+                                                "API.340.100.018"
+                                        )
+                                )
+                        )
+                ).map(tc -> dynamicTest(tc.name, () -> {
+                            Unzer unzer = getUnzer();
+
+                            Customer customer = unzer.createCustomer(getMaximumCustomer(generateUuid()).setCompany("Unzer GmbH"));
+                            Basket basket = unzer.createBasket(new Basket()
+                                    .setTotalValueGross(totalAmount)
+                                    .setCurrencyCode(Currency.getInstance("EUR"))
+                                    .setOrderId(generateUuid())
+                                    .addBasketItem(
+                                            new BasketItem()
+                                                    .setBasketItemReferenceId("Artikelnummer4711")
+                                                    .setQuantity(5)
+                                                    .setVat(BigDecimal.ZERO)
+                                                    .setAmountDiscountPerUnitGross(BigDecimal.ZERO)
+                                                    .setAmountPerUnitGross(new BigDecimal("100.1"))
+                                                    .setTitle("Apple iPhone")
+                                    )
+                            );
+
+
+                            Klarna type = unzer.createPaymentType(new Klarna());
+
+                            Authorization authorization = (Authorization) new Authorization()
+                                    .setAmount(totalAmount)
+                                    .setTypeId(type.getId())
+                                    .setCustomerId(customer.getId())
+                                    .setBasketId(basket.getId())
+                                    .setCurrency(Currency.getInstance("EUR"))
+                                    .setReturnUrl(unsafeUrl("https://unzer.com"))
+                                    .setAdditionalTransactionData(
+                                            new AdditionalTransactionData()
+                                                    .setPrivacyPolicyUrl("https://en.wikipedia.org/wiki/Policy")
+                                                    .setTermsAndConditionsUrl("https://en.wikipedia.org/wiki/Terms_of_service")
+                                    );
+
+
+                            // Authorize
+                            Authorization createdAuth = unzer.authorize(authorization);
+
+                            assertNotNull(createdAuth.getId());
+                            performKlarnaAuthorization(createdAuth.getRedirectUrl().toString());
+
+                            Authorization succeedAuth = unzer.fetchAuthorization(createdAuth.getPaymentId());
+                            assertEquals(Authorization.Status.SUCCESS, succeedAuth.getStatus());
+
+                            // Charge
+                            Charge charge = unzer.chargeAuthorization(succeedAuth.getPaymentId());
+                            assertEquals(Authorization.Status.SUCCESS, charge.getStatus());
+
+                            // Cancel charge
+                            if (tc.expectedErrors == null) {
+                                Cancel cancel = unzer.cancelCharge(succeedAuth.getPaymentId(), tc.amount);
+                                assertEquals(AbstractTransaction.Status.SUCCESS, cancel.getStatus());
+                            } else {
+                                PaymentException ex = assertThrows(PaymentException.class, () -> unzer.cancelAuthorization(succeedAuth.getPaymentId(), tc.amount));
+                                assertEquals(sorted(tc.expectedErrors), sorted(ex.getPaymentErrorList()));
+                            }
+                        })
+                )
+                .collect(Collectors.toList());
+    }
+
     private void performKlarnaAuthorization(String redirectUrl) {
-        driverSetup();
-        driver.get(redirectUrl);
-        wait.until(ExpectedConditions.urlContains("https://pay.playground.klarna.com/"));
-        wait.until(ExpectedConditions.elementToBeClickable(By.id("buy-button")));
-        driver.findElement(By.id("buy-button")).click();
-        driver.switchTo().frame("klarna-hpp-instance-fullscreen");
-        wait.until(ExpectedConditions.elementToBeClickable(By.id("onContinue")));
-        driver.findElement(By.id("onContinue")).click();
-        wait.until(ExpectedConditions.elementToBeClickable(By.id("otp_field")));
-        driver.findElement(By.id("otp_field")).sendKeys("999998");
-        wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("invoice_kp-purchase-review-continue-button")));
-        driver.findElement(By.id("invoice_kp-purchase-review-continue-button")).click();
-        wait.until(ExpectedConditions.urlContains("unzer.com"));
+        AbstractMap.SimpleEntry<WebDriver, WebDriverWait> pair = driverSetup();
+        WebDriver driver = pair.getKey();
+        WebDriverWait wait = pair.getValue();
+
+        try {
+            driver.get(redirectUrl);
+            wait.until(ExpectedConditions.urlContains("https://pay.playground.klarna.com/"));
+            wait.until(ExpectedConditions.elementToBeClickable(By.id("buy-button")));
+            driver.findElement(By.id("buy-button")).click();
+            driver.switchTo().frame("klarna-hpp-instance-fullscreen");
+            wait.until(ExpectedConditions.elementToBeClickable(By.id("onContinue")));
+            driver.findElement(By.id("onContinue")).click();
+            wait.until(ExpectedConditions.elementToBeClickable(By.id("otp_field")));
+            driver.findElement(By.id("otp_field")).sendKeys("999998");
+            wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("invoice_kp-purchase-review-continue-button")));
+            driver.findElement(By.id("invoice_kp-purchase-review-continue-button")).click();
+            wait.until(ExpectedConditions.urlContains("unzer.com"));
+        } finally {
+            driver.close();
+        }
+    }
+
+    private List<PaymentError> sorted(Collection<PaymentError> errors) {
+        return errors.stream().sorted(Comparator.comparing(PaymentError::getCode)).collect(Collectors.toList());
     }
 }
