@@ -30,7 +30,6 @@ public class JsonToBusinessClassMapper {
         json.setCurrency(abstractInitPayment.getCurrency());
         json.setReturnUrl(abstractInitPayment.getReturnUrl());
         json.setOrderId(abstractInitPayment.getOrderId());
-        // TODO: set typeId
         json.setResources(getResources(abstractInitPayment));
         json.setCard3ds(abstractInitPayment.getCard3ds());
         json.setPaymentReference(abstractInitPayment.getPaymentReference());
