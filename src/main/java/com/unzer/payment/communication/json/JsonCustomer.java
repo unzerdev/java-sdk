@@ -37,7 +37,7 @@ public class JsonCustomer extends JsonIdObject implements JsonObject {
     private String mobile;
     private Address billingAddress;
     private ShippingAddress shippingAddress;
-
+    private String language;
     private JSonCompanyInfo companyInfo;
 
     public String getFirstname() {
@@ -136,4 +136,11 @@ public class JsonCustomer extends JsonIdObject implements JsonObject {
         this.company = company;
     }
 
+    public String getLanguage() {
+        return language;
+    }
+
+    public void setLanguage(String language) {
+        this.language = language;
+    }
 }

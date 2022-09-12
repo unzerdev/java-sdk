@@ -6,6 +6,20 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres
 to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## [1.2.2.0][1.2.2.0]
+
+This release adds Klarna payment type to Java SDK.
+
+### Added
+
+* Added payment type `Klarna`.
+* Added `language` field to `Customer` resource.
+* Added `termsAndConditionsUrl` and `privacyPolicyUrl` fields to `AdditionalTransactionData` resource
+
+### Fixed
+
+* Fixed typo `ShippingAddress.Type:DIFFERENT_ADDRESSES` -> `ShippingAddress.Type:DIFFERENT_ADDRESS`. This typo caused errors on authorize/charge in some payment cases
+
 ## [1.2.1.0][1.2.1.0]
 
 This release brings Unzer Paylater Invoice payment type support to Java SDK.
@@ -233,6 +247,8 @@ This release brings Unzer Paylater Invoice payment type support to Java SDK.
     *   cancelAuthorization
 *   Remove deprecated classes
     *   RestCommunication
+
+[1.2.2.0]: http://github.com/unzerdev/java-sdk/compare/1.2.1.0..1.2.2.0
 
 [1.2.1.0]: http://github.com/unzerdev/java-sdk/compare/1.2.0.0..1.2.1.0
 

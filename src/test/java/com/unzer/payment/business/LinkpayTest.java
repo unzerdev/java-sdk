@@ -25,7 +25,7 @@ import java.util.Arrays;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class LinkpayTest extends AbstractSeleniumTest {
+public class LinkpayTest extends AbstractPaymentTest {
 
     @Test
     public void testMaximumLinkpay() throws MalformedURLException, HttpCommunicationException {

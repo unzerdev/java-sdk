@@ -24,11 +24,7 @@ import com.unzer.payment.communication.HttpCommunicationException;
 import com.unzer.payment.paymenttypes.Card;
 import com.unzer.payment.paymenttypes.Paypal;
 import com.unzer.payment.paymenttypes.SepaDirectDebit;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebElement;
-import org.openqa.selenium.remote.RemoteWebDriver;
 
 import java.math.BigDecimal;
 import java.net.MalformedURLException;
@@ -39,27 +35,7 @@ import java.util.Currency;
 import static com.unzer.payment.util.Uuid.generateUuid;
 import static org.junit.jupiter.api.Assertions.*;
 
-public class RecurringTest extends AbstractSeleniumTest {
-
-    @Test
-    @Disabled("Does not work on Bamboo")
-    public void testRecurringCardWithSelenium() throws MalformedURLException, HttpCommunicationException, ParseException {
-
-        String typeId = createPaymentTypeCard(getUnzer(), "4711100000000000").getId();
-        Recurring recurring = getUnzer().recurring(typeId, new URL("https://www.unzer.com"));
-        assertRecurring(recurring, Recurring.Status.PENDING);
-
-        RemoteWebDriver driver = openUrl(recurring.getRedirectUrl().toString());
-        WebElement sdd = driver.findElement(By.id("code"));
-
-        sdd.sendKeys("secret3");
-        WebElement submit = driver.findElement(By.name("submit"));
-        submit.click();
-        Card card = (Card) getUnzer().fetchPaymentType(typeId);
-        assertEquals(true, card.getRecurring());
-        close();
-    }
-
+public class RecurringTest extends AbstractPaymentTest {
     @Test
     public void testRecurringCardWithoutCustomer() throws MalformedURLException, HttpCommunicationException, ParseException {
         String typeId = createPaymentTypeCard(getUnzer(), "4711100000000000").getId();
@@ -99,33 +75,6 @@ public class RecurringTest extends AbstractSeleniumTest {
         assertRecurring(recurring, Recurring.Status.PENDING);
         assertNotNull(recurring.getRedirectUrl());
     }
-
-    @Test
-    @Disabled("Does not work on Bamboo")
-    public void testRecurringPaypalWithSelenium() throws MalformedURLException, HttpCommunicationException, ParseException {
-        Paypal paypal = new Paypal();
-        paypal = getUnzer().createPaymentType(paypal);
-        Recurring recurring = getUnzer().recurring(paypal.getId(), new URL("https://www.unzer.com"));
-        assertRecurring(recurring, Recurring.Status.PENDING);
-
-        Paypal type = (Paypal) getUnzer().fetchPaymentType(paypal.getId());
-        assertEquals(false, type.getRecurring());
-
-        RemoteWebDriver driver = openUrl(recurring.getRedirectUrl().toString());
-
-        WebElement email = driver.findElement(By.id("email"));
-        email.clear();
-        email.sendKeys("paypal-customer@unzer.de");
-        WebElement password = driver.findElement(By.id("password"));
-        password.sendKeys("unzer");
-        WebElement submit = driver.findElement(By.name("btnLogin"));
-        submit.click();
-
-        type = (Paypal) getUnzer().fetchPaymentType(paypal.getId());
-        assertEquals(true, type.getRecurring());
-        close();
-    }
-
 
     @Test
     public void testRecurringPaypalWithoutCustomer() throws MalformedURLException, HttpCommunicationException, ParseException {
