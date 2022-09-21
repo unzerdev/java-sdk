@@ -32,14 +32,14 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class ErrorTest extends AbstractPaymentTest {
     @Test
-    public void testKeyMissing() throws HttpCommunicationException {
+    public void testKeyMissing() {
         assertThrows(
-                IllegalArgumentException.class,
+                AssertionError.class,
                 () -> new Unzer(null)
         );
 
         assertThrows(
-                IllegalArgumentException.class,
+                AssertionError.class,
                 () -> new Unzer("")
         );
     }

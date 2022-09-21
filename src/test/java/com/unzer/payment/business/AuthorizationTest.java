@@ -32,7 +32,7 @@ import java.time.LocalDate;
 import java.util.Currency;
 
 import static com.unzer.payment.business.BasketV1TestData.getMaxTestBasketV1;
-import static com.unzer.payment.business.Keys.MARKETPLACE_KEY;
+import static com.unzer.payment.business.Keys.*;
 import static com.unzer.payment.util.Uuid.generateUuid;
 import static java.util.concurrent.TimeUnit.SECONDS;
 import static org.awaitility.Awaitility.await;
@@ -72,7 +72,7 @@ public class AuthorizationTest extends AbstractPaymentTest {
 
     @Test
     public void testAuthorizeWithPaymentType() throws MalformedURLException, HttpCommunicationException {
-        Unzer unzer = getUnzer(privateKey2);LocalDate locaDateNow = LocalDate.now();
+        Unzer unzer = getUnzer(KEY_WITH_3DS);LocalDate locaDateNow = LocalDate.now();
         Card card = new Card("4444333322221111", "12/" + (locaDateNow.getYear() + 1));
         Authorization authorize = unzer.authorize(BigDecimal.ONE, Currency.getInstance("EUR"), card, new URL("https://www.unzer.com"), false);
         assertNotNull(authorize);
@@ -83,7 +83,7 @@ public class AuthorizationTest extends AbstractPaymentTest {
 
     @Test
     public void testAuthorizeReturnPaymentTypeAndCustomer() throws MalformedURLException, HttpCommunicationException {
-        Unzer unzer = getUnzer(privateKey2);LocalDate locaDateNow = LocalDate.now();
+        Unzer unzer = getUnzer(KEY_WITH_3DS);LocalDate locaDateNow = LocalDate.now();
         Card card = new Card("4444333322221111", "12/" + (locaDateNow.getYear() + 1));
         Customer customer = new Customer("Max", "Mustermann");
         Authorization authorize = unzer.authorize(BigDecimal.ONE, Currency.getInstance("EUR"), card, new URL("https://www.unzer.com"), customer, false);
@@ -116,7 +116,7 @@ public class AuthorizationTest extends AbstractPaymentTest {
 
     @Test
     public void testAuthorizeWithCustomerTypeReturnUrl() throws MalformedURLException, HttpCommunicationException {
-        Unzer unzer = getUnzer(privateKey2);LocalDate locaDateNow = LocalDate.now();
+        Unzer unzer = getUnzer(KEY_WITH_3DS);LocalDate locaDateNow = LocalDate.now();
         Card card = new Card("4444333322221111", "12/" + (locaDateNow.getYear() + 1));
         Customer customer = new Customer("Max", "Mustermann");
         Authorization authorize = unzer.authorize(BigDecimal.ONE, Currency.getInstance("EUR"), card, new URL("https://www.unzer.com"), customer, false);
