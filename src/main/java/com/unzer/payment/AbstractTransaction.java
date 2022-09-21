@@ -1,24 +1,19 @@
-package com.unzer.payment;
-
-/*-
- * #%L
- * Unzer Java SDK
- * %%
- * Copyright (C) 2020 - today Unzer E-Com GmbH
- * %%
+/*
+ * Copyright 2020-today Unzer E-Com GmbH
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- * #L%
  */
+package com.unzer.payment;
 
 import com.unzer.payment.communication.JsonFieldIgnore;
 import com.unzer.payment.models.AdditionalTransactionData;
@@ -30,10 +25,6 @@ import java.util.Currency;
 import java.util.Date;
 
 public abstract class AbstractTransaction<T extends AbstractPayment> implements PaymentType {
-
-    public enum Status {
-        SUCCESS, PENDING, ERROR
-    }
 
     private String id;
     private BigDecimal amount;
@@ -56,13 +47,10 @@ public abstract class AbstractTransaction<T extends AbstractPayment> implements 
     private Date date;
     private String type;
     private AdditionalTransactionData additionalTransactionData;
-
     @JsonFieldIgnore
     private T payment;
-
     @JsonFieldIgnore
     private Unzer unzer;
-
     @JsonFieldIgnore
     private URL resourceUrl;
 
@@ -186,8 +174,9 @@ public abstract class AbstractTransaction<T extends AbstractPayment> implements 
         return additionalTransactionData;
     }
 
-    public void setAdditionalTransactionData(AdditionalTransactionData additionalTransactionData) {
+    public AbstractTransaction<T> setAdditionalTransactionData(AdditionalTransactionData additionalTransactionData) {
         this.additionalTransactionData = additionalTransactionData;
+        return this;
     }
 
     public URL getRedirectUrl() {
@@ -211,71 +200,84 @@ public abstract class AbstractTransaction<T extends AbstractPayment> implements 
         return paymentReference;
     }
 
-    public void setPaymentReference(String paymentReference) {
+    public AbstractTransaction<T> setPaymentReference(String paymentReference) {
         this.paymentReference = paymentReference;
+        return this;
     }
 
     public String getTraceId() {
         return traceId;
     }
 
-    public void setTraceId(String traceId) {
+    public AbstractTransaction<T> setTraceId(String traceId) {
         this.traceId = traceId;
+        return this;
     }
 
     public T getPayment() {
         return payment;
     }
 
-    public void setPayment(T payment) {
+    public AbstractTransaction<T> setPayment(T payment) {
         this.payment = payment;
+        return this;
     }
 
     public Unzer getUnzer() {
         return unzer;
     }
 
-    public void setUnzer(Unzer unzer) {
+    public AbstractTransaction<T> setUnzer(Unzer unzer) {
         this.unzer = unzer;
+        return this;
     }
 
     public String getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public AbstractTransaction<T> setId(String id) {
         this.id = id;
+        return this;
     }
 
     public Message getMessage() {
         return message;
     }
 
-    public void setMessage(Message message) {
+    public AbstractTransaction<T> setMessage(Message message) {
         this.message = message;
+        return this;
     }
 
     public Date getDate() {
         return date;
     }
 
-    public void setDate(Date date) {
+    public AbstractTransaction<T> setDate(Date date) {
         this.date = date;
+        return this;
     }
 
     public String getType() {
         return type;
     }
 
-    public void setType(String type) {
+    public AbstractTransaction<T> setType(String type) {
         this.type = type;
+        return this;
     }
 
     public URL getResourceUrl() {
         return resourceUrl;
     }
 
-    public void setResourceUrl(URL resourceUrl) {
+    public AbstractTransaction<T> setResourceUrl(URL resourceUrl) {
         this.resourceUrl = resourceUrl;
+        return this;
+    }
+
+    public enum Status {
+        SUCCESS, PENDING, ERROR
     }
 }

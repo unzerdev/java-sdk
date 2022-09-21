@@ -1,24 +1,20 @@
-package com.unzer.payment.business.errors;
-
-/*-
- * #%L
- * Unzer Java SDK
- * %%
- * Copyright (C) 2020 - today Unzer E-Com GmbH
- * %%
+/*
+ * Copyright 2020-today Unzer E-Com GmbH
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- * #L%
  */
+package com.unzer.payment.business.errors;
+
 
 import com.unzer.payment.*;
 import com.unzer.payment.business.AbstractPaymentTest;
@@ -87,7 +83,7 @@ public class ErrorTest extends AbstractPaymentTest {
     //FIXME tests nothing
     @Test
     public void testInvalidAccess() throws HttpCommunicationException {
-        Card card = createPaymentTypeCard();
+        Card card = createPaymentTypeCard(getUnzer(), "4711100000000000");
         try {
             getUnzer(Keys.KEY_WITH_3DS).fetchPaymentType(card.getId());  // Prod-Sandbox
 
@@ -105,7 +101,7 @@ public class ErrorTest extends AbstractPaymentTest {
     @Test
     public void testMissingReturnUrl() throws MalformedURLException, HttpCommunicationException {
         try {
-            Authorization authorization = getAuthorization(createPaymentTypeCard().getId());
+            Authorization authorization = getAuthorization(createPaymentTypeCard(getUnzer(), "4711100000000000").getId());
             authorization.setReturnUrl(null);
             getUnzer().authorize(authorization);
         } catch (PaymentException e) {

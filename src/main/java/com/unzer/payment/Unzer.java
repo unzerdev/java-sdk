@@ -1,3 +1,18 @@
+/*
+ * Copyright 2020-today Unzer E-Com GmbH
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package com.unzer.payment;
 
 import com.unzer.payment.business.paymenttypes.InstallmentSecuredRatePlan;
@@ -9,37 +24,22 @@ import com.unzer.payment.marketplace.MarketplaceAuthorization;
 import com.unzer.payment.marketplace.MarketplaceCancel;
 import com.unzer.payment.marketplace.MarketplaceCharge;
 import com.unzer.payment.marketplace.MarketplacePayment;
-import com.unzer.payment.models.AdditionalTransactionData;
-import com.unzer.payment.models.CardTransactionData;
+import com.unzer.payment.models.*;
 import com.unzer.payment.paymenttypes.PaymentType;
-import com.unzer.payment.service.*;
+import com.unzer.payment.service.LinkpayService;
+import com.unzer.payment.service.PaymentService;
+import com.unzer.payment.service.PaypageService;
+import com.unzer.payment.service.WebhookService;
 import com.unzer.payment.service.marketplace.MarketplacePaymentService;
 import com.unzer.payment.webhook.Webhook;
 import com.unzer.payment.webhook.WebhookList;
 
 import java.math.BigDecimal;
 import java.net.URL;
-import java.util.*;
-
-/*-
- * #%L
- * Unzer Java SDK
- * %%
- * Copyright (C) 2020 - today Unzer E-Com GmbH
- * %%
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- * #L%
- */
+import java.util.Currency;
+import java.util.Date;
+import java.util.List;
+import java.util.Locale;
 
 /**
  * {@code Unzer} is a facade to the Unzer REST Api. The facade is
@@ -51,61 +51,65 @@ import java.util.*;
  * @see UnzerRestCommunication for details of the http-layer abstraction.
  */
 public class Unzer {
-    private final String privateKey;
-    private final transient PaymentService paymentService;
-    private final transient MarketplacePaymentService marketplacePaymentService;
-    private final transient PaypageService paypageService;
-    private final transient LinkpayService linkpayService;
-    private final transient WebhookService webhookService;
+    private String privateKey;
+    private String endPoint;
+    private transient PaymentService paymentService;
+    private transient MarketplacePaymentService marketplacePaymentService;
+    private transient PaypageService paypageService;
+    private transient LinkpayService linkpayService;
+    private transient WebhookService webhookService;
 
-    /**
-     * Creates an instance of the {@code Unzer}-facade.
-     *
-     * @param restCommunication - an appropriate implementation of {@code UnzerRestCommunication}. If you are fine with apache's httpCLient you might choose {@code HttpClientBasedRestCommunication}.
-     * @param privateKey        - your private key as generated within the unzer Intelligence Platform (hIP)
-     * @throws IllegalArgumentException when privateKey is empty or null
-     */
-    public Unzer(UnzerRestCommunication restCommunication, String privateKey) {
-        if (privateKey == null || privateKey.isEmpty()) {
-            throw new IllegalArgumentException("privateKey must not be empty");
-        }
-
-        this.privateKey = privateKey;
-        this.paymentService = new PaymentService(this, restCommunication);
-        this.marketplacePaymentService = new MarketplacePaymentService(this, restCommunication);
-        this.paypageService = new PaypageService(this, restCommunication);
-        this.linkpayService = new LinkpayService(this, restCommunication);
-        this.webhookService = new WebhookService(this, restCommunication);
-    }
-
-    /**
-     * Creates an instance of the {@code Unzer}-facade.
-     *
-     * @param restCommunication - an appropriate implementation of {@code UnzerRestCommunication}. If you are fine with apache's httpCLient you might choose {@code HttpClientBasedRestCommunication}.
-     * @param privateKey        - your private key as generated within the unzer Intelligence Platform (hIP)
-     * @param endPoint          - parameter is ignored
-     * @deprecated Endpoint cannot be set. Please, use constructors without endpoint parameter.
-     */
-    @Deprecated
-    public Unzer(UnzerRestCommunication restCommunication, String privateKey, String endPoint) {
-        this(restCommunication, privateKey);
-    }
-
-    @Deprecated
-    public Unzer(String privateKey, Locale locale, String endPoint) {
-        this(new HttpClientBasedRestCommunication(locale), privateKey, endPoint);
+    public Unzer(String privateKey) {
+        this(privateKey, null, null);
     }
 
     public Unzer(String privateKey, Locale locale) {
         this(privateKey, locale, null);
     }
 
-    public Unzer(String privateKey) {
-        this(privateKey, null);
+    public Unzer(String privateKey, Locale locale, String endPoint) {
+        this(privateKey, locale, endPoint, null);
     }
 
-    public String getPrivateKey() {
-        return privateKey;
+    /**
+     * Creates an instance of the {@code Unzer}-facade.
+     *
+     * @param clientIp   -  sets CLIENT_IP header for Payment API request
+     * @param privateKey - your private key as generated within the unzer Intelligence Platform (hIP)
+     * @param endPoint   - the endPoint for the outgoing connection, in case of null, the value of unzer.properties will be considered
+     */
+    public Unzer(String privateKey, Locale locale, String endPoint, String clientIp) {
+        this(new HttpClientBasedRestCommunication(locale, clientIp), privateKey, endPoint);
+    }
+
+    /**
+     * Creates an instance of the {@code Unzer}-facade.
+     *
+     * @param restCommunication - an appropriate implementation of {@code UnzerRestCommunication}. If you are fine with apache's httpCLient you might choose {@code HttpClientBasedRestCommunication}.
+     * @param privateKey        - your private key as generated within the unzer Intelligence Platform (hIP)
+     */
+    public Unzer(UnzerRestCommunication restCommunication, String privateKey) {
+
+        this(restCommunication, privateKey, null);
+
+    }
+
+    /**
+     * Creates an instance of the {@code Unzer}-facade.
+     *
+     * @param restCommunication - an appropriate implementation of {@code UnzerRestCommunication}. If you are fine with apache's httpCLient you might choose {@code HttpClientBasedRestCommunication}.
+     * @param privateKey        - your private key as generated within the unzer Intelligence Platform (hIP)
+     * @param endPoint          - the endPoint for the outgoing connection, in case of null, the value of unzer.properties will be considered
+     */
+    public Unzer(UnzerRestCommunication restCommunication, String privateKey, String endPoint) {
+
+        this.privateKey = privateKey;
+        this.endPoint = endPoint;
+        this.paymentService = new PaymentService(this, restCommunication);
+        this.marketplacePaymentService = new MarketplacePaymentService(this, restCommunication);
+        this.paypageService = new PaypageService(this, restCommunication);
+        this.linkpayService = new LinkpayService(this, restCommunication);
+        this.webhookService = new WebhookService(this, restCommunication);
     }
 
     /**
@@ -117,9 +121,8 @@ public class Unzer {
      * @throws HttpCommunicationException in case communication to Unzer didn't work
      */
     public Customer createCustomerIfPresent(Customer customer) throws HttpCommunicationException {
-        if (customer == null) {
+        if (customer == null)
             return null;
-        }
         return createCustomer(customer);
     }
 
@@ -132,13 +135,11 @@ public class Unzer {
      * @throws HttpCommunicationException in case communication to Unzer didn't work
      */
     public Customer createCustomer(Customer customer) throws HttpCommunicationException {
-        if (customer == null) {
+        if (customer == null)
             throw new IllegalArgumentException("Customer must not be null");
-        }
-        if (customer.getId() != null) {
+        if (customer.getId() != null)
             throw new PaymentException(
                     "Customer has an id set. createCustomer can only be called without Customer.id. Please use updateCustomer or remove the id from Customer.");
-        }
         return paymentService.createCustomer(customer);
     }
 
@@ -909,6 +910,18 @@ public class Unzer {
     }
 
     /**
+     * Cancel (Refund) partial Charge
+     *
+     * @param paymentId used for the cancel of a charge
+     * @param amount    used for the cancel of a charge
+     * @return Cancel with id
+     * @throws HttpCommunicationException in case communication to Unzer didn't work
+     */
+    public Cancel cancelCharge(String paymentId, BigDecimal amount) throws HttpCommunicationException {
+        return paymentService.cancelCharge(paymentId, null, amount);
+    }
+
+    /**
      * Cancel (Refund) charge with Cancel object
      *
      * @param paymentId used for the cancel of a charge
@@ -1082,6 +1095,16 @@ public class Unzer {
     }
 
     /**
+     * Returns links to legal documents (Terms and Conditions, etc).
+     *
+     * @param customerType Customer type either B2B or B2C. Mandatory
+     * @param country      Country in ISO 3166-2 format. Optional
+     */
+    public PaylaterInvoiceConfig fetchPaylaterConfig(CustomerType customerType, Locale country) throws HttpCommunicationException {
+        return paymentService.fetchPaymentTypeConfig(new PaylaterInvoiceConfigRequest(customerType, country));
+    }
+
+    /**
      * Load the PaymentType
      *
      * @param typeId used for fetching a payment type
@@ -1154,9 +1177,12 @@ public class Unzer {
         return paymentService.installmentSecuredPlan(amount, currency, effectiveInterestRate, orderDate);
     }
 
-    @Deprecated
+    public String getPrivateKey() {
+        return privateKey;
+    }
+
     public String getEndPoint() {
-        return new UrlUtil(this.privateKey).getApiEndpoint();
+        return endPoint;
     }
 
     private Charge getCharge(BigDecimal amount, Currency currency, String typeId, URL returnUrl, String customerId, String basketId, Boolean card3ds, RecurrenceType recurrenceType) {
@@ -1212,22 +1238,22 @@ public class Unzer {
      *                       <br>
      *                       Request example:
      *                       <pre>
-     *                                                                                                                                                                                 {
-     *                                                                                                                                                                                    "url": "https://domain.com",
-     *                                                                                                                                                                                    "event": "types"
-     *                                                                                                                                                                                 }
-     *                                                                                                                                                                                 <pre>
-     *                                                                                                                                                                                 @return Webhook refers to webhook has been created.
-     *                                                                                                                                                                                 <br>
-     *                                                                                                                                                                                 Response example:
-     *                                                                                                                                                                                 <pre>
-     *                                                                                                                                                                                 {
-     *                                                                                                                                                                                    "id": "s-whk-61873",
-     *                                                                                                                                                                                    "url": "https://domain.com",
-     *                                                                                                                                                                                    "event": "types"
-     *                                                                                                                                                                                 }
-     *                                                                                                                                                                                 <pre>
-     *                                                                                                                                                                                 @throws HttpCommunicationException
+     *                                                                   {
+     *                                                                      "url": "https://domain.com",
+     *                                                                      "event": "types"
+     *                                                                   }
+     *                                                                   <pre>
+     *                                                                   @return Webhook refers to webhook has been created.
+     *                                                                   <br>
+     *                                                                   Response example:
+     *                                                                   <pre>
+     *                                                                   {
+     *                                                                      "id": "s-whk-61873",
+     *                                                                      "url": "https://domain.com",
+     *                                                                      "event": "types"
+     *                                                                   }
+     *                                                                   <pre>
+     *                                                                   @throws HttpCommunicationException
      */
     public Webhook registerSingleWebhook(Webhook webhookRequest) throws HttpCommunicationException {
         return webhookService.registerSingleWebhook(webhookRequest);
@@ -1241,29 +1267,29 @@ public class Unzer {
      *                       <br>
      *                       Request example:
      *                       <pre>
-     *                                                                                                                                                                                 {
-     *                                                                                                                                                                                   "url": "https://domain.com",
-     *                                                                                                                                                                                   "eventList": ["types", "payments"]
-     *                                                                                                                                                                                 }
-     *                                                                                                                                                                                 <pre>
-     *                                                                                                                                                                                 @return WebhookList refers to list of webhooks have been created.
-     *                                                                                                                                                                                  * <br>
-     *                                                                                                                                                                                 Response example:
-     *                                                                                                                                                                                 <pre>
-     *                                                                                                                                                                                 {
-     *                                                                                                                                                                                    "events":[{
-     *                                                                                                                                                                                       "id": "s-whk-61873",
-     *                                                                                                                                                                                       "url": "https://domain.com",
-     *                                                                                                                                                                                       "event": "types"
-     *                                                                                                                                                                                    },
-     *                                                                                                                                                                                    {
-     *                                                                                                                                                                                       "id": "s-whk-61874",
-     *                                                                                                                                                                                       "url": "https://domain.com",
-     *                                                                                                                                                                                       "event": "payments"
-     *                                                                                                                                                                                    }]
-     *                                                                                                                                                                                 }
-     *                                                                                                                                                                                 <pre>
-     *                                                                                                                                                                                 @throws HttpCommunicationException
+     *                                                                   {
+     *                                                                     "url": "https://domain.com",
+     *                                                                     "eventList": ["types", "payments"]
+     *                                                                   }
+     *                                                                   <pre>
+     *                                                                   @return WebhookList refers to list of webhooks have been created.
+     *                                                                    * <br>
+     *                                                                   Response example:
+     *                                                                   <pre>
+     *                                                                   {
+     *                                                                      "events":[{
+     *                                                                         "id": "s-whk-61873",
+     *                                                                         "url": "https://domain.com",
+     *                                                                         "event": "types"
+     *                                                                      },
+     *                                                                      {
+     *                                                                         "id": "s-whk-61874",
+     *                                                                         "url": "https://domain.com",
+     *                                                                         "event": "payments"
+     *                                                                      }]
+     *                                                                   }
+     *                                                                   <pre>
+     *                                                                   @throws HttpCommunicationException
      */
     public WebhookList registerMultiWebhooks(Webhook webhookRequest) throws HttpCommunicationException {
         return webhookService.registerMultiWebhooks(webhookRequest);

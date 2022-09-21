@@ -6,7 +6,7 @@
 
     <groupId>com.unzer.payment</groupId>
     <artifactId>java-sdk</artifactId>
-    <version>1.2.0.0</version>
+    <version>1.2.2.0</version>
     <name>Unzer Java SDK</name>
     <description>Unzer Java SDK provides an easy way to connect to the Unzer Rest API.</description>
     <url>https://docs.unzer.com/</url>
@@ -104,7 +104,7 @@
             <plugin>
                 <groupId>org.jacoco</groupId>
                 <artifactId>jacoco-maven-plugin</artifactId>
-                <version>0.8.5</version>
+                <version>0.8.8</version>
                 <configuration>
                     <excludes>
                         <exclude>**/*Test.*</exclude>
@@ -134,16 +134,16 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.8.1</version>
+                <version>3.10.1</version>
                 <configuration>
-                    <source>1.8</source>
-                    <target>1.8</target>
+                    <source>8</source>
+                    <target>8</target>
                 </configuration>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-javadoc-plugin</artifactId>
-                <version>3.2.0</version>
+                <version>3.4.0</version>
                 <configuration>
                     <doclint>none</doclint>
                 </configuration>
@@ -224,6 +224,35 @@
                     </execution>
                 </executions>
             </plugin>
+
+            <plugin>
+                <groupId>com.mycila</groupId>
+                <artifactId>license-maven-plugin</artifactId>
+                <version>4.1</version>
+                <configuration>
+                    <licenseSets>
+                        <licenseSet>
+                            <header>LICENSE</header>
+                            <excludes>
+                                <exclude>**/*.md</exclude>
+                                <exclude>**/*.xml</exclude>
+                                <exclude>selenium/**</exclude>
+                                <exclude>src/test/resources/**</exclude>
+                                <exclude>src/main/resources/**</exclude>
+                            </excludes>
+                        </licenseSet>
+                    </licenseSets>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>check-license-headers</id>
+                        <phase>validate</phase>
+                        <goals>
+                            <goal>check</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
         </plugins>
     </build>
 
@@ -239,7 +268,7 @@
         <dependency>
             <groupId>com.google.code.gson</groupId>
             <artifactId>gson</artifactId>
-            <version>2.8.9</version>
+            <version>2.9.1</version>
         </dependency>
 
         <dependency>
@@ -275,13 +304,6 @@
         </dependency>
 
         <dependency>
-            <groupId>org.junit.jupiter</groupId>
-            <artifactId>junit-jupiter-engine</artifactId>
-            <version>${junit.version}</version>
-            <scope>test</scope>
-        </dependency>
-
-        <dependency>
             <groupId>org.awaitility</groupId>
             <artifactId>awaitility</artifactId>
             <version>4.0.2</version>
@@ -291,7 +313,7 @@
         <dependency>
             <groupId>org.jsoup</groupId>
             <artifactId>jsoup</artifactId>
-            <version>1.14.2</version>
+            <version>1.15.3</version>
             <scope>test</scope>
         </dependency>
 
@@ -332,16 +354,9 @@
         </dependency>
 
         <dependency>
-            <groupId>org.seleniumhq.selenium</groupId>
-            <artifactId>selenium-server</artifactId>
-            <version>3.141.59</version>
-            <scope>test</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>org.seleniumhq.selenium</groupId>
-            <artifactId>htmlunit-driver</artifactId>
-            <version>2.39.0</version>
+            <groupId>io.github.bonigarcia</groupId>
+            <artifactId>webdrivermanager</artifactId>
+            <version>3.8.1</version>
             <scope>test</scope>
         </dependency>
     </dependencies>
