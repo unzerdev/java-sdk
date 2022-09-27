@@ -1,19 +1,24 @@
-/*
- * Copyright 2020-today Unzer E-Com GmbH
- *
+package com.unzer.payment.service;
+
+/*-
+ * #%L
+ * Unzer Java SDK
+ * %%
+ * Copyright (C) 2020 - today Unzer E-Com GmbH
+ * %%
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ *      http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
+ * #L%
  */
-package com.unzer.payment.service;
 
 
 import com.unzer.payment.business.AbstractPaymentTest;
@@ -26,12 +31,11 @@ import com.unzer.payment.paymenttypes.SepaDirectDebitSecured;
 import org.junit.jupiter.api.DynamicTest;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestFactory;
-import org.junit.jupiter.api.extension.ExtendWith;
 import uk.org.webcompere.systemstubs.environment.EnvironmentVariables;
 import uk.org.webcompere.systemstubs.jupiter.SystemStub;
-import uk.org.webcompere.systemstubs.jupiter.SystemStubsExtension;
 
 import java.util.Collection;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -40,7 +44,6 @@ import static org.junit.jupiter.api.DynamicTest.dynamicTest;
 
 
 public class UrlUtilTest extends AbstractPaymentTest {
-
     private static final String sbxTypesUrl = "https://sbx-api.unzer.com/v1/types/";
     private static final String id = "random-id";
 
@@ -70,10 +73,8 @@ public class UrlUtilTest extends AbstractPaymentTest {
             EnvironmentVariables environmentVariables = new EnvironmentVariables("UNZER_PAPI_ENV", tc.env);
 
             environmentVariables.execute(() -> {
-                assertEquals(
-                        tc.expectedEndpoint,
-                        new UrlUtil(tc.key).getApiEndpoint()
-                );
+                assertEquals(tc.env, System.getenv("UNZER_PAPI_ENV"));
+                assertEquals(tc.expectedEndpoint, new UrlUtil(tc.key).getApiEndpoint());
             });
         })).collect(Collectors.toList());
     }
