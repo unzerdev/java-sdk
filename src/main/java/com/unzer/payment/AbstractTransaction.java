@@ -47,7 +47,7 @@ public abstract class AbstractTransaction<T extends AbstractPayment> implements 
     private String type;
     private AdditionalTransactionData additionalTransactionData;
     @JsonFieldIgnore
-    private T payment;
+    private transient T payment;
     @JsonFieldIgnore
     private transient Unzer unzer;
     @JsonFieldIgnore
