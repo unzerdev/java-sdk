@@ -25,7 +25,6 @@ import java.util.Currency;
 import java.util.Date;
 
 public abstract class AbstractTransaction<T extends AbstractPayment> implements PaymentType {
-
     private String id;
     private BigDecimal amount;
     private Currency currency;
@@ -48,9 +47,9 @@ public abstract class AbstractTransaction<T extends AbstractPayment> implements 
     private String type;
     private AdditionalTransactionData additionalTransactionData;
     @JsonFieldIgnore
-    private T payment;
+    private transient T payment;
     @JsonFieldIgnore
-    private Unzer unzer;
+    private transient Unzer unzer;
     @JsonFieldIgnore
     private URL resourceUrl;
 
