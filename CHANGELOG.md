@@ -27,6 +27,7 @@ This release adds Klarna payment type to Java SDK.
 ### Fixed
 
 * Fixed typo `ShippingAddress.Type:DIFFERENT_ADDRESSES` -> `ShippingAddress.Type:DIFFERENT_ADDRESS`. This typo caused errors on authorize/charge in some payment cases
+* Fixed (de-)serialization of `AbstractTransaction` cause infinite Webhook calls.
 
 ## [1.2.1.0][1.2.1.0]
 
