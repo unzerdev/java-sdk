@@ -54,7 +54,12 @@ public class UrlUtil {
         stringBuilder.append(REFUND_URL);
         String result = stringBuilder.toString();
         result = result.replace(PLACEHOLDER_PAYMENT_ID, paymentId);
-        return result.replace(PLACEHOLDER_CHARGE_ID, chargeId);
+        if(chargeId != null) {
+            result = result.replace(PLACEHOLDER_CHARGE_ID, chargeId);
+        } else {
+            result = result.replace(PLACEHOLDER_CHARGE_ID + "/", "");
+        }
+        return result;
     }
 
     public String getPaymentUrl(PaymentType paymentType, String paymentId) {

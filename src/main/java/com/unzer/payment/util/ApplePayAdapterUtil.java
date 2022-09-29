@@ -38,36 +38,37 @@ import java.security.NoSuchAlgorithmException;
 import java.util.*;
 
 public class ApplePayAdapterUtil {
-    private static final List<String> defaultUrls = Arrays.asList(
-            "apple-pay-gateway.apple.com",
-            "cn-apple-pay-gateway.apple.com",
-            "apple-pay-gateway-nc-pod1.apple.com",
-            "apple-pay-gateway-nc-pod2.apple.com",
-            "apple-pay-gateway-nc-pod3.apple.com",
-            "apple-pay-gateway-nc-pod4.apple.com",
-            "apple-pay-gateway-nc-pod5.apple.com",
-            "apple-pay-gateway-pr-pod1.apple.com",
-            "apple-pay-gateway-pr-pod2.apple.com",
-            "apple-pay-gateway-pr-pod3.apple.com",
-            "apple-pay-gateway-pr-pod4.apple.com",
-            "apple-pay-gateway-pr-pod5.apple.com",
-            "cn-apple-pay-gateway-sh-pod1.apple.com",
-            "cn-apple-pay-gateway-sh-pod2.apple.com",
-            "cn-apple-pay-gateway-sh-pod3.apple.com",
-            "cn-apple-pay-gateway-tj-pod1.apple.com",
-            "cn-apple-pay-gateway-tj-pod2.apple.com",
-            "cn-apple-pay-gateway-tj-pod3.apple.com",
-            "apple-pay-gateway-cert.apple.com",
-            "cn-apple-pay-gateway-cert.apple.com"
-    );
+    public static final List<String> DEFAULT_VALIDATION_URLS = Collections.unmodifiableList(
+            Arrays.asList(
+                    "apple-pay-gateway.apple.com",
+                    "cn-apple-pay-gateway.apple.com",
+                    "apple-pay-gateway-nc-pod1.apple.com",
+                    "apple-pay-gateway-nc-pod2.apple.com",
+                    "apple-pay-gateway-nc-pod3.apple.com",
+                    "apple-pay-gateway-nc-pod4.apple.com",
+                    "apple-pay-gateway-nc-pod5.apple.com",
+                    "apple-pay-gateway-pr-pod1.apple.com",
+                    "apple-pay-gateway-pr-pod2.apple.com",
+                    "apple-pay-gateway-pr-pod3.apple.com",
+                    "apple-pay-gateway-pr-pod4.apple.com",
+                    "apple-pay-gateway-pr-pod5.apple.com",
+                    "cn-apple-pay-gateway-sh-pod1.apple.com",
+                    "cn-apple-pay-gateway-sh-pod2.apple.com",
+                    "cn-apple-pay-gateway-sh-pod3.apple.com",
+                    "cn-apple-pay-gateway-tj-pod1.apple.com",
+                    "cn-apple-pay-gateway-tj-pod2.apple.com",
+                    "cn-apple-pay-gateway-tj-pod3.apple.com",
+                    "apple-pay-gateway-cert.apple.com",
+                    "cn-apple-pay-gateway-cert.apple.com"
+            ));
 
-    private static Set<String> urls = new HashSet<>(defaultUrls);
-
-    public static void setCustomAppleValidationUrls(String... appleUrls) {
-        urls = new HashSet<>(Arrays.asList(appleUrls));
-    }
+    private static Set<String> urls = new HashSet<>(DEFAULT_VALIDATION_URLS);
 
     private ApplePayAdapterUtil() {
+    }
+
+    public static void setCustomAppleValidationUrls(List<String> appleUrls) {
+        urls = new HashSet<>(appleUrls);
     }
 
     public static String validateApplePayMerchant(String merchantValidationURL, ApplePaySession applePaySession, KeyManagerFactory keyManagerFactory, TrustManagerFactory trustManagerFactory) throws IOException, NoSuchAlgorithmException, KeyManagementException, URISyntaxException {

@@ -16,14 +16,25 @@
 package com.unzer.payment.util;
 
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.parallel.Execution;
+import org.junit.jupiter.api.parallel.ExecutionMode;
 
 import java.net.URISyntaxException;
+import java.util.Collections;
 
 import static com.unzer.payment.util.ApplePayAdapterUtil.doesUrlContainValidDomainName;
 import static org.junit.jupiter.api.Assertions.*;
 
+
+@Execution(ExecutionMode.SAME_THREAD)
 public class ApplePayAdapterTest {
+    @BeforeEach
+    public void setDefaultValues() {
+        ApplePayAdapterUtil.setCustomAppleValidationUrls(ApplePayAdapterUtil.DEFAULT_VALIDATION_URLS);
+    }
+
     @Test
     public void ifAllParametersAreNullThrowError() {
         assertThrows(NullPointerException.class, () -> ApplePayAdapterUtil.validateApplePayMerchant(
@@ -44,7 +55,7 @@ public class ApplePayAdapterTest {
 
     @Test
     public void customValidationUrls() throws URISyntaxException {
-        ApplePayAdapterUtil.setCustomAppleValidationUrls("google.com");
+        ApplePayAdapterUtil.setCustomAppleValidationUrls(Collections.singletonList("google.com"));
         assertTrue(doesUrlContainValidDomainName("https://www.google.com"));
         assertFalse(doesUrlContainValidDomainName("https://www.apple-pay-gateway.apple.com/"));
     }
