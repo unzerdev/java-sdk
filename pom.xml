@@ -8,7 +8,7 @@
     <artifactId>java-sdk</artifactId>
     <version>1.2.2.0</version>
     <name>Unzer Java SDK</name>
-    <description>Unzer Java SDK</description>
+    <description>Unzer Java SDK provides an easy way to connect to the Unzer Rest API.</description>
     <url>https://docs.unzer.com/</url>
 
     <inceptionYear>2020</inceptionYear>
@@ -44,6 +44,7 @@
         <log4j.version>2.18.0</log4j.version>
         <jackson.version>2.12.7</jackson.version>
         <junit.version>5.9.0</junit.version>
+        <system-stubs.version>2.0.1</system-stubs.version>
     </properties>
 
     <distributionManagement>
@@ -310,13 +311,6 @@
         </dependency>
 
         <dependency>
-            <groupId>org.awaitility</groupId>
-            <artifactId>awaitility-proxy</artifactId>
-            <version>3.1.6</version>
-            <scope>test</scope>
-        </dependency>
-
-        <dependency>
             <groupId>org.jsoup</groupId>
             <artifactId>jsoup</artifactId>
             <version>1.15.3</version>
@@ -331,6 +325,28 @@
         </dependency>
 
         <dependency>
+            <groupId>org.mockito</groupId>
+            <artifactId>mockito-inline</artifactId>
+            <version>3.12.4</version>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>uk.org.webcompere</groupId>
+            <artifactId>system-stubs-core</artifactId>
+            <version>${system-stubs.version}</version>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>uk.org.webcompere</groupId>
+            <artifactId>system-stubs-jupiter</artifactId>
+            <version>${system-stubs.version}</version>
+            <scope>test</scope>
+        </dependency>
+
+        <!-- UI Test dependencies Selenium -->
+        <dependency>
             <groupId>org.seleniumhq.selenium</groupId>
             <artifactId>selenium-java</artifactId>
             <version>3.141.59</version>
@@ -344,4 +360,15 @@
             <scope>test</scope>
         </dependency>
     </dependencies>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>net.bytebuddy</groupId>
+                <artifactId>byte-buddy</artifactId>
+                <version>1.11.13</version>
+                <scope>test</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
 </project>

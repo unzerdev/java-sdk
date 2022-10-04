@@ -33,6 +33,7 @@ import java.util.Currency;
 
 import static com.unzer.payment.business.BasketV1TestData.getMinTestBasketV1;
 import static com.unzer.payment.business.BasketV2TestData.getMinTestBasketV2;
+import static com.unzer.payment.business.Keys.PRIVATE_KEY_3;
 import static com.unzer.payment.util.Url.unsafeUrl;
 import static com.unzer.payment.util.Uuid.generateUuid;
 import static org.junit.jupiter.api.Assertions.*;
@@ -95,7 +96,7 @@ public class SepaDirectDebitSecuredTest extends AbstractPaymentTest {
 
     @Test
     public void testChargeSepaDirectDebitGuaranteed() throws HttpCommunicationException {
-        Unzer unzer = getUnzer(privateKey3);
+        Unzer unzer = getUnzer(PRIVATE_KEY_3);
         HttpClientBasedRestCommunication restCommunication = new HttpClientBasedRestCommunication();
         JsonParser jsonParser = new JsonParser();
         PaymentService paymentService = new PaymentService(unzer, restCommunication);

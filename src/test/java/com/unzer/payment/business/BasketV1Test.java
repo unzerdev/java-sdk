@@ -18,7 +18,6 @@ package com.unzer.payment.business;
 
 import com.unzer.payment.*;
 import com.unzer.payment.communication.HttpCommunicationException;
-import com.unzer.payment.service.PropertiesUtil;
 import com.unzer.payment.service.UrlUtil;
 import org.junit.jupiter.api.Test;
 
@@ -170,8 +169,8 @@ public class BasketV1Test extends AbstractPaymentTest {
                 .setTotalValueGross(BigDecimal.TEN)
                 .setAmountTotalGross(BigDecimal.ONE);
 
-        UrlUtil urlUtil = new UrlUtil(null);
-        String endpoint = new PropertiesUtil().getString(PropertiesUtil.REST_ENDPOINT);
+        UrlUtil urlUtil = new UrlUtil(Keys.KEY_WITHOUT_3DS);
+        String endpoint = urlUtil.getApiEndpoint();
 
         String url = urlUtil.getPaymentUrl(basket, "id");
         assertTrue(

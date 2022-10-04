@@ -28,6 +28,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Currency;
 
+import static com.unzer.payment.business.Keys.PRIVATE_KEY_3;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 public class PostFinanceEFinanceTest extends AbstractPaymentTest {
@@ -35,13 +36,13 @@ public class PostFinanceEFinanceTest extends AbstractPaymentTest {
     @Test
     public void testCreatePostFinanceEFinanceMandatoryType() throws HttpCommunicationException {
         PostFinanceEFinance pfEFinance = new PostFinanceEFinance();
-        pfEFinance = getUnzer(privateKey3).createPaymentType(pfEFinance);
+        pfEFinance = getUnzer(PRIVATE_KEY_3).createPaymentType(pfEFinance);
         assertNotNull(pfEFinance.getId());
     }
 
     @Test
     public void testChargePostFinanceEFinanceType() throws HttpCommunicationException, MalformedURLException {
-        Unzer unzer = getUnzer(privateKey3);
+        Unzer unzer = getUnzer(PRIVATE_KEY_3);
 		PostFinanceEFinance pfEFinance = unzer.createPaymentType(getPostFinanceEFinance());
         Charge charge = pfEFinance.charge(BigDecimal.ONE, Currency.getInstance("CHF"), new URL("https://www.unzer.com"));
         assertNotNull(charge);
@@ -51,7 +52,7 @@ public class PostFinanceEFinanceTest extends AbstractPaymentTest {
 
     @Test
     public void testFetchPostFinanceEFinanceType() throws HttpCommunicationException {
-        Unzer unzer = getUnzer(privateKey3);
+        Unzer unzer = getUnzer(PRIVATE_KEY_3);
 		PostFinanceEFinance pfEFinance = unzer.createPaymentType(getPostFinanceEFinance());
         assertNotNull(pfEFinance.getId());
         PostFinanceEFinance fetchedPostFinanceEFinance = (PostFinanceEFinance) unzer.fetchPaymentType(pfEFinance.getId());
