@@ -324,12 +324,14 @@ public abstract class AbstractPaymentTest {
                 .setSalutation(Salutation.MR)
                 .setEmail("support@unzer.com")
                 .setMobile("+4315136633669")
+                .setPhone("+4962216471100")
                 .setBirthDate(getDate("03.10.1974"))
                 .setBillingAddress(getAddress())
+                .setLanguage(Locale.GERMAN)
                 .setShippingAddress(
                         ShippingAddress.of(
                                 getAddress("Mustermann", "Vangerowstraße 18", "Heidelberg", "BW", "69115", "DE"),
-                                ShippingAddress.Type.DIFFERENT_ADDRESSES
+                                ShippingAddress.Type.DIFFERENT_ADDRESS
                         )
                 );
         return customer;
@@ -347,7 +349,7 @@ public abstract class AbstractPaymentTest {
                 .setShippingAddress(
                         ShippingAddress.of(
                                 getAddress("Schubert", "Vangerowstraße 18", "Heidelberg", "BW", "69115", "DE"),
-                                ShippingAddress.Type.DIFFERENT_ADDRESSES
+                                ShippingAddress.Type.DIFFERENT_ADDRESS
                         )
                 );
         return customer;
@@ -365,7 +367,7 @@ public abstract class AbstractPaymentTest {
                 .setShippingAddress(
                         ShippingAddress.of(
                                 getAddress("Schubert", "Vangerowstraße 18", "Heidelberg", "BW", "69115", "DE"),
-                                ShippingAddress.Type.DIFFERENT_ADDRESSES
+                                ShippingAddress.Type.DIFFERENT_ADDRESS
                         )
                 );
         return customer;
@@ -595,5 +597,73 @@ public abstract class AbstractPaymentTest {
         }
         cancelBasket.setItems(cancelBasketItems);
         return cancelBasket;
+    }
+
+    protected Paypage getMaximumPaypage() throws MalformedURLException {
+        Paypage paypage = new Paypage();
+        String[] excludeTypes = {"paypal"};
+        paypage.setExcludeTypes(excludeTypes);
+        paypage.setAmount(BigDecimal.ONE);
+        paypage.setCurrency(Currency.getInstance("EUR"));
+        paypage.setReturnUrl(new URL("https://www.unzer.com/"));
+        paypage.setShopName("Unzer Demo Shop");
+        paypage.setShopDescription("Unzer Demo Shop Description");
+        paypage.setTagline("Unzer Tagline");
+        paypage.setTermsAndConditionUrl(new URL("https://www.unzer.com/en/privacy-statement/"));
+        paypage.setPrivacyPolicyUrl(new URL("https://www.unzer.com/en/privacy-statement/"));
+        paypage.setCss(getCssMap());
+
+        paypage.setLogoImage("https://docs.unzer.com/payment-nutshell/payment-in-nutshell.png");
+        paypage.setFullPageImage("https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/iphone-12-pro-family-hero");
+
+        paypage.setContactUrl(new URL("mailto:support@unzer.com"));
+        paypage.setHelpUrl(new URL("https://www.unzer.com/en/support/"));
+        paypage.setImprintUrl(new URL("https://www.unzer.com/en/impressum/"));
+        paypage.setPrivacyPolicyUrl(new URL("https://www.unzer.com/en/datenschutz/"));
+        paypage.setTermsAndConditionUrl(new URL("https://www.unzer.com/en/datenschutz/"));
+
+        paypage.setInvoiceId(generateUuid());
+        paypage.setOrderId(generateUuid());
+        return paypage;
+    }
+
+
+    protected Map<String, String> getCssMap() {
+        Map<String, String> cssMap = new HashMap<String, String>();
+        cssMap.put("shopDescription", "color: blue; font-size: 30px");
+        cssMap.put("tagline", "color: blue; font-size: 30px");
+        cssMap.put("header", "background-color: white");
+        cssMap.put("shopName", "color: blue; font-size: 30px");
+        cssMap.put("contactUrl", "color: blue; font-size: 30px");
+        cssMap.put("helpUrl", "color: blue; font-size: 30px");
+        return cssMap;
+    }
+
+    protected Linkpay getMaximumLinkpay() throws MalformedURLException {
+        Linkpay linkpay = new Linkpay();
+        String[] excludeTypes = {"paypal"};
+        linkpay.setExcludeTypes(excludeTypes);
+        linkpay.setAmount(BigDecimal.ONE);
+        linkpay.setCurrency(Currency.getInstance("EUR"));
+        linkpay.setReturnUrl(new URL("https://unzer.com"));
+        linkpay.setShopName("Unzer Demo Shop");
+        linkpay.setShopDescription("Unzer Demo Shop Description");
+        linkpay.setTagline("Unzer Tagline");
+        linkpay.setTermsAndConditionUrl(new URL("https://www.unzer.com/en/datenschutz/"));
+        linkpay.setPrivacyPolicyUrl(new URL("https://www.unzer.com/en/datenschutz/"));
+        linkpay.setCss(getCssMap());
+
+        linkpay.setLogoImage("https://docs.unzer.com/payment-nutshell/payment-in-nutshell.png");
+        linkpay.setFullPageImage("https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/iphone-12-pro-family-hero");
+
+        linkpay.setContactUrl(new URL("mailto:support@unzer.com"));
+        linkpay.setHelpUrl(new URL("https://www.unzer.com/en/support/"));
+        linkpay.setImprintUrl(new URL("https://www.unzer.com/en/impressum/"));
+        linkpay.setPrivacyPolicyUrl(new URL("https://www.unzer.com/en/datenschutz/"));
+        linkpay.setTermsAndConditionUrl(new URL("https://www.unzer.com/en/datenschutz/"));
+
+        linkpay.setInvoiceId(generateUuid());
+        linkpay.setOrderId(generateUuid());
+        return linkpay;
     }
 }

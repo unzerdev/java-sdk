@@ -20,10 +20,11 @@ import com.unzer.payment.communication.json.JsonObject;
 import com.unzer.payment.paymenttypes.PaymentType;
 
 import java.util.Date;
+import java.util.Locale;
 
 /**
  * Business object for Customer together with billingAddress.
- * 
+ * <p>
  * firstname and lastname are mandatory to create a new Customer.
  *
  * @author Unzer E-Com GmbH
@@ -41,6 +42,15 @@ public class Customer implements PaymentType {
     private Address billingAddress;
     private ShippingAddress shippingAddress;
     private String company;
+
+    /**
+     * Customer language.
+     * <p>
+     * Mandatory depending on payment type
+     * Format: ISO 639 alpha-2 code
+     */
+    private Locale language;
+
     private CustomerCompanyData companyData;
 
     public Customer(String firstname, String lastname) {
@@ -150,14 +160,14 @@ public class Customer implements PaymentType {
     }
 
     public Customer setShippingAddress(ShippingAddress shippingAddress) {
-		this.shippingAddress = shippingAddress;
-		return this;
-	}
+        this.shippingAddress = shippingAddress;
+        return this;
+    }
 
     /**
      * @deprecated use {@link #setShippingAddress(ShippingAddress)} instead
      */
-	@Deprecated
+    @Deprecated
     public Customer setShippingAddress(Address shippingAddress) {
         this.shippingAddress = ShippingAddress.of(shippingAddress, null);
         return this;
@@ -175,8 +185,9 @@ public class Customer implements PaymentType {
         return company;
     }
 
-    public void setCompany(String company) {
+    public Customer setCompany(String company) {
         this.company = company;
+        return this;
     }
 
     @Override
@@ -186,6 +197,15 @@ public class Customer implements PaymentType {
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    public Locale getLanguage() {
+        return language;
+    }
+
+    public Customer setLanguage(Locale language) {
+        this.language = language;
+        return this;
     }
 
     public enum Salutation {
