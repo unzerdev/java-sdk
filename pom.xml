@@ -42,7 +42,7 @@
         <additionalparam>-Xdoclint:none</additionalparam>
         <skip.dependency.check>true</skip.dependency.check>
         <log4j.version>2.18.0</log4j.version>
-        <jackson.version>2.12.7</jackson.version>
+        <jackson.version>2.14.0-rc1</jackson.version>
         <junit.version>5.9.0</junit.version>
         <system-stubs.version>2.0.1</system-stubs.version>
     </properties>

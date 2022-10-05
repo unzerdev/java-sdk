@@ -15,6 +15,9 @@ to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 * Changed method `com.unzer.payment.util.ApplePayAdapterUtil.getPlainDomainName()` modifier to private.
 * Removed `unzer.properties` file. Use `com.unzer.payment.util.ApplePayAdapterUtil.setCustomAppleValidationUrls` to configure ApplePay validation urls.
 
+### Changed
+* Upgraded `jackson-databind` dependency. See: [CVE-2022-42004](https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2022-42004)
+
 ## [1.2.2.0][1.2.2.0]
 
 This release adds Klarna payment type to Java SDK.
