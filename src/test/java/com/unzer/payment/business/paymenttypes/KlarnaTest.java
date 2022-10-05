@@ -34,6 +34,7 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.math.BigDecimal;
+import java.time.Duration;
 import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -57,7 +58,7 @@ public class KlarnaTest extends AbstractPaymentTest {
                         "--headless"
                 );
         ChromeDriver driver = new ChromeDriver(chromeOptions);
-        WebDriverWait wait = new WebDriverWait(driver, 60);
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofMinutes(1));
 
         return new AbstractMap.SimpleEntry<>(driver, wait);
     }
