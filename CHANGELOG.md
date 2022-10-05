@@ -8,6 +8,8 @@ to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
 ## [1.2.3.0][1.2.3.0]
 
+New version of Java SDK is not configurable via `unzer.properties` file anymore.
+
 ### Breaking changes
 * Removed class `com.unzer.payment.service.PropertiesUtil`, unzer.properties file and `privatekey1`, `privatekey2`, `privatekey3`, `publickey1`, `marketplacekey`
   and corresponding constants `PUBLIC_KEY1`, `PRIVATE_KEY1`, `PRIVATE_KEY2`, `PRIVATE_KEY3`, `MARKETPLACE_PRIVATE_KEY`. Since this properties were used only for internal testing purpose.
