@@ -6,7 +6,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres
 to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
-## UNRELEASED
+## [1.2.3.0][1.2.3.0]
 
 ### Breaking changes
 * Removed class `com.unzer.payment.service.PropertiesUtil`, unzer.properties file and `privatekey1`, `privatekey2`, `privatekey3`, `publickey1`, `marketplacekey`
@@ -257,6 +257,8 @@ This release brings Unzer Paylater Invoice payment type support to Java SDK.
     *   cancelAuthorization
 *   Remove deprecated classes
     *   RestCommunication
+
+[1.2.3.0]: http://github.com/unzerdev/java-sdk/compare/1.2.2.0..1.2.3.0
 
 [1.2.2.0]: http://github.com/unzerdev/java-sdk/compare/1.2.1.0..1.2.2.0
 
