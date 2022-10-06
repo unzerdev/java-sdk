@@ -17,7 +17,6 @@ package com.unzer.payment.util;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.unzer.payment.ApplePaySession;
-import com.unzer.payment.service.PropertiesUtil;
 import org.apache.http.HttpEntity;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpPost;
@@ -36,13 +35,40 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.security.KeyManagementException;
 import java.security.NoSuchAlgorithmException;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 public class ApplePayAdapterUtil {
+    public static final List<String> DEFAULT_VALIDATION_URLS = Collections.unmodifiableList(
+            Arrays.asList(
+                    "apple-pay-gateway.apple.com",
+                    "cn-apple-pay-gateway.apple.com",
+                    "apple-pay-gateway-nc-pod1.apple.com",
+                    "apple-pay-gateway-nc-pod2.apple.com",
+                    "apple-pay-gateway-nc-pod3.apple.com",
+                    "apple-pay-gateway-nc-pod4.apple.com",
+                    "apple-pay-gateway-nc-pod5.apple.com",
+                    "apple-pay-gateway-pr-pod1.apple.com",
+                    "apple-pay-gateway-pr-pod2.apple.com",
+                    "apple-pay-gateway-pr-pod3.apple.com",
+                    "apple-pay-gateway-pr-pod4.apple.com",
+                    "apple-pay-gateway-pr-pod5.apple.com",
+                    "cn-apple-pay-gateway-sh-pod1.apple.com",
+                    "cn-apple-pay-gateway-sh-pod2.apple.com",
+                    "cn-apple-pay-gateway-sh-pod3.apple.com",
+                    "cn-apple-pay-gateway-tj-pod1.apple.com",
+                    "cn-apple-pay-gateway-tj-pod2.apple.com",
+                    "cn-apple-pay-gateway-tj-pod3.apple.com",
+                    "apple-pay-gateway-cert.apple.com",
+                    "cn-apple-pay-gateway-cert.apple.com"
+            ));
+
+    private static Set<String> urls = new HashSet<>(DEFAULT_VALIDATION_URLS);
 
     private ApplePayAdapterUtil() {
+    }
 
+    public static void setCustomAppleValidationUrls(List<String> appleUrls) {
+        urls = new HashSet<>(appleUrls);
     }
 
     public static String validateApplePayMerchant(String merchantValidationURL, ApplePaySession applePaySession, KeyManagerFactory keyManagerFactory, TrustManagerFactory trustManagerFactory) throws IOException, NoSuchAlgorithmException, KeyManagementException, URISyntaxException {
@@ -66,6 +92,12 @@ public class ApplePayAdapterUtil {
         return response;
     }
 
+    public static boolean doesUrlContainValidDomainName(String merchantValidationURL) throws URISyntaxException {
+        String merchantValidationUrlDomain = getPlainDomainName(merchantValidationURL);
+
+        return urls.contains(merchantValidationUrlDomain);
+    }
+
     private static SSLConnectionSocketFactory setupSSLSocketFactory(KeyManagerFactory keyManagerFactory, TrustManagerFactory trustManagerFactory) throws KeyManagementException, NoSuchAlgorithmException {
         SSLContext sslcontext = SSLContext.getInstance("TLS");
         sslcontext.init(keyManagerFactory.getKeyManagers(), trustManagerFactory.getTrustManagers(), null);
@@ -73,17 +105,9 @@ public class ApplePayAdapterUtil {
         return new SSLConnectionSocketFactory(sslcontext, new String[]{"TLSv1.2"}, null, SSLConnectionSocketFactory.getDefaultHostnameVerifier());
     }
 
-    public static String getPlainDomainName(String url) throws URISyntaxException {
+    private static String getPlainDomainName(String url) throws URISyntaxException {
         URI uri = new URI(url);
         String domain = uri.getHost();
         return domain.startsWith("www.") ? domain.substring(4) : domain;
-    }
-
-    public static boolean doesUrlContainValidDomainName(String merchantValidationURL) throws URISyntaxException {
-        PropertiesUtil propertiesUtil = new PropertiesUtil();
-        String merchantValidationUrlDomain = getPlainDomainName(merchantValidationURL);
-        List<String> validApplePayDomains = Arrays.asList(propertiesUtil.getString("applepay.validValidationUrls").split(","));
-
-        return validApplePayDomains.contains(merchantValidationUrlDomain);
     }
 }

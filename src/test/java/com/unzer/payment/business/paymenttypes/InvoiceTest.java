@@ -28,19 +28,20 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Currency;
 
+import static com.unzer.payment.business.Keys.KEY_WITH_3DS;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 public class InvoiceTest extends AbstractPaymentTest {
 
     @Test
     public void testCreateInvoiceMandatoryType() throws HttpCommunicationException {
-        Invoice invoice = getUnzer(privateKey2).createPaymentType(new Invoice());
+        Invoice invoice = getUnzer(KEY_WITH_3DS).createPaymentType(new Invoice());
         assertNotNull(invoice.getId());
     }
 
     @Test
     public void testChargeType() throws HttpCommunicationException, MalformedURLException {
-        Invoice invoice = getUnzer(privateKey2).createPaymentType(new Invoice());
+        Invoice invoice = getUnzer(KEY_WITH_3DS).createPaymentType(new Invoice());
         Charge charge = invoice.charge(BigDecimal.ONE, Currency.getInstance("EUR"), new URL("https://www.meinShop.de"));
         assertNotNull(charge);
         assertNotNull(charge.getId());
@@ -48,7 +49,7 @@ public class InvoiceTest extends AbstractPaymentTest {
 
     @Test
     public void testFetchInvoiceType() throws HttpCommunicationException {
-        Unzer unzer = getUnzer(privateKey2);
+        Unzer unzer = getUnzer(KEY_WITH_3DS);
 		Invoice invoice = unzer.createPaymentType(new Invoice());
         assertNotNull(invoice.getId());
         Invoice fetchedInvoice = (Invoice) unzer.fetchPaymentType(invoice.getId());

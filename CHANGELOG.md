@@ -6,6 +6,20 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres
 to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## [1.3.0.0][1.3.0.0]
+
+New version of Java SDK is not configurable via `unzer.properties` file anymore.
+
+### Breaking changes
+* Removed class `com.unzer.payment.service.PropertiesUtil`, unzer.properties file and `privatekey1`, `privatekey2`, `privatekey3`, `publickey1`, `marketplacekey`
+  and corresponding constants `PUBLIC_KEY1`, `PRIVATE_KEY1`, `PRIVATE_KEY2`, `PRIVATE_KEY3`, `MARKETPLACE_PRIVATE_KEY`. Since this properties were used only for internal testing purpose.
+* Removed property `applepay.validValidationUrls` from `unzer.properties`. Use `com.unzer.payment.util.ApplePayAdapterUtil.replaceValidationUrls` instead
+* Changed method `com.unzer.payment.util.ApplePayAdapterUtil.getPlainDomainName()` modifier to private.
+* Removed `unzer.properties` file. Use `com.unzer.payment.util.ApplePayAdapterUtil.setCustomAppleValidationUrls` to configure ApplePay validation urls.
+
+### Changed
+* Upgraded `jackson-databind` dependency. See: [CVE-2022-42004](https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2022-42004)
+
 ## [1.2.2.0][1.2.2.0]
 
 This release adds Klarna payment type to Java SDK.
@@ -248,6 +262,8 @@ This release brings Unzer Paylater Invoice payment type support to Java SDK.
     *   cancelAuthorization
 *   Remove deprecated classes
     *   RestCommunication
+
+[1.2.3.0]: http://github.com/unzerdev/java-sdk/compare/1.2.2.0..1.3.0.0
 
 [1.2.2.0]: http://github.com/unzerdev/java-sdk/compare/1.2.1.0..1.2.2.0
 

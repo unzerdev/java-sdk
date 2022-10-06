@@ -41,7 +41,7 @@ public class PaypageService {
     public PaypageService(Unzer unzer, UnzerRestCommunication restCommunication) {
         super();
         this.unzer = unzer;
-        this.urlUtil = new UrlUtil(unzer.getEndPoint());
+        this.urlUtil = new UrlUtil(unzer.getPrivateKey());
         this.restCommunication = restCommunication;
     }
 

@@ -21,6 +21,7 @@ import com.unzer.payment.Customer;
 import com.unzer.payment.PaymentError;
 import com.unzer.payment.PaymentException;
 import com.unzer.payment.business.AbstractPaymentTest;
+import com.unzer.payment.business.Keys;
 import com.unzer.payment.communication.HttpCommunicationException;
 import com.unzer.payment.paymenttypes.Card;
 import org.junit.jupiter.api.Test;
@@ -59,7 +60,7 @@ public class ErrorTestDE extends AbstractPaymentTest {
     @Test
     public void testPCILevelSaqA() throws HttpCommunicationException {
         try {
-            getUnzerDE(publicKey1).createPaymentType(getPaymentTypeCard()); // Prod Sandbox
+            getUnzerDE(Keys.PUBLIC_KEY).createPaymentType(getPaymentTypeCard()); // Prod Sandbox
         } catch (PaymentException e) {
             assertNotNull(e.getPaymentErrorList());
             assertTrue(e.getPaymentErrorList().size() > 0);
@@ -77,7 +78,7 @@ public class ErrorTestDE extends AbstractPaymentTest {
     public void testInvalidAccess() throws HttpCommunicationException {
         Card card = createPaymentTypeCard(getUnzer(), "4711100000000000");
         try {
-            getUnzerDE(privateKey1).fetchPaymentType(card.getId());  // Prod-Sandbox
+            getUnzerDE(Keys.KEY_WITHOUT_3DS).fetchPaymentType(card.getId());  // Prod-Sandbox
 
         } catch (PaymentException e) {
             assertNotNull(e.getPaymentErrorList());

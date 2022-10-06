@@ -18,6 +18,7 @@ package com.unzer.payment.business.errors;
 
 import com.unzer.payment.*;
 import com.unzer.payment.business.AbstractPaymentTest;
+import com.unzer.payment.business.Keys;
 import com.unzer.payment.communication.HttpCommunicationException;
 import com.unzer.payment.paymenttypes.Card;
 import org.junit.jupiter.api.Test;
@@ -30,17 +31,17 @@ import static com.unzer.payment.util.Uuid.generateUuid;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class ErrorTest extends AbstractPaymentTest {
-
     @Test
-    public void testKeyMissing() throws MalformedURLException, HttpCommunicationException {
-        try {
-            getUnzer(null).authorize(getAuthorization(""));
-        } catch (PaymentException e) {
-            assertNotNull(e.getPaymentErrorList());
-            assertTrue(e.getPaymentErrorList().size() > 0);
-            assertEquals("API.000.000.001", e.getPaymentErrorList().get(0).getCode());
-            assertEquals("PrivateKey/PublicKey is missing", e.getPaymentErrorList().get(0).getMerchantMessage());
-        }
+    public void testKeyMissing() {
+        assertThrows(
+                AssertionError.class,
+                () -> new Unzer(null)
+        );
+
+        assertThrows(
+                AssertionError.class,
+                () -> new Unzer("")
+        );
     }
 
     // The given key something is unknown or invalid.
@@ -65,7 +66,7 @@ public class ErrorTest extends AbstractPaymentTest {
     @Test
     public void testPCILevelSaqA() throws HttpCommunicationException {
         try {
-            getUnzer(publicKey1).createPaymentType(getPaymentTypeCard()); // Prod Sandbox
+            getUnzer(Keys.PUBLIC_KEY).createPaymentType(getPaymentTypeCard()); // Prod Sandbox
         } catch (PaymentException e) {
             assertNotNull(e.getPaymentErrorList());
             assertTrue(e.getPaymentErrorList().size() > 0);
@@ -79,11 +80,12 @@ public class ErrorTest extends AbstractPaymentTest {
     // You do not have the permission to access the paymentmethod with the id
     // s-crd-jy8xfchnfte2.
     // Payment type '/types/s-crd-jbrjthrghag2' not found
+    //FIXME tests nothing
     @Test
     public void testInvalidAccess() throws HttpCommunicationException {
         Card card = createPaymentTypeCard(getUnzer(), "4711100000000000");
         try {
-            getUnzer(privateKey2).fetchPaymentType(card.getId());  // Prod-Sandbox
+            getUnzer(Keys.KEY_WITH_3DS).fetchPaymentType(card.getId());  // Prod-Sandbox
 
         } catch (PaymentException e) {
             assertNotNull(e.getPaymentErrorList());

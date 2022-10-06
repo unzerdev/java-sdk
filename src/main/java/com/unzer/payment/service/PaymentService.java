@@ -57,7 +57,7 @@ public class PaymentService {
     public PaymentService(Unzer unzer, UnzerRestCommunication restCommunication) {
         super();
         this.unzer = unzer;
-        this.urlUtil = new UrlUtil(unzer.getEndPoint());
+        this.urlUtil = new UrlUtil(unzer.getPrivateKey());
         this.restCommunication = restCommunication;
         this.jsonParser = new JsonParser();
     }
@@ -657,7 +657,7 @@ public class PaymentService {
     }
 
     public PaylaterInvoiceConfig fetchPaymentTypeConfig(PaylaterInvoiceConfigRequest configRequest) throws HttpCommunicationException {
-        String url = this.urlUtil.getEndpoint() + configRequest.getRequestUrl();
+        String url = this.urlUtil.getApiEndpoint() + configRequest.getRequestUrl();
         String response = this.restCommunication.httpGet(url, unzer.getPrivateKey());
         return this.jsonParser.fromJson(response, PaylaterInvoiceConfig.class);
     }

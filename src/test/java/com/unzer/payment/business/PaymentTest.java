@@ -27,6 +27,7 @@ import java.net.URL;
 import java.text.ParseException;
 import java.util.Currency;
 
+import static com.unzer.payment.business.Keys.KEY_WITH_3DS;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class PaymentTest extends AbstractPaymentTest {
@@ -82,7 +83,7 @@ public class PaymentTest extends AbstractPaymentTest {
 
     @Test
     public void testFullCancelAuthorize() throws MalformedURLException, HttpCommunicationException {
-        Unzer unzer = getUnzer(privateKey2);
+        Unzer unzer = getUnzer(KEY_WITH_3DS);
 
         Card card = createPaymentTypeCard(unzer, "4711100000000000");
         Authorization authorize = unzer.authorize(getAuthorization(card.getId()));
