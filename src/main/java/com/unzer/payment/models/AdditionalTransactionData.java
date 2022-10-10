@@ -24,6 +24,7 @@ public class AdditionalTransactionData {
     private CardTransactionData card;
     private ShippingTransactionData shipping;
     private RiskData riskData;
+    private PaypalData paypal;
 
     /**
      * URL to the merchant's Terms and Conditions Page
@@ -89,6 +90,15 @@ public class AdditionalTransactionData {
      */
     public AdditionalTransactionData setPrivacyPolicyUrl(String privacyPolicyUrl) {
         this.privacyPolicyUrl = privacyPolicyUrl;
+        return this;
+    }
+
+    public PaypalData getPaypal() {
+        return paypal;
+    }
+
+    public AdditionalTransactionData setPaypal(PaypalData paypal) {
+        this.paypal = paypal;
         return this;
     }
 }
