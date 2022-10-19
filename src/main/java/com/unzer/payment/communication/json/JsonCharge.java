@@ -15,8 +15,6 @@
  */
 package com.unzer.payment.communication.json;
 
-import com.unzer.payment.Cancel;
-
 public class JsonCharge extends JsonInitPayment implements JsonObject {
 
     private String invoiceId;
@@ -35,9 +33,10 @@ public class JsonCharge extends JsonInitPayment implements JsonObject {
         this.setResources(json.getResources());
         this.setReturnUrl(json.getReturnUrl());
         this.setDate(json.getDate());
-        this.setIsError(json.getIsError());
-        this.setIsPending(json.getIsPending());
-        this.setIsSuccess(json.getIsSuccess());
+        this.setError(json.getError());
+        this.setPending(json.getPending());
+        this.setSuccess(json.getSuccess());
+        this.setResumed(json.getResumed());
         this.setMessage(json.getMessage());
         this.setProcessing(json.getProcessing());
         this.setRedirectUrl(json.getRedirectUrl());

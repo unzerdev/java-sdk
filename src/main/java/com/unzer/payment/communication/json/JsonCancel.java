@@ -22,7 +22,7 @@ import java.net.URL;
 import java.util.Currency;
 import java.util.Date;
 
-public class JsonCancel extends JsonIdObject implements JsonObject {
+public class JsonCancel extends JsonIdObject implements JsonObject, TransactionStatus {
     private Boolean isSuccess;
     private Boolean isPending;
     private Boolean isError;
@@ -103,27 +103,37 @@ public class JsonCancel extends JsonIdObject implements JsonObject {
         this.date = date;
     }
 
-    public Boolean isSuccess() {
+    public Boolean getSuccess() {
         return isSuccess;
     }
 
-    public void setIsSuccess(Boolean isSuccess) {
+    public void setSuccess(Boolean isSuccess) {
         this.isSuccess = isSuccess;
     }
 
-    public Boolean isPending() {
+    public Boolean getPending() {
         return isPending;
     }
 
-    public void setIsPending(Boolean isPending) {
+    public void setPending(Boolean isPending) {
         this.isPending = isPending;
     }
 
-    public Boolean isError() {
+    @Override
+    public Boolean getResumed() {
+        return null;
+    }
+
+    @Override
+    public void setResumed(Boolean value) {
+        // Do nothing
+    }
+
+    public Boolean getError() {
         return isError;
     }
 
-    public void setIsError(Boolean isError) {
+    public void setError(Boolean isError) {
         this.isError = isError;
     }
 

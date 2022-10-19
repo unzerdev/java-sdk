@@ -33,6 +33,6 @@ public interface UnzerHttpRequest {
     UnzerHttpMethod getMethod();
 
     enum UnzerHttpMethod {
-        GET, POST, DELETE, PUT
+        GET, POST, DELETE, PUT, PATCH
     }
 }

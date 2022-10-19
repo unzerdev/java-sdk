@@ -406,6 +406,16 @@ public class Unzer {
     }
 
     /**
+     * Update an Authorization transaction with PATCH method and returns the resulting Authorization resource.
+     *
+     * @param authorization The Authorization object containing transaction specific information.
+     * @return Authorization The resulting object of the Authorization resource.
+     */
+    public Authorization updateAuthorization(Authorization authorization) throws HttpCommunicationException {
+        return paymentService.updateAuthorization(authorization);
+    }
+
+    /**
      * Charge call with a typeId that was created using the Javascript or Mobile SDK
      *
      * @param amount   Amount usd for the charge
@@ -700,6 +710,16 @@ public class Unzer {
      */
     public MarketplaceCharge marketplaceCharge(MarketplaceCharge charge) throws HttpCommunicationException {
         return marketplacePaymentService.marketplaceCharge(charge);
+    }
+
+    /**
+     * Update a Charge transaction with PATCH method and returns the resulting Charge resource.
+     *
+     * @param charge The Authorization object containing transaction specific information.
+     * @return Charge The resulting object of the Charge resource.
+     */
+    public Charge updateCharge(Charge charge) throws HttpCommunicationException {
+        return paymentService.updateCharge(charge);
     }
 
     /**

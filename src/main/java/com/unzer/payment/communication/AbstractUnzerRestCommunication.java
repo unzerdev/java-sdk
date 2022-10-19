@@ -27,6 +27,7 @@ import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+import java.util.Objects;
 
 import static org.apache.http.HttpHeaders.*;
 
@@ -136,6 +137,7 @@ public abstract class AbstractUnzerRestCommunication implements UnzerRestCommuni
      *
      * @param body - the json representation of the data to be sent
      */
+    @Deprecated
     protected abstract void logRequestBody(String body);
 
     /**
@@ -145,44 +147,43 @@ public abstract class AbstractUnzerRestCommunication implements UnzerRestCommuni
      */
     protected abstract void logResponse(UnzerHttpResponse response);
 
+    @Override
     public String httpGet(String url, String privateKey) throws HttpCommunicationException {
-
+        Objects.requireNonNull(url);
         return this.execute(createRequest(url, UnzerHttpMethod.GET), privateKey);
     }
 
-    public String httpPost(String url, String privateKey, Object data)
-            throws HttpCommunicationException {
-        if (url == null) {
-            throw new IllegalArgumentException("Cannot post to a null URL");
-        }
-        return sendPutOrPost(createRequest(url, UnzerHttpMethod.POST), privateKey, data);
+    @Override
+    public String httpPost(String url, String privateKey, Object data) throws HttpCommunicationException {
+        Objects.requireNonNull(url);
+        Objects.requireNonNull(data);
+        return sendRequestWithBody(createRequest(url, UnzerHttpMethod.POST), privateKey, data);
     }
 
-    public String httpPut(String url, String privateKey, Object data)
-            throws HttpCommunicationException {
-        if (url == null) {
-            throw new IllegalArgumentException("Cannot put to a null URL");
-        }
-        return sendPutOrPost(createRequest(url, UnzerHttpMethod.PUT), privateKey, data);
+    @Override
+    public String httpPut(String url, String privateKey, Object data) throws HttpCommunicationException {
+        Objects.requireNonNull(url);
+        Objects.requireNonNull(data);
+        return sendRequestWithBody(createRequest(url, UnzerHttpMethod.PUT), privateKey, data);
+    }
+
+    @Override
+    public String httpPatch(String url, String privateKey, Object data) throws HttpCommunicationException {
+        Objects.requireNonNull(url);
+        Objects.requireNonNull(data);
+        return sendRequestWithBody(createRequest(url, UnzerHttpMethod.PATCH), privateKey, data);
     }
 
     public String httpDelete(String url, String privateKey) throws HttpCommunicationException {
-
+        Objects.requireNonNull(url);
         return this.execute(createRequest(url, UnzerHttpMethod.DELETE), privateKey);
     }
 
-    private String sendPutOrPost(UnzerHttpRequest request, String privateKey, Object data)
-            throws HttpCommunicationException {
-        if (data == null) {
-            throw new IllegalArgumentException("Cannot create a http post request with null params");
-        }
-
+    private String sendRequestWithBody(UnzerHttpRequest request, String privateKey, Object data) throws HttpCommunicationException {
         String json = new JsonParser().toJson(data);
         logRequestBody(json);
-        request.setContent(new JsonParser().toJson(data), "UTF-8");
-
+        request.setContent(json, "UTF-8");
         return this.execute(request, privateKey);
-
     }
 
     /**
