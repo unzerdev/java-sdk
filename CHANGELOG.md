@@ -6,6 +6,13 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres
 to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## [3.0.0][3.0.0]
+
+This release switches Java SDK version to a traditional 3-digit semantic versioning style.
+
+### Changes
+* Removed first digit at semver: ~~API_VERSION.~~ MAJOR.MINOR.PATCH
+
 ## [1.3.0.0][1.3.0.0]
 
 New version of Java SDK is not configurable via `unzer.properties` file anymore.
@@ -263,7 +270,9 @@ This release brings Unzer Paylater Invoice payment type support to Java SDK.
 *   Remove deprecated classes
     *   RestCommunication
 
-[1.2.3.0]: http://github.com/unzerdev/java-sdk/compare/1.2.2.0..1.3.0.0
+[3.0.0]: http://github.com/unzerdev/java-sdk/compare/1.3.0.0..3.0.0
+
+[1.3.0.0]: http://github.com/unzerdev/java-sdk/compare/1.2.2.0..1.3.0.0
 
 [1.2.2.0]: http://github.com/unzerdev/java-sdk/compare/1.2.1.0..1.2.2.0
 
