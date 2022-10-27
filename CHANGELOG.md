@@ -11,7 +11,7 @@ to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 This release switches Java SDK version to a traditional 3-digit semantic versioning style.
 
 ### Changes
-* Removed first digit at semver: ~~API_VERSION.~~MAJOR.MINOR.PATCH
+* Removed first digit at semver: ~~API_VERSION.~~ MAJOR.MINOR.PATCH
 
 ## [1.3.0.0][1.3.0.0]
 
