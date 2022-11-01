@@ -18,8 +18,6 @@ package com.unzer.payment.communication.json;
 import com.unzer.payment.Cancel;
 
 public class JsonCharge extends JsonInitPayment implements JsonObject {
-
-    private String invoiceId;
     private String reasonCode;
 
     public JsonCharge() {
@@ -32,6 +30,7 @@ public class JsonCharge extends JsonInitPayment implements JsonObject {
         this.setCard3ds(json.getCard3ds());
         this.setCurrency(json.getCurrency());
         this.setOrderId(json.getOrderId());
+        this.setInvoiceId(json.getInvoiceId());
         this.setResources(json.getResources());
         this.setReturnUrl(json.getReturnUrl());
         this.setDate(json.getDate());
@@ -44,14 +43,6 @@ public class JsonCharge extends JsonInitPayment implements JsonObject {
         this.setPaymentReference(json.getPaymentReference());
         this.setId(json.getId());
         this.setAdditionalTransactionData(json.getAdditionalTransactionData());
-    }
-
-    public String getInvoiceId() {
-        return invoiceId;
-    }
-
-    public void setInvoiceId(String invoiceId) {
-        this.invoiceId = invoiceId;
     }
 
     public void setReasonCode(String reasonCode) {

@@ -30,20 +30,19 @@ public class JsonToBusinessClassMapper {
         json.setCurrency(abstractInitPayment.getCurrency());
         json.setReturnUrl(abstractInitPayment.getReturnUrl());
         json.setOrderId(abstractInitPayment.getOrderId());
+        json.setInvoiceId(abstractInitPayment.getInvoiceId());
         json.setResources(getResources(abstractInitPayment));
         json.setCard3ds(abstractInitPayment.getCard3ds());
         json.setPaymentReference(abstractInitPayment.getPaymentReference());
         json.setAdditionalTransactionData(abstractInitPayment.getAdditionalTransactionData());
 
-        if (abstractInitPayment instanceof Charge) {
-            json = new JsonCharge(json);
-            ((JsonCharge) json).setInvoiceId(((Charge) abstractInitPayment).getInvoiceId());
-        } else if (abstractInitPayment instanceof Payout) {
+        if (abstractInitPayment instanceof Payout) {
             json = new JsonPayout(json);
         } else if (abstractInitPayment instanceof Authorization) {
             json = new JsonAuthorization(json);
             json.setEffectiveInterestRate(((Authorization) abstractInitPayment).getEffectiveInterestRate());
         }
+
         return json;
     }
 
@@ -58,6 +57,8 @@ public class JsonToBusinessClassMapper {
     public JsonObject map(Cancel cancel) {
         JsonCharge json = new JsonCharge();
         json.setAmount(cancel.getAmount());
+        json.setOrderId(cancel.getOrderId());
+        json.setInvoiceId(cancel.getInvoiceId());
         json.setPaymentReference(cancel.getPaymentReference());
 
         if (cancel.getReasonCode() != null) {
@@ -274,6 +275,8 @@ public class JsonToBusinessClassMapper {
         abstractInitTransaction.setCurrency(json.getCurrency());
         abstractInitTransaction.setOrderId(json.getOrderId());
         abstractInitTransaction.setCard3ds(json.getCard3ds());
+        abstractInitTransaction.setInvoiceId(json.getInvoiceId());
+        abstractInitTransaction.setOrderId(json.getOrderId());
         abstractInitTransaction.setPaymentReference(json.getPaymentReference());
         if (json.getResources() != null) {
             abstractInitTransaction.setCustomerId(json.getResources().getCustomerId());
@@ -348,7 +351,7 @@ public class JsonToBusinessClassMapper {
         customer.setCompany(json.getCompany());
         customer.setCustomerId(json.getCustomerId());
 
-        if(json.getLanguage() != null && !json.getLanguage().isEmpty()) {
+        if (json.getLanguage() != null && !json.getLanguage().isEmpty()) {
             customer.setLanguage(new Locale(json.getLanguage()));
         }
 
@@ -445,30 +448,25 @@ public class JsonToBusinessClassMapper {
         payment.setOrderId(json.getOrderId());
         payment.setPaymentState(getPaymentState(json.getState()));
         payment.setId(json.getId());
+
         if (json.getResources() != null) {
             payment.setPaymentTypeId(json.getResources().getTypeId());
             payment.setCustomerId(json.getResources().getCustomerId());
             payment.setMetadataId(json.getResources().getMetadataId());
             payment.setBasketId(json.getResources().getBasketId());
         }
+
         return payment;
     }
 
     private AbstractPayment.State getPaymentState(JsonState state) {
         if (state == null)
             return null;
-        if (state.getId() == 0)
-            return AbstractPayment.State.PENDING;
-        if (state.getId() == 1)
-            return AbstractPayment.State.COMPLETED;
-        if (state.getId() == 2)
-            return AbstractPayment.State.CANCELED;
-        if (state.getId() == 3)
-            return AbstractPayment.State.PARTLY;
-        if (state.getId() == 4)
-            return AbstractPayment.State.PAYMENT_REVIEW;
-        if (state.getId() == 5)
-            return AbstractPayment.State.CHARGEBACK;
+
+        if (state.getId() >= 0 && state.getId() <= 5) {
+            return AbstractPayment.State.values()[state.getId()];
+        }
+
         return null;
     }
 

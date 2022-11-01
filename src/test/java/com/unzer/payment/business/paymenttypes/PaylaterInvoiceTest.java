@@ -94,6 +94,8 @@ public class PaylaterInvoiceTest extends AbstractPaymentTest {
                                 .setAmount(BigDecimal.valueOf(500.5))
                                 .setCurrency(Currency.getInstance("EUR"))
                                 .setReturnUrl(unsafeUrl("https://unzer.com"))
+                                .setInvoiceId(generateUuid())
+                                .setOrderId(generateUuid())
                                 .setAdditionalTransactionData(
                                         new AdditionalTransactionData()
                                                 .setRiskData(
