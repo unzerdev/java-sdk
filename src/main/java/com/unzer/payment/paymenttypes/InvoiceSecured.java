@@ -64,13 +64,13 @@ public class InvoiceSecured extends AbstractPaymentType implements PaymentType {
     @Deprecated
     private Charge getCharge(BigDecimal amount, Currency currency, InvoiceSecured invoiceSecured, URL returnUrl,
                              Customer customer, Basket basket, String invoiceId) throws HttpCommunicationException {
-        return ((Charge) new Charge()
+        return (Charge) new Charge()
                 .setAmount(amount)
                 .setCurrency(currency)
                 .setTypeId(getUnzer().createPaymentType(invoiceSecured).getId())
                 .setReturnUrl(returnUrl)
                 .setCustomerId(getUnzer().createCustomerIfPresent(customer).getId())
-                .setBasketId(getUnzer().createBasket(basket).getId()))
+                .setBasketId(getUnzer().createBasket(basket).getId())
                 .setInvoiceId(invoiceId);
     }
 }
