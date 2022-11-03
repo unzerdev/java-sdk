@@ -32,9 +32,6 @@ import java.util.List;
  *
  */
 public class Charge extends AbstractTransaction<Payment> {
-
-    private String invoiceId;
-
     private List<Cancel> cancelList;
 
     public Charge() {
@@ -45,15 +42,6 @@ public class Charge extends AbstractTransaction<Payment> {
     public Charge(Unzer unzer) {
         super(unzer);
         setCancelList(new ArrayList<Cancel>());
-    }
-
-    public String getInvoiceId() {
-        return invoiceId;
-    }
-
-    public Charge setInvoiceId(String invoiceId) {
-        this.invoiceId = invoiceId;
-        return this;
     }
 
     public Cancel cancel() throws HttpCommunicationException {

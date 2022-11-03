@@ -6,11 +6,17 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres
 to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## [3.0.1][3.0.1]
+
+### Added
+
+* Added fields `orderId` and `invoiceId` to all transactions.
+
 ## [3.0.0][3.0.0]
 
 This release switches Java SDK version to a traditional 3-digit semantic versioning style.
 
-### Changes
+### Changed
 * Removed first digit at semver: ~~API_VERSION.~~ MAJOR.MINOR.PATCH
 
 ## [1.3.0.0][1.3.0.0]
