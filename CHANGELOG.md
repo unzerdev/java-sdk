@@ -8,9 +8,15 @@ to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
 ## [3.0.1][3.0.1]
 
+All transactions has `orderId` and `invoiceId` fields since this release.
+
 ### Added
 
 * Added fields `orderId` and `invoiceId` to all transactions.
+
+### Deprecated 
+
+* Deprecated `com.unzer.payment.paymenttypes.Invoice`. Use `com.unzer.payment.paymenttypes.PaylaterInvoice` instead 
 
 ## [3.0.0][3.0.0]
 
