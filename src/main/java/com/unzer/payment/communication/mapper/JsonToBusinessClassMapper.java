@@ -46,7 +46,7 @@ public class JsonToBusinessClassMapper {
         return json;
     }
 
-    public JsonObject map(Recurring recurring) {
+    public JsonRecurring map(Recurring recurring) {
         JsonRecurring json = new JsonRecurring();
         json.setReturnUrl(recurring.getReturnUrl());
         json.setResources(getResources(recurring));
@@ -54,8 +54,8 @@ public class JsonToBusinessClassMapper {
         return json;
     }
 
-    public JsonObject map(Cancel cancel) {
-        JsonCharge json = new JsonCharge();
+    public JsonCancel map(Cancel cancel) {
+        JsonCancel json = new JsonCancel();
         json.setAmount(cancel.getAmount());
         json.setOrderId(cancel.getOrderId());
         json.setInvoiceId(cancel.getInvoiceId());
@@ -411,6 +411,8 @@ public class JsonToBusinessClassMapper {
         cancel.setMessage(json.getMessage());
         cancel.setDate(json.getDate());
         cancel.setPaymentReference(json.getPaymentReference());
+        cancel.setInvoiceId(json.getInvoiceId());
+        cancel.setOrderId(json.getOrderId());
         setStatus(cancel, json.isSuccess(), json.isPending(), json.isError());
         return cancel;
     }
