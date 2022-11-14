@@ -8,7 +8,7 @@ to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
 ## [3.0.1][3.0.1]
 
-All transactions has `orderId` and `invoiceId` fields since this release.
+All transactions have `orderId` and `invoiceId` fields since this release.
 
 ### Added
 
