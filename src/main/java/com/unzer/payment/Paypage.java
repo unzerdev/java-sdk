@@ -58,7 +58,10 @@ public class Paypage implements PaymentType {
 
     @Override
     public String getTypeUrl() {
-        String action = Optional.ofNullable(this.action).orElse("CHARGE").toLowerCase();
+        String action = Optional
+                .ofNullable(this.action)
+                .orElse(Action.CHARGE)
+                .toLowerCase();
         return "paypage/".concat(action);
     }
 
