@@ -206,6 +206,6 @@ public abstract class AbstractPayment implements PaymentType {
     }
 
     public enum State {
-        COMPLETED, PENDING, CANCELED, PARTLY, PAYMENT_REVIEW, CHARGEBACK
+        PENDING, COMPLETED, CANCELED, PARTLY, PAYMENT_REVIEW, CHARGEBACK
     }
 }

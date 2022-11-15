@@ -29,7 +29,9 @@ import java.util.Currency;
  * Invoice business object
  *
  * @author Unzer E-Com GmbH
+ * @deprecated use {@link PaylaterInvoice} instead
  */
+@Deprecated
 public class Invoice extends AbstractPaymentType implements PaymentType {
 
     @Override
@@ -44,10 +46,12 @@ public class Invoice extends AbstractPaymentType implements PaymentType {
         return invoice;
     }
 
+    @Deprecated
     public Charge charge(BigDecimal amount, Currency currency, URL returnUrl) throws HttpCommunicationException {
         return charge(amount, currency, returnUrl, null);
     }
 
+    @Deprecated
     public Charge charge(BigDecimal amount, Currency currency, URL returnUrl, Customer customer) throws HttpCommunicationException {
         return getUnzer().charge(amount, currency, this, returnUrl, customer);
     }

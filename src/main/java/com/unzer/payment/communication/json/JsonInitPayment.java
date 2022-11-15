@@ -31,6 +31,7 @@ public class JsonInitPayment extends JsonIdObject implements JsonObject, Transac
     private Date date;
 
     private String orderId;
+    private String invoiceId;
     private BigDecimal amount;
     private Currency currency;
     private URL returnUrl;
@@ -160,31 +161,44 @@ public class JsonInitPayment extends JsonIdObject implements JsonObject, Transac
         return card3ds;
     }
 
-    public void setCard3ds(Boolean card3ds) {
+    public JsonInitPayment setCard3ds(Boolean card3ds) {
         this.card3ds = card3ds;
+        return this;
     }
 
     public String getPaymentReference() {
         return paymentReference;
     }
 
-    public void setPaymentReference(String paymentReference) {
+    public JsonInitPayment setPaymentReference(String paymentReference) {
         this.paymentReference = paymentReference;
+        return this;
     }
 
     public BigDecimal getEffectiveInterestRate() {
         return effectiveInterestRate;
     }
 
-    public void setEffectiveInterestRate(BigDecimal effectiveInterestRate) {
+    public JsonInitPayment setEffectiveInterestRate(BigDecimal effectiveInterestRate) {
         this.effectiveInterestRate = effectiveInterestRate;
+        return this;
     }
 
     public AdditionalTransactionData getAdditionalTransactionData() {
         return additionalTransactionData;
     }
 
-    public void setAdditionalTransactionData(AdditionalTransactionData additionalTransactionData) {
+    public JsonInitPayment setAdditionalTransactionData(AdditionalTransactionData additionalTransactionData) {
         this.additionalTransactionData = additionalTransactionData;
+        return this;
+    }
+
+    public String getInvoiceId() {
+        return invoiceId;
+    }
+
+    public JsonInitPayment setInvoiceId(String invoiceId) {
+        this.invoiceId = invoiceId;
+        return this;
     }
 }

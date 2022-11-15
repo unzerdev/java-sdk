@@ -29,6 +29,10 @@ public class JsonCancel extends JsonIdObject implements JsonObject, TransactionS
     private JsonMessage message;
     private Date date;
     private String paymentReference;
+    private String reasonCode;
+
+    private String orderId;
+    private String invoiceId;
 
     private BigDecimal amount;
     private Currency currency;
@@ -37,10 +41,6 @@ public class JsonCancel extends JsonIdObject implements JsonObject, TransactionS
     private JsonResources resources;
     private JsonProcessing processing = new JsonProcessing();
     private MarketplaceCancelBasket canceledBasket;
-
-    public JsonCancel() {
-        super();
-    }
 
     public BigDecimal getAmount() {
         return amount;
@@ -151,5 +151,29 @@ public class JsonCancel extends JsonIdObject implements JsonObject, TransactionS
 
     public void setCanceledBasket(MarketplaceCancelBasket canceledBasket) {
         this.canceledBasket = canceledBasket;
+    }
+
+    public String getInvoiceId() {
+        return invoiceId;
+    }
+
+    public String getOrderId() {
+        return orderId;
+    }
+
+    public void setOrderId(String orderId) {
+        this.orderId = orderId;
+    }
+
+    public void setInvoiceId(String invoiceId) {
+        this.invoiceId = invoiceId;
+    }
+
+    public String getReasonCode() {
+        return reasonCode;
+    }
+
+    public void setReasonCode(String reasonCode) {
+        this.reasonCode = reasonCode;
     }
 }

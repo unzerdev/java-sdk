@@ -94,6 +94,8 @@ public class PaylaterInvoiceTest extends AbstractPaymentTest {
                                 .setAmount(BigDecimal.valueOf(500.5))
                                 .setCurrency(Currency.getInstance("EUR"))
                                 .setReturnUrl(unsafeUrl("https://unzer.com"))
+                                .setInvoiceId(generateUuid())
+                                .setOrderId(generateUuid())
                                 .setAdditionalTransactionData(
                                         new AdditionalTransactionData()
                                                 .setRiskData(
@@ -156,12 +158,16 @@ public class PaylaterInvoiceTest extends AbstractPaymentTest {
             assertEquals(AbstractTransaction.Status.SUCCESS, responseAuthorization.getStatus());
             assertNotNull(responseAuthorization.getPaymentId());
             assertFalse(responseAuthorization.getPaymentId().isEmpty());
+            assertEquals(tc.authorization.getInvoiceId(), responseAuthorization.getInvoiceId());
+            assertEquals(tc.authorization.getOrderId(), responseAuthorization.getOrderId());
 
             // Charge
             Charge responseCharge = unzer.chargeAuthorization(responseAuthorization.getPaymentId());
             assertNotNull(responseCharge);
             assertEquals(AbstractTransaction.Status.SUCCESS, responseCharge.getStatus());
             assertNotNull(responseCharge.getId());
+            assertEquals(tc.authorization.getInvoiceId(), responseCharge.getInvoiceId());
+            assertEquals(tc.authorization.getOrderId(), responseCharge.getOrderId());
 
         })).collect(Collectors.toList());
     }
@@ -190,7 +196,7 @@ public class PaylaterInvoiceTest extends AbstractPaymentTest {
 
         return Stream.of(
                 new TestCase(
-                        "full refund",
+                        "full cancel",
                         new PaylaterInvoice(),
                         new Basket()
                                 .setTotalValueGross(new BigDecimal("500.5"))
@@ -210,11 +216,13 @@ public class PaylaterInvoiceTest extends AbstractPaymentTest {
                         (Authorization) new Authorization()
                                 .setAmount(BigDecimal.valueOf(500.5))
                                 .setCurrency(Currency.getInstance("EUR"))
-                                .setReturnUrl(unsafeUrl("https://unzer.com")),
+                                .setReturnUrl(unsafeUrl("https://unzer.com"))
+                                .setOrderId(generateUuid())
+                                .setInvoiceId(generateUuid()),
                         null
                 ),
                 new TestCase(
-                        "partial refund - fails",
+                        "partial cancel - fails",
                         new PaylaterInvoice(),
                         new Basket()
                                 .setTotalValueGross(new BigDecimal("500.5"))
@@ -272,6 +280,8 @@ public class PaylaterInvoiceTest extends AbstractPaymentTest {
                 assertNotNull(cancelResponse);
                 assertEquals(AbstractTransaction.Status.SUCCESS, cancelResponse.getStatus());
                 assertNotNull(cancelResponse.getId());
+                assertEquals(tc.authorization.getInvoiceId(), cancelResponse.getInvoiceId());
+                assertEquals(tc.authorization.getOrderId(), cancelResponse.getOrderId());
             } else {
                 PaymentException ex = assertThrows(PaymentException.class, () -> {
                     unzer.cancelAuthorization(responseAuthorization.getPaymentId(), tc.amount);
@@ -325,6 +335,8 @@ public class PaylaterInvoiceTest extends AbstractPaymentTest {
                                 .setAmount(BigDecimal.valueOf(500.5))
                                 .setCurrency(Currency.getInstance("EUR"))
                                 .setReturnUrl(unsafeUrl("https://unzer.com"))
+                                .setInvoiceId(generateUuid())
+                                .setOrderId(generateUuid())
                 ),
                 new TestCase(
                         "partial refund",

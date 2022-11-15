@@ -151,19 +151,7 @@ public class KlarnaTest extends AbstractPaymentTest {
                         .setAmount(BigDecimal.valueOf(500.5))
                         .setCurrency(Currency.getInstance("EUR"))
                         .setReturnUrl(unsafeUrl("https://unzer.com")),
-
-                        Arrays.asList(
-                                new PaymentError(
-                                        "additionalTransactionData.termsAndConditionUrl is missing.",
-                                        "An error occurred. Please contact us for more information.",
-                                        "API.320.200.209"
-                                ),
-                                new PaymentError(
-                                        "additionalTransactionData.privacyPolicyUrl is missing.",
-                                        "An error occurred. Please contact us for more information.",
-                                        "API.320.200.210"
-                                )
-                        )
+                        null
                 ),
                 new TestCase(
                         "without language",

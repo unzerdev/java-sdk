@@ -31,6 +31,7 @@ public abstract class AbstractTransaction<T extends AbstractPayment> implements 
     private URL returnUrl;
     private Boolean card3ds;
     private String orderId;
+    private String invoiceId;
     private String typeId;
     private String customerId;
     private String metadataId;
@@ -273,6 +274,15 @@ public abstract class AbstractTransaction<T extends AbstractPayment> implements 
 
     public AbstractTransaction<T> setResourceUrl(URL resourceUrl) {
         this.resourceUrl = resourceUrl;
+        return this;
+    }
+
+    public String getInvoiceId() {
+        return invoiceId;
+    }
+
+    public AbstractTransaction<T> setInvoiceId(String invoiceId) {
+        this.invoiceId = invoiceId;
         return this;
     }
 
