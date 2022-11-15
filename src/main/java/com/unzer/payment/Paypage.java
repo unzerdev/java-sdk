@@ -22,6 +22,7 @@ import java.math.BigDecimal;
 import java.net.URL;
 import java.util.Currency;
 import java.util.Map;
+import java.util.Optional;
 
 public class Paypage implements PaymentType {
 
@@ -54,13 +55,11 @@ public class Paypage implements PaymentType {
     private String metadataId;
     private String paymentId;
     private String basketId;
-    public Paypage() {
-        //default constructor
-    }
 
     @Override
     public String getTypeUrl() {
-        return "paypage/charge";
+        String action = Optional.ofNullable(this.action).orElse("CHARGE").toLowerCase();
+        return "paypage/".concat(action);
     }
 
     public BigDecimal getAmount() {
@@ -362,9 +361,15 @@ public class Paypage implements PaymentType {
     /**
      * @param action the action to set
      */
-    public void setAction(String action) {
+    public Paypage setAction(String action) {
         this.action = action;
+        return this;
     }
 
     public enum Status {SUCCESS, PENDING, ERROR}
+
+    public interface Action {
+        String CHARGE = "CHARGE";
+        String AUTHORIZE = "AUTHORIZE";
+    }
 }

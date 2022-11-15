@@ -17,11 +17,17 @@ package com.unzer.payment.business;
 
 
 import com.unzer.payment.Paypage;
+import com.unzer.payment.Unzer;
 import com.unzer.payment.communication.HttpCommunicationException;
+import org.junit.jupiter.api.DynamicTest;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestFactory;
 
 import java.net.MalformedURLException;
 import java.util.Arrays;
+import java.util.Collection;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -97,5 +103,51 @@ public class PaypageTest extends AbstractPaymentTest {
         assertEquals(request.getShippingAddressRequired(), response.getShippingAddressRequired());
         assertEquals(Arrays.toString(request.getExcludeTypes()), Arrays.toString(response.getExcludeTypes()));
         assertEquals("charge", response.getAction().toLowerCase());
+    }
+
+    @TestFactory
+    public Collection<DynamicTest> testRestUrl() {
+        class TestCase {
+            String name;
+            String action;
+            String expectedUrl;
+
+            public TestCase(String name, String action, String expectedUrl) {
+                this.name = name;
+                this.action = action;
+                this.expectedUrl = expectedUrl;
+            }
+        }
+
+        return Stream.of(
+                new TestCase(
+                        "null",
+                        null,
+                        "paypage/charge"
+                ),
+                new TestCase(
+                        "charge",
+                        Paypage.Action.CHARGE,
+                        "paypage/charge"
+                ),
+                new TestCase(
+                        "authorize",
+                        Paypage.Action.AUTHORIZE,
+                        "paypage/authorize"
+                )
+        ).map(t -> DynamicTest.dynamicTest(t.name, () -> {
+            Paypage paypage = getMaximumPaypage()
+                    .setAction(t.action);
+            assertEquals(t.expectedUrl, paypage.getTypeUrl());
+        })).collect(Collectors.toList());
+    }
+
+    @Test
+    public void testAuthorize() throws HttpCommunicationException {
+        Unzer unzer = getUnzer();
+        Paypage request = getMaximumPaypage().setAction(Paypage.Action.AUTHORIZE);
+
+        Paypage response = unzer.paypage(request);
+        assertEquals("AUTHORIZE", response.getAction());
     }
 }
