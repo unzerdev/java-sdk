@@ -16,44 +16,4 @@
 package com.unzer.payment.communication.json;
 
 public class JsonCharge extends JsonInitPayment implements JsonObject {
-
-    private String invoiceId;
-    private String reasonCode;
-
-    public JsonCharge() {
-        super();
-    }
-
-    public JsonCharge(JsonInitPayment json) {
-        super();
-        this.setAmount(json.getAmount());
-        this.setCard3ds(json.getCard3ds());
-        this.setCurrency(json.getCurrency());
-        this.setOrderId(json.getOrderId());
-        this.setResources(json.getResources());
-        this.setReturnUrl(json.getReturnUrl());
-        this.setDate(json.getDate());
-        this.setError(json.getError());
-        this.setPending(json.getPending());
-        this.setSuccess(json.getSuccess());
-        this.setResumed(json.getResumed());
-        this.setMessage(json.getMessage());
-        this.setProcessing(json.getProcessing());
-        this.setRedirectUrl(json.getRedirectUrl());
-        this.setPaymentReference(json.getPaymentReference());
-        this.setId(json.getId());
-        this.setAdditionalTransactionData(json.getAdditionalTransactionData());
-    }
-
-    public String getInvoiceId() {
-        return invoiceId;
-    }
-
-    public void setInvoiceId(String invoiceId) {
-        this.invoiceId = invoiceId;
-    }
-
-    public void setReasonCode(String reasonCode) {
-        this.reasonCode = reasonCode;
-    }
 }

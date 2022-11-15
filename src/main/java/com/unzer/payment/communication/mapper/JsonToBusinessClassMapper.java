@@ -417,7 +417,6 @@ public class JsonToBusinessClassMapper {
         cancel.setPaymentReference(json.getPaymentReference());
         cancel.setInvoiceId(json.getInvoiceId());
         cancel.setOrderId(json.getOrderId());
-        setStatus(cancel, json.isSuccess(), json.isPending(), json.isError());
         cancel.setStatus(extractStatus(json));
         return cancel;
     }
