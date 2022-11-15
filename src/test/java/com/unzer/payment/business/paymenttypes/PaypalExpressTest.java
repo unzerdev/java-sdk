@@ -24,14 +24,29 @@ import com.unzer.payment.communication.HttpCommunicationException;
 import com.unzer.payment.models.AdditionalTransactionData;
 import com.unzer.payment.models.PaypalData;
 import com.unzer.payment.paymenttypes.Paypal;
+import io.github.bonigarcia.wdm.WebDriverManager;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.math.BigDecimal;
+import java.time.Duration;
+import java.util.AbstractMap;
 import java.util.Currency;
 
 import static com.unzer.payment.util.Url.unsafeUrl;
 
 public class PaypalExpressTest extends AbstractPaymentTest {
+    @BeforeAll
+    static void setup() {
+        WebDriverManager.chromedriver().setup();
+    }
+
     @Test
     public void testCharge() throws HttpCommunicationException {
         Unzer unzer = getUnzer();
@@ -53,6 +68,53 @@ public class PaypalExpressTest extends AbstractPaymentTest {
                 );
 
         Authorization createdAuthorization = unzer.authorize(authorization);
-        createdAuthorization.getTypeUrl();
+        System.out.println(createdAuthorization.getRedirectUrl());
+
+        performPaypalExpressUIActions(createdAuthorization.getRedirectUrl().toString());
+
+        // Update authorization
+
+        // Charge
+    }
+
+    private AbstractMap.SimpleEntry<WebDriver, WebDriverWait> driverSetup() {
+        ChromeOptions chromeOptions = new ChromeOptions()
+                .addArguments(
+                        "--ignore-certificate-errors",
+                        "--headless"
+                );
+        ChromeDriver driver = new ChromeDriver(chromeOptions);
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofMinutes(5));
+
+        return new AbstractMap.SimpleEntry<>(driver, wait);
+    }
+
+    // Simulates user interaction on paypal-express page.
+    private void performPaypalExpressUIActions(String redirectUrl) {
+        AbstractMap.SimpleEntry<WebDriver, WebDriverWait> pair = driverSetup();
+        WebDriver driver = pair.getKey();
+        WebDriverWait wait = pair.getValue();
+
+        try {
+            driver.get(redirectUrl);
+            wait.until(ExpectedConditions.urlContains("https://www.sandbox.paypal.com/checkoutnow"));
+
+            wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//div[@data-testid='basl-login-link-container']")))
+                    .findElement(By.tagName("button")).click();
+
+            wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("email")))
+                    .sendKeys("paypal-buyer@unzer.com");
+            driver.findElement(By.id("btnNext")).click();
+            wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("password")))
+                    .sendKeys("unzer1234");
+            wait.until(ExpectedConditions.elementToBeClickable(By.id("btnLogin")))
+                    .click();
+
+            wait.until(ExpectedConditions.elementToBeClickable(By.id("payment-submit-btn")))
+                    .click();
+            wait.until(ExpectedConditions.urlContains("https://www.unzer.com"));
+        } finally {
+            driver.close();
+        }
     }
 }

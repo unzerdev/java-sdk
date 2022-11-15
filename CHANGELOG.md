@@ -6,12 +6,15 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres
 to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
-## [3.0.1][3.0.1]
+## [3.1.0][3.1.0]
 
-All transactions have `orderId` and `invoiceId` fields since this release.
+This release brings Unzer Paypal Express support to Java SDK.
 
 ### Added
 
+* Added Paypal-Express support:
+  * Extended `AdditionalTransactionData` with `paypal.checkoutType` field. See `com.unzer.payment.models.AdditionalTransactionData.setPaypal`.
+  * Defined `RESUMED` value for `com.unzer.payment.AbstractTransaction.Status`
 * Added fields `orderId` and `invoiceId` to all transactions.
 
 ### Deprecated 
