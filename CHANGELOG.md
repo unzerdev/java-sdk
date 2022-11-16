@@ -8,13 +8,14 @@ to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
 ## [3.1.0][3.1.0]
 
-This release brings Unzer Paypal Express support to Java SDK.
+This release brings Unzer PayPal Express support to Java SDK.
 
 ### Added
 
 * Added Paypal-Express support:
   * Extended `AdditionalTransactionData` with `paypal.checkoutType` field. See `com.unzer.payment.models.AdditionalTransactionData.setPaypal`.
   * Defined `RESUMED` value for `com.unzer.payment.AbstractTransaction.Status`
+  * Added `com.unzer.payment.Unzer::updateCharge()`, `com.unzer.payment.Unzer::updateAuthorization()` which must be invoked after Paypal-Express transaction is resumed.
 * Added fields `orderId` and `invoiceId` to all transactions.
 
 ### Deprecated 
