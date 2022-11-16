@@ -21,6 +21,7 @@ import com.unzer.payment.marketplace.MarketplaceCancel;
 import com.unzer.payment.paymenttypes.PaymentType;
 
 import java.util.Locale;
+import java.util.Optional;
 
 public class JsonToBusinessClassMapper {
 
@@ -395,14 +396,17 @@ public class JsonToBusinessClassMapper {
     }
 
     private AbstractTransaction.Status extractStatus(TransactionStatus json) {
+        // Resumed has to be the first, because currently PAPI returns several statuses if isResumed is set to true.
+        if (Optional.ofNullable(json.getResumed()).orElse(false)) {
+            return AbstractTransaction.Status.RESUMED;
+        }
+
         if (json.getSuccess()) {
             return AbstractTransaction.Status.SUCCESS;
         } else if (json.getPending()) {
             return AbstractTransaction.Status.PENDING;
         } else if (json.getError()) {
             return AbstractTransaction.Status.ERROR;
-        } else if (json.getResumed()) {
-            return AbstractTransaction.Status.RESUMED;
         }
 
         return null;

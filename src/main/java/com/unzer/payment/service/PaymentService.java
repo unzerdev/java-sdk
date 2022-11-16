@@ -197,7 +197,7 @@ public class PaymentService {
      * @return Authorization The resulting object of the Authorization resource.
      */
     public Authorization updateAuthorization(Authorization authorization) throws HttpCommunicationException {
-        return this.updateAuthorization(authorization, urlUtil.getRestUrl(authorization));
+        return this.updateAuthorization(authorization, urlUtil.getPaymentUrl(authorization, authorization.getPaymentId()));
     }
 
     public Charge charge(Charge charge) throws HttpCommunicationException {
@@ -211,7 +211,7 @@ public class PaymentService {
      * @return Charge The resulting object of the Charge resource.
      */
     public Charge updateCharge(Charge charge) throws HttpCommunicationException {
-        return updateCharge(charge, urlUtil.getRestUrl(charge));
+        return updateCharge(charge, urlUtil.getPaymentUrl(charge, charge.getPaymentId()));
     }
 
 
@@ -371,7 +371,8 @@ public class PaymentService {
         payment = jsonToBusinessClassMapper.mapToBusinessObject(payment, jsonPayment);
         payment.setCancelList(fetchCancelList(payment, getCancelsFromTransactions(jsonPayment.getTransactions())));
         payment.setAuthorization(
-                fetchAuthorization(payment, getAuthorizationFromTransactions(jsonPayment.getTransactions())));
+                fetchAuthorization(payment, getAuthorizationFromTransactions(jsonPayment.getTransactions()))
+        );
         payment.setChargesList(fetchChargeList(payment, getChargesFromTransactions(jsonPayment.getTransactions())));
         payment.setPayoutList(fetchPayoutList(payment, getPayoutFromTransactions(jsonPayment.getTransactions())));
         return payment;
