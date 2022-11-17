@@ -47,6 +47,7 @@ import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 
+import static com.unzer.payment.util.Url.unsafeUrl;
 import static com.unzer.payment.util.Uuid.generateUuid;
 import static java.util.concurrent.TimeUnit.SECONDS;
 import static org.awaitility.Awaitility.await;
@@ -551,28 +552,28 @@ public abstract class AbstractPaymentTest {
         return cancelBasket;
     }
 
-    protected Paypage getMaximumPaypage() throws MalformedURLException {
+    protected Paypage getMaximumPaypage() {
         Paypage paypage = new Paypage();
         String[] excludeTypes = {"paypal"};
         paypage.setExcludeTypes(excludeTypes);
         paypage.setAmount(BigDecimal.ONE);
         paypage.setCurrency(Currency.getInstance("EUR"));
-        paypage.setReturnUrl(new URL("https://www.unzer.com/"));
+        paypage.setReturnUrl(unsafeUrl("https://www.unzer.com/"));
         paypage.setShopName("Unzer Demo Shop");
         paypage.setShopDescription("Unzer Demo Shop Description");
         paypage.setTagline("Unzer Tagline");
-        paypage.setTermsAndConditionUrl(new URL("https://www.unzer.com/en/privacy-statement/"));
-        paypage.setPrivacyPolicyUrl(new URL("https://www.unzer.com/en/privacy-statement/"));
+        paypage.setTermsAndConditionUrl(unsafeUrl("https://www.unzer.com/en/privacy-statement/"));
+        paypage.setPrivacyPolicyUrl(unsafeUrl("https://www.unzer.com/en/privacy-statement/"));
         paypage.setCss(getCssMap());
 
         paypage.setLogoImage("https://docs.unzer.com/payment-nutshell/payment-in-nutshell.png");
         paypage.setFullPageImage("https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/iphone-12-pro-family-hero");
 
-        paypage.setContactUrl(new URL("mailto:support@unzer.com"));
-        paypage.setHelpUrl(new URL("https://www.unzer.com/en/support/"));
-        paypage.setImprintUrl(new URL("https://www.unzer.com/en/impressum/"));
-        paypage.setPrivacyPolicyUrl(new URL("https://www.unzer.com/en/datenschutz/"));
-        paypage.setTermsAndConditionUrl(new URL("https://www.unzer.com/en/datenschutz/"));
+        paypage.setContactUrl(unsafeUrl("mailto:support@unzer.com"));
+        paypage.setHelpUrl(unsafeUrl("https://www.unzer.com/en/support/"));
+        paypage.setImprintUrl(unsafeUrl("https://www.unzer.com/en/impressum/"));
+        paypage.setPrivacyPolicyUrl(unsafeUrl("https://www.unzer.com/en/datenschutz/"));
+        paypage.setTermsAndConditionUrl(unsafeUrl("https://www.unzer.com/en/datenschutz/"));
 
         paypage.setInvoiceId(generateUuid());
         paypage.setOrderId(generateUuid());
