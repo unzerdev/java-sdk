@@ -8,7 +8,7 @@ to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
 ## [3.1.0][3.1.0]
 
-This release brings Unzer PayPal Express support to Java SDK.
+This release introduces Unzer PayPal Express in Java SDK.
 
 ### Added
 

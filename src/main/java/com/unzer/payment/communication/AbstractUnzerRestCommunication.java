@@ -137,7 +137,6 @@ public abstract class AbstractUnzerRestCommunication implements UnzerRestCommuni
      *
      * @param body - the json representation of the data to be sent
      */
-    @Deprecated
     protected abstract void logRequestBody(String body);
 
     /**
