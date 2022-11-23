@@ -16,7 +16,8 @@ This release introduces Unzer PayPal Express in Java SDK.
   * Extended `AdditionalTransactionData` with `paypal.checkoutType` field. See `com.unzer.payment.models.AdditionalTransactionData.setPaypal`.
   * Defined `RESUMED` value for `com.unzer.payment.AbstractTransaction.Status`
   * Added `com.unzer.payment.Unzer::updateCharge()`, `com.unzer.payment.Unzer::updateAuthorization()` which must be invoked after Paypal-Express transaction is resumed.
-* Added fields `orderId` and `invoiceId` to all transactions.
+* Added fields `orderId` and `invoiceId` to `Authorize`, `Charge` and `Cancel` transactions.
+* Added authorize support for Paypage. Use `Paypage::setAction(Paypage.Action.AUTHORIZE)`
 
 ### Deprecated 
 
