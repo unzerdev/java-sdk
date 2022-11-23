@@ -287,6 +287,8 @@ This release brings Unzer Paylater Invoice payment type support to Java SDK.
 *   Remove deprecated classes
     *   RestCommunication
 
+[3.1.0]: http://github.com/unzerdev/java-sdk/compare/3.0.0..3.1.0
+
 [3.0.0]: http://github.com/unzerdev/java-sdk/compare/1.3.0.0..3.0.0
 
 [1.3.0.0]: http://github.com/unzerdev/java-sdk/compare/1.2.2.0..1.3.0.0
