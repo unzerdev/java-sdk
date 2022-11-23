@@ -66,8 +66,6 @@ public class PaypalExpressTest extends AbstractPaymentTest {
                 .setReturnUrl(unsafeUrl("https://unzer.com"))
                 .setAdditionalTransactionData(
                         new AdditionalTransactionData()
-                                .setPrivacyPolicyUrl("https://en.wikipedia.org/wiki/Policy")
-                                .setTermsAndConditionsUrl("https://en.wikipedia.org/wiki/Terms_of_service")
                                 .setPaypal(new PaypalData().setCheckoutType(PaypalData.CheckoutType.EXPRESS))
                 );
 
@@ -107,8 +105,6 @@ public class PaypalExpressTest extends AbstractPaymentTest {
                 .setReturnUrl(unsafeUrl("https://unzer.com"))
                 .setAdditionalTransactionData(
                         new AdditionalTransactionData()
-                                .setPrivacyPolicyUrl("https://en.wikipedia.org/wiki/Policy")
-                                .setTermsAndConditionsUrl("https://en.wikipedia.org/wiki/Terms_of_service")
                                 .setPaypal(new PaypalData().setCheckoutType(PaypalData.CheckoutType.EXPRESS))
                 );
 
@@ -148,8 +144,6 @@ public class PaypalExpressTest extends AbstractPaymentTest {
                 .setReturnUrl(unsafeUrl("https://unzer.com"))
                 .setAdditionalTransactionData(
                         new AdditionalTransactionData()
-                                .setPrivacyPolicyUrl("https://en.wikipedia.org/wiki/Policy")
-                                .setTermsAndConditionsUrl("https://en.wikipedia.org/wiki/Terms_of_service")
                                 .setPaypal(new PaypalData().setCheckoutType(PaypalData.CheckoutType.EXPRESS))
                 );
 
@@ -185,8 +179,6 @@ public class PaypalExpressTest extends AbstractPaymentTest {
                 .setReturnUrl(unsafeUrl("https://unzer.com"))
                 .setAdditionalTransactionData(
                         new AdditionalTransactionData()
-                                .setPrivacyPolicyUrl("https://en.wikipedia.org/wiki/Policy")
-                                .setTermsAndConditionsUrl("https://en.wikipedia.org/wiki/Terms_of_service")
                                 .setPaypal(new PaypalData().setCheckoutType(PaypalData.CheckoutType.EXPRESS))
                 );
 
@@ -225,8 +217,6 @@ public class PaypalExpressTest extends AbstractPaymentTest {
                 .setReturnUrl(unsafeUrl("https://unzer.com"))
                 .setAdditionalTransactionData(
                         new AdditionalTransactionData()
-                                .setPrivacyPolicyUrl("https://en.wikipedia.org/wiki/Policy")
-                                .setTermsAndConditionsUrl("https://en.wikipedia.org/wiki/Terms_of_service")
                                 .setPaypal(new PaypalData().setCheckoutType(PaypalData.CheckoutType.EXPRESS))
                 );
 
