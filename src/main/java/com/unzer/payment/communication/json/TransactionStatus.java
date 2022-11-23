@@ -13,26 +13,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.unzer.payment.communication;
+package com.unzer.payment.communication.json;
 
-import java.net.URI;
+public interface TransactionStatus {
+    Boolean getSuccess();
+    Boolean getError();
+    Boolean getPending();
+    Boolean getResumed();
 
-/**
- * Abstraction for any http-request executed by the
- * {@code UnzerRestCommunication} and its basic implementation in
- * {@code AbstractUnzerRestCommunication}.
- */
-public interface UnzerHttpRequest {
-
-    void addHeader(String header, String value);
-
-    URI getURI();
-
-    void setContent(String content, String encoding);
-
-    UnzerHttpMethod getMethod();
-
-    enum UnzerHttpMethod {
-        GET, POST, DELETE, PUT, PATCH
-    }
+    void setSuccess(Boolean value);
+    void setError(Boolean value);
+    void setPending(Boolean value);
+    void setResumed(Boolean value);
 }

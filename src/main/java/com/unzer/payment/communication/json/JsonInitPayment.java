@@ -22,10 +22,11 @@ import java.net.URL;
 import java.util.Currency;
 import java.util.Date;
 
-public class JsonInitPayment extends JsonIdObject implements JsonObject {
+public class JsonInitPayment extends JsonIdObject implements JsonObject, TransactionStatus {
     private Boolean isSuccess;
     private Boolean isPending;
     private Boolean isError;
+    private Boolean isResumed;
     private JsonMessage message;
     private Date date;
 
@@ -124,28 +125,36 @@ public class JsonInitPayment extends JsonIdObject implements JsonObject {
         this.orderId = orderId;
     }
 
-    public Boolean getIsSuccess() {
+    public Boolean getSuccess() {
         return isSuccess;
     }
 
-    public void setIsSuccess(Boolean isSuccess) {
+    public void setSuccess(Boolean isSuccess) {
         this.isSuccess = isSuccess;
     }
 
-    public Boolean getIsPending() {
+    public Boolean getPending() {
         return isPending;
     }
 
-    public void setIsPending(Boolean isPending) {
+    public void setPending(Boolean isPending) {
         this.isPending = isPending;
     }
 
-    public Boolean getIsError() {
+    public Boolean getError() {
         return isError;
     }
 
-    public void setIsError(Boolean isError) {
+    public void setError(Boolean isError) {
         this.isError = isError;
+    }
+
+    public Boolean getResumed() {
+        return isResumed;
+    }
+
+    public void setResumed(Boolean resumed) {
+        isResumed = resumed;
     }
 
     public Boolean getCard3ds() {

@@ -287,6 +287,6 @@ public abstract class AbstractTransaction<T extends AbstractPayment> implements 
     }
 
     public enum Status {
-        SUCCESS, PENDING, ERROR
+        SUCCESS, PENDING, ERROR, RESUMED
     }
 }

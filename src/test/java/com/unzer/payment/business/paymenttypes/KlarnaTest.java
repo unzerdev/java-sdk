@@ -123,8 +123,8 @@ public class KlarnaTest extends AbstractPaymentTest {
                         .setReturnUrl(unsafeUrl("https://unzer.com"))
                         .setAdditionalTransactionData(
                                 new AdditionalTransactionData()
-                                        .setPrivacyPolicyUrl("https://en.wikipedia.org/wiki/Policy")
-                                        .setTermsAndConditionsUrl("https://en.wikipedia.org/wiki/Terms_of_service")
+                                        .setPrivacyPolicyUrl("https://unzer.com")
+                                        .setTermsAndConditionsUrl("https://unzer.com")
                         ),
 
                         null
@@ -178,8 +178,8 @@ public class KlarnaTest extends AbstractPaymentTest {
                         .setReturnUrl(unsafeUrl("https://unzer.com"))
                         .setAdditionalTransactionData(
                                 new AdditionalTransactionData()
-                                        .setPrivacyPolicyUrl("https://en.wikipedia.org/wiki/Policy")
-                                        .setTermsAndConditionsUrl("https://en.wikipedia.org/wiki/Terms_of_service")
+                                        .setPrivacyPolicyUrl("https://unzer.com")
+                                        .setTermsAndConditionsUrl("https://unzer.com")
                         ),
 
                         Collections.singletonList(
@@ -309,8 +309,8 @@ public class KlarnaTest extends AbstractPaymentTest {
                                     .setReturnUrl(unsafeUrl("https://unzer.com"))
                                     .setAdditionalTransactionData(
                                             new AdditionalTransactionData()
-                                                    .setPrivacyPolicyUrl("https://en.wikipedia.org/wiki/Policy")
-                                                    .setTermsAndConditionsUrl("https://en.wikipedia.org/wiki/Terms_of_service")
+                                                    .setPrivacyPolicyUrl("https://unzer.com")
+                                                    .setTermsAndConditionsUrl("https://unzer.com")
                                     );
 
 
@@ -403,8 +403,8 @@ public class KlarnaTest extends AbstractPaymentTest {
                                     .setReturnUrl(unsafeUrl("https://unzer.com"))
                                     .setAdditionalTransactionData(
                                             new AdditionalTransactionData()
-                                                    .setPrivacyPolicyUrl("https://en.wikipedia.org/wiki/Policy")
-                                                    .setTermsAndConditionsUrl("https://en.wikipedia.org/wiki/Terms_of_service")
+                                                    .setPrivacyPolicyUrl("https://unzer.com")
+                                                    .setTermsAndConditionsUrl("https://unzer.com")
                                     );
 
 

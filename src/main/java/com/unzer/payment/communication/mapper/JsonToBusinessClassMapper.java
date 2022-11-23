@@ -21,6 +21,7 @@ import com.unzer.payment.marketplace.MarketplaceCancel;
 import com.unzer.payment.paymenttypes.PaymentType;
 
 import java.util.Locale;
+import java.util.Optional;
 
 public class JsonToBusinessClassMapper {
 
@@ -265,7 +266,7 @@ public class JsonToBusinessClassMapper {
         recurring.setRedirectUrl(json.getRedirectUrl());
         recurring.setReturnUrl(json.getReturnUrl());
         recurring.setAdditionalTransactionData(json.getAdditionalTransactionData());
-        setStatus(recurring, json.getIsSuccess(), json.getIsPending(), json.getIsError());
+        recurring.setStatus(extractStatus(json));
         return recurring;
     }
 
@@ -292,7 +293,7 @@ public class JsonToBusinessClassMapper {
         abstractInitTransaction.setMessage(json.getMessage());
         abstractInitTransaction.setDate(json.getDate());
 
-        setStatus(abstractInitTransaction, json.getIsSuccess(), json.getIsPending(), json.getIsError());
+        abstractInitTransaction.setStatus(extractStatus(json));
         return abstractInitTransaction;
     }
 
@@ -394,14 +395,21 @@ public class JsonToBusinessClassMapper {
         return json.getRegistrationType() == null;
     }
 
-    private <T extends AbstractPayment> void setStatus(AbstractTransaction<T> transaction, boolean isSuccess, boolean isPending, boolean isError) {
-        if (isSuccess) {
-            transaction.setStatus(AbstractTransaction.Status.SUCCESS);
-        } else if (isPending) {
-            transaction.setStatus(AbstractTransaction.Status.PENDING);
-        } else if (isError) {
-            transaction.setStatus(AbstractTransaction.Status.ERROR);
+    private AbstractTransaction.Status extractStatus(TransactionStatus json) {
+        // Resumed has to be the first, because currently PAPI returns several statuses if isResumed is set to true.
+        if (Optional.ofNullable(json.getResumed()).orElse(false)) {
+            return AbstractTransaction.Status.RESUMED;
         }
+
+        if (json.getSuccess()) {
+            return AbstractTransaction.Status.SUCCESS;
+        } else if (json.getPending()) {
+            return AbstractTransaction.Status.PENDING;
+        } else if (json.getError()) {
+            return AbstractTransaction.Status.ERROR;
+        }
+
+        return null;
     }
 
     public <T extends AbstractPayment> AbstractTransaction<T> mapToBusinessObject(AbstractTransaction<T> cancel, JsonCancel json) {
@@ -413,7 +421,7 @@ public class JsonToBusinessClassMapper {
         cancel.setPaymentReference(json.getPaymentReference());
         cancel.setInvoiceId(json.getInvoiceId());
         cancel.setOrderId(json.getOrderId());
-        setStatus(cancel, json.isSuccess(), json.isPending(), json.isError());
+        cancel.setStatus(extractStatus(json));
         return cancel;
     }
 
