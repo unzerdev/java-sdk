@@ -238,6 +238,11 @@ public class PaymentService {
         return chargeAuthorization(paymentId, charge);
     }
 
+
+    public Charge chargeAuthorization(Charge charge) throws HttpCommunicationException {
+        return chargeAuthorization(charge.getPaymentId(), charge);
+    }
+
     private Charge chargeAuthorization(String paymentId, Charge charge) throws HttpCommunicationException {
         return charge(charge, urlUtil.getPaymentUrl(charge, paymentId));
     }
