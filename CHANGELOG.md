@@ -27,7 +27,7 @@ This release introduces Unzer PayPal Express in Java SDK.
 ### Deprecated 
 
 * Deprecated `com.unzer.payment.paymenttypes.Invoice`. Use `com.unzer.payment.paymenttypes.PaylaterInvoice` instead 
-* Deprecated business logic methods at data objects for:
+* Deprecated behavioral methods for data objects at:
   * `AbstractTransaction` (base class of `Authorization`, `Cancel`, `Charge`, `Payout`, `Recurring`, `Shipment`, `MarketplaceAuthorization`, `MarketplaceCharge`, `MarketplacePayment`, `MarketplaceCancel`):
     * `getUnzer`/`setUnzer`
   * `Charge`:
