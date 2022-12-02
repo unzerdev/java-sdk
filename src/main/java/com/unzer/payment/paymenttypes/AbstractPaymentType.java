@@ -25,6 +25,7 @@ public abstract class AbstractPaymentType implements PaymentType {
 
     private transient Unzer unzer;
 
+    @Deprecated
     public AbstractPaymentType(Unzer unzer) {
         super();
         this.setUnzer(unzer);
@@ -42,10 +43,12 @@ public abstract class AbstractPaymentType implements PaymentType {
         this.id = id;
     }
 
+    @Deprecated
     public Unzer getUnzer() {
         return unzer;
     }
 
+    @Deprecated
     public void setUnzer(Unzer unzer) {
         this.unzer = unzer;
     }

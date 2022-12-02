@@ -40,6 +40,7 @@ public abstract class AbstractPayment implements PaymentType {
     private Basket basket;
     private transient Unzer unzer;
 
+    @Deprecated
     public AbstractPayment(Unzer unzer) {
         super();
         this.setUnzer(unzer);
@@ -57,10 +58,12 @@ public abstract class AbstractPayment implements PaymentType {
         this.id = id;
     }
 
+    @Deprecated
     public Unzer getUnzer() {
         return unzer;
     }
 
+    @Deprecated
     public void setUnzer(Unzer unzer) {
         this.unzer = unzer;
     }
@@ -189,18 +192,22 @@ public abstract class AbstractPayment implements PaymentType {
         return value != null && !"".equalsIgnoreCase(value.trim());
     }
 
+    @Deprecated
     protected PaymentType fetchPaymentType(String paymentTypeId) throws HttpCommunicationException {
         return getUnzer().fetchPaymentType(paymentTypeId);
     }
 
+    @Deprecated
     protected Customer fetchCustomer(String customerId) throws HttpCommunicationException {
         return getUnzer().fetchCustomer(customerId);
     }
 
+    @Deprecated
     protected Metadata fetchMetadata(String metadataId) throws HttpCommunicationException {
         return getUnzer().fetchMetadata(metadataId);
     }
 
+    @Deprecated
     protected Basket fetchBasket(String basketId) throws HttpCommunicationException {
         return getUnzer().fetchBasket(basketId);
     }

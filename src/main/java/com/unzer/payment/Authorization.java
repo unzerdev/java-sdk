@@ -40,30 +40,37 @@ public class Authorization extends AbstractTransaction<Payment> {
         super();
     }
 
+    @Deprecated
     public Authorization(Unzer unzer) {
         super(unzer);
     }
 
+    @Deprecated
     public Charge charge() throws HttpCommunicationException {
         return getUnzer().chargeAuthorization(getPayment().getId());
     }
 
+    @Deprecated
     public Charge charge(BigDecimal amount) throws HttpCommunicationException {
         return getUnzer().chargeAuthorization(getPayment().getId(), amount);
     }
 
+    @Deprecated
     public Charge charge(BigDecimal amount, String paymentReference) throws HttpCommunicationException {
         return getUnzer().chargeAuthorization(getPayment().getId(), amount, paymentReference);
     }
 
+    @Deprecated
     public Cancel cancel() throws HttpCommunicationException {
         return getUnzer().cancelAuthorization(getPayment().getId());
     }
 
+    @Deprecated
     public Cancel cancel(BigDecimal amount) throws HttpCommunicationException {
         return getUnzer().cancelAuthorization(getPayment().getId(), amount);
     }
 
+    @Deprecated
     public Cancel cancel(Cancel cancel) throws HttpCommunicationException {
         return getUnzer().cancelAuthorization(getPayment().getId(), cancel);
     }

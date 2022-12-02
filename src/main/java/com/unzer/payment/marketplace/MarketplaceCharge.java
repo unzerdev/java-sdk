@@ -41,6 +41,7 @@ public class MarketplaceCharge extends AbstractTransaction<MarketplacePayment> {
         setCancelList(new ArrayList<MarketplaceCancel>());
     }
 
+    @Deprecated
     public MarketplaceCharge(Unzer unzer) {
         super(unzer);
         setCancelList(new ArrayList<MarketplaceCancel>());
@@ -88,6 +89,7 @@ public class MarketplaceCharge extends AbstractTransaction<MarketplacePayment> {
      * @return MarketplaceCancel
      * @throws HttpCommunicationException
      */
+    @Deprecated
     public MarketplaceCancel cancel(MarketplaceCancel cancel) throws HttpCommunicationException {
         return getUnzer().marketplaceChargeCancel(this.getPaymentId(), this.getId(), cancel);
     }

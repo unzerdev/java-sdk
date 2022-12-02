@@ -23,6 +23,7 @@ public class Payout extends AbstractTransaction<Payment> {
     public Payout() {
     }
 
+    @Deprecated
     public Payout(Unzer unzer) {
         super(unzer);
     }

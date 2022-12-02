@@ -45,54 +45,67 @@ public class Payment extends AbstractPayment {
         super();
     }
 
+    @Deprecated
     public Payment(Unzer unzer) {
         super(unzer);
     }
 
+    @Deprecated
     public Charge charge() throws HttpCommunicationException {
         return getUnzer().chargeAuthorization(getId());
     }
 
+    @Deprecated
     public Charge charge(BigDecimal amount) throws HttpCommunicationException {
         return getUnzer().chargeAuthorization(getId(), amount);
     }
 
+    @Deprecated
     public Charge charge(BigDecimal amount, Currency currency, String typeId) throws HttpCommunicationException {
         return getUnzer().charge(amount, currency, typeId);
     }
 
+    @Deprecated
     public Charge charge(BigDecimal amount, Currency currency, String typeId, String customerId) throws HttpCommunicationException {
         return getUnzer().charge(amount, currency, typeId, customerId);
     }
 
+    @Deprecated
     public Charge charge(BigDecimal amount, Currency currency, PaymentType paymentType) throws HttpCommunicationException {
         return getUnzer().charge(amount, currency, paymentType);
     }
 
+    @Deprecated
     public Charge charge(BigDecimal amount, Currency currency, String typeId, URL returnUrl) throws HttpCommunicationException {
         return getUnzer().charge(amount, currency, typeId, returnUrl);
     }
 
+    @Deprecated
     public Charge charge(BigDecimal amount, Currency currency, String typeId, URL returnUrl, String customerId) throws HttpCommunicationException {
         return getUnzer().charge(amount, currency, typeId, returnUrl, customerId);
     }
 
+    @Deprecated
     public Charge charge(BigDecimal amount, Currency currency, PaymentType paymentType, URL returnUrl, Customer customer) throws HttpCommunicationException {
         return getUnzer().charge(amount, currency, paymentType, returnUrl, customer);
     }
 
+    @Deprecated
     public Authorization authorize(BigDecimal amount, Currency currency, String typeId, URL returnUrl) throws HttpCommunicationException {
         return getUnzer().authorize(amount, currency, typeId, returnUrl);
     }
 
+    @Deprecated
     public Authorization authorize(BigDecimal amount, Currency currency, String typeId, URL returnUrl, String customerId) throws HttpCommunicationException {
         return getUnzer().authorize(amount, currency, typeId, returnUrl, customerId);
     }
 
+    @Deprecated
     public Authorization authorize(BigDecimal amount, Currency currency, PaymentType paymentType, URL returnUrl, Customer customer) throws HttpCommunicationException {
         return getUnzer().authorize(amount, currency, paymentType, returnUrl, customer);
     }
 
+    @Deprecated
     public Cancel cancel() throws HttpCommunicationException {
         if (getAuthorization() == null) {
             List<PaymentError> paymentErrorList = new ArrayList<PaymentError>();
@@ -103,6 +116,7 @@ public class Payment extends AbstractPayment {
         return getAuthorization().cancel();
     }
 
+    @Deprecated
     public Cancel cancel(BigDecimal amount) throws HttpCommunicationException {
         if (getAuthorization() == null) {
             List<PaymentError> paymentErrorList = new ArrayList<>();

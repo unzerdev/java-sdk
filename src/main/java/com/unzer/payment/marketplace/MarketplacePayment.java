@@ -33,6 +33,7 @@ public class MarketplacePayment extends AbstractPayment {
         super();
     }
 
+    @Deprecated
     public MarketplacePayment(Unzer unzer) {
         super(unzer);
     }
@@ -119,6 +120,7 @@ public class MarketplacePayment extends AbstractPayment {
      * @return MarketplacePayment
      * @throws HttpCommunicationException
      */
+    @Deprecated
     public MarketplacePayment marketplaceFullAuthorizeCancel(String paymentReference) throws HttpCommunicationException {
         MarketplaceCancel cancel = new MarketplaceCancel();
         cancel.setPaymentReference(paymentReference);
@@ -132,6 +134,7 @@ public class MarketplacePayment extends AbstractPayment {
      * @return MarketplacePayment
      * @throws HttpCommunicationException
      */
+    @Deprecated
     public MarketplacePayment marketplaceFullChargesCancel(String paymentReference) throws HttpCommunicationException {
         MarketplaceCancel cancel = new MarketplaceCancel();
         cancel.setPaymentReference(paymentReference);
@@ -145,6 +148,7 @@ public class MarketplacePayment extends AbstractPayment {
      * @return MarketplacePayment
      * @throws HttpCommunicationException
      */
+    @Deprecated
     public MarketplacePayment fullChargeAuthorizations(String paymentReference) throws HttpCommunicationException {
         return getUnzer().marketplaceFullChargeAuthorizations(this.getId(), paymentReference);
     }
