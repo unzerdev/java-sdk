@@ -18,7 +18,11 @@ This release introduces Unzer PayPal Express in Java SDK.
   * Added `com.unzer.payment.Unzer::updateCharge()`, `com.unzer.payment.Unzer::updateAuthorization()` which must be invoked after Paypal-Express transaction is resumed.
 * Added fields `orderId` and `invoiceId` to `Authorize`, `Charge` and `Cancel` transactions.
 * Added authorize support for Paypage. Use `Paypage::setAction(Paypage.Action.AUTHORIZE)`
-* Added new capture (charge authorization) method. See: `com.unzer.payment.Unzer.chargeAuthorization(com.unzer.payment.Charge)`
+* Added new capture (charge authorization) methods. See: `com.unzer.payment.Unzer.chargeAuthorization(charge)` and `com.unzer.payment.Unzer.chargeAuthorization(paymentId, charge)`
+
+### Changed
+
+* Reduced multiple `com.unzer.payment.service.PaymentService.chargeAuthorization` methods to one with `Charge` argument.
 
 ### Deprecated 
 

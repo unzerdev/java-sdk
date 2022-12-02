@@ -219,32 +219,8 @@ public class PaymentService {
         return payout(payout, urlUtil.getRestUrl(payout));
     }
 
-    public Charge chargeAuthorization(String paymentId) throws HttpCommunicationException {
-        Charge charge = new Charge();
-        return chargeAuthorization(paymentId, charge);
-    }
-
-    public Charge chargeAuthorization(String paymentId, BigDecimal amount) throws HttpCommunicationException {
-        Charge charge = new Charge();
-        charge.setAmount(amount);
-        return chargeAuthorization(paymentId, charge);
-    }
-
-    public Charge chargeAuthorization(String paymentId, BigDecimal amount, String paymentReference)
-            throws HttpCommunicationException {
-        Charge charge = new Charge();
-        charge.setAmount(amount);
-        charge.setPaymentReference(paymentReference);
-        return chargeAuthorization(paymentId, charge);
-    }
-
-
     public Charge chargeAuthorization(Charge charge) throws HttpCommunicationException {
-        return chargeAuthorization(charge.getPaymentId(), charge);
-    }
-
-    private Charge chargeAuthorization(String paymentId, Charge charge) throws HttpCommunicationException {
-        return charge(charge, urlUtil.getPaymentUrl(charge, paymentId));
+        return charge(charge, urlUtil.getPaymentUrl(charge, charge.getPaymentId()));
     }
 
     public Cancel cancelAuthorization(String paymentId) throws HttpCommunicationException {

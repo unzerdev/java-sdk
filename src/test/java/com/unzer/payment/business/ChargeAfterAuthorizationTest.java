@@ -220,7 +220,7 @@ public class ChargeAfterAuthorizationTest extends AbstractPaymentTest {
                         new AdditionalTransactionData().setShipping(shippingData)
                 );
 
-        Charge resp = unzer.chargeAuthorization(charge);
+        Charge resp = unzer.chargeAuthorization(charge.getPaymentId(), charge);
         assertNotNull(resp.getAdditionalTransactionData().getShipping());
         assertEquals(shippingData, resp.getAdditionalTransactionData().getShipping());
     }
