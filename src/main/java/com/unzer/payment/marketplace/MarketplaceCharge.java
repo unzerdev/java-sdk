@@ -88,6 +88,7 @@ public class MarketplaceCharge extends AbstractTransaction<MarketplacePayment> {
      * @param cancel refers to MarketplaceCancel.
      * @return MarketplaceCancel
      * @throws HttpCommunicationException
+     * @deprecated use {@link Unzer#marketplaceChargeCancel(String, String, MarketplaceCancel)} instead
      */
     @Deprecated
     public MarketplaceCancel cancel(MarketplaceCancel cancel) throws HttpCommunicationException {
