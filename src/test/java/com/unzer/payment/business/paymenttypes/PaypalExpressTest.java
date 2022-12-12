@@ -202,6 +202,7 @@ public class PaypalExpressTest extends AbstractPaymentTest {
     }
 
     @Test
+    @Disabled
     public void testUpdateExistingBasketForChargePatch() throws HttpCommunicationException {
         Unzer unzer = getUnzer();
 
