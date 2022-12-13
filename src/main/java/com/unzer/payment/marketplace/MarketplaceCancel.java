@@ -38,6 +38,7 @@ public class MarketplaceCancel extends AbstractTransaction<MarketplacePayment> {
         super();
     }
 
+    @Deprecated
     public MarketplaceCancel(Unzer unzer) {
         super(unzer);
     }

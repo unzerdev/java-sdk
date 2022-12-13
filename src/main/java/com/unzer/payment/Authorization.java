@@ -40,30 +40,55 @@ public class Authorization extends AbstractTransaction<Payment> {
         super();
     }
 
+    @Deprecated
     public Authorization(Unzer unzer) {
         super(unzer);
     }
 
+    /**
+     * @deprecated use {@link Unzer#chargeAuthorization(Charge)} instead
+     */
+    @Deprecated
     public Charge charge() throws HttpCommunicationException {
         return getUnzer().chargeAuthorization(getPayment().getId());
     }
 
+    /**
+     * @deprecated use {@link Unzer#chargeAuthorization(Charge)} instead
+     */
+    @Deprecated
     public Charge charge(BigDecimal amount) throws HttpCommunicationException {
         return getUnzer().chargeAuthorization(getPayment().getId(), amount);
     }
 
+    /**
+     * @deprecated use {@link Unzer#chargeAuthorization(Charge)} instead
+     */
+    @Deprecated
     public Charge charge(BigDecimal amount, String paymentReference) throws HttpCommunicationException {
         return getUnzer().chargeAuthorization(getPayment().getId(), amount, paymentReference);
     }
 
+    /**
+     * @deprecated use {@link Unzer#cancelAuthorization(String, Cancel)} instead
+     */
+    @Deprecated
     public Cancel cancel() throws HttpCommunicationException {
         return getUnzer().cancelAuthorization(getPayment().getId());
     }
 
+    /**
+     * @deprecated use {@link Unzer#cancelAuthorization(String, Cancel)} instead
+     */
+    @Deprecated
     public Cancel cancel(BigDecimal amount) throws HttpCommunicationException {
         return getUnzer().cancelAuthorization(getPayment().getId(), amount);
     }
 
+    /**
+     * @deprecated use {@link Unzer#cancelAuthorization(String, Cancel)} instead
+     */
+    @Deprecated
     public Cancel cancel(Cancel cancel) throws HttpCommunicationException {
         return getUnzer().cancelAuthorization(getPayment().getId(), cancel);
     }

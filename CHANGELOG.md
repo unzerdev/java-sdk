@@ -18,10 +18,38 @@ This release introduces Unzer PayPal Express in Java SDK.
   * Added `com.unzer.payment.Unzer::updateCharge()`, `com.unzer.payment.Unzer::updateAuthorization()` which must be invoked after Paypal-Express transaction is resumed.
 * Added fields `orderId` and `invoiceId` to `Authorize`, `Charge` and `Cancel` transactions.
 * Added authorize support for Paypage. Use `Paypage::setAction(Paypage.Action.AUTHORIZE)`
+* Added new capture (charge authorization) methods. See: `com.unzer.payment.Unzer.chargeAuthorization(charge)` and `com.unzer.payment.Unzer.chargeAuthorization(paymentId, charge)`
+
+### Changed
+
+* Reduced multiple `com.unzer.payment.service.PaymentService.chargeAuthorization` methods to one with `Charge` argument.
 
 ### Deprecated 
 
 * Deprecated `com.unzer.payment.paymenttypes.Invoice`. Use `com.unzer.payment.paymenttypes.PaylaterInvoice` instead 
+* Deprecated behavioral methods for data objects. Please, use Unzer facade instead. List of deprecations:
+  * `AbstractTransaction` (base class of `Authorization`, `Cancel`, `Charge`, `Payout`, `Recurring`, `Shipment`, `MarketplaceAuthorization`, `MarketplaceCharge`, `MarketplacePayment`, `MarketplaceCancel`):
+    * `getUnzer`/`setUnzer`
+  * `Charge`:
+    * `cancel`
+  * `Authorization`:
+    * `charge`
+    * `cancel`
+  * `Payment`:
+    * `charge`
+    * `authorize`
+    * `cancel`
+  * `MarketplaceCharge`:
+    * `cancel`
+  * `MarketplaceAuthorization`:
+    * `charge`
+    * `cancel`
+  * `MarketplacePayment`:
+    * `marketplaceFullChargesCancel`
+    * `fullChargeAuthorizations`
+    * `marketplaceFullAuthorizeCancel`
+  * `AbstractPayment`:
+    * `fetchBasket`, `fetchMetadata`, `fetchCustomer`, `fetchPaymentType`
 
 ## [3.0.0][3.0.0]
 

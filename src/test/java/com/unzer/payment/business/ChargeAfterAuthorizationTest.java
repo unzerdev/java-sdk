@@ -20,6 +20,8 @@ import com.unzer.payment.communication.HttpCommunicationException;
 import com.unzer.payment.marketplace.MarketplaceAuthorization;
 import com.unzer.payment.marketplace.MarketplaceCharge;
 import com.unzer.payment.marketplace.MarketplacePayment;
+import com.unzer.payment.models.AdditionalTransactionData;
+import com.unzer.payment.models.ShippingTransactionData;
 import com.unzer.payment.paymenttypes.Card;
 import org.apache.http.HttpStatus;
 import org.junit.jupiter.api.Disabled;
@@ -33,8 +35,7 @@ import static com.unzer.payment.business.Keys.MARKETPLACE_KEY;
 import static com.unzer.payment.util.Uuid.generateUuid;
 import static java.util.concurrent.TimeUnit.SECONDS;
 import static org.awaitility.Awaitility.await;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
 
 
 public class ChargeAfterAuthorizationTest extends AbstractPaymentTest {
@@ -191,5 +192,36 @@ public class ChargeAfterAuthorizationTest extends AbstractPaymentTest {
         assertEquals(2, payment.getAuthorizationsList().size());
         assertEquals(1, payment.getChargesList().size());
         assertEquals(chargeAuthorization.getProcessing().getUniqueId(), payment.getChargesList().get(0).getProcessing().getUniqueId());
+    }
+
+    @Test
+    public void testChargeAuthorizationWithChargeObject() throws HttpCommunicationException, MalformedURLException {
+        Unzer unzer = getUnzer();
+
+        Authorization auth = unzer.authorize(
+                getAuthorization(
+                        createPaymentTypeCard(getUnzer(), "4711100000000000").getId(),
+                        null, generateUuid(), null, null, false
+                )
+        );
+
+        assertNull(auth.getAdditionalTransactionData());
+
+
+        ShippingTransactionData shippingData = new ShippingTransactionData()
+                .setDeliveryService(generateUuid())
+                .setReturnTrackingId(generateUuid())
+                .setDeliveryTrackingId(generateUuid());
+
+        Charge charge = (Charge) new Charge()
+                .setPaymentId(auth.getPaymentId())
+                .setAmount(BigDecimal.TEN)
+                .setAdditionalTransactionData(
+                        new AdditionalTransactionData().setShipping(shippingData)
+                );
+
+        Charge resp = unzer.chargeAuthorization(charge.getPaymentId(), charge);
+        assertNotNull(resp.getAdditionalTransactionData().getShipping());
+        assertEquals(shippingData, resp.getAdditionalTransactionData().getShipping());
     }
 }

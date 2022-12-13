@@ -31,6 +31,7 @@ public class MarketplaceAuthorization extends AbstractTransaction<MarketplacePay
         super();
     }
 
+    @Deprecated
     public MarketplaceAuthorization(Unzer unzer) {
         super(unzer);
     }
@@ -63,6 +64,10 @@ public class MarketplaceAuthorization extends AbstractTransaction<MarketplacePay
         return null;
     }
 
+    /**
+     * @deprecated use {@link Unzer#marketplaceCharge(MarketplaceCharge)} instead
+     */
+    @Deprecated
     public MarketplaceCharge charge(MarketplaceCharge charge) throws HttpCommunicationException {
         return getUnzer().marketplaceChargeAuthorization(this.getPaymentId(), this.getId(), charge);
     }
@@ -73,7 +78,9 @@ public class MarketplaceAuthorization extends AbstractTransaction<MarketplacePay
      * @param cancel refers to MarketplaceCancel.
      * @return MarketplaceCancel
      * @throws HttpCommunicationException
+     * @deprecated use {@link Unzer#marketplaceAuthorizationCancel(String, String, MarketplaceCancel)} instead
      */
+    @Deprecated
     public MarketplaceCancel cancel(MarketplaceCancel cancel) throws HttpCommunicationException {
         return getUnzer().marketplaceAuthorizationCancel(this.getPaymentId(), this.getId(), cancel);
     }

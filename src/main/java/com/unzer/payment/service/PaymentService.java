@@ -219,27 +219,8 @@ public class PaymentService {
         return payout(payout, urlUtil.getRestUrl(payout));
     }
 
-    public Charge chargeAuthorization(String paymentId) throws HttpCommunicationException {
-        Charge charge = new Charge();
-        return chargeAuthorization(paymentId, charge);
-    }
-
-    public Charge chargeAuthorization(String paymentId, BigDecimal amount) throws HttpCommunicationException {
-        Charge charge = new Charge();
-        charge.setAmount(amount);
-        return chargeAuthorization(paymentId, charge);
-    }
-
-    public Charge chargeAuthorization(String paymentId, BigDecimal amount, String paymentReference)
-            throws HttpCommunicationException {
-        Charge charge = new Charge();
-        charge.setAmount(amount);
-        charge.setPaymentReference(paymentReference);
-        return chargeAuthorization(paymentId, charge);
-    }
-
-    private Charge chargeAuthorization(String paymentId, Charge charge) throws HttpCommunicationException {
-        return charge(charge, urlUtil.getPaymentUrl(charge, paymentId));
+    public Charge chargeAuthorization(Charge charge) throws HttpCommunicationException {
+        return charge(charge, urlUtil.getPaymentUrl(charge, charge.getPaymentId()));
     }
 
     public Cancel cancelAuthorization(String paymentId) throws HttpCommunicationException {
@@ -431,8 +412,8 @@ public class PaymentService {
     private List<Charge> fetchChargeList(Payment payment, List<JsonTransaction> jsonChargesTransactionList)
             throws HttpCommunicationException {
         if (jsonChargesTransactionList == null || jsonChargesTransactionList.isEmpty())
-            return new ArrayList<Charge>();
-        List<Charge> chargesList = new ArrayList<Charge>();
+            return new ArrayList<>();
+        List<Charge> chargesList = new ArrayList<>();
         for (JsonTransaction jsonTransaction : jsonChargesTransactionList) {
             Charge charge = fetchCharge(payment, new Charge(unzer), jsonTransaction.getUrl());
             charge.setCancelList(getCancelListForCharge(charge.getId(), payment.getCancelList()));
@@ -448,8 +429,8 @@ public class PaymentService {
     private List<Payout> fetchPayoutList(Payment payment, List<JsonTransaction> jsonTransactionList)
             throws HttpCommunicationException {
         if (jsonTransactionList == null || jsonTransactionList.isEmpty())
-            return new ArrayList<Payout>();
-        List<Payout> payoutList = new ArrayList<Payout>();
+            return new ArrayList<>();
+        List<Payout> payoutList = new ArrayList<>();
         for (JsonTransaction jsonTransaction : jsonTransactionList) {
             Payout payout = fetchPayout(payment, new Payout(unzer), jsonTransaction.getUrl());
             payout.setType(jsonTransaction.getType());

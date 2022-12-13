@@ -58,6 +58,7 @@ public abstract class AbstractTransaction<T extends AbstractPayment> implements 
         super();
     }
 
+    @Deprecated
     public AbstractTransaction(Unzer unzer) {
         this.unzer = unzer;
     }
@@ -223,10 +224,12 @@ public abstract class AbstractTransaction<T extends AbstractPayment> implements 
         return this;
     }
 
+    @Deprecated
     public Unzer getUnzer() {
         return unzer;
     }
 
+    @Deprecated
     public AbstractTransaction<T> setUnzer(Unzer unzer) {
         this.unzer = unzer;
         return this;
