@@ -22,14 +22,16 @@ import java.net.URL;
 import java.util.Currency;
 import java.util.Date;
 
-public class JsonInitPayment extends JsonIdObject implements JsonObject {
+public class JsonInitPayment extends JsonIdObject implements JsonObject, TransactionStatus {
     private Boolean isSuccess;
     private Boolean isPending;
     private Boolean isError;
+    private Boolean isResumed;
     private JsonMessage message;
     private Date date;
 
     private String orderId;
+    private String invoiceId;
     private BigDecimal amount;
     private Currency currency;
     private URL returnUrl;
@@ -123,59 +125,80 @@ public class JsonInitPayment extends JsonIdObject implements JsonObject {
         this.orderId = orderId;
     }
 
-    public Boolean getIsSuccess() {
+    public Boolean getSuccess() {
         return isSuccess;
     }
 
-    public void setIsSuccess(Boolean isSuccess) {
+    public void setSuccess(Boolean isSuccess) {
         this.isSuccess = isSuccess;
     }
 
-    public Boolean getIsPending() {
+    public Boolean getPending() {
         return isPending;
     }
 
-    public void setIsPending(Boolean isPending) {
+    public void setPending(Boolean isPending) {
         this.isPending = isPending;
     }
 
-    public Boolean getIsError() {
+    public Boolean getError() {
         return isError;
     }
 
-    public void setIsError(Boolean isError) {
+    public void setError(Boolean isError) {
         this.isError = isError;
+    }
+
+    public Boolean getResumed() {
+        return isResumed;
+    }
+
+    public void setResumed(Boolean resumed) {
+        isResumed = resumed;
     }
 
     public Boolean getCard3ds() {
         return card3ds;
     }
 
-    public void setCard3ds(Boolean card3ds) {
+    public JsonInitPayment setCard3ds(Boolean card3ds) {
         this.card3ds = card3ds;
+        return this;
     }
 
     public String getPaymentReference() {
         return paymentReference;
     }
 
-    public void setPaymentReference(String paymentReference) {
+    public JsonInitPayment setPaymentReference(String paymentReference) {
         this.paymentReference = paymentReference;
+        return this;
     }
 
     public BigDecimal getEffectiveInterestRate() {
         return effectiveInterestRate;
     }
 
-    public void setEffectiveInterestRate(BigDecimal effectiveInterestRate) {
+    public JsonInitPayment setEffectiveInterestRate(BigDecimal effectiveInterestRate) {
         this.effectiveInterestRate = effectiveInterestRate;
+        return this;
     }
 
     public AdditionalTransactionData getAdditionalTransactionData() {
         return additionalTransactionData;
     }
 
-    public void setAdditionalTransactionData(AdditionalTransactionData additionalTransactionData) {
+    public JsonInitPayment setAdditionalTransactionData(AdditionalTransactionData additionalTransactionData) {
         this.additionalTransactionData = additionalTransactionData;
+        return this;
+    }
+
+    public String getInvoiceId() {
+        return invoiceId;
+    }
+
+    public JsonInitPayment setInvoiceId(String invoiceId) {
+        this.invoiceId = invoiceId;
+        return this;
     }
 }

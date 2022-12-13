@@ -39,14 +39,13 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.math.BigDecimal;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.text.ParseException;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 
+import static com.unzer.payment.util.Url.unsafeUrl;
 import static com.unzer.payment.util.Uuid.generateUuid;
 import static java.util.concurrent.TimeUnit.SECONDS;
 import static org.awaitility.Awaitility.await;
@@ -102,33 +101,33 @@ public abstract class AbstractPaymentTest {
         return new Unzer(new HttpClientBasedRestCommunication(Locale.GERMANY), key);
     }
 
-    protected Authorization getAuthorization(String typeId) throws MalformedURLException {
+    protected Authorization getAuthorization(String typeId) {
         return getAuthorization(typeId, (String) null);
     }
 
-    protected Authorization getAuthorization(String typeId, Boolean card3ds) throws MalformedURLException {
+    protected Authorization getAuthorization(String typeId, Boolean card3ds) {
         return getAuthorization(typeId, null, null, null, null, card3ds);
     }
 
-    protected Authorization getAuthorization(String typeId, String customerId) throws MalformedURLException {
+    protected Authorization getAuthorization(String typeId, String customerId) {
         return getAuthorization(typeId, customerId, null, null, null, null);
     }
 
-    protected Authorization getAuthorization(String typeId, String customerId, String metadataId) throws MalformedURLException {
+    protected Authorization getAuthorization(String typeId, String customerId, String metadataId) {
         return getAuthorization(typeId, customerId, null, metadataId, null, null);
     }
 
-    protected Authorization getAuthorization(String typeId, String customerId, String orderId, String metadataId, String basketId) throws MalformedURLException {
+    protected Authorization getAuthorization(String typeId, String customerId, String orderId, String metadataId, String basketId) {
         return getAuthorization(typeId, customerId, orderId, metadataId, basketId, null);
     }
 
-    protected Authorization getAuthorization(String typeId, String customerId, String orderId, String metadataId, String basketId, Boolean card3ds) throws MalformedURLException {
+    protected Authorization getAuthorization(String typeId, String customerId, String orderId, String metadataId, String basketId, Boolean card3ds) {
         Authorization authorization = new Authorization();
         authorization
                 .setAmount(new BigDecimal(10))
                 .setCurrency(Currency.getInstance("EUR"))
                 .setTypeId(typeId)
-                .setReturnUrl(new URL("https://www.unzer.com"))
+                .setReturnUrl(unsafeUrl("https://www.unzer.com"))
                 .setOrderId(orderId)
                 .setCustomerId(customerId)
                 .setMetadataId(metadataId)
@@ -137,13 +136,13 @@ public abstract class AbstractPaymentTest {
         return authorization;
     }
 
-    protected MarketplaceAuthorization getMarketplaceAuthorization(String typeId, String customerId, String orderId, String metadataId, String basketId, Boolean card3ds) throws MalformedURLException {
+    protected MarketplaceAuthorization getMarketplaceAuthorization(String typeId, String customerId, String orderId, String metadataId, String basketId, Boolean card3ds) {
         MarketplaceAuthorization authorization = new MarketplaceAuthorization();
         authorization
                 .setAmount(new BigDecimal(10))
                 .setCurrency(Currency.getInstance("EUR"))
                 .setTypeId(typeId)
-                .setReturnUrl(new URL("https://www.unzer.com"))
+                .setReturnUrl(unsafeUrl("https://www.unzer.com"))
                 .setOrderId(orderId)
                 .setCustomerId(customerId)
                 .setMetadataId(metadataId)
@@ -152,13 +151,13 @@ public abstract class AbstractPaymentTest {
         return authorization;
     }
 
-    protected MarketplaceCharge getMarketplaceCharge(String typeId, String customerId, String orderId, String metadataId, String basketId, Boolean card3ds) throws MalformedURLException {
+    protected MarketplaceCharge getMarketplaceCharge(String typeId, String customerId, String orderId, String metadataId, String basketId, Boolean card3ds) {
         MarketplaceCharge authorization = new MarketplaceCharge();
         authorization
                 .setAmount(new BigDecimal(10))
                 .setCurrency(Currency.getInstance("EUR"))
                 .setTypeId(typeId)
-                .setReturnUrl(new URL("https://www.unzer.com"))
+                .setReturnUrl(unsafeUrl("https://www.unzer.com"))
                 .setOrderId(orderId)
                 .setCustomerId(customerId)
                 .setMetadataId(metadataId)
@@ -167,30 +166,30 @@ public abstract class AbstractPaymentTest {
         return authorization;
     }
 
-    protected Charge getCharge() throws MalformedURLException, HttpCommunicationException {
+    protected Charge getCharge() throws HttpCommunicationException {
         return getCharge(null);
     }
 
-    protected Charge getCharge(String orderId) throws MalformedURLException, HttpCommunicationException {
+    protected Charge getCharge(String orderId) throws HttpCommunicationException {
         Charge charge = getCharge(createPaymentTypeCard(getUnzer(), "4711100000000000").getId(), null, null);
         charge.setOrderId(orderId);
         return charge;
     }
 
-    protected Charge getCharge(String orderId, Boolean card3ds, AdditionalTransactionData additionalTransactionData) throws MalformedURLException, HttpCommunicationException {
+    protected Charge getCharge(String orderId, Boolean card3ds, AdditionalTransactionData additionalTransactionData) throws HttpCommunicationException {
         return getCharge(createPaymentTypeCard(getUnzer(), "4711100000000000").getId(), null, orderId, null, null, card3ds, additionalTransactionData);
     }
 
-    protected Charge getCharge(String typeId, String customerId, String orderId, String metadataId, String basketId, AdditionalTransactionData additionalTransactionData) throws MalformedURLException, HttpCommunicationException {
+    protected Charge getCharge(String typeId, String customerId, String orderId, String metadataId, String basketId, AdditionalTransactionData additionalTransactionData) throws HttpCommunicationException {
         return getCharge(typeId, customerId, orderId, metadataId, basketId, null, additionalTransactionData);
     }
 
-    protected Charge getCharge(String typeId, String customerId, String orderId, String metadataId, String basketId, Boolean card3ds, AdditionalTransactionData additionalTransactionData) throws MalformedURLException, HttpCommunicationException {
+    protected Charge getCharge(String typeId, String customerId, String orderId, String metadataId, String basketId, Boolean card3ds, AdditionalTransactionData additionalTransactionData) throws HttpCommunicationException {
         Charge charge = new Charge();
         charge.setAmount(BigDecimal.ONE)
                 .setCurrency(Currency.getInstance("EUR"))
                 .setTypeId(typeId)
-                .setReturnUrl(new URL("https://www.unzer.com"))
+                .setReturnUrl(unsafeUrl("https://www.unzer.com"))
                 .setOrderId(orderId)
                 .setCustomerId(customerId)
                 .setMetadataId(metadataId)
@@ -200,8 +199,8 @@ public abstract class AbstractPaymentTest {
         return charge;
     }
 
-    protected Card createPaymentTypeCard(Unzer unzer, String cardnumber) throws HttpCommunicationException {
-        Card card = getPaymentTypeCard(cardnumber);
+    protected Card createPaymentTypeCard(Unzer unzer, String cardNumber) throws HttpCommunicationException {
+        Card card = getPaymentTypeCard(cardNumber);
         card = unzer.createPaymentType(card);
         return card;
     }
@@ -551,28 +550,28 @@ public abstract class AbstractPaymentTest {
         return cancelBasket;
     }
 
-    protected Paypage getMaximumPaypage() throws MalformedURLException {
+    protected Paypage getMaximumPaypage() {
         Paypage paypage = new Paypage();
         String[] excludeTypes = {"paypal"};
         paypage.setExcludeTypes(excludeTypes);
         paypage.setAmount(BigDecimal.ONE);
         paypage.setCurrency(Currency.getInstance("EUR"));
-        paypage.setReturnUrl(new URL("https://www.unzer.com/"));
+        paypage.setReturnUrl(unsafeUrl("https://www.unzer.com/"));
         paypage.setShopName("Unzer Demo Shop");
         paypage.setShopDescription("Unzer Demo Shop Description");
         paypage.setTagline("Unzer Tagline");
-        paypage.setTermsAndConditionUrl(new URL("https://www.unzer.com/en/privacy-statement/"));
-        paypage.setPrivacyPolicyUrl(new URL("https://www.unzer.com/en/privacy-statement/"));
+        paypage.setTermsAndConditionUrl(unsafeUrl("https://www.unzer.com/en/privacy-statement/"));
+        paypage.setPrivacyPolicyUrl(unsafeUrl("https://www.unzer.com/en/privacy-statement/"));
         paypage.setCss(getCssMap());
 
         paypage.setLogoImage("https://docs.unzer.com/payment-nutshell/payment-in-nutshell.png");
         paypage.setFullPageImage("https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/iphone-12-pro-family-hero");
 
-        paypage.setContactUrl(new URL("mailto:support@unzer.com"));
-        paypage.setHelpUrl(new URL("https://www.unzer.com/en/support/"));
-        paypage.setImprintUrl(new URL("https://www.unzer.com/en/impressum/"));
-        paypage.setPrivacyPolicyUrl(new URL("https://www.unzer.com/en/datenschutz/"));
-        paypage.setTermsAndConditionUrl(new URL("https://www.unzer.com/en/datenschutz/"));
+        paypage.setContactUrl(unsafeUrl("mailto:support@unzer.com"));
+        paypage.setHelpUrl(unsafeUrl("https://www.unzer.com/en/support/"));
+        paypage.setImprintUrl(unsafeUrl("https://www.unzer.com/en/impressum/"));
+        paypage.setPrivacyPolicyUrl(unsafeUrl("https://www.unzer.com/en/datenschutz/"));
+        paypage.setTermsAndConditionUrl(unsafeUrl("https://www.unzer.com/en/datenschutz/"));
 
         paypage.setInvoiceId(generateUuid());
         paypage.setOrderId(generateUuid());
@@ -591,28 +590,28 @@ public abstract class AbstractPaymentTest {
         return cssMap;
     }
 
-    protected Linkpay getMaximumLinkpay() throws MalformedURLException {
+    protected Linkpay getMaximumLinkpay() {
         Linkpay linkpay = new Linkpay();
         String[] excludeTypes = {"paypal"};
         linkpay.setExcludeTypes(excludeTypes);
         linkpay.setAmount(BigDecimal.ONE);
         linkpay.setCurrency(Currency.getInstance("EUR"));
-        linkpay.setReturnUrl(new URL("https://unzer.com"));
+        linkpay.setReturnUrl(unsafeUrl("https://unzer.com"));
         linkpay.setShopName("Unzer Demo Shop");
         linkpay.setShopDescription("Unzer Demo Shop Description");
         linkpay.setTagline("Unzer Tagline");
-        linkpay.setTermsAndConditionUrl(new URL("https://www.unzer.com/en/datenschutz/"));
-        linkpay.setPrivacyPolicyUrl(new URL("https://www.unzer.com/en/datenschutz/"));
+        linkpay.setTermsAndConditionUrl(unsafeUrl("https://www.unzer.com/en/datenschutz/"));
+        linkpay.setPrivacyPolicyUrl(unsafeUrl("https://www.unzer.com/en/datenschutz/"));
         linkpay.setCss(getCssMap());
 
         linkpay.setLogoImage("https://docs.unzer.com/payment-nutshell/payment-in-nutshell.png");
         linkpay.setFullPageImage("https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/iphone-12-pro-family-hero");
 
-        linkpay.setContactUrl(new URL("mailto:support@unzer.com"));
-        linkpay.setHelpUrl(new URL("https://www.unzer.com/en/support/"));
-        linkpay.setImprintUrl(new URL("https://www.unzer.com/en/impressum/"));
-        linkpay.setPrivacyPolicyUrl(new URL("https://www.unzer.com/en/datenschutz/"));
-        linkpay.setTermsAndConditionUrl(new URL("https://www.unzer.com/en/datenschutz/"));
+        linkpay.setContactUrl(unsafeUrl("mailto:support@unzer.com"));
+        linkpay.setHelpUrl(unsafeUrl("https://www.unzer.com/en/support/"));
+        linkpay.setImprintUrl(unsafeUrl("https://www.unzer.com/en/impressum/"));
+        linkpay.setPrivacyPolicyUrl(unsafeUrl("https://www.unzer.com/en/datenschutz/"));
+        linkpay.setTermsAndConditionUrl(unsafeUrl("https://www.unzer.com/en/datenschutz/"));
 
         linkpay.setInvoiceId(generateUuid());
         linkpay.setOrderId(generateUuid());

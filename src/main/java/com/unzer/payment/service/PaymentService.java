@@ -190,35 +190,37 @@ public class PaymentService {
         return authorization;
     }
 
+    /**
+     * Update an Authorization transaction with PATCH method and returns the resulting Authorization resource.
+     *
+     * @param authorization The Authorization object containing transaction specific information.
+     * @return Authorization The resulting object of the Authorization resource.
+     */
+    public Authorization updateAuthorization(Authorization authorization) throws HttpCommunicationException {
+        return this.updateAuthorization(authorization, urlUtil.getPaymentUrl(authorization, authorization.getPaymentId()));
+    }
+
     public Charge charge(Charge charge) throws HttpCommunicationException {
         return charge(charge, urlUtil.getRestUrl(charge));
     }
+
+    /**
+     * Update a Charge transaction with PATCH method and returns the resulting Charge resource.
+     *
+     * @param charge The Charge object containing transaction specific information
+     * @return Charge The resulting object of the Charge resource.
+     */
+    public Charge updateCharge(Charge charge) throws HttpCommunicationException {
+        return updateCharge(charge, urlUtil.getPaymentUrl(charge, charge.getPaymentId()));
+    }
+
 
     public Payout payout(Payout payout) throws HttpCommunicationException {
         return payout(payout, urlUtil.getRestUrl(payout));
     }
 
-    public Charge chargeAuthorization(String paymentId) throws HttpCommunicationException {
-        Charge charge = new Charge();
-        return chargeAuthorization(paymentId, charge);
-    }
-
-    public Charge chargeAuthorization(String paymentId, BigDecimal amount) throws HttpCommunicationException {
-        Charge charge = new Charge();
-        charge.setAmount(amount);
-        return chargeAuthorization(paymentId, charge);
-    }
-
-    public Charge chargeAuthorization(String paymentId, BigDecimal amount, String paymentReference)
-            throws HttpCommunicationException {
-        Charge charge = new Charge();
-        charge.setAmount(amount);
-        charge.setPaymentReference(paymentReference);
-        return chargeAuthorization(paymentId, charge);
-    }
-
-    private Charge chargeAuthorization(String paymentId, Charge charge) throws HttpCommunicationException {
-        return charge(charge, urlUtil.getPaymentUrl(charge, paymentId));
+    public Charge chargeAuthorization(Charge charge) throws HttpCommunicationException {
+        return charge(charge, urlUtil.getPaymentUrl(charge, charge.getPaymentId()));
     }
 
     public Cancel cancelAuthorization(String paymentId) throws HttpCommunicationException {
@@ -290,6 +292,27 @@ public class PaymentService {
         return charge;
     }
 
+    private Charge updateCharge(Charge charge, String url) throws HttpCommunicationException {
+        String response = restCommunication.httpPatch(url, unzer.getPrivateKey(), jsonToBusinessClassMapper.map(charge));
+        JsonCharge jsonCharge = jsonParser.fromJson(response, JsonCharge.class);
+        charge = (Charge) jsonToBusinessClassMapper.mapToBusinessObject(charge, jsonCharge);
+        charge.setInvoiceId(jsonCharge.getInvoiceId());
+        charge.setPayment(fetchPayment(jsonCharge.getResources().getPaymentId()));
+        charge.setPaymentId(jsonCharge.getResources().getPaymentId());
+        charge.setUnzer(unzer);
+        return charge;
+    }
+
+    private Authorization updateAuthorization(Authorization authorization, String url) throws HttpCommunicationException {
+        String response = restCommunication.httpPatch(url, unzer.getPrivateKey(), jsonToBusinessClassMapper.map(authorization));
+        JsonAuthorization jsonCharge = jsonParser.fromJson(response, JsonAuthorization.class);
+        authorization = (Authorization) jsonToBusinessClassMapper.mapToBusinessObject(authorization, jsonCharge);
+        authorization.setPayment(fetchPayment(jsonCharge.getResources().getPaymentId()));
+        authorization.setPaymentId(jsonCharge.getResources().getPaymentId());
+        authorization.setUnzer(unzer);
+        return authorization;
+    }
+
     private Payout payout(Payout payout, String url) throws HttpCommunicationException {
         JsonObject json = jsonToBusinessClassMapper.map(payout);
         String response = restCommunication.httpPost(url, unzer.getPrivateKey(), json);
@@ -329,7 +352,8 @@ public class PaymentService {
         payment = jsonToBusinessClassMapper.mapToBusinessObject(payment, jsonPayment);
         payment.setCancelList(fetchCancelList(payment, getCancelsFromTransactions(jsonPayment.getTransactions())));
         payment.setAuthorization(
-                fetchAuthorization(payment, getAuthorizationFromTransactions(jsonPayment.getTransactions())));
+                fetchAuthorization(payment, getAuthorizationFromTransactions(jsonPayment.getTransactions()))
+        );
         payment.setChargesList(fetchChargeList(payment, getChargesFromTransactions(jsonPayment.getTransactions())));
         payment.setPayoutList(fetchPayoutList(payment, getPayoutFromTransactions(jsonPayment.getTransactions())));
         return payment;
@@ -388,8 +412,8 @@ public class PaymentService {
     private List<Charge> fetchChargeList(Payment payment, List<JsonTransaction> jsonChargesTransactionList)
             throws HttpCommunicationException {
         if (jsonChargesTransactionList == null || jsonChargesTransactionList.isEmpty())
-            return new ArrayList<Charge>();
-        List<Charge> chargesList = new ArrayList<Charge>();
+            return new ArrayList<>();
+        List<Charge> chargesList = new ArrayList<>();
         for (JsonTransaction jsonTransaction : jsonChargesTransactionList) {
             Charge charge = fetchCharge(payment, new Charge(unzer), jsonTransaction.getUrl());
             charge.setCancelList(getCancelListForCharge(charge.getId(), payment.getCancelList()));
@@ -405,8 +429,8 @@ public class PaymentService {
     private List<Payout> fetchPayoutList(Payment payment, List<JsonTransaction> jsonTransactionList)
             throws HttpCommunicationException {
         if (jsonTransactionList == null || jsonTransactionList.isEmpty())
-            return new ArrayList<Payout>();
-        List<Payout> payoutList = new ArrayList<Payout>();
+            return new ArrayList<>();
+        List<Payout> payoutList = new ArrayList<>();
         for (JsonTransaction jsonTransaction : jsonTransactionList) {
             Payout payout = fetchPayout(payment, new Payout(unzer), jsonTransaction.getUrl());
             payout.setType(jsonTransaction.getType());

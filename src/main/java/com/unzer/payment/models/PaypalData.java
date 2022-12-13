@@ -13,26 +13,24 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.unzer.payment.communication;
+package com.unzer.payment.models;
 
-import java.net.URI;
+import com.google.gson.annotations.SerializedName;
 
-/**
- * Abstraction for any http-request executed by the
- * {@code UnzerRestCommunication} and its basic implementation in
- * {@code AbstractUnzerRestCommunication}.
- */
-public interface UnzerHttpRequest {
+public class PaypalData {
+    private CheckoutType checkoutType;
 
-    void addHeader(String header, String value);
+    public CheckoutType getCheckoutType() {
+        return checkoutType;
+    }
 
-    URI getURI();
+    public PaypalData setCheckoutType(CheckoutType checkoutType) {
+        this.checkoutType = checkoutType;
+        return this;
+    }
 
-    void setContent(String content, String encoding);
-
-    UnzerHttpMethod getMethod();
-
-    enum UnzerHttpMethod {
-        GET, POST, DELETE, PUT, PATCH
+    public enum CheckoutType {
+        @SerializedName("express")
+        EXPRESS
     }
 }

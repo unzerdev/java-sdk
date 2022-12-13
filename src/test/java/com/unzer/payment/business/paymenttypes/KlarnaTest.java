@@ -123,8 +123,8 @@ public class KlarnaTest extends AbstractPaymentTest {
                         .setReturnUrl(unsafeUrl("https://unzer.com"))
                         .setAdditionalTransactionData(
                                 new AdditionalTransactionData()
-                                        .setPrivacyPolicyUrl("https://en.wikipedia.org/wiki/Policy")
-                                        .setTermsAndConditionsUrl("https://en.wikipedia.org/wiki/Terms_of_service")
+                                        .setPrivacyPolicyUrl("https://unzer.com")
+                                        .setTermsAndConditionsUrl("https://unzer.com")
                         ),
 
                         null
@@ -151,19 +151,7 @@ public class KlarnaTest extends AbstractPaymentTest {
                         .setAmount(BigDecimal.valueOf(500.5))
                         .setCurrency(Currency.getInstance("EUR"))
                         .setReturnUrl(unsafeUrl("https://unzer.com")),
-
-                        Arrays.asList(
-                                new PaymentError(
-                                        "additionalTransactionData.termsAndConditionUrl is missing.",
-                                        "An error occurred. Please contact us for more information.",
-                                        "API.320.200.209"
-                                ),
-                                new PaymentError(
-                                        "additionalTransactionData.privacyPolicyUrl is missing.",
-                                        "An error occurred. Please contact us for more information.",
-                                        "API.320.200.210"
-                                )
-                        )
+                        null
                 ),
                 new TestCase(
                         "without language",
@@ -190,8 +178,8 @@ public class KlarnaTest extends AbstractPaymentTest {
                         .setReturnUrl(unsafeUrl("https://unzer.com"))
                         .setAdditionalTransactionData(
                                 new AdditionalTransactionData()
-                                        .setPrivacyPolicyUrl("https://en.wikipedia.org/wiki/Policy")
-                                        .setTermsAndConditionsUrl("https://en.wikipedia.org/wiki/Terms_of_service")
+                                        .setPrivacyPolicyUrl("https://unzer.com")
+                                        .setTermsAndConditionsUrl("https://unzer.com")
                         ),
 
                         Collections.singletonList(
@@ -321,8 +309,8 @@ public class KlarnaTest extends AbstractPaymentTest {
                                     .setReturnUrl(unsafeUrl("https://unzer.com"))
                                     .setAdditionalTransactionData(
                                             new AdditionalTransactionData()
-                                                    .setPrivacyPolicyUrl("https://en.wikipedia.org/wiki/Policy")
-                                                    .setTermsAndConditionsUrl("https://en.wikipedia.org/wiki/Terms_of_service")
+                                                    .setPrivacyPolicyUrl("https://unzer.com")
+                                                    .setTermsAndConditionsUrl("https://unzer.com")
                                     );
 
 
@@ -415,8 +403,8 @@ public class KlarnaTest extends AbstractPaymentTest {
                                     .setReturnUrl(unsafeUrl("https://unzer.com"))
                                     .setAdditionalTransactionData(
                                             new AdditionalTransactionData()
-                                                    .setPrivacyPolicyUrl("https://en.wikipedia.org/wiki/Policy")
-                                                    .setTermsAndConditionsUrl("https://en.wikipedia.org/wiki/Terms_of_service")
+                                                    .setPrivacyPolicyUrl("https://unzer.com")
+                                                    .setTermsAndConditionsUrl("https://unzer.com")
                                     );
 
 

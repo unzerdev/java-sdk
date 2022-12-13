@@ -20,8 +20,11 @@ import com.unzer.payment.communication.json.JsonObject;
 import com.unzer.payment.paymenttypes.PaymentType;
 
 import java.math.BigDecimal;
+import java.net.URL;
 import java.util.ArrayList;
+import java.util.Currency;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Business object for Charge. Amount, currency and typeId are mandatory parameter to 
@@ -32,9 +35,6 @@ import java.util.List;
  *
  */
 public class Charge extends AbstractTransaction<Payment> {
-
-    private String invoiceId;
-
     private List<Cancel> cancelList;
 
     public Charge() {
@@ -42,28 +42,32 @@ public class Charge extends AbstractTransaction<Payment> {
         setCancelList(new ArrayList<Cancel>());
     }
 
+    @Deprecated
     public Charge(Unzer unzer) {
         super(unzer);
         setCancelList(new ArrayList<Cancel>());
     }
 
-    public String getInvoiceId() {
-        return invoiceId;
-    }
-
-    public Charge setInvoiceId(String invoiceId) {
-        this.invoiceId = invoiceId;
-        return this;
-    }
-
+    /**
+     * @deprecated use {@link Unzer#cancelCharge(String, String)} instead
+     */
+    @Deprecated
     public Cancel cancel() throws HttpCommunicationException {
         return getUnzer().cancelCharge(getPayment().getId(), getId());
     }
 
+    /**
+     * @deprecated use {@link Unzer#cancelCharge(String, String, Cancel)} instead
+     */
+    @Deprecated
     public Cancel cancel(BigDecimal amount) throws HttpCommunicationException {
         return getUnzer().cancelCharge(getPayment().getId(), getId(), amount);
     }
 
+    /**
+     * @deprecated use {@link Unzer#cancelCharge(String, String, Cancel)} instead
+     */
+    @Deprecated
     public Cancel cancel(Cancel cancel) throws HttpCommunicationException {
         return getUnzer().cancelCharge(getPayment().getId(), getId(), cancel);
     }

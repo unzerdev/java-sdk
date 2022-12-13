@@ -31,6 +31,7 @@ public abstract class AbstractTransaction<T extends AbstractPayment> implements 
     private URL returnUrl;
     private Boolean card3ds;
     private String orderId;
+    private String invoiceId;
     private String typeId;
     private String customerId;
     private String metadataId;
@@ -57,6 +58,7 @@ public abstract class AbstractTransaction<T extends AbstractPayment> implements 
         super();
     }
 
+    @Deprecated
     public AbstractTransaction(Unzer unzer) {
         this.unzer = unzer;
     }
@@ -222,10 +224,12 @@ public abstract class AbstractTransaction<T extends AbstractPayment> implements 
         return this;
     }
 
+    @Deprecated
     public Unzer getUnzer() {
         return unzer;
     }
 
+    @Deprecated
     public AbstractTransaction<T> setUnzer(Unzer unzer) {
         this.unzer = unzer;
         return this;
@@ -276,7 +280,16 @@ public abstract class AbstractTransaction<T extends AbstractPayment> implements 
         return this;
     }
 
+    public String getInvoiceId() {
+        return invoiceId;
+    }
+
+    public AbstractTransaction<T> setInvoiceId(String invoiceId) {
+        this.invoiceId = invoiceId;
+        return this;
+    }
+
     public enum Status {
-        SUCCESS, PENDING, ERROR
+        SUCCESS, PENDING, ERROR, RESUMED
     }
 }

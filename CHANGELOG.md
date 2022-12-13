@@ -6,11 +6,56 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres
 to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## [3.1.0][3.1.0]
+
+This release introduces Unzer PayPal Express in Java SDK.
+
+### Added
+
+* Added Paypal-Express support:
+  * Extended `AdditionalTransactionData` with `paypal.checkoutType` field. See `com.unzer.payment.models.AdditionalTransactionData.setPaypal`.
+  * Defined `RESUMED` value for `com.unzer.payment.AbstractTransaction.Status`
+  * Added `com.unzer.payment.Unzer::updateCharge()`, `com.unzer.payment.Unzer::updateAuthorization()` which must be invoked after Paypal-Express transaction is resumed.
+* Added fields `orderId` and `invoiceId` to `Authorize`, `Charge` and `Cancel` transactions.
+* Added authorize support for Paypage. Use `Paypage::setAction(Paypage.Action.AUTHORIZE)`
+* Added new capture (charge authorization) methods. See: `com.unzer.payment.Unzer.chargeAuthorization(charge)` and `com.unzer.payment.Unzer.chargeAuthorization(paymentId, charge)`
+
+### Changed
+
+* Reduced multiple `com.unzer.payment.service.PaymentService.chargeAuthorization` methods to one with `Charge` argument.
+
+### Deprecated 
+
+* Deprecated `com.unzer.payment.paymenttypes.Invoice`. Use `com.unzer.payment.paymenttypes.PaylaterInvoice` instead 
+* Deprecated behavioral methods for data objects. Please, use Unzer facade instead. List of deprecations:
+  * `AbstractTransaction` (base class of `Authorization`, `Cancel`, `Charge`, `Payout`, `Recurring`, `Shipment`, `MarketplaceAuthorization`, `MarketplaceCharge`, `MarketplacePayment`, `MarketplaceCancel`):
+    * `getUnzer`/`setUnzer`
+  * `Charge`:
+    * `cancel`
+  * `Authorization`:
+    * `charge`
+    * `cancel`
+  * `Payment`:
+    * `charge`
+    * `authorize`
+    * `cancel`
+  * `MarketplaceCharge`:
+    * `cancel`
+  * `MarketplaceAuthorization`:
+    * `charge`
+    * `cancel`
+  * `MarketplacePayment`:
+    * `marketplaceFullChargesCancel`
+    * `fullChargeAuthorizations`
+    * `marketplaceFullAuthorizeCancel`
+  * `AbstractPayment`:
+    * `fetchBasket`, `fetchMetadata`, `fetchCustomer`, `fetchPaymentType`
+
 ## [3.0.0][3.0.0]
 
 This release switches Java SDK version to a traditional 3-digit semantic versioning style.
 
-### Changes
+### Changed
 * Removed first digit at semver: ~~API_VERSION.~~ MAJOR.MINOR.PATCH
 
 ## [1.3.0.0][1.3.0.0]
@@ -269,6 +314,8 @@ This release brings Unzer Paylater Invoice payment type support to Java SDK.
     *   cancelAuthorization
 *   Remove deprecated classes
     *   RestCommunication
+
+[3.1.0]: http://github.com/unzerdev/java-sdk/compare/3.0.0..3.1.0
 
 [3.0.0]: http://github.com/unzerdev/java-sdk/compare/1.3.0.0..3.0.0
 

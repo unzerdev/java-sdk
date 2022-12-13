@@ -20,7 +20,7 @@ import com.unzer.payment.models.AdditionalTransactionData;
 import java.net.URL;
 import java.util.Date;
 
-public class JsonRecurring extends JsonIdObject implements JsonObject {
+public class JsonRecurring extends JsonIdObject implements JsonObject, TransactionStatus {
     private Boolean isSuccess;
     private Boolean isPending;
     private Boolean isError;
@@ -81,28 +81,36 @@ public class JsonRecurring extends JsonIdObject implements JsonObject {
         this.date = date;
     }
 
-    public Boolean getIsSuccess() {
+    public Boolean getSuccess() {
         return isSuccess;
     }
 
-    public void setIsSuccess(Boolean isSuccess) {
+    public void setSuccess(Boolean isSuccess) {
         this.isSuccess = isSuccess;
     }
 
-    public Boolean getIsPending() {
+    public Boolean getPending() {
         return isPending;
     }
 
-    public void setIsPending(Boolean isPending) {
+    public void setPending(Boolean isPending) {
         this.isPending = isPending;
     }
 
-    public Boolean getIsError() {
+    public Boolean getError() {
         return isError;
     }
 
-    public void setIsError(Boolean isError) {
+    public void setError(Boolean isError) {
         this.isError = isError;
+    }
+
+    public void setResumed(Boolean value) {
+        // Do nothing
+    }
+
+    public Boolean getResumed() {
+        return null;
     }
 
     public URL getRedirectUrl() {

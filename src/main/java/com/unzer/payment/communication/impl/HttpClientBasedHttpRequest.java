@@ -55,16 +55,19 @@ public class HttpClientBasedHttpRequest implements UnzerHttpRequest {
     }
 
     private HttpUriRequest createRequestForMethod(String url, UnzerHttpMethod method) {
-        if (UnzerHttpMethod.GET.equals(method)) {
-            return new HttpGet(url);
-        } else if (UnzerHttpMethod.POST.equals(method)) {
-            return new HttpPost(url);
-        } else if (UnzerHttpMethod.PUT.equals(method)) {
-            return new HttpPut(url);
-        } else if (UnzerHttpMethod.DELETE.equals(method)) {
-            return new HttpDelete(url);
-        } else {
-            throw new IllegalArgumentException("Unsupported HttpMethod given " + method);
+        switch (method) {
+            case GET:
+                return new HttpGet(url);
+            case POST:
+                return new HttpPost(url);
+            case PUT:
+                return new HttpPut(url);
+            case DELETE:
+                return new HttpDelete(url);
+            case PATCH:
+                return new HttpPatch(url);
+            default:
+                throw new IllegalArgumentException("Unsupported HttpMethod given " + method);
         }
     }
 

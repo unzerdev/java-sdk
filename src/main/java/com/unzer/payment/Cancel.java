@@ -36,6 +36,7 @@ public class Cancel extends AbstractTransaction<Payment> {
         super();
     }
 
+    @Deprecated
     public Cancel(Unzer unzer) {
         super(unzer);
     }

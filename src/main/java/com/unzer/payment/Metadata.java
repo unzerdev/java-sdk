@@ -63,10 +63,12 @@ public class Metadata implements PaymentType {
         return "metadata";
     }
 
+    @Deprecated
     public Unzer getUnzer() {
         return unzer;
     }
 
+    @Deprecated
     public void setUnzer(Unzer unzer) {
         this.unzer = unzer;
     }
