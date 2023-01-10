@@ -31,16 +31,12 @@ public abstract class AbstractPayment implements PaymentType {
     private BigDecimal amountRemaining;
     private String orderId;
     private String customerId;
-    @Deprecated
     private Customer customer;
     private String paymentTypeId;
-    @Deprecated
     private PaymentType paymentType;
     private String metadataId;
-    @Deprecated
     private Metadata metadata;
     private String basketId;
-    @Deprecated
     private Basket basket;
     @Deprecated
     private transient Unzer unzer;
@@ -80,7 +76,6 @@ public abstract class AbstractPayment implements PaymentType {
         return paymentType;
     }
 
-    @Deprecated
     public Customer getCustomer() throws HttpCommunicationException {
         if (customer == null && isNotEmpty(getCustomerId())) {
             customer = fetchCustomer(getCustomerId());
@@ -88,7 +83,6 @@ public abstract class AbstractPayment implements PaymentType {
         return customer;
     }
 
-    @Deprecated
     public void setCustomer(Customer customer) {
         this.customer = customer;
     }
@@ -117,7 +111,6 @@ public abstract class AbstractPayment implements PaymentType {
         this.metadataId = metadataId;
     }
 
-    @Deprecated
     public Metadata getMetadata() throws HttpCommunicationException {
         if (metadata == null && isNotEmpty(getMetadataId())) {
             metadata = fetchMetadata(getMetadataId());
@@ -125,7 +118,6 @@ public abstract class AbstractPayment implements PaymentType {
         return metadata;
     }
 
-    @Deprecated
     public void setMetadata(Metadata metadata) {
         this.metadata = metadata;
     }
@@ -138,7 +130,6 @@ public abstract class AbstractPayment implements PaymentType {
         this.basketId = basketId;
     }
 
-    @Deprecated
     public Basket getBasket() throws HttpCommunicationException {
         if (basket == null && isNotEmpty(getBasketId())) {
             basket = fetchBasket(getBasketId());
@@ -146,7 +137,6 @@ public abstract class AbstractPayment implements PaymentType {
         return basket;
     }
 
-    @Deprecated
     public void setBasket(Basket basket) {
         this.basket = basket;
     }
