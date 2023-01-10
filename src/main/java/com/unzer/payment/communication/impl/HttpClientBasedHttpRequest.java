@@ -16,12 +16,13 @@
 package com.unzer.payment.communication.impl;
 
 import com.unzer.payment.communication.UnzerHttpRequest;
-import org.apache.http.HttpEntity;
-import org.apache.http.HttpEntityEnclosingRequest;
-import org.apache.http.client.methods.*;
-import org.apache.http.entity.StringEntity;
+import org.apache.hc.client5.http.classic.methods.*;
+import org.apache.hc.core5.http.ClassicHttpRequest;
+import org.apache.hc.core5.http.ContentType;
+import org.apache.hc.core5.http.io.entity.StringEntity;
 
 import java.net.URI;
+import java.net.URISyntaxException;
 
 /**
  * Implementation of the {@code UnzerHttpRequest} wrapping an apache
@@ -35,19 +36,17 @@ import java.net.URI;
  */
 public class HttpClientBasedHttpRequest implements UnzerHttpRequest {
 
-    protected HttpUriRequest request;
+    protected ClassicHttpRequest request;
     protected UnzerHttpMethod method;
 
     /**
      * Creates a {@code HttpClientBasedHttpRequest} wrapping a
      * {@code HttpUriRequest} defined by the given {@code UnzerHttpMethod}.
      *
-	 * @param uri
-	 *            - the RUI of the request
-	 * @param method
-	 *            - the {@code UnzerHttpMethod} representing one of
-	 *            {@code HttpGet}, {@code HttpPost}, {@code HttpPut},
-	 *            {@code HttpDelete}
+     * @param uri    - the RUI of the request
+     * @param method - the {@code UnzerHttpMethod} representing one of
+     *               {@code HttpGet}, {@code HttpPost}, {@code HttpPut},
+     *               {@code HttpDelete}
      */
     public HttpClientBasedHttpRequest(String uri, UnzerHttpMethod method) {
         this.method = method;
@@ -77,24 +76,28 @@ public class HttpClientBasedHttpRequest implements UnzerHttpRequest {
     }
 
     /**
-	 * Returns the wrapped {@code HttpUriRequest} to be passed to the {@code HttpClient} within the {@code HttpClientBasedRestCommunication} implementation. 
-	 * @return - the the wrapped {@code HttpUriRequest}  
+     * Returns the wrapped {@code HttpUriRequest} to be passed to the {@code HttpClient} within the {@code HttpClientBasedRestCommunication} implementation.
+     *
+     * @return - the the wrapped {@code HttpUriRequest}
      */
-    public HttpUriRequest getRequest() {
+    public ClassicHttpRequest getRequest() {
         return request;
     }
 
     @Override
-    public URI getURI() {
-        return request.getURI();
+    public URI getURI() throws URISyntaxException {
+        return request.getUri();
     }
 
     @Override
     public void setContent(String content, String encoding) {
-        if (request instanceof HttpEntityEnclosingRequest) {
-            HttpEntity entity = new StringEntity(content, encoding);
-            ((HttpEntityEnclosingRequest) request).setEntity(entity);
-        }
+        StringEntity entity = new StringEntity(
+                content,
+                ContentType.APPLICATION_JSON,
+                encoding,
+                false
+        );
+        request.setEntity(entity);
     }
 
     @Override

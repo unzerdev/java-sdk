@@ -19,36 +19,36 @@ import com.unzer.payment.communication.AbstractUnzerRestCommunication;
 import com.unzer.payment.communication.HttpCommunicationException;
 import com.unzer.payment.communication.UnzerHttpRequest;
 import com.unzer.payment.communication.UnzerHttpResponse;
-import org.apache.http.ParseException;
-import org.apache.http.client.methods.CloseableHttpResponse;
-import org.apache.http.impl.client.CloseableHttpClient;
-import org.apache.http.impl.client.HttpClientBuilder;
-import org.apache.http.impl.client.HttpClients;
-import org.apache.http.util.EntityUtils;
+import org.apache.hc.client5.http.impl.classic.CloseableHttpClient;
+import org.apache.hc.client5.http.impl.classic.CloseableHttpResponse;
+import org.apache.hc.client5.http.impl.classic.HttpClientBuilder;
+import org.apache.hc.client5.http.impl.classic.HttpClients;
+import org.apache.hc.core5.http.ParseException;
+import org.apache.hc.core5.http.io.entity.EntityUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
+import java.net.URISyntaxException;
 import java.util.Locale;
 
 /**
  * Reference implementation of the {@code UnzerRestCommunication}, based on apaches {@code HttpClient}.
- *
  */
 public class HttpClientBasedRestCommunication extends AbstractUnzerRestCommunication {
 
     private static final Logger logger = LogManager.getLogger(HttpClientBasedRestCommunication.class);
 
     public HttpClientBasedRestCommunication() {
-        this(null,null);
+        this(null, null);
     }
 
     public HttpClientBasedRestCommunication(Locale locale) {
         this(locale, null);
-	}
+    }
 
-	public HttpClientBasedRestCommunication(Locale locale, String clientIp) {
-		super(locale, clientIp);
+    public HttpClientBasedRestCommunication(Locale locale, String clientIp) {
+        super(locale, clientIp);
     }
 
     @Override
@@ -77,14 +77,28 @@ public class HttpClientBasedRestCommunication extends AbstractUnzerRestCommunica
         if (!(request instanceof HttpClientBasedHttpRequest)) {
             throw new IllegalArgumentException("Request is not an instance of HttpClientBasedHttpRequest");
         }
-        CloseableHttpResponse response = null;
+
         try {
-            response = getHttpClient().execute(((HttpClientBasedHttpRequest) request).getRequest());
-            return new UnzerHttpResponse(EntityUtils.toString(response.getEntity()),
-                    response.getStatusLine().getStatusCode());
-        } catch (IOException |ParseException e) {
-            throw new HttpCommunicationException(
-                    "Error communicating to " + request.getURI() + ": Detail: " + e.getMessage());
+            request.getURI();
+        } catch (URISyntaxException e) {
+            throw new IllegalArgumentException("Request URI is not correct", e);
+        }
+
+        CloseableHttpResponse response = null;
+        try (CloseableHttpClient client = createClient()) {
+            response = client.execute(((HttpClientBasedHttpRequest) request).getRequest());
+            return new UnzerHttpResponse(EntityUtils.toString(response.getEntity()), response.getCode());
+        } catch (IOException | ParseException e) {
+            try {
+                throw new HttpCommunicationException(String.format(
+                        "Error communicating to %s: Detail: %s",
+                        request.getURI().toString(),
+                        e.getMessage()
+                ));
+            } catch (URISyntaxException ex) {
+                // happens never, because uri validation happens in the beginning of this method
+                throw new RuntimeException(ex);
+            }
         } finally {
             if (response != null) {
                 try {
@@ -96,7 +110,8 @@ public class HttpClientBasedRestCommunication extends AbstractUnzerRestCommunica
         }
     }
 
-    private CloseableHttpClient getHttpClient() {
+    @Deprecated
+    private CloseableHttpClient createClient() {
         HttpClientBuilder builder = HttpClients.custom().useSystemProperties();
         return builder.build();
     }

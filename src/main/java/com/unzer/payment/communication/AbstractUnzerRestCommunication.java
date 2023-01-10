@@ -24,12 +24,13 @@ import com.unzer.payment.util.SDKInfo;
 
 import javax.xml.bind.DatatypeConverter;
 import java.io.UnsupportedEncodingException;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
 
-import static org.apache.http.HttpHeaders.*;
+import static org.apache.hc.core5.http.HttpHeaders.*;
 
 /**
  * Template implementation of the {@code UnzerRestCommunication}. You should
