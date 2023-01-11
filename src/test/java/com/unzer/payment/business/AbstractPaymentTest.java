@@ -26,11 +26,12 @@ import com.unzer.payment.marketplace.MarketplaceCharge;
 import com.unzer.payment.models.AdditionalTransactionData;
 import com.unzer.payment.paymenttypes.Card;
 import com.unzer.payment.paymenttypes.SepaDirectDebit;
-import org.apache.http.HttpResponse;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.impl.client.HttpClients;
+import org.apache.hc.client5.http.classic.HttpClient;
+import org.apache.hc.client5.http.classic.methods.HttpGet;
+import org.apache.hc.client5.http.classic.methods.HttpPost;
+import org.apache.hc.client5.http.impl.classic.HttpClients;
+import org.apache.hc.core5.http.ClassicHttpResponse;
+import org.apache.hc.core5.http.HttpResponse;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 
@@ -500,14 +501,14 @@ public abstract class AbstractPaymentTest {
     protected int confirmMarketplacePendingTransaction(String redirectUrl) {
         try {
             HttpClient httpClient = HttpClients.custom().useSystemProperties().build();
-            HttpResponse response = httpClient.execute(new HttpGet(redirectUrl));
+            ClassicHttpResponse response = (ClassicHttpResponse) httpClient.execute(new HttpGet(redirectUrl));
 
             Document html = Jsoup.parse(readHtml(response.getEntity().getContent()));
             String apiRediretUrl = html.getElementById("authForm").attr("action");
 
-            response = httpClient.execute(new HttpPost(apiRediretUrl));
+            response = (ClassicHttpResponse) httpClient.execute(new HttpPost(apiRediretUrl));
             await().atLeast(5, SECONDS).atMost(10, SECONDS);
-            return response.getStatusLine().getStatusCode();
+            return response.getCode();
         } catch (IOException e) {
             e.printStackTrace();
         }

@@ -38,6 +38,7 @@ public abstract class AbstractPayment implements PaymentType {
     private Metadata metadata;
     private String basketId;
     private Basket basket;
+    @Deprecated
     private transient Unzer unzer;
 
     @Deprecated

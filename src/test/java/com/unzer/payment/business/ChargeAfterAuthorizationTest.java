@@ -23,7 +23,7 @@ import com.unzer.payment.marketplace.MarketplacePayment;
 import com.unzer.payment.models.AdditionalTransactionData;
 import com.unzer.payment.models.ShippingTransactionData;
 import com.unzer.payment.paymenttypes.Card;
-import org.apache.http.HttpStatus;
+import org.apache.hc.core5.http.HttpStatus;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
@@ -195,7 +195,7 @@ public class ChargeAfterAuthorizationTest extends AbstractPaymentTest {
     }
 
     @Test
-    public void testChargeAuthorizationWithChargeObject() throws HttpCommunicationException, MalformedURLException {
+    public void testChargeAuthorizationWithChargeObject() throws HttpCommunicationException {
         Unzer unzer = getUnzer();
 
         Authorization auth = unzer.authorize(

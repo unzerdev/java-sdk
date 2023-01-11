@@ -6,7 +6,7 @@
 
     <groupId>com.unzer.payment</groupId>
     <artifactId>java-sdk</artifactId>
-    <version>3.1.0</version>
+    <version>3.1.1</version>
     <name>Unzer Java SDK</name>
     <description>Unzer Java SDK provides an easy way to connect to the Unzer Rest API.</description>
     <url>https://docs.unzer.com/</url>
@@ -41,9 +41,9 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <additionalparam>-Xdoclint:none</additionalparam>
         <skip.dependency.check>true</skip.dependency.check>
-        <log4j.version>2.18.0</log4j.version>
-        <jackson.version>2.14.0-rc1</jackson.version>
-        <junit.version>5.9.0</junit.version>
+        <log4j.version>2.19.0</log4j.version>
+        <jackson.version>2.14.1</jackson.version>
+        <junit.version>5.9.1</junit.version>
         <system-stubs.version>2.0.1</system-stubs.version>
     </properties>
 
@@ -236,7 +236,6 @@
                             <excludes>
                                 <exclude>**/*.md</exclude>
                                 <exclude>**/*.xml</exclude>
-                                <exclude>selenium/**</exclude>
                                 <exclude>src/test/resources/**</exclude>
                                 <exclude>src/main/resources/**</exclude>
                             </excludes>
@@ -285,13 +284,11 @@
             <artifactId>jaxb-api</artifactId>
             <version>2.3.1</version>
         </dependency>
-
         <dependency>
-            <groupId>org.apache.httpcomponents</groupId>
-            <artifactId>httpclient</artifactId>
-            <version>4.5.13</version>
+            <groupId>org.apache.httpcomponents.client5</groupId>
+            <artifactId>httpclient5</artifactId>
+            <version>5.2.1</version>
         </dependency>
-
 
         <!-- Test dependencies       -->
         <dependency>

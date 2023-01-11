@@ -6,6 +6,14 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres
 to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## [4.0.0][4.0.0]
+
+### Changed
+
+* Upgraded Apache HttpClient from version 4 to version 5.
+* Made `HttpCommunicationException` unchecked exception.
+* Updated `jackson-core` dependency.
+
 ## [3.1.0][3.1.0]
 
 This release introduces Unzer PayPal Express in Java SDK.
