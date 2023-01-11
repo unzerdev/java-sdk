@@ -6,7 +6,9 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres
 to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
-## [4.0.0][4.0.0]
+## [3.1.1][3.1.1]
+
+This release updates dependencies with security issues
 
 ### Changed
 
@@ -322,6 +324,8 @@ This release brings Unzer Paylater Invoice payment type support to Java SDK.
     *   cancelAuthorization
 *   Remove deprecated classes
     *   RestCommunication
+
+[3.1.1]: http://github.com/unzerdev/java-sdk/compare/3.1.0..3.1.1
 
 [3.1.0]: http://github.com/unzerdev/java-sdk/compare/3.0.0..3.1.0
 
