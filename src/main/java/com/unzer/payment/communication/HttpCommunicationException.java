@@ -18,7 +18,7 @@ package com.unzer.payment.communication;
 /**
  * Generic exception for HttpCommunication module
  */
-public class HttpCommunicationException extends Exception {
+public class HttpCommunicationException extends RuntimeException {
 
     private static final long serialVersionUID = 1L;
 

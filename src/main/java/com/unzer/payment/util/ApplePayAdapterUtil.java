@@ -17,15 +17,19 @@ package com.unzer.payment.util;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.unzer.payment.ApplePaySession;
-import org.apache.http.HttpEntity;
-import org.apache.http.client.methods.CloseableHttpResponse;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.conn.ssl.SSLConnectionSocketFactory;
-import org.apache.http.entity.ContentType;
-import org.apache.http.entity.StringEntity;
-import org.apache.http.impl.client.CloseableHttpClient;
-import org.apache.http.impl.client.HttpClients;
-import org.apache.http.util.EntityUtils;
+import org.apache.hc.client5.http.classic.methods.HttpPost;
+import org.apache.hc.client5.http.impl.classic.CloseableHttpClient;
+import org.apache.hc.client5.http.impl.classic.CloseableHttpResponse;
+import org.apache.hc.client5.http.impl.classic.HttpClients;
+import org.apache.hc.client5.http.impl.io.PoolingHttpClientConnectionManagerBuilder;
+import org.apache.hc.client5.http.io.HttpClientConnectionManager;
+import org.apache.hc.client5.http.ssl.HttpsSupport;
+import org.apache.hc.client5.http.ssl.SSLConnectionSocketFactory;
+import org.apache.hc.core5.http.ContentType;
+import org.apache.hc.core5.http.HttpEntity;
+import org.apache.hc.core5.http.ParseException;
+import org.apache.hc.core5.http.io.entity.EntityUtils;
+import org.apache.hc.core5.http.io.entity.StringEntity;
 
 import javax.net.ssl.KeyManagerFactory;
 import javax.net.ssl.SSLContext;
@@ -71,18 +75,26 @@ public class ApplePayAdapterUtil {
         urls = new HashSet<>(appleUrls);
     }
 
-    public static String validateApplePayMerchant(String merchantValidationURL, ApplePaySession applePaySession, KeyManagerFactory keyManagerFactory, TrustManagerFactory trustManagerFactory) throws IOException, NoSuchAlgorithmException, KeyManagementException, URISyntaxException {
+    public static String validateApplePayMerchant(
+            String merchantValidationURL,
+            ApplePaySession applePaySession,
+            KeyManagerFactory keyManagerFactory,
+            TrustManagerFactory trustManagerFactory
+    ) throws IOException, NoSuchAlgorithmException, KeyManagementException, URISyntaxException, ParseException {
         ObjectMapper mapper = new ObjectMapper();
         SSLConnectionSocketFactory sslsf = setupSSLSocketFactory(keyManagerFactory, trustManagerFactory);
         String response = "";
 
+
+        HttpClientConnectionManager cm = PoolingHttpClientConnectionManagerBuilder.create().setSSLSocketFactory(sslsf).build();
+
         if (doesUrlContainValidDomainName(merchantValidationURL)) {
-            try (CloseableHttpClient httpclient = HttpClients.custom().setSSLSocketFactory(sslsf).build()) {
+            try (CloseableHttpClient client = HttpClients.custom().setConnectionManager(cm).build()) {
                 HttpPost post = new HttpPost(merchantValidationURL);
                 StringEntity reqEntity = new StringEntity(mapper.writeValueAsString(applePaySession), ContentType.APPLICATION_JSON);
                 post.setEntity(reqEntity);
 
-                CloseableHttpResponse res = httpclient.execute(post);
+                CloseableHttpResponse res = client.execute(post);
                 HttpEntity entity = res.getEntity();
                 response = EntityUtils.toString(entity, "UTF-8");
                 EntityUtils.consume(entity);
@@ -98,11 +110,14 @@ public class ApplePayAdapterUtil {
         return urls.contains(merchantValidationUrlDomain);
     }
 
-    private static SSLConnectionSocketFactory setupSSLSocketFactory(KeyManagerFactory keyManagerFactory, TrustManagerFactory trustManagerFactory) throws KeyManagementException, NoSuchAlgorithmException {
+    private static SSLConnectionSocketFactory setupSSLSocketFactory(
+            KeyManagerFactory keyManagerFactory,
+            TrustManagerFactory trustManagerFactory
+    ) throws KeyManagementException, NoSuchAlgorithmException {
         SSLContext sslcontext = SSLContext.getInstance("TLS");
         sslcontext.init(keyManagerFactory.getKeyManagers(), trustManagerFactory.getTrustManagers(), null);
 
-        return new SSLConnectionSocketFactory(sslcontext, new String[]{"TLSv1.2"}, null, SSLConnectionSocketFactory.getDefaultHostnameVerifier());
+        return new SSLConnectionSocketFactory(sslcontext, new String[]{"TLSv1.2"}, null, HttpsSupport.getDefaultHostnameVerifier());
     }
 
     private static String getPlainDomainName(String url) throws URISyntaxException {
