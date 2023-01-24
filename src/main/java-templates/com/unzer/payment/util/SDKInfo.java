@@ -17,12 +17,4 @@ package com.unzer.payment.util;
 
 public class SDKInfo {
     public final static String VERSION = "${project.version}";
-
-    /**
-     * @deprecated Use {@link #VERSION} instead
-     */
-    @Deprecated
-    public static String getVersion() {
-        return VERSION;
-    }
 }
