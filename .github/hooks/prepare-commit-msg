@@ -1,0 +1,16 @@
+#!/bin/bash
+# Automatically adds ticket number to every commit message.
+# Ticket number is extracted from branch name.
+#
+# See: https://gist.github.com/jimschubert/9073276
+
+COMMIT_MESSAGE_FILE=$1
+COMMIT_MESSAGE=$(cat "$COMMIT_MESSAGE_FILE")
+
+# Don't apply this logic if we are in a 'detached head' state (rebasing, read-only history, etc)
+# newlines below may need echo -e "\n\n: (etc.)"
+BRANCH_NAME=$(git symbolic-ref --short HEAD)
+if [[ "$BRANCH_NAME" =~ ^CC-[0-9]+/. ]]; then
+    TICKET=$(echo "$BRANCH_NAME" | cut -d "/" -f 1)
+    echo "[$TICKET] $COMMIT_MESSAGE" > "$COMMIT_MESSAGE_FILE"
+fi
