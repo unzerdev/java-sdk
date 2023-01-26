@@ -13,12 +13,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.unzer.payment.exceptions;
+package com.unzer.payment.util;
 
-public class PropertiesException extends RuntimeException {
+import org.junit.jupiter.api.Test;
 
-    public PropertiesException(String msg) {
-        super(msg);
+import java.util.regex.Pattern;
+
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
+public class VersionTest {
+    @Test
+    public void testVersionIsCorrect() {
+        // Version must be a semver consisting of 3 digit groups, rest is not important
+        // e.g. 1.22.33-SNAPSHOT
+        assertTrue(Pattern.matches("^\\d+[.]\\d+[.]\\d+.*", SDKInfo.VERSION));
     }
-
 }
