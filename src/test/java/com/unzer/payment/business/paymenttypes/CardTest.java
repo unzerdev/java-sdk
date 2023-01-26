@@ -31,7 +31,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Currency;
 
-import static com.unzer.payment.business.Keys.KEY_WITH_3DS;
+import static com.unzer.payment.business.Keys.KEY_WITHOUT_3DS;
 import static com.unzer.payment.business.Keys.PRIVATE_KEY_3;
 import static com.unzer.payment.util.Url.unsafeUrl;
 import static org.junit.jupiter.api.Assertions.*;
@@ -435,13 +435,15 @@ public class CardTest extends AbstractPaymentTest {
     }
 
     @Test
+    @Disabled("Not implemented on SBX")
     public void testAdditionalTransactionData_Liability() {
-        Unzer unzer = getUnzer(KEY_WITH_3DS);
-        final CardTransactionData.Liability liability = CardTransactionData.Liability.ISSUER;
+        Unzer unzer = getUnzer(KEY_WITHOUT_3DS);
+        final CardTransactionData.Liability liability = CardTransactionData.Liability.MERCHANT;
 
         Card card = unzer.createPaymentType(
-                new Card(VISA_3DS_ENABLED_CARD_NUMBER, "03/99")
+                new Card(NO_3DS_VISA_CARD_NUMBER, "01/30")
                         .setCvc("123")
+                        .set3ds(false)
         );
 
         Authorization authorization = (Authorization) new Authorization()
@@ -449,11 +451,11 @@ public class CardTest extends AbstractPaymentTest {
                 .setReturnUrl(unsafeUrl("https://unzer.com"))
                 .setAmount(BigDecimal.TEN)
                 .setCurrency(Currency.getInstance("EUR"))
+                .setOrderId("ord-Hi686u4Q4Y")
                 .setAdditionalTransactionData(
                         new AdditionalTransactionData()
                                 .setCard(
                                         new CardTransactionData()
-                                                .setLiability(liability)
                                                 .setRecurrenceType(RecurrenceType.UNSCHEDULED)
                                 )
                 );
