@@ -8,6 +8,10 @@ to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
 ## [UNRELEASED]
 
+### Added
+
+* Added field Liability to AdditionalTransactionData.Card for non-3ds card transactions  
+
 ### Removed
 
 * Removed resource `version.properties`. Version is set at generate-sources phase.
