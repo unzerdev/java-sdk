@@ -9,7 +9,8 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 public class VersionTest {
     @Test
     public void testVersionIsCorrect() {
-//        1.2.3
-        assertTrue(Pattern.matches("", SDKInfo.VERSION));
+        // Version must be a semver consisting of 3 digit groups, rest is not important
+        // e.g. 1.22.33-SNAPSHOT
+        assertTrue(Pattern.matches("^\\d+[.]\\d+[.]\\d+.*", SDKInfo.VERSION));
     }
 }
