@@ -17,14 +17,19 @@ package com.unzer.payment.models;
 
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.google.gson.annotations.SerializedName;
 import com.unzer.payment.enums.RecurrenceType;
 
 @JsonTypeName("card")
 @JsonTypeInfo(include = JsonTypeInfo.As.WRAPPER_OBJECT, use = JsonTypeInfo.Id.NAME)
 public class CardTransactionData {
+    private RecurrenceType recurrenceType;
+    private Liability liability;
 
-    RecurrenceType recurrenceType;
+    public CardTransactionData() {
+    }
 
+    @Deprecated
     public CardTransactionData(RecurrenceType recurrenceType) {
         this.recurrenceType = recurrenceType;
     }
@@ -33,7 +38,23 @@ public class CardTransactionData {
         return recurrenceType;
     }
 
-    public void setRecurrenceType(RecurrenceType recurrenceType) {
+    public CardTransactionData setRecurrenceType(RecurrenceType recurrenceType) {
         this.recurrenceType = recurrenceType;
+        return this;
+    }
+
+    public Liability getLiability() {
+        return liability;
+    }
+
+    public CardTransactionData setLiability(Liability liability) {
+        this.liability = liability;
+        return this;
+    }
+
+    public enum Liability {
+        ISSUER,
+        @SerializedName("merchant")
+        MERCHANT,
     }
 }

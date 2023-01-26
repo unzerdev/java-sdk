@@ -20,6 +20,8 @@ import com.unzer.payment.business.AbstractPaymentTest;
 import com.unzer.payment.communication.HttpCommunicationException;
 import com.unzer.payment.communication.impl.HttpClientBasedRestCommunication;
 import com.unzer.payment.enums.RecurrenceType;
+import com.unzer.payment.models.AdditionalTransactionData;
+import com.unzer.payment.models.CardTransactionData;
 import com.unzer.payment.paymenttypes.Card;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
@@ -29,7 +31,9 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Currency;
 
+import static com.unzer.payment.business.Keys.KEY_WITH_3DS;
 import static com.unzer.payment.business.Keys.PRIVATE_KEY_3;
+import static com.unzer.payment.util.Url.unsafeUrl;
 import static org.junit.jupiter.api.Assertions.*;
 
 
@@ -428,5 +432,34 @@ public class CardTest extends AbstractPaymentTest {
         assertNotNull(charge.getAdditionalTransactionData());
         assertNotNull(charge.getAdditionalTransactionData().getCard());
         assertEquals(RecurrenceType.UNSCHEDULED, charge.getAdditionalTransactionData().getCard().getRecurrenceType());
+    }
+
+    @Test
+    public void testAdditionalTransactionData_Liability() {
+        Unzer unzer = getUnzer(KEY_WITH_3DS);
+        final CardTransactionData.Liability liability = CardTransactionData.Liability.ISSUER;
+
+        Card card = unzer.createPaymentType(
+                new Card(VISA_3DS_ENABLED_CARD_NUMBER, "03/99")
+                        .setCvc("123")
+        );
+
+        Authorization authorization = (Authorization) new Authorization()
+                .setTypeId(card.getId())
+                .setReturnUrl(unsafeUrl("https://unzer.com"))
+                .setAmount(BigDecimal.TEN)
+                .setCurrency(Currency.getInstance("EUR"))
+                .setAdditionalTransactionData(
+                        new AdditionalTransactionData()
+                                .setCard(
+                                        new CardTransactionData()
+                                                .setLiability(liability)
+                                                .setRecurrenceType(RecurrenceType.UNSCHEDULED)
+                                )
+                );
+        authorization = unzer.authorize(authorization);
+
+        Authorization fetchAuthorization = unzer.fetchAuthorization(authorization.getPaymentId());
+        assertEquals(liability, fetchAuthorization.getAdditionalTransactionData().getCard().getLiability());
     }
 }
