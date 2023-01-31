@@ -13,13 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.unzer.payment.business.paymenttypes;
+package com.unzer.payment.integration.paymenttypes;
 
 
 import com.unzer.payment.Charge;
 import com.unzer.payment.business.AbstractPaymentTest;
 import com.unzer.payment.communication.HttpCommunicationException;
-import com.unzer.payment.paymenttypes.Alipay;
+import com.unzer.payment.paymenttypes.Sofort;
 import org.junit.jupiter.api.Test;
 
 import java.math.BigDecimal;
@@ -29,37 +29,36 @@ import java.util.Currency;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-
-public class AlipayTest extends AbstractPaymentTest {
+public class SofortTest extends AbstractPaymentTest {
 
     @Test
-    public void testCreateAlipayManatoryType() throws HttpCommunicationException {
-        Alipay alipay = new Alipay();
-        alipay = getUnzer().createPaymentType(alipay);
-        assertNotNull(alipay.getId());
+    public void testCreateSofortManatoryType() throws HttpCommunicationException {
+        Sofort sofort = new Sofort();
+        sofort = getUnzer().createPaymentType(sofort);
+        assertNotNull(sofort.getId());
     }
 
     @Test
-    public void testChargeAlipayType() throws HttpCommunicationException, MalformedURLException {
-        Alipay alipay = getUnzer().createPaymentType(getAlipay());
-        Charge charge = alipay.charge(BigDecimal.ONE, Currency.getInstance("EUR"), new URL("https://www.unzer.com"));
+    public void testChargeSofortType() throws HttpCommunicationException, MalformedURLException {
+        Sofort sofort = getUnzer().createPaymentType(getSofort());
+        Charge charge = sofort.charge(BigDecimal.ONE, Currency.getInstance("EUR"), new URL("https://www.unzer.com"));
         assertNotNull(charge);
         assertNotNull(charge.getId());
         assertNotNull(charge.getRedirectUrl());
     }
 
     @Test
-    public void testFetchAlipayType() throws HttpCommunicationException {
-        Alipay alipay = getUnzer().createPaymentType(getAlipay());
-        assertNotNull(alipay.getId());
-        Alipay fetchedAlipay = (Alipay) getUnzer().fetchPaymentType(alipay.getId());
-        assertNotNull(fetchedAlipay.getId());
+    public void testFetchSofortType() throws HttpCommunicationException {
+        Sofort sofort = getUnzer().createPaymentType(getSofort());
+        assertNotNull(sofort.getId());
+        Sofort fetchedSofort = (Sofort) getUnzer().fetchPaymentType(sofort.getId());
+        assertNotNull(fetchedSofort.getId());
     }
 
 
-    private Alipay getAlipay() {
-        Alipay alipay = new Alipay();
-        return alipay;
+    private Sofort getSofort() {
+        Sofort sofort = new Sofort();
+        return sofort;
     }
 
 

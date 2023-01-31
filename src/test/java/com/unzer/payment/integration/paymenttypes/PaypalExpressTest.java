@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.unzer.payment.business.paymenttypes;
+package com.unzer.payment.integration.paymenttypes;
 
 import com.unzer.payment.AbstractTransaction.Status;
 import com.unzer.payment.*;
@@ -35,13 +35,12 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.math.BigDecimal;
-import java.math.RoundingMode;
 import java.time.Duration;
 import java.util.AbstractMap;
 import java.util.Currency;
 
 import static com.unzer.payment.util.Url.unsafeUrl;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class PaypalExpressTest extends AbstractPaymentTest {
     @BeforeAll

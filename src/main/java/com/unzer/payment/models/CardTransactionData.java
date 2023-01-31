@@ -54,7 +54,6 @@ public class CardTransactionData {
 
     public enum Liability {
         ISSUER,
-        @SerializedName("merchant")
         MERCHANT,
     }
 }

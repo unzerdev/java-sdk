@@ -13,13 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.unzer.payment.business.paymenttypes;
+package com.unzer.payment.integration.paymenttypes;
 
 
 import com.unzer.payment.Charge;
 import com.unzer.payment.business.AbstractPaymentTest;
 import com.unzer.payment.communication.HttpCommunicationException;
-import com.unzer.payment.paymenttypes.Giropay;
+import com.unzer.payment.paymenttypes.Ideal;
 import org.junit.jupiter.api.Test;
 
 import java.math.BigDecimal;
@@ -29,34 +29,36 @@ import java.util.Currency;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-public class GiropayTest extends AbstractPaymentTest {
+public class IdealTest extends AbstractPaymentTest {
 
     @Test
-    public void testCreateGiropayManatoryType() throws HttpCommunicationException {
-        Giropay giropay = new Giropay();
-        giropay = getUnzer().createPaymentType(giropay);
-        assertNotNull(giropay.getId());
+    public void testCreateIdealManatoryType() throws HttpCommunicationException {
+        Ideal ideal = getUnzer().createPaymentType(getIdeal());
+        assertNotNull(ideal.getId());
     }
 
     @Test
-    public void testChargeGiropayType() throws HttpCommunicationException, MalformedURLException {
-        Giropay giropay = getUnzer().createPaymentType(getGiropay());
-        Charge charge = giropay.charge(BigDecimal.ONE, Currency.getInstance("EUR"), new URL("https://www.unzer.com"));
+    public void testChargeIdealType() throws HttpCommunicationException, MalformedURLException {
+        Ideal ideal = getUnzer().createPaymentType(getIdeal());
+        Charge charge = ideal.charge(BigDecimal.ONE, Currency.getInstance("EUR"), new URL("https://www.unzer.com"));
         assertNotNull(charge);
         assertNotNull(charge.getId());
         assertNotNull(charge.getRedirectUrl());
     }
 
     @Test
-    public void testFetchGiropayType() throws HttpCommunicationException {
-        Giropay giropay = getUnzer().createPaymentType(getGiropay());
-        assertNotNull(giropay.getId());
-        Giropay fetchedGiropay = (Giropay) getUnzer().fetchPaymentType(giropay.getId());
-        assertNotNull(fetchedGiropay.getId());
+    public void testFetchIdealType() throws HttpCommunicationException {
+        Ideal ideal = getUnzer().createPaymentType(getIdeal());
+        assertNotNull(ideal.getId());
+        Ideal fetchedIdeal = (Ideal) getUnzer().fetchPaymentType(ideal.getId());
+        assertNotNull(fetchedIdeal.getId());
     }
 
-    private Giropay getGiropay() {
-        return new Giropay();
+
+    private Ideal getIdeal() {
+        Ideal ideal = new Ideal().setBic("RABONL2U");
+        return ideal;
     }
+
 
 }

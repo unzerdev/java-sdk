@@ -13,13 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.unzer.payment.business.paymenttypes;
+package com.unzer.payment.integration.paymenttypes;
 
 
 import com.unzer.payment.Charge;
 import com.unzer.payment.business.AbstractPaymentTest;
 import com.unzer.payment.communication.HttpCommunicationException;
-import com.unzer.payment.paymenttypes.Sofort;
+import com.unzer.payment.paymenttypes.Przelewy24;
 import org.junit.jupiter.api.Test;
 
 import java.math.BigDecimal;
@@ -29,36 +29,36 @@ import java.util.Currency;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-public class SofortTest extends AbstractPaymentTest {
+public class Przelewy24Test extends AbstractPaymentTest {
 
     @Test
-    public void testCreateSofortManatoryType() throws HttpCommunicationException {
-        Sofort sofort = new Sofort();
-        sofort = getUnzer().createPaymentType(sofort);
-        assertNotNull(sofort.getId());
+    public void testCreatePrzelewy24ManatoryType() throws HttpCommunicationException {
+        Przelewy24 p24 = new Przelewy24();
+        p24 = getUnzer().createPaymentType(p24);
+        assertNotNull(p24.getId());
     }
 
     @Test
-    public void testChargeSofortType() throws HttpCommunicationException, MalformedURLException {
-        Sofort sofort = getUnzer().createPaymentType(getSofort());
-        Charge charge = sofort.charge(BigDecimal.ONE, Currency.getInstance("EUR"), new URL("https://www.unzer.com"));
+    public void testChargePrzelewy24Type() throws HttpCommunicationException, MalformedURLException {
+        Przelewy24 p24 = getUnzer().createPaymentType(getPrzelewy24());
+        Charge charge = p24.charge(BigDecimal.ONE, Currency.getInstance("PLN"), new URL("https://www.unzer.com"));
         assertNotNull(charge);
         assertNotNull(charge.getId());
         assertNotNull(charge.getRedirectUrl());
     }
 
     @Test
-    public void testFetchSofortType() throws HttpCommunicationException {
-        Sofort sofort = getUnzer().createPaymentType(getSofort());
-        assertNotNull(sofort.getId());
-        Sofort fetchedSofort = (Sofort) getUnzer().fetchPaymentType(sofort.getId());
-        assertNotNull(fetchedSofort.getId());
+    public void testFetchPrzelewy24Type() throws HttpCommunicationException {
+        Przelewy24 p24 = getUnzer().createPaymentType(getPrzelewy24());
+        assertNotNull(p24.getId());
+        Przelewy24 fetchedPrzelewy24 = (Przelewy24) getUnzer().fetchPaymentType(p24.getId());
+        assertNotNull(fetchedPrzelewy24.getId());
     }
 
 
-    private Sofort getSofort() {
-        Sofort sofort = new Sofort();
-        return sofort;
+    private Przelewy24 getPrzelewy24() {
+        Przelewy24 p24 = new Przelewy24();
+        return p24;
     }
 
 
