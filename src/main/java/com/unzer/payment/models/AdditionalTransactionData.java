@@ -18,6 +18,8 @@ package com.unzer.payment.models;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
+import java.util.Objects;
+
 @JsonTypeName("additionalTransactionDataModel")
 @JsonTypeInfo(include = JsonTypeInfo.As.WRAPPER_OBJECT, use = JsonTypeInfo.Id.NAME)
 public class AdditionalTransactionData {
@@ -100,5 +102,32 @@ public class AdditionalTransactionData {
     public AdditionalTransactionData setPaypal(PaypalData paypal) {
         this.paypal = paypal;
         return this;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        AdditionalTransactionData that = (AdditionalTransactionData) o;
+
+        if (!Objects.equals(card, that.card)) return false;
+        if (!Objects.equals(shipping, that.shipping)) return false;
+        if (!Objects.equals(riskData, that.riskData)) return false;
+        if (!Objects.equals(paypal, that.paypal)) return false;
+        if (!Objects.equals(termsAndConditionUrl, that.termsAndConditionUrl))
+            return false;
+        return Objects.equals(privacyPolicyUrl, that.privacyPolicyUrl);
+    }
+
+    @Override
+    public int hashCode() {
+        int result = card != null ? card.hashCode() : 0;
+        result = 31 * result + (shipping != null ? shipping.hashCode() : 0);
+        result = 31 * result + (riskData != null ? riskData.hashCode() : 0);
+        result = 31 * result + (paypal != null ? paypal.hashCode() : 0);
+        result = 31 * result + (termsAndConditionUrl != null ? termsAndConditionUrl.hashCode() : 0);
+        result = 31 * result + (privacyPolicyUrl != null ? privacyPolicyUrl.hashCode() : 0);
+        return result;
     }
 }

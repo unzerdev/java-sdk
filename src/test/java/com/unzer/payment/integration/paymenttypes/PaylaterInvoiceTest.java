@@ -18,10 +18,7 @@ package com.unzer.payment.integration.paymenttypes;
 import com.unzer.payment.*;
 import com.unzer.payment.business.AbstractPaymentTest;
 import com.unzer.payment.communication.HttpCommunicationException;
-import com.unzer.payment.models.AdditionalTransactionData;
-import com.unzer.payment.models.CustomerType;
-import com.unzer.payment.models.PaylaterInvoiceConfig;
-import com.unzer.payment.models.RiskData;
+import com.unzer.payment.models.*;
 import com.unzer.payment.paymenttypes.PaylaterInvoice;
 import org.junit.jupiter.api.DynamicTest;
 import org.junit.jupiter.api.Test;
@@ -491,4 +488,57 @@ public class PaylaterInvoiceTest extends AbstractPaymentTest {
                 })
         ).collect(Collectors.toList());
     }
+
+    @Test
+    public void testChargeAuthorizationWithChargeObject() throws HttpCommunicationException {
+        Unzer unzer = getUnzer();
+
+        Basket basket = unzer.createBasket(new Basket()
+                .setTotalValueGross(new BigDecimal("500.5"))
+                .setCurrencyCode(Currency.getInstance("EUR"))
+                .setOrderId(generateUuid())
+                .addBasketItem(
+                        new BasketItem()
+                                .setBasketItemReferenceId("Artikelnummer4711")
+                                .setQuantity(5)
+                                .setVat(BigDecimal.ZERO)
+                                .setAmountDiscountPerUnitGross(BigDecimal.ZERO)
+                                .setAmountPerUnitGross(new BigDecimal("100.1"))
+                                .setTitle("Apple iPhone")
+                ));
+
+        Customer customer = unzer.createCustomer(getMaximumCustomerSameAddress(generateUuid()));
+
+
+        PaylaterInvoice paylaterInvoice = unzer.createPaymentType(new PaylaterInvoice());
+
+        Authorization auth = unzer.authorize((Authorization) new Authorization()
+                .setAmount(new BigDecimal("500.5"))
+                .setReturnUrl(unsafeUrl("https://unzer.com"))
+                .setBasketId(basket.getId())
+                .setCustomerId(customer.getId())
+                .setTypeId(paylaterInvoice.getId())
+                .setCurrency(Currency.getInstance("EUR"))
+        );
+
+        assertNull(auth.getAdditionalTransactionData());
+
+
+        ShippingTransactionData shippingData = new ShippingTransactionData()
+                .setDeliveryService(generateUuid())
+                .setReturnTrackingId(generateUuid())
+                .setDeliveryTrackingId(generateUuid());
+
+        Charge charge = (Charge) new Charge()
+                .setPaymentId(auth.getPaymentId())
+                .setAmount(BigDecimal.TEN)
+                .setAdditionalTransactionData(
+                        new AdditionalTransactionData().setShipping(shippingData)
+                );
+
+        Charge resp = unzer.chargeAuthorization(charge.getPaymentId(), charge);
+        assertNotNull(resp.getAdditionalTransactionData().getShipping());
+        assertEquals(shippingData, resp.getAdditionalTransactionData().getShipping());
+    }
+
 }

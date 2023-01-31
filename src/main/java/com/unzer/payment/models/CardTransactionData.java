@@ -52,6 +52,24 @@ public class CardTransactionData {
         return this;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        CardTransactionData that = (CardTransactionData) o;
+
+        if (recurrenceType != that.recurrenceType) return false;
+        return liability == that.liability;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = recurrenceType != null ? recurrenceType.hashCode() : 0;
+        result = 31 * result + (liability != null ? liability.hashCode() : 0);
+        return result;
+    }
+
     public enum Liability {
         ISSUER,
         MERCHANT,
