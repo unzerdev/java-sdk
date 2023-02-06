@@ -47,7 +47,7 @@ public class MockUnzerRestCommunication extends AbstractUnzerRestCommunication {
     @Override
     protected UnzerHttpResponse doExecute(UnzerHttpRequest request) {
         this.request = (MockUnzerHttpRequest) request;
-        return new UnzerHttpResponse(responseMockContent, responseMockStatus);
+        return new UnzerHttpResponse(this.request, responseMockContent, responseMockStatus);
     }
 
     @Override

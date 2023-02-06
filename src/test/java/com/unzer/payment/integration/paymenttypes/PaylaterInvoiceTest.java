@@ -13,22 +13,22 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.unzer.payment.business.paymenttypes;
+package com.unzer.payment.integration.paymenttypes;
 
 import com.unzer.payment.*;
 import com.unzer.payment.business.AbstractPaymentTest;
 import com.unzer.payment.communication.HttpCommunicationException;
-import com.unzer.payment.models.AdditionalTransactionData;
-import com.unzer.payment.models.CustomerType;
-import com.unzer.payment.models.PaylaterInvoiceConfig;
-import com.unzer.payment.models.RiskData;
+import com.unzer.payment.models.*;
 import com.unzer.payment.paymenttypes.PaylaterInvoice;
 import org.junit.jupiter.api.DynamicTest;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestFactory;
 
 import java.math.BigDecimal;
-import java.util.*;
+import java.util.Collection;
+import java.util.Currency;
+import java.util.Date;
+import java.util.Locale;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -427,9 +427,9 @@ public class PaylaterInvoiceTest extends AbstractPaymentTest {
                         CustomerType.B2B,
                         Locale.GERMANY,
                         new PaylaterInvoiceConfig(
-                                "https://test-payment.payolution.com/payolution-payment/infoport/dataprivacyconsent?channelId=heidelpay-invoice-b2b-b2c",
-                                "https://test-payment.payolution.com/payolution-payment/infoport/dataprivacydeclaration?channelId=heidelpay-invoice-b2b-b2c",
-                                "https://test-payment.payolution.com/payolution-payment/infoport/termsandconditions?channelId=heidelpay-invoice-b2b-b2c"
+                                "https://test-payment.paylater.unzer.com/payolution-payment/infoport/dataprivacyconsent?channelId=heidelpay-invoice-b2b-b2c",
+                                "https://test-payment.paylater.unzer.com/payolution-payment/infoport/dataprivacydeclaration?channelId=heidelpay-invoice-b2b-b2c",
+                                "https://test-payment.paylater.unzer.com/payolution-payment/infoport/termsandconditions?channelId=heidelpay-invoice-b2b-b2c"
                         )
                 ),
 
@@ -438,9 +438,9 @@ public class PaylaterInvoiceTest extends AbstractPaymentTest {
                         CustomerType.B2C,
                         Locale.GERMANY,
                         new PaylaterInvoiceConfig(
-                                "https://test-payment.payolution.com/payolution-payment/infoport/dataprivacyconsent?channelId=heidelpay-invoice-b2b-b2c",
-                                "https://test-payment.payolution.com/payolution-payment/infoport/dataprivacydeclaration?channelId=heidelpay-invoice-b2b-b2c",
-                                "https://test-payment.payolution.com/payolution-payment/infoport/termsandconditions?channelId=heidelpay-invoice-b2b-b2c"
+                                "https://test-payment.paylater.unzer.com/payolution-payment/infoport/dataprivacyconsent?channelId=heidelpay-invoice-b2b-b2c",
+                                "https://test-payment.paylater.unzer.com/payolution-payment/infoport/dataprivacydeclaration?channelId=heidelpay-invoice-b2b-b2c",
+                                "https://test-payment.paylater.unzer.com/payolution-payment/infoport/termsandconditions?channelId=heidelpay-invoice-b2b-b2c"
                         )
                 ),
 
@@ -449,9 +449,9 @@ public class PaylaterInvoiceTest extends AbstractPaymentTest {
                         CustomerType.B2C,
                         Locale.ITALY,
                         new PaylaterInvoiceConfig(
-                                "https://test-payment.payolution.com/payolution-payment/infoport/dataprivacyconsent?channelId=heidelpay-invoice-b2b-b2c",
-                                "https://test-payment.payolution.com/payolution-payment/infoport/dataprivacydeclaration?channelId=heidelpay-invoice-b2b-b2c",
-                                "https://test-payment.payolution.com/payolution-payment/infoport/termsandconditions?channelId=heidelpay-invoice-b2b-b2c"
+                                "https://test-payment.paylater.unzer.com/payolution-payment/infoport/dataprivacyconsent?channelId=heidelpay-invoice-b2b-b2c",
+                                "https://test-payment.paylater.unzer.com/payolution-payment/infoport/dataprivacydeclaration?channelId=heidelpay-invoice-b2b-b2c",
+                                "https://test-payment.paylater.unzer.com/payolution-payment/infoport/termsandconditions?channelId=heidelpay-invoice-b2b-b2c"
                         )
                 ),
 
@@ -460,9 +460,9 @@ public class PaylaterInvoiceTest extends AbstractPaymentTest {
                         CustomerType.B2C,
                         null,
                         new PaylaterInvoiceConfig(
-                                "https://test-payment.payolution.com/payolution-payment/infoport/dataprivacyconsent?channelId=heidelpay-invoice-b2b-b2c",
-                                "https://test-payment.payolution.com/payolution-payment/infoport/dataprivacydeclaration?channelId=heidelpay-invoice-b2b-b2c",
-                                "https://test-payment.payolution.com/payolution-payment/infoport/termsandconditions?channelId=heidelpay-invoice-b2b-b2c"
+                                "https://test-payment.paylater.unzer.com/payolution-payment/infoport/dataprivacyconsent?channelId=heidelpay-invoice-b2b-b2c",
+                                "https://test-payment.paylater.unzer.com/payolution-payment/infoport/dataprivacydeclaration?channelId=heidelpay-invoice-b2b-b2c",
+                                "https://test-payment.paylater.unzer.com/payolution-payment/infoport/termsandconditions?channelId=heidelpay-invoice-b2b-b2c"
                         )
                 ),
 
@@ -471,9 +471,9 @@ public class PaylaterInvoiceTest extends AbstractPaymentTest {
                         CustomerType.B2C,
                         Locale.ENGLISH,
                         new PaylaterInvoiceConfig(
-                                "https://test-payment.payolution.com/payolution-payment/infoport/dataprivacyconsent?channelId=heidelpay-invoice-b2b-b2c",
-                                "https://test-payment.payolution.com/payolution-payment/infoport/dataprivacydeclaration?channelId=heidelpay-invoice-b2b-b2c",
-                                "https://test-payment.payolution.com/payolution-payment/infoport/termsandconditions?channelId=heidelpay-invoice-b2b-b2c"
+                                "https://test-payment.paylater.unzer.com/payolution-payment/infoport/dataprivacyconsent?channelId=heidelpay-invoice-b2b-b2c",
+                                "https://test-payment.paylater.unzer.com/payolution-payment/infoport/dataprivacydeclaration?channelId=heidelpay-invoice-b2b-b2c",
+                                "https://test-payment.paylater.unzer.com/payolution-payment/infoport/termsandconditions?channelId=heidelpay-invoice-b2b-b2c"
                         )
                 )
         ).map(tc -> dynamicTest(tc.name, () -> {
@@ -488,4 +488,57 @@ public class PaylaterInvoiceTest extends AbstractPaymentTest {
                 })
         ).collect(Collectors.toList());
     }
+
+    @Test
+    public void testChargeAuthorizationWithChargeObject() throws HttpCommunicationException {
+        Unzer unzer = getUnzer();
+
+        Basket basket = unzer.createBasket(new Basket()
+                .setTotalValueGross(new BigDecimal("500.5"))
+                .setCurrencyCode(Currency.getInstance("EUR"))
+                .setOrderId(generateUuid())
+                .addBasketItem(
+                        new BasketItem()
+                                .setBasketItemReferenceId("Artikelnummer4711")
+                                .setQuantity(5)
+                                .setVat(BigDecimal.ZERO)
+                                .setAmountDiscountPerUnitGross(BigDecimal.ZERO)
+                                .setAmountPerUnitGross(new BigDecimal("100.1"))
+                                .setTitle("Apple iPhone")
+                ));
+
+        Customer customer = unzer.createCustomer(getMaximumCustomerSameAddress(generateUuid()));
+
+
+        PaylaterInvoice paylaterInvoice = unzer.createPaymentType(new PaylaterInvoice());
+
+        Authorization auth = unzer.authorize((Authorization) new Authorization()
+                .setAmount(new BigDecimal("500.5"))
+                .setReturnUrl(unsafeUrl("https://unzer.com"))
+                .setBasketId(basket.getId())
+                .setCustomerId(customer.getId())
+                .setTypeId(paylaterInvoice.getId())
+                .setCurrency(Currency.getInstance("EUR"))
+        );
+
+        assertNull(auth.getAdditionalTransactionData());
+
+
+        ShippingTransactionData shippingData = new ShippingTransactionData()
+                .setDeliveryService(generateUuid())
+                .setReturnTrackingId(generateUuid())
+                .setDeliveryTrackingId(generateUuid());
+
+        Charge charge = (Charge) new Charge()
+                .setPaymentId(auth.getPaymentId())
+                .setAmount(BigDecimal.TEN)
+                .setAdditionalTransactionData(
+                        new AdditionalTransactionData().setShipping(shippingData)
+                );
+
+        Charge resp = unzer.chargeAuthorization(charge.getPaymentId(), charge);
+        assertNotNull(resp.getAdditionalTransactionData().getShipping());
+        assertEquals(shippingData, resp.getAdditionalTransactionData().getShipping());
+    }
+
 }

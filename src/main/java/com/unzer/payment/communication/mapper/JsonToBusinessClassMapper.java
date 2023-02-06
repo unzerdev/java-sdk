@@ -292,6 +292,7 @@ public class JsonToBusinessClassMapper {
         abstractInitTransaction.setRedirectUrl(json.getRedirectUrl());
         abstractInitTransaction.setMessage(json.getMessage());
         abstractInitTransaction.setDate(json.getDate());
+        abstractInitTransaction.setAdditionalTransactionData(json.getAdditionalTransactionData());
 
         abstractInitTransaction.setStatus(extractStatus(json));
         return abstractInitTransaction;

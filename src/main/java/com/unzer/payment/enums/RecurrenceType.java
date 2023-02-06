@@ -15,9 +15,15 @@
  */
 package com.unzer.payment.enums;
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.google.gson.annotations.SerializedName;
+
 public enum RecurrenceType {
+    @SerializedName("oneclick")
     ONECLICK,
+    @SerializedName("scheduled")
     SCHEDULED,
+    @SerializedName("unscheduled")
     UNSCHEDULED;
 
     @Override

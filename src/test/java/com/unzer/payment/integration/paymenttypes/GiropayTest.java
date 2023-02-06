@@ -13,13 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.unzer.payment.business.paymenttypes;
+package com.unzer.payment.integration.paymenttypes;
 
 
 import com.unzer.payment.Charge;
 import com.unzer.payment.business.AbstractPaymentTest;
 import com.unzer.payment.communication.HttpCommunicationException;
-import com.unzer.payment.paymenttypes.Alipay;
+import com.unzer.payment.paymenttypes.Giropay;
 import org.junit.jupiter.api.Test;
 
 import java.math.BigDecimal;
@@ -29,38 +29,34 @@ import java.util.Currency;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-
-public class AlipayTest extends AbstractPaymentTest {
+public class GiropayTest extends AbstractPaymentTest {
 
     @Test
-    public void testCreateAlipayManatoryType() throws HttpCommunicationException {
-        Alipay alipay = new Alipay();
-        alipay = getUnzer().createPaymentType(alipay);
-        assertNotNull(alipay.getId());
+    public void testCreateGiropayManatoryType() throws HttpCommunicationException {
+        Giropay giropay = new Giropay();
+        giropay = getUnzer().createPaymentType(giropay);
+        assertNotNull(giropay.getId());
     }
 
     @Test
-    public void testChargeAlipayType() throws HttpCommunicationException, MalformedURLException {
-        Alipay alipay = getUnzer().createPaymentType(getAlipay());
-        Charge charge = alipay.charge(BigDecimal.ONE, Currency.getInstance("EUR"), new URL("https://www.unzer.com"));
+    public void testChargeGiropayType() throws HttpCommunicationException, MalformedURLException {
+        Giropay giropay = getUnzer().createPaymentType(getGiropay());
+        Charge charge = giropay.charge(BigDecimal.ONE, Currency.getInstance("EUR"), new URL("https://www.unzer.com"));
         assertNotNull(charge);
         assertNotNull(charge.getId());
         assertNotNull(charge.getRedirectUrl());
     }
 
     @Test
-    public void testFetchAlipayType() throws HttpCommunicationException {
-        Alipay alipay = getUnzer().createPaymentType(getAlipay());
-        assertNotNull(alipay.getId());
-        Alipay fetchedAlipay = (Alipay) getUnzer().fetchPaymentType(alipay.getId());
-        assertNotNull(fetchedAlipay.getId());
+    public void testFetchGiropayType() throws HttpCommunicationException {
+        Giropay giropay = getUnzer().createPaymentType(getGiropay());
+        assertNotNull(giropay.getId());
+        Giropay fetchedGiropay = (Giropay) getUnzer().fetchPaymentType(giropay.getId());
+        assertNotNull(fetchedGiropay.getId());
     }
 
-
-    private Alipay getAlipay() {
-        Alipay alipay = new Alipay();
-        return alipay;
+    private Giropay getGiropay() {
+        return new Giropay();
     }
-
 
 }

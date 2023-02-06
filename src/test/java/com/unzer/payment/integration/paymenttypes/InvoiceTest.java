@@ -13,13 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.unzer.payment.business.paymenttypes;
+package com.unzer.payment.integration.paymenttypes;
 
 
 import com.unzer.payment.Charge;
+import com.unzer.payment.Unzer;
 import com.unzer.payment.business.AbstractPaymentTest;
 import com.unzer.payment.communication.HttpCommunicationException;
-import com.unzer.payment.paymenttypes.Ideal;
+import com.unzer.payment.paymenttypes.Invoice;
 import org.junit.jupiter.api.Test;
 
 import java.math.BigDecimal;
@@ -27,38 +28,34 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Currency;
 
+import static com.unzer.payment.business.Keys.KEY_WITH_3DS;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-public class IdealTest extends AbstractPaymentTest {
+public class InvoiceTest extends AbstractPaymentTest {
 
     @Test
-    public void testCreateIdealManatoryType() throws HttpCommunicationException {
-        Ideal ideal = getUnzer().createPaymentType(getIdeal());
-        assertNotNull(ideal.getId());
+    public void testCreateInvoiceMandatoryType() throws HttpCommunicationException {
+        Invoice invoice = getUnzer(KEY_WITH_3DS).createPaymentType(new Invoice());
+        assertNotNull(invoice.getId());
     }
 
     @Test
-    public void testChargeIdealType() throws HttpCommunicationException, MalformedURLException {
-        Ideal ideal = getUnzer().createPaymentType(getIdeal());
-        Charge charge = ideal.charge(BigDecimal.ONE, Currency.getInstance("EUR"), new URL("https://www.unzer.com"));
+    public void testChargeType() throws HttpCommunicationException, MalformedURLException {
+        Invoice invoice = getUnzer(KEY_WITH_3DS).createPaymentType(new Invoice());
+        Charge charge = invoice.charge(BigDecimal.ONE, Currency.getInstance("EUR"), new URL("https://www.meinShop.de"));
         assertNotNull(charge);
         assertNotNull(charge.getId());
-        assertNotNull(charge.getRedirectUrl());
     }
 
     @Test
-    public void testFetchIdealType() throws HttpCommunicationException {
-        Ideal ideal = getUnzer().createPaymentType(getIdeal());
-        assertNotNull(ideal.getId());
-        Ideal fetchedIdeal = (Ideal) getUnzer().fetchPaymentType(ideal.getId());
-        assertNotNull(fetchedIdeal.getId());
+    public void testFetchInvoiceType() throws HttpCommunicationException {
+        Unzer unzer = getUnzer(KEY_WITH_3DS);
+		Invoice invoice = unzer.createPaymentType(new Invoice());
+        assertNotNull(invoice.getId());
+        Invoice fetchedInvoice = (Invoice) unzer.fetchPaymentType(invoice.getId());
+        assertNotNull(fetchedInvoice.getId());
     }
 
-
-    private Ideal getIdeal() {
-        Ideal ideal = new Ideal().setBic("RABONL2U");
-        return ideal;
-    }
 
 
 }

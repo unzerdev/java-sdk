@@ -29,6 +29,21 @@ public class PaypalData {
         return this;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        PaypalData that = (PaypalData) o;
+
+        return checkoutType == that.checkoutType;
+    }
+
+    @Override
+    public int hashCode() {
+        return checkoutType != null ? checkoutType.hashCode() : 0;
+    }
+
     public enum CheckoutType {
         @SerializedName("express")
         EXPRESS

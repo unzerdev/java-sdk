@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.unzer.payment.business.paymenttypes;
+package com.unzer.payment.integration.paymenttypes;
 
 import com.unzer.payment.*;
 import com.unzer.payment.business.AbstractPaymentTest;
@@ -22,10 +22,7 @@ import com.unzer.payment.models.AdditionalTransactionData;
 import com.unzer.payment.paymenttypes.Klarna;
 import com.unzer.payment.util.Integration;
 import io.github.bonigarcia.wdm.WebDriverManager;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.DynamicTest;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestFactory;
+import org.junit.jupiter.api.*;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -81,6 +78,7 @@ public class KlarnaTest extends AbstractPaymentTest {
 
     @Integration
     @TestFactory
+    @Disabled("Klarna has changed UI workflow")
     public Collection<DynamicTest> testAuthorizeAndCharge() {
         class TestCase {
             final String name;
@@ -236,6 +234,7 @@ public class KlarnaTest extends AbstractPaymentTest {
 
     @Integration
     @TestFactory
+    @Disabled("Klarna has changed UI workflow")
     public Collection<DynamicTest> testCancelAuthorize() {
         final BigDecimal totalAmount = BigDecimal.valueOf(500.5);
         class TestCase {
@@ -336,6 +335,7 @@ public class KlarnaTest extends AbstractPaymentTest {
 
     @Integration
     @TestFactory
+    @Disabled("Klarna has changed UI workflow")
     public Collection<DynamicTest> testCancelCharge() {
         final BigDecimal totalAmount = BigDecimal.valueOf(500.5);
         class TestCase {

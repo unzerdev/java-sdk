@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.unzer.payment.business.paymenttypes;
+package com.unzer.payment.integration.paymenttypes;
 
 import com.unzer.payment.Authorization;
 import com.unzer.payment.Charge;

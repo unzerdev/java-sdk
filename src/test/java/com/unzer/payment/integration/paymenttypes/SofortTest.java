@@ -13,13 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.unzer.payment.business.paymenttypes;
+package com.unzer.payment.integration.paymenttypes;
 
 
 import com.unzer.payment.Charge;
 import com.unzer.payment.business.AbstractPaymentTest;
 import com.unzer.payment.communication.HttpCommunicationException;
-import com.unzer.payment.paymenttypes.Wechatpay;
+import com.unzer.payment.paymenttypes.Sofort;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.math.BigDecimal;
@@ -29,32 +30,30 @@ import java.util.Currency;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-public class WechatpayTest extends AbstractPaymentTest {
+public class SofortTest extends AbstractPaymentTest {
 
     @Test
-    public void testCreateWechatpayMandatoryType() throws HttpCommunicationException {
-        Wechatpay wechatpay = new Wechatpay();
-        wechatpay = getUnzer().createPaymentType(wechatpay);
-        assertNotNull(wechatpay.getId());
+    public void testCreateSofortManatoryType() throws HttpCommunicationException {
+        Sofort sofort = new Sofort();
+        sofort = getUnzer().createPaymentType(sofort);
+        assertNotNull(sofort.getId());
     }
 
     @Test
-    public void testChargeWechatpayType() throws HttpCommunicationException, MalformedURLException {
-        Wechatpay wechatpay = getUnzer().createPaymentType(new Wechatpay());
-        Charge charge = wechatpay.charge(BigDecimal.ONE, Currency.getInstance("EUR"), new URL("https://www.unzer.com"));
+    @Disabled("does not work on PAPI")
+    public void testChargeSofortType() throws HttpCommunicationException, MalformedURLException {
+        Sofort sofort = getUnzer().createPaymentType(new Sofort());
+        Charge charge = sofort.charge(BigDecimal.ONE, Currency.getInstance("EUR"), new URL("https://www.unzer.com"));
         assertNotNull(charge);
         assertNotNull(charge.getId());
         assertNotNull(charge.getRedirectUrl());
     }
 
     @Test
-    public void testFetchWechatpayType() throws HttpCommunicationException {
-        Wechatpay wechatpay = getUnzer().createPaymentType(new Wechatpay());
-        assertNotNull(wechatpay.getId());
-        Wechatpay fetchedWechatpay = (Wechatpay) getUnzer().fetchPaymentType(wechatpay.getId());
-        assertNotNull(fetchedWechatpay.getId());
+    public void testFetchSofortType() throws HttpCommunicationException {
+        Sofort sofort = getUnzer().createPaymentType(new Sofort());
+        assertNotNull(sofort.getId());
+        Sofort fetchedSofort = (Sofort) getUnzer().fetchPaymentType(sofort.getId());
+        assertNotNull(fetchedSofort.getId());
     }
-
-
-
 }
