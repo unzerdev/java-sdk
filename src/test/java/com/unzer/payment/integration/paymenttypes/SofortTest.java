@@ -20,6 +20,7 @@ import com.unzer.payment.Charge;
 import com.unzer.payment.business.AbstractPaymentTest;
 import com.unzer.payment.communication.HttpCommunicationException;
 import com.unzer.payment.paymenttypes.Sofort;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.math.BigDecimal;
@@ -39,6 +40,7 @@ public class SofortTest extends AbstractPaymentTest {
     }
 
     @Test
+    @Disabled("does not work on PAPI")
     public void testChargeSofortType() throws HttpCommunicationException, MalformedURLException {
         Sofort sofort = getUnzer().createPaymentType(new Sofort());
         Charge charge = sofort.charge(BigDecimal.ONE, Currency.getInstance("EUR"), new URL("https://www.unzer.com"));
