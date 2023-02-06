@@ -38,7 +38,7 @@ public class AbstractUnzerHttpCommunicationTest {
         MockUnzerRestCommunication rest = setupRest(errorJson(), 409);
         MockUnzerHttpRequest request = new MockUnzerHttpRequest("https://unzer.com", UnzerHttpRequest.UnzerHttpMethod.GET);
         try {
-            rest.execute(request, privateKey);
+            rest.execute(request, privateKey, "{}");
         } catch (PaymentException e) {
             exception = e;
         }

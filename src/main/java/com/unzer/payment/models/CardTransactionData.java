@@ -29,7 +29,6 @@ public class CardTransactionData {
     public CardTransactionData() {
     }
 
-    @Deprecated
     public CardTransactionData(RecurrenceType recurrenceType) {
         this.recurrenceType = recurrenceType;
     }

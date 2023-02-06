@@ -40,7 +40,7 @@ public class SofortTest extends AbstractPaymentTest {
 
     @Test
     public void testChargeSofortType() throws HttpCommunicationException, MalformedURLException {
-        Sofort sofort = getUnzer().createPaymentType(getSofort());
+        Sofort sofort = getUnzer().createPaymentType(new Sofort());
         Charge charge = sofort.charge(BigDecimal.ONE, Currency.getInstance("EUR"), new URL("https://www.unzer.com"));
         assertNotNull(charge);
         assertNotNull(charge.getId());
@@ -49,17 +49,9 @@ public class SofortTest extends AbstractPaymentTest {
 
     @Test
     public void testFetchSofortType() throws HttpCommunicationException {
-        Sofort sofort = getUnzer().createPaymentType(getSofort());
+        Sofort sofort = getUnzer().createPaymentType(new Sofort());
         assertNotNull(sofort.getId());
         Sofort fetchedSofort = (Sofort) getUnzer().fetchPaymentType(sofort.getId());
         assertNotNull(fetchedSofort.getId());
     }
-
-
-    private Sofort getSofort() {
-        Sofort sofort = new Sofort();
-        return sofort;
-    }
-
-
 }

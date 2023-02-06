@@ -24,7 +24,6 @@ import com.unzer.payment.util.SDKInfo;
 
 import javax.xml.bind.DatatypeConverter;
 import java.io.UnsupportedEncodingException;
-import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -60,6 +59,7 @@ public abstract class AbstractUnzerRestCommunication implements UnzerRestCommuni
     private static final String SDK_TYPE_HEADER = "SDK-TYPE";
     private static final String SDK_VERSION_HEADER = "SDK-VERSION";
     private static final String JAVA_VERSION_HEADER = "JAVA-VERSION";
+    private static final String EMPTY_JSON = "{}";
     private final Locale locale;
     private final String clientIp;
 
@@ -150,7 +150,7 @@ public abstract class AbstractUnzerRestCommunication implements UnzerRestCommuni
     @Override
     public String httpGet(String url, String privateKey) throws HttpCommunicationException {
         Objects.requireNonNull(url);
-        return this.execute(createRequest(url, UnzerHttpMethod.GET), privateKey);
+        return this.execute(createRequest(url, UnzerHttpMethod.GET), privateKey, EMPTY_JSON);
     }
 
     @Override
@@ -176,14 +176,12 @@ public abstract class AbstractUnzerRestCommunication implements UnzerRestCommuni
 
     public String httpDelete(String url, String privateKey) throws HttpCommunicationException {
         Objects.requireNonNull(url);
-        return this.execute(createRequest(url, UnzerHttpMethod.DELETE), privateKey);
+        return this.execute(createRequest(url, UnzerHttpMethod.DELETE), privateKey, EMPTY_JSON);
     }
 
     private String sendRequestWithBody(UnzerHttpRequest request, String privateKey, Object data) throws HttpCommunicationException {
         String json = new JsonParser().toJson(data);
-        logRequestBody(json);
-        request.setContent(json, "UTF-8");
-        return this.execute(request, privateKey);
+        return this.execute(request, privateKey, json);
     }
 
     /**
@@ -222,7 +220,7 @@ public abstract class AbstractUnzerRestCommunication implements UnzerRestCommuni
         request.addHeader(JAVA_VERSION_HEADER, System.getProperty("java.version"));
     }
 
-    String execute(UnzerHttpRequest request, String privateKey) throws HttpCommunicationException {
+    String execute(UnzerHttpRequest request, String privateKey, String jsonBody) throws HttpCommunicationException {
         addUserAgent(request);
         addUnzerAuthentication(privateKey, request);
         addAcceptLanguageHeader(request);
@@ -231,6 +229,11 @@ public abstract class AbstractUnzerRestCommunication implements UnzerRestCommuni
         setContentType(request);
 
         logRequest(request);
+
+        if (!jsonBody.equals(EMPTY_JSON)) {
+            request.setContent(jsonBody, "UTF-8");
+            logRequestBody(jsonBody);
+        }
 
         UnzerHttpResponse response = doExecute(request);
 

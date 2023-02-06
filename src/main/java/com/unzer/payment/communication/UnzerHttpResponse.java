@@ -15,13 +15,15 @@
  */
 package com.unzer.payment.communication;
 
+import java.net.URISyntaxException;
+
 /**
  * Minimal represenation of a http-response.
  */
 public class UnzerHttpResponse {
-
-    private String content;
-    private int code;
+    private final UnzerHttpRequest request;
+    private final String content;
+    private final int code;
 
     /**
      * Creates the {@code UnzerHttpResponse} with the given content ond http-status code.
@@ -29,7 +31,8 @@ public class UnzerHttpResponse {
      * @param content - the content of the response. will be application/son, UTF-8 in any cases
      * @param code    - the http-status code
      */
-    public UnzerHttpResponse(String content, int code) {
+    public UnzerHttpResponse(UnzerHttpRequest request, String content, int code) {
+        this.request = request;
         this.content = content;
         this.code = code;
     }
@@ -48,4 +51,20 @@ public class UnzerHttpResponse {
         return this.content;
     }
 
+
+    /**
+     * Fail-safe method to reveal initial request URI
+     * @return initial request URI
+     */
+    public String getRequestURI() {
+        try {
+            return request.getURI().toString();
+        } catch (URISyntaxException e) {
+            return "UNKNOWN";
+        }
+    }
+
+    public UnzerHttpRequest getRequest() {
+        return this.request;
+    }
 }

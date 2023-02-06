@@ -16,15 +16,15 @@ to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
 * Removed resource `version.properties`. Version is set at generate-sources phase.
 * Removed class `com.unzer.payment.exceptions.PropertiesException`
-* Removed deprecated method `com.unzer.payment.util.SDKInfo::getVersion()`. Please, use `com.unzer.payment.util.SDKInfo.VERSION` instead 
+* Removed deprecated method `com.unzer.payment.util.SDKInfo::getVersion()`. Please, use `com.unzer.payment.util.SDKInfo.VERSION` instead
 
-### Deprecated
+### Changed
 
-* Deprecated constructor with args `com.unzer.payment.models.CardTransactionData.CardTransactionData(com.unzer.payment.enums.RecurrenceType)`. Use empty one instead
+* Enriched request and response logging
 
 ### Fixed
 
-* Fixed AdditionalTransactionData.RecurrenceType field is empty for fetched transactions. 
+* Fixed `AdditionalTransactionData.RecurrenceType` field is empty for fetched transactions. 
 
 ## [3.1.1][3.1.1]
 

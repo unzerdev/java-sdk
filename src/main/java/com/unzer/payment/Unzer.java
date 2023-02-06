@@ -53,11 +53,11 @@ import java.util.Locale;
 public class Unzer {
     private final String privateKey;
     private final String endPoint;
-    private transient PaymentService paymentService;
-    private transient MarketplacePaymentService marketplacePaymentService;
-    private transient PaypageService paypageService;
-    private transient LinkpayService linkpayService;
-    private transient WebhookService webhookService;
+    private final transient PaymentService paymentService;
+    private final transient MarketplacePaymentService marketplacePaymentService;
+    private final transient PaypageService paypageService;
+    private final transient LinkpayService linkpayService;
+    private final transient WebhookService webhookService;
 
     public Unzer(String privateKey) {
         this(privateKey, null, null);
