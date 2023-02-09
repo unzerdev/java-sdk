@@ -32,6 +32,7 @@
       "additionalTransactionData": {
         "card": {
           "recurrenceType": "unscheduled",
+          "exemptionType": "lvp",
           "liability": "MERCHANT"
         }
       }

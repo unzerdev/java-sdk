@@ -61,4 +61,28 @@ class CardTest {
                 ));
         assertEquals(CardTransactionData.Liability.MERCHANT, authorization.getAdditionalTransactionData().getCard().getLiability());
     }
+
+    @Test
+    void test_card_exemption() {
+        Unzer unzer = new Unzer(new HttpClientTestImpl(), "s-private-key");
+        stubFor(post("/v1/payments/authorize").willReturn(jsonResponse(getResponse("card-authorize.json"), 200)));
+        stubFor(get("/v1/payments/s-pay-286").willReturn(jsonResponse(getResponse("card-fetch-payment.json"), 200)));
+        stubFor(get("/v1/payments/s-pay-286/authorize/s-aut-1").willReturn(jsonResponse(getResponse("card-fetch-authorization.json"), 200)));
+
+        Authorization authorization = unzer.authorize((Authorization) new Authorization()
+                .setTypeId("s-crd-6tg6nwdkrcdk")
+                .setReturnUrl(unsafeUrl("https://unzer.com"))
+                .setAmount(BigDecimal.TEN)
+                .setCurrency(Currency.getInstance("EUR"))
+                .setOrderId("ord-Hi686u4Q4Y")
+                .setAdditionalTransactionData(
+                        new AdditionalTransactionData()
+                                .setCard(
+                                        new CardTransactionData()
+                                                .setRecurrenceType(RecurrenceType.UNSCHEDULED)
+                                                .setExemptionType(CardTransactionData.ExemptionType.LVP)
+                                )
+                ));
+        assertEquals(CardTransactionData.ExemptionType.LVP, authorization.getAdditionalTransactionData().getCard().getExemptionType());
+    }
 }
