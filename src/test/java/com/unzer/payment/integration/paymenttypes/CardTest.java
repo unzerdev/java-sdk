@@ -463,4 +463,34 @@ public class CardTest extends AbstractPaymentTest {
         Authorization fetchAuthorization = unzer.fetchAuthorization(authorization.getPaymentId());
         assertEquals(liability, fetchAuthorization.getAdditionalTransactionData().getCard().getLiability());
     }
+
+    @Test
+    public void testCardLowValueExemptions() {
+        Unzer unzer = getUnzer();
+
+        Card card = unzer.createPaymentType(
+                new Card(NO_3DS_VISA_CARD_NUMBER, "01/30")
+                        .setCvc("123")
+                        .set3ds(false)
+        );
+
+        Authorization authorization = (Authorization) new Authorization()
+                .setTypeId(card.getId())
+                .setReturnUrl(unsafeUrl("https://unzer.com"))
+                .setAmount(BigDecimal.TEN)
+                .setCurrency(Currency.getInstance("EUR"))
+                .setOrderId("ord-Hi686u4Q4Y")
+                .setAdditionalTransactionData(
+                        new AdditionalTransactionData()
+                                .setCard(
+                                        new CardTransactionData()
+                                                .setRecurrenceType(RecurrenceType.UNSCHEDULED)
+                                                .setExemptionType(CardTransactionData.ExemptionType.LVP)
+                                )
+                );
+        authorization = unzer.authorize(authorization);
+
+        Authorization fetchAuthorization = unzer.fetchAuthorization(authorization.getPaymentId());
+        assertEquals(CardTransactionData.ExemptionType.LVP, fetchAuthorization.getAdditionalTransactionData().getCard().getExemptionType());
+    }
 }
