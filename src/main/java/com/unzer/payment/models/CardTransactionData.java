@@ -25,6 +25,7 @@ import com.unzer.payment.enums.RecurrenceType;
 public class CardTransactionData {
     private RecurrenceType recurrenceType;
     private Liability liability;
+    private ExemptionType exemptionType;
 
     public CardTransactionData() {
     }
@@ -69,8 +70,22 @@ public class CardTransactionData {
         return result;
     }
 
+    public ExemptionType getExemptionType() {
+        return exemptionType;
+    }
+
+    public CardTransactionData setExemptionType(ExemptionType exemptionType) {
+        this.exemptionType = exemptionType;
+        return this;
+    }
+
     public enum Liability {
         ISSUER,
         MERCHANT,
+    }
+
+    public enum ExemptionType {
+        @SerializedName("lvp")
+        LVP
     }
 }
