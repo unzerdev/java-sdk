@@ -10,7 +10,7 @@ to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
 ### Added
 
-* Added fields `liability` and `exemptionType` to AdditionalTransactionData.Card
+* Added `Liability` and `ExemptionType` fields to `AdditionalTransactionData.CardTransactionData`
 
 ### Removed
 
