@@ -8,6 +8,8 @@ to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
 ## [3.2.0][3.2.0]
 
+This release brings liability and exemption type support to Java SDK
+
 ### Added
 
 * Added `Liability` and `ExemptionType` fields to `AdditionalTransactionData.CardTransactionData`
