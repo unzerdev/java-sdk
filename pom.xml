@@ -6,7 +6,7 @@
 
     <groupId>com.unzer.payment</groupId>
     <artifactId>java-sdk</artifactId>
-    <version>3.2.0</version>
+    <version>4.0.0</version>
     <name>Unzer Java SDK</name>
     <description>Unzer Java SDK provides an easy way to connect to the Unzer Rest API.</description>
     <url>https://docs.unzer.com/</url>
@@ -65,7 +65,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-javadoc-plugin</artifactId>
-                <version>3.2.0</version>
+                <version>4.0.0</version>
             </plugin>
         </plugins>
     </reporting>
