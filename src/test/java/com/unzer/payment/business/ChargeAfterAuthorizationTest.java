@@ -23,6 +23,7 @@ import com.unzer.payment.marketplace.MarketplacePayment;
 import com.unzer.payment.models.AdditionalTransactionData;
 import com.unzer.payment.models.ShippingTransactionData;
 import com.unzer.payment.paymenttypes.Card;
+import com.unzer.payment.paymenttypes.PaylaterInvoice;
 import org.apache.hc.core5.http.HttpStatus;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
@@ -192,36 +193,5 @@ public class ChargeAfterAuthorizationTest extends AbstractPaymentTest {
         assertEquals(2, payment.getAuthorizationsList().size());
         assertEquals(1, payment.getChargesList().size());
         assertEquals(chargeAuthorization.getProcessing().getUniqueId(), payment.getChargesList().get(0).getProcessing().getUniqueId());
-    }
-
-    @Test
-    public void testChargeAuthorizationWithChargeObject() throws HttpCommunicationException {
-        Unzer unzer = getUnzer();
-
-        Authorization auth = unzer.authorize(
-                getAuthorization(
-                        createPaymentTypeCard(getUnzer(), "4711100000000000").getId(),
-                        null, generateUuid(), null, null, false
-                )
-        );
-
-        assertNull(auth.getAdditionalTransactionData());
-
-
-        ShippingTransactionData shippingData = new ShippingTransactionData()
-                .setDeliveryService(generateUuid())
-                .setReturnTrackingId(generateUuid())
-                .setDeliveryTrackingId(generateUuid());
-
-        Charge charge = (Charge) new Charge()
-                .setPaymentId(auth.getPaymentId())
-                .setAmount(BigDecimal.TEN)
-                .setAdditionalTransactionData(
-                        new AdditionalTransactionData().setShipping(shippingData)
-                );
-
-        Charge resp = unzer.chargeAuthorization(charge.getPaymentId(), charge);
-        assertNotNull(resp.getAdditionalTransactionData().getShipping());
-        assertEquals(shippingData, resp.getAdditionalTransactionData().getShipping());
     }
 }

@@ -13,21 +13,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.unzer.payment.enums;
+package com.unzer.payment.util;
 
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.google.gson.annotations.SerializedName;
+import org.junit.jupiter.api.Test;
 
-public enum RecurrenceType {
-    @SerializedName("oneclick")
-    ONECLICK,
-    @SerializedName("scheduled")
-    SCHEDULED,
-    @SerializedName("unscheduled")
-    UNSCHEDULED;
+import java.util.regex.Pattern;
 
-    @Override
-    public String toString() {
-        return this.name().toLowerCase();
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
+public class VersionTest {
+    @Test
+    public void testVersionIsCorrect() {
+        // Version must be a semver consisting of 3 digit groups, rest is not important
+        // e.g. 1.22.33-SNAPSHOT
+        assertTrue(Pattern.matches("^\\d+[.]\\d+[.]\\d+.*", SDKInfo.VERSION));
     }
 }

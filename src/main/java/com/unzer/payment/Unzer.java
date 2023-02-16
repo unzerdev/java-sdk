@@ -51,13 +51,13 @@ import java.util.Locale;
  * @see UnzerRestCommunication for details of the http-layer abstraction.
  */
 public class Unzer {
-    private String privateKey;
-    private String endPoint;
-    private transient PaymentService paymentService;
-    private transient MarketplacePaymentService marketplacePaymentService;
-    private transient PaypageService paypageService;
-    private transient LinkpayService linkpayService;
-    private transient WebhookService webhookService;
+    private final String privateKey;
+    private final String endPoint;
+    private final transient PaymentService paymentService;
+    private final transient MarketplacePaymentService marketplacePaymentService;
+    private final transient PaypageService paypageService;
+    private final transient LinkpayService linkpayService;
+    private final transient WebhookService webhookService;
 
     public Unzer(String privateKey) {
         this(privateKey, null, null);
@@ -89,9 +89,7 @@ public class Unzer {
      * @param privateKey        - your private key as generated within the unzer Intelligence Platform (hIP)
      */
     public Unzer(UnzerRestCommunication restCommunication, String privateKey) {
-
         this(restCommunication, privateKey, null);
-
     }
 
     /**
@@ -1218,14 +1216,25 @@ public class Unzer {
         recurring.setTypeId(typeId);
         recurring.setReturnUrl(returnUrl);
         recurring.setMetadataId(metadataId);
+        setRecurrenceType(recurring, recurrenceType);
+        return recurring;
+    }
 
-        if (recurrenceType != null) {
-            AdditionalTransactionData additionalTransactionData = new AdditionalTransactionData();
-            additionalTransactionData.setCard(new CardTransactionData(recurrenceType));
-            recurring.setAdditionalTransactionData(additionalTransactionData);
+    private void setRecurrenceType(AbstractTransaction transaction, RecurrenceType recurrenceType) {
+        if (recurrenceType == null) {
+            return;
         }
 
-        return recurring;
+        if (transaction.getAdditionalTransactionData() == null) {
+            transaction.setAdditionalTransactionData(new AdditionalTransactionData());
+        }
+
+        if (transaction.getAdditionalTransactionData().getCard() == null) {
+            transaction.getAdditionalTransactionData().setCard(new CardTransactionData());
+        }
+
+        transaction.getAdditionalTransactionData().getCard().setRecurrenceType(recurrenceType);
+
     }
 
     public List<InstallmentSecuredRatePlan> installmentSecuredRates(BigDecimal amount, Currency currency, BigDecimal effectiveInterestRate, Date orderDate) throws HttpCommunicationException {
@@ -1241,8 +1250,7 @@ public class Unzer {
     }
 
     private Charge getCharge(BigDecimal amount, Currency currency, String typeId, URL returnUrl, String customerId, String basketId, Boolean card3ds, RecurrenceType recurrenceType) {
-        Charge charge = new Charge();
-        charge
+        Charge charge = (Charge) new Charge()
                 .setAmount(amount)
                 .setCurrency(currency)
                 .setTypeId(typeId)
@@ -1250,14 +1258,7 @@ public class Unzer {
                 .setBasketId(basketId)
                 .setReturnUrl(returnUrl)
                 .setCard3ds(card3ds);
-
-
-        if (recurrenceType != null) {
-            AdditionalTransactionData additionalTransactionData = new AdditionalTransactionData();
-            additionalTransactionData.setCard(new CardTransactionData(recurrenceType));
-            charge.setAdditionalTransactionData(additionalTransactionData);
-        }
-
+        setRecurrenceType(charge, recurrenceType);
         return charge;
     }
 
@@ -1268,21 +1269,14 @@ public class Unzer {
     }
 
     private Authorization getAuthorization(BigDecimal amount, Currency currency, String paymentTypeId, URL returnUrl, String customerId, Boolean card3ds, RecurrenceType recurrenceType) {
-        Authorization authorization = new Authorization(this);
-        authorization
+        Authorization authorization = (Authorization) new Authorization(this)
                 .setAmount(amount)
                 .setCurrency(currency)
                 .setReturnUrl(returnUrl)
                 .setTypeId(paymentTypeId)
                 .setCustomerId(customerId)
                 .setCard3ds(card3ds);
-
-        if (recurrenceType != null) {
-            AdditionalTransactionData additionalTransactionData = new AdditionalTransactionData();
-            additionalTransactionData.setCard(new CardTransactionData(recurrenceType));
-            authorization.setAdditionalTransactionData(additionalTransactionData);
-        }
-
+        setRecurrenceType(authorization, recurrenceType);
         return authorization;
     }
 
@@ -1293,22 +1287,22 @@ public class Unzer {
      *                       <br>
      *                       Request example:
      *                       <pre>
-     *                                                                                                                                                                                                                                                                                               {
-     *                                                                                                                                                                                                                                                                                                  "url": "https://domain.com",
-     *                                                                                                                                                                                                                                                                                                  "event": "types"
-     *                                                                                                                                                                                                                                                                                               }
-     *                                                                                                                                                                                                                                                                                               <pre>
-     *                                                                                                                                                                                                                                                                                               @return Webhook refers to webhook has been created.
-     *                                                                                                                                                                                                                                                                                               <br>
-     *                                                                                                                                                                                                                                                                                               Response example:
-     *                                                                                                                                                                                                                                                                                               <pre>
-     *                                                                                                                                                                                                                                                                                               {
-     *                                                                                                                                                                                                                                                                                                  "id": "s-whk-61873",
-     *                                                                                                                                                                                                                                                                                                  "url": "https://domain.com",
-     *                                                                                                                                                                                                                                                                                                  "event": "types"
-     *                                                                                                                                                                                                                                                                                               }
-     *                                                                                                                                                                                                                                                                                               <pre>
-     *                                                                                                                                                                                                                                                                                               @throws HttpCommunicationException
+     *                                                                                                                                                                                                                                                                                                                                                                                                                                   {
+     *                                                                                                                                                                                                                                                                                                                                                                                                                                      "url": "https://domain.com",
+     *                                                                                                                                                                                                                                                                                                                                                                                                                                      "event": "types"
+     *                                                                                                                                                                                                                                                                                                                                                                                                                                   }
+     *                                                                                                                                                                                                                                                                                                                                                                                                                                   <pre>
+     *                                                                                                                                                                                                                                                                                                                                                                                                                                   @return Webhook refers to webhook has been created.
+     *                                                                                                                                                                                                                                                                                                                                                                                                                                   <br>
+     *                                                                                                                                                                                                                                                                                                                                                                                                                                   Response example:
+     *                                                                                                                                                                                                                                                                                                                                                                                                                                   <pre>
+     *                                                                                                                                                                                                                                                                                                                                                                                                                                   {
+     *                                                                                                                                                                                                                                                                                                                                                                                                                                      "id": "s-whk-61873",
+     *                                                                                                                                                                                                                                                                                                                                                                                                                                      "url": "https://domain.com",
+     *                                                                                                                                                                                                                                                                                                                                                                                                                                      "event": "types"
+     *                                                                                                                                                                                                                                                                                                                                                                                                                                   }
+     *                                                                                                                                                                                                                                                                                                                                                                                                                                   <pre>
+     *                                                                                                                                                                                                                                                                                                                                                                                                                                   @throws HttpCommunicationException
      */
     public Webhook registerSingleWebhook(Webhook webhookRequest) throws HttpCommunicationException {
         return webhookService.registerSingleWebhook(webhookRequest);
@@ -1322,29 +1316,29 @@ public class Unzer {
      *                       <br>
      *                       Request example:
      *                       <pre>
-     *                                                                                                                                                                                                                                                                                               {
-     *                                                                                                                                                                                                                                                                                                 "url": "https://domain.com",
-     *                                                                                                                                                                                                                                                                                                 "eventList": ["types", "payments"]
-     *                                                                                                                                                                                                                                                                                               }
-     *                                                                                                                                                                                                                                                                                               <pre>
-     *                                                                                                                                                                                                                                                                                               @return WebhookList refers to list of webhooks have been created.
-     *                                                                                                                                                                                                                                                                                                * <br>
-     *                                                                                                                                                                                                                                                                                               Response example:
-     *                                                                                                                                                                                                                                                                                               <pre>
-     *                                                                                                                                                                                                                                                                                               {
-     *                                                                                                                                                                                                                                                                                                  "events":[{
-     *                                                                                                                                                                                                                                                                                                     "id": "s-whk-61873",
-     *                                                                                                                                                                                                                                                                                                     "url": "https://domain.com",
-     *                                                                                                                                                                                                                                                                                                     "event": "types"
-     *                                                                                                                                                                                                                                                                                                  },
-     *                                                                                                                                                                                                                                                                                                  {
-     *                                                                                                                                                                                                                                                                                                     "id": "s-whk-61874",
-     *                                                                                                                                                                                                                                                                                                     "url": "https://domain.com",
-     *                                                                                                                                                                                                                                                                                                     "event": "payments"
-     *                                                                                                                                                                                                                                                                                                  }]
-     *                                                                                                                                                                                                                                                                                               }
-     *                                                                                                                                                                                                                                                                                               <pre>
-     *                                                                                                                                                                                                                                                                                               @throws HttpCommunicationException
+     *                                                                                                                                                                                                                                                                                                                                                                 {
+     *                                                                                                                                                                                                                                                                                                                                                                   "url": "https://domain.com",
+     *                                                                                                                                                                                                                                                                                                                                                                   "eventList": ["types", "payments"]
+     *                                                                                                                                                                                                                                                                                                                                                                 }
+     *                                                                                                                                                                                                                                                                                                                                                                 <pre>
+     *                                                                                                                                                                                                                                                                                                                                                                 @return WebhookList refers to list of webhooks have been created.
+     *                                                                                                                                                                                                                                                                                                                                                                  * <br>
+     *                                                                                                                                                                                                                                                                                                                                                                 Response example:
+     *                                                                                                                                                                                                                                                                                                                                                                 <pre>
+     *                                                                                                                                                                                                                                                                                                                                                                 {
+     *                                                                                                                                                                                                                                                                                                                                                                    "events":[{
+     *                                                                                                                                                                                                                                                                                                                                                                       "id": "s-whk-61873",
+     *                                                                                                                                                                                                                                                                                                                                                                       "url": "https://domain.com",
+     *                                                                                                                                                                                                                                                                                                                                                                       "event": "types"
+     *                                                                                                                                                                                                                                                                                                                                                                    },
+     *                                                                                                                                                                                                                                                                                                                                                                    {
+     *                                                                                                                                                                                                                                                                                                                                                                       "id": "s-whk-61874",
+     *                                                                                                                                                                                                                                                                                                                                                                       "url": "https://domain.com",
+     *                                                                                                                                                                                                                                                                                                                                                                       "event": "payments"
+     *                                                                                                                                                                                                                                                                                                                                                                    }]
+     *                                                                                                                                                                                                                                                                                                                                                                 }
+     *                                                                                                                                                                                                                                                                                                                                                                 <pre>
+     *                                                                                                                                                                                                                                                                                                                                                                 @throws HttpCommunicationException
      */
     public WebhookList registerMultiWebhooks(Webhook webhookRequest) throws HttpCommunicationException {
         return webhookService.registerMultiWebhooks(webhookRequest);

@@ -162,8 +162,9 @@ public class Card extends AbstractPaymentType implements PaymentType {
         return threeDs;
     }
 
-    public void set3ds(Boolean threeDs) {
+    public Card set3ds(Boolean threeDs) {
         this.threeDs = threeDs;
+        return this;
     }
 
 

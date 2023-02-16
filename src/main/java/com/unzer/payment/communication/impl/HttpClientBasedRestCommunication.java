@@ -63,13 +63,16 @@ public class HttpClientBasedRestCommunication extends AbstractUnzerRestCommunica
 
     @Override
     protected void logRequest(UnzerHttpRequest request) {
-        logger.debug(request.toString());
+        logger.debug("Sending request {}", request.toString());
     }
 
     @Override
     protected void logResponse(UnzerHttpResponse response) {
-        logger.debug(response.getStatusCode());
-        logger.debug(response.getContent());
+        logger.debug("Received response {} {}\nHTTP status {}\n{}",
+                response.getRequest().getMethod(),
+                response.getRequestURI(),
+                response.getStatusCode(),
+                response.getContent());
     }
 
     @Override
@@ -87,7 +90,7 @@ public class HttpClientBasedRestCommunication extends AbstractUnzerRestCommunica
         CloseableHttpResponse response = null;
         try (CloseableHttpClient client = createClient()) {
             response = client.execute(((HttpClientBasedHttpRequest) request).getRequest());
-            return new UnzerHttpResponse(EntityUtils.toString(response.getEntity()), response.getCode());
+            return new UnzerHttpResponse(request, EntityUtils.toString(response.getEntity()), response.getCode());
         } catch (IOException | ParseException e) {
             try {
                 throw new HttpCommunicationException(String.format(
@@ -96,7 +99,7 @@ public class HttpClientBasedRestCommunication extends AbstractUnzerRestCommunica
                         e.getMessage()
                 ));
             } catch (URISyntaxException ex) {
-                // happens never, because uri validation happens in the beginning of this method
+                // raises never, because uri validation happens in the beginning of this method
                 throw new RuntimeException(ex);
             }
         } finally {

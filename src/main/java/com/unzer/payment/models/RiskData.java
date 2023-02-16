@@ -19,6 +19,7 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Objects;
 
 public class RiskData {
     private String threatMetrixId;
@@ -113,6 +114,38 @@ public class RiskData {
             this.confirmedAmount = confirmedAmount.toString();
         }
         return this;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        RiskData riskData = (RiskData) o;
+
+        if (!Objects.equals(threatMetrixId, riskData.threatMetrixId))
+            return false;
+        if (!Objects.equals(registrationLevel, riskData.registrationLevel))
+            return false;
+        if (!Objects.equals(registrationDate, riskData.registrationDate))
+            return false;
+        if (!Objects.equals(customerId, riskData.customerId)) return false;
+        if (customerGroup != riskData.customerGroup) return false;
+        if (!Objects.equals(confirmedOrders, riskData.confirmedOrders))
+            return false;
+        return Objects.equals(confirmedAmount, riskData.confirmedAmount);
+    }
+
+    @Override
+    public int hashCode() {
+        int result = threatMetrixId != null ? threatMetrixId.hashCode() : 0;
+        result = 31 * result + (registrationLevel != null ? registrationLevel.hashCode() : 0);
+        result = 31 * result + (registrationDate != null ? registrationDate.hashCode() : 0);
+        result = 31 * result + (customerId != null ? customerId.hashCode() : 0);
+        result = 31 * result + (customerGroup != null ? customerGroup.hashCode() : 0);
+        result = 31 * result + (confirmedOrders != null ? confirmedOrders.hashCode() : 0);
+        result = 31 * result + (confirmedAmount != null ? confirmedAmount.hashCode() : 0);
+        return result;
     }
 
     /**

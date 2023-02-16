@@ -6,6 +6,28 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres
 to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## [4.0.0][4.0.0]
+
+This release brings liability and exemption type support to Java SDK
+
+### Added
+
+* Added `Liability` and `ExemptionType` fields to `AdditionalTransactionData.CardTransactionData`
+
+### Removed
+
+* Removed resource `version.properties`. Version is set at generate-sources phase.
+* Removed class `com.unzer.payment.exceptions.PropertiesException`
+* Removed deprecated method `com.unzer.payment.util.SDKInfo::getVersion()`. Please, use `com.unzer.payment.util.SDKInfo.VERSION` instead
+
+### Changed
+
+* Enriched request and response logging
+
+### Fixed
+
+* Fixed `AdditionalTransactionData.RecurrenceType` field is empty for fetched transactions. 
+
 ## [3.1.1][3.1.1]
 
 This release updates dependencies with security issues
@@ -324,6 +346,8 @@ This release brings Unzer Paylater Invoice payment type support to Java SDK.
     *   cancelAuthorization
 *   Remove deprecated classes
     *   RestCommunication
+
+[4.0.0]: http://github.com/unzerdev/java-sdk/compare/3.1.1..4.0.0
 
 [3.1.1]: http://github.com/unzerdev/java-sdk/compare/3.1.0..3.1.1
 

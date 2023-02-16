@@ -13,21 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.unzer.payment.enums;
+package com.unzer.payment.util;
 
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.google.gson.annotations.SerializedName;
-
-public enum RecurrenceType {
-    @SerializedName("oneclick")
-    ONECLICK,
-    @SerializedName("scheduled")
-    SCHEDULED,
-    @SerializedName("unscheduled")
-    UNSCHEDULED;
-
-    @Override
-    public String toString() {
-        return this.name().toLowerCase();
-    }
+public class SDKInfo {
+    public final static String VERSION = "${project.version}";
 }

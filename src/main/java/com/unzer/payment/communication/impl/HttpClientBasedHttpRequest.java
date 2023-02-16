@@ -35,7 +35,6 @@ import java.net.URISyntaxException;
  * </ul>
  */
 public class HttpClientBasedHttpRequest implements UnzerHttpRequest {
-
     protected ClassicHttpRequest request;
     protected UnzerHttpMethod method;
 
