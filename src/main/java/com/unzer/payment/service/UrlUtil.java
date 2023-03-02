@@ -16,6 +16,7 @@
 package com.unzer.payment.service;
 
 import com.unzer.payment.Basket;
+import com.unzer.payment.Paypage;
 import com.unzer.payment.Recurring;
 import com.unzer.payment.paymenttypes.PaymentType;
 
@@ -133,6 +134,22 @@ public class UrlUtil {
         stringBuilder.append("currency=").append(currency.getCurrencyCode()).append("&");
         stringBuilder.append("effectiveInterest=").append(getBigDecimal(effectiveInterestRate)).append("&");
         stringBuilder.append("orderDate=").append(getDate(orderDate));
+        return stringBuilder.toString();
+    }
+
+    public String getInitPaypageUrl(Paypage paypage) {
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append(getRestUrl());
+        appendSlashIfNeeded(stringBuilder);
+        stringBuilder.append(paypage.getTypeUrl());
+        appendSlashIfNeeded(stringBuilder);
+
+        String action = Optional
+                .ofNullable(paypage.getAction())
+                .orElse(Paypage.Action.CHARGE)
+                .toLowerCase();
+        stringBuilder.append(action);
+
         return stringBuilder.toString();
     }
 

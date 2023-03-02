@@ -1181,6 +1181,15 @@ public class Unzer {
         return paypageService.initialize(paypage);
     }
 
+    /**
+     * Retrieves created Paypage by id
+     * @param id paypage id
+     * @return paypage
+     */
+    public Paypage fetchPaypage(String id) {
+        return paypageService.fetch(id);
+    }
+
     public Linkpay linkpay(Linkpay linkpay) throws HttpCommunicationException {
         return linkpayService.initialize(linkpay);
     }
