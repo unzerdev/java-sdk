@@ -19,11 +19,11 @@ package com.unzer.payment.business;
 import com.unzer.payment.Paypage;
 import com.unzer.payment.Unzer;
 import com.unzer.payment.communication.HttpCommunicationException;
+import com.unzer.payment.service.UrlUtil;
 import org.junit.jupiter.api.DynamicTest;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestFactory;
 
-import java.net.MalformedURLException;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.stream.Collectors;
@@ -34,88 +34,98 @@ import static org.junit.jupiter.api.Assertions.*;
 public class PaypageTest extends AbstractPaymentTest {
 
     @Test
-    public void testMaximumPaypage() throws HttpCommunicationException, MalformedURLException {
+    public void testMaximumPaypage() throws HttpCommunicationException {
+        Unzer unzer = getUnzer();
+
         Paypage request = getMaximumPaypage();
-        Paypage response = getUnzer().paypage(request);
-        assertNull(response.getCard3ds());
+        Paypage createdPaypage = unzer.paypage(request);
 
-        assertNotNull(response);
-        assertNotNull(response.getId());
-        assertNotNull(response.getRedirectUrl());
-        assertNotNull(response.getPaymentId());
+        Paypage fetchedPaypage = unzer.fetchPaypage(createdPaypage.getId());
 
-        assertEquals(request.getCurrency(), response.getCurrency());
-        assertEquals(request.getReturnUrl(), response.getReturnUrl());
-        assertEquals(request.getShopName(), response.getShopName());
-        assertEquals(request.getShopDescription(), response.getShopDescription());
-        assertEquals(request.getTagline(), response.getTagline());
-        assertEquals(request.getTermsAndConditionUrl().toString(), response.getTermsAndConditionUrl().toString());
-        assertEquals(request.getPrivacyPolicyUrl().toString(), response.getPrivacyPolicyUrl().toString());
-        assertEquals(request.getLogoImage(), response.getLogoImage());
-        assertEquals(request.getFullPageImage(), response.getFullPageImage());
-        assertEquals(request.getContactUrl().toString(), response.getContactUrl().toString());
-        assertEquals(request.getHelpUrl().toString(), response.getHelpUrl().toString());
-        assertEquals(request.getImprintUrl().toString(), response.getImprintUrl().toString());
-        assertEquals(request.getTermsAndConditionUrl().toString(), response.getTermsAndConditionUrl().toString());
-        assertEquals(request.getPrivacyPolicyUrl().toString(), response.getPrivacyPolicyUrl().toString());
-        assertEquals(request.getInvoiceId(), response.getInvoiceId());
-        assertEquals(request.getOrderId(), response.getOrderId());
-        assertEquals(request.getBillingAddressRequired(), response.getBillingAddressRequired());
-        assertEquals(request.getShippingAddressRequired(), response.getShippingAddressRequired());
-        assertEquals(Arrays.toString(request.getExcludeTypes()), Arrays.toString(response.getExcludeTypes()));
-        assertEquals("charge", response.getAction().toLowerCase());
+        assertNull(fetchedPaypage.getCard3ds());
+        assertNotNull(fetchedPaypage);
+        assertNotNull(fetchedPaypage.getId());
+        assertNotNull(fetchedPaypage.getRedirectUrl());
+        assertNotNull(fetchedPaypage.getPaymentId());
 
-        for (String key : response.getCss().keySet()) {
-            assertEquals(request.getCss().get(key), response.getCss().get(key));
+        assertEquals(request.getCurrency(), fetchedPaypage.getCurrency());
+        assertEquals(request.getReturnUrl(), fetchedPaypage.getReturnUrl());
+        assertEquals(request.getShopName(), fetchedPaypage.getShopName());
+        assertEquals(request.getShopDescription(), fetchedPaypage.getShopDescription());
+        assertEquals(request.getTagline(), fetchedPaypage.getTagline());
+        assertEquals(request.getTermsAndConditionUrl().toString(), fetchedPaypage.getTermsAndConditionUrl().toString());
+        assertEquals(request.getPrivacyPolicyUrl().toString(), fetchedPaypage.getPrivacyPolicyUrl().toString());
+        assertEquals(request.getLogoImage(), fetchedPaypage.getLogoImage());
+        assertEquals(request.getFullPageImage(), fetchedPaypage.getFullPageImage());
+        assertEquals(request.getContactUrl().toString(), fetchedPaypage.getContactUrl().toString());
+        assertEquals(request.getHelpUrl().toString(), fetchedPaypage.getHelpUrl().toString());
+        assertEquals(request.getImprintUrl().toString(), fetchedPaypage.getImprintUrl().toString());
+        assertEquals(request.getTermsAndConditionUrl().toString(), fetchedPaypage.getTermsAndConditionUrl().toString());
+        assertEquals(request.getPrivacyPolicyUrl().toString(), fetchedPaypage.getPrivacyPolicyUrl().toString());
+        assertEquals(request.getInvoiceId(), fetchedPaypage.getInvoiceId());
+        assertEquals(request.getOrderId(), fetchedPaypage.getOrderId());
+        assertEquals(request.getBillingAddressRequired(), fetchedPaypage.getBillingAddressRequired());
+        assertEquals(request.getShippingAddressRequired(), fetchedPaypage.getShippingAddressRequired());
+        assertEquals(Arrays.toString(request.getExcludeTypes()), Arrays.toString(fetchedPaypage.getExcludeTypes()));
+        assertEquals("charge", fetchedPaypage.getAction().toLowerCase());
+
+        for (String key : fetchedPaypage.getCss().keySet()) {
+            assertEquals(request.getCss().get(key), fetchedPaypage.getCss().get(key));
         }
     }
 
     @Test
-    public void testPaypage_WithEmptyCssMap() throws MalformedURLException, HttpCommunicationException {
+    public void testPaypage_WithEmptyCssMap() throws HttpCommunicationException {
+        Unzer unzer = getUnzer();
+
         Paypage request = getMaximumPaypage();
         request.setCss(null);
 
-        Paypage response = getUnzer().paypage(request);
-        assertNull(response.getCard3ds());
+        Paypage createdPaypage = unzer.paypage(request);
 
-        assertNotNull(response);
-        assertNotNull(response.getId());
-        assertNotNull(response.getRedirectUrl());
-        assertNotNull(response.getPaymentId());
+        Paypage fetchedPaypage = unzer.fetchPaypage(createdPaypage.getId());
 
-        assertEquals(request.getCurrency(), response.getCurrency());
-        assertEquals(request.getReturnUrl(), response.getReturnUrl());
-        assertEquals(request.getShopName(), response.getShopName());
-        assertEquals(request.getShopDescription(), response.getShopDescription());
-        assertEquals(request.getTagline(), response.getTagline());
-        assertEquals(request.getTermsAndConditionUrl().toString(), response.getTermsAndConditionUrl().toString());
-        assertEquals(request.getPrivacyPolicyUrl().toString(), response.getPrivacyPolicyUrl().toString());
-        assertEquals(request.getLogoImage(), response.getLogoImage());
-        assertEquals(request.getFullPageImage(), response.getFullPageImage());
-        assertEquals(request.getContactUrl().toString(), response.getContactUrl().toString());
-        assertEquals(request.getHelpUrl().toString(), response.getHelpUrl().toString());
-        assertEquals(request.getImprintUrl().toString(), response.getImprintUrl().toString());
-        assertEquals(request.getTermsAndConditionUrl().toString(), response.getTermsAndConditionUrl().toString());
-        assertEquals(request.getPrivacyPolicyUrl().toString(), response.getPrivacyPolicyUrl().toString());
-        assertEquals(request.getInvoiceId(), response.getInvoiceId());
-        assertEquals(request.getOrderId(), response.getOrderId());
-        assertEquals(request.getBillingAddressRequired(), response.getBillingAddressRequired());
-        assertEquals(request.getShippingAddressRequired(), response.getShippingAddressRequired());
-        assertEquals(Arrays.toString(request.getExcludeTypes()), Arrays.toString(response.getExcludeTypes()));
-        assertEquals("charge", response.getAction().toLowerCase());
+        assertNull(fetchedPaypage.getCard3ds());
+
+        assertNotNull(fetchedPaypage);
+        assertNotNull(fetchedPaypage.getId());
+        assertNotNull(fetchedPaypage.getRedirectUrl());
+        assertNotNull(fetchedPaypage.getPaymentId());
+
+        assertEquals(request.getCurrency(), fetchedPaypage.getCurrency());
+        assertEquals(request.getReturnUrl(), fetchedPaypage.getReturnUrl());
+        assertEquals(request.getShopName(), fetchedPaypage.getShopName());
+        assertEquals(request.getShopDescription(), fetchedPaypage.getShopDescription());
+        assertEquals(request.getTagline(), fetchedPaypage.getTagline());
+        assertEquals(request.getTermsAndConditionUrl().toString(), fetchedPaypage.getTermsAndConditionUrl().toString());
+        assertEquals(request.getPrivacyPolicyUrl().toString(), fetchedPaypage.getPrivacyPolicyUrl().toString());
+        assertEquals(request.getLogoImage(), fetchedPaypage.getLogoImage());
+        assertEquals(request.getFullPageImage(), fetchedPaypage.getFullPageImage());
+        assertEquals(request.getContactUrl().toString(), fetchedPaypage.getContactUrl().toString());
+        assertEquals(request.getHelpUrl().toString(), fetchedPaypage.getHelpUrl().toString());
+        assertEquals(request.getImprintUrl().toString(), fetchedPaypage.getImprintUrl().toString());
+        assertEquals(request.getTermsAndConditionUrl().toString(), fetchedPaypage.getTermsAndConditionUrl().toString());
+        assertEquals(request.getPrivacyPolicyUrl().toString(), fetchedPaypage.getPrivacyPolicyUrl().toString());
+        assertEquals(request.getInvoiceId(), fetchedPaypage.getInvoiceId());
+        assertEquals(request.getOrderId(), fetchedPaypage.getOrderId());
+        assertEquals(request.getBillingAddressRequired(), fetchedPaypage.getBillingAddressRequired());
+        assertEquals(request.getShippingAddressRequired(), fetchedPaypage.getShippingAddressRequired());
+        assertEquals(Arrays.toString(request.getExcludeTypes()), Arrays.toString(fetchedPaypage.getExcludeTypes()));
+        assertEquals("charge", fetchedPaypage.getAction().toLowerCase());
     }
 
     @TestFactory
     public Collection<DynamicTest> testRestUrl() {
+        UrlUtil urlUtil = new UrlUtil("any-key");
         class TestCase {
-            String name;
-            String action;
-            String expectedUrl;
+            final String name;
+            final String action;
+            final String expectedUrlPart;
 
-            public TestCase(String name, String action, String expectedUrl) {
+            public TestCase(String name, String action, String expectedUrlPart) {
                 this.name = name;
                 this.action = action;
-                this.expectedUrl = expectedUrl;
+                this.expectedUrlPart = expectedUrlPart;
             }
         }
 
@@ -138,7 +148,11 @@ public class PaypageTest extends AbstractPaymentTest {
         ).map(t -> DynamicTest.dynamicTest(t.name, () -> {
             Paypage paypage = getMaximumPaypage()
                     .setAction(t.action);
-            assertEquals(t.expectedUrl, paypage.getTypeUrl());
+
+            String actualUrl = urlUtil.getInitPaypageUrl(paypage);
+            String expectedUrl = urlUtil.getRestUrl() + t.expectedUrlPart;
+
+            assertEquals(expectedUrl, actualUrl);
         })).collect(Collectors.toList());
     }
 
@@ -146,8 +160,10 @@ public class PaypageTest extends AbstractPaymentTest {
     public void testAuthorize() throws HttpCommunicationException {
         Unzer unzer = getUnzer();
         Paypage request = getMaximumPaypage().setAction(Paypage.Action.AUTHORIZE);
+        Paypage createdPaypage = unzer.paypage(request);
 
-        Paypage response = unzer.paypage(request);
-        assertEquals("AUTHORIZE", response.getAction());
+        Paypage fetchedPaypage = unzer.fetchPaypage(createdPaypage.getId());
+
+        assertEquals("AUTHORIZE", fetchedPaypage.getAction());
     }
 }

@@ -6,6 +6,18 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres
 to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## UNRELEASED
+
+This release adds functionality to fetch payment page
+
+### Added
+
+* Added `com.unzer.payment.Unzer.fetchPaypage`
+
+### Changed
+
+* Changed return value for `com.unzer.payment.Paypage.getTypeUrl`. Was: `paypage/charge` or `paypage/authorize`, now: `paypage`
+
 ## [4.0.0][4.0.0]
 
 This release brings liability and exemption type support to Java SDK
