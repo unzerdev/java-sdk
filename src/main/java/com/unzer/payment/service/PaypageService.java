@@ -46,7 +46,7 @@ public class PaypageService {
     }
 
     public Paypage initialize(Paypage paypage) throws HttpCommunicationException {
-        return initialize(paypage, urlUtil.getRestUrl(paypage));
+        return initialize(paypage, urlUtil.getInitPaypageUrl(paypage));
     }
 
     public Paypage initialize(Paypage paypage, String url) throws HttpCommunicationException {
@@ -56,5 +56,9 @@ public class PaypageService {
         return paypage;
     }
 
-
+    public Paypage fetch(String paypageId) {
+        String response = restCommunication.httpGet(urlUtil.getHttpGetUrl(new Paypage(), paypageId), unzer.getPrivateKey());
+        JsonPaypage jsonPaypage = new JsonParser().fromJson(response, JsonPaypage.class);
+        return jsonToBusinessClassMapper.mapToBusinessObject(new Paypage(), jsonPaypage);
+    }
 }
