@@ -69,6 +69,6 @@ jobs:
               "draft": true,
               "prerelease": false,
               "generate_release_notes": false,
-              "body": "${{ toJSON("some text") }}"
+              "body": "${{ toJSON(inputs.version) }}"
           }'
         
