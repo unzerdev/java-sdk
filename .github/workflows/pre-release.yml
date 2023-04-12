@@ -1,4 +1,4 @@
-name: Pre-release Java SDK
+name: Release Java SDK
 on:
   workflow_dispatch:
     inputs:
@@ -6,7 +6,7 @@ on:
         description: Release version
         type: string
         required: true
-
+jobs:
   request-signoff:
     name: Send management sign-off request
     runs-on: ubuntu-latest
