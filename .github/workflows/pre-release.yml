@@ -63,10 +63,12 @@ jobs:
           path: ReleaseNotes.md
       - name: Install jq
         run: sudo apt-get install -y jq
+      - name: Transform release notes to JSON escaped string
+        run: echo "JSON_ESCAPED_RELEASE_NOTES=$(cat ReleaseNotes.md | jq --raw-input --slurp .)" >> $GITHUB_ENV
       - name: Create Draft via GitHub API
         run: |
-          JSON_ESCAPED_RELEASE_NOTES=$(cat ReleaseNotes.md | jq --raw-input --slurp .) && \
-          curl --location 'https://api.github.com/repos/${{ github.repository }}/releases' \
+           && \
+          curl --trace - 'https://api.github.com/repos/unzerdev/java-sdk/releases' \
           --header 'Accept: application/vnd.github+json' \
           --header 'Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}' \
           --header 'X-GitHub-Api-Version: 2022-11-28' \
@@ -78,6 +80,6 @@ jobs:
               "draft": true,
               "prerelease": false,
               "generate_release_notes": false,
-              "body": "$JSON_ESCAPED_RELEASE_NOTES"
+              "body": ${{ env.JSON_ESCAPED_RELEASE_NOTES }}
           }'
         
