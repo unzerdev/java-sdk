@@ -8,6 +8,7 @@ on:
         required: true
 jobs:
   request-signoff:
+    if: ${{ false }}
     name: Send management sign-off request
     runs-on: ubuntu-latest
     steps:
@@ -19,3 +20,24 @@ jobs:
           command: signoff
           config: ${{ secrets.RELEASE_AUTOMATOR_BASE64_CONFIG }}
           version: ${{inputs.version}}
+  release-notes:
+    name: Generate release notes
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Run release-automator
+        uses: ./.github/actions/release-automator
+        with:
+          command: tweet
+          config: ${{ secrets.RELEASE_AUTOMATOR_BASE64_CONFIG }}
+          version: ${{inputs.version}}
+      - name: Copy out release notes file
+        run: |
+          sudo cp target/release-automator/ReleaseNotes.md ReleaseNotes.md
+      - name: Attach tweet
+        uses: actions/upload-artifact@v3
+        with:
+          name: ReleaseNotes.zip
+          path: ReleaseNotes.md
+          retention-days: 5

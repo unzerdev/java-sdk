@@ -13,8 +13,10 @@ inputs:
     required: true
 runs:
   using: 'docker'
-  image: 'ghcr.io/greatg0ose/release-automator:sha-1fcfaa9'
+  image: 'ghcr.io/greatg0ose/release-automator:latest'
   args:
-    - ${{ inputs.command }}
+    - "-version"
     - ${{ inputs.version }}
+    - "-config"
     - ${{ inputs.config }}
+    - ${{ inputs.command }}
