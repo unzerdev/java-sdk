@@ -56,7 +56,7 @@ jobs:
       - name: Create Draft via GitHub API
         env:
           VERSION: ${{ inputs.version }}
-          ACCESS_TOKEN: ${{ secrets.GITHUB_ACCESS_TOKEN }}
+          ACCESS_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           curl --location 'https://api.github.com/repos/unzerdev/java-sdk/releases' \
           --header 'Accept: application/vnd.github+json' \
