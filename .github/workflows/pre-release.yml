@@ -58,6 +58,9 @@ jobs:
           VERSION: ${{ inputs.version }}
           ACCESS_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
+          echo $VERSION
+          echo $ACCESS_TOKEN
+          
           curl --location 'https://api.github.com/repos/unzerdev/java-sdk/releases' \
           --header 'Accept: application/vnd.github+json' \
           --header 'Authorization: Bearer $ACCESS_TOKEN' \
