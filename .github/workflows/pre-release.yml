@@ -24,6 +24,7 @@ jobs:
         with:
           command: signoff
           version: ${{ inputs.version }}
+
   release-notes:
     name: Generate release notes
     runs-on: ubuntu-latest
@@ -49,6 +50,7 @@ jobs:
           name: ReleaseNotes
           path: ReleaseNotes.md
           retention-days: 5
+
   draft-release:
     name: Create Release Draft
     runs-on: ubuntu-latest
@@ -60,9 +62,11 @@ jobs:
         name: Download Release Notes
         with:
           name: ReleaseNotes
-          path: ReleaseNotes.md
-      - name: Install jq
-        run: sudo apt-get install -y jq
+          path: ReleaseNotes.zip
+      - name: Install packages
+        run: sudo apt-get install -y jq zip
+      - name: Unzip artifact
+        run: unzip ReleaseNotes.zip ..
       - name: Transform release notes to JSON escaped string
         run: echo "JSON_ESCAPED_RELEASE_NOTES=$(cat ReleaseNotes.md | jq --raw-input --slurp .)" >> $GITHUB_ENV
       - name: Create Draft via GitHub API
