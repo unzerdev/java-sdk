@@ -1,5 +1,11 @@
+name: Generate post release tweet
 on:
-  workflow_dispatch
+  workflow_dispatch:
+    inputs:
+      version:
+        description: Release version
+        type: string
+        required: true
 
 jobs:
   generate-tweet:
