@@ -1,0 +1,27 @@
+name: Generate post release tweet
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: Release version
+        type: string
+        required: true
+
+jobs:
+  generate-tweet:
+    runs-on: ubuntu-latest
+    name: Generate tweet
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Run release-automator
+        uses: ./.github/actions/release-automator
+        with:
+          command: tweet
+          config: ${{ secrets.RELEASE_AUTOMATOR_BASE64_CONFIG }}
+          version: ${{github.ref_name}}
+      - name: Attach tweet
+        uses: actions/upload-artifact@v3
+        with:
+          name: tweet
+          path: target/release-automator/tweet.txt
