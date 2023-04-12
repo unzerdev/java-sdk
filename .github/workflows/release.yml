@@ -32,11 +32,15 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
+      - name: Decode configuration
+        env:
+          CONFIG: ${{ secrets.RELEASE_AUTOMATOR_BASE64_CONFIG }}
+        run: |
+          echo $CONFIG | base64 --decode > release.yaml
       - name: Run release-automator
         uses: ./.github/actions/release-automator
         with:
           command: mail
-          config: ${{ secrets.RELEASE_AUTOMATOR_BASE64_CONFIG }}
           version: ${{github.ref_name}}
 
   generate-tweet:
@@ -45,18 +49,22 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
+      - name: Decode configuration
+        env:
+          CONFIG: ${{ secrets.RELEASE_AUTOMATOR_BASE64_CONFIG }}
+        run: |
+          echo $CONFIG | base64 --decode > release.yaml
       - name: Run release-automator
         uses: ./.github/actions/release-automator
         with:
           command: tweet
-          config: ${{ secrets.RELEASE_AUTOMATOR_BASE64_CONFIG }}
-          version: ${{github.ref_name}}
+          version: ${{inputs.version}}
       - name: Copy out tweet file
         run: |
-          sudo cp target/release-automator/tweet.txt tweet.txt
-      - name: Attach tweet
+          sudo cp target/tweet.txt tweet.txt
+      - name: Attach release notes
         uses: actions/upload-artifact@v3
         with:
-          name: tweet.zip
+          name: tweet
           path: tweet.txt
           retention-days: 5

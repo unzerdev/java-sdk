@@ -14,11 +14,15 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
+      - name: Decode configuration
+        env:
+          CONFIG: ${{ secrets.RELEASE_AUTOMATOR_BASE64_CONFIG }}
+        run: |
+          echo $CONFIG | base64 --decode > release.yaml
       - name: Run release-automator
         uses: ./.github/actions/release-automator
         with:
           command: signoff
-          config: ${{ secrets.RELEASE_AUTOMATOR_BASE64_CONFIG }}
           version: ${{inputs.version}}
   release-notes:
     name: Generate release notes
@@ -42,6 +46,6 @@ jobs:
       - name: Attach release notes
         uses: actions/upload-artifact@v3
         with:
-          name: ReleaseNotes.zip
+          name: ReleaseNotes
           path: ReleaseNotes.md
           retention-days: 5
