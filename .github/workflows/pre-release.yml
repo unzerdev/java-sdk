@@ -66,12 +66,12 @@ jobs:
       - name: Install packages
         run: sudo apt-get install -y jq zip
       - name: Unzip artifact
-        run: unzip ReleaseNotes.zip ..
+        run: unzip ReleaseNotes.zip
       - name: Transform release notes to JSON escaped string
-        run: echo "JSON_ESCAPED_RELEASE_NOTES=$(cat ReleaseNotes.md | jq --raw-input --slurp .)" >> $GITHUB_ENV
+        run: echo "JSON_ESCAPED_RELEASE_NOTES=$(cat ReleaseNotes/ReleaseNotes.md | jq --raw-input --slurp .)" >> $GITHUB_ENV
       - name: Create Draft via GitHub API
         run: |
-          curl --location 'https://api.github.com/repos/${{ github.repository }}/releases' \
+          curl --fail-with-body --location 'https://api.github.com/repos/${{ github.repository }}/releases' \
           --header 'Accept: application/vnd.github+json' \
           --header 'Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}' \
           --header 'X-GitHub-Api-Version: 2022-11-28' \
