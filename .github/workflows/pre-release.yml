@@ -65,10 +65,8 @@ jobs:
           path: ReleaseNotes.zip
       - name: Install packages
         run: sudo apt-get install -y jq zip
-      - name: List files
-        run: ls -al
       - name: Unzip artifact
-        run: unzip ReleaseNotes.zip -d ReleaseNotes
+        run: chmod 0755 ReleaseNotes.zip && unzip ReleaseNotes.zip -d ReleaseNotes
       - name: Transform release notes to JSON escaped string
         run: echo "JSON_ESCAPED_RELEASE_NOTES=$(cat ReleaseNotes/ReleaseNotes.md | jq --raw-input --slurp .)" >> $GITHUB_ENV
       - name: Create Draft via GitHub API
