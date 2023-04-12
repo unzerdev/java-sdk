@@ -34,7 +34,7 @@ jobs:
       - name: Run release-automator
         uses: ./.github/actions/release-automator
         with:
-          command: tweet
+          command: notes
           version: ${{inputs.version}}
       - name: Copy out release notes file
         run: |
