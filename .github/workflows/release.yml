@@ -1,9 +1,10 @@
-name: Publish package to the Maven Central Repository
+name: Release java-sdk
 on:
   release:
     types: [ published ]
 jobs:
   publish:
+    name: Publish to Maven Central
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -24,3 +25,25 @@ jobs:
           MAVEN_USERNAME: ${{ secrets.OSSRH_USERNAME }}
           MAVEN_PASSWORD: ${{ secrets.OSSRH_TOKEN }}
           GPG_PASSPHRASE: ${{ secrets.GPG_PASSPHRASE }}
+
+  generate-tweet:
+    name: Generate tweet
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Run release-automator
+        uses: ./.github/actions/release-automator
+        with:
+          command: tweet
+          config: ${{ secrets.RELEASE_AUTOMATOR_BASE64_CONFIG }}
+          version: ${{github.ref_name}}
+      - name: Copy out tweet file
+        run: |
+          sudo cp target/release-automator/tweet.txt tweet.txt
+      - name: Attach tweet
+        uses: actions/upload-artifact@v3
+        with:
+          name: tweet.zip
+          path: tweet.txt
+          retention-days: 5
