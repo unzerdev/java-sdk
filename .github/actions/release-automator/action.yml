@@ -8,15 +8,10 @@ inputs:
   version:
     description: 'Release version'
     required: true
-  config:
-    description: 'Configuration for release-automator'
-    required: true
 runs:
   using: 'docker'
   image: 'ghcr.io/greatg0ose/release-automator:sha-94d43d2'
   args:
     - "-version"
     - ${{ inputs.version }}
-    - "-config"
-    - ${{ inputs.config }}
     - ${{ inputs.command }}
