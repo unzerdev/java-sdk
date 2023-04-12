@@ -1,4 +1,4 @@
-name: Execute pre-release actions
+name: Pre-release Java SDK
 on:
   workflow_dispatch:
     inputs:

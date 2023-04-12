@@ -1,4 +1,4 @@
-name: Release java-sdk
+name: Release Java SDK
 on:
   release:
     types: [ published ]
