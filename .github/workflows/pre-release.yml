@@ -1,0 +1,21 @@
+name: Execute pre-release actions
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: Release version
+        type: string
+        required: true
+
+  request-signoff:
+    name: Send management sign-off request
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Run release-automator
+        uses: ./.github/actions/release-automator
+        with:
+          command: signoff
+          config: ${{ secrets.RELEASE_AUTOMATOR_BASE64_CONFIG }}
+          version: ${{inputs.version}}
