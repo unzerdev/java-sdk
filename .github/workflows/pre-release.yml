@@ -23,14 +23,14 @@ jobs:
   release-notes:
     name: Generate release notes
     runs-on: ubuntu-latest
-    env:
-      CONFIG: ${{ secrets.RELEASE_AUTOMATOR_BASE64_CONFIG }}
     steps:
       - name: Checkout
         uses: actions/checkout@v3
       - name: Decode configuration
+        env:
+          CONFIG: ${{ secrets.RELEASE_AUTOMATOR_BASE64_CONFIG }}
         run: |
-          echo -n '$CONFIG' | base64 --decode > release.yaml
+          echo $CONFIG | base64 --decode > release.yaml
       - name: Run release-automator
         uses: ./.github/actions/release-automator
         with:
