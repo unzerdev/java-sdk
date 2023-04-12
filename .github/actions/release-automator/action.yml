@@ -1,0 +1,20 @@
+name: 'Release Automator'
+author: GreatG0ose
+description: 'Sends sign-off requests, pre-/post-release emails, generates tweet'
+inputs:
+  command:
+    description: 'Command to execute'
+    required: true
+  version:
+    description: 'Release version'
+    required: true
+  config:
+    description: 'Configuration for release-automator'
+    required: true
+runs:
+  using: 'docker'
+  image: 'ghcr.io/greatg0ose/release-automator:sha-1fcfaa9'
+  args:
+    - ${{ inputs.command }}
+    - ${{ inputs.version }}
+    - ${{ inputs.config }}
