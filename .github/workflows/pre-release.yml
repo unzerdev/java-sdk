@@ -62,11 +62,11 @@ jobs:
         name: Download Release Notes
         with:
           name: ReleaseNotes
-          path: ReleaseNotes.zip
+          path: ReleaseNotes
       - name: Install packages
         run: sudo apt-get install -y jq zip
       - name: Unzip artifact
-        run: ls -al && cat ReleaseNotes.zip && unzip ReleaseNotes.zip -d ReleaseNotes
+        run: ls -al && ls -al ReleaseNotes && unzip ReleaseNotes.zip -d ReleaseNotes
       - name: Transform release notes to JSON escaped string
         run: echo "JSON_ESCAPED_RELEASE_NOTES=$(cat ReleaseNotes/ReleaseNotes.md | jq --raw-input --slurp .)" >> $GITHUB_ENV
       - name: Create Draft Release via GitHub API
