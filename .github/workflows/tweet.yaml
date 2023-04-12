@@ -20,8 +20,12 @@ jobs:
           command: tweet
           config: ${{ secrets.RELEASE_AUTOMATOR_BASE64_CONFIG }}
           version: ${{inputs.version}}
+      - name: Copy out file from volume
+        run: |
+          sudo cp target/release-automator/tweet.txt tweet.txt
       - name: Attach tweet
         uses: actions/upload-artifact@v3
         with:
           name: tweet
-          path: target/release-automator/tweet.txt
+          path: tweet.txt
+          retention-days: 1
