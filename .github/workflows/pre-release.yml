@@ -26,11 +26,16 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
+      - name: Decode configuration
+        id: write_file
+        uses: timheuer/base64-to-file@v1.2
+        with:
+          fileName: 'release.yaml'
+          encodedString: ${{ secrets.RELEASE_AUTOMATOR_BASE64_CONFIG }}
       - name: Run release-automator
         uses: ./.github/actions/release-automator
         with:
           command: tweet
-          config: ${{ secrets.RELEASE_AUTOMATOR_BASE64_CONFIG }}
           version: ${{inputs.version}}
       - name: Copy out release notes file
         run: |
