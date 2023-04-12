@@ -19,7 +19,7 @@ jobs:
         with:
           command: tweet
           config: ${{ secrets.RELEASE_AUTOMATOR_BASE64_CONFIG }}
-          version: ${{github.ref_name}}
+          version: ${{inputs.version}}
       - name: Attach tweet
         uses: actions/upload-artifact@v3
         with:
