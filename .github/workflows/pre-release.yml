@@ -65,6 +65,7 @@ jobs:
         run: sudo apt-get install -y jq
       - name: Create Draft via GitHub API
         run: |
+          JSON_ESCAPED_RELEASE_NOTES=$(cat ReleaseNotes.md | jq --raw-input --slurp .) && \
           curl --location 'https://api.github.com/repos/${{ github.repository }}/releases' \
           --header 'Accept: application/vnd.github+json' \
           --header 'Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}' \
@@ -77,6 +78,6 @@ jobs:
               "draft": true,
               "prerelease": false,
               "generate_release_notes": false,
-              "body": "$(cat ReleaseNotes.md | jq --raw-input --slurp .)"
+              "body": "$JSON_ESCAPED_RELEASE_NOTES"
           }'
         
