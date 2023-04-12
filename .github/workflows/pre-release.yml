@@ -38,7 +38,7 @@ jobs:
           version: ${{inputs.version}}
       - name: Copy out release notes file
         run: |
-          sudo cp target/release-automator/ReleaseNotes.md ReleaseNotes.md
+          sudo cp target/ReleaseNotes.md ReleaseNotes.md
       - name: Attach release notes
         uses: actions/upload-artifact@v3
         with:
