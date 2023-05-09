@@ -15,4 +15,4 @@ jobs:
           java-version: '17'
       # No JavaDoc and Overloaded methods checks
       - name: Run Checkstyle linter
-        run: java -jar checkstyle.jar -c google_checks.xml -c google_checks.xml src/main/**/*.java | grep -v Javadoc | grep -v OverloadMethodsDeclarationOrder
+        run: java -jar checkstyle.jar -c google_checks.xml src/main/**/*.java | grep -v Javadoc | grep -v OverloadMethodsDeclarationOrder
