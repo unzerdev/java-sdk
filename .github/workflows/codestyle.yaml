@@ -19,9 +19,9 @@ jobs:
         # Ignore Javadoc and overloaded methods order
         # Ignore service lines
         # Exit if output not empty
-        run: >
+        run: |
           echo "Starting audit..."
           shopt -s globstar
-          java -jar checkstyle.jar -c google_checks.xml src/main/**/*.java | grep -v OverloadMethodsDeclarationOrder | grep -v "Starting audit..." | grep -v "Audit done." | tee checkstyle.output
+          java -jar checkstyle.jar -c google_checks.xml src/main/**/*.java | grep -v Javadoc | grep -v OverloadMethodsDeclarationOrder | grep -v "Starting audit..." | grep -v "Audit done." | tee checkstyle.output
           echo "Audit done."
           exit $(stat -c %s checkstyle.output)
