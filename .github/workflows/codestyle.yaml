@@ -1,6 +1,6 @@
 # Validates Java sources against Google code-style
 name: Check codestyle
-on: [ pull_request, push ]
+on: [ pull_request ]
 jobs:
   checkstyle:
     name: Clang-format
