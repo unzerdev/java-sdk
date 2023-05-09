@@ -13,17 +13,18 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package com.unzer.payment.communication.json;
 
 public class JsonIdeal extends JsonIdObject {
-    private String bankName;
+  private String bankName;
 
-    public String getBankName() {
-        return bankName;
-    }
+  public String getBankName() {
+    return bankName;
+  }
 
-    public void setBankName(String bankName) {
-        this.bankName = bankName;
-    }
+  public void setBankName(String bankName) {
+    this.bankName = bankName;
+  }
 
 }

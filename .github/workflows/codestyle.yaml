@@ -1,0 +1,18 @@
+# Validates Java sources against Google code-style
+name: Check codestyle
+on: [ pull_request, push ]
+jobs:
+  checkstyle:
+    name: Clang-format
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Download Checkstyle
+        run: wget https://github.com/checkstyle/checkstyle/releases/download/checkstyle-10.10.0/checkstyle-10.10.0-all.jar -o checkstyle.jar
+      - uses: actions/setup-java@v3
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+      # No JavaDoc and Overloaded methods checks
+      - name: Run Checkstyle linter
+        run: java -jar checkstyle.jar -c google_checks.xml -c google_checks.xml src/main/**/*.java | grep -v Javadoc | grep -v OverloadMethodsDeclarationOrder

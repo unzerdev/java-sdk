@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package com.unzer.payment.marketplace;
 
 import com.unzer.payment.AbstractTransaction;
@@ -20,68 +21,69 @@ import com.unzer.payment.Unzer;
 import com.unzer.payment.communication.HttpCommunicationException;
 import com.unzer.payment.communication.json.JsonObject;
 import com.unzer.payment.paymenttypes.PaymentType;
-
 import java.util.List;
 
 public class MarketplaceAuthorization extends AbstractTransaction<MarketplacePayment> {
 
-    private List<MarketplaceCancel> cancelList;
+  private List<MarketplaceCancel> cancelList;
 
-    public MarketplaceAuthorization() {
-        super();
-    }
+  public MarketplaceAuthorization() {
+    super();
+  }
 
-    @Deprecated
-    public MarketplaceAuthorization(Unzer unzer) {
-        super(unzer);
-    }
+  @Deprecated
+  public MarketplaceAuthorization(Unzer unzer) {
+    super(unzer);
+  }
 
-    @Override
-    public String getTypeUrl() {
-        return "marketplace/payments/<paymentId>/authorize";
-    }
+  @Override
+  public String getTypeUrl() {
+    return "marketplace/payments/<paymentId>/authorize";
+  }
 
-    @Override
-    public PaymentType map(PaymentType paymentType, JsonObject jsonObject) {
-        return null;
-    }
+  @Override
+  public PaymentType map(PaymentType paymentType, JsonObject jsonObject) {
+    return null;
+  }
 
-    public List<MarketplaceCancel> getCancelList() {
-        return cancelList;
-    }
+  public List<MarketplaceCancel> getCancelList() {
+    return cancelList;
+  }
 
-    public void setCancelList(List<MarketplaceCancel> cancelList) {
-        this.cancelList = cancelList;
-    }
+  public void setCancelList(List<MarketplaceCancel> cancelList) {
+    this.cancelList = cancelList;
+  }
 
-    public MarketplaceCancel getCancel(String cancelId) {
-        if (cancelList == null) return null;
-        for (MarketplaceCancel cancel : cancelList) {
-            if (cancelId.equalsIgnoreCase(cancel.getId())) {
-                return cancel;
-            }
-        }
-        return null;
+  public MarketplaceCancel getCancel(String cancelId) {
+    if (cancelList == null) {
+      return null;
     }
+    for (MarketplaceCancel cancel : cancelList) {
+      if (cancelId.equalsIgnoreCase(cancel.getId())) {
+        return cancel;
+      }
+    }
+    return null;
+  }
 
-    /**
-     * @deprecated use {@link Unzer#marketplaceCharge(MarketplaceCharge)} instead
-     */
-    @Deprecated
-    public MarketplaceCharge charge(MarketplaceCharge charge) throws HttpCommunicationException {
-        return getUnzer().marketplaceChargeAuthorization(this.getPaymentId(), this.getId(), charge);
-    }
+  /**
+   * @deprecated use {@link Unzer#marketplaceCharge(MarketplaceCharge)} instead
+   */
+  @Deprecated
+  public MarketplaceCharge charge(MarketplaceCharge charge) throws HttpCommunicationException {
+    return getUnzer().marketplaceChargeAuthorization(this.getPaymentId(), this.getId(), charge);
+  }
 
-    /**
-     * Cancel for this authorization.
-     *
-     * @param cancel refers to MarketplaceCancel.
-     * @return MarketplaceCancel
-     * @throws HttpCommunicationException
-     * @deprecated use {@link Unzer#marketplaceAuthorizationCancel(String, String, MarketplaceCancel)} instead
-     */
-    @Deprecated
-    public MarketplaceCancel cancel(MarketplaceCancel cancel) throws HttpCommunicationException {
-        return getUnzer().marketplaceAuthorizationCancel(this.getPaymentId(), this.getId(), cancel);
-    }
+  /**
+   * Cancel for this authorization.
+   *
+   * @param cancel refers to MarketplaceCancel.
+   * @return MarketplaceCancel
+   * @throws HttpCommunicationException generic Payment API communication error
+   * @deprecated use {@link Unzer#marketplaceAuthorizationCancel(String, String, MarketplaceCancel)}
+   */
+  @Deprecated
+  public MarketplaceCancel cancel(MarketplaceCancel cancel) throws HttpCommunicationException {
+    return getUnzer().marketplaceAuthorizationCancel(this.getPaymentId(), this.getId(), cancel);
+  }
 }

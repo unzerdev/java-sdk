@@ -13,27 +13,29 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package com.unzer.payment.communication;
 
 /**
- * Generic exception for HttpCommunication module
+ * Generic exception for HttpCommunication module.
  */
 public class HttpCommunicationException extends RuntimeException {
 
-    private static final long serialVersionUID = 1L;
+  private static final long serialVersionUID = 1L;
 
-    /**
-     * Constructor create instance without message
-     */
-    public HttpCommunicationException() {
-        super();
-    }
+  /**
+   * Constructor create instance without message.
+   */
+  public HttpCommunicationException() {
+    super();
+  }
 
-    /**
-     * Constructor create instance with message
-     * @param msg refers to the declared message
-     */
-    public HttpCommunicationException(String msg) {
-        super(msg);
-    }
+  /**
+   * Constructor create instance with message.
+   *
+   * @param message refers to the declared message
+   */
+  public HttpCommunicationException(String message) {
+    super(message);
+  }
 }

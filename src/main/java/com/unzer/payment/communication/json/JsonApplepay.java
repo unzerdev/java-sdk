@@ -13,50 +13,50 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package com.unzer.payment.communication.json;
 
 /**
- * Alipay business object 
+ * Alipay business object
  *
  * @author Unzer E-Com GmbH
- *
  */
 public class JsonApplepay extends JsonIdObject implements JsonObject {
-    private String version;
-    private String data;
-    private String signature;
-    private JsonApplepayHeader header;
+  private String version;
+  private String data;
+  private String signature;
+  private JsonApplepayHeader header;
 
-    public String getVersion() {
-        return version;
-    }
+  public String getVersion() {
+    return version;
+  }
 
-    public void setVersion(String version) {
-        this.version = version;
-    }
+  public void setVersion(String version) {
+    this.version = version;
+  }
 
-    public String getData() {
-        return data;
-    }
+  public String getData() {
+    return data;
+  }
 
-    public void setData(String data) {
-        this.data = data;
-    }
+  public void setData(String data) {
+    this.data = data;
+  }
 
-    public String getSignature() {
-        return signature;
-    }
+  public String getSignature() {
+    return signature;
+  }
 
-    public void setSignature(String signature) {
-        this.signature = signature;
-    }
+  public void setSignature(String signature) {
+    this.signature = signature;
+  }
 
-    public JsonApplepayHeader getHeader() {
-        return header;
-    }
+  public JsonApplepayHeader getHeader() {
+    return header;
+  }
 
-    public void setHeader(JsonApplepayHeader header) {
-        this.header = header;
-    }
+  public void setHeader(JsonApplepayHeader header) {
+    this.header = header;
+  }
 
 }

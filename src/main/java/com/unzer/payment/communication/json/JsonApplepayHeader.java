@@ -13,35 +13,36 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package com.unzer.payment.communication.json;
 
 public class JsonApplepayHeader {
-    private String ephemeralPublicKey;
-    private String publicKeyHash;
-    private String transactionId;
+  private String ephemeralPublicKey;
+  private String publicKeyHash;
+  private String transactionId;
 
-    public String getEphemeralPublicKey() {
-        return ephemeralPublicKey;
-    }
+  public String getEphemeralPublicKey() {
+    return ephemeralPublicKey;
+  }
 
-    public void setEphemeralPublicKey(String ephemeralPublicKey) {
-        this.ephemeralPublicKey = ephemeralPublicKey;
-    }
+  public void setEphemeralPublicKey(String ephemeralPublicKey) {
+    this.ephemeralPublicKey = ephemeralPublicKey;
+  }
 
-    public String getPublicKeyHash() {
-        return publicKeyHash;
-    }
+  public String getPublicKeyHash() {
+    return publicKeyHash;
+  }
 
-    public void setPublicKeyHash(String publicKeyHash) {
-        this.publicKeyHash = publicKeyHash;
-    }
+  public void setPublicKeyHash(String publicKeyHash) {
+    this.publicKeyHash = publicKeyHash;
+  }
 
-    public String getTransactionId() {
-        return transactionId;
-    }
+  public String getTransactionId() {
+    return transactionId;
+  }
 
-    public void setTransactionId(String transactionId) {
-        this.transactionId = transactionId;
-    }
+  public void setTransactionId(String transactionId) {
+    this.transactionId = transactionId;
+  }
 
 }

@@ -13,12 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package com.unzer.payment.communication.json;
 
 public class JsonBancontact extends JsonIdObject implements JsonObject {
-    private String holder;
+  private String holder;
 
-    public String getHolder() {
-        return holder;
-    }
+  public String getHolder() {
+    return holder;
+  }
 }

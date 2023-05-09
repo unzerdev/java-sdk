@@ -13,37 +13,38 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package com.unzer.payment.communication.json;
 
 import com.unzer.payment.Message;
 
 public class JsonMessage implements Message {
-    private String code;
-    private String customer;
-    private String merchant;
+  private String code;
+  private String customer;
+  private String merchant;
 
-    public String getCode() {
-        return code;
-    }
+  public String getCode() {
+    return code;
+  }
 
-    public void setCode(String code) {
-        this.code = code;
-    }
+  public void setCode(String code) {
+    this.code = code;
+  }
 
-    public String getCustomer() {
-        return customer;
-    }
+  public String getCustomer() {
+    return customer;
+  }
 
-    public void setCustomer(String customer) {
-        this.customer = customer;
-    }
+  public void setCustomer(String customer) {
+    this.customer = customer;
+  }
 
-    public String getMerchant() {
-        return merchant;
-    }
+  public String getMerchant() {
+    return merchant;
+  }
 
-    public void setMerchant(String merchant) {
-        this.merchant = merchant;
-    }
+  public void setMerchant(String merchant) {
+    this.merchant = merchant;
+  }
 
 }

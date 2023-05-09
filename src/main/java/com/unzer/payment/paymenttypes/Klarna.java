@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package com.unzer.payment.paymenttypes;
 
 import com.unzer.payment.GeoLocation;
@@ -20,18 +21,20 @@ import com.unzer.payment.communication.json.JsonIdObject;
 import com.unzer.payment.communication.json.JsonObject;
 
 public class Klarna extends AbstractPaymentType {
-    @Override
-    public String getTypeUrl() {
-        return "types/klarna";
-    }
+  @Override
+  public String getTypeUrl() {
+    return "types/klarna";
+  }
 
-    @Override
-    public PaymentType map(PaymentType paymentType, JsonObject jsonObject) {
-        ((Klarna) paymentType).setId(jsonObject.getId());
-        ((Klarna) paymentType).setRecurring(((JsonIdObject) jsonObject).getRecurring());
-        GeoLocation tempGeoLocation = new GeoLocation(((JsonIdObject) jsonObject).getGeoLocation().getClientIp(), ((JsonIdObject) jsonObject).getGeoLocation().getCountryIsoA2());
-        ((Klarna) paymentType).setGeoLocation(tempGeoLocation);
+  @Override
+  public PaymentType map(PaymentType paymentType, JsonObject jsonObject) {
+    ((Klarna) paymentType).setId(jsonObject.getId());
+    ((Klarna) paymentType).setRecurring(((JsonIdObject) jsonObject).getRecurring());
+    GeoLocation tempGeoLocation =
+        new GeoLocation(((JsonIdObject) jsonObject).getGeoLocation().getClientIp(),
+            ((JsonIdObject) jsonObject).getGeoLocation().getCountryIsoA2());
+    ((Klarna) paymentType).setGeoLocation(tempGeoLocation);
 
-        return paymentType;
-    }
+    return paymentType;
+  }
 }

@@ -13,39 +13,44 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package com.unzer.payment.models;
 
 import com.google.gson.annotations.SerializedName;
 
 public class PaypalData {
-    private CheckoutType checkoutType;
+  private CheckoutType checkoutType;
 
-    public CheckoutType getCheckoutType() {
-        return checkoutType;
+  public CheckoutType getCheckoutType() {
+    return checkoutType;
+  }
+
+  public PaypalData setCheckoutType(CheckoutType checkoutType) {
+    this.checkoutType = checkoutType;
+    return this;
+  }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) {
+      return true;
+    }
+    if (o == null || getClass() != o.getClass()) {
+      return false;
     }
 
-    public PaypalData setCheckoutType(CheckoutType checkoutType) {
-        this.checkoutType = checkoutType;
-        return this;
-    }
+    PaypalData that = (PaypalData) o;
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+    return checkoutType == that.checkoutType;
+  }
 
-        PaypalData that = (PaypalData) o;
+  @Override
+  public int hashCode() {
+    return checkoutType != null ? checkoutType.hashCode() : 0;
+  }
 
-        return checkoutType == that.checkoutType;
-    }
-
-    @Override
-    public int hashCode() {
-        return checkoutType != null ? checkoutType.hashCode() : 0;
-    }
-
-    public enum CheckoutType {
-        @SerializedName("express")
-        EXPRESS
-    }
+  public enum CheckoutType {
+    @SerializedName("express")
+    EXPRESS
+  }
 }
