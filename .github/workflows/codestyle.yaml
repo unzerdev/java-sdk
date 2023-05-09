@@ -8,7 +8,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - name: Download Checkstyle
-        run: wget https://github.com/checkstyle/checkstyle/releases/download/checkstyle-10.10.0/checkstyle-10.10.0-all.jar -o checkstyle.jar
+        run: wget https://github.com/checkstyle/checkstyle/releases/download/checkstyle-10.10.0/checkstyle-10.10.0-all.jar -O checkstyle.jar
       - uses: actions/setup-java@v3
         with:
           distribution: 'temurin'
