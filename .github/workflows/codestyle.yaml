@@ -13,6 +13,15 @@ jobs:
         with:
           distribution: 'temurin'
           java-version: '17'
-      # No JavaDoc and Overloaded methods checks
       - name: Run Checkstyle linter
-        run: java -jar checkstyle.jar -c google_checks.xml src/main/**/*.java | grep -v Javadoc
+        # Enable **/* glob pattern.
+        # Run checkstyle cli.
+        # Ignore Javadoc and overloaded methods order
+        # Ignore service lines
+        # Exit if output not empty
+        run: >
+          echo "Starting audit..."
+          shopt -s globstar
+          java -jar checkstyle.jar -c google_checks.xml src/main/**/*.java | grep -v Javadoc | grep -v OverloadMethodsDeclarationOrder | grep -v "Starting audit..." | grep -v "Audit done." | tee checkstyle.output
+          echo "Audit done."
+          exit $(stat -c %s checkstyle.output)
