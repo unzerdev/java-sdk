@@ -13,8 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package com.unzer.payment.models;
 
 public enum CustomerType {
-    B2B, B2C
+  B2B, B2C
 }

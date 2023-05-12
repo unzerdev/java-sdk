@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package com.unzer.payment.paymenttypes;
 
 import com.unzer.payment.Basket;
@@ -21,7 +22,6 @@ import com.unzer.payment.Customer;
 import com.unzer.payment.communication.HttpCommunicationException;
 import com.unzer.payment.communication.json.JsonIdObject;
 import com.unzer.payment.communication.json.JsonObject;
-
 import java.math.BigDecimal;
 import java.net.URL;
 import java.util.Currency;
@@ -32,45 +32,51 @@ import java.util.Currency;
 @Deprecated
 public class InvoiceSecured extends AbstractPaymentType implements PaymentType {
 
-    @Override
-    public String getTypeUrl() {
-        return "types/invoice-secured";
-    }
+  @Override
+  public String getTypeUrl() {
+    return "types/invoice-secured";
+  }
 
-    @Override
-    public PaymentType map(PaymentType invoiceSecured, JsonObject jsonId) {
-        if (invoiceSecured instanceof InvoiceSecured && jsonId instanceof JsonIdObject) {
-            ((InvoiceSecured) invoiceSecured).setId(jsonId.getId());
-            ((InvoiceSecured) invoiceSecured).setRecurring(((JsonIdObject) jsonId).getRecurring());
-        }
-        return invoiceSecured;
+  @Override
+  public PaymentType map(PaymentType invoiceSecured, JsonObject jsonId) {
+    if (invoiceSecured instanceof InvoiceSecured && jsonId instanceof JsonIdObject) {
+      ((InvoiceSecured) invoiceSecured).setId(jsonId.getId());
+      ((InvoiceSecured) invoiceSecured).setRecurring(((JsonIdObject) jsonId).getRecurring());
     }
+    return invoiceSecured;
+  }
 
-    @Deprecated
-    public Charge charge(BigDecimal amount, Currency currency, URL returnUrl) throws HttpCommunicationException {
-        return charge(amount, currency, returnUrl, null);
-    }
+  @Deprecated
+  public Charge charge(BigDecimal amount, Currency currency, URL returnUrl)
+      throws HttpCommunicationException {
+    return charge(amount, currency, returnUrl, null);
+  }
 
-    @Deprecated
-    public Charge charge(BigDecimal amount, Currency currency, URL returnUrl, Customer customer) throws HttpCommunicationException {
-        return getUnzer().charge(amount, currency, this, returnUrl, customer);
-    }
+  @Deprecated
+  public Charge charge(BigDecimal amount, Currency currency, URL returnUrl, Customer customer)
+      throws HttpCommunicationException {
+    return getUnzer().charge(amount, currency, this, returnUrl, customer);
+  }
 
-    @Deprecated
-    public Charge charge(BigDecimal amount, Currency currency, URL returnUrl, Customer customer, Basket basket, String invoiceId) throws HttpCommunicationException {
-        return getUnzer().charge(getCharge(amount, currency, this, returnUrl, customer, basket, invoiceId));
-    }
+  @Deprecated
+  public Charge charge(BigDecimal amount, Currency currency, URL returnUrl, Customer customer,
+                       Basket basket, String invoiceId) throws HttpCommunicationException {
+    return getUnzer().charge(
+        getCharge(amount, currency, this, returnUrl, customer, basket, invoiceId));
+  }
 
-    @Deprecated
-    private Charge getCharge(BigDecimal amount, Currency currency, InvoiceSecured invoiceSecured, URL returnUrl,
-                             Customer customer, Basket basket, String invoiceId) throws HttpCommunicationException {
-        return (Charge) new Charge()
-                .setAmount(amount)
-                .setCurrency(currency)
-                .setTypeId(getUnzer().createPaymentType(invoiceSecured).getId())
-                .setReturnUrl(returnUrl)
-                .setCustomerId(getUnzer().createCustomerIfPresent(customer).getId())
-                .setBasketId(getUnzer().createBasket(basket).getId())
-                .setInvoiceId(invoiceId);
-    }
+  @Deprecated
+  private Charge getCharge(BigDecimal amount, Currency currency, InvoiceSecured invoiceSecured,
+                           URL returnUrl,
+                           Customer customer, Basket basket, String invoiceId)
+      throws HttpCommunicationException {
+    return (Charge) new Charge()
+        .setAmount(amount)
+        .setCurrency(currency)
+        .setTypeId(getUnzer().createPaymentType(invoiceSecured).getId())
+        .setReturnUrl(returnUrl)
+        .setCustomerId(getUnzer().createCustomerIfPresent(customer).getId())
+        .setBasketId(getUnzer().createBasket(basket).getId())
+        .setInvoiceId(invoiceId);
+  }
 }

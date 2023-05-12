@@ -233,6 +233,7 @@
                                 <exclude>**/*.xml</exclude>
                                 <exclude>src/test/resources/**</exclude>
                                 <exclude>src/main/resources/**</exclude>
+                                <exclude>*</exclude>
                             </excludes>
                         </licenseSet>
                     </licenseSets>

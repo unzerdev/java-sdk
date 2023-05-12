@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package com.unzer.payment.service;
 
 import com.unzer.payment.Paypage;
@@ -24,41 +25,44 @@ import com.unzer.payment.communication.json.JsonPaypage;
 import com.unzer.payment.communication.mapper.JsonToBusinessClassMapper;
 
 public class PaypageService {
-    private UnzerRestCommunication restCommunication;
+  private final UnzerRestCommunication restCommunication;
 
-    private UrlUtil urlUtil;
-    private JsonToBusinessClassMapper jsonToBusinessClassMapper = new JsonToBusinessClassMapper();
-    private Unzer unzer;
+  private final UrlUtil urlUtil;
+  private final JsonToBusinessClassMapper jsonToObjectMapper = new JsonToBusinessClassMapper();
+  private final Unzer unzer;
 
-    /**
-     * Creates the {@code PaymentService} with the given {@code Unzer} facade,
-     * bound to the given {@code UnzerRestCommunication} implementation used for
-     * http-communication.
-     *
-     * @param unzer             - the {@code Unzer} Facade
-     * @param restCommunication - the implementation of {@code UnzerRestCommunication} to be used for network communication.
-     */
-    public PaypageService(Unzer unzer, UnzerRestCommunication restCommunication) {
-        super();
-        this.unzer = unzer;
-        this.urlUtil = new UrlUtil(unzer.getPrivateKey());
-        this.restCommunication = restCommunication;
-    }
+  /**
+   * Creates the {@code PaymentService} with the given {@code Unzer} facade,
+   * bound to the given {@code UnzerRestCommunication} implementation used for
+   * http-communication.
+   *
+   * @param unzer             - the {@code Unzer} Facade
+   * @param restCommunication - the implementation of {@code UnzerRestCommunication} to be
+   *                          used for network communication.
+   */
+  public PaypageService(Unzer unzer, UnzerRestCommunication restCommunication) {
+    super();
+    this.unzer = unzer;
+    this.urlUtil = new UrlUtil(unzer.getPrivateKey());
+    this.restCommunication = restCommunication;
+  }
 
-    public Paypage initialize(Paypage paypage) throws HttpCommunicationException {
-        return initialize(paypage, urlUtil.getInitPaypageUrl(paypage));
-    }
+  public Paypage initialize(Paypage paypage) throws HttpCommunicationException {
+    return initialize(paypage, urlUtil.getInitPaypageUrl(paypage));
+  }
 
-    public Paypage initialize(Paypage paypage, String url) throws HttpCommunicationException {
-        String response = restCommunication.httpPost(url, unzer.getPrivateKey(), jsonToBusinessClassMapper.map(paypage));
-        JsonPaypage jsonPaypage = new JsonParser().fromJson(response, JsonPaypage.class);
-        paypage = jsonToBusinessClassMapper.mapToBusinessObject(paypage, jsonPaypage);
-        return paypage;
-    }
+  public Paypage initialize(Paypage paypage, String url) throws HttpCommunicationException {
+    String response = restCommunication.httpPost(url, unzer.getPrivateKey(),
+        jsonToObjectMapper.map(paypage));
+    JsonPaypage jsonPaypage = new JsonParser().fromJson(response, JsonPaypage.class);
+    paypage = jsonToObjectMapper.mapToBusinessObject(paypage, jsonPaypage);
+    return paypage;
+  }
 
-    public Paypage fetch(String paypageId) {
-        String response = restCommunication.httpGet(urlUtil.getHttpGetUrl(new Paypage(), paypageId), unzer.getPrivateKey());
-        JsonPaypage jsonPaypage = new JsonParser().fromJson(response, JsonPaypage.class);
-        return jsonToBusinessClassMapper.mapToBusinessObject(new Paypage(), jsonPaypage);
-    }
+  public Paypage fetch(String paypageId) {
+    String response = restCommunication.httpGet(urlUtil.getHttpGetUrl(new Paypage(), paypageId),
+        unzer.getPrivateKey());
+    JsonPaypage jsonPaypage = new JsonParser().fromJson(response, JsonPaypage.class);
+    return jsonToObjectMapper.mapToBusinessObject(new Paypage(), jsonPaypage);
+  }
 }

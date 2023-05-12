@@ -13,11 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package com.unzer.payment;
 
 import com.unzer.payment.communication.json.JsonObject;
 import com.unzer.payment.paymenttypes.PaymentType;
-
 import java.math.BigDecimal;
 
 /**
@@ -27,64 +27,64 @@ import java.math.BigDecimal;
  */
 public class Cancel extends AbstractTransaction<Payment> {
 
-    private BigDecimal amountGross;
-    private BigDecimal amountNet;
-    private BigDecimal amountVat;
-    private ReasonCode reasonCode;
+  private BigDecimal amountGross;
+  private BigDecimal amountNet;
+  private BigDecimal amountVat;
+  private ReasonCode reasonCode;
 
-    public Cancel() {
-        super();
-    }
+  public Cancel() {
+    super();
+  }
 
-    @Deprecated
-    public Cancel(Unzer unzer) {
-        super(unzer);
-    }
+  @Deprecated
+  public Cancel(Unzer unzer) {
+    super(unzer);
+  }
 
-    @Override
-    public String getTypeUrl() {
-        return "payments/<paymentId>/authorize/cancels";
-    }
+  @Override
+  public String getTypeUrl() {
+    return "payments/<paymentId>/authorize/cancels";
+  }
 
-    @Override
-    public PaymentType map(PaymentType paymentType, JsonObject jsonObject) {
-        return null;
-    }
+  @Override
+  public PaymentType map(PaymentType paymentType, JsonObject jsonObject) {
+    return null;
+  }
 
-    public BigDecimal getAmountGross() {
-        return amountGross;
-    }
+  public BigDecimal getAmountGross() {
+    return amountGross;
+  }
 
-    public void setAmountGross(BigDecimal amountGross) {
-        this.amountGross = amountGross;
-    }
+  public void setAmountGross(BigDecimal amountGross) {
+    this.amountGross = amountGross;
+  }
 
-    public BigDecimal getAmountNet() {
-        return amountNet;
-    }
+  public BigDecimal getAmountNet() {
+    return amountNet;
+  }
 
-    public void setAmountNet(BigDecimal amountNet) {
-        this.amountNet = amountNet;
-    }
+  public void setAmountNet(BigDecimal amountNet) {
+    this.amountNet = amountNet;
+  }
 
-    public BigDecimal getAmountVat() {
-        return amountVat;
-    }
+  public BigDecimal getAmountVat() {
+    return amountVat;
+  }
 
-    public void setAmountVat(BigDecimal amountVat) {
-        this.amountVat = amountVat;
-    }
+  public void setAmountVat(BigDecimal amountVat) {
+    this.amountVat = amountVat;
+  }
 
-    public ReasonCode getReasonCode() {
-        return reasonCode;
-    }
+  public ReasonCode getReasonCode() {
+    return reasonCode;
+  }
 
-    public Cancel setReasonCode(ReasonCode reasonCode) {
-        this.reasonCode = reasonCode;
-        return this;
-    }
+  public Cancel setReasonCode(ReasonCode reasonCode) {
+    this.reasonCode = reasonCode;
+    return this;
+  }
 
-    public enum ReasonCode {
-        CANCEL, RETURN, CREDIT
-    }
+  public enum ReasonCode {
+    CANCEL, RETURN, CREDIT
+  }
 }

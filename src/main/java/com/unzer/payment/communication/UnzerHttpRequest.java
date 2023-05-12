@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package com.unzer.payment.communication;
 
 import java.net.URI;
@@ -25,15 +26,16 @@ import java.net.URISyntaxException;
  */
 public interface UnzerHttpRequest {
 
-    void addHeader(String header, String value);
+  void addHeader(String header, String value);
 
-    URI getURI() throws URISyntaxException;
+  @SuppressWarnings("checkstyle:AbbreviationAsWordInName")
+  URI getURI() throws URISyntaxException;
 
-    void setContent(String content, String encoding);
+  void setContent(String content, String encoding);
 
-    UnzerHttpMethod getMethod();
+  UnzerHttpMethod getMethod();
 
-    enum UnzerHttpMethod {
-        GET, POST, DELETE, PUT, PATCH
-    }
+  enum UnzerHttpMethod {
+    GET, POST, DELETE, PUT, PATCH
+  }
 }

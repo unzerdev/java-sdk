@@ -13,44 +13,45 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package com.unzer.payment.communication.json;
 
 public class JsonError {
-    private String code;
-    private String merchantMessage;
-    private String customerMessage;
-    private String customer;
+  private String code;
+  private String merchantMessage;
+  private String customerMessage;
+  private String customer;
 
-    public String getCode() {
-        return code;
-    }
+  public String getCode() {
+    return code;
+  }
 
-    public void setCode(String code) {
-        this.code = code;
-    }
+  public void setCode(String code) {
+    this.code = code;
+  }
 
-    public String getMerchantMessage() {
-        return merchantMessage;
-    }
+  public String getMerchantMessage() {
+    return merchantMessage;
+  }
 
-    public void setMerchantMessage(String merchantMessage) {
-        this.merchantMessage = merchantMessage;
-    }
+  public void setMerchantMessage(String merchantMessage) {
+    this.merchantMessage = merchantMessage;
+  }
 
-    public String getCustomerMessage() {
-        return customerMessage;
-    }
+  public String getCustomerMessage() {
+    return customerMessage;
+  }
 
-    public void setCustomerMessage(String customerMessage) {
-        this.customerMessage = customerMessage;
-    }
+  public void setCustomerMessage(String customerMessage) {
+    this.customerMessage = customerMessage;
+  }
 
-    public String getCustomer() {
-        return customer;
-    }
+  public String getCustomer() {
+    return customer;
+  }
 
-    public void setCustomer(String customer) {
-        this.customer = customer;
-    }
+  public void setCustomer(String customer) {
+    this.customer = customer;
+  }
 
 }

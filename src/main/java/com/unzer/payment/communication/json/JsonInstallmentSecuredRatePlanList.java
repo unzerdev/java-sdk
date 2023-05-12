@@ -13,30 +13,30 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package com.unzer.payment.communication.json;
 
 import com.unzer.payment.business.paymenttypes.InstallmentSecuredRatePlan;
-
 import java.util.ArrayList;
 import java.util.List;
 
 public class JsonInstallmentSecuredRatePlanList {
-    private String code;
-    private List<InstallmentSecuredRatePlan> entity = new ArrayList<InstallmentSecuredRatePlan>();
+  private String code;
+  private List<InstallmentSecuredRatePlan> entity = new ArrayList<InstallmentSecuredRatePlan>();
 
-    public String getCode() {
-        return code;
-    }
+  public String getCode() {
+    return code;
+  }
 
-    public void setCode(String code) {
-        this.code = code;
-    }
+  public void setCode(String code) {
+    this.code = code;
+  }
 
-    public List<InstallmentSecuredRatePlan> getEntity() {
-        return entity;
-    }
+  public List<InstallmentSecuredRatePlan> getEntity() {
+    return entity;
+  }
 
-    public void setEntity(List<InstallmentSecuredRatePlan> entity) {
-        this.entity = entity;
-    }
+  public void setEntity(List<InstallmentSecuredRatePlan> entity) {
+    this.entity = entity;
+  }
 }

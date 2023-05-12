@@ -13,14 +13,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package com.unzer.payment.paymenttypes;
 
 import com.unzer.payment.communication.json.JsonObject;
 
 public interface PaymentType {
-    String getTypeUrl();
+  String getTypeUrl();
 
-    String getId();
+  String getId();
 
-    PaymentType map(PaymentType paymentType, JsonObject jsonObject);
+  PaymentType map(PaymentType paymentType, JsonObject jsonObject);
 }

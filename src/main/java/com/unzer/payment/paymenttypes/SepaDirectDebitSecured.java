@@ -13,17 +13,18 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package com.unzer.payment.paymenttypes;
 
 public class SepaDirectDebitSecured extends SepaDirectDebit implements PaymentType {
 
-    public SepaDirectDebitSecured(String iban) {
-        super(iban);
-    }
+  public SepaDirectDebitSecured(String iban) {
+    super(iban);
+  }
 
-    @Override
-    public String getTypeUrl() {
-        return "types/sepa-direct-debit-secured";
-    }
+  @Override
+  public String getTypeUrl() {
+    return "types/sepa-direct-debit-secured";
+  }
 
 }

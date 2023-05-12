@@ -13,26 +13,27 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package com.unzer.payment.communication.json;
 
 public class JsonIdObject implements JsonObject {
-    private String id;
-    private Boolean recurring;
-    private JsonGeoLocation geoLocation;
+  private String id;
+  private Boolean recurring;
+  private JsonGeoLocation geoLocation;
 
-    public String getId() {
-        return id;
-    }
+  public String getId() {
+    return id;
+  }
 
-    public void setId(String id) {
-        this.id = id;
-    }
+  public void setId(String id) {
+    this.id = id;
+  }
 
-    public Boolean getRecurring() {
-        return recurring;
-    }
+  public Boolean getRecurring() {
+    return recurring;
+  }
 
-    public JsonGeoLocation getGeoLocation() {
-        return geoLocation;
-    }
+  public JsonGeoLocation getGeoLocation() {
+    return geoLocation;
+  }
 }

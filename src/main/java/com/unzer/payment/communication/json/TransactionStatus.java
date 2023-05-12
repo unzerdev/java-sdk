@@ -13,16 +13,23 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package com.unzer.payment.communication.json;
 
 public interface TransactionStatus {
-    Boolean getSuccess();
-    Boolean getError();
-    Boolean getPending();
-    Boolean getResumed();
+  Boolean getSuccess();
 
-    void setSuccess(Boolean value);
-    void setError(Boolean value);
-    void setPending(Boolean value);
-    void setResumed(Boolean value);
+  void setSuccess(Boolean value);
+
+  Boolean getError();
+
+  void setError(Boolean value);
+
+  Boolean getPending();
+
+  void setPending(Boolean value);
+
+  Boolean getResumed();
+
+  void setResumed(Boolean value);
 }

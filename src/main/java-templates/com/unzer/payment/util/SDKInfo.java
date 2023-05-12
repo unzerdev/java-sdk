@@ -13,8 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package com.unzer.payment.util;
 
+@SuppressWarnings("checkstyle:AbbreviationAsWordInName")
 public class SDKInfo {
-    public final static String VERSION = "${project.version}";
+  public static final String VERSION = "${project.version}";
 }

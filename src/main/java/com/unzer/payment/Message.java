@@ -13,12 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package com.unzer.payment;
 
 public interface Message {
-    String getCode();
+  String getCode();
 
-    String getCustomer();
+  String getCustomer();
 
-    String getMerchant();
+  String getMerchant();
 }

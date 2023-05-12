@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package com.unzer.payment;
 
 import com.unzer.payment.communication.json.JsonObject;
@@ -20,23 +21,23 @@ import com.unzer.payment.paymenttypes.PaymentType;
 
 public class Shipment extends AbstractTransaction<Payment> {
 
-    public Shipment() {
-        super();
-    }
+  public Shipment() {
+    super();
+  }
 
-    public Shipment(String invoiceId, String orderId) {
-        super();
-        setOrderId(orderId);
-        setInvoiceId(invoiceId);
-    }
+  public Shipment(String invoiceId, String orderId) {
+    super();
+    setOrderId(orderId);
+    setInvoiceId(invoiceId);
+  }
 
-    @Override
-    public String getTypeUrl() {
-        return "payments/<paymentId>/shipments";
-    }
+  @Override
+  public String getTypeUrl() {
+    return "payments/<paymentId>/shipments";
+  }
 
-    @Override
-    public PaymentType map(PaymentType paymentType, JsonObject jsonObject) {
-        return null;
-    }
+  @Override
+  public PaymentType map(PaymentType paymentType, JsonObject jsonObject) {
+    return null;
+  }
 }
