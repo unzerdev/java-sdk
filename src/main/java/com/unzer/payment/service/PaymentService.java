@@ -21,9 +21,11 @@ import com.unzer.payment.communication.HttpCommunicationException;
 import com.unzer.payment.communication.JsonParser;
 import com.unzer.payment.communication.UnzerRestCommunication;
 import com.unzer.payment.communication.json.*;
+import com.unzer.payment.communication.json.paylater.JsonInstallmentPlans;
 import com.unzer.payment.communication.mapper.JsonToBusinessClassMapper;
 import com.unzer.payment.models.PaylaterInvoiceConfig;
 import com.unzer.payment.models.PaylaterInvoiceConfigRequest;
+import com.unzer.payment.models.paylater.InstallmentPlansRequest;
 import com.unzer.payment.paymenttypes.*;
 
 import java.math.BigDecimal;
@@ -60,6 +62,18 @@ public class PaymentService {
         this.urlUtil = new UrlUtil(unzer.getPrivateKey());
         this.restCommunication = restCommunication;
         this.jsonParser = new JsonParser();
+    }
+
+    public PaylaterInstallmentPlans fetchPaylaterInstallmentPlans(InstallmentPlansRequest installmentPlansRequest) throws HttpCommunicationException {
+        String url = this.urlUtil.getApiEndpoint() + installmentPlansRequest.getRequestUrl();
+
+        String response = restCommunication.httpGet(
+                url,
+                unzer.getPrivateKey());
+
+        JsonInstallmentPlans json = jsonParser.fromJson(response,
+                JsonInstallmentPlans.class);
+        return jsonToBusinessClassMapper.mapToBusinessObject(new PaylaterInstallmentPlans(), json);
     }
 
     public List<InstallmentSecuredRatePlan> installmentSecuredPlan(BigDecimal amount, Currency currency,
@@ -610,6 +624,8 @@ public class PaymentService {
                 return new JsonInstallmentSecuredRatePlan();
             case BANCONTACT:
                 return new JsonBancontact();
+            case PAYLATER_INSTALLMENT:
+                return new JsonPaylaterInstallment();
             default:
                 throw new PaymentException("Type '" + typeId + "' is currently not supported by the SDK");
         }
@@ -652,6 +668,8 @@ public class PaymentService {
                 return new Sofort();
             case PIS:
                 return new Pis();
+            case PAYLATER_INSTALLMENT:
+                return new PaylaterInstallment();
             case ALIPAY:
                 return new Alipay();
             case WECHATPAY:

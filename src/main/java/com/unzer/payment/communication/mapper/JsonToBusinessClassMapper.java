@@ -17,9 +17,11 @@ package com.unzer.payment.communication.mapper;
 
 import com.unzer.payment.*;
 import com.unzer.payment.communication.json.*;
+import com.unzer.payment.communication.json.paylater.JsonInstallmentPlans;
 import com.unzer.payment.marketplace.MarketplaceCancel;
 import com.unzer.payment.paymenttypes.PaymentType;
 
+import java.util.List;
 import java.util.Locale;
 import java.util.Optional;
 
@@ -482,6 +484,10 @@ public class JsonToBusinessClassMapper {
     }
 
     public PaymentType mapToBusinessObject(PaymentType paymentType, JsonIdObject jsonPaymentType) {
+        return paymentType.map(paymentType, jsonPaymentType);
+    }
+
+    public PaylaterInstallmentPlans mapToBusinessObject(PaylaterInstallmentPlans paymentType, JsonInstallmentPlans jsonPaymentType) {
         return paymentType.map(paymentType, jsonPaymentType);
     }
 }

@@ -25,6 +25,7 @@ import com.unzer.payment.marketplace.MarketplaceCancel;
 import com.unzer.payment.marketplace.MarketplaceCharge;
 import com.unzer.payment.marketplace.MarketplacePayment;
 import com.unzer.payment.models.*;
+import com.unzer.payment.models.paylater.InstallmentPlansRequest;
 import com.unzer.payment.paymenttypes.PaymentType;
 import com.unzer.payment.service.LinkpayService;
 import com.unzer.payment.service.PaymentService;
@@ -1248,6 +1249,10 @@ public class Unzer {
 
     public List<InstallmentSecuredRatePlan> installmentSecuredRates(BigDecimal amount, Currency currency, BigDecimal effectiveInterestRate, Date orderDate) throws HttpCommunicationException {
         return paymentService.installmentSecuredPlan(amount, currency, effectiveInterestRate, orderDate);
+    }
+
+    public PaylaterInstallmentPlans fetchPaylaterInstallmentPlans(InstallmentPlansRequest installmentPlansRequest) throws HttpCommunicationException {
+        return paymentService.fetchPaylaterInstallmentPlans(installmentPlansRequest);
     }
 
     public String getPrivateKey() {

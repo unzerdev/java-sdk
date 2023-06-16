@@ -24,8 +24,8 @@ public enum PaymentTypeEnum {
     @Deprecated
     INVOICE_GUARANTEED("ivg"),
     @Deprecated
-	INVOICE_FACTORING("ivf"),
-	@Deprecated
+    INVOICE_FACTORING("ivf"),
+    @Deprecated
     INVOICE_SECURED("ivs"),
     PAYPAL("ppl"),
     PREPAYMENT("ppy"),
@@ -41,6 +41,7 @@ public enum PaymentTypeEnum {
     HIRE_PURCHASE_RATE_PLAN("hdd"),
     INSTALLMENT_SECURED_RATE_PLAN("ins"),
     BANCONTACT("bct"),
+    PAYLATER_INSTALLMENT("pit"),
     PF_CARD("pfc"),
     PF_EFINANCE("pfe"),
     UNZER_PAYLATER_INVOICE("piv"),
