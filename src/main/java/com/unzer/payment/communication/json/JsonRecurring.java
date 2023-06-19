@@ -16,6 +16,8 @@
 
 package com.unzer.payment.communication.json;
 
+import com.google.gson.annotations.JsonAdapter;
+import com.unzer.payment.communication.JsonDateTimeConverter;
 import com.unzer.payment.models.AdditionalTransactionData;
 import java.net.URL;
 import java.util.Date;
@@ -25,6 +27,8 @@ public class JsonRecurring extends JsonIdObject implements JsonObject, Transacti
   private Boolean isPending;
   private Boolean isError;
   private JsonMessage message;
+
+  @JsonAdapter(JsonDateTimeConverter.class)
   private Date date;
 
   private URL returnUrl;

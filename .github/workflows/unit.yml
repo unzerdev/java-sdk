@@ -23,8 +23,15 @@ jobs:
         run: sudo timedatectl set-timezone Europe/Berlin
       - name: Run unit tests
         env:
-          PAPI_PUBLIC_KEY: ${{ secrets.PAPI_PUBLIC_KEY }}
-          PAPI_PRIVATE_KEY: ${{ secrets.PAPI_PRIVATE_KEY }}
-          PAPI_PRIVATE_KEY_NO_3DS: ${{ secrets.PAPI_PRIVATE_KEY_NO_3DS }}
-          PAPI_PRIVATE_JAVA_MERCH_KEY: ${{ secrets.PAPI_PRIVATE_JAVA_MERCH_KEY }}
-        run: mvn -B test --file pom.xml -Dpublickey1="$PAPI_PUBLIC_KEY" -Dprivatekey1="$PAPI_PRIVATE_KEY" -Dprivatekey2="$PAPI_PRIVATE_KEY_NO_3DS" -Dprivatekey3="$PAPI_PRIVATE_JAVA_MERCH_KEY" -DmarketplacePrivatekey="$PAPI_PRIVATE_KEY"
+          UNZER_PUBLIC_KEY: ${{ secrets.UNZER_PUBLIC_KEY }}
+          UNZER_DEFAULT_PRIVATE_KEY: ${{ secrets.UNZER_PRIVATE_KEY }}
+          UNZER_NO3DS_PRIVATE_KEY: ${{ secrets.UNZER_PRIVATE_KEY }}
+          UNZER_LEGACY_PRIVATE_KEY: ${{ secrets.UNZER_PRIVATE_KEY }}
+          UNZER_ALT_LEGACY_PRIVATE_KEY: ${{ secrets.UNZER_PRIVATE_KEY }}
+        run: |
+          mvn -B test --file pom.xml \
+          -DdefaultPublicKey="$UNZER_PUBLIC_KEY" \
+          -DdefaultPrivateKey="$UNZER_DEFAULT_PRIVATE_KEY" \
+          -Dno3dsPrivateKey="$UNZER_NO3DS_PRIVATE_KEY" \
+          -DlegacyPrivateKey="$UNZER_LEGACY_PRIVATE_KEY" \
+          -DaltLegacyPrivateKey="$UNZER_ALT_LEGACY_PRIVATE_KEY"

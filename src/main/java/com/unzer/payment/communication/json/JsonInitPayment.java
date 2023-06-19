@@ -16,6 +16,8 @@
 
 package com.unzer.payment.communication.json;
 
+import com.google.gson.annotations.JsonAdapter;
+import com.unzer.payment.communication.JsonDateTimeConverter;
 import com.unzer.payment.models.AdditionalTransactionData;
 import java.math.BigDecimal;
 import java.net.URL;
@@ -28,8 +30,8 @@ public class JsonInitPayment extends JsonIdObject implements JsonObject, Transac
   private Boolean isError;
   private Boolean isResumed;
   private JsonMessage message;
+  @JsonAdapter(JsonDateTimeConverter.class)
   private Date date;
-
   private String orderId;
   private String invoiceId;
   private BigDecimal amount;

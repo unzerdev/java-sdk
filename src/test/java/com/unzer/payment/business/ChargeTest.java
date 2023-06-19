@@ -36,7 +36,7 @@ import java.time.LocalDate;
 import java.util.Currency;
 
 import static com.unzer.payment.business.BasketV1TestData.getMaxTestBasketV1;
-import static com.unzer.payment.business.Keys.KEY_WITH_3DS;
+import static com.unzer.payment.business.Keys.DEFAULT;
 import static com.unzer.payment.business.Keys.MARKETPLACE_KEY;
 import static com.unzer.payment.util.Uuid.generateUuid;
 import static org.junit.jupiter.api.Assertions.*;
@@ -80,7 +80,7 @@ public class ChargeTest extends AbstractPaymentTest {
 
     @Test
     public void testChargeWithPaymentType() throws MalformedURLException, HttpCommunicationException {
-        Unzer unzer = getUnzer(KEY_WITH_3DS);LocalDate locaDateNow = LocalDate.now();
+        Unzer unzer = getUnzer(DEFAULT);LocalDate locaDateNow = LocalDate.now();
         Card card = new Card("4444333322221111", "12/" + (locaDateNow.getYear() + 1));
         Charge charge = unzer.charge(BigDecimal.ONE, Currency.getInstance("EUR"), card, new URL("https://www.unzer.com"), false);
         assertNotNull(charge);
@@ -100,7 +100,7 @@ public class ChargeTest extends AbstractPaymentTest {
 
     @Test
     public void testChargeWithCustomerTypeReturnUrl() throws MalformedURLException, HttpCommunicationException {
-        Unzer unzer = getUnzer(KEY_WITH_3DS);LocalDate locaDateNow = LocalDate.now();
+        Unzer unzer = getUnzer(DEFAULT);LocalDate locaDateNow = LocalDate.now();
         Card card = new Card("4444333322221111", "12/" + (locaDateNow.getYear() + 1));
         Customer customer = new Customer("Max", "Mustermann");
         Charge charge = unzer.charge(BigDecimal.ONE, Currency.getInstance("EUR"), card, new URL("https://www.unzer.com"), customer, false);
@@ -121,7 +121,7 @@ public class ChargeTest extends AbstractPaymentTest {
 
     @Test
     public void testChargeReturnPayment() throws MalformedURLException, HttpCommunicationException {
-        Unzer unzer = getUnzer(KEY_WITH_3DS);LocalDate locaDateNow = LocalDate.now();
+        Unzer unzer = getUnzer(DEFAULT);LocalDate locaDateNow = LocalDate.now();
         Card card = new Card("4444333322221111", "12/" + (locaDateNow.getYear() + 1));
         Charge charge = unzer.charge(BigDecimal.ONE, Currency.getInstance("EUR"), card, new URL("https://www.unzer.com"), false);
         assertNotNull(charge);

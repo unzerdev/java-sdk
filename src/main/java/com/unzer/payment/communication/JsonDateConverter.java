@@ -31,6 +31,11 @@ import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
 
+/**
+ * Converts java.util.Date to/from date string.
+ * Format yyyy-MM-dd.
+ * Time not allowed.
+ */
 public class JsonDateConverter
     implements JsonDeserializer<Date>, JsonSerializer<Date> {
 
@@ -44,22 +49,15 @@ public class JsonDateConverter
     return new JsonPrimitive(new SimpleDateFormat("yyyy-MM-dd").format(src));
   }
 
-  Date getDate(JsonElement json) {
+  private Date getDate(JsonElement json) {
     String jsonValue = json.getAsJsonPrimitive().getAsString();
 
     if (jsonValue == null || "".equalsIgnoreCase(jsonValue)) {
       return null;
     }
-    if (jsonValue.length() == 10) {
-      DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-      LocalDate parsedLocalDate = LocalDate.parse(jsonValue, formatter);
-      return Date.from(parsedLocalDate.atStartOfDay().atZone(ZoneId.of("UTC")).toInstant());
-    } else {
-      DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-      ZonedDateTime parsedZonedDateTime =
-          LocalDateTime.parse(jsonValue, formatter).atZone(ZoneId.of("UTC"));
-      return Date.from(parsedZonedDateTime.toInstant());
-    }
-  }
 
+    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+    LocalDate parsedLocalDate = LocalDate.parse(jsonValue, formatter);
+    return Date.from(parsedLocalDate.atStartOfDay().atZone(ZoneId.of("UTC")).toInstant());
+  }
 }
