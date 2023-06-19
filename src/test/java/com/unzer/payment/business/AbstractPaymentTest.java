@@ -307,7 +307,7 @@ public abstract class AbstractPaymentTest {
         return customer;
     }
 
-    protected Customer getMaximumUnknownCustomer(String customerId) throws ParseException {
+    protected Customer getMaximumUnknownCustomer(String customerId) {
         Customer customer = new Customer("XXX", "YYY");
         customer
                 .setCustomerId(customerId)
