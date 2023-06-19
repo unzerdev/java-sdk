@@ -24,10 +24,10 @@ jobs:
       - name: Run unit tests
         env:
           UNZER_PUBLIC_KEY: ${{ secrets.UNZER_PUBLIC_KEY }}
-          UNZER_DEFAULT_PRIVATE_KEY: ${{ secrets.UNZER_PRIVATE_KEY }}
-          UNZER_NO3DS_PRIVATE_KEY: ${{ secrets.UNZER_PRIVATE_KEY }}
-          UNZER_LEGACY_PRIVATE_KEY: ${{ secrets.UNZER_PRIVATE_KEY }}
-          UNZER_ALT_LEGACY_PRIVATE_KEY: ${{ secrets.UNZER_PRIVATE_KEY }}
+          UNZER_DEFAULT_PRIVATE_KEY: ${{ secrets.UNZER_DEFAULT_PRIVATE_KEY }}
+          UNZER_NO3DS_PRIVATE_KEY: ${{ secrets.UNZER_NO3DS_PRIVATE_KEY }}
+          UNZER_LEGACY_PRIVATE_KEY: ${{ secrets.UNZER_LEGACY_PRIVATE_KEY }}
+          UNZER_ALT_LEGACY_PRIVATE_KEY: ${{ secrets.UNZER_ALT_LEGACY_PRIVATE_KEY }}
         run: |
           mvn -B test --file pom.xml \
           -DdefaultPublicKey="$UNZER_PUBLIC_KEY" \
