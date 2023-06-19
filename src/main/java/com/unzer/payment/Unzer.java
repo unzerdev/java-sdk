@@ -30,6 +30,7 @@ import com.unzer.payment.models.CardTransactionData;
 import com.unzer.payment.models.CustomerType;
 import com.unzer.payment.models.PaylaterInvoiceConfig;
 import com.unzer.payment.models.PaylaterInvoiceConfigRequest;
+import com.unzer.payment.models.paylater.InstallmentPlansRequest;
 import com.unzer.payment.paymenttypes.PaymentType;
 import com.unzer.payment.service.LinkpayService;
 import com.unzer.payment.service.PaymentService;
@@ -1388,6 +1389,10 @@ public class Unzer {
     recurring.setReturnUrl(returnUrl);
     recurring.setMetadataId(metadataId);
     return recurring;
+  }
+
+  public PaylaterInstallmentPlans fetchPaylaterInstallmentPlans(InstallmentPlansRequest installmentPlansRequest) throws HttpCommunicationException {
+      return paymentService.fetchPaylaterInstallmentPlans(installmentPlansRequest);
   }
 
   public List<InstallmentSecuredRatePlan> installmentSecuredRates(BigDecimal amount,

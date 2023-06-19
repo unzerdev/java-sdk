@@ -16,19 +16,7 @@
 
 package com.unzer.payment.communication.mapper;
 
-import com.unzer.payment.AbstractPayment;
-import com.unzer.payment.AbstractTransaction;
-import com.unzer.payment.Authorization;
-import com.unzer.payment.Cancel;
-import com.unzer.payment.CommercialSector;
-import com.unzer.payment.Customer;
-import com.unzer.payment.CustomerCompanyData;
-import com.unzer.payment.Linkpay;
-import com.unzer.payment.Payout;
-import com.unzer.payment.Paypage;
-import com.unzer.payment.Processing;
-import com.unzer.payment.Recurring;
-import com.unzer.payment.Shipment;
+import com.unzer.payment.*;
 import com.unzer.payment.communication.json.JsonAuthorization;
 import com.unzer.payment.communication.json.JsonCancel;
 import com.unzer.payment.communication.json.JsonCompanyInfo;
@@ -46,8 +34,10 @@ import com.unzer.payment.communication.json.JsonResources;
 import com.unzer.payment.communication.json.JsonShipment;
 import com.unzer.payment.communication.json.JsonState;
 import com.unzer.payment.communication.json.TransactionStatus;
+import com.unzer.payment.communication.json.paylater.JsonInstallmentPlans;
 import com.unzer.payment.marketplace.MarketplaceCancel;
 import com.unzer.payment.paymenttypes.PaymentType;
+import java.util.List;
 import java.util.Locale;
 import java.util.Optional;
 
@@ -521,6 +511,10 @@ public class JsonToBusinessClassMapper {
   }
 
   public PaymentType mapToBusinessObject(PaymentType paymentType, JsonIdObject jsonPaymentType) {
+    return paymentType.map(paymentType, jsonPaymentType);
+  }
+
+  public PaylaterInstallmentPlans mapToBusinessObject(PaylaterInstallmentPlans paymentType, JsonInstallmentPlans jsonPaymentType) {
     return paymentType.map(paymentType, jsonPaymentType);
   }
 }

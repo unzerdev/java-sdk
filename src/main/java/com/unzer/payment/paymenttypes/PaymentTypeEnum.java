@@ -46,6 +46,7 @@ public enum PaymentTypeEnum {
   PF_EFINANCE("pfe"),
   UNZER_PAYLATER_INVOICE("piv"),
   KLARNA("kla"),
+  PAYLATER_INSTALLMENT("pit"),
   UNKNOWN("unknown");
 
   private final String shortName;

@@ -16,70 +16,19 @@
 
 package com.unzer.payment.service;
 
-import com.unzer.payment.AbstractPayment;
-import com.unzer.payment.Authorization;
-import com.unzer.payment.Basket;
-import com.unzer.payment.Cancel;
-import com.unzer.payment.Charge;
-import com.unzer.payment.Customer;
-import com.unzer.payment.Metadata;
-import com.unzer.payment.Payment;
-import com.unzer.payment.PaymentException;
-import com.unzer.payment.Payout;
-import com.unzer.payment.Recurring;
-import com.unzer.payment.Shipment;
-import com.unzer.payment.Unzer;
+import com.unzer.payment.*;
 import com.unzer.payment.business.paymenttypes.InstallmentSecuredRatePlan;
 import com.unzer.payment.communication.HttpCommunicationException;
 import com.unzer.payment.communication.JsonParser;
 import com.unzer.payment.communication.UnzerRestCommunication;
-import com.unzer.payment.communication.json.JsonApplepayResponse;
-import com.unzer.payment.communication.json.JsonAuthorization;
-import com.unzer.payment.communication.json.JsonBancontact;
-import com.unzer.payment.communication.json.JsonCancel;
-import com.unzer.payment.communication.json.JsonCard;
-import com.unzer.payment.communication.json.JsonCharge;
-import com.unzer.payment.communication.json.JsonCustomer;
-import com.unzer.payment.communication.json.JsonIdObject;
-import com.unzer.payment.communication.json.JsonIdeal;
-import com.unzer.payment.communication.json.JsonInstallmentSecuredRatePlan;
-import com.unzer.payment.communication.json.JsonInstallmentSecuredRatePlanList;
-import com.unzer.payment.communication.json.JsonObject;
-import com.unzer.payment.communication.json.JsonPayment;
-import com.unzer.payment.communication.json.JsonPayout;
-import com.unzer.payment.communication.json.JsonPaypal;
-import com.unzer.payment.communication.json.JsonPis;
-import com.unzer.payment.communication.json.JsonRecurring;
-import com.unzer.payment.communication.json.JsonSepaDirectDebit;
-import com.unzer.payment.communication.json.JsonShipment;
-import com.unzer.payment.communication.json.JsonTransaction;
+import com.unzer.payment.communication.json.*;
+import com.unzer.payment.communication.json.paylater.JsonInstallmentPlans;
 import com.unzer.payment.communication.mapper.JsonToBusinessClassMapper;
 import com.unzer.payment.models.PaylaterInvoiceConfig;
 import com.unzer.payment.models.PaylaterInvoiceConfigRequest;
-import com.unzer.payment.paymenttypes.AbstractPaymentType;
-import com.unzer.payment.paymenttypes.Alipay;
-import com.unzer.payment.paymenttypes.Applepay;
-import com.unzer.payment.paymenttypes.Bancontact;
-import com.unzer.payment.paymenttypes.Card;
-import com.unzer.payment.paymenttypes.Eps;
-import com.unzer.payment.paymenttypes.Giropay;
-import com.unzer.payment.paymenttypes.Ideal;
-import com.unzer.payment.paymenttypes.Invoice;
-import com.unzer.payment.paymenttypes.InvoiceSecured;
-import com.unzer.payment.paymenttypes.Klarna;
-import com.unzer.payment.paymenttypes.PaylaterInvoice;
-import com.unzer.payment.paymenttypes.PaymentType;
-import com.unzer.payment.paymenttypes.PaymentTypeEnum;
-import com.unzer.payment.paymenttypes.Paypal;
-import com.unzer.payment.paymenttypes.Pis;
-import com.unzer.payment.paymenttypes.PostFinanceCard;
-import com.unzer.payment.paymenttypes.PostFinanceEFinance;
-import com.unzer.payment.paymenttypes.Prepayment;
-import com.unzer.payment.paymenttypes.Przelewy24;
-import com.unzer.payment.paymenttypes.SepaDirectDebit;
-import com.unzer.payment.paymenttypes.SepaDirectDebitSecured;
-import com.unzer.payment.paymenttypes.Sofort;
-import com.unzer.payment.paymenttypes.Wechatpay;
+import com.unzer.payment.models.paylater.InstallmentPlansRequest;
+import com.unzer.payment.paymenttypes.*;
+
 import java.math.BigDecimal;
 import java.net.URL;
 import java.util.ArrayList;
@@ -120,6 +69,18 @@ public class PaymentService {
     this.restCommunication = restCommunication;
     this.jsonParser = new JsonParser();
   }
+
+    public PaylaterInstallmentPlans fetchPaylaterInstallmentPlans(InstallmentPlansRequest installmentPlansRequest) throws HttpCommunicationException {
+        String url = this.urlUtil.getApiEndpoint() + installmentPlansRequest.getRequestUrl();
+
+        String response = restCommunication.httpGet(
+                url,
+                unzer.getPrivateKey());
+
+        JsonInstallmentPlans json = jsonParser.fromJson(response,
+                JsonInstallmentPlans.class);
+        return jsonToBusinessClassMapper.mapToBusinessObject(new PaylaterInstallmentPlans(), json);
+    }
 
   public List<InstallmentSecuredRatePlan> installmentSecuredPlan(BigDecimal amount,
                                                                  Currency currency,
@@ -211,6 +172,8 @@ public class PaymentService {
         return new PaylaterInvoice();
       case KLARNA:
         return new Klarna();
+      case PAYLATER_INSTALLMENT:
+        return new PaylaterInstallment();
       default:
         throw new PaymentException("Type '" + typeId + "' is currently not supported by the SDK");
     }
@@ -255,6 +218,8 @@ public class PaymentService {
         return new JsonInstallmentSecuredRatePlan();
       case BANCONTACT:
         return new JsonBancontact();
+      case PAYLATER_INSTALLMENT:
+        return new JsonPaylaterInstallment();
       default:
         throw new PaymentException("Type '" + typeId + "' is currently not supported by the SDK");
     }
@@ -789,8 +754,7 @@ public class PaymentService {
     return fetchPayment(paymentId).getCharge(chargeId).getCancel(cancelId);
   }
 
-  public PaylaterInvoiceConfig fetchPaymentTypeConfig(PaylaterInvoiceConfigRequest configRequest)
-      throws HttpCommunicationException {
+  public PaylaterInvoiceConfig fetchPaymentTypeConfig(PaylaterInvoiceConfigRequest configRequest) throws HttpCommunicationException {
     String url = this.urlUtil.getApiEndpoint() + configRequest.getRequestUrl();
     String response = this.restCommunication.httpGet(url, unzer.getPrivateKey());
     return this.jsonParser.fromJson(response, PaylaterInvoiceConfig.class);
