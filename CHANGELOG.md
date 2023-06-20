@@ -6,19 +6,6 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres
 to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
-## [UNRELEASED](https://github.com/unzerdev/java-sdk/compare/4.1.0..)
-
-This Java SDK version supports Unzer Paylater Installment and fixes customer birthdate bug
-
-### Added
-
-### Changed
-
-### Fixed
-
-* Fixed the bug: customer resources created from Java SDK omitted birthdate field. 
-
-
 ## [4.1.0](https://github.com/unzerdev/java-sdk/compare/4.0.0..4.1.0)
 
 This release adds functionality to fetch payment page
