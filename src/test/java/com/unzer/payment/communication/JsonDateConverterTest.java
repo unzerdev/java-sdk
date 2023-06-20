@@ -39,18 +39,14 @@ public class JsonDateConverterTest {
   }
 
   @Test
-  public void dateTime_throws_exception() {
+  public void dateTime_parsed_successfully() {
     JsonObject jsonObject = new JsonObject();
     jsonObject.addProperty("date", "1980-12-01 11:59:00");
 
     JsonDateConverter jsonDateConverter = new JsonDateConverter();
 
-    DateTimeParseException exception = assertThrows(DateTimeParseException.class, () -> {
-      Date jsonDate = jsonDateConverter.deserialize(jsonObject.get("date"), null, null);
-    });
-
-    assertEquals("Text '1980-12-01 11:59:00' could not be parsed, unparsed text found at index 10",
-        exception.getMessage());
+    Date jsonDate = jsonDateConverter.deserialize(jsonObject.get("date"), null, null);
+    assertEquals("Mon Dec 01 12:59:00 CET 1980", jsonDate.toString());
   }
 
   @Test

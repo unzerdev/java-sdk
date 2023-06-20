@@ -56,8 +56,15 @@ public class JsonDateConverter
       return null;
     }
 
-    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-    LocalDate parsedLocalDate = LocalDate.parse(jsonValue, formatter);
-    return Date.from(parsedLocalDate.atStartOfDay().atZone(ZoneId.of("UTC")).toInstant());
+    if (jsonValue.length() == 10) {
+      DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+      LocalDate parsedLocalDate = LocalDate.parse(jsonValue, formatter);
+      return Date.from(parsedLocalDate.atStartOfDay().atZone(ZoneId.of("UTC")).toInstant());
+    } else {
+      DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+      ZonedDateTime parsedZonedDateTime =
+          LocalDateTime.parse(jsonValue, formatter).atZone(ZoneId.of("UTC"));
+      return Date.from(parsedZonedDateTime.toInstant());
+    }
   }
 }
