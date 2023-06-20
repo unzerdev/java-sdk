@@ -17,7 +17,6 @@
 package com.unzer.payment.models.paylater;
 
 import com.unzer.payment.models.CustomerType;
-
 import java.math.BigDecimal;
 
 public class InstallmentPlansRequest {

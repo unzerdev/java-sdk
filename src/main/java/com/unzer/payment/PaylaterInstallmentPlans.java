@@ -21,7 +21,6 @@ import com.unzer.payment.communication.json.paylater.JsonInstallmentPlanRate;
 import com.unzer.payment.communication.json.paylater.JsonInstallmentPlans;
 import com.unzer.payment.models.paylater.InstallmentPlan;
 import com.unzer.payment.models.paylater.InstallmentPlanRate;
-
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
@@ -126,7 +125,6 @@ public class PaylaterInstallmentPlans {
       installmentPlans.setResumed(jsonInstallmentPlans.isResumed());
 
       map(installmentPlans.getPlans(), jsonInstallmentPlans.getPlans());
-//            ((PaylaterInstallmentPlans) installmentPlans).setPlans(jsonInstallmentPlans.getPlans());
     }
     return installmentPlans;
   }
@@ -136,27 +134,19 @@ public class PaylaterInstallmentPlans {
     jsonInstallmentPlan.forEach((plan) -> {
       List<InstallmentPlanRate> planRates = new ArrayList<InstallmentPlanRate>();
       mapRates(planRates, plan.getInstallmentRates());
-      installmentPlan.add(
-          new InstallmentPlan()
-              .setTotalAmount(plan.getTotalAmount())
-              .setNumberOfRates(plan.getNumberOfRates())
-              .setNominalInterestRate(plan.getNominalInterestRate())
-              .setEffectiveInterestRate(plan.getEffectiveInterestRate())
-              .setInstallmentRates(planRates)
-              .setSecciUrl(plan.getSecciUrl())
-      );
+      installmentPlan.add(new InstallmentPlan().setTotalAmount(plan.getTotalAmount())
+          .setNumberOfRates(plan.getNumberOfRates())
+          .setNominalInterestRate(plan.getNominalInterestRate())
+          .setEffectiveInterestRate(plan.getEffectiveInterestRate()).setInstallmentRates(planRates)
+          .setSecciUrl(plan.getSecciUrl()));
     });
   }
 
   private void mapRates(List<InstallmentPlanRate> installmentPlanRates,
                         List<JsonInstallmentPlanRate> json) {
     json.forEach((rate) -> {
-          installmentPlanRates.add(
-              new InstallmentPlanRate()
-                  .setRate(rate.getRate())
-                  .setDate(rate.getDate())
-          );
-        }
-    );
+      installmentPlanRates.add(
+          new InstallmentPlanRate().setRate(rate.getRate()).setDate(rate.getDate()));
+    });
   }
 }

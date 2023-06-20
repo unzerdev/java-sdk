@@ -154,6 +154,36 @@ public class PaylaterInstallmentTest extends AbstractPaymentTest {
 
 
   @Test
+  public void testFullCancelAfterAuthorization() throws HttpCommunicationException, ParseException {
+    PaylaterInstallmentPlans installmentPlans = getPaylaterInstallmentPlans();
+    InstallmentPlan selectedPlan = installmentPlans.getPlans().get(0);
+
+    // when
+    PaylaterInstallment paylaterInstallment = getUnzer().createPaymentType(
+        new PaylaterInstallment()
+            .setInquiryId(installmentPlans.getId())
+            .setNumberOfRates(selectedPlan.getNumberOfRates())
+            .setHolder("Max Mustermann")
+            .setIban("DE89370400440532013000")
+    );
+
+    Basket basket = getBasket();
+
+    Authorization authorization = getUnzer().authorize(
+        getAuthorization(paylaterInstallment.getId(),
+            createMaximumCustomer().getId(),
+            createBasket(basket).getId())
+    );
+
+    // when
+    Cancel cancel = getUnzer().cancelAuthorization(authorization.getPaymentId(), getOrderAmount());
+
+    // then
+    assertEquals(AbstractTransaction.Status.SUCCESS, authorization.getStatus());
+    assertNumberEquals(getOrderAmount(), authorization.getAmount());
+  }
+
+  @Test
   public void testFullCancelAfterCharge() throws HttpCommunicationException, ParseException {
     PaylaterInstallmentPlans installmentPlans = getPaylaterInstallmentPlans();
     InstallmentPlan selectedPlan = installmentPlans.getPlans().get(0);
