@@ -16,6 +16,7 @@
 package com.unzer.payment.models.paylater;
 
 import java.math.BigDecimal;
+import java.net.URL;
 import java.util.List;
 
 public class InstallmentPlan {
@@ -24,7 +25,7 @@ public class InstallmentPlan {
     private BigDecimal nominalInterestRate;
     private BigDecimal effectiveInterestRate;
     private List<InstallmentPlanRate> installmentRates;
-    private String secciUrl; // TODO: use URL object instead?
+    private URL secciUrl;
 
     public BigDecimal getTotalAmount() {
         return totalAmount;
@@ -71,11 +72,11 @@ public class InstallmentPlan {
         return this;
     }
 
-    public String getSecciUrl() {
+    public URL getSecciUrl() {
         return secciUrl;
     }
 
-    public InstallmentPlan setSecciUrl(String secciUrl) {
+    public InstallmentPlan setSecciUrl(URL secciUrl) {
         this.secciUrl = secciUrl;
         return this;
     }

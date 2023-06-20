@@ -19,6 +19,7 @@ import com.unzer.payment.communication.json.JsonIdObject;
 import com.unzer.payment.communication.json.JsonObject;
 
 import java.math.BigDecimal;
+import java.net.URL;
 import java.util.List;
 
 public class JsonInstallmentPlan extends JsonIdObject implements JsonObject {
@@ -28,7 +29,7 @@ public class JsonInstallmentPlan extends JsonIdObject implements JsonObject {
     private BigDecimal nominalInterestRate;
     private BigDecimal effectiveInterestRate;
     private List<JsonInstallmentPlanRate> installmentRates;
-    private String secciUrl;
+    private URL secciUrl;
     private BigDecimal minimumInstallmentFee;
 
     public BigDecimal getTotalAmount() {
@@ -76,11 +77,11 @@ public class JsonInstallmentPlan extends JsonIdObject implements JsonObject {
         return this;
     }
 
-    public String getSecciUrl() {
+    public URL getSecciUrl() {
         return secciUrl;
     }
 
-    public JsonInstallmentPlan setSecciUrl(String secciUrl) {
+    public JsonInstallmentPlan setSecciUrl(URL secciUrl) {
         this.secciUrl = secciUrl;
         return this;
     }
