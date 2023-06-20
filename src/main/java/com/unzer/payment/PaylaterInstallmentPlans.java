@@ -32,10 +32,7 @@ public class PaylaterInstallmentPlans {
   private BigDecimal amount;
   private String currency;
   private List<InstallmentPlan> plans = new ArrayList<>();
-  private boolean error;
-  private boolean success;
-  private boolean pending;
-  private boolean resumed;
+  private AbstractTransaction.Status status;
 
   public BigDecimal getAmount() {
     return amount;
@@ -64,42 +61,6 @@ public class PaylaterInstallmentPlans {
     return this;
   }
 
-  public boolean isError() {
-    return error;
-  }
-
-  public PaylaterInstallmentPlans setError(boolean error) {
-    this.error = error;
-    return this;
-  }
-
-  public boolean isSuccess() {
-    return success;
-  }
-
-  public PaylaterInstallmentPlans setSuccess(boolean success) {
-    this.success = success;
-    return this;
-  }
-
-  public boolean isPending() {
-    return pending;
-  }
-
-  public PaylaterInstallmentPlans setPending(boolean pending) {
-    this.pending = pending;
-    return this;
-  }
-
-  public boolean isResumed() {
-    return resumed;
-  }
-
-  public PaylaterInstallmentPlans setResumed(boolean resumed) {
-    this.resumed = resumed;
-    return this;
-  }
-
   public String getTypeUrl() {
     return "types/paylater-installment/plans";
   }
@@ -113,16 +74,21 @@ public class PaylaterInstallmentPlans {
     return this;
   }
 
+  public AbstractTransaction.Status getStatus() {
+    return status;
+  }
+
+  public PaylaterInstallmentPlans setStatus(AbstractTransaction.Status status) {
+    this.status = status;
+    return this;
+  }
+
   public PaylaterInstallmentPlans map(PaylaterInstallmentPlans installmentPlans,
                                       JsonInstallmentPlans jsonInstallmentPlans) {
     if (installmentPlans != null && jsonInstallmentPlans != null) {
-      installmentPlans.setId((jsonInstallmentPlans).getId());
-      installmentPlans.setAmount(jsonInstallmentPlans.getAmount());
-      installmentPlans.setCurrency(jsonInstallmentPlans.getCurrency());
-      installmentPlans.setError(jsonInstallmentPlans.isError());
-      installmentPlans.setSuccess(jsonInstallmentPlans.isSuccess());
-      installmentPlans.setPending(jsonInstallmentPlans.isPending());
-      installmentPlans.setResumed(jsonInstallmentPlans.isResumed());
+      installmentPlans.setId((jsonInstallmentPlans).getId())
+      .setAmount(jsonInstallmentPlans.getAmount())
+      .setCurrency(jsonInstallmentPlans.getCurrency());
 
       map(installmentPlans.getPlans(), jsonInstallmentPlans.getPlans());
     }

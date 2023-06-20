@@ -1391,6 +1391,11 @@ public class Unzer {
     return recurring;
   }
 
+  /**
+   * @param installmentPlansRequest Contains information for requested plan.
+   * @return Response contains a list of available installment plans the customer can choose from.
+   * @throws HttpCommunicationException generic Payment API communication error
+   */
   public PaylaterInstallmentPlans fetchPaylaterInstallmentPlans(
       InstallmentPlansRequest installmentPlansRequest) throws HttpCommunicationException {
     return paymentService.fetchPaylaterInstallmentPlans(installmentPlansRequest);

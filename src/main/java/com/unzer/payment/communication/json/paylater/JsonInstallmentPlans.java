@@ -18,10 +18,11 @@ package com.unzer.payment.communication.json.paylater;
 
 import com.unzer.payment.communication.json.JsonIdObject;
 import com.unzer.payment.communication.json.JsonObject;
+import com.unzer.payment.communication.json.TransactionStatus;
 import java.math.BigDecimal;
 import java.util.List;
 
-public class JsonInstallmentPlans extends JsonIdObject implements JsonObject {
+public class JsonInstallmentPlans extends JsonIdObject implements JsonObject, TransactionStatus {
   private BigDecimal amount;
   private String currency;
   private List<JsonInstallmentPlan> plans;
@@ -29,6 +30,7 @@ public class JsonInstallmentPlans extends JsonIdObject implements JsonObject {
   private boolean isSuccess;
   private boolean isPending;
   private boolean isResumed;
+  private TransactionStatus status;
 
   public BigDecimal getAmount() {
     return amount;
@@ -57,39 +59,55 @@ public class JsonInstallmentPlans extends JsonIdObject implements JsonObject {
     return this;
   }
 
-  public boolean isError() {
-    return isError;
+  public TransactionStatus getStatus() {
+    return status;
   }
 
-  public JsonInstallmentPlans setError(boolean error) {
-    isError = error;
+  public JsonInstallmentPlans setStatus(
+      TransactionStatus status) {
+    this.status = status;
     return this;
   }
 
-  public boolean isSuccess() {
-    return isSuccess;
+  @Override
+  public Boolean getSuccess() {
+    return this.isSuccess;
   }
 
-  public JsonInstallmentPlans setSuccess(boolean success) {
-    isSuccess = success;
-    return this;
+  @Override
+  public void setSuccess(Boolean value) {
+    this.isSuccess = value;
   }
 
-  public boolean isPending() {
-    return isPending;
+  @Override
+  public Boolean getError() {
+    return this.isError;
+
   }
 
-  public JsonInstallmentPlans setPending(boolean pending) {
-    isPending = pending;
-    return this;
+  @Override
+  public void setError(Boolean value) {
+    this.isError = value;
   }
 
-  public boolean isResumed() {
-    return isResumed;
+  @Override
+  public Boolean getPending() {
+    return this.isPending;
+
   }
 
-  public JsonInstallmentPlans setResumed(boolean resumed) {
-    isResumed = resumed;
-    return this;
+  @Override
+  public void setPending(Boolean value) {
+    this.isPending = value;
+  }
+
+  @Override
+  public Boolean getResumed() {
+    return this.isResumed;
+  }
+
+  @Override
+  public void setResumed(Boolean value) {
+    this.isResumed = value;
   }
 }
