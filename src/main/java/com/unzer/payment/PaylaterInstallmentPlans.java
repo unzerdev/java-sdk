@@ -87,8 +87,8 @@ public class PaylaterInstallmentPlans {
                                       JsonInstallmentPlans jsonInstallmentPlans) {
     if (installmentPlans != null && jsonInstallmentPlans != null) {
       installmentPlans.setId((jsonInstallmentPlans).getId())
-      .setAmount(jsonInstallmentPlans.getAmount())
-      .setCurrency(jsonInstallmentPlans.getCurrency());
+          .setAmount(jsonInstallmentPlans.getAmount())
+          .setCurrency(jsonInstallmentPlans.getCurrency());
 
       map(installmentPlans.getPlans(), jsonInstallmentPlans.getPlans());
     }
