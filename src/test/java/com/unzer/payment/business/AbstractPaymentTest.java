@@ -87,11 +87,11 @@ public abstract class AbstractPaymentTest {
     }
 
     public Unzer getUnzer() {
-        return new Unzer(Keys.KEY_WITHOUT_3DS);
+        return new Unzer(Keys.DEFAULT);
     }
 
     public Unzer getUnzerDE() {
-        return new Unzer(Keys.KEY_WITHOUT_3DS, Locale.GERMANY);
+        return new Unzer(Keys.DEFAULT, Locale.GERMANY);
     }
 
     public Unzer getUnzer(String key) {
@@ -307,7 +307,7 @@ public abstract class AbstractPaymentTest {
         return customer;
     }
 
-    protected Customer getMaximumUnknownCustomer(String customerId) throws ParseException {
+    protected Customer getMaximumUnknownCustomer(String customerId) {
         Customer customer = new Customer("XXX", "YYY");
         customer
                 .setCustomerId(customerId)

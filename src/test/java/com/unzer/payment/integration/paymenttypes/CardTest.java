@@ -31,7 +31,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Currency;
 
-import static com.unzer.payment.business.Keys.PRIVATE_KEY_3;
+import static com.unzer.payment.business.Keys.ALT_LEGACY_PRIVATE_KEY;
 import static com.unzer.payment.util.Url.unsafeUrl;
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -43,7 +43,7 @@ public class CardTest extends AbstractPaymentTest {
         assertThrows(PaymentException.class, () -> {
             Card card = new Card("4444333322221111", "03/20");
             card.setCvc("123");
-            Unzer unzer = new Unzer(new HttpClientBasedRestCommunication(), PRIVATE_KEY_3);
+            Unzer unzer = new Unzer(new HttpClientBasedRestCommunication(), ALT_LEGACY_PRIVATE_KEY);
             unzer.createPaymentType(card);
         });
     }

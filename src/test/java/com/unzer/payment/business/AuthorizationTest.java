@@ -32,7 +32,6 @@ import java.time.LocalDate;
 import java.util.Currency;
 
 import static com.unzer.payment.business.BasketV1TestData.getMaxTestBasketV1;
-import static com.unzer.payment.business.Keys.*;
 import static com.unzer.payment.util.Uuid.generateUuid;
 import static java.util.concurrent.TimeUnit.SECONDS;
 import static org.awaitility.Awaitility.await;
@@ -72,7 +71,7 @@ public class AuthorizationTest extends AbstractPaymentTest {
 
     @Test
     public void testAuthorizeWithPaymentType() throws MalformedURLException, HttpCommunicationException {
-        Unzer unzer = getUnzer(KEY_WITH_3DS);LocalDate locaDateNow = LocalDate.now();
+        Unzer unzer = getUnzer(Keys.DEFAULT);LocalDate locaDateNow = LocalDate.now();
         Card card = new Card("4444333322221111", "12/" + (locaDateNow.getYear() + 1));
         Authorization authorize = unzer.authorize(BigDecimal.ONE, Currency.getInstance("EUR"), card, new URL("https://www.unzer.com"), false);
         assertNotNull(authorize);
@@ -83,7 +82,7 @@ public class AuthorizationTest extends AbstractPaymentTest {
 
     @Test
     public void testAuthorizeReturnPaymentTypeAndCustomer() throws MalformedURLException, HttpCommunicationException {
-        Unzer unzer = getUnzer(KEY_WITH_3DS);LocalDate locaDateNow = LocalDate.now();
+        Unzer unzer = getUnzer(Keys.DEFAULT);LocalDate locaDateNow = LocalDate.now();
         Card card = new Card("4444333322221111", "12/" + (locaDateNow.getYear() + 1));
         Customer customer = new Customer("Max", "Mustermann");
         Authorization authorize = unzer.authorize(BigDecimal.ONE, Currency.getInstance("EUR"), card, new URL("https://www.unzer.com"), customer, false);
@@ -116,7 +115,7 @@ public class AuthorizationTest extends AbstractPaymentTest {
 
     @Test
     public void testAuthorizeWithCustomerTypeReturnUrl() throws MalformedURLException, HttpCommunicationException {
-        Unzer unzer = getUnzer(KEY_WITH_3DS);LocalDate locaDateNow = LocalDate.now();
+        Unzer unzer = getUnzer(Keys.DEFAULT);LocalDate locaDateNow = LocalDate.now();
         Card card = new Card("4444333322221111", "12/" + (locaDateNow.getYear() + 1));
         Customer customer = new Customer("Max", "Mustermann");
         Authorization authorize = unzer.authorize(BigDecimal.ONE, Currency.getInstance("EUR"), card, new URL("https://www.unzer.com"), customer, false);
@@ -182,13 +181,14 @@ public class AuthorizationTest extends AbstractPaymentTest {
     @Test
     public void testAuthorizeCard3dsTrue() throws MalformedURLException, HttpCommunicationException {
         String orderId = generateUuid();
-        Authorization authorize = getUnzer().authorize(getAuthorization(createPaymentTypeCard(getUnzer(), "4711100000000000").getId(), null, orderId, null, null, true));
+        Unzer unzer = getUnzer();
+        Authorization authorize = unzer.authorize(getAuthorization(createPaymentTypeCard(unzer, "4711100000000000").getId(), null, orderId, null, null, true));
         assertNotNull(authorize);
         assertNotNull(authorize.getId());
         assertEquals("COR.000.200.000", authorize.getMessage().getCode());
         assertEquals(Authorization.Status.PENDING, authorize.getStatus());
 //		assertTrue(authorize.getCard3ds());
-        Authorization authorization = getUnzer().fetchAuthorization(orderId);
+        Authorization authorization = unzer.fetchAuthorization(orderId);
         assertNotNull(authorization);
         assertNotNull(authorization.getId());
         assertEquals(orderId, authorization.getOrderId());
@@ -235,17 +235,17 @@ public class AuthorizationTest extends AbstractPaymentTest {
             maxBasket.getBasketItems().get(i).setAmountDiscount(null);
         }
 
-        Basket basket = getUnzer(MARKETPLACE_KEY).createBasket(maxBasket);
+        Basket basket = getUnzer(Keys.MARKETPLACE_KEY).createBasket(maxBasket);
 
         //create card
         Card card = getPaymentTypeCard(NO_3DS_VISA_CARD_NUMBER); //do not change card number except error case
-        card = getUnzer(MARKETPLACE_KEY).createPaymentType(card);
+        card = getUnzer(Keys.MARKETPLACE_KEY).createPaymentType(card);
 
         //marketplace authorization
         MarketplaceAuthorization authorizeRequest = getMarketplaceAuthorization(card.getId(), null, null, null, basket.getId(), null);
         authorizeRequest.setAmount(maxBasket.getAmountTotalGross());
 
-        MarketplaceAuthorization authorize = getUnzer(MARKETPLACE_KEY).marketplaceAuthorize(authorizeRequest);
+        MarketplaceAuthorization authorize = getUnzer(Keys.MARKETPLACE_KEY).marketplaceAuthorize(authorizeRequest);
         assertNotNull(authorize.getId());
         assertNotNull(authorize);
         assertEquals(AbstractTransaction.Status.PENDING, authorize.getStatus());
@@ -256,7 +256,7 @@ public class AuthorizationTest extends AbstractPaymentTest {
         assertEquals(HttpStatus.SC_MOVED_TEMPORARILY, redirectStatus);
 
         //get marketplace payment
-        MarketplacePayment payment = getUnzer(MARKETPLACE_KEY).fetchMarketplacePayment(authorize.getPayment().getId());
+        MarketplacePayment payment = getUnzer(Keys.MARKETPLACE_KEY).fetchMarketplacePayment(authorize.getPayment().getId());
         assertNotNull(payment);
         assertNotNull(payment.getId());
         assertNotNull(payment.getAuthorizationsList());
@@ -264,7 +264,7 @@ public class AuthorizationTest extends AbstractPaymentTest {
         assertEquals(Payment.State.PENDING, payment.getPaymentState());
 
         //get marketplace authorize
-        authorize = getUnzer(MARKETPLACE_KEY).fetchMarketplaceAuthorization(authorize.getPayment().getId(), authorize.getId());
+        authorize = getUnzer(Keys.MARKETPLACE_KEY).fetchMarketplaceAuthorization(authorize.getPayment().getId(), authorize.getId());
         assertNotNull(authorize.getId());
         assertNotNull(authorize);
         assertEquals(AbstractTransaction.Status.SUCCESS, authorize.getStatus());

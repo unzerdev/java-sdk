@@ -17,6 +17,7 @@ package com.unzer.payment.integration.paymenttypes;
 
 import com.unzer.payment.*;
 import com.unzer.payment.business.AbstractPaymentTest;
+import com.unzer.payment.business.Keys;
 import com.unzer.payment.communication.HttpCommunicationException;
 import com.unzer.payment.models.AdditionalTransactionData;
 import com.unzer.payment.paymenttypes.Klarna;
@@ -42,6 +43,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.api.DynamicTest.dynamicTest;
 
 
+@Disabled("https://unz.atlassian.net/browse/CC-454")
 public class KlarnaTest extends AbstractPaymentTest {
     @BeforeAll
     static void setup() {
