@@ -17,9 +17,11 @@ package com.unzer.payment.integration.paymenttypes;
 
 import com.unzer.payment.*;
 import com.unzer.payment.business.AbstractPaymentTest;
+import com.unzer.payment.business.Keys;
 import com.unzer.payment.communication.HttpCommunicationException;
 import com.unzer.payment.models.*;
 import com.unzer.payment.paymenttypes.PaylaterInvoice;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DynamicTest;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestFactory;
@@ -38,6 +40,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.api.DynamicTest.dynamicTest;
 
 
+@Disabled("https://unz.atlassian.net/browse/CC-454")
 public class PaylaterInvoiceTest extends AbstractPaymentTest {
     @Test
     public void testCreatePaylaterType() throws HttpCommunicationException {

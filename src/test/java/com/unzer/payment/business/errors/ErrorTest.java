@@ -85,7 +85,7 @@ public class ErrorTest extends AbstractPaymentTest {
     public void testInvalidAccess() throws HttpCommunicationException {
         Card card = createPaymentTypeCard(getUnzer(), "4711100000000000");
         try {
-            getUnzer(Keys.KEY_WITH_3DS).fetchPaymentType(card.getId());  // Prod-Sandbox
+            getUnzer(Keys.DEFAULT).fetchPaymentType(card.getId());  // Prod-Sandbox
 
         } catch (PaymentException e) {
             assertNotNull(e.getPaymentErrorList());

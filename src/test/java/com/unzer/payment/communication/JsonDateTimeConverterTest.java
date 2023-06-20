@@ -26,27 +26,26 @@ import java.util.Date;
 import org.junit.jupiter.api.Test;
 
 
-public class JsonDateConverterTest {
+public class JsonDateTimeConverterTest {
+  private static final JsonDateTimeConverter converter = new JsonDateTimeConverter();
 
   @Test
-  public void date_parsed_successfully() {
+  public void date_parsed_fine() {
     JsonObject jsonObject = new JsonObject();
     jsonObject.addProperty("date", "1980-12-01");
 
-    JsonDateConverter jsonDateConverter = new JsonDateConverter();
-    Date jsonDate = jsonDateConverter.deserialize(jsonObject.get("date"), null, null);
+    Date jsonDate = converter.deserialize(jsonObject.get("date"), null, null);
     assertEquals("Mon Dec 01 01:00:00 CET 1980", jsonDate.toString());
   }
 
   @Test
-  public void dateTime_parsed_successfully() {
+  public void dateTime_parsed_fine() {
     JsonObject jsonObject = new JsonObject();
     jsonObject.addProperty("date", "1980-12-01 11:59:00");
 
-    JsonDateConverter jsonDateConverter = new JsonDateConverter();
+    Date parsedDate = converter.deserialize(jsonObject.get("date"), null, null);
+    assertEquals("Mon Dec 01 12:59:00 CET 1980", parsedDate.toString());
 
-    Date jsonDate = jsonDateConverter.deserialize(jsonObject.get("date"), null, null);
-    assertEquals("Mon Dec 01 12:59:00 CET 1980", jsonDate.toString());
   }
 
   @Test
@@ -55,10 +54,8 @@ public class JsonDateConverterTest {
     jsonObject.addProperty("date", "1980-12-01 12:00");
 
 
-    JsonDateConverter jsonDateConverter = new JsonDateConverter();
-    assertThrows(DateTimeParseException.class, () -> {
-      jsonDateConverter.deserialize(jsonObject.get("date"), null, null);
-    });
+    assertThrows(DateTimeParseException.class,
+        () -> converter.deserialize(jsonObject.get("date"), null, null));
   }
 
   @Test
@@ -67,10 +64,8 @@ public class JsonDateConverterTest {
     jsonObject.addProperty("date", "2000-12-32");
 
 
-    JsonDateConverter jsonDateConverter = new JsonDateConverter();
-    assertThrows(DateTimeParseException.class, () -> {
-      jsonDateConverter.deserialize(jsonObject.get("date"), null, null);
-    });
+    assertThrows(DateTimeParseException.class,
+        () -> converter.deserialize(jsonObject.get("date"), null, null));
   }
 
   @Test
@@ -79,17 +74,15 @@ public class JsonDateConverterTest {
     jsonObject.addProperty("date", "2000-12-31 25:00:00");
 
 
-    JsonDateConverter jsonDateConverter = new JsonDateConverter();
-    assertThrows(DateTimeParseException.class, () -> {
-      jsonDateConverter.deserialize(jsonObject.get("date"), null, null);
-    });
+    assertThrows(DateTimeParseException.class,
+        () -> converter.deserialize(jsonObject.get("date"), null, null));
   }
 
   @Test
-  public void date_time_converted_without_time() {
+  public void date_time_converted_with_time() {
     Date initialDate = new Date(94, Calendar.DECEMBER, 1, 11, 59, 31);
 
-    String convertedDate = new JsonDateConverter().serialize(initialDate, null, null).getAsString();
-    assertEquals("1994-12-01", convertedDate);
+    String convertedDate = converter.serialize(initialDate, null, null).getAsString();
+    assertEquals("1994-12-01 11:59:31", convertedDate);
   }
 }

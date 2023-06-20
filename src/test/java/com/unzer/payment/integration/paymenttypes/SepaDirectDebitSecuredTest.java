@@ -19,6 +19,7 @@ import com.unzer.payment.Basket;
 import com.unzer.payment.Charge;
 import com.unzer.payment.Unzer;
 import com.unzer.payment.business.AbstractPaymentTest;
+import com.unzer.payment.business.Keys;
 import com.unzer.payment.communication.HttpCommunicationException;
 import com.unzer.payment.communication.JsonParser;
 import com.unzer.payment.communication.impl.HttpClientBasedRestCommunication;
@@ -33,7 +34,8 @@ import java.util.Currency;
 
 import static com.unzer.payment.business.BasketV1TestData.getMinTestBasketV1;
 import static com.unzer.payment.business.BasketV2TestData.getMinTestBasketV2;
-import static com.unzer.payment.business.Keys.PRIVATE_KEY_3;
+import static com.unzer.payment.business.Keys.ALT_LEGACY_PRIVATE_KEY;
+import static com.unzer.payment.business.Keys.LEGACY_PRIVATE_KEY;
 import static com.unzer.payment.util.Url.unsafeUrl;
 import static com.unzer.payment.util.Uuid.generateUuid;
 import static org.junit.jupiter.api.Assertions.*;
@@ -44,22 +46,23 @@ public class SepaDirectDebitSecuredTest extends AbstractPaymentTest {
     @Test
     public void testCreateSepaDirectDebitSecuredManatoryType() throws HttpCommunicationException {
         SepaDirectDebitSecured sdd = new SepaDirectDebitSecured("DE89370400440532013000");
-        sdd = getUnzer().createPaymentType(sdd);
+        sdd = getUnzer(LEGACY_PRIVATE_KEY).createPaymentType(sdd);
         assertNotNull(sdd.getId());
     }
 
     @Test
     public void testCreateSepaDirectDebitSecuredFullType() throws HttpCommunicationException {
         SepaDirectDebitSecured sddOriginal = getSepaDirectDebitSecured();
-        SepaDirectDebitSecured sddCreated = getUnzer().createPaymentType(sddOriginal);
+        SepaDirectDebitSecured sddCreated = getUnzer(LEGACY_PRIVATE_KEY).createPaymentType(sddOriginal);
         assertSddEquals(sddOriginal, sddCreated);
     }
 
     @Test
     public void testFetchSepaDirectDebitSecuredType() throws HttpCommunicationException {
-        SepaDirectDebitSecured sdd = getUnzer().createPaymentType(getSepaDirectDebitSecured());
+        Unzer unzer = getUnzer(LEGACY_PRIVATE_KEY);
+        SepaDirectDebitSecured sdd = unzer.createPaymentType(getSepaDirectDebitSecured());
         assertNotNull(sdd.getId());
-        SepaDirectDebitSecured fetchedSdd = (SepaDirectDebitSecured) getUnzer().fetchPaymentType(sdd.getId());
+        SepaDirectDebitSecured fetchedSdd = (SepaDirectDebitSecured) unzer.fetchPaymentType(sdd.getId());
         assertNotNull(fetchedSdd.getId());
         assertSddEquals(sdd, fetchedSdd);
     }
@@ -67,17 +70,19 @@ public class SepaDirectDebitSecuredTest extends AbstractPaymentTest {
     @Test
     @Deprecated
     public void testChargeSepaDirectDebitSecuredTypeBasketV1() throws HttpCommunicationException, ParseException {
-        SepaDirectDebitSecured sdd = getUnzer().createPaymentType(getSepaDirectDebitSecured());
+        Unzer unzer = getUnzer(Keys.LEGACY_PRIVATE_KEY);
+        SepaDirectDebitSecured sdd = unzer.createPaymentType(getSepaDirectDebitSecured());
         assertNotNull(sdd.getId());
-        Basket basket = getUnzer().createBasket(getMinTestBasketV1());
+        Basket basket = unzer.createBasket(getMinTestBasketV1());
         sdd.charge(basket.getAmountTotalGross(), Currency.getInstance("EUR"), unsafeUrl("https://www.unzer.com"), getMaximumCustomerSameAddress(generateUuid()), basket);
     }
 
     @Test
     public void testChargeSepaDirectDebitSecuredTypeBasketV2() throws HttpCommunicationException, ParseException {
-        SepaDirectDebitSecured sdd = getUnzer().createPaymentType(getSepaDirectDebitSecured());
+        Unzer unzer = getUnzer(Keys.LEGACY_PRIVATE_KEY);
+        SepaDirectDebitSecured sdd = unzer.createPaymentType(getSepaDirectDebitSecured());
         assertNotNull(sdd.getId());
-        Basket basket = getUnzer().createBasket(getMinTestBasketV2());
+        Basket basket = unzer.createBasket(getMinTestBasketV2());
         sdd.charge(
                 basket.getTotalValueGross(),
                 Currency.getInstance("EUR"),
@@ -96,7 +101,7 @@ public class SepaDirectDebitSecuredTest extends AbstractPaymentTest {
 
     @Test
     public void testChargeSepaDirectDebitGuaranteed() throws HttpCommunicationException {
-        Unzer unzer = getUnzer(PRIVATE_KEY_3);
+        Unzer unzer = getUnzer(Keys.LEGACY_PRIVATE_KEY);
         HttpClientBasedRestCommunication restCommunication = new HttpClientBasedRestCommunication();
         JsonParser jsonParser = new JsonParser();
         PaymentService paymentService = new PaymentService(unzer, restCommunication);
