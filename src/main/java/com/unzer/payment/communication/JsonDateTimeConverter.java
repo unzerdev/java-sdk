@@ -24,11 +24,6 @@ import com.google.gson.JsonSerializationContext;
 import com.google.gson.JsonSerializer;
 import java.lang.reflect.Type;
 import java.text.SimpleDateFormat;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.time.ZonedDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.Date;
 
 public class JsonDateTimeConverter extends JsonDateConverter
@@ -44,22 +39,4 @@ public class JsonDateTimeConverter extends JsonDateConverter
     return new JsonPrimitive(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(src));
   }
 
-  private Date getDate(JsonElement json) {
-    String jsonValue = json.getAsJsonPrimitive().getAsString();
-
-    if (jsonValue == null || "".equalsIgnoreCase(jsonValue)) {
-      return null;
-    }
-
-    if (jsonValue.length() == 10) {
-      DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-      LocalDate parsedLocalDate = LocalDate.parse(jsonValue, formatter);
-      return Date.from(parsedLocalDate.atStartOfDay().atZone(ZoneId.of("UTC")).toInstant());
-    } else {
-      DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-      ZonedDateTime parsedZonedDateTime =
-          LocalDateTime.parse(jsonValue, formatter).atZone(ZoneId.of("UTC"));
-      return Date.from(parsedZonedDateTime.toInstant());
-    }
-  }
 }

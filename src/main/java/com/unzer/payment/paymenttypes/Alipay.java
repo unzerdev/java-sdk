@@ -49,13 +49,11 @@ public class Alipay extends AbstractPaymentType implements PaymentType {
     return alipay;
   }
 
-  @Deprecated
   public Charge charge(BigDecimal amount, Currency currency, URL returnUrl)
       throws HttpCommunicationException {
     return getUnzer().charge(amount, currency, this, returnUrl);
   }
 
-  @Deprecated
   public Charge charge(BigDecimal amount, Currency currency, URL returnUrl, Customer customer)
       throws HttpCommunicationException {
     return getUnzer().charge(amount, currency, this, returnUrl, customer);

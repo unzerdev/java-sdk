@@ -16,14 +16,11 @@
 
 package com.unzer.payment.communication.json;
 
-import com.google.gson.annotations.JsonAdapter;
-import com.unzer.payment.communication.JsonDateTimeConverter;
 import java.math.BigDecimal;
 import java.net.URL;
 import java.util.Date;
 
 public class JsonTransaction {
-  @JsonAdapter(JsonDateTimeConverter.class)
   private Date date;
   private String type;
   private URL url;

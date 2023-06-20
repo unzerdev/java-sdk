@@ -16,9 +16,6 @@
 
 package com.unzer.payment.communication.json;
 
-import com.google.gson.annotations.JsonAdapter;
-import com.unzer.payment.communication.JsonDateConverter;
-import com.unzer.payment.communication.JsonDateTimeConverter;
 import com.unzer.payment.marketplace.MarketplaceCancelBasket;
 import java.math.BigDecimal;
 import java.net.URL;
@@ -30,7 +27,6 @@ public class JsonCancel extends JsonIdObject implements JsonObject, TransactionS
   private Boolean isPending;
   private Boolean isError;
   private JsonMessage message;
-  @JsonAdapter(JsonDateTimeConverter.class)
   private Date date;
   private String paymentReference;
   private String reasonCode;
