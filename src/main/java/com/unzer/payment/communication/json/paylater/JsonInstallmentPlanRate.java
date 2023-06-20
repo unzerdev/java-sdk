@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package com.unzer.payment.communication.json.paylater;
 
 import com.unzer.payment.communication.json.JsonIdObject;
@@ -23,24 +24,24 @@ import java.util.Date;
 
 public class JsonInstallmentPlanRate extends JsonIdObject implements JsonObject {
 
-    private Date date;
-    private BigDecimal rate;
+  private Date date;
+  private BigDecimal rate;
 
-    public Date getDate() {
-        return date;
-    }
+  public Date getDate() {
+    return date;
+  }
 
-    public JsonInstallmentPlanRate setDate(Date date) {
-        this.date = date;
-        return this;
-    }
+  public JsonInstallmentPlanRate setDate(Date date) {
+    this.date = date;
+    return this;
+  }
 
-    public BigDecimal getRate() {
-        return rate;
-    }
+  public BigDecimal getRate() {
+    return rate;
+  }
 
-    public JsonInstallmentPlanRate setRate(BigDecimal rate) {
-        this.rate = rate;
-        return this;
-    }
+  public JsonInstallmentPlanRate setRate(BigDecimal rate) {
+    this.rate = rate;
+    return this;
+  }
 }

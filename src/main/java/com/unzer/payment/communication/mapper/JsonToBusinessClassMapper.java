@@ -514,7 +514,8 @@ public class JsonToBusinessClassMapper {
     return paymentType.map(paymentType, jsonPaymentType);
   }
 
-  public PaylaterInstallmentPlans mapToBusinessObject(PaylaterInstallmentPlans paymentType, JsonInstallmentPlans jsonPaymentType) {
+  public PaylaterInstallmentPlans mapToBusinessObject(PaylaterInstallmentPlans paymentType,
+                                                      JsonInstallmentPlans jsonPaymentType) {
     return paymentType.map(paymentType, jsonPaymentType);
   }
 }

@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package com.unzer.payment.integration.paymenttypes;
 
 import com.unzer.payment.*;
@@ -36,196 +37,202 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class PaylaterInstallmentTest extends AbstractPaymentTest {
 
-    @Test
-    public void testRateRetrievalUrl() {
-        BigDecimal amount = new BigDecimal("33.33");
-        InstallmentPlansRequest request = new InstallmentPlansRequest(amount, "EUR", "DE", CustomerType.B2C);
+  @Test
+  public void testRateRetrievalUrl() {
+    BigDecimal amount = new BigDecimal("33.33");
+    InstallmentPlansRequest request =
+        new InstallmentPlansRequest(amount, "EUR", "DE", CustomerType.B2C);
 
-        String uri = request.getRequestUrl();
-        assertEquals("/v1/types/paylater-installment/plans?amount=33.33&currency=EUR&country=DE&customerType=B2C", uri);
-    }
+    String uri = request.getRequestUrl();
+    assertEquals(
+        "/v1/types/paylater-installment/plans?amount=33.33&currency=EUR&country=DE&customerType=B2C",
+        uri);
+  }
 
-    @Test
-    public void testFetchInstallmentPlans() {
-        BigDecimal amount = new BigDecimal("99.99");
-        InstallmentPlansRequest request = new InstallmentPlansRequest(amount, "EUR", "DE", CustomerType.B2C);
+  @Test
+  public void testFetchInstallmentPlans() {
+    BigDecimal amount = new BigDecimal("99.99");
+    InstallmentPlansRequest request =
+        new InstallmentPlansRequest(amount, "EUR", "DE", CustomerType.B2C);
 
-        PaylaterInstallmentPlans installmentPlans = getUnzer().fetchPaylaterInstallmentPlans(request);
-        assertNotEquals("", installmentPlans.getId());
-        assertNumberEquals(new BigDecimal("99.99"), installmentPlans.getAmount());
-        assertEquals("EUR", installmentPlans.getCurrency());
-        assertTrue(installmentPlans.isSuccess());
-        assertFalse(installmentPlans.isError());
-        assertFalse(installmentPlans.isPending());
-        assertFalse(installmentPlans.isResumed());
+    PaylaterInstallmentPlans installmentPlans = getUnzer().fetchPaylaterInstallmentPlans(request);
+    assertNotEquals("", installmentPlans.getId());
+    assertNumberEquals(new BigDecimal("99.99"), installmentPlans.getAmount());
+    assertEquals("EUR", installmentPlans.getCurrency());
+    assertTrue(installmentPlans.isSuccess());
+    assertFalse(installmentPlans.isError());
+    assertFalse(installmentPlans.isPending());
+    assertFalse(installmentPlans.isResumed());
 
-        List<InstallmentPlan> plans = installmentPlans.getPlans();
+    List<InstallmentPlan> plans = installmentPlans.getPlans();
 
-        assertNotNull(plans);
-        assertTrue(plans.size() > 0);
-        assertPlans(plans);
-    }
+    assertNotNull(plans);
+    assertTrue(plans.size() > 0);
+    assertPlans(plans);
+  }
 
-    @Test
-    public void testCreatePaylaterInstallmentTypeWithAllParameter() throws HttpCommunicationException, ParseException {
-        PaylaterInstallmentPlans installmentPlans = getPaylaterInstallmentPlans();
-        InstallmentPlan selectedPlan = installmentPlans.getPlans().get(0);
+  @Test
+  public void testCreatePaylaterInstallmentTypeWithAllParameter()
+      throws HttpCommunicationException, ParseException {
+    PaylaterInstallmentPlans installmentPlans = getPaylaterInstallmentPlans();
+    InstallmentPlan selectedPlan = installmentPlans.getPlans().get(0);
 
-        // when
-        PaylaterInstallment paylaterInstallment = getUnzer().createPaymentType(
-                new PaylaterInstallment()
-                        .setInquiryId(installmentPlans.getId())
-                        .setNumberOfRates(selectedPlan.getNumberOfRates())
-                        .setHolder("Max Mustermann")
-                        .setIban("DE89370400440532013000")
+    // when
+    PaylaterInstallment paylaterInstallment = getUnzer().createPaymentType(
+        new PaylaterInstallment()
+            .setInquiryId(installmentPlans.getId())
+            .setNumberOfRates(selectedPlan.getNumberOfRates())
+            .setHolder("Max Mustermann")
+            .setIban("DE89370400440532013000")
+    );
+
+    // then
+    assertNotNull(paylaterInstallment.getId());
+    assertNotNull(paylaterInstallment.getGeoLocation());
+    assertFalse(paylaterInstallment.getRecurring());
+
+    // API Response doesn't contain request fields.
+    assertNull(paylaterInstallment.getInquiryId());
+    assertNull(paylaterInstallment.getNumberOfRates());
+    assertNull(paylaterInstallment.getCountry());
+    assertNull(paylaterInstallment.getHolder());
+  }
+
+  @Test
+  public void testAuthorize() throws HttpCommunicationException, ParseException {
+    PaylaterInstallmentPlans installmentPlans = getPaylaterInstallmentPlans();
+    InstallmentPlan selectedPlan = installmentPlans.getPlans().get(0);
+
+    // when
+    PaylaterInstallment paylaterInstallment = getUnzer().createPaymentType(
+        new PaylaterInstallment()
+            .setInquiryId(installmentPlans.getId())
+            .setNumberOfRates(selectedPlan.getNumberOfRates())
+            .setHolder("Max Mustermann")
+            .setIban("DE89370400440532013000")
+    );
+
+    Basket basket = getBasket();
+
+    Authorization authorization = getUnzer().authorize(
+        getAuthorization(paylaterInstallment.getId(),
+            createMaximumCustomer().getId(),
+            createBasket(basket).getId())
+    );
+
+    // then
+    assertEquals(AbstractTransaction.Status.SUCCESS, authorization.getStatus());
+    assertNumberEquals(getOrderAmount(), authorization.getAmount());
+  }
+
+  @Test
+  public void testCharge() throws HttpCommunicationException, ParseException {
+    PaylaterInstallmentPlans installmentPlans = getPaylaterInstallmentPlans();
+    InstallmentPlan selectedPlan = installmentPlans.getPlans().get(0);
+
+    PaylaterInstallment paylaterInstallment = getUnzer().createPaymentType(
+        new PaylaterInstallment()
+            .setInquiryId(installmentPlans.getId())
+            .setNumberOfRates(selectedPlan.getNumberOfRates())
+            .setHolder("Max Mustermann")
+            .setIban("DE89370400440532013000")
+    );
+
+    Authorization authorization = getUnzer().authorize(
+        getAuthorization(paylaterInstallment.getId(),
+            createMaximumCustomer().getId(),
+            createBasket(getBasket()).getId())
+    );
+
+    // when
+    Charge charge = getUnzer().chargeAuthorization(authorization.getPaymentId());
+
+    // then
+    assertEquals(AbstractTransaction.Status.SUCCESS, charge.getStatus());
+    assertNumberEquals(getOrderAmount(), charge.getAmount());
+  }
+
+
+  @Test
+  public void testFullCancelAfterCharge() throws HttpCommunicationException, ParseException {
+    PaylaterInstallmentPlans installmentPlans = getPaylaterInstallmentPlans();
+    InstallmentPlan selectedPlan = installmentPlans.getPlans().get(0);
+
+    // when
+    PaylaterInstallment paylaterInstallment = getUnzer().createPaymentType(
+        new PaylaterInstallment()
+            .setInquiryId(installmentPlans.getId())
+            .setNumberOfRates(selectedPlan.getNumberOfRates())
+            .setHolder("Max Mustermann")
+            .setIban("DE89370400440532013000")
+    );
+
+    Basket basket = getBasket();
+
+    Authorization authorization = getUnzer().authorize(
+        getAuthorization(paylaterInstallment.getId(),
+            createMaximumCustomer().getId(),
+            createBasket(basket).getId())
+    );
+
+    Charge charge = getUnzer().chargeAuthorization(authorization.getPaymentId());
+
+    // when
+    Cancel cancel = getUnzer().cancelCharge(charge.getPaymentId(), getOrderAmount());
+
+    // then
+    assertEquals(AbstractTransaction.Status.SUCCESS, charge.getStatus());
+    assertNumberEquals(getOrderAmount(), charge.getAmount());
+  }
+
+  private void assertPlans(List<InstallmentPlan> plans) {
+    plans.forEach((plan) -> {
+      assertNotNull(plan.getTotalAmount());
+      assertNotNull(plan.getNumberOfRates());
+      assertNotNull(plan.getNominalInterestRate());
+      assertNotNull(plan.getEffectiveInterestRate());
+      assertNotNull(plan.getInstallmentRates());
+      assertNotNull(plan.getSecciUrl());
+      assertEquals(plan.getNumberOfRates(), plan.getInstallmentRates().size());
+    });
+  }
+
+  private Basket getBasket() {
+    return new Basket()
+        .setTotalValueGross(getOrderAmount())
+        .setCurrencyCode(Currency.getInstance("EUR"))
+        .addBasketItem(
+            new BasketItem()
+                .setBasketItemReferenceId("Artikelnummer4711")
+                .setQuantity(1)
+                .setVat(BigDecimal.ZERO)
+                .setAmountDiscountPerUnitGross(BigDecimal.ZERO)
+                .setAmountPerUnitGross(getOrderAmount())
+                .setTitle("Some Title")
         );
+  }
 
-        // then
-        assertNotNull(paylaterInstallment.getId());
-        assertNotNull(paylaterInstallment.getGeoLocation());
-        assertFalse(paylaterInstallment.getRecurring());
+  protected Authorization getAuthorization(String typeId, String customerId, String basketId) {
+    Authorization authorization = new Authorization();
+    authorization
+        .setAmount(getOrderAmount())
+        .setCurrency(Currency.getInstance("EUR"))
+        .setTypeId(typeId)
+        .setReturnUrl(unsafeUrl("https://www.unzer.com"))
+        .setCustomerId(customerId)
+        .setBasketId(basketId);
+    return authorization;
+  }
 
-        // API Response doesn't contain request fields.
-        assertNull(paylaterInstallment.getInquiryId());
-        assertNull(paylaterInstallment.getNumberOfRates());
-        assertNull(paylaterInstallment.getCountry());
-        assertNull(paylaterInstallment.getHolder());
-    }
+  private BigDecimal getOrderAmount() {
+    BigDecimal amount = new BigDecimal("99.9900");
+    return amount.setScale(2, RoundingMode.HALF_UP);
+  }
 
-    @Test
-    public void testAuthorize() throws HttpCommunicationException, ParseException {
-        PaylaterInstallmentPlans installmentPlans = getPaylaterInstallmentPlans();
-        InstallmentPlan selectedPlan = installmentPlans.getPlans().get(0);
-
-        // when
-        PaylaterInstallment paylaterInstallment = getUnzer().createPaymentType(
-                new PaylaterInstallment()
-                        .setInquiryId(installmentPlans.getId())
-                        .setNumberOfRates(selectedPlan.getNumberOfRates())
-                        .setHolder("Max Mustermann")
-                        .setIban("DE89370400440532013000")
-        );
-
-        Basket basket = getBasket();
-
-        Authorization authorization = getUnzer().authorize(
-                getAuthorization(paylaterInstallment.getId(),
-                        createMaximumCustomer().getId(),
-                        createBasket(basket).getId())
-        );
-
-        // then
-        assertEquals(AbstractTransaction.Status.SUCCESS, authorization.getStatus());
-        assertNumberEquals(getOrderAmount(), authorization.getAmount());
-    }
-
-    @Test
-    public void testCharge() throws HttpCommunicationException, ParseException {
-        PaylaterInstallmentPlans installmentPlans = getPaylaterInstallmentPlans();
-        InstallmentPlan selectedPlan = installmentPlans.getPlans().get(0);
-
-        PaylaterInstallment paylaterInstallment = getUnzer().createPaymentType(
-                new PaylaterInstallment()
-                        .setInquiryId(installmentPlans.getId())
-                        .setNumberOfRates(selectedPlan.getNumberOfRates())
-                        .setHolder("Max Mustermann")
-                        .setIban("DE89370400440532013000")
-        );
-
-        Authorization authorization = getUnzer().authorize(
-                getAuthorization(paylaterInstallment.getId(),
-                        createMaximumCustomer().getId(),
-                        createBasket(getBasket()).getId())
-        );
-
-        // when
-        Charge charge = getUnzer().chargeAuthorization(authorization.getPaymentId());
-
-        // then
-        assertEquals(AbstractTransaction.Status.SUCCESS, charge.getStatus());
-        assertNumberEquals(getOrderAmount(), charge.getAmount());
-    }
-
-
-    @Test
-    public void testFullCancelAfterCharge() throws HttpCommunicationException, ParseException {
-        PaylaterInstallmentPlans installmentPlans = getPaylaterInstallmentPlans();
-        InstallmentPlan selectedPlan = installmentPlans.getPlans().get(0);
-
-        // when
-        PaylaterInstallment paylaterInstallment = getUnzer().createPaymentType(
-                new PaylaterInstallment()
-                        .setInquiryId(installmentPlans.getId())
-                        .setNumberOfRates(selectedPlan.getNumberOfRates())
-                        .setHolder("Max Mustermann")
-                        .setIban("DE89370400440532013000")
-        );
-
-        Basket basket = getBasket();
-
-        Authorization authorization = getUnzer().authorize(
-                getAuthorization(paylaterInstallment.getId(),
-                        createMaximumCustomer().getId(),
-                        createBasket(basket).getId())
-        );
-
-        Charge charge = getUnzer().chargeAuthorization(authorization.getPaymentId());
-
-        // when
-        Cancel cancel = getUnzer().cancelCharge(charge.getPaymentId(), getOrderAmount());
-
-        // then
-        assertEquals(AbstractTransaction.Status.SUCCESS, charge.getStatus());
-        assertNumberEquals(getOrderAmount(), charge.getAmount());
-    }
-
-    private void assertPlans(List<InstallmentPlan> plans) {
-        plans.forEach((plan) -> {
-            assertNotNull(plan.getTotalAmount());
-            assertNotNull(plan.getNumberOfRates());
-            assertNotNull(plan.getNominalInterestRate());
-            assertNotNull(plan.getEffectiveInterestRate());
-            assertNotNull(plan.getInstallmentRates());
-            assertNotNull(plan.getSecciUrl());
-            assertEquals(plan.getNumberOfRates(), plan.getInstallmentRates().size());
-        });
-    }
-
-    private Basket getBasket() {
-        return new Basket()
-                .setTotalValueGross(getOrderAmount())
-                .setCurrencyCode(Currency.getInstance("EUR"))
-                .addBasketItem(
-                        new BasketItem()
-                                .setBasketItemReferenceId("Artikelnummer4711")
-                                .setQuantity(1)
-                                .setVat(BigDecimal.ZERO)
-                                .setAmountDiscountPerUnitGross(BigDecimal.ZERO)
-                                .setAmountPerUnitGross(getOrderAmount())
-                                .setTitle("Some Title")
-                );
-    }
-
-    protected Authorization getAuthorization(String typeId, String customerId, String basketId) {
-        Authorization authorization = new Authorization();
-        authorization
-                .setAmount(getOrderAmount())
-                .setCurrency(Currency.getInstance("EUR"))
-                .setTypeId(typeId)
-                .setReturnUrl(unsafeUrl("https://www.unzer.com"))
-                .setCustomerId(customerId)
-                .setBasketId(basketId);
-        return authorization;
-    }
-
-    private BigDecimal getOrderAmount() {
-        BigDecimal amount = new BigDecimal("99.9900");
-        return amount.setScale(2, RoundingMode.HALF_UP);
-    }
-
-    private PaylaterInstallmentPlans getPaylaterInstallmentPlans() throws ParseException, HttpCommunicationException {
-        return getUnzer().fetchPaylaterInstallmentPlans(
-                new InstallmentPlansRequest(getOrderAmount(), "EUR", "DE", CustomerType.B2C)
-        );
-    }
+  private PaylaterInstallmentPlans getPaylaterInstallmentPlans()
+      throws ParseException, HttpCommunicationException {
+    return getUnzer().fetchPaylaterInstallmentPlans(
+        new InstallmentPlansRequest(getOrderAmount(), "EUR", "DE", CustomerType.B2C)
+    );
+  }
 }

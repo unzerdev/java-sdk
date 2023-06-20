@@ -13,57 +13,58 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package com.unzer.payment.communication.json;
 
 public class JsonPaylaterInstallment extends JsonIdObject implements JsonObject {
-    private String inquiryId;
-    private Integer numberOfRates;
-    private String iban;
-    private String country;
-    private String holder;
+  private String inquiryId;
+  private Integer numberOfRates;
+  private String iban;
+  private String country;
+  private String holder;
 
-    public String getInquiryId() {
-        return inquiryId;
-    }
+  public String getInquiryId() {
+    return inquiryId;
+  }
 
-    public JsonPaylaterInstallment setInquiryId(String inquiryId) {
-        this.inquiryId = inquiryId;
-        return this;
-    }
+  public JsonPaylaterInstallment setInquiryId(String inquiryId) {
+    this.inquiryId = inquiryId;
+    return this;
+  }
 
-    public Integer getNumberOfRates() {
-        return numberOfRates;
-    }
+  public Integer getNumberOfRates() {
+    return numberOfRates;
+  }
 
-    public JsonPaylaterInstallment setNumberOfRates(Integer numberOfRates) {
-        this.numberOfRates = numberOfRates;
-        return this;
-    }
+  public JsonPaylaterInstallment setNumberOfRates(Integer numberOfRates) {
+    this.numberOfRates = numberOfRates;
+    return this;
+  }
 
-    public String getIban() {
-        return iban;
-    }
+  public String getIban() {
+    return iban;
+  }
 
-    public JsonPaylaterInstallment setIban(String iban) {
-        this.iban = iban;
-        return this;
-    }
+  public JsonPaylaterInstallment setIban(String iban) {
+    this.iban = iban;
+    return this;
+  }
 
-    public String getCountry() {
-        return country;
-    }
+  public String getCountry() {
+    return country;
+  }
 
-    public JsonPaylaterInstallment setCountry(String country) {
-        this.country = country;
-        return this;
-    }
+  public JsonPaylaterInstallment setCountry(String country) {
+    this.country = country;
+    return this;
+  }
 
-    public String getHolder() {
-        return holder;
-    }
+  public String getHolder() {
+    return holder;
+  }
 
-    public JsonPaylaterInstallment setHolder(String holder) {
-        this.holder = holder;
-        return this;
-    }
+  public JsonPaylaterInstallment setHolder(String holder) {
+    this.holder = holder;
+    return this;
+  }
 }

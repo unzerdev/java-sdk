@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package com.unzer.payment.communication.json.paylater;
 
 import com.unzer.payment.communication.json.JsonIdObject;
@@ -24,74 +25,74 @@ import java.util.List;
 
 public class JsonInstallmentPlan extends JsonIdObject implements JsonObject {
 
-    private BigDecimal totalAmount;
-    private int numberOfRates;
-    private BigDecimal nominalInterestRate;
-    private BigDecimal effectiveInterestRate;
-    private List<JsonInstallmentPlanRate> installmentRates;
-    private URL secciUrl;
-    private BigDecimal minimumInstallmentFee;
+  private BigDecimal totalAmount;
+  private int numberOfRates;
+  private BigDecimal nominalInterestRate;
+  private BigDecimal effectiveInterestRate;
+  private List<JsonInstallmentPlanRate> installmentRates;
+  private URL secciUrl;
+  private BigDecimal minimumInstallmentFee;
 
-    public BigDecimal getTotalAmount() {
-        return totalAmount;
-    }
+  public BigDecimal getTotalAmount() {
+    return totalAmount;
+  }
 
-    public JsonInstallmentPlan setTotalAmount(BigDecimal totalAmount) {
-        this.totalAmount = totalAmount;
-        return this;
-    }
+  public JsonInstallmentPlan setTotalAmount(BigDecimal totalAmount) {
+    this.totalAmount = totalAmount;
+    return this;
+  }
 
-    public int getNumberOfRates() {
-        return numberOfRates;
-    }
+  public int getNumberOfRates() {
+    return numberOfRates;
+  }
 
-    public JsonInstallmentPlan setNumberOfRates(int numberOfRates) {
-        this.numberOfRates = numberOfRates;
-        return this;
-    }
+  public JsonInstallmentPlan setNumberOfRates(int numberOfRates) {
+    this.numberOfRates = numberOfRates;
+    return this;
+  }
 
-    public BigDecimal getNominalInterestRate() {
-        return nominalInterestRate;
-    }
+  public BigDecimal getNominalInterestRate() {
+    return nominalInterestRate;
+  }
 
-    public JsonInstallmentPlan setNominalInterestRate(BigDecimal nominalInterestRate) {
-        this.nominalInterestRate = nominalInterestRate;
-        return this;
-    }
+  public JsonInstallmentPlan setNominalInterestRate(BigDecimal nominalInterestRate) {
+    this.nominalInterestRate = nominalInterestRate;
+    return this;
+  }
 
-    public BigDecimal getEffectiveInterestRate() {
-        return effectiveInterestRate;
-    }
+  public BigDecimal getEffectiveInterestRate() {
+    return effectiveInterestRate;
+  }
 
-    public JsonInstallmentPlan setEffectiveInterestRate(BigDecimal effectiveInterestRate) {
-        this.effectiveInterestRate = effectiveInterestRate;
-        return this;
-    }
+  public JsonInstallmentPlan setEffectiveInterestRate(BigDecimal effectiveInterestRate) {
+    this.effectiveInterestRate = effectiveInterestRate;
+    return this;
+  }
 
-    public List<JsonInstallmentPlanRate> getInstallmentRates() {
-        return installmentRates;
-    }
+  public List<JsonInstallmentPlanRate> getInstallmentRates() {
+    return installmentRates;
+  }
 
-    public JsonInstallmentPlan setInstallmentRates(List<JsonInstallmentPlanRate> installmentRates) {
-        this.installmentRates = installmentRates;
-        return this;
-    }
+  public JsonInstallmentPlan setInstallmentRates(List<JsonInstallmentPlanRate> installmentRates) {
+    this.installmentRates = installmentRates;
+    return this;
+  }
 
-    public URL getSecciUrl() {
-        return secciUrl;
-    }
+  public URL getSecciUrl() {
+    return secciUrl;
+  }
 
-    public JsonInstallmentPlan setSecciUrl(URL secciUrl) {
-        this.secciUrl = secciUrl;
-        return this;
-    }
+  public JsonInstallmentPlan setSecciUrl(URL secciUrl) {
+    this.secciUrl = secciUrl;
+    return this;
+  }
 
-    public BigDecimal getMinimumInstallmentFee() {
-        return minimumInstallmentFee;
-    }
+  public BigDecimal getMinimumInstallmentFee() {
+    return minimumInstallmentFee;
+  }
 
-    public JsonInstallmentPlan setMinimumInstallmentFee(BigDecimal minimumInstallmentFee) {
-        this.minimumInstallmentFee = minimumInstallmentFee;
-        return this;
-    }
+  public JsonInstallmentPlan setMinimumInstallmentFee(BigDecimal minimumInstallmentFee) {
+    this.minimumInstallmentFee = minimumInstallmentFee;
+    return this;
+  }
 }

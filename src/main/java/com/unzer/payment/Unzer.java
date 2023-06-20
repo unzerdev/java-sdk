@@ -1391,8 +1391,9 @@ public class Unzer {
     return recurring;
   }
 
-  public PaylaterInstallmentPlans fetchPaylaterInstallmentPlans(InstallmentPlansRequest installmentPlansRequest) throws HttpCommunicationException {
-      return paymentService.fetchPaylaterInstallmentPlans(installmentPlansRequest);
+  public PaylaterInstallmentPlans fetchPaylaterInstallmentPlans(
+      InstallmentPlansRequest installmentPlansRequest) throws HttpCommunicationException {
+    return paymentService.fetchPaylaterInstallmentPlans(installmentPlansRequest);
   }
 
   public List<InstallmentSecuredRatePlan> installmentSecuredRates(BigDecimal amount,

@@ -13,30 +13,31 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package com.unzer.payment.models.paylater;
 
 import java.math.BigDecimal;
 import java.util.Date;
 
 public class InstallmentPlanRate {
-    private Date date;
-    private BigDecimal rate;
+  private Date date;
+  private BigDecimal rate;
 
-    public Date getDate() {
-        return date;
-    }
+  public Date getDate() {
+    return date;
+  }
 
-    public InstallmentPlanRate setDate(Date date) {
-        this.date = date;
-        return this;
-    }
+  public InstallmentPlanRate setDate(Date date) {
+    this.date = date;
+    return this;
+  }
 
-    public BigDecimal getRate() {
-        return rate;
-    }
+  public BigDecimal getRate() {
+    return rate;
+  }
 
-    public InstallmentPlanRate setRate(BigDecimal rate) {
-        this.rate = rate;
-        return this;
-    }
+  public InstallmentPlanRate setRate(BigDecimal rate) {
+    this.rate = rate;
+    return this;
+  }
 }

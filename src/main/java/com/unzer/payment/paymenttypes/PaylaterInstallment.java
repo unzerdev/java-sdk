@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package com.unzer.payment.paymenttypes;
 
 import com.unzer.payment.GeoLocation;
@@ -22,75 +23,76 @@ import com.unzer.payment.communication.json.JsonPaylaterInstallment;
 
 public class PaylaterInstallment extends AbstractPaymentType implements PaymentType {
 
-    private String inquiryId;
-    private Integer numberOfRates;
-    private String iban;
-    private String country;
-    private String holder;
+  private String inquiryId;
+  private Integer numberOfRates;
+  private String iban;
+  private String country;
+  private String holder;
 
-    public String getInquiryId() {
-        return inquiryId;
-    }
+  public String getInquiryId() {
+    return inquiryId;
+  }
 
-    public PaylaterInstallment setInquiryId(String inquiryId) {
-        this.inquiryId = inquiryId;
-        return this;
-    }
+  public PaylaterInstallment setInquiryId(String inquiryId) {
+    this.inquiryId = inquiryId;
+    return this;
+  }
 
-    public Integer getNumberOfRates() {
-        return numberOfRates;
-    }
+  public Integer getNumberOfRates() {
+    return numberOfRates;
+  }
 
-    public PaylaterInstallment setNumberOfRates(Integer numberOfRates) {
-        this.numberOfRates = numberOfRates;
-        return this;
-    }
+  public PaylaterInstallment setNumberOfRates(Integer numberOfRates) {
+    this.numberOfRates = numberOfRates;
+    return this;
+  }
 
-    public String getIban() {
-        return iban;
-    }
+  public String getIban() {
+    return iban;
+  }
 
-    public PaylaterInstallment setIban(String iban) {
-        this.iban = iban;
-        return this;
-    }
+  public PaylaterInstallment setIban(String iban) {
+    this.iban = iban;
+    return this;
+  }
 
-    public String getCountry() {
-        return country;
-    }
+  public String getCountry() {
+    return country;
+  }
 
-    public PaylaterInstallment setCountry(String country) {
-        this.country = country;
-        return this;
-    }
+  public PaylaterInstallment setCountry(String country) {
+    this.country = country;
+    return this;
+  }
 
-    public String getHolder() {
-        return holder;
-    }
+  public String getHolder() {
+    return holder;
+  }
 
-    public PaylaterInstallment setHolder(String holder) {
-        this.holder = holder;
-        return this;
-    }
+  public PaylaterInstallment setHolder(String holder) {
+    this.holder = holder;
+    return this;
+  }
 
-    @Override
-    public PaymentType map(PaymentType pit, JsonObject jsonPit) {
-        ((PaylaterInstallment) pit).setId(jsonPit.getId());
-        ((PaylaterInstallment) pit).setInquiryId(((JsonPaylaterInstallment) jsonPit).getInquiryId());
-        ((PaylaterInstallment) pit).setNumberOfRates(((JsonPaylaterInstallment) jsonPit).getNumberOfRates());
-        ((PaylaterInstallment) pit).setIban(((JsonPaylaterInstallment) jsonPit).getIban());
-        ((PaylaterInstallment) pit).setCountry(((JsonPaylaterInstallment) jsonPit).getCountry());
-        ((PaylaterInstallment) pit).setHolder(((JsonPaylaterInstallment) jsonPit).getHolder());
-        ((PaylaterInstallment) pit).setRecurring(((JsonPaylaterInstallment) jsonPit).getRecurring());
-        GeoLocation geoLocation =
-                new GeoLocation(((JsonIdObject) jsonPit).getGeoLocation().getClientIp(),
-                        ((JsonIdObject) jsonPit).getGeoLocation().getCountryIsoA2());
-        ((PaylaterInstallment) pit).setGeoLocation(geoLocation);
-        return pit;
-    }
+  @Override
+  public PaymentType map(PaymentType pit, JsonObject jsonPit) {
+    ((PaylaterInstallment) pit).setId(jsonPit.getId());
+    ((PaylaterInstallment) pit).setInquiryId(((JsonPaylaterInstallment) jsonPit).getInquiryId());
+    ((PaylaterInstallment) pit).setNumberOfRates(
+        ((JsonPaylaterInstallment) jsonPit).getNumberOfRates());
+    ((PaylaterInstallment) pit).setIban(((JsonPaylaterInstallment) jsonPit).getIban());
+    ((PaylaterInstallment) pit).setCountry(((JsonPaylaterInstallment) jsonPit).getCountry());
+    ((PaylaterInstallment) pit).setHolder(((JsonPaylaterInstallment) jsonPit).getHolder());
+    ((PaylaterInstallment) pit).setRecurring(((JsonPaylaterInstallment) jsonPit).getRecurring());
+    GeoLocation geoLocation =
+        new GeoLocation(((JsonIdObject) jsonPit).getGeoLocation().getClientIp(),
+            ((JsonIdObject) jsonPit).getGeoLocation().getCountryIsoA2());
+    ((PaylaterInstallment) pit).setGeoLocation(geoLocation);
+    return pit;
+  }
 
-    @Override
-    public String getTypeUrl() {
-        return "types/paylater-installment";
-    }
+  @Override
+  public String getTypeUrl() {
+    return "types/paylater-installment";
+  }
 }

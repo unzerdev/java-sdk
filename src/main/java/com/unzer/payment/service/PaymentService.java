@@ -70,17 +70,18 @@ public class PaymentService {
     this.jsonParser = new JsonParser();
   }
 
-    public PaylaterInstallmentPlans fetchPaylaterInstallmentPlans(InstallmentPlansRequest installmentPlansRequest) throws HttpCommunicationException {
-        String url = this.urlUtil.getApiEndpoint() + installmentPlansRequest.getRequestUrl();
+  public PaylaterInstallmentPlans fetchPaylaterInstallmentPlans(
+      InstallmentPlansRequest installmentPlansRequest) throws HttpCommunicationException {
+    String url = this.urlUtil.getApiEndpoint() + installmentPlansRequest.getRequestUrl();
 
-        String response = restCommunication.httpGet(
-                url,
-                unzer.getPrivateKey());
+    String response = restCommunication.httpGet(
+        url,
+        unzer.getPrivateKey());
 
-        JsonInstallmentPlans json = jsonParser.fromJson(response,
-                JsonInstallmentPlans.class);
-        return jsonToBusinessClassMapper.mapToBusinessObject(new PaylaterInstallmentPlans(), json);
-    }
+    JsonInstallmentPlans json = jsonParser.fromJson(response,
+        JsonInstallmentPlans.class);
+    return jsonToBusinessClassMapper.mapToBusinessObject(new PaylaterInstallmentPlans(), json);
+  }
 
   public List<InstallmentSecuredRatePlan> installmentSecuredPlan(BigDecimal amount,
                                                                  Currency currency,
@@ -754,7 +755,8 @@ public class PaymentService {
     return fetchPayment(paymentId).getCharge(chargeId).getCancel(cancelId);
   }
 
-  public PaylaterInvoiceConfig fetchPaymentTypeConfig(PaylaterInvoiceConfigRequest configRequest) throws HttpCommunicationException {
+  public PaylaterInvoiceConfig fetchPaymentTypeConfig(PaylaterInvoiceConfigRequest configRequest)
+      throws HttpCommunicationException {
     String url = this.urlUtil.getApiEndpoint() + configRequest.getRequestUrl();
     String response = this.restCommunication.httpGet(url, unzer.getPrivateKey());
     return this.jsonParser.fromJson(response, PaylaterInvoiceConfig.class);
