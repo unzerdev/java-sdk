@@ -18,7 +18,6 @@ package com.unzer.payment.communication.json.paylater;
 
 import com.unzer.payment.communication.json.JsonIdObject;
 import com.unzer.payment.communication.json.JsonObject;
-
 import java.math.BigDecimal;
 import java.net.URL;
 import java.util.List;
