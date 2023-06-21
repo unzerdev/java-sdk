@@ -18,6 +18,7 @@ package com.unzer.payment.integration.paymenttypes;
 
 import com.unzer.payment.Cancel;
 import com.unzer.payment.Charge;
+import com.unzer.payment.Unzer;
 import com.unzer.payment.business.AbstractPaymentTest;
 import com.unzer.payment.communication.HttpCommunicationException;
 import com.unzer.payment.paymenttypes.SepaDirectDebit;
@@ -49,7 +50,8 @@ public class SepaDirectDebitTest extends AbstractPaymentTest {
 
     @Test
     public void testChargeSepaDirectDebitType() throws HttpCommunicationException, MalformedURLException {
-        SepaDirectDebit sdd = createPaymentTypeSepaDirectDebit();
+        Unzer unzer = getUnzer();
+        SepaDirectDebit sdd = unzer.createPaymentType(getSepaDirectDebit());
         Charge charge = sdd.charge(BigDecimal.ONE, Currency.getInstance("EUR"), new URL("https://www.unzer.com"));
         assertNotNull(charge);
         assertNotNull(charge.getId());
@@ -61,7 +63,8 @@ public class SepaDirectDebitTest extends AbstractPaymentTest {
 
     @Test
     public void testFetchSepaDirectDebitType() throws HttpCommunicationException {
-        SepaDirectDebit sdd = createPaymentTypeSepaDirectDebit();
+        Unzer unzer = getUnzer();
+        SepaDirectDebit sdd = unzer.createPaymentType(getSepaDirectDebit());
         assertNotNull(sdd.getId());
         SepaDirectDebit fetchedSdd = (SepaDirectDebit) getUnzer().fetchPaymentType(sdd.getId());
         assertNotNull(fetchedSdd.getId());
@@ -70,7 +73,8 @@ public class SepaDirectDebitTest extends AbstractPaymentTest {
 
     @Test
     public void testCancelSepaDirectDebitType() throws HttpCommunicationException, MalformedURLException {
-        SepaDirectDebit sdd = createPaymentTypeSepaDirectDebit();
+        Unzer unzer = getUnzer();
+        SepaDirectDebit sdd = unzer.createPaymentType(getSepaDirectDebit());
         Charge charge = sdd.charge(BigDecimal.ONE, Currency.getInstance("EUR"), new URL("https://www.unzer.com"));
         assertNotNull(charge);
         assertNotNull(charge.getId());

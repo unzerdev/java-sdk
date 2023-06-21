@@ -18,6 +18,7 @@ package com.unzer.payment.business;
 
 
 import static com.unzer.payment.util.Url.unsafeUrl;
+import static com.unzer.payment.util.Uuid.generateUuid;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -163,17 +164,20 @@ public class PaymentTest extends AbstractPaymentTest {
 
   @Test
   public void testAuthorizeWithExistedCustomer() throws HttpCommunicationException, ParseException {
+    Unzer unzer = getUnzer();
     // Variant 1
-    Payment payment = new Payment(getUnzer());
+    Payment payment = new Payment(unzer);
     Authorization authorizationUsingPayment =
         payment.authorize(BigDecimal.ONE, Currency.getInstance("EUR"),
-            createPaymentTypeCard(getUnzer(), "4711100000000000").getId(),
-            unsafeUrl("https://www.unzer.com"), createFactoringOKCustomer().getId());
+            createPaymentTypeCard(unzer, "4711100000000000").getId(),
+            unsafeUrl("https://www.unzer.com"),
+            unzer.createCustomer(getFactoringOKCustomer(generateUuid())).getId());
 
     Authorization authorizationUsingUnzer =
-        getUnzer().authorize(BigDecimal.ONE, Currency.getInstance("EUR"),
-            createPaymentTypeCard(getUnzer(), "4711100000000000").getId(),
-            unsafeUrl("https://www.unzer.com"), createFactoringOKCustomer().getId());
+        unzer.authorize(BigDecimal.ONE, Currency.getInstance("EUR"),
+            createPaymentTypeCard(unzer, "4711100000000000").getId(),
+            unsafeUrl("https://www.unzer.com"),
+            unzer.createCustomer(getFactoringOKCustomer(generateUuid())).getId());
     authorizationUsingUnzer.getPayment();
 
     assertNotNull(authorizationUsingPayment);
@@ -185,14 +189,15 @@ public class PaymentTest extends AbstractPaymentTest {
       throws HttpCommunicationException {
     Customer customerRequest = getMaximumCustomer("");
     Card cardRequest = getPaymentTypeCard();
+    Unzer unzer = getUnzer();
     // Variant 1
-    Payment payment = new Payment(getUnzer());
+    Payment payment = new Payment(unzer);
     Authorization authorizationUsingPayment =
         payment.authorize(BigDecimal.ONE, Currency.getInstance("EUR"), cardRequest,
             unsafeUrl("https://www.unzer.com"), customerRequest);
 
     Authorization authorizationUsingUnzer =
-        getUnzer().authorize(BigDecimal.ONE, Currency.getInstance("EUR"), cardRequest,
+        unzer.authorize(BigDecimal.ONE, Currency.getInstance("EUR"), cardRequest,
             unsafeUrl("https://www.unzer.com"), customerRequest);
     authorizationUsingUnzer.getPayment();
 
