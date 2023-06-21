@@ -23,6 +23,7 @@ import com.unzer.payment.models.paylater.InstallmentPlan;
 import com.unzer.payment.models.paylater.InstallmentPlanRate;
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Currency;
 import java.util.List;
 
 public class PaylaterInstallmentPlans {
@@ -30,7 +31,7 @@ public class PaylaterInstallmentPlans {
   private String id;
 
   private BigDecimal amount;
-  private String currency;
+  private Currency currency;
   private List<InstallmentPlan> plans = new ArrayList<>();
   private AbstractTransaction.Status status;
 
@@ -43,11 +44,11 @@ public class PaylaterInstallmentPlans {
     return this;
   }
 
-  public String getCurrency() {
+  public Currency getCurrency() {
     return currency;
   }
 
-  public PaylaterInstallmentPlans setCurrency(String currency) {
+  public PaylaterInstallmentPlans setCurrency(Currency currency) {
     this.currency = currency;
     return this;
   }

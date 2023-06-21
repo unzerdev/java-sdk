@@ -68,7 +68,7 @@ public class PaylaterInstallmentTest extends AbstractPaymentTest {
     PaylaterInstallmentPlans installmentPlans = getUnzer().fetchPaylaterInstallmentPlans(request);
     assertNotEquals("", installmentPlans.getId());
     assertNumberEquals(new BigDecimal("99.99"), installmentPlans.getAmount());
-    assertEquals("EUR", installmentPlans.getCurrency());
+    assertEquals(Currency.getInstance("EUR"), installmentPlans.getCurrency());
     assertEquals(AbstractTransaction.Status.SUCCESS, installmentPlans.getStatus());
 
     List<InstallmentPlan> plans = installmentPlans.getPlans();
@@ -80,7 +80,7 @@ public class PaylaterInstallmentTest extends AbstractPaymentTest {
 
   @Test
   public void testCreatePaylaterInstallmentTypeWithAllParameter()
-      throws HttpCommunicationException, ParseException {
+      throws HttpCommunicationException {
     PaylaterInstallmentPlans installmentPlans = getPaylaterInstallmentPlans();
     InstallmentPlan selectedPlan = installmentPlans.getPlans().get(0);
 

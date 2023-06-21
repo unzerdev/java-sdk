@@ -20,11 +20,12 @@ import com.unzer.payment.communication.json.JsonIdObject;
 import com.unzer.payment.communication.json.JsonObject;
 import com.unzer.payment.communication.json.TransactionStatus;
 import java.math.BigDecimal;
+import java.util.Currency;
 import java.util.List;
 
 public class JsonInstallmentPlans extends JsonIdObject implements JsonObject, TransactionStatus {
   private BigDecimal amount;
-  private String currency;
+  private Currency currency;
   private List<JsonInstallmentPlan> plans;
   private boolean isError;
   private boolean isSuccess;
@@ -41,11 +42,11 @@ public class JsonInstallmentPlans extends JsonIdObject implements JsonObject, Tr
     return this;
   }
 
-  public String getCurrency() {
+  public Currency getCurrency() {
     return currency;
   }
 
-  public JsonInstallmentPlans setCurrency(String currency) {
+  public JsonInstallmentPlans setCurrency(Currency currency) {
     this.currency = currency;
     return this;
   }
