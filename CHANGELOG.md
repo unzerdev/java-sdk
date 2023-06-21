@@ -6,6 +6,15 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres
 to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## [UNRELEASED](https://github.com/unzerdev/java-sdk/compare/4.1.0..)
+
+This Java SDK version supports Unzer Paylater Installment.
+
+### Added
+* Add Paylater Installment support:
+  * Add `com.unzer.payment.service.PaymentService.fetchPaylaterInstallmentPlans()` to get available installment plans.
+  * Add payment type `com.unzer.payment.paymenttypes.PaylaterInstallment`.
+
 ## [4.1.0](https://github.com/unzerdev/java-sdk/compare/4.0.0..4.1.0)
 
 This release adds functionality to fetch payment page
