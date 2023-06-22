@@ -20,6 +20,7 @@ import com.unzer.payment.Charge;
 import com.unzer.payment.Customer;
 import com.unzer.payment.Metadata;
 import com.unzer.payment.Recurring;
+import com.unzer.payment.Unzer;
 import com.unzer.payment.communication.HttpCommunicationException;
 import com.unzer.payment.paymenttypes.Card;
 import com.unzer.payment.paymenttypes.Paypal;
@@ -115,14 +116,15 @@ public class RecurringTest extends AbstractPaymentTest {
 
     @Test
     public void testRecurringSepaDirectDebitDuringCharge() throws MalformedURLException, HttpCommunicationException, ParseException {
-        SepaDirectDebit sdd = createPaymentTypeSepaDirectDebit();
-        sdd = (SepaDirectDebit) getUnzer().fetchPaymentType(sdd.getId());
+        Unzer unzer = getUnzer();
+        SepaDirectDebit sdd = unzer.createPaymentType(getSepaDirectDebit());
+        sdd = (SepaDirectDebit) unzer.fetchPaymentType(sdd.getId());
         assertEquals(false, sdd.getRecurring());
 
-        Charge charge = getUnzer().charge(BigDecimal.ONE, Currency.getInstance("EUR"), sdd.getId(), new URL("https://www.unzer.com"));
+        Charge charge = unzer.charge(BigDecimal.ONE, Currency.getInstance("EUR"), sdd.getId(), new URL("https://www.unzer.com"));
         assertNull(charge.getRedirectUrl());
 
-        sdd = (SepaDirectDebit) getUnzer().fetchPaymentType(sdd.getId());
+        sdd = (SepaDirectDebit) unzer.fetchPaymentType(sdd.getId());
         assertEquals(true, sdd.getRecurring());
     }
 
