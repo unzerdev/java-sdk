@@ -13,5 +13,5 @@ jobs:
   security-scan:
     uses: unzerdev/unzer-tech-toolbox/.github/workflows/security-scan.yaml@main
     secrets:
-      CX_CLIENT_ID: ${{ secrets.CX_CONNECTIVITY_CLIENT_ID }}
-      CX_CLIENT_SECRET: ${{ secrets.CX_CONNECTIVITY_CLIENT_SECRET }}
+      CX_CLIENT_ID: ${{ secrets.CX_CONN_EXT_CLIENT_ID }}
+      CX_CLIENT_SECRET: ${{ secrets.CX_CONN_EXT_CLIENT_SECRET }}
