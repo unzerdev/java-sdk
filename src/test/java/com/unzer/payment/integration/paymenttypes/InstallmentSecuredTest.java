@@ -19,6 +19,7 @@ package com.unzer.payment.integration.paymenttypes;
 import static com.unzer.payment.business.BasketV1TestData.getMaxTestBasketV1;
 import static com.unzer.payment.business.BasketV2TestData.getMaxTestBasketV2;
 import static com.unzer.payment.util.Url.unsafeUrl;
+import static com.unzer.payment.util.Uuid.generateUuid;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -54,12 +55,12 @@ import org.junit.jupiter.api.Test;
 public class InstallmentSecuredTest extends AbstractPaymentTest {
 
   @Test
-  @Disabled("https://unz.atlassian.net/browse/CC-454")
   public void testRateRetrieval() throws HttpCommunicationException, ParseException {
     BigDecimal effectiveInterestRate = new BigDecimal(5.5).setScale(4, RoundingMode.HALF_UP);
     Date orderDate = getDate("21.06.2019");
+    Unzer unzer = getUnzer(Keys.LEGACY_PRIVATE_KEY);
     List<InstallmentSecuredRatePlan> rateList =
-        getUnzer().installmentSecuredRates(BigDecimal.TEN, Currency.getInstance("EUR"),
+        unzer.installmentSecuredRates(BigDecimal.TEN, Currency.getInstance("EUR"),
             effectiveInterestRate, orderDate);
     assertNotNull(rateList);
     assertTrue(rateList.size() > 0);
@@ -87,12 +88,13 @@ public class InstallmentSecuredTest extends AbstractPaymentTest {
   }
 
   @Test
-  @Disabled("https://unz.atlassian.net/browse/CC-454")
+
   public void testCreateInstallmentSecuredTypeWithIbanInvoiceDate()
       throws HttpCommunicationException, ParseException {
     InstallmentSecuredRatePlan ratePlan = getInstallmentSecuredRatePlan();
     addIbanInvoiceParameter(ratePlan);
-    InstallmentSecuredRatePlan ratePlanReturned = getUnzer().createPaymentType(ratePlan);
+    InstallmentSecuredRatePlan ratePlanReturned =
+        getUnzer(Keys.LEGACY_PRIVATE_KEY).createPaymentType(ratePlan);
     assertNotNull(ratePlanReturned);
     assertRatePlan(ratePlan, ratePlanReturned);
   }
@@ -102,7 +104,8 @@ public class InstallmentSecuredTest extends AbstractPaymentTest {
     BigDecimal effectiveInterestRate = new BigDecimal(5.5);
     Date orderDate = getDate("21.06.2019");
     List<InstallmentSecuredRatePlan> rateList =
-        getUnzer().installmentSecuredRates(BigDecimal.TEN, Currency.getInstance("EUR"),
+        getUnzer(Keys.LEGACY_PRIVATE_KEY).installmentSecuredRates(BigDecimal.TEN,
+            Currency.getInstance("EUR"),
             effectiveInterestRate, orderDate);
     InstallmentSecuredRatePlan ratePlan = rateList.get(0);
     return ratePlan;
@@ -164,30 +167,33 @@ public class InstallmentSecuredTest extends AbstractPaymentTest {
   }
 
   @Test
-  @Disabled("https://unz.atlassian.net/browse/CC-454")
+
   public void testCreateInstallmentSecuredTypeIbanLater()
       throws HttpCommunicationException, ParseException {
     InstallmentSecuredRatePlan ratePlan = getInstallmentSecuredRatePlan();
-    InstallmentSecuredRatePlan ratePlanReturned = getUnzer().createPaymentType(ratePlan);
+    InstallmentSecuredRatePlan ratePlanReturned =
+        getUnzer(Keys.LEGACY_PRIVATE_KEY).createPaymentType(ratePlan);
     assertNotNull(ratePlanReturned);
     assertRatePlan(ratePlan, ratePlanReturned);
 
     addIbanInvoiceParameter(ratePlanReturned);
-    InstallmentSecuredRatePlan updatedPlan = getUnzer().updatePaymentType(ratePlanReturned);
+    InstallmentSecuredRatePlan updatedPlan =
+        getUnzer(Keys.LEGACY_PRIVATE_KEY).updatePaymentType(ratePlanReturned);
 
     assertNotNull(updatedPlan);
     assertRatePlan(ratePlanReturned, updatedPlan);
   }
 
   @Test
-  @Disabled("https://unz.atlassian.net/browse/CC-454")
+
   @Deprecated
   public void testAuthorizeViaTypeWithIbanBasketV1()
       throws HttpCommunicationException, ParseException {
     InstallmentSecuredRatePlan ratePlan = getInstallmentSecuredRatePlan();
     addIbanInvoiceParameter(ratePlan);
+    Unzer unzer = getUnzer(Keys.LEGACY_PRIVATE_KEY);
     InstallmentSecuredRatePlan ratePlanReturned =
-        getUnzer(Keys.LEGACY_PRIVATE_KEY).createPaymentType(ratePlan);
+        unzer.createPaymentType(ratePlan);
     assertNotNull(ratePlanReturned);
     assertRatePlan(ratePlan, ratePlanReturned);
 
@@ -195,8 +201,8 @@ public class InstallmentSecuredTest extends AbstractPaymentTest {
         new BigDecimal(370.48),
         Currency.getInstance("EUR"),
         unsafeUrl("https://www.unzer.com"),
-        createMaximumCustomerSameAddress().getId(),
-        createBasket(getMaxTestBasketV1()).getId(),
+        unzer.createCustomer(getMaximumCustomerSameAddress(generateUuid())).getId(),
+        unzer.createBasket(getMaxTestBasketV1()).getId(),
         ratePlan.getEffectiveInterestRate());
     assertValidAuthorize(ratePlan, authorization);
   }
@@ -230,8 +236,9 @@ public class InstallmentSecuredTest extends AbstractPaymentTest {
       throws HttpCommunicationException, ParseException {
     InstallmentSecuredRatePlan ratePlan = getInstallmentSecuredRatePlan();
     addIbanInvoiceParameter(ratePlan);
+    Unzer unzer = getUnzer(Keys.LEGACY_PRIVATE_KEY);
     InstallmentSecuredRatePlan ratePlanReturned =
-        getUnzer(Keys.LEGACY_PRIVATE_KEY).createPaymentType(ratePlan);
+        unzer.createPaymentType(ratePlan);
     assertNotNull(ratePlanReturned);
     assertRatePlan(ratePlan, ratePlanReturned);
 
@@ -239,14 +246,14 @@ public class InstallmentSecuredTest extends AbstractPaymentTest {
         new BigDecimal(370.48),
         Currency.getInstance("EUR"),
         unsafeUrl("https://www.unzer.com"),
-        createMaximumCustomerSameAddress().getId(),
-        createBasket(getMaxTestBasketV2()).getId(),
+        unzer.createCustomer(getMaximumCustomerSameAddress(generateUuid())).getId(),
+        unzer.createBasket(getMaxTestBasketV2()).getId(),
         ratePlan.getEffectiveInterestRate());
     assertValidAuthorize(ratePlan, authorization);
   }
 
   @Test
-  @Disabled("https://unz.atlassian.net/browse/CC-454")
+
   @Deprecated
   public void testAuthorizeViaUnzerTypeIdWithIbanBasketV1()
       throws HttpCommunicationException, ParseException, MalformedURLException {
@@ -262,8 +269,8 @@ public class InstallmentSecuredTest extends AbstractPaymentTest {
         .authorize(
             getAuthorization(
                 ratePlanReturned.getId(),
-                createMaximumCustomerSameAddress().getId(),
-                createBasket(getMaxTestBasketV1()).getId(),
+                unzer.createCustomer(getMaximumCustomerSameAddress(generateUuid())).getId(),
+                unzer.createBasket(getMaxTestBasketV1()).getId(),
                 ratePlan.getEffectiveInterestRate()
             )
         );
@@ -300,8 +307,8 @@ public class InstallmentSecuredTest extends AbstractPaymentTest {
         .authorize(
             getAuthorization(
                 ratePlanReturned.getId(),
-                createMaximumCustomerSameAddress().getId(),
-                createBasket(getMaxTestBasketV2()).getId(),
+                unzer.createCustomer(getMaximumCustomerSameAddress(generateUuid())).getId(),
+                unzer.createBasket(getMaxTestBasketV2()).getId(),
                 ratePlan.getEffectiveInterestRate()
             )
         );
@@ -309,7 +316,7 @@ public class InstallmentSecuredTest extends AbstractPaymentTest {
   }
 
   @Test
-  @Disabled("https://unz.atlassian.net/browse/CC-454")
+
   @Deprecated
   public void testChargeViaAuthorizeBasketV1() throws HttpCommunicationException, ParseException {
     Unzer unzer = getUnzer(Keys.LEGACY_PRIVATE_KEY);
@@ -323,8 +330,8 @@ public class InstallmentSecuredTest extends AbstractPaymentTest {
         new BigDecimal(370.48),
         Currency.getInstance("EUR"),
         unsafeUrl("https://www.unzer.com"),
-        createMaximumCustomerSameAddress().getId(),
-        createBasket(getMaxTestBasketV1()).getId(),
+        unzer.createCustomer(getMaximumCustomerSameAddress(generateUuid())).getId(),
+        unzer.createBasket(getMaxTestBasketV1()).getId(),
         ratePlan.getEffectiveInterestRate());
     assertValidAuthorize(ratePlan, authorization);
 
@@ -344,9 +351,10 @@ public class InstallmentSecuredTest extends AbstractPaymentTest {
   @Disabled("https://unz.atlassian.net/browse/AHC-5292")
   @Test
   public void testChargeViaAuthorizeBasketV2() throws HttpCommunicationException, ParseException {
+    Unzer unzer = getUnzer(Keys.LEGACY_PRIVATE_KEY);
     InstallmentSecuredRatePlan ratePlan =
-        getUnzer(Keys.LEGACY_PRIVATE_KEY).createPaymentType(getInstallmentSecuredRatePlan());
-    InstallmentSecuredRatePlan ratePlanReturned = getUnzer().createPaymentType(ratePlan);
+        unzer.createPaymentType(getInstallmentSecuredRatePlan());
+    InstallmentSecuredRatePlan ratePlanReturned = unzer.createPaymentType(ratePlan);
     assertNotNull(ratePlanReturned);
     assertRatePlan(ratePlan, ratePlanReturned);
 
@@ -354,8 +362,8 @@ public class InstallmentSecuredTest extends AbstractPaymentTest {
         new BigDecimal(370.48),
         Currency.getInstance("EUR"),
         unsafeUrl("https://www.unzer.com"),
-        createMaximumCustomerSameAddress().getId(),
-        createBasket(getMaxTestBasketV2()).getId(),
+        unzer.createCustomer(getMaximumCustomerSameAddress(generateUuid())).getId(),
+        unzer.createBasket(getMaxTestBasketV2()).getId(),
         ratePlan.getEffectiveInterestRate());
     assertValidAuthorize(ratePlan, authorization);
 
@@ -365,7 +373,7 @@ public class InstallmentSecuredTest extends AbstractPaymentTest {
 
   @Test
   @Deprecated
-  @Disabled("https://unz.atlassian.net/browse/CC-454")
+
   public void testFullCancellationBeforeShipmentBasketV1()
       throws HttpCommunicationException, ParseException {
     Unzer unzer = getUnzer(Keys.LEGACY_PRIVATE_KEY);
@@ -379,8 +387,8 @@ public class InstallmentSecuredTest extends AbstractPaymentTest {
         new BigDecimal(370.48),
         Currency.getInstance("EUR"),
         unsafeUrl("https://www.unzer.com"),
-        createMaximumCustomerSameAddress().getId(),
-        createBasket(getMaxTestBasketV1()).getId(),
+        unzer.createCustomer(getMaximumCustomerSameAddress(generateUuid())).getId(),
+        unzer.createBasket(getMaxTestBasketV1()).getId(),
         ratePlan.getEffectiveInterestRate());
     assertValidAuthorize(ratePlan, authorization);
 
@@ -403,9 +411,10 @@ public class InstallmentSecuredTest extends AbstractPaymentTest {
   @Test
   public void testFullCancellationBeforeShipmentBasketV2()
       throws HttpCommunicationException, ParseException {
+    Unzer unzer = getUnzer(Keys.LEGACY_PRIVATE_KEY);
     InstallmentSecuredRatePlan ratePlan =
-        getUnzer(Keys.LEGACY_PRIVATE_KEY).createPaymentType(getInstallmentSecuredRatePlan());
-    InstallmentSecuredRatePlan ratePlanReturned = getUnzer().createPaymentType(ratePlan);
+        unzer.createPaymentType(getInstallmentSecuredRatePlan());
+    InstallmentSecuredRatePlan ratePlanReturned = unzer.createPaymentType(ratePlan);
     assertNotNull(ratePlanReturned);
     assertRatePlan(ratePlan, ratePlanReturned);
 
@@ -413,8 +422,8 @@ public class InstallmentSecuredTest extends AbstractPaymentTest {
         new BigDecimal(370.48),
         Currency.getInstance("EUR"),
         unsafeUrl("https://www.unzer.com"),
-        createMaximumCustomerSameAddress().getId(),
-        createBasket(getMaxTestBasketV2()).getId(),
+        unzer.createCustomer(getMaximumCustomerSameAddress(generateUuid())).getId(),
+        unzer.createBasket(getMaxTestBasketV2()).getId(),
         ratePlan.getEffectiveInterestRate());
     assertValidAuthorize(ratePlan, authorization);
 
@@ -426,13 +435,14 @@ public class InstallmentSecuredTest extends AbstractPaymentTest {
   }
 
   @Test
-  @Disabled("https://unz.atlassian.net/browse/CC-454")
+
   @Deprecated
   public void testPartialCancellationBeforeShipmentBasketV1()
       throws HttpCommunicationException, ParseException {
+    Unzer unzer = getUnzer(Keys.LEGACY_PRIVATE_KEY);
     InstallmentSecuredRatePlan ratePlan =
-        getUnzer(Keys.LEGACY_PRIVATE_KEY).createPaymentType(getInstallmentSecuredRatePlan());
-    InstallmentSecuredRatePlan ratePlanReturned = getUnzer().createPaymentType(ratePlan);
+        unzer.createPaymentType(getInstallmentSecuredRatePlan());
+    InstallmentSecuredRatePlan ratePlanReturned = unzer.createPaymentType(ratePlan);
     assertNotNull(ratePlanReturned);
     assertRatePlan(ratePlan, ratePlanReturned);
 
@@ -440,8 +450,8 @@ public class InstallmentSecuredTest extends AbstractPaymentTest {
         new BigDecimal(370.48),
         Currency.getInstance("EUR"),
         unsafeUrl("https://www.unzer.com"),
-        createMaximumCustomerSameAddress().getId(),
-        createBasket(getMaxTestBasketV1()).getId(),
+        unzer.createCustomer(getMaximumCustomerSameAddress(generateUuid())).getId(),
+        unzer.createBasket(getMaxTestBasketV1()).getId(),
         ratePlan.getEffectiveInterestRate());
     assertValidAuthorize(ratePlan, authorization);
 
@@ -461,9 +471,10 @@ public class InstallmentSecuredTest extends AbstractPaymentTest {
   @Test
   public void testPartialCancellationBeforeShipmentBasketV2()
       throws HttpCommunicationException, ParseException {
+    Unzer unzer = getUnzer(Keys.LEGACY_PRIVATE_KEY);
     InstallmentSecuredRatePlan ratePlan =
-        getUnzer(Keys.LEGACY_PRIVATE_KEY).createPaymentType(getInstallmentSecuredRatePlan());
-    InstallmentSecuredRatePlan ratePlanReturned = getUnzer().createPaymentType(ratePlan);
+        unzer.createPaymentType(getInstallmentSecuredRatePlan());
+    InstallmentSecuredRatePlan ratePlanReturned = unzer.createPaymentType(ratePlan);
     assertNotNull(ratePlanReturned);
     assertRatePlan(ratePlan, ratePlanReturned);
 
@@ -471,8 +482,8 @@ public class InstallmentSecuredTest extends AbstractPaymentTest {
         new BigDecimal(370.48),
         Currency.getInstance("EUR"),
         unsafeUrl("https://www.unzer.com"),
-        createMaximumCustomerSameAddress().getId(),
-        createBasket(getMaxTestBasketV2()).getId(),
+        unzer.createCustomer(getMaximumCustomerSameAddress(generateUuid())).getId(),
+        unzer.createBasket(getMaxTestBasketV2()).getId(),
         ratePlan.getEffectiveInterestRate());
     assertValidAuthorize(ratePlan, authorization);
 
@@ -490,11 +501,11 @@ public class InstallmentSecuredTest extends AbstractPaymentTest {
 
   @Test
   @Deprecated
-  @Disabled("https://unz.atlassian.net/browse/CC-454")
   public void testShipmentBasketV1() throws HttpCommunicationException, ParseException {
     InstallmentSecuredRatePlan ratePlan = getInstallmentSecuredRatePlan();
     addIbanInvoiceParameter(ratePlan);
-    InstallmentSecuredRatePlan ratePlanReturned = getUnzer().createPaymentType(ratePlan);
+    Unzer unzer = getUnzer(Keys.LEGACY_PRIVATE_KEY);
+    InstallmentSecuredRatePlan ratePlanReturned = unzer.createPaymentType(ratePlan);
     assertNotNull(ratePlanReturned);
     assertRatePlan(ratePlan, ratePlanReturned);
 
@@ -502,15 +513,15 @@ public class InstallmentSecuredTest extends AbstractPaymentTest {
         new BigDecimal(370.48),
         Currency.getInstance("EUR"),
         unsafeUrl("https://www.unzer.com"),
-        createMaximumCustomerSameAddress().getId(),
-        createBasket(getMaxTestBasketV1()).getId(),
+        unzer.createCustomer(getMaximumCustomerSameAddress(generateUuid())).getId(),
+        unzer.createBasket(getMaxTestBasketV1()).getId(),
         ratePlan.getEffectiveInterestRate());
     assertValidAuthorize(ratePlan, authorization);
 
     Charge charge = authorization.charge();
     assertValidCharge(charge);
 
-    Shipment shipment = getUnzer().shipment(charge.getPaymentId());
+    Shipment shipment = unzer.shipment(charge.getPaymentId());
     assertValidShipment(shipment);
   }
 
@@ -523,7 +534,9 @@ public class InstallmentSecuredTest extends AbstractPaymentTest {
   public void testShipmentBasketV2() throws HttpCommunicationException, ParseException {
     InstallmentSecuredRatePlan ratePlan = getInstallmentSecuredRatePlan();
     addIbanInvoiceParameter(ratePlan);
-    InstallmentSecuredRatePlan ratePlanReturned = getUnzer().createPaymentType(ratePlan);
+    Unzer unzer = getUnzer(Keys.LEGACY_PRIVATE_KEY);
+    InstallmentSecuredRatePlan ratePlanReturned =
+        unzer.createPaymentType(ratePlan);
     assertNotNull(ratePlanReturned);
     assertRatePlan(ratePlan, ratePlanReturned);
 
@@ -531,26 +544,27 @@ public class InstallmentSecuredTest extends AbstractPaymentTest {
         new BigDecimal(370.48),
         Currency.getInstance("EUR"),
         unsafeUrl("https://www.unzer.com"),
-        createMaximumCustomerSameAddress().getId(),
-        createBasket(getMaxTestBasketV2()).getId(),
+        unzer.createCustomer(getMaximumCustomerSameAddress(generateUuid())).getId(),
+        unzer.createBasket(getMaxTestBasketV2()).getId(),
         ratePlan.getEffectiveInterestRate());
     assertValidAuthorize(ratePlan, authorization);
 
     Charge charge = authorization.charge();
     assertValidCharge(charge);
 
-    Shipment shipment = getUnzer().shipment(charge.getPaymentId());
+    Shipment shipment = unzer.shipment(charge.getPaymentId());
     assertValidShipment(shipment);
   }
 
   @Test
   @Deprecated
-  @Disabled("https://unz.atlassian.net/browse/CC-454")
+
   public void testFullCancelAfterShipmentBasketV1()
       throws HttpCommunicationException, ParseException {
     InstallmentSecuredRatePlan ratePlan = getInstallmentSecuredRatePlan();
     addIbanInvoiceParameter(ratePlan);
-    InstallmentSecuredRatePlan ratePlanReturned = getUnzer().createPaymentType(ratePlan);
+    Unzer unzer = getUnzer(Keys.LEGACY_PRIVATE_KEY);
+    InstallmentSecuredRatePlan ratePlanReturned = unzer.createPaymentType(ratePlan);
     assertNotNull(ratePlanReturned);
     assertRatePlan(ratePlan, ratePlanReturned);
 
@@ -558,15 +572,15 @@ public class InstallmentSecuredTest extends AbstractPaymentTest {
         new BigDecimal("370.48"),
         Currency.getInstance("EUR"),
         unsafeUrl("https://www.unzer.com"),
-        createMaximumCustomerSameAddress().getId(),
-        createBasket(getMaxTestBasketV1()).getId(),
+        unzer.createCustomer(getMaximumCustomerSameAddress(generateUuid())).getId(),
+        unzer.createBasket(getMaxTestBasketV1()).getId(),
         ratePlan.getEffectiveInterestRate());
     assertValidAuthorize(ratePlan, authorization);
 
     Charge charge = authorization.charge();
     assertValidCharge(charge);
 
-    Shipment shipment = getUnzer().shipment(charge.getPaymentId());
+    Shipment shipment = unzer.shipment(charge.getPaymentId());
     assertValidShipment(shipment);
 
     Cancel cancel = charge.cancel();
@@ -579,7 +593,9 @@ public class InstallmentSecuredTest extends AbstractPaymentTest {
       throws HttpCommunicationException, ParseException {
     InstallmentSecuredRatePlan ratePlan = getInstallmentSecuredRatePlan();
     addIbanInvoiceParameter(ratePlan);
-    InstallmentSecuredRatePlan ratePlanReturned = getUnzer().createPaymentType(ratePlan);
+    Unzer unzer = getUnzer(Keys.LEGACY_PRIVATE_KEY);
+    InstallmentSecuredRatePlan ratePlanReturned =
+        unzer.createPaymentType(ratePlan);
     assertNotNull(ratePlanReturned);
     assertRatePlan(ratePlan, ratePlanReturned);
 
@@ -587,15 +603,15 @@ public class InstallmentSecuredTest extends AbstractPaymentTest {
         new BigDecimal("380.38"),
         Currency.getInstance("EUR"),
         unsafeUrl("https://www.unzer.com"),
-        createMaximumCustomerSameAddress().getId(),
-        createBasket(getMaxTestBasketV2()).getId(),
+        unzer.createCustomer(getMaximumCustomerSameAddress(generateUuid())).getId(),
+        unzer.createBasket(getMaxTestBasketV2()).getId(),
         ratePlan.getEffectiveInterestRate());
     assertValidAuthorize(ratePlan, authorization);
 
     Charge charge = authorization.charge();
     assertValidCharge(charge);
 
-    Shipment shipment = getUnzer().shipment(charge.getPaymentId());
+    Shipment shipment = unzer.shipment(charge.getPaymentId());
     assertValidShipment(shipment);
 
     Cancel cancel = charge.cancel();
@@ -603,7 +619,7 @@ public class InstallmentSecuredTest extends AbstractPaymentTest {
   }
 
   @Test
-  @Disabled("https://unz.atlassian.net/browse/CC-454")
+
   @Deprecated
   public void testAuthorizeHirePurchaseDirectDebitBasketV1()
       throws HttpCommunicationException, ParseException {
@@ -611,8 +627,8 @@ public class InstallmentSecuredTest extends AbstractPaymentTest {
     HttpClientBasedRestCommunication restCommunication = new HttpClientBasedRestCommunication();
     JsonParser jsonParser = new JsonParser();
     PaymentService paymentService = new PaymentService(unzer, restCommunication);
-    Customer maximumCustomer = createMaximumCustomer();
-    Basket basket = createBasket(getMaxTestBasketV1(new BigDecimal(380.48)));
+    Customer maximumCustomer = unzer.createCustomer(getMaximumCustomer(generateUuid()));
+    Basket basket = unzer.createBasket(getMaxTestBasketV1(new BigDecimal(380.48)));
 
     // FIXME: hardcoded endpoint
     String response = restCommunication.httpPost(
@@ -643,7 +659,8 @@ public class InstallmentSecuredTest extends AbstractPaymentTest {
     BigDecimal effectiveInterestRate = new BigDecimal(5.5);
     Date orderDate = getDate("21.06.2019");
     List<InstallmentSecuredRatePlan> rateList =
-        getUnzer().installmentSecuredRates(amount, Currency.getInstance("EUR"),
+        getUnzer(Keys.LEGACY_PRIVATE_KEY).installmentSecuredRates(amount,
+            Currency.getInstance("EUR"),
             effectiveInterestRate, orderDate);
     InstallmentSecuredRatePlan ratePlan = rateList.get(0);
     return ratePlan;
@@ -653,12 +670,12 @@ public class InstallmentSecuredTest extends AbstractPaymentTest {
   @Test
   public void testAuthorizeHirePurchaseDirectDebitBasketV2()
       throws HttpCommunicationException, ParseException {
-    Unzer unzer = getUnzer();
+    Unzer unzer = getUnzer(Keys.LEGACY_PRIVATE_KEY);
     HttpClientBasedRestCommunication restCommunication = new HttpClientBasedRestCommunication();
     JsonParser jsonParser = new JsonParser();
     PaymentService paymentService = new PaymentService(unzer, restCommunication);
-    Customer maximumCustomer = createMaximumCustomer();
-    Basket basket = createBasket(getMaxTestBasketV1(new BigDecimal(380.48)));
+    Customer maximumCustomer = unzer.createCustomer(getMaximumCustomer(generateUuid()));
+    Basket basket = unzer.createBasket(getMaxTestBasketV1(new BigDecimal(380.48)));
 
     // FIXME: hardcoded endpoint
     String response = restCommunication.httpPost(

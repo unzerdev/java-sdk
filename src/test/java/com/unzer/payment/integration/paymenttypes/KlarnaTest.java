@@ -43,7 +43,6 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.api.DynamicTest.dynamicTest;
 
 
-@Disabled("https://unz.atlassian.net/browse/CC-454")
 public class KlarnaTest extends AbstractPaymentTest {
     @BeforeAll
     static void setup() {
