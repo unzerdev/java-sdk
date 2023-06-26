@@ -24,6 +24,7 @@ public class JsonResources {
   private String riskId;
   private String basketId;
   private String traceId;
+  private String payPageId;
 
   public String getTypeId() {
     return typeId;
@@ -79,5 +80,13 @@ public class JsonResources {
 
   public void setTraceId(String traceId) {
     this.traceId = traceId;
+  }
+
+  public String getPayPageId() {
+    return payPageId;
+  }
+
+  public void setPayPageId(String payPageId) {
+    this.payPageId = payPageId;
   }
 }

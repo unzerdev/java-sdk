@@ -19,14 +19,14 @@ package com.unzer.payment.communication.json;
 import java.util.Currency;
 import java.util.List;
 
-public class JsonPayment extends JsonIdObject {
+public class ApiPayment extends JsonIdObject {
 
   private JsonState state;
   private JsonAmount amount;
   private Currency currency;
   private String orderId;
   private JsonResources resources;
-  private List<JsonTransaction> transactions;
+  private List<ApiTransaction> transactions;
 
   public JsonState getState() {
     return state;
@@ -68,11 +68,11 @@ public class JsonPayment extends JsonIdObject {
     this.resources = resources;
   }
 
-  public List<JsonTransaction> getTransactions() {
+  public List<ApiTransaction> getTransactions() {
     return transactions;
   }
 
-  public void setTransactions(List<JsonTransaction> transactions) {
+  public void setTransactions(List<ApiTransaction> transactions) {
     this.transactions = transactions;
   }
 

@@ -38,6 +38,7 @@ public abstract class AbstractTransaction<T extends AbstractPayment> implements 
   private String paymentId;
   private String riskId;
   private String basketId;
+  private String paypageId;
   private String paymentReference;
   private Status status;
   private URL redirectUrl;
@@ -61,6 +62,138 @@ public abstract class AbstractTransaction<T extends AbstractPayment> implements 
   @Deprecated
   public AbstractTransaction(Unzer unzer) {
     this.unzer = unzer;
+  }
+
+  @Override
+  public int hashCode() {
+    int result = getId() != null ? getId().hashCode() : 0;
+    result = 31 * result + (getAmount() != null ? getAmount().hashCode() : 0);
+    result = 31 * result + (getCurrency() != null ? getCurrency().hashCode() : 0);
+    result = 31 * result + (getReturnUrl() != null ? getReturnUrl().hashCode() : 0);
+    result = 31 * result + (getCard3ds() != null ? getCard3ds().hashCode() : 0);
+    result = 31 * result + (getOrderId() != null ? getOrderId().hashCode() : 0);
+    result = 31 * result + (getInvoiceId() != null ? getInvoiceId().hashCode() : 0);
+    result = 31 * result + (getTypeId() != null ? getTypeId().hashCode() : 0);
+    result = 31 * result + (getCustomerId() != null ? getCustomerId().hashCode() : 0);
+    result = 31 * result + (getMetadataId() != null ? getMetadataId().hashCode() : 0);
+    result = 31 * result + (getPaymentId() != null ? getPaymentId().hashCode() : 0);
+    result = 31 * result + (getRiskId() != null ? getRiskId().hashCode() : 0);
+    result = 31 * result + (getBasketId() != null ? getBasketId().hashCode() : 0);
+    result = 31 * result + (getPaypageId() != null ? getPaypageId().hashCode() : 0);
+    result = 31 * result + (getPaymentReference() != null ? getPaymentReference().hashCode() : 0);
+    result = 31 * result + (getStatus() != null ? getStatus().hashCode() : 0);
+    result = 31 * result + (getRedirectUrl() != null ? getRedirectUrl().hashCode() : 0);
+    result = 31 * result + (getTraceId() != null ? getTraceId().hashCode() : 0);
+    result = 31 * result + (getMessage() != null ? getMessage().hashCode() : 0);
+    result = 31 * result + (getDate() != null ? getDate().hashCode() : 0);
+    result = 31 * result + (getType() != null ? getType().hashCode() : 0);
+    result = 31 * result +
+        (getAdditionalTransactionData() != null ? getAdditionalTransactionData().hashCode() : 0);
+    result = 31 * result + (getResourceUrl() != null ? getResourceUrl().hashCode() : 0);
+    return result;
+  }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) {
+      return true;
+    }
+    if (o == null || getClass() != o.getClass()) {
+      return false;
+    }
+
+    AbstractTransaction<?> that = (AbstractTransaction<?>) o;
+
+    if (getId() != null ? !getId().equals(that.getId()) : that.getId() != null) {
+      return false;
+    }
+
+    if (getAmount() != null ? getAmount().compareTo(that.getAmount()) != 0 :
+        that.getAmount() != null) {
+      return false;
+    }
+    if (getCurrency() != null ? !getCurrency().equals(that.getCurrency()) :
+        that.getCurrency() != null) {
+      return false;
+    }
+    if (getReturnUrl() != null ? !getReturnUrl().equals(that.getReturnUrl()) :
+        that.getReturnUrl() != null) {
+      return false;
+    }
+    if (getCard3ds() != null ? !getCard3ds().equals(that.getCard3ds()) :
+        that.getCard3ds() != null) {
+      return false;
+    }
+    if (getOrderId() != null ? !getOrderId().equals(that.getOrderId()) :
+        that.getOrderId() != null) {
+      return false;
+    }
+    if (getInvoiceId() != null ? !getInvoiceId().equals(that.getInvoiceId()) :
+        that.getInvoiceId() != null) {
+      return false;
+    }
+    if (getTypeId() != null ? !getTypeId().equals(that.getTypeId()) : that.getTypeId() != null) {
+      return false;
+    }
+    if (getCustomerId() != null ? !getCustomerId().equals(that.getCustomerId()) :
+        that.getCustomerId() != null) {
+      return false;
+    }
+    if (getMetadataId() != null ? !getMetadataId().equals(that.getMetadataId()) :
+        that.getMetadataId() != null) {
+      return false;
+    }
+    if (getPaymentId() != null ? !getPaymentId().equals(that.getPaymentId()) :
+        that.getPaymentId() != null) {
+      return false;
+    }
+    if (getRiskId() != null ? !getRiskId().equals(that.getRiskId()) : that.getRiskId() != null) {
+      return false;
+    }
+    if (getBasketId() != null ? !getBasketId().equals(that.getBasketId()) :
+        that.getBasketId() != null) {
+      return false;
+    }
+    if (getPaypageId() != null ? !getPaypageId().equals(that.getPaypageId()) :
+        that.getPaypageId() != null) {
+      return false;
+    }
+    if (getPaymentReference() != null ? !getPaymentReference().equals(that.getPaymentReference()) :
+        that.getPaymentReference() != null) {
+      return false;
+    }
+    if (getStatus() != that.getStatus()) {
+      return false;
+    }
+    if (getRedirectUrl() != null ? !getRedirectUrl().equals(that.getRedirectUrl()) :
+        that.getRedirectUrl() != null) {
+      return false;
+    }
+    if (getTraceId() != null ? !getTraceId().equals(that.getTraceId()) :
+        that.getTraceId() != null) {
+      return false;
+    }
+    if (getMessage() != null ? !getMessage().equals(that.getMessage()) :
+        that.getMessage() != null) {
+      return false;
+    }
+    if (getDate() != null ? !getDate().equals(that.getDate()) : that.getDate() != null) {
+      return false;
+    }
+    if (getType() != null ? !getType().equals(that.getType()) : that.getType() != null) {
+      return false;
+    }
+    if (getAdditionalTransactionData() != null ?
+        !getAdditionalTransactionData().equals(that.getAdditionalTransactionData()) :
+        that.getAdditionalTransactionData() != null) {
+      return false;
+    }
+    return getResourceUrl() != null ? getResourceUrl().equals(that.getResourceUrl()) :
+        that.getResourceUrl() == null;
+  }
+
+  public String getId() {
+    return id;
   }
 
   public BigDecimal getAmount() {
@@ -106,6 +239,10 @@ public abstract class AbstractTransaction<T extends AbstractPayment> implements 
   public AbstractTransaction<T> setOrderId(String orderId) {
     this.orderId = orderId;
     return this;
+  }
+
+  public String getInvoiceId() {
+    return invoiceId;
   }
 
   public String getTypeId() {
@@ -162,22 +299,20 @@ public abstract class AbstractTransaction<T extends AbstractPayment> implements 
     return this;
   }
 
+  public String getPaypageId() {
+    return paypageId;
+  }
+
+  public String getPaymentReference() {
+    return paymentReference;
+  }
+
   public Status getStatus() {
     return status;
   }
 
   public AbstractTransaction<T> setStatus(Status status) {
     this.status = status;
-    return this;
-  }
-
-  public AdditionalTransactionData getAdditionalTransactionData() {
-    return additionalTransactionData;
-  }
-
-  public AbstractTransaction<T> setAdditionalTransactionData(
-      AdditionalTransactionData additionalTransactionData) {
-    this.additionalTransactionData = additionalTransactionData;
     return this;
   }
 
@@ -189,59 +324,12 @@ public abstract class AbstractTransaction<T extends AbstractPayment> implements 
     this.redirectUrl = redirectUrl;
   }
 
-  public Processing getProcessing() {
-    return processing;
-  }
-
-  public AbstractTransaction<T> setProcessing(Processing processing) {
-    this.processing = processing;
-    return this;
-  }
-
-  public String getPaymentReference() {
-    return paymentReference;
-  }
-
-  public AbstractTransaction<T> setPaymentReference(String paymentReference) {
-    this.paymentReference = paymentReference;
-    return this;
-  }
-
   public String getTraceId() {
     return traceId;
   }
 
   public AbstractTransaction<T> setTraceId(String traceId) {
     this.traceId = traceId;
-    return this;
-  }
-
-  public T getPayment() {
-    return payment;
-  }
-
-  public AbstractTransaction<T> setPayment(T payment) {
-    this.payment = payment;
-    return this;
-  }
-
-  @Deprecated
-  public Unzer getUnzer() {
-    return unzer;
-  }
-
-  @Deprecated
-  public AbstractTransaction<T> setUnzer(Unzer unzer) {
-    this.unzer = unzer;
-    return this;
-  }
-
-  public String getId() {
-    return id;
-  }
-
-  public AbstractTransaction<T> setId(String id) {
-    this.id = id;
     return this;
   }
 
@@ -267,8 +355,13 @@ public abstract class AbstractTransaction<T extends AbstractPayment> implements 
     return type;
   }
 
-  public AbstractTransaction<T> setType(String type) {
-    this.type = type;
+  public AdditionalTransactionData getAdditionalTransactionData() {
+    return additionalTransactionData;
+  }
+
+  public AbstractTransaction<T> setAdditionalTransactionData(
+      AdditionalTransactionData additionalTransactionData) {
+    this.additionalTransactionData = additionalTransactionData;
     return this;
   }
 
@@ -281,12 +374,57 @@ public abstract class AbstractTransaction<T extends AbstractPayment> implements 
     return this;
   }
 
-  public String getInvoiceId() {
-    return invoiceId;
+  public AbstractTransaction<T> setType(String type) {
+    this.type = type;
+    return this;
+  }
+
+  public AbstractTransaction<T> setPaymentReference(String paymentReference) {
+    this.paymentReference = paymentReference;
+    return this;
+  }
+
+  public AbstractTransaction<T> setPaypageId(String paypageId) {
+    this.paypageId = paypageId;
+    return this;
   }
 
   public AbstractTransaction<T> setInvoiceId(String invoiceId) {
     this.invoiceId = invoiceId;
+    return this;
+  }
+
+  public AbstractTransaction<T> setId(String id) {
+    this.id = id;
+    return this;
+  }
+
+  public Processing getProcessing() {
+    return processing;
+  }
+
+  public AbstractTransaction<T> setProcessing(Processing processing) {
+    this.processing = processing;
+    return this;
+  }
+
+  public T getPayment() {
+    return payment;
+  }
+
+  public AbstractTransaction<T> setPayment(T payment) {
+    this.payment = payment;
+    return this;
+  }
+
+  @Deprecated
+  public Unzer getUnzer() {
+    return unzer;
+  }
+
+  @Deprecated
+  public AbstractTransaction<T> setUnzer(Unzer unzer) {
+    this.unzer = unzer;
     return this;
   }
 

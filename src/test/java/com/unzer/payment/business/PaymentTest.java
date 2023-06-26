@@ -19,6 +19,7 @@ package com.unzer.payment.business;
 
 import static com.unzer.payment.util.Url.unsafeUrl;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertIterableEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
@@ -26,6 +27,7 @@ import com.unzer.payment.AbstractTransaction;
 import com.unzer.payment.Authorization;
 import com.unzer.payment.Cancel;
 import com.unzer.payment.Charge;
+import com.unzer.payment.Chargeback;
 import com.unzer.payment.Customer;
 import com.unzer.payment.Payment;
 import com.unzer.payment.PaymentException;
@@ -34,7 +36,12 @@ import com.unzer.payment.communication.HttpCommunicationException;
 import com.unzer.payment.paymenttypes.Card;
 import java.math.BigDecimal;
 import java.text.ParseException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Currency;
+import java.util.List;
 import org.junit.jupiter.api.Test;
 
 public class PaymentTest extends AbstractPaymentTest {

@@ -43,6 +43,7 @@ public abstract class AbstractPayment implements PaymentType {
   private Metadata metadata;
   private String basketId;
   private Basket basket;
+  private String paypageId;
   @Deprecated
   private transient Unzer unzer;
 
@@ -64,6 +65,25 @@ public abstract class AbstractPayment implements PaymentType {
     this.id = id;
   }
 
+  public PaymentType getPaymentType() throws HttpCommunicationException {
+    if (paymentType == null) {
+      paymentType = fetchPaymentType(getPaymentTypeId());
+    }
+    return paymentType;
+  }
+
+  /**
+   * @deprecated use {@link Unzer#fetchPaymentType(String)} instead
+   */
+  @Deprecated
+  protected PaymentType fetchPaymentType(String paymentTypeId) throws HttpCommunicationException {
+    return getUnzer().fetchPaymentType(paymentTypeId);
+  }
+
+  public String getPaymentTypeId() {
+    return paymentTypeId;
+  }
+
   @Deprecated
   public Unzer getUnzer() {
     return unzer;
@@ -74,11 +94,8 @@ public abstract class AbstractPayment implements PaymentType {
     this.unzer = unzer;
   }
 
-  public PaymentType getPaymentType() throws HttpCommunicationException {
-    if (paymentType == null) {
-      paymentType = fetchPaymentType(getPaymentTypeId());
-    }
-    return paymentType;
+  public void setPaymentTypeId(String paymentTypeId) {
+    this.paymentTypeId = paymentTypeId;
   }
 
   public Customer getCustomer() throws HttpCommunicationException {
@@ -92,12 +109,8 @@ public abstract class AbstractPayment implements PaymentType {
     this.customer = customer;
   }
 
-  public String getPaymentTypeId() {
-    return paymentTypeId;
-  }
-
-  public void setPaymentTypeId(String paymentTypeId) {
-    this.paymentTypeId = paymentTypeId;
+  protected boolean isNotEmpty(String value) {
+    return value != null && !"".equalsIgnoreCase(value.trim());
   }
 
   public String getCustomerId() {
@@ -108,12 +121,12 @@ public abstract class AbstractPayment implements PaymentType {
     this.customerId = customerId;
   }
 
-  public String getMetadataId() {
-    return metadataId;
-  }
-
-  public void setMetadataId(String metadataId) {
-    this.metadataId = metadataId;
+  /**
+   * @deprecated use {@link Unzer#fetchCustomer(String)} instead
+   */
+  @Deprecated
+  protected Customer fetchCustomer(String customerId) throws HttpCommunicationException {
+    return getUnzer().fetchCustomer(customerId);
   }
 
   public Metadata getMetadata() throws HttpCommunicationException {
@@ -123,8 +136,31 @@ public abstract class AbstractPayment implements PaymentType {
     return metadata;
   }
 
+  public String getMetadataId() {
+    return metadataId;
+  }
+
+  public void setMetadataId(String metadataId) {
+    this.metadataId = metadataId;
+  }
+
+  /**
+   * @deprecated use {@link Unzer#fetchMetadata(String)} instead
+   */
+  @Deprecated
+  protected Metadata fetchMetadata(String metadataId) throws HttpCommunicationException {
+    return getUnzer().fetchMetadata(metadataId);
+  }
+
   public void setMetadata(Metadata metadata) {
     this.metadata = metadata;
+  }
+
+  public Basket getBasket() throws HttpCommunicationException {
+    if (basket == null && isNotEmpty(getBasketId())) {
+      basket = fetchBasket(getBasketId());
+    }
+    return basket;
   }
 
   public String getBasketId() {
@@ -135,11 +171,12 @@ public abstract class AbstractPayment implements PaymentType {
     this.basketId = basketId;
   }
 
-  public Basket getBasket() throws HttpCommunicationException {
-    if (basket == null && isNotEmpty(getBasketId())) {
-      basket = fetchBasket(getBasketId());
-    }
-    return basket;
+  /**
+   * @deprecated use {@link Unzer#fetchBasket(String)} instead
+   */
+  @Deprecated
+  protected Basket fetchBasket(String basketId) throws HttpCommunicationException {
+    return getUnzer().fetchBasket(basketId);
   }
 
   public void setBasket(Basket basket) {
@@ -194,40 +231,12 @@ public abstract class AbstractPayment implements PaymentType {
     this.orderId = orderId;
   }
 
-  protected boolean isNotEmpty(String value) {
-    return value != null && !"".equalsIgnoreCase(value.trim());
+  public String getPaypageId() {
+    return paypageId;
   }
 
-  /**
-   * @deprecated use {@link Unzer#fetchPaymentType(String)} instead
-   */
-  @Deprecated
-  protected PaymentType fetchPaymentType(String paymentTypeId) throws HttpCommunicationException {
-    return getUnzer().fetchPaymentType(paymentTypeId);
-  }
-
-  /**
-   * @deprecated use {@link Unzer#fetchCustomer(String)} instead
-   */
-  @Deprecated
-  protected Customer fetchCustomer(String customerId) throws HttpCommunicationException {
-    return getUnzer().fetchCustomer(customerId);
-  }
-
-  /**
-   * @deprecated use {@link Unzer#fetchMetadata(String)} instead
-   */
-  @Deprecated
-  protected Metadata fetchMetadata(String metadataId) throws HttpCommunicationException {
-    return getUnzer().fetchMetadata(metadataId);
-  }
-
-  /**
-   * @deprecated use {@link Unzer#fetchBasket(String)} instead
-   */
-  @Deprecated
-  protected Basket fetchBasket(String basketId) throws HttpCommunicationException {
-    return getUnzer().fetchBasket(basketId);
+  public void setPaypageId(String paypageId) {
+    this.paypageId = paypageId;
   }
 
   public enum State {
