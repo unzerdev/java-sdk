@@ -87,8 +87,8 @@ public abstract class AbstractTransaction<T extends AbstractPayment> implements 
     result = 31 * result + (getMessage() != null ? getMessage().hashCode() : 0);
     result = 31 * result + (getDate() != null ? getDate().hashCode() : 0);
     result = 31 * result + (getType() != null ? getType().hashCode() : 0);
-    result = 31 * result +
-        (getAdditionalTransactionData() != null ? getAdditionalTransactionData().hashCode() : 0);
+    result = 31 * result
+        + (getAdditionalTransactionData() != null ? getAdditionalTransactionData().hashCode() : 0);
     result = 31 * result + (getResourceUrl() != null ? getResourceUrl().hashCode() : 0);
     return result;
   }
@@ -183,8 +183,8 @@ public abstract class AbstractTransaction<T extends AbstractPayment> implements 
     if (getType() != null ? !getType().equals(that.getType()) : that.getType() != null) {
       return false;
     }
-    if (getAdditionalTransactionData() != null ?
-        !getAdditionalTransactionData().equals(that.getAdditionalTransactionData()) :
+    if (getAdditionalTransactionData() != null
+        ? !getAdditionalTransactionData().equals(that.getAdditionalTransactionData()) :
         that.getAdditionalTransactionData() != null) {
       return false;
     }

@@ -29,6 +29,7 @@ import com.unzer.payment.Paypage;
 import com.unzer.payment.Processing;
 import com.unzer.payment.Recurring;
 import com.unzer.payment.Shipment;
+import com.unzer.payment.communication.json.ApiPayment;
 import com.unzer.payment.communication.json.JsonAuthorization;
 import com.unzer.payment.communication.json.JsonCancel;
 import com.unzer.payment.communication.json.JsonCompanyInfo;
@@ -37,7 +38,6 @@ import com.unzer.payment.communication.json.JsonIdObject;
 import com.unzer.payment.communication.json.JsonInitPayment;
 import com.unzer.payment.communication.json.JsonLinkpay;
 import com.unzer.payment.communication.json.JsonObject;
-import com.unzer.payment.communication.json.ApiPayment;
 import com.unzer.payment.communication.json.JsonPayout;
 import com.unzer.payment.communication.json.JsonPaypage;
 import com.unzer.payment.communication.json.JsonProcessing;
@@ -321,7 +321,8 @@ public class JsonToBusinessClassMapper {
   }
 
   private AbstractTransaction.Status extractStatus(TransactionStatus src) {
-    // Resumed has to be the first, because currently Payment API returns several statuses if isResumed set
+    // Resumed has to be the first,
+    // because currently Payment API returns several statuses if isResumed set
     if (Optional.ofNullable(src.getResumed()).orElse(false)) {
       return AbstractTransaction.Status.RESUMED;
     }
