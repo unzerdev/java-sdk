@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package com.unzer.payment.business.payment;
 
 import static com.github.tomakehurst.wiremock.client.WireMock.get;
@@ -33,7 +34,6 @@ import com.unzer.payment.enums.RecurrenceType;
 import com.unzer.payment.models.AdditionalTransactionData;
 import com.unzer.payment.models.CardTransactionData;
 import java.math.BigDecimal;
-import java.sql.Date;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
@@ -97,7 +97,8 @@ public class ChargebackTest {
                             .setExemptionType(CardTransactionData.ExemptionType.LVP)
                     )
             )
-            .setResourceUrl(unsafeUrl("https://sbx-api.unzer.com/v1/payments/s-pay-286/chargeback/s-cgb-1"))
+            .setResourceUrl(
+                unsafeUrl("https://sbx-api.unzer.com/v1/payments/s-pay-286/chargeback/s-cgb-1"))
     );
 
     assertIterableEquals(expectedChargeBacks, actualChargebacks);
