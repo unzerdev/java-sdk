@@ -67,7 +67,7 @@ class CardTest {
 
   private static String getResponse(String response) {
     return new Scanner(Objects.requireNonNull(
-        CardTest.class.getResourceAsStream("/api-response/card" + response))).useDelimiter("\\A")
+        CardTest.class.getResourceAsStream("/api-response/card/" + response))).useDelimiter("\\A")
         .next();
   }
 
