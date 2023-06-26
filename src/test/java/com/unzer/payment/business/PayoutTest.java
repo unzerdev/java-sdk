@@ -18,6 +18,7 @@ package com.unzer.payment.business;
 
 import com.unzer.payment.PaymentException;
 import com.unzer.payment.Payout;
+import com.unzer.payment.Unzer;
 import com.unzer.payment.communication.HttpCommunicationException;
 import com.unzer.payment.paymenttypes.Card;
 import org.junit.jupiter.api.Disabled;
@@ -79,6 +80,7 @@ public class PayoutTest extends AbstractPaymentTest {
     }
 
     private Payout getTestPayout(String typeId) throws PaymentException, HttpCommunicationException, ParseException, MalformedURLException {
+        Unzer unzer = getUnzer();
         Payout payout = new Payout();
         payout.setAmount(new BigDecimal(856.4900));
         payout.setCurrency(Currency.getInstance("EUR"));
@@ -86,9 +88,9 @@ public class PayoutTest extends AbstractPaymentTest {
         payout.setPaymentReference("My Payment Reference");
         payout.setReturnUrl(new URL("https://www.unzer.com"));
         payout.setTypeId(typeId);
-        payout.setBasketId(getUnzer().createBasket(getMaxTestBasketV1()).getId());
-        payout.setCustomerId(createMaximumCustomerSameAddress().getId());
-        payout.setMetadataId(createTestMetadata().getId());
+        payout.setBasketId(unzer.createBasket(getMaxTestBasketV1()).getId());
+        payout.setCustomerId(unzer.createCustomer(getMaximumCustomerSameAddress(generateUuid())).getId());
+        payout.setMetadataId(unzer.createMetadata(getTestMetadata()).getId());
         return payout;
     }
 }

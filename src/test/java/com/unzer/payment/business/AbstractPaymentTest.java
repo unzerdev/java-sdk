@@ -216,32 +216,11 @@ public abstract class AbstractPaymentTest {
         return card;
     }
 
-    protected SepaDirectDebit createPaymentTypeSepaDirectDebit() throws HttpCommunicationException {
-        SepaDirectDebit sdd = getUnzer().createPaymentType(getSepaDirectDebit());
-        return sdd;
-    }
-
     protected SepaDirectDebit getSepaDirectDebit() {
         SepaDirectDebit sdd = new SepaDirectDebit("DE89370400440532013000");
         sdd.setBic("COBADEFFXXX");
         sdd.setHolder("Max Mustermann");
         return sdd;
-    }
-
-    protected Customer createMaximumCustomer() throws HttpCommunicationException {
-        return getUnzer().createCustomer(getMaximumCustomer(generateUuid()));
-    }
-
-    protected Basket createBasket(Basket basket) throws HttpCommunicationException {
-        return getUnzer().createBasket(basket);
-    }
-
-    protected Customer createFactoringOKCustomer() throws HttpCommunicationException, ParseException {
-        return getUnzer().createCustomer(getFactoringOKCustomer(generateUuid()));
-    }
-
-    protected Customer createMaximumCustomerSameAddress() throws HttpCommunicationException {
-        return getUnzer().createCustomer(getMaximumCustomerSameAddress(generateUuid()));
     }
 
     protected Customer getMinimumCustomer() {
@@ -397,13 +376,6 @@ public abstract class AbstractPaymentTest {
                 .setZip(zip)
                 .setCountry(country);
         return address;
-    }
-
-    protected Metadata createTestMetadata() throws PaymentException, HttpCommunicationException {
-        Metadata metadata = getTestMetadata();
-        metadata = getUnzer().createMetadata(metadata);
-        return metadata;
-
     }
 
     protected Metadata getTestMetadata() {

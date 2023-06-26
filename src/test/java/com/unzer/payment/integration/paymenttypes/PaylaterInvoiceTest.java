@@ -40,7 +40,6 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.api.DynamicTest.dynamicTest;
 
 
-@Disabled("https://unz.atlassian.net/browse/CC-454")
 public class PaylaterInvoiceTest extends AbstractPaymentTest {
     @Test
     public void testCreatePaylaterType() throws HttpCommunicationException {
