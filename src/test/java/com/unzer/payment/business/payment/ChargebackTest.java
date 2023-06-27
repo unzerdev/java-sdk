@@ -27,6 +27,7 @@ import com.github.tomakehurst.wiremock.junit5.WireMockTest;
 import com.unzer.payment.AbstractTransaction;
 import com.unzer.payment.Chargeback;
 import com.unzer.payment.Payment;
+import com.unzer.payment.Processing;
 import com.unzer.payment.Unzer;
 import com.unzer.payment.business.paymenttypes.HttpClientTestImpl;
 import com.unzer.payment.communication.json.JsonMessage;
@@ -98,7 +99,14 @@ public class ChargebackTest {
                     )
             )
             .setResourceUrl(
-                unsafeUrl("https://sbx-api.unzer.com/v1/payments/s-pay-286/chargeback/s-cgb-1"))
+                unsafeUrl("https://sbx-api.unzer.com/v1/payments/s-pay-286/chargeback/s-cgb-1")
+            )
+            .setProcessing(
+                new Processing()
+                    .setUniqueId("31HA07BC8150FAE7F0B65A2095CE0A83")
+                    .setShortId("5390.6667.9884")
+                    .setTraceId("b2f9c67bebafa3cd49b3d50f9ff00639")
+            )
     );
 
     assertIterableEquals(expectedChargeBacks, actualChargebacks);

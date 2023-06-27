@@ -188,6 +188,13 @@ public abstract class AbstractTransaction<T extends AbstractPayment> implements 
         that.getAdditionalTransactionData() != null) {
       return false;
     }
+
+    if (getProcessing() != null
+        ? !getProcessing().equals(that.getProcessing()) :
+        that.getProcessing() != null) {
+      return false;
+    }
+
     return getResourceUrl() != null ? getResourceUrl().equals(that.getResourceUrl()) :
         that.getResourceUrl() == null;
   }
