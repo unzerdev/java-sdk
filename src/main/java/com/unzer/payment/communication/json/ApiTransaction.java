@@ -20,7 +20,7 @@ import java.math.BigDecimal;
 import java.net.URL;
 import java.util.Date;
 
-public class JsonTransaction {
+public class ApiTransaction {
   private Date date;
   private String type;
   private URL url;

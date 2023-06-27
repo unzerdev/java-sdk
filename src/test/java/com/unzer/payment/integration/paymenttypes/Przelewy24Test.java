@@ -18,6 +18,7 @@ package com.unzer.payment.integration.paymenttypes;
 
 import com.unzer.payment.Charge;
 import com.unzer.payment.business.AbstractPaymentTest;
+import com.unzer.payment.business.Keys;
 import com.unzer.payment.communication.HttpCommunicationException;
 import com.unzer.payment.paymenttypes.Przelewy24;
 import org.junit.jupiter.api.Test;
@@ -40,7 +41,7 @@ public class Przelewy24Test extends AbstractPaymentTest {
 
     @Test
     public void testChargePrzelewy24Type() throws HttpCommunicationException, MalformedURLException {
-        Przelewy24 p24 = getUnzer().createPaymentType(getPrzelewy24());
+        Przelewy24 p24 = getUnzer(Keys.LEGACY_PRIVATE_KEY).createPaymentType(getPrzelewy24());
         Charge charge = p24.charge(BigDecimal.ONE, Currency.getInstance("PLN"), new URL("https://www.unzer.com"));
         assertNotNull(charge);
         assertNotNull(charge.getId());

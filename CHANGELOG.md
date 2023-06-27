@@ -6,6 +6,22 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres
 to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## [UNRELEASED]
+
+### Added
+
+* `com.unzer.payment.fetchPayment` now fetches chargeback transactions of the payment. See `com.unzer.payment.Payment.chargebackList`
+* Added field `paypageId` to payment and its transactions (authorize, charge, cancel, chargeback). See: `com.unzer.payment.AbstractPayment.paypageId`, `com.unzer.payment.AbstractTransaction.paypageId` 
+
+### Changed
+
+* Refactored internal class `com.unzer.payment.communication.mapper.JsonToBusinessClassMapper`:
+  * Unified parameter names to `src` and `output`
+  * Changed parameters order. First parameter is `src`, second is `output`
+* Renamed internal classes at `com.unzer.payment.communication.json`:
+  * `JsonPayment` -> `ApiPayment`
+  * `JsonTransaction` -> `ApiTransaction`
+
 ## [4.1.0](https://github.com/unzerdev/java-sdk/compare/4.0.0..4.1.0)
 
 This release adds functionality to fetch payment page

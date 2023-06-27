@@ -26,6 +26,7 @@ public class JsonCancel extends JsonIdObject implements JsonObject, TransactionS
   private Boolean isSuccess;
   private Boolean isPending;
   private Boolean isError;
+
   private JsonMessage message;
   private Date date;
   private String paymentReference;
