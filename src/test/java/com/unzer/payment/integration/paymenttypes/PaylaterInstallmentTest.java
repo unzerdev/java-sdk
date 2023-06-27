@@ -17,6 +17,7 @@
 package com.unzer.payment.integration.paymenttypes;
 
 import static com.unzer.payment.util.Url.unsafeUrl;
+import static com.unzer.payment.util.Uuid.generateUuid;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
@@ -30,6 +31,7 @@ import com.unzer.payment.Basket;
 import com.unzer.payment.BasketItem;
 import com.unzer.payment.Cancel;
 import com.unzer.payment.Charge;
+import com.unzer.payment.Customer;
 import com.unzer.payment.PaylaterInstallmentPlans;
 import com.unzer.payment.business.AbstractPaymentTest;
 import com.unzer.payment.communication.HttpCommunicationException;
@@ -119,12 +121,13 @@ public class PaylaterInstallmentTest extends AbstractPaymentTest {
             .setIban("DE89370400440532013000")
     );
 
-    Basket basket = getBasket();
+    Basket basket = getUnzer().createBasket(getBasket());
+    Customer customer = getUnzer().createCustomer(getMaximumCustomer(generateUuid()));
 
     Authorization authorization = getUnzer().authorize(
         getAuthorization(paylaterInstallment.getId(),
-            createMaximumCustomer().getId(),
-            createBasket(basket).getId())
+            customer.getId(),
+            basket.getId())
     );
 
     // then
@@ -133,7 +136,7 @@ public class PaylaterInstallmentTest extends AbstractPaymentTest {
   }
 
   @Test
-  public void testCharge() throws HttpCommunicationException, ParseException {
+  public void testFullCharge() throws HttpCommunicationException, ParseException {
     PaylaterInstallmentPlans installmentPlans = getPaylaterInstallmentPlans();
     InstallmentPlan selectedPlan = installmentPlans.getPlans().get(0);
 
@@ -145,10 +148,13 @@ public class PaylaterInstallmentTest extends AbstractPaymentTest {
             .setIban("DE89370400440532013000")
     );
 
+    Basket basket = getUnzer().createBasket(getBasket());
+    Customer customer = getUnzer().createCustomer(getMaximumCustomer(generateUuid()));
+
     Authorization authorization = getUnzer().authorize(
         getAuthorization(paylaterInstallment.getId(),
-            createMaximumCustomer().getId(),
-            createBasket(getBasket()).getId())
+            customer.getId(),
+            basket.getId())
     );
 
     // when
@@ -157,6 +163,40 @@ public class PaylaterInstallmentTest extends AbstractPaymentTest {
     // then
     assertEquals(AbstractTransaction.Status.SUCCESS, charge.getStatus());
     assertNumberEquals(getOrderAmount(), charge.getAmount());
+  }
+
+  @Test
+  public void testPartialCharge() throws HttpCommunicationException, ParseException {
+    PaylaterInstallmentPlans installmentPlans = getPaylaterInstallmentPlans();
+    InstallmentPlan selectedPlan = installmentPlans.getPlans().get(0);
+
+    PaylaterInstallment paylaterInstallment = getUnzer().createPaymentType(
+        new PaylaterInstallment()
+            .setInquiryId(installmentPlans.getId())
+            .setNumberOfRates(selectedPlan.getNumberOfRates())
+            .setHolder("Max Mustermann")
+            .setIban("DE89370400440532013000")
+    );
+
+    Basket basket = getUnzer().createBasket(getBasket());
+    Customer customer = getUnzer().createCustomer(getMaximumCustomer(generateUuid()));
+
+    Authorization authorization = getUnzer().authorize(
+        getAuthorization(paylaterInstallment.getId(),
+            customer.getId(),
+            basket.getId())
+    );
+
+    // when
+    BigDecimal partialChargeAmount = new BigDecimal("66.66");
+    Charge charge = getUnzer().chargeAuthorization(
+        authorization.getPaymentId(),
+        partialChargeAmount
+    );
+
+    // then
+    assertEquals(AbstractTransaction.Status.SUCCESS, charge.getStatus());
+    assertNumberEquals(partialChargeAmount, charge.getAmount());
   }
 
 
@@ -174,12 +214,13 @@ public class PaylaterInstallmentTest extends AbstractPaymentTest {
             .setIban("DE89370400440532013000")
     );
 
-    Basket basket = getBasket();
+    Basket basket = getUnzer().createBasket(getBasket());
+    Customer customer = getUnzer().createCustomer(getMaximumCustomer(generateUuid()));
 
     Authorization authorization = getUnzer().authorize(
         getAuthorization(paylaterInstallment.getId(),
-            createMaximumCustomer().getId(),
-            createBasket(basket).getId())
+            customer.getId(),
+            basket.getId())
     );
 
     // when
@@ -204,12 +245,13 @@ public class PaylaterInstallmentTest extends AbstractPaymentTest {
             .setIban("DE89370400440532013000")
     );
 
-    Basket basket = getBasket();
+    Basket basket = getUnzer().createBasket(getBasket());
+    Customer customer = getUnzer().createCustomer(getMaximumCustomer(generateUuid()));
 
     Authorization authorization = getUnzer().authorize(
         getAuthorization(paylaterInstallment.getId(),
-            createMaximumCustomer().getId(),
-            createBasket(basket).getId())
+            customer.getId(),
+            basket.getId())
     );
 
     Charge charge = getUnzer().chargeAuthorization(authorization.getPaymentId());
@@ -218,8 +260,42 @@ public class PaylaterInstallmentTest extends AbstractPaymentTest {
     Cancel cancel = getUnzer().cancelCharge(charge.getPaymentId(), getOrderAmount());
 
     // then
-    assertEquals(AbstractTransaction.Status.SUCCESS, charge.getStatus());
-    assertNumberEquals(getOrderAmount(), charge.getAmount());
+    assertEquals(AbstractTransaction.Status.SUCCESS, cancel.getStatus());
+    assertNumberEquals(getOrderAmount(), cancel.getAmount());
+  }
+
+  @Test
+  public void testPartialCancelAfterCharge() throws HttpCommunicationException, ParseException {
+    PaylaterInstallmentPlans installmentPlans = getPaylaterInstallmentPlans();
+    InstallmentPlan selectedPlan = installmentPlans.getPlans().get(0);
+
+    // when
+    PaylaterInstallment paylaterInstallment = getUnzer().createPaymentType(
+        new PaylaterInstallment()
+            .setInquiryId(installmentPlans.getId())
+            .setNumberOfRates(selectedPlan.getNumberOfRates())
+            .setHolder("Max Mustermann")
+            .setIban("DE89370400440532013000")
+    );
+
+    Basket basket = getUnzer().createBasket(getBasket());
+    Customer customer = getUnzer().createCustomer(getMaximumCustomer(generateUuid()));
+
+    Authorization authorization = getUnzer().authorize(
+        getAuthorization(paylaterInstallment.getId(),
+            customer.getId(),
+            basket.getId())
+    );
+
+    Charge charge = getUnzer().chargeAuthorization(authorization.getPaymentId());
+
+    // when
+    BigDecimal partialCancelAmount = new BigDecimal("66.66");
+    Cancel cancel = getUnzer().cancelCharge(charge.getPaymentId(), partialCancelAmount);
+
+    // then
+    assertEquals(AbstractTransaction.Status.SUCCESS, cancel.getStatus());
+    assertNumberEquals(partialCancelAmount, cancel.getAmount());
   }
 
   private void assertPlans(List<InstallmentPlan> plans) {
