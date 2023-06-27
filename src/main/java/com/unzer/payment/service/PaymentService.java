@@ -51,14 +51,12 @@ import com.unzer.payment.communication.json.JsonInstallmentSecuredRatePlan;
 import com.unzer.payment.communication.json.JsonInstallmentSecuredRatePlanList;
 import com.unzer.payment.communication.json.JsonObject;
 import com.unzer.payment.communication.json.JsonPaylaterInstallment;
-import com.unzer.payment.communication.json.JsonPayment;
 import com.unzer.payment.communication.json.JsonPayout;
 import com.unzer.payment.communication.json.JsonPaypal;
 import com.unzer.payment.communication.json.JsonPis;
 import com.unzer.payment.communication.json.JsonRecurring;
 import com.unzer.payment.communication.json.JsonSepaDirectDebit;
 import com.unzer.payment.communication.json.JsonShipment;
-import com.unzer.payment.communication.json.JsonTransaction;
 import com.unzer.payment.communication.json.paylater.JsonInstallmentPlans;
 import com.unzer.payment.communication.mapper.JsonToBusinessClassMapper;
 import com.unzer.payment.models.PaylaterInvoiceConfig;
@@ -135,7 +133,7 @@ public class PaymentService {
 
     JsonInstallmentPlans json = jsonParser.fromJson(response,
         JsonInstallmentPlans.class);
-    return jsonToBusinessClassMapper.mapToBusinessObject(new PaylaterInstallmentPlans(), json);
+    return apiToSdkMapper.mapToBusinessObject(new PaylaterInstallmentPlans(), json);
   }
 
   public List<InstallmentSecuredRatePlan> installmentSecuredPlan(BigDecimal amount,
