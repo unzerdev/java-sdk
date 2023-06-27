@@ -227,7 +227,7 @@
                 <configuration>
                     <licenseSets>
                         <licenseSet>
-                            <header>LICENSE</header>
+                            <header>NOTICE</header>
                             <excludes>
                                 <exclude>**/*.md</exclude>
                                 <exclude>**/*.xml</exclude>
