@@ -79,25 +79,27 @@ public class RecurringTest extends AbstractPaymentTest {
 
     @Test
     public void testRecurringPaypalWithoutCustomer() throws MalformedURLException, HttpCommunicationException, ParseException {
+        Unzer unzer = getUnzer(Keys.LEGACY_PRIVATE_KEY);
         Paypal paypal = new Paypal();
-        paypal = getUnzer().createPaymentType(paypal);
-        Recurring recurring = getUnzer().recurring(paypal.getId(), new URL("https://www.unzer.com"));
+        paypal = unzer.createPaymentType(paypal);
+        Recurring recurring = unzer.recurring(paypal.getId(), new URL("https://www.unzer.com"));
         assertRecurring(recurring, Recurring.Status.PENDING);
 
-        Paypal type = (Paypal) getUnzer().fetchPaymentType(paypal.getId());
+        Paypal type = (Paypal) unzer.fetchPaymentType(paypal.getId());
         assertEquals(false, type.getRecurring());
     }
 
     @Test
-    public void testRecurringPaypalWitCustomerId() throws MalformedURLException, HttpCommunicationException, ParseException {
-        Customer customer = getUnzer().createCustomer(getMaximumCustomer(generateUuid()));
+    public void testRecurringPaypalWitCustomerId() throws MalformedURLException, HttpCommunicationException {
+        Unzer unzer = getUnzer(Keys.LEGACY_PRIVATE_KEY);
+        Customer customer = unzer.createCustomer(getMaximumCustomer(generateUuid()));
         Paypal paypal = new Paypal();
-        paypal = getUnzer().createPaymentType(paypal);
-        Recurring recurring = getUnzer().recurring(paypal.getId(), customer.getId(), new URL("https://www.unzer.com"));
+        paypal = unzer.createPaymentType(paypal);
+        Recurring recurring = unzer.recurring(paypal.getId(), customer.getId(), new URL("https://www.unzer.com"));
         assertRecurring(recurring, Recurring.Status.PENDING);
         assertNotNull(recurring.getRedirectUrl());
 
-        Paypal type = (Paypal) getUnzer().fetchPaymentType(paypal.getId());
+        Paypal type = (Paypal) unzer.fetchPaymentType(paypal.getId());
         assertEquals(false, type.getRecurring());
     }
 

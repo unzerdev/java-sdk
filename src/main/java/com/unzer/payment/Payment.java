@@ -40,6 +40,7 @@ public class Payment extends AbstractPayment {
   private List<Charge> chargesList;
   private List<Cancel> cancelList;
   private List<Payout> payoutList;
+  private List<Chargeback> chargebackList;
 
   public Payment() {
     super();
@@ -251,5 +252,13 @@ public class Payment extends AbstractPayment {
 
   public void setPayoutList(List<Payout> payoutList) {
     this.payoutList = payoutList;
+  }
+
+  public List<Chargeback> getChargebackList() {
+    return chargebackList;
+  }
+
+  public void setChargebackList(List<Chargeback> chargebackList) {
+    this.chargebackList = chargebackList;
   }
 }

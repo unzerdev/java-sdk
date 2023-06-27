@@ -30,6 +30,7 @@ import com.unzer.payment.Paypage;
 import com.unzer.payment.Processing;
 import com.unzer.payment.Recurring;
 import com.unzer.payment.Shipment;
+import com.unzer.payment.communication.json.ApiPayment;
 import com.unzer.payment.communication.json.JsonAuthorization;
 import com.unzer.payment.communication.json.JsonCancel;
 import com.unzer.payment.communication.json.JsonCompanyInfo;
@@ -38,7 +39,6 @@ import com.unzer.payment.communication.json.JsonIdObject;
 import com.unzer.payment.communication.json.JsonInitPayment;
 import com.unzer.payment.communication.json.JsonLinkpay;
 import com.unzer.payment.communication.json.JsonObject;
-import com.unzer.payment.communication.json.JsonPayment;
 import com.unzer.payment.communication.json.JsonPayout;
 import com.unzer.payment.communication.json.JsonPaypage;
 import com.unzer.payment.communication.json.JsonProcessing;
@@ -55,282 +55,285 @@ import java.util.Optional;
 
 public class JsonToBusinessClassMapper {
 
-  public JsonObject map(AbstractTransaction<? extends AbstractPayment> abstractInitPayment) {
-    JsonInitPayment json = new JsonInitPayment();
-    json.setAmount(abstractInitPayment.getAmount());
-    json.setCurrency(abstractInitPayment.getCurrency());
-    json.setReturnUrl(abstractInitPayment.getReturnUrl());
-    json.setOrderId(abstractInitPayment.getOrderId());
-    json.setInvoiceId(abstractInitPayment.getInvoiceId());
-    json.setResources(getResources(abstractInitPayment));
-    json.setCard3ds(abstractInitPayment.getCard3ds());
-    json.setPaymentReference(abstractInitPayment.getPaymentReference());
-    json.setAdditionalTransactionData(abstractInitPayment.getAdditionalTransactionData());
+  public JsonObject map(AbstractTransaction<? extends AbstractPayment> src) {
+    JsonInitPayment out = new JsonInitPayment();
+    out.setAmount(src.getAmount());
+    out.setCurrency(src.getCurrency());
+    out.setReturnUrl(src.getReturnUrl());
+    out.setOrderId(src.getOrderId());
+    out.setInvoiceId(src.getInvoiceId());
+    out.setResources(getResources(src));
+    out.setCard3ds(src.getCard3ds());
+    out.setPaymentReference(src.getPaymentReference());
+    out.setAdditionalTransactionData(src.getAdditionalTransactionData());
 
-    if (abstractInitPayment instanceof Payout) {
-      json = new JsonPayout(json);
-    } else if (abstractInitPayment instanceof Authorization) {
-      json = new JsonAuthorization(json);
-      json.setEffectiveInterestRate(
-          ((Authorization) abstractInitPayment).getEffectiveInterestRate());
+    if (src instanceof Payout) {
+      out = new JsonPayout(out);
+    } else if (src instanceof Authorization) {
+      out = new JsonAuthorization(out);
+      out.setEffectiveInterestRate(
+          ((Authorization) src).getEffectiveInterestRate());
     }
 
-    return json;
+    return out;
   }
 
   private JsonResources getResources(
-      AbstractTransaction<? extends AbstractPayment> abstractInitPayment) {
-    JsonResources json = new JsonResources();
-    json.setCustomerId(abstractInitPayment.getCustomerId());
-    json.setMetadataId(abstractInitPayment.getMetadataId());
-    json.setTypeId(abstractInitPayment.getTypeId());
-    json.setRiskId(abstractInitPayment.getRiskId());
-    json.setBasketId(abstractInitPayment.getBasketId());
-    json.setTraceId(abstractInitPayment.getTraceId());
-    return json;
+      AbstractTransaction<? extends AbstractPayment> src
+  ) {
+    JsonResources out = new JsonResources();
+    out.setCustomerId(src.getCustomerId());
+    out.setMetadataId(src.getMetadataId());
+    out.setTypeId(src.getTypeId());
+    out.setRiskId(src.getRiskId());
+    out.setBasketId(src.getBasketId());
+    out.setTraceId(src.getTraceId());
+    out.setPayPageId(src.getPaypageId());
+    return out;
   }
 
-  public JsonRecurring map(Recurring recurring) {
-    JsonRecurring json = new JsonRecurring();
-    json.setReturnUrl(recurring.getReturnUrl());
-    json.setResources(getResources(recurring));
-    json.setAdditionalTransactionData(recurring.getAdditionalTransactionData());
-    return json;
+  public JsonRecurring map(Recurring src) {
+    JsonRecurring out = new JsonRecurring();
+    out.setReturnUrl(src.getReturnUrl());
+    out.setResources(getResources(src));
+    out.setAdditionalTransactionData(src.getAdditionalTransactionData());
+    return out;
   }
 
-  private JsonResources getResources(Recurring recurring) {
-    JsonResources json = new JsonResources();
-    json.setCustomerId(recurring.getCustomerId());
-    json.setMetadataId(recurring.getMetadataId());
-    return json;
+  private JsonResources getResources(Recurring src) {
+    JsonResources out = new JsonResources();
+    out.setCustomerId(src.getCustomerId());
+    out.setMetadataId(src.getMetadataId());
+    return out;
   }
 
-  public JsonCancel map(Cancel cancel) {
-    JsonCancel json = new JsonCancel();
-    json.setAmount(cancel.getAmount());
-    json.setOrderId(cancel.getOrderId());
-    json.setInvoiceId(cancel.getInvoiceId());
-    json.setPaymentReference(cancel.getPaymentReference());
+  public JsonCancel map(Cancel src) {
+    JsonCancel out = new JsonCancel();
+    out.setAmount(src.getAmount());
+    out.setOrderId(src.getOrderId());
+    out.setInvoiceId(src.getInvoiceId());
+    out.setPaymentReference(src.getPaymentReference());
 
-    if (cancel.getReasonCode() != null) {
-      json.setReasonCode(cancel.getReasonCode().toString());
+    if (src.getReasonCode() != null) {
+      out.setReasonCode(src.getReasonCode().toString());
     }
-    return json;
+    return out;
   }
 
-  public JsonObject map(MarketplaceCancel cancel) {
-    JsonCancel json = new JsonCancel();
-    json.setPaymentReference(cancel.getPaymentReference());
-    json.setCanceledBasket(cancel.getCanceledBasket());
-    return json;
+  public JsonObject map(MarketplaceCancel src) {
+    JsonCancel out = new JsonCancel();
+    out.setPaymentReference(src.getPaymentReference());
+    out.setCanceledBasket(src.getCanceledBasket());
+    return out;
   }
 
-  public JsonObject map(Paypage paypage) {
-    JsonPaypage json = new JsonPaypage();
-    json.setId(paypage.getId());
-    json.setAmount(paypage.getAmount());
-    json.setCurrency(paypage.getCurrency());
-    json.setReturnUrl(paypage.getReturnUrl());
-    json.setLogoImage(paypage.getLogoImage());
-    json.setFullPageImage(paypage.getFullPageImage());
-    json.setShopName(paypage.getShopName());
-    json.setShopDescription(paypage.getShopDescription());
-    json.setTagline(paypage.getTagline());
-    json.setCss(paypage.getCss());
-    json.setTermsAndConditionUrl(paypage.getTermsAndConditionUrl());
-    json.setPrivacyPolicyUrl(paypage.getPrivacyPolicyUrl());
-    json.setImprintUrl(paypage.getImprintUrl());
-    json.setHelpUrl(paypage.getHelpUrl());
-    json.setContactUrl(paypage.getContactUrl());
-    json.setInvoiceId(paypage.getInvoiceId());
-    json.setOrderId(paypage.getOrderId());
-    json.setCard3ds(paypage.getCard3ds());
-    json.setBillingAddressRequired(paypage.getBillingAddressRequired());
-    json.setShippingAddressRequired(paypage.getShippingAddressRequired());
-    json.setAdditionalAttributes(paypage.getAdditionalAttributes());
-    json.setExcludeTypes(paypage.getExcludeTypes());
-    json.setResources(getResources(paypage));
-    return json;
+  public JsonObject map(Paypage src) {
+    JsonPaypage out = new JsonPaypage();
+    out.setId(src.getId());
+    out.setAmount(src.getAmount());
+    out.setCurrency(src.getCurrency());
+    out.setReturnUrl(src.getReturnUrl());
+    out.setLogoImage(src.getLogoImage());
+    out.setFullPageImage(src.getFullPageImage());
+    out.setShopName(src.getShopName());
+    out.setShopDescription(src.getShopDescription());
+    out.setTagline(src.getTagline());
+    out.setCss(src.getCss());
+    out.setTermsAndConditionUrl(src.getTermsAndConditionUrl());
+    out.setPrivacyPolicyUrl(src.getPrivacyPolicyUrl());
+    out.setImprintUrl(src.getImprintUrl());
+    out.setHelpUrl(src.getHelpUrl());
+    out.setContactUrl(src.getContactUrl());
+    out.setInvoiceId(src.getInvoiceId());
+    out.setOrderId(src.getOrderId());
+    out.setCard3ds(src.getCard3ds());
+    out.setBillingAddressRequired(src.getBillingAddressRequired());
+    out.setShippingAddressRequired(src.getShippingAddressRequired());
+    out.setAdditionalAttributes(src.getAdditionalAttributes());
+    out.setExcludeTypes(src.getExcludeTypes());
+    out.setResources(getResources(src));
+    return out;
   }
 
-  private JsonResources getResources(Paypage paypage) {
-    JsonResources json = new JsonResources();
-    json.setCustomerId(paypage.getCustomerId());
-    json.setMetadataId(paypage.getMetadataId());
-    json.setBasketId(paypage.getBasketId());
-    return json;
+  private JsonResources getResources(Paypage src) {
+    JsonResources out = new JsonResources();
+    out.setCustomerId(src.getCustomerId());
+    out.setMetadataId(src.getMetadataId());
+    out.setBasketId(src.getBasketId());
+    return out;
   }
 
-  public JsonObject map(Linkpay linkpay) {
-    JsonLinkpay json = new JsonLinkpay();
-    json.setId(linkpay.getId());
-    json.setAmount(linkpay.getAmount());
-    json.setCurrency(linkpay.getCurrency());
-    json.setReturnUrl(linkpay.getReturnUrl());
-    json.setLogoImage(linkpay.getLogoImage());
-    json.setFullPageImage(linkpay.getFullPageImage());
-    json.setShopName(linkpay.getShopName());
-    json.setTermsAndConditionUrl(linkpay.getTermsAndConditionUrl());
-    json.setPrivacyPolicyUrl(linkpay.getPrivacyPolicyUrl());
-    json.setHelpUrl(linkpay.getHelpUrl());
-    json.setContactUrl(linkpay.getContactUrl());
-    json.setOrderId(linkpay.getOrderId());
-    json.setResources(getResources(linkpay));
-    json.setShopDescription(linkpay.getShopDescription());
-    json.setTagline(linkpay.getTagline());
-    json.setImprintUrl(linkpay.getImprintUrl());
-    json.setInvoiceId(linkpay.getInvoiceId());
-    json.setCard3ds(linkpay.getCard3ds());
-    json.setBillingAddressRequired(linkpay.getBillingAddressRequired());
-    json.setShippingAddressRequired(linkpay.getShippingAddressRequired());
-    json.setAdditionalAttributes(linkpay.getAdditionalAttributes());
-    json.setAction(linkpay.getAction());
-    json.setExcludeTypes(linkpay.getExcludeTypes());
-    json.setCss(linkpay.getCss());
-    json.setAlias(linkpay.getAlias());
-    json.setExpires(linkpay.getExpires());
-    json.setIntention(linkpay.getIntention());
-    json.setPaymentReference(linkpay.getPaymentReference());
-    json.setOrderIdRequired(linkpay.getOrderIdRequired());
-    json.setInvoiceIdRequired(linkpay.getInvoiceIdRequired());
-    json.setOneTimeUse(linkpay.getOneTimeUse());
-    json.setSuccessfullyProcessed(linkpay.getSuccessfullyProcessed());
-    json.setRedirectUrl(linkpay.getRedirectUrl());
-    json.setVersion(linkpay.getVersion());
-    return json;
+  public JsonObject map(Linkpay src) {
+    JsonLinkpay out = new JsonLinkpay();
+    out.setId(src.getId());
+    out.setAmount(src.getAmount());
+    out.setCurrency(src.getCurrency());
+    out.setReturnUrl(src.getReturnUrl());
+    out.setLogoImage(src.getLogoImage());
+    out.setFullPageImage(src.getFullPageImage());
+    out.setShopName(src.getShopName());
+    out.setTermsAndConditionUrl(src.getTermsAndConditionUrl());
+    out.setPrivacyPolicyUrl(src.getPrivacyPolicyUrl());
+    out.setHelpUrl(src.getHelpUrl());
+    out.setContactUrl(src.getContactUrl());
+    out.setOrderId(src.getOrderId());
+    out.setResources(getResources(src));
+    out.setShopDescription(src.getShopDescription());
+    out.setTagline(src.getTagline());
+    out.setImprintUrl(src.getImprintUrl());
+    out.setInvoiceId(src.getInvoiceId());
+    out.setCard3ds(src.getCard3ds());
+    out.setBillingAddressRequired(src.getBillingAddressRequired());
+    out.setShippingAddressRequired(src.getShippingAddressRequired());
+    out.setAdditionalAttributes(src.getAdditionalAttributes());
+    out.setAction(src.getAction());
+    out.setExcludeTypes(src.getExcludeTypes());
+    out.setCss(src.getCss());
+    out.setAlias(src.getAlias());
+    out.setExpires(src.getExpires());
+    out.setIntention(src.getIntention());
+    out.setPaymentReference(src.getPaymentReference());
+    out.setOrderIdRequired(src.getOrderIdRequired());
+    out.setInvoiceIdRequired(src.getInvoiceIdRequired());
+    out.setOneTimeUse(src.getOneTimeUse());
+    out.setSuccessfullyProcessed(src.getSuccessfullyProcessed());
+    out.setRedirectUrl(src.getRedirectUrl());
+    out.setVersion(src.getVersion());
+    return out;
   }
 
   private JsonResources getResources(Linkpay linkpay) {
-    JsonResources json = new JsonResources();
-    json.setCustomerId(linkpay.getCustomerId());
-    json.setMetadataId(linkpay.getMetadataId());
-    json.setBasketId(linkpay.getBasketId());
-    return json;
+    JsonResources out = new JsonResources();
+    out.setCustomerId(linkpay.getCustomerId());
+    out.setMetadataId(linkpay.getMetadataId());
+    out.setBasketId(linkpay.getBasketId());
+    return out;
   }
 
-  public Linkpay mapToBusinessObject(Linkpay linkpay, JsonLinkpay json) {
-    linkpay.setId(json.getId());
-    linkpay.setAmount(json.getAmount());
-    linkpay.setCurrency(json.getCurrency());
-    linkpay.setReturnUrl(json.getReturnUrl());
-    linkpay.setLogoImage(json.getLogoImage());
-    linkpay.setFullPageImage(json.getFullPageImage());
-    linkpay.setShopName(json.getShopName());
-    linkpay.setShopDescription(json.getShopDescription());
-    linkpay.setTagline(json.getTagline());
-    linkpay.setCss(json.getCss());
-    linkpay.setAlias(json.getAlias());
-    linkpay.setTermsAndConditionUrl(json.getTermsAndConditionUrl());
-    linkpay.setPrivacyPolicyUrl(json.getPrivacyPolicyUrl());
-    linkpay.setImprintUrl(json.getImprintUrl());
-    linkpay.setHelpUrl(json.getHelpUrl());
-    linkpay.setContactUrl(json.getContactUrl());
-    linkpay.setVersion(json.getVersion());
-    linkpay.setRedirectUrl(json.getRedirectUrl());
-    linkpay.setAction(json.getAction());
-    linkpay.setCard3ds(json.getCard3ds());
-    linkpay.setExpires(json.getExpires());
-    linkpay.setOrderId(json.getOrderId());
-    linkpay.setInvoiceId(json.getInvoiceId());
-    linkpay.setBillingAddressRequired(json.getBillingAddressRequired());
-    linkpay.setShippingAddressRequired(json.getShippingAddressRequired());
-    linkpay.setAdditionalAttributes(json.getAdditionalAttributes());
-    linkpay.setIntention(json.getIntention());
-    linkpay.setOrderIdRequired(json.getOrderIdRequired());
-    linkpay.setInvoiceIdRequired(json.getInvoiceIdRequired());
-    linkpay.setOneTimeUse(json.getOneTimeUse());
-    linkpay.setSuccessfullyProcessed(json.getSuccessfullyProcessed());
-    linkpay.setExcludeTypes(json.getExcludeTypes());
-    linkpay.setPaymentReference(json.getPaymentReference());
-    if (json.getResources() != null) {
-      JsonResources jsonResources = json.getResources();
-      linkpay.setCustomerId(jsonResources.getCustomerId());
-      linkpay.setMetadataId(jsonResources.getMetadataId());
-      linkpay.setPaymentId(jsonResources.getPaymentId());
-      linkpay.setBasketId(jsonResources.getBasketId());
+  public Linkpay mapToBusinessObject(Linkpay out, JsonLinkpay src) {
+    out.setId(src.getId());
+    out.setAmount(src.getAmount());
+    out.setCurrency(src.getCurrency());
+    out.setReturnUrl(src.getReturnUrl());
+    out.setLogoImage(src.getLogoImage());
+    out.setFullPageImage(src.getFullPageImage());
+    out.setShopName(src.getShopName());
+    out.setShopDescription(src.getShopDescription());
+    out.setTagline(src.getTagline());
+    out.setCss(src.getCss());
+    out.setAlias(src.getAlias());
+    out.setTermsAndConditionUrl(src.getTermsAndConditionUrl());
+    out.setPrivacyPolicyUrl(src.getPrivacyPolicyUrl());
+    out.setImprintUrl(src.getImprintUrl());
+    out.setHelpUrl(src.getHelpUrl());
+    out.setContactUrl(src.getContactUrl());
+    out.setVersion(src.getVersion());
+    out.setRedirectUrl(src.getRedirectUrl());
+    out.setAction(src.getAction());
+    out.setCard3ds(src.getCard3ds());
+    out.setExpires(src.getExpires());
+    out.setOrderId(src.getOrderId());
+    out.setInvoiceId(src.getInvoiceId());
+    out.setBillingAddressRequired(src.getBillingAddressRequired());
+    out.setShippingAddressRequired(src.getShippingAddressRequired());
+    out.setAdditionalAttributes(src.getAdditionalAttributes());
+    out.setIntention(src.getIntention());
+    out.setOrderIdRequired(src.getOrderIdRequired());
+    out.setInvoiceIdRequired(src.getInvoiceIdRequired());
+    out.setOneTimeUse(src.getOneTimeUse());
+    out.setSuccessfullyProcessed(src.getSuccessfullyProcessed());
+    out.setExcludeTypes(src.getExcludeTypes());
+    out.setPaymentReference(src.getPaymentReference());
+    if (src.getResources() != null) {
+      JsonResources outResources = src.getResources();
+      out.setCustomerId(outResources.getCustomerId());
+      out.setMetadataId(outResources.getMetadataId());
+      out.setPaymentId(outResources.getPaymentId());
+      out.setBasketId(outResources.getBasketId());
     }
-    return linkpay;
+    return out;
   }
 
-  public Paypage mapToBusinessObject(Paypage paypage, JsonPaypage json) {
-    paypage.setId(json.getId());
-    paypage.setAmount(json.getAmount());
-    paypage.setCurrency(json.getCurrency());
-    paypage.setReturnUrl(json.getReturnUrl());
-    paypage.setLogoImage(json.getLogoImage());
-    paypage.setFullPageImage(json.getFullPageImage());
-    paypage.setShopName(json.getShopName());
-    paypage.setShopDescription(json.getShopDescription());
-    paypage.setTagline(json.getTagline());
-    paypage.setCss(json.getCss());
-    paypage.setTermsAndConditionUrl(json.getTermsAndConditionUrl());
-    paypage.setPrivacyPolicyUrl(json.getPrivacyPolicyUrl());
-    paypage.setImprintUrl(json.getImprintUrl());
-    paypage.setHelpUrl(json.getHelpUrl());
-    paypage.setContactUrl(json.getContactUrl());
-    paypage.setInvoiceId(json.getInvoiceId());
-    paypage.setOrderId(json.getOrderId());
-    paypage.setCard3ds(json.getCard3ds());
-    paypage.setBillingAddressRequired(json.getBillingAddressRequired());
-    paypage.setShippingAddressRequired(json.getShippingAddressRequired());
-    paypage.setAdditionalAttributes(json.getAdditionalAttributes());
-    paypage.setExcludeTypes(json.getExcludeTypes());
-    paypage.setRedirectUrl(json.getRedirectUrl());
-    paypage.setAction(json.getAction());
+  public Paypage mapToBusinessObject(Paypage out, JsonPaypage src) {
+    out.setId(src.getId());
+    out.setAmount(src.getAmount());
+    out.setCurrency(src.getCurrency());
+    out.setReturnUrl(src.getReturnUrl());
+    out.setLogoImage(src.getLogoImage());
+    out.setFullPageImage(src.getFullPageImage());
+    out.setShopName(src.getShopName());
+    out.setShopDescription(src.getShopDescription());
+    out.setTagline(src.getTagline());
+    out.setCss(src.getCss());
+    out.setTermsAndConditionUrl(src.getTermsAndConditionUrl());
+    out.setPrivacyPolicyUrl(src.getPrivacyPolicyUrl());
+    out.setImprintUrl(src.getImprintUrl());
+    out.setHelpUrl(src.getHelpUrl());
+    out.setContactUrl(src.getContactUrl());
+    out.setInvoiceId(src.getInvoiceId());
+    out.setOrderId(src.getOrderId());
+    out.setCard3ds(src.getCard3ds());
+    out.setBillingAddressRequired(src.getBillingAddressRequired());
+    out.setShippingAddressRequired(src.getShippingAddressRequired());
+    out.setAdditionalAttributes(src.getAdditionalAttributes());
+    out.setExcludeTypes(src.getExcludeTypes());
+    out.setRedirectUrl(src.getRedirectUrl());
+    out.setAction(src.getAction());
 
-    if (json.getResources() != null) {
-      paypage.setBasketId(json.getResources().getBasketId());
-      paypage.setCustomerId(json.getResources().getCustomerId());
-      paypage.setMetadataId(json.getResources().getMetadataId());
-      paypage.setPaymentId(json.getResources().getPaymentId());
+    if (src.getResources() != null) {
+      out.setBasketId(src.getResources().getBasketId());
+      out.setCustomerId(src.getResources().getCustomerId());
+      out.setMetadataId(src.getResources().getMetadataId());
+      out.setPaymentId(src.getResources().getPaymentId());
     }
-    return paypage;
+    return out;
   }
 
-  public Recurring mapToBusinessObject(Recurring recurring, JsonRecurring json) {
-    recurring.setDate(json.getDate());
-    recurring.setMessage(json.getMessage());
-    if (json.getResources() != null) {
-      recurring.setMetadataId(json.getResources().getMetadataId());
-      recurring.setCustomerId(json.getResources().getCustomerId());
+  public Recurring mapToBusinessObject(Recurring out, JsonRecurring src) {
+    out.setDate(src.getDate());
+    out.setMessage(src.getMessage());
+    if (src.getResources() != null) {
+      out.setMetadataId(src.getResources().getMetadataId());
+      out.setCustomerId(src.getResources().getCustomerId());
     }
-    recurring.setProcessing(getProcessing(json.getProcessing()));
-    recurring.setRedirectUrl(json.getRedirectUrl());
-    recurring.setReturnUrl(json.getReturnUrl());
-    recurring.setAdditionalTransactionData(json.getAdditionalTransactionData());
-    recurring.setStatus(extractStatus(json));
-    return recurring;
+    out.setProcessing(getProcessing(src.getProcessing()));
+    out.setRedirectUrl(src.getRedirectUrl());
+    out.setReturnUrl(src.getReturnUrl());
+    out.setAdditionalTransactionData(src.getAdditionalTransactionData());
+    out.setStatus(extractStatus(src));
+    return out;
   }
 
-  private Processing getProcessing(JsonProcessing json) {
-    Processing processing = new Processing();
-    processing.setUniqueId(json.getUniqueId());
-    processing.setShortId(json.getShortId());
-    processing.setBic(json.getBic());
-    processing.setDescriptor(json.getDescriptor());
-    processing.setHolder(json.getHolder());
-    processing.setIban(json.getIban());
-    processing.setPdfLink(json.getPdfLink());
-    processing.setExternalOrderId(json.getExternalOrderId());
-    processing.setZgReferenceId(json.getZgReferenceId());
-    processing.setCreatorId(json.getCreatorId());
-    processing.setIdentification(json.getIdentification());
-    processing.setTraceId(json.getTraceId());
-    processing.setParticipantId(json.getParticipantId());
-    return processing;
+  private Processing getProcessing(JsonProcessing src) {
+    Processing out = new Processing();
+    out.setUniqueId(src.getUniqueId());
+    out.setShortId(src.getShortId());
+    out.setBic(src.getBic());
+    out.setDescriptor(src.getDescriptor());
+    out.setHolder(src.getHolder());
+    out.setIban(src.getIban());
+    out.setPdfLink(src.getPdfLink());
+    out.setExternalOrderId(src.getExternalOrderId());
+    out.setZgReferenceId(src.getZgReferenceId());
+    out.setCreatorId(src.getCreatorId());
+    out.setIdentification(src.getIdentification());
+    out.setTraceId(src.getTraceId());
+    out.setParticipantId(src.getParticipantId());
+    return out;
   }
 
-  private AbstractTransaction.Status extractStatus(TransactionStatus json) {
-    // Resumed has to be the first, because currently PAPI returns several statuses if isResumed set
-    if (Optional.ofNullable(json.getResumed()).orElse(false)) {
+  private AbstractTransaction.Status extractStatus(TransactionStatus src) {
+    // Resumed has to be the first,
+    // because currently Payment API returns several statuses if isResumed set
+    if (Optional.ofNullable(src.getResumed()).orElse(false)) {
       return AbstractTransaction.Status.RESUMED;
     }
 
-    if (json.getSuccess()) {
+    if (src.getSuccess()) {
       return AbstractTransaction.Status.SUCCESS;
-    } else if (json.getPending()) {
+    } else if (src.getPending()) {
       return AbstractTransaction.Status.PENDING;
-    } else if (json.getError()) {
+    } else if (src.getError()) {
       return AbstractTransaction.Status.ERROR;
     }
 
@@ -338,192 +341,197 @@ public class JsonToBusinessClassMapper {
   }
 
   public <T extends AbstractPayment> AbstractTransaction<T> mapToBusinessObject(
-      AbstractTransaction<T> abstractInitTransaction, JsonInitPayment json) {
-    abstractInitTransaction.setId(json.getId());
-    abstractInitTransaction.setAmount(json.getAmount());
-    abstractInitTransaction.setCurrency(json.getCurrency());
-    abstractInitTransaction.setOrderId(json.getOrderId());
-    abstractInitTransaction.setCard3ds(json.getCard3ds());
-    abstractInitTransaction.setInvoiceId(json.getInvoiceId());
-    abstractInitTransaction.setOrderId(json.getOrderId());
-    abstractInitTransaction.setPaymentReference(json.getPaymentReference());
-    if (json.getResources() != null) {
-      abstractInitTransaction.setCustomerId(json.getResources().getCustomerId());
-      abstractInitTransaction.setMetadataId(json.getResources().getMetadataId());
-      abstractInitTransaction.setPaymentId(json.getResources().getPaymentId());
-      abstractInitTransaction.setRiskId(json.getResources().getRiskId());
-      abstractInitTransaction.setTypeId(json.getResources().getTypeId());
-      abstractInitTransaction.setTraceId(json.getResources().getTraceId());
+      JsonInitPayment src, AbstractTransaction<T> out
+  ) {
+    out.setId(src.getId());
+    out.setAmount(src.getAmount());
+    out.setCurrency(src.getCurrency());
+    out.setOrderId(src.getOrderId());
+    out.setCard3ds(src.getCard3ds());
+    out.setInvoiceId(src.getInvoiceId());
+    out.setOrderId(src.getOrderId());
+    out.setPaymentReference(src.getPaymentReference());
+    if (src.getResources() != null) {
+      out.setCustomerId(src.getResources().getCustomerId());
+      out.setMetadataId(src.getResources().getMetadataId());
+      out.setPaymentId(src.getResources().getPaymentId());
+      out.setRiskId(src.getResources().getRiskId());
+      out.setTypeId(src.getResources().getTypeId());
+      out.setTraceId(src.getResources().getTraceId());
+      out.setPaypageId(src.getResources().getPayPageId());
     }
-    abstractInitTransaction.setReturnUrl(json.getReturnUrl());
-    abstractInitTransaction.setProcessing(getProcessing(json.getProcessing()));
-    abstractInitTransaction.setRedirectUrl(json.getRedirectUrl());
-    abstractInitTransaction.setMessage(json.getMessage());
-    abstractInitTransaction.setDate(json.getDate());
-    abstractInitTransaction.setAdditionalTransactionData(json.getAdditionalTransactionData());
+    out.setReturnUrl(src.getReturnUrl());
+    out.setProcessing(getProcessing(src.getProcessing()));
+    out.setRedirectUrl(src.getRedirectUrl());
+    out.setMessage(src.getMessage());
+    out.setDate(src.getDate());
+    out.setAdditionalTransactionData(src.getAdditionalTransactionData());
 
-    abstractInitTransaction.setStatus(extractStatus(json));
-    return abstractInitTransaction;
+    out.setStatus(extractStatus(src));
+    return out;
   }
 
-  public JsonCustomer map(Customer customer) {
-    JsonCustomer json = new JsonCustomer();
-    json.setFirstname(customer.getFirstname());
-    json.setLastname(customer.getLastname());
-    json.setCompany(customer.getCompany());
+  public JsonCustomer map(Customer src) {
+    JsonCustomer out = new JsonCustomer();
+    out.setFirstname(src.getFirstname());
+    out.setLastname(src.getLastname());
+    out.setCompany(src.getCompany());
 
-    if (customer.getLanguage() != null) {
-      json.setLanguage(customer.getLanguage().getLanguage());
+    if (src.getLanguage() != null) {
+      out.setLanguage(src.getLanguage().getLanguage());
     }
 
-    json.setCustomerId(customer.getCustomerId());
-    json.setEmail(customer.getEmail());
-    json.setMobile(customer.getMobile());
-    json.setPhone(customer.getPhone());
-    json.setSalutation(customer.getSalutation());
-    json.setBirthDate(customer.getBirthDate());
+    out.setCustomerId(src.getCustomerId());
+    out.setEmail(src.getEmail());
+    out.setMobile(src.getMobile());
+    out.setPhone(src.getPhone());
+    out.setSalutation(src.getSalutation());
+    out.setBirthDate(src.getBirthDate());
 
-    json.setBillingAddress(customer.getBillingAddress());
-    json.setShippingAddress(customer.getShippingAddress());
-    json.setCompanyInfo(getCompanyInfo(customer.getCompanyData(), customer.getCompany()));
-    return json;
+    out.setBillingAddress(src.getBillingAddress());
+    out.setShippingAddress(src.getShippingAddress());
+    out.setCompanyInfo(getCompanyInfo(src.getCompanyData(), src.getCompany()));
+    return out;
   }
 
-  private JsonCompanyInfo getCompanyInfo(CustomerCompanyData customer, String company) {
-    if (customer == null) {
+  private JsonCompanyInfo getCompanyInfo(CustomerCompanyData src, String company) {
+    if (src == null) {
       return null;
     }
-    JsonCompanyInfo json = new JsonCompanyInfo();
+    JsonCompanyInfo out = new JsonCompanyInfo();
     if (company != null) {
-      mapRegisteredCompany(customer, json);
+      mapRegisteredCompany(src, out);
     } else {
-      mapUnregisteredCompany(customer, json);
+      mapUnregisteredCompany(src, out);
     }
-    return json;
+    return out;
   }
 
-  private void mapRegisteredCompany(CustomerCompanyData customer, JsonCompanyInfo json) {
-    json.setRegistrationType("registered");
-    json.setCommercialRegisterNumber(customer.getCommercialRegisterNumber());
+  private void mapRegisteredCompany(CustomerCompanyData src, JsonCompanyInfo out) {
+    out.setRegistrationType("registered");
+    out.setCommercialRegisterNumber(src.getCommercialRegisterNumber());
   }
 
-  private void mapUnregisteredCompany(CustomerCompanyData customer, JsonCompanyInfo json) {
-    json.setFunction("OWNER");
-    json.setRegistrationType("not_registered");
-    if (customer.getCommercialSector() != null) {
-      json.setCommercialSector(customer.getCommercialSector().toString());
+  private void mapUnregisteredCompany(CustomerCompanyData src, JsonCompanyInfo out) {
+    out.setFunction("OWNER");
+    out.setRegistrationType("not_registered");
+    if (src.getCommercialSector() != null) {
+      out.setCommercialSector(src.getCommercialSector().toString());
     }
   }
 
-  public Customer mapToBusinessObject(Customer customer, JsonCustomer json) {
-    customer.setId(json.getId());
-    customer.setFirstname(json.getFirstname());
-    customer.setLastname(json.getLastname());
-    customer.setCompany(json.getCompany());
-    customer.setCustomerId(json.getCustomerId());
+  public Customer mapToBusinessObject(JsonCustomer src, Customer out) {
+    out.setId(src.getId());
+    out.setFirstname(src.getFirstname());
+    out.setLastname(src.getLastname());
+    out.setCompany(src.getCompany());
+    out.setCustomerId(src.getCustomerId());
 
-    if (json.getLanguage() != null && !json.getLanguage().isEmpty()) {
-      customer.setLanguage(new Locale(json.getLanguage()));
+    if (src.getLanguage() != null && !src.getLanguage().isEmpty()) {
+      out.setLanguage(new Locale(src.getLanguage()));
     }
 
-    customer.setEmail(json.getEmail());
-    customer.setMobile(json.getMobile());
-    customer.setPhone(json.getPhone());
-    customer.setSalutation(json.getSalutation());
-    customer.setBirthDate(json.getBirthDate());
+    out.setEmail(src.getEmail());
+    out.setMobile(src.getMobile());
+    out.setPhone(src.getPhone());
+    out.setSalutation(src.getSalutation());
+    out.setBirthDate(src.getBirthDate());
 
-    customer.setBillingAddress(json.getBillingAddress());
-    customer.setShippingAddress(json.getShippingAddress());
-    customer.setCompanyData(getCompanyInfo(json.getCompanyInfo()));
-    return customer;
+    out.setBillingAddress(src.getBillingAddress());
+    out.setShippingAddress(src.getShippingAddress());
+    out.setCompanyData(getCompanyInfo(src.getCompanyInfo()));
+    return out;
   }
 
-  private CustomerCompanyData getCompanyInfo(JsonCompanyInfo json) {
-    if (json == null) {
+  private CustomerCompanyData getCompanyInfo(JsonCompanyInfo src) {
+    if (src == null) {
       return null;
     }
-    if (allFieldsNull(json)) {
+    if (allFieldsNull(src)) {
       return null;
     }
-    CustomerCompanyData company = new CustomerCompanyData();
-    company.setCommercialRegisterNumber(json.getCommercialRegisterNumber());
-    if (json.getCommercialSector() != null) {
-      company.setCommercialSector(CommercialSector.valueOf(json.getCommercialSector()));
+    CustomerCompanyData out = new CustomerCompanyData();
+    out.setCommercialRegisterNumber(src.getCommercialRegisterNumber());
+    if (src.getCommercialSector() != null) {
+      out.setCommercialSector(CommercialSector.valueOf(src.getCommercialSector()));
     }
-    if (json.getRegistrationType() != null) {
-      company.setRegistrationType(
-          CustomerCompanyData.RegistrationType.valueOf(json.getRegistrationType().toUpperCase()));
+    if (src.getRegistrationType() != null) {
+      out.setRegistrationType(
+          CustomerCompanyData.RegistrationType.valueOf(src.getRegistrationType().toUpperCase()));
     }
-    return company;
+    return out;
   }
 
-  private boolean allFieldsNull(JsonCompanyInfo json) {
-    if (json.getCommercialRegisterNumber() != null) {
+  private boolean allFieldsNull(JsonCompanyInfo src) {
+    if (src.getCommercialRegisterNumber() != null) {
       return false;
     }
-    if (json.getCommercialSector() != null) {
+    if (src.getCommercialSector() != null) {
       return false;
     }
-    if (json.getFunction() != null) {
+    if (src.getFunction() != null) {
       return false;
     }
-    return json.getRegistrationType() == null;
+    return src.getRegistrationType() == null;
   }
 
   public <T extends AbstractPayment> AbstractTransaction<T> mapToBusinessObject(
-      AbstractTransaction<T> cancel, JsonCancel json) {
-    cancel.setId(json.getId());
-    cancel.setAmount(json.getAmount());
-    cancel.setProcessing(getProcessing(json.getProcessing()));
-    cancel.setMessage(json.getMessage());
-    cancel.setDate(json.getDate());
-    cancel.setPaymentReference(json.getPaymentReference());
-    cancel.setInvoiceId(json.getInvoiceId());
-    cancel.setOrderId(json.getOrderId());
-    cancel.setStatus(extractStatus(json));
-    return cancel;
+      JsonCancel src, AbstractTransaction<T> out
+  ) {
+    out.setId(src.getId());
+    out.setAmount(src.getAmount());
+    out.setProcessing(getProcessing(src.getProcessing()));
+    out.setMessage(src.getMessage());
+    out.setDate(src.getDate());
+    out.setPaymentReference(src.getPaymentReference());
+    out.setInvoiceId(src.getInvoiceId());
+    out.setOrderId(src.getOrderId());
+    out.setStatus(extractStatus(src));
+    return out;
   }
 
-  public Shipment mapToBusinessObject(Shipment shipment, JsonShipment json) {
-    shipment.setId(json.getId());
-    shipment.setMessage(json.getMessage());
-    shipment.setDate(json.getDate());
-    return shipment;
+  public Shipment mapToBusinessObject(JsonShipment src, Shipment out) {
+    out.setId(src.getId());
+    out.setMessage(src.getMessage());
+    out.setDate(src.getDate());
+    return out;
   }
 
-  public <T extends AbstractPayment> T mapToBusinessObject(T payment, JsonPayment json) {
-    payment.setAmountTotal(json.getAmount().getTotal());
-    payment.setAmountCanceled(json.getAmount().getCanceled());
-    payment.setAmountCharged(json.getAmount().getCharged());
-    payment.setAmountRemaining(json.getAmount().getRemaining());
-    payment.setOrderId(json.getOrderId());
-    payment.setPaymentState(getPaymentState(json.getState()));
-    payment.setId(json.getId());
+  public <T extends AbstractPayment> T mapToBusinessObject(ApiPayment src, T out) {
+    out.setAmountTotal(src.getAmount().getTotal());
+    out.setAmountCanceled(src.getAmount().getCanceled());
+    out.setAmountCharged(src.getAmount().getCharged());
+    out.setAmountRemaining(src.getAmount().getRemaining());
+    out.setOrderId(src.getOrderId());
+    out.setPaymentState(getPaymentState(src.getState()));
+    out.setId(src.getId());
 
-    if (json.getResources() != null) {
-      payment.setPaymentTypeId(json.getResources().getTypeId());
-      payment.setCustomerId(json.getResources().getCustomerId());
-      payment.setMetadataId(json.getResources().getMetadataId());
-      payment.setBasketId(json.getResources().getBasketId());
+    JsonResources resources = src.getResources();
+    if (resources != null) {
+      out.setPaymentTypeId(resources.getTypeId());
+      out.setCustomerId(resources.getCustomerId());
+      out.setMetadataId(resources.getMetadataId());
+      out.setBasketId(resources.getBasketId());
+      out.setPaypageId(resources.getPayPageId());
     }
 
-    return payment;
+    return out;
   }
 
-  private AbstractPayment.State getPaymentState(JsonState state) {
-    if (state == null) {
+  private AbstractPayment.State getPaymentState(JsonState src) {
+    if (src == null) {
       return null;
     }
 
-    if (state.getId() >= 0 && state.getId() <= 5) {
-      return AbstractPayment.State.values()[state.getId()];
+    if (src.getId() >= 0 && src.getId() <= 5) {
+      return AbstractPayment.State.values()[src.getId()];
     }
 
     return null;
   }
 
-  public PaymentType mapToBusinessObject(PaymentType paymentType, JsonIdObject jsonPaymentType) {
-    return paymentType.map(paymentType, jsonPaymentType);
+  public PaymentType mapToBusinessObject(PaymentType out, JsonIdObject src) {
+    return out.map(out, src);
   }
 
   public PaylaterInstallmentPlans mapToBusinessObject(PaylaterInstallmentPlans installmentPlans,

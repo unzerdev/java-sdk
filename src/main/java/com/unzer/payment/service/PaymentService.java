@@ -21,6 +21,7 @@ import com.unzer.payment.Authorization;
 import com.unzer.payment.Basket;
 import com.unzer.payment.Cancel;
 import com.unzer.payment.Charge;
+import com.unzer.payment.Chargeback;
 import com.unzer.payment.Customer;
 import com.unzer.payment.Metadata;
 import com.unzer.payment.PaylaterInstallmentPlans;
@@ -34,6 +35,9 @@ import com.unzer.payment.business.paymenttypes.InstallmentSecuredRatePlan;
 import com.unzer.payment.communication.HttpCommunicationException;
 import com.unzer.payment.communication.JsonParser;
 import com.unzer.payment.communication.UnzerRestCommunication;
+import com.unzer.payment.communication.json.ApiChargeback;
+import com.unzer.payment.communication.json.ApiPayment;
+import com.unzer.payment.communication.json.ApiTransaction;
 import com.unzer.payment.communication.json.JsonApplepayResponse;
 import com.unzer.payment.communication.json.JsonAuthorization;
 import com.unzer.payment.communication.json.JsonBancontact;
@@ -93,18 +97,13 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class PaymentService {
-  protected static final String TRANSACTION_TYPE_AUTHORIZATION = "authorize";
-  protected static final String TRANSACTION_TYPE_CHARGE = "charge";
-  protected static final String TRANSACTION_TYPE_PAYOUT = "payout";
-  protected static final String TRANSACTION_TYPE_CANCEL_AUTHORIZE = "cancel-authorize";
-  protected static final String TRANSACTION_TYPE_CANCEL_CHARGE = "cancel-charge";
-
   protected UnzerRestCommunication restCommunication;
-
   protected UrlUtil urlUtil;
-  protected JsonToBusinessClassMapper jsonToBusinessClassMapper = new JsonToBusinessClassMapper();
+  protected JsonToBusinessClassMapper apiToSdkMapper = new JsonToBusinessClassMapper();
   protected Unzer unzer;
   protected JsonParser jsonParser;
 
@@ -170,7 +169,7 @@ public class PaymentService {
         unzer.getPrivateKey());
     JsonIdObject jsonPaymentType =
         jsonParser.fromJson(response, getJsonObjectFromTypeId(typeId).getClass());
-    return (T) jsonToBusinessClassMapper.mapToBusinessObject(paymentType, jsonPaymentType);
+    return (T) apiToSdkMapper.mapToBusinessObject(paymentType, jsonPaymentType);
   }
 
   private AbstractPaymentType getPaymentTypeFromTypeId(String typeId) {
@@ -305,7 +304,7 @@ public class PaymentService {
   public Customer createCustomer(Customer customer) throws HttpCommunicationException {
     String response =
         restCommunication.httpPost(urlUtil.getRestUrl(customer), unzer.getPrivateKey(),
-            jsonToBusinessClassMapper.map(customer));
+            apiToSdkMapper.map(customer));
     JsonIdObject jsonId = jsonParser.fromJson(response, JsonIdObject.class);
     return fetchCustomer(jsonId.getId());
   }
@@ -317,12 +316,12 @@ public class PaymentService {
     String response = restCommunication.httpGet(urlUtil.getHttpGetUrl(customer, customer.getId()),
         unzer.getPrivateKey());
     JsonCustomer json = jsonParser.fromJson(response, JsonCustomer.class);
-    return jsonToBusinessClassMapper.mapToBusinessObject(new Customer("", ""), json);
+    return apiToSdkMapper.mapToBusinessObject(json, new Customer("", ""));
   }
 
   public Customer updateCustomer(String id, Customer customer) throws HttpCommunicationException {
     restCommunication.httpPut(urlUtil.getHttpGetUrl(customer, id), unzer.getPrivateKey(),
-        jsonToBusinessClassMapper.map(customer));
+        apiToSdkMapper.map(customer));
     return fetchCustomer(id);
   }
 
@@ -397,10 +396,11 @@ public class PaymentService {
   public Authorization authorize(Authorization authorization) throws HttpCommunicationException {
     String response =
         restCommunication.httpPost(urlUtil.getRestUrl(authorization), unzer.getPrivateKey(),
-            jsonToBusinessClassMapper.map(authorization));
+            apiToSdkMapper.map(authorization));
     JsonAuthorization jsonAuthorization = jsonParser.fromJson(response, JsonAuthorization.class);
-    authorization = (Authorization) jsonToBusinessClassMapper.mapToBusinessObject(authorization,
-        jsonAuthorization);
+    authorization = (Authorization) apiToSdkMapper.mapToBusinessObject(jsonAuthorization,
+        authorization
+    );
     authorization.setPayment(fetchPayment(jsonAuthorization.getResources().getPaymentId()));
     authorization.setUnzer(unzer);
     return authorization;
@@ -411,23 +411,50 @@ public class PaymentService {
     return fetchPayment(payment, paymentId);
   }
 
-  private Payment fetchPayment(Payment payment, String paymentId)
+  private Payment fetchPayment(Payment sdkPayment, String paymentId)
       throws HttpCommunicationException {
-    payment.setId(paymentId);
+    sdkPayment.setId(paymentId);
 
-    String response = getPayment(payment);
-    JsonPayment jsonPayment = jsonParser.fromJson(response, JsonPayment.class);
-    payment = jsonToBusinessClassMapper.mapToBusinessObject(payment, jsonPayment);
-    payment.setCancelList(
-        fetchCancelList(payment, getCancelsFromTransactions(jsonPayment.getTransactions())));
-    payment.setAuthorization(
-        fetchAuthorization(payment, getAuthorizationFromTransactions(jsonPayment.getTransactions()))
+    String response = getPayment(sdkPayment);
+    ApiPayment apiPayment = jsonParser.fromJson(response, ApiPayment.class);
+    sdkPayment = apiToSdkMapper.mapToBusinessObject(apiPayment, sdkPayment);
+
+
+    sdkPayment.setCancelList(
+        fetchCancelList(
+            sdkPayment,
+            getCancelsFromTransactions(apiPayment.getTransactions())
+        )
     );
-    payment.setChargesList(
-        fetchChargeList(payment, getChargesFromTransactions(jsonPayment.getTransactions())));
-    payment.setPayoutList(
-        fetchPayoutList(payment, getPayoutFromTransactions(jsonPayment.getTransactions())));
-    return payment;
+
+    sdkPayment.setAuthorization(
+        fetchAuthorization(
+            sdkPayment,
+            getAuthorizationFromTransactions(apiPayment.getTransactions())
+        )
+    );
+
+    sdkPayment.setChargesList(
+        fetchChargeList(
+            sdkPayment,
+            getTypedTransactions(apiPayment.getTransactions(), TransactionType.CHARGE)
+        )
+    );
+
+    sdkPayment.setPayoutList(
+        fetchPayoutList(
+            sdkPayment,
+            getTypedTransactions(apiPayment.getTransactions(), TransactionType.PAYOUT)
+        )
+    );
+
+    sdkPayment.setChargebackList(
+        fetchChargebackList(
+            sdkPayment,
+            getTypedTransactions(apiPayment.getTransactions(), TransactionType.CHARGEBACK)
+        )
+    );
+    return sdkPayment;
   }
 
   protected <T extends AbstractPayment> String getPayment(T payment)
@@ -436,63 +463,65 @@ public class PaymentService {
         unzer.getPrivateKey());
   }
 
-  private List<Cancel> fetchCancelList(Payment payment,
-                                       List<JsonTransaction> jsonChargesTransactionList)
+  private List<Cancel> fetchCancelList(
+      Payment sdkPayment,
+      List<ApiTransaction> apiChargeTransactions
+  )
       throws HttpCommunicationException {
     List<Cancel> cancelList = new ArrayList<Cancel>();
 
-    if (jsonChargesTransactionList != null && !jsonChargesTransactionList.isEmpty()) {
-      for (JsonTransaction jsonTransaction : jsonChargesTransactionList) {
-        Cancel cancel = fetchCancel(payment, new Cancel(unzer), jsonTransaction.getUrl());
-        cancel.setType(jsonTransaction.getType());
+    if (apiChargeTransactions != null && !apiChargeTransactions.isEmpty()) {
+      for (ApiTransaction apiTransaction : apiChargeTransactions) {
+        Cancel cancel = fetchCancel(sdkPayment, new Cancel(unzer), apiTransaction.getUrl());
+        cancel.setType(apiTransaction.getType());
         cancelList.add(cancel);
       }
     }
     return cancelList;
   }
 
-  protected List<JsonTransaction> getCancelsFromTransactions(List<JsonTransaction> transactions) {
-    List<JsonTransaction> cancelsList = new ArrayList<JsonTransaction>();
-    for (JsonTransaction jsonTransaction : transactions) {
-      if (TRANSACTION_TYPE_CANCEL_AUTHORIZE.equalsIgnoreCase(jsonTransaction.getType())
-          || TRANSACTION_TYPE_CANCEL_CHARGE.equalsIgnoreCase(jsonTransaction.getType())) {
-        cancelsList.add(jsonTransaction);
-      }
-    }
-    return cancelsList;
+  protected List<ApiTransaction> getCancelsFromTransactions(List<ApiTransaction> transactions) {
+    return Stream.concat(
+            getTypedTransactions(transactions, TransactionType.CANCEL_AUTHORIZE).stream(),
+            getTypedTransactions(transactions, TransactionType.CANCEL_CHARGE).stream())
+        .collect(Collectors.toList());
   }
 
-  private Authorization fetchAuthorization(Payment payment, JsonTransaction jsonTransaction)
+  private Authorization fetchAuthorization(Payment payment, ApiTransaction apiTransaction)
       throws HttpCommunicationException {
-    if (jsonTransaction == null) {
+    if (apiTransaction == null) {
       return null;
     }
     Authorization authorization =
-        fetchAuthorization(payment, new Authorization(), jsonTransaction.getUrl());
+        fetchAuthorization(payment, new Authorization(), apiTransaction.getUrl());
     authorization.setPayment(payment);
-    authorization.setResourceUrl(jsonTransaction.getUrl());
-    authorization.setType(jsonTransaction.getType());
-    authorization.setCancelList(getCancelListForAuthorization(payment.getCancelList()));
+    authorization.setResourceUrl(apiTransaction.getUrl());
+    authorization.setType(apiTransaction.getType());
+    authorization.setCancelList(payment.getCancelList().stream()
+        .filter(c -> c.getType().equalsIgnoreCase(TransactionType.CANCEL_AUTHORIZE.apiName()))
+        .collect(
+            Collectors.toList()));
     authorization.setBasketId(payment.getBasketId());
     return authorization;
   }
 
-  private JsonTransaction getAuthorizationFromTransactions(List<JsonTransaction> transactions) {
-    List<JsonTransaction> authorizeList = getAuthorizationsFromTransactions(transactions);
+  private ApiTransaction getAuthorizationFromTransactions(List<ApiTransaction> transactions) {
+    List<ApiTransaction> authorizeList =
+        getTypedTransactions(transactions, TransactionType.AUTHORIZE);
     return !authorizeList.isEmpty() ? authorizeList.get(0) : null;
   }
 
   private List<Charge> fetchChargeList(Payment payment,
-                                       List<JsonTransaction> jsonChargesTransactionList)
+                                       List<ApiTransaction> jsonChargesTransactionList)
       throws HttpCommunicationException {
     if (jsonChargesTransactionList == null || jsonChargesTransactionList.isEmpty()) {
       return new ArrayList<>();
     }
     List<Charge> chargesList = new ArrayList<>();
-    for (JsonTransaction jsonTransaction : jsonChargesTransactionList) {
-      Charge charge = fetchCharge(payment, new Charge(unzer), jsonTransaction.getUrl());
-      charge.setCancelList(getCancelListForCharge(charge.getId(), payment.getCancelList()));
-      charge.setType(jsonTransaction.getType());
+    for (ApiTransaction apiTransaction : jsonChargesTransactionList) {
+      Charge charge = fetchCharge(payment, new Charge(unzer), apiTransaction.getUrl());
+      charge.setCancelList(getCancelListForCharge(payment.getCancelList(), charge.getId()));
+      charge.setType(apiTransaction.getType());
       charge.setBasketId(payment.getBasketId());
       charge.setCustomerId(payment.getCustomerId());
       charge.setMetadataId(payment.getMetadataId());
@@ -501,46 +530,39 @@ public class PaymentService {
     return chargesList;
   }
 
-  protected List<JsonTransaction> getChargesFromTransactions(List<JsonTransaction> transactions) {
-    List<JsonTransaction> chargesList = new ArrayList<JsonTransaction>();
-    for (JsonTransaction jsonTransaction : transactions) {
-      if (TRANSACTION_TYPE_CHARGE.equalsIgnoreCase(jsonTransaction.getType())) {
-        chargesList.add(jsonTransaction);
-      }
-    }
-    return chargesList;
+  protected List<ApiTransaction> getTypedTransactions(
+      List<ApiTransaction> transactions,
+      TransactionType type) {
+    return transactions.stream().filter(t -> t.getType().equalsIgnoreCase(type.apiName())).collect(
+        Collectors.toList());
   }
 
-  private List<Payout> fetchPayoutList(Payment payment, List<JsonTransaction> jsonTransactionList)
+  private List<Payout> fetchPayoutList(Payment payment, List<ApiTransaction> apiTransactionList)
       throws HttpCommunicationException {
-    if (jsonTransactionList == null || jsonTransactionList.isEmpty()) {
+    if (apiTransactionList == null || apiTransactionList.isEmpty()) {
       return new ArrayList<>();
     }
     List<Payout> payoutList = new ArrayList<>();
-    for (JsonTransaction jsonTransaction : jsonTransactionList) {
-      Payout payout = fetchPayout(payment, new Payout(unzer), jsonTransaction.getUrl());
-      payout.setType(jsonTransaction.getType());
+    for (ApiTransaction apiTransaction : apiTransactionList) {
+      Payout payout = fetchPayout(payment, new Payout(unzer), apiTransaction.getUrl());
+      payout.setType(apiTransaction.getType());
       payout.setBasketId(payment.getBasketId());
       payoutList.add(payout);
     }
     return payoutList;
   }
 
-  private List<JsonTransaction> getPayoutFromTransactions(List<JsonTransaction> transactions) {
-    List<JsonTransaction> payoutList = new ArrayList<JsonTransaction>();
-    for (JsonTransaction jsonTransaction : transactions) {
-      if (TRANSACTION_TYPE_PAYOUT.equalsIgnoreCase(jsonTransaction.getType())) {
-        payoutList.add(jsonTransaction);
-      }
-    }
-    return payoutList;
+  private List<Chargeback> fetchChargebackList(Payment payment, List<ApiTransaction> chargebacks) {
+    return chargebacks.parallelStream()
+        .map(t -> fetchChargeback(payment, t.getUrl()))
+        .collect(Collectors.toList());
   }
 
   private Cancel fetchCancel(Payment payment, Cancel cancel, URL url)
       throws HttpCommunicationException {
     String response = restCommunication.httpGet(url.toString(), unzer.getPrivateKey());
     JsonCancel jsonCancel = jsonParser.fromJson(response, JsonCancel.class);
-    cancel = (Cancel) jsonToBusinessClassMapper.mapToBusinessObject(cancel, jsonCancel);
+    cancel = (Cancel) apiToSdkMapper.mapToBusinessObject(jsonCancel, cancel);
     cancel.setPayment(payment);
     cancel.setResourceUrl(url);
     return cancel;
@@ -550,75 +572,55 @@ public class PaymentService {
       throws HttpCommunicationException {
     String response = restCommunication.httpGet(url.toString(), unzer.getPrivateKey());
     JsonAuthorization jsonAuthorization = jsonParser.fromJson(response, JsonAuthorization.class);
-    authorization = (Authorization) jsonToBusinessClassMapper.mapToBusinessObject(authorization,
-        jsonAuthorization);
-    authorization.setCancelList(getCancelListForAuthorization(payment.getCancelList()));
+    authorization = (Authorization) apiToSdkMapper.mapToBusinessObject(jsonAuthorization,
+        authorization
+    );
+    authorization.setCancelList(payment.getCancelList().stream()
+        .filter(c -> c.getType().equalsIgnoreCase(TransactionType.CANCEL_AUTHORIZE.apiName()))
+        .collect(
+            Collectors.toList()));
     authorization.setUnzer(unzer);
     return authorization;
-  }
-
-  private List<Cancel> getCancelListForAuthorization(List<Cancel> cancelList) {
-    if (cancelList == null) {
-      return new ArrayList<Cancel>();
-    }
-    List<Cancel> authorizationCancelList = new ArrayList<Cancel>();
-    for (Cancel cancel : cancelList) {
-      if (TRANSACTION_TYPE_CANCEL_AUTHORIZE.equalsIgnoreCase(cancel.getType())) {
-        authorizationCancelList.add(cancel);
-      }
-    }
-    return authorizationCancelList;
-
-  }
-
-  protected List<JsonTransaction> getAuthorizationsFromTransactions(
-      List<JsonTransaction> transactions) {
-    List<JsonTransaction> authorizeList = new ArrayList<JsonTransaction>();
-    for (JsonTransaction jsonTransaction : transactions) {
-      if (TRANSACTION_TYPE_AUTHORIZATION.equalsIgnoreCase(jsonTransaction.getType())) {
-        authorizeList.add(jsonTransaction);
-      }
-    }
-    return authorizeList;
   }
 
   private Charge fetchCharge(Payment payment, Charge charge, URL url)
       throws HttpCommunicationException {
     String response = restCommunication.httpGet(url.toString(), unzer.getPrivateKey());
     JsonCharge jsonCharge = jsonParser.fromJson(response, JsonCharge.class);
-    charge = (Charge) jsonToBusinessClassMapper.mapToBusinessObject(charge, jsonCharge);
+    charge = (Charge) apiToSdkMapper.mapToBusinessObject(jsonCharge, charge);
     charge.setInvoiceId(jsonCharge.getInvoiceId());
     charge.setPayment(payment);
     charge.setResourceUrl(url);
     return charge;
   }
 
-  private List<Cancel> getCancelListForCharge(String chargeId, List<Cancel> cancelList) {
-    if (cancelList == null) {
-      return new ArrayList<Cancel>();
-    }
-    List<Cancel> chargeCancelList = new ArrayList<Cancel>();
-    for (Cancel cancel : cancelList) {
-      if (TRANSACTION_TYPE_CANCEL_CHARGE.equalsIgnoreCase(cancel.getType())
-          && containsChargeId(cancel.getResourceUrl(), chargeId)) {
-        chargeCancelList.add(cancel);
-      }
-    }
-    return chargeCancelList;
+  private List<Cancel> getCancelListForCharge(List<Cancel> list, String chargeId) {
+    return list.stream()
+        .filter(c -> c.getType().equalsIgnoreCase(TransactionType.CANCEL_CHARGE.apiName()))
+        .filter(c -> c.getResourceUrl().toString().contains(chargeId))
+        .collect(Collectors.toList());
   }
 
   private Payout fetchPayout(Payment payment, Payout payout, URL url)
       throws HttpCommunicationException {
     String response = restCommunication.httpGet(url.toString(), unzer.getPrivateKey());
     JsonPayout jsonPayout = jsonParser.fromJson(response, JsonPayout.class);
-    payout = (Payout) jsonToBusinessClassMapper.mapToBusinessObject(payout, jsonPayout);
+    payout = (Payout) apiToSdkMapper.mapToBusinessObject(jsonPayout, payout);
     payout.setPayment(payment);
     payout.setResourceUrl(url);
     return payout;
   }
 
-  private boolean containsChargeId(URL resourceUrl, String chargeId) {
-    return resourceUrl.toString().contains(chargeId);
+  private Chargeback fetchChargeback(Payment payment, URL url) {
+    String response = restCommunication.httpGet(url.toString(), unzer.getPrivateKey());
+    ApiChargeback apiChargeback = jsonParser.fromJson(response, ApiChargeback.class);
+    Chargeback chargeback = (Chargeback) apiToSdkMapper
+        .mapToBusinessObject(
+            apiChargeback, new Chargeback()
+        );
+    chargeback.setPayment(payment);
+    chargeback.setResourceUrl(url);
+    return chargeback;
   }
 
   /**
@@ -637,10 +639,10 @@ public class PaymentService {
   private Authorization updateAuthorization(Authorization authorization, String url)
       throws HttpCommunicationException {
     String response = restCommunication.httpPatch(url, unzer.getPrivateKey(),
-        jsonToBusinessClassMapper.map(authorization));
+        apiToSdkMapper.map(authorization));
     JsonAuthorization jsonCharge = jsonParser.fromJson(response, JsonAuthorization.class);
     authorization =
-        (Authorization) jsonToBusinessClassMapper.mapToBusinessObject(authorization, jsonCharge);
+        (Authorization) apiToSdkMapper.mapToBusinessObject(jsonCharge, authorization);
     authorization.setPayment(fetchPayment(jsonCharge.getResources().getPaymentId()));
     authorization.setPaymentId(jsonCharge.getResources().getPaymentId());
     authorization.setUnzer(unzer);
@@ -653,9 +655,9 @@ public class PaymentService {
 
   private Charge charge(Charge charge, String url) throws HttpCommunicationException {
     String response = restCommunication.httpPost(url, unzer.getPrivateKey(),
-        jsonToBusinessClassMapper.map(charge));
+        apiToSdkMapper.map(charge));
     JsonCharge jsonCharge = jsonParser.fromJson(response, JsonCharge.class);
-    charge = (Charge) jsonToBusinessClassMapper.mapToBusinessObject(charge, jsonCharge);
+    charge = (Charge) apiToSdkMapper.mapToBusinessObject(jsonCharge, charge);
     charge.setInvoiceId(jsonCharge.getInvoiceId());
     charge.setPayment(fetchPayment(jsonCharge.getResources().getPaymentId()));
     charge.setPaymentId(jsonCharge.getResources().getPaymentId());
@@ -675,9 +677,9 @@ public class PaymentService {
 
   private Charge updateCharge(Charge charge, String url) throws HttpCommunicationException {
     String response = restCommunication.httpPatch(url, unzer.getPrivateKey(),
-        jsonToBusinessClassMapper.map(charge));
+        apiToSdkMapper.map(charge));
     JsonCharge jsonCharge = jsonParser.fromJson(response, JsonCharge.class);
-    charge = (Charge) jsonToBusinessClassMapper.mapToBusinessObject(charge, jsonCharge);
+    charge = (Charge) apiToSdkMapper.mapToBusinessObject(jsonCharge, charge);
     charge.setInvoiceId(jsonCharge.getInvoiceId());
     charge.setPayment(fetchPayment(jsonCharge.getResources().getPaymentId()));
     charge.setPaymentId(jsonCharge.getResources().getPaymentId());
@@ -686,14 +688,11 @@ public class PaymentService {
   }
 
   public Payout payout(Payout payout) throws HttpCommunicationException {
-    return payout(payout, urlUtil.getRestUrl(payout));
-  }
-
-  private Payout payout(Payout payout, String url) throws HttpCommunicationException {
-    JsonObject json = jsonToBusinessClassMapper.map(payout);
-    String response = restCommunication.httpPost(url, unzer.getPrivateKey(), json);
+    JsonObject json = apiToSdkMapper.map(payout);
+    String response =
+        restCommunication.httpPost(urlUtil.getRestUrl(payout), unzer.getPrivateKey(), json);
     JsonPayout jsonPayout = jsonParser.fromJson(response, JsonPayout.class);
-    payout = (Payout) jsonToBusinessClassMapper.mapToBusinessObject(payout, jsonPayout);
+    payout = (Payout) apiToSdkMapper.mapToBusinessObject(jsonPayout, payout);
     payout.setPayment(fetchPayment(jsonPayout.getResources().getPaymentId()));
     payout.setPaymentId(jsonPayout.getResources().getPaymentId());
     payout.setUnzer(unzer);
@@ -716,9 +715,9 @@ public class PaymentService {
 
   private Cancel cancel(Cancel cancel, String url) throws HttpCommunicationException {
     String response = restCommunication.httpPost(url, unzer.getPrivateKey(),
-        jsonToBusinessClassMapper.map(cancel));
+        apiToSdkMapper.map(cancel));
     JsonCancel jsonCancel = jsonParser.fromJson(response, JsonCancel.class);
-    cancel = (Cancel) jsonToBusinessClassMapper.mapToBusinessObject(cancel, jsonCancel);
+    cancel = (Cancel) apiToSdkMapper.mapToBusinessObject(jsonCancel, cancel);
     cancel.setPayment(fetchPayment(jsonCancel.getResources().getPaymentId()));
     cancel.setUnzer(unzer);
     return cancel;
@@ -757,7 +756,7 @@ public class PaymentService {
   private Shipment shipment(Shipment shipment, String url) throws HttpCommunicationException {
     String response = restCommunication.httpPost(url, unzer.getPrivateKey(), shipment);
     JsonShipment jsonShipment = jsonParser.fromJson(response, JsonShipment.class);
-    shipment = jsonToBusinessClassMapper.mapToBusinessObject(shipment, jsonShipment);
+    shipment = apiToSdkMapper.mapToBusinessObject(jsonShipment, shipment);
     shipment.setPayment(fetchPayment(jsonShipment.getResources().getPaymentId()));
     shipment.setUnzer(unzer);
     return shipment;
@@ -771,9 +770,9 @@ public class PaymentService {
   public Recurring recurring(Recurring recurring) throws HttpCommunicationException {
     String url = urlUtil.getRecurringUrl(recurring);
     String response = restCommunication.httpPost(url, unzer.getPrivateKey(),
-        jsonToBusinessClassMapper.map(recurring));
+        apiToSdkMapper.map(recurring));
     JsonRecurring json = jsonParser.fromJson(response, JsonRecurring.class);
-    recurring = jsonToBusinessClassMapper.mapToBusinessObject(recurring, json);
+    recurring = apiToSdkMapper.mapToBusinessObject(recurring, json);
     recurring.setUnzer(unzer);
     return recurring;
 
@@ -816,5 +815,13 @@ public class PaymentService {
     String url = this.urlUtil.getApiEndpoint() + configRequest.getRequestUrl();
     String response = this.restCommunication.httpGet(url, unzer.getPrivateKey());
     return this.jsonParser.fromJson(response, PaylaterInvoiceConfig.class);
+  }
+
+  protected enum TransactionType {
+    AUTHORIZE, CHARGE, CHARGEBACK, PAYOUT, CANCEL_AUTHORIZE, CANCEL_CHARGE;
+
+    public String apiName() {
+      return this.name().toLowerCase().replaceAll("_", "-");
+    }
   }
 }

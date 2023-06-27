@@ -7,7 +7,7 @@
     </Appenders>
     <Loggers>
         <Root level="info"></Root>
-        <Logger name="com.unzer.payment" level="DEBUG">
+        <Logger name="com.unzer.payment" level="INFO">
             <AppenderRef ref="Console"/>
         </Logger>
     </Loggers>
