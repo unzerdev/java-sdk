@@ -18,6 +18,7 @@ package com.unzer.payment.integration.paymenttypes;
 
 import com.unzer.payment.Charge;
 import com.unzer.payment.business.AbstractPaymentTest;
+import com.unzer.payment.business.Keys;
 import com.unzer.payment.communication.HttpCommunicationException;
 import com.unzer.payment.paymenttypes.Ideal;
 import org.junit.jupiter.api.Test;
@@ -39,7 +40,7 @@ public class IdealTest extends AbstractPaymentTest {
 
     @Test
     public void testChargeIdealType() throws HttpCommunicationException, MalformedURLException {
-        Ideal ideal = getUnzer().createPaymentType(getIdeal());
+        Ideal ideal = getUnzer(Keys.LEGACY_PRIVATE_KEY).createPaymentType(getIdeal());
         Charge charge = ideal.charge(BigDecimal.ONE, Currency.getInstance("EUR"), new URL("https://www.unzer.com"));
         assertNotNull(charge);
         assertNotNull(charge.getId());
