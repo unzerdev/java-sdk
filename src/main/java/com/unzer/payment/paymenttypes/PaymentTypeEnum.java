@@ -40,6 +40,7 @@ public enum PaymentTypeEnum {
   WECHATPAY("wcp"),
   APPLEPAY("apl"),
   HIRE_PURCHASE_RATE_PLAN("hdd"),
+  @Deprecated
   INSTALLMENT_SECURED_RATE_PLAN("ins"),
   BANCONTACT("bct"),
   PF_CARD("pfc"),

@@ -27,6 +27,12 @@ This Java SDK version supports Unzer Paylater Installment.
   * `JsonPayment` -> `ApiPayment`
   * `JsonTransaction` -> `ApiTransaction`
 
+### Deprecated
+*   Installment Secured: 
+    * method `com.unzer.payment.Unzer.installmentSecuredRates()`
+    * class `com.unzer.payment.business.paymenttypes.InstallmentSecuredRatePlan`
+    * class `com.unzer.payment.business.paymenttypes.InstallmentSecuredRate`
+
 ## [4.1.0](https://github.com/unzerdev/java-sdk/compare/4.0.0..4.1.0)
 
 This release adds functionality to fetch payment page

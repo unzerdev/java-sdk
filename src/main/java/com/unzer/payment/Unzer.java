@@ -31,6 +31,7 @@ import com.unzer.payment.models.CustomerType;
 import com.unzer.payment.models.PaylaterInvoiceConfig;
 import com.unzer.payment.models.PaylaterInvoiceConfigRequest;
 import com.unzer.payment.models.paylater.InstallmentPlansRequest;
+import com.unzer.payment.paymenttypes.PaylaterInstallment;
 import com.unzer.payment.paymenttypes.PaymentType;
 import com.unzer.payment.service.LinkpayService;
 import com.unzer.payment.service.PaymentService;
@@ -1401,6 +1402,10 @@ public class Unzer {
     return paymentService.fetchPaylaterInstallmentPlans(installmentPlansRequest);
   }
 
+  /**
+   * @deprecated Use {@link Unzer#fetchPaylaterInstallmentPlans(InstallmentPlansRequest)} together
+   * with payment type {@link PaylaterInstallment} instead.
+   */
   public List<InstallmentSecuredRatePlan> installmentSecuredRates(BigDecimal amount,
                                                                   Currency currency,
                                                                   BigDecimal effectiveInterestRate,
