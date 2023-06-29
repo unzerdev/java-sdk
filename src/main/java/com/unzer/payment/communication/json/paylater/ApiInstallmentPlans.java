@@ -23,10 +23,10 @@ import java.math.BigDecimal;
 import java.util.Currency;
 import java.util.List;
 
-public class JsonInstallmentPlans extends JsonIdObject implements JsonObject, TransactionStatus {
+public class ApiInstallmentPlans extends JsonIdObject implements JsonObject, TransactionStatus {
   private BigDecimal amount;
   private Currency currency;
-  private List<JsonInstallmentPlan> plans;
+  private List<ApiInstallmentPlan> plans;
   private boolean isError;
   private boolean isSuccess;
   private boolean isPending;
@@ -37,7 +37,7 @@ public class JsonInstallmentPlans extends JsonIdObject implements JsonObject, Tr
     return amount;
   }
 
-  public JsonInstallmentPlans setAmount(BigDecimal amount) {
+  public ApiInstallmentPlans setAmount(BigDecimal amount) {
     this.amount = amount;
     return this;
   }
@@ -46,16 +46,16 @@ public class JsonInstallmentPlans extends JsonIdObject implements JsonObject, Tr
     return currency;
   }
 
-  public JsonInstallmentPlans setCurrency(Currency currency) {
+  public ApiInstallmentPlans setCurrency(Currency currency) {
     this.currency = currency;
     return this;
   }
 
-  public List<JsonInstallmentPlan> getPlans() {
+  public List<ApiInstallmentPlan> getPlans() {
     return plans;
   }
 
-  public JsonInstallmentPlans setPlans(List<JsonInstallmentPlan> plans) {
+  public ApiInstallmentPlans setPlans(List<ApiInstallmentPlan> plans) {
     this.plans = plans;
     return this;
   }
@@ -64,7 +64,7 @@ public class JsonInstallmentPlans extends JsonIdObject implements JsonObject, Tr
     return status;
   }
 
-  public JsonInstallmentPlans setStatus(
+  public ApiInstallmentPlans setStatus(
       TransactionStatus status) {
     this.status = status;
     return this;

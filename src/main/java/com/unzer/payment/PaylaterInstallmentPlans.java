@@ -16,9 +16,9 @@
 
 package com.unzer.payment;
 
-import com.unzer.payment.communication.json.paylater.JsonInstallmentPlan;
-import com.unzer.payment.communication.json.paylater.JsonInstallmentPlanRate;
-import com.unzer.payment.communication.json.paylater.JsonInstallmentPlans;
+import com.unzer.payment.communication.json.paylater.ApiInstallmentPlan;
+import com.unzer.payment.communication.json.paylater.ApiInstallmentPlanRate;
+import com.unzer.payment.communication.json.paylater.ApiInstallmentPlans;
 import com.unzer.payment.models.paylater.InstallmentPlan;
 import com.unzer.payment.models.paylater.InstallmentPlanRate;
 import java.math.BigDecimal;
@@ -85,7 +85,7 @@ public class PaylaterInstallmentPlans {
   }
 
   public PaylaterInstallmentPlans map(PaylaterInstallmentPlans installmentPlans,
-                                      JsonInstallmentPlans jsonInstallmentPlans) {
+                                      ApiInstallmentPlans jsonInstallmentPlans) {
     if (installmentPlans != null && jsonInstallmentPlans != null) {
       installmentPlans.setId((jsonInstallmentPlans).getId())
           .setAmount(jsonInstallmentPlans.getAmount())
@@ -97,7 +97,7 @@ public class PaylaterInstallmentPlans {
   }
 
   private void map(List<InstallmentPlan> installmentPlan,
-                   List<JsonInstallmentPlan> jsonInstallmentPlan) {
+                   List<ApiInstallmentPlan> jsonInstallmentPlan) {
     jsonInstallmentPlan.forEach((plan) -> {
       List<InstallmentPlanRate> planRates = new ArrayList<InstallmentPlanRate>();
       mapRates(planRates, plan.getInstallmentRates());
@@ -110,7 +110,7 @@ public class PaylaterInstallmentPlans {
   }
 
   private void mapRates(List<InstallmentPlanRate> installmentPlanRates,
-                        List<JsonInstallmentPlanRate> json) {
+                        List<ApiInstallmentPlanRate> json) {
     json.forEach((rate) -> {
       installmentPlanRates.add(
           new InstallmentPlanRate().setRate(rate.getRate()).setDate(rate.getDate()));

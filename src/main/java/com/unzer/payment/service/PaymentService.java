@@ -57,7 +57,7 @@ import com.unzer.payment.communication.json.JsonPis;
 import com.unzer.payment.communication.json.JsonRecurring;
 import com.unzer.payment.communication.json.JsonSepaDirectDebit;
 import com.unzer.payment.communication.json.JsonShipment;
-import com.unzer.payment.communication.json.paylater.JsonInstallmentPlans;
+import com.unzer.payment.communication.json.paylater.ApiInstallmentPlans;
 import com.unzer.payment.communication.mapper.JsonToBusinessClassMapper;
 import com.unzer.payment.models.PaylaterInvoiceConfig;
 import com.unzer.payment.models.PaylaterInvoiceConfigRequest;
@@ -131,8 +131,8 @@ public class PaymentService {
         url,
         unzer.getPrivateKey());
 
-    JsonInstallmentPlans json = jsonParser.fromJson(response,
-        JsonInstallmentPlans.class);
+    ApiInstallmentPlans json = jsonParser.fromJson(response,
+        ApiInstallmentPlans.class);
     return apiToSdkMapper.mapToBusinessObject(new PaylaterInstallmentPlans(), json);
   }
 

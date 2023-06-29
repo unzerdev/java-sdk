@@ -21,7 +21,7 @@ import com.unzer.payment.communication.json.JsonObject;
 import java.math.BigDecimal;
 import java.util.Date;
 
-public class JsonInstallmentPlanRate extends JsonIdObject implements JsonObject {
+public class ApiInstallmentPlanRate extends JsonIdObject implements JsonObject {
 
   private Date date;
   private BigDecimal rate;
@@ -30,7 +30,7 @@ public class JsonInstallmentPlanRate extends JsonIdObject implements JsonObject 
     return date;
   }
 
-  public JsonInstallmentPlanRate setDate(Date date) {
+  public ApiInstallmentPlanRate setDate(Date date) {
     this.date = date;
     return this;
   }
@@ -39,7 +39,7 @@ public class JsonInstallmentPlanRate extends JsonIdObject implements JsonObject 
     return rate;
   }
 
-  public JsonInstallmentPlanRate setRate(BigDecimal rate) {
+  public ApiInstallmentPlanRate setRate(BigDecimal rate) {
     this.rate = rate;
     return this;
   }

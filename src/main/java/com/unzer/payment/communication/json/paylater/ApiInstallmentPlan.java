@@ -22,13 +22,13 @@ import java.math.BigDecimal;
 import java.net.URL;
 import java.util.List;
 
-public class JsonInstallmentPlan extends JsonIdObject implements JsonObject {
+public class ApiInstallmentPlan extends JsonIdObject implements JsonObject {
 
   private BigDecimal totalAmount;
   private int numberOfRates;
   private BigDecimal nominalInterestRate;
   private BigDecimal effectiveInterestRate;
-  private List<JsonInstallmentPlanRate> installmentRates;
+  private List<ApiInstallmentPlanRate> installmentRates;
   private URL secciUrl;
   private BigDecimal minimumInstallmentFee;
 
@@ -36,7 +36,7 @@ public class JsonInstallmentPlan extends JsonIdObject implements JsonObject {
     return totalAmount;
   }
 
-  public JsonInstallmentPlan setTotalAmount(BigDecimal totalAmount) {
+  public ApiInstallmentPlan setTotalAmount(BigDecimal totalAmount) {
     this.totalAmount = totalAmount;
     return this;
   }
@@ -45,7 +45,7 @@ public class JsonInstallmentPlan extends JsonIdObject implements JsonObject {
     return numberOfRates;
   }
 
-  public JsonInstallmentPlan setNumberOfRates(int numberOfRates) {
+  public ApiInstallmentPlan setNumberOfRates(int numberOfRates) {
     this.numberOfRates = numberOfRates;
     return this;
   }
@@ -54,7 +54,7 @@ public class JsonInstallmentPlan extends JsonIdObject implements JsonObject {
     return nominalInterestRate;
   }
 
-  public JsonInstallmentPlan setNominalInterestRate(BigDecimal nominalInterestRate) {
+  public ApiInstallmentPlan setNominalInterestRate(BigDecimal nominalInterestRate) {
     this.nominalInterestRate = nominalInterestRate;
     return this;
   }
@@ -63,16 +63,16 @@ public class JsonInstallmentPlan extends JsonIdObject implements JsonObject {
     return effectiveInterestRate;
   }
 
-  public JsonInstallmentPlan setEffectiveInterestRate(BigDecimal effectiveInterestRate) {
+  public ApiInstallmentPlan setEffectiveInterestRate(BigDecimal effectiveInterestRate) {
     this.effectiveInterestRate = effectiveInterestRate;
     return this;
   }
 
-  public List<JsonInstallmentPlanRate> getInstallmentRates() {
+  public List<ApiInstallmentPlanRate> getInstallmentRates() {
     return installmentRates;
   }
 
-  public JsonInstallmentPlan setInstallmentRates(List<JsonInstallmentPlanRate> installmentRates) {
+  public ApiInstallmentPlan setInstallmentRates(List<ApiInstallmentPlanRate> installmentRates) {
     this.installmentRates = installmentRates;
     return this;
   }
@@ -81,7 +81,7 @@ public class JsonInstallmentPlan extends JsonIdObject implements JsonObject {
     return secciUrl;
   }
 
-  public JsonInstallmentPlan setSecciUrl(URL secciUrl) {
+  public ApiInstallmentPlan setSecciUrl(URL secciUrl) {
     this.secciUrl = secciUrl;
     return this;
   }
@@ -90,7 +90,7 @@ public class JsonInstallmentPlan extends JsonIdObject implements JsonObject {
     return minimumInstallmentFee;
   }
 
-  public JsonInstallmentPlan setMinimumInstallmentFee(BigDecimal minimumInstallmentFee) {
+  public ApiInstallmentPlan setMinimumInstallmentFee(BigDecimal minimumInstallmentFee) {
     this.minimumInstallmentFee = minimumInstallmentFee;
     return this;
   }

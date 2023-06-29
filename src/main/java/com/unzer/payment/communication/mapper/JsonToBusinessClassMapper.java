@@ -47,7 +47,7 @@ import com.unzer.payment.communication.json.JsonResources;
 import com.unzer.payment.communication.json.JsonShipment;
 import com.unzer.payment.communication.json.JsonState;
 import com.unzer.payment.communication.json.TransactionStatus;
-import com.unzer.payment.communication.json.paylater.JsonInstallmentPlans;
+import com.unzer.payment.communication.json.paylater.ApiInstallmentPlans;
 import com.unzer.payment.marketplace.MarketplaceCancel;
 import com.unzer.payment.paymenttypes.PaymentType;
 import java.util.Locale;
@@ -535,7 +535,7 @@ public class JsonToBusinessClassMapper {
   }
 
   public PaylaterInstallmentPlans mapToBusinessObject(PaylaterInstallmentPlans installmentPlans,
-                                                      JsonInstallmentPlans jsonInstallmentPlans) {
+                                                      ApiInstallmentPlans jsonInstallmentPlans) {
     installmentPlans.setStatus(extractStatus(jsonInstallmentPlans));
     return installmentPlans.map(installmentPlans, jsonInstallmentPlans);
   }
