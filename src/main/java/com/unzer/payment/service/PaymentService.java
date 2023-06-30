@@ -36,6 +36,7 @@ import com.unzer.payment.communication.HttpCommunicationException;
 import com.unzer.payment.communication.JsonParser;
 import com.unzer.payment.communication.UnzerRestCommunication;
 import com.unzer.payment.communication.json.ApiChargeback;
+import com.unzer.payment.communication.json.ApiPaylaterInstallment;
 import com.unzer.payment.communication.json.ApiPayment;
 import com.unzer.payment.communication.json.ApiTransaction;
 import com.unzer.payment.communication.json.JsonApplepayResponse;
@@ -50,7 +51,6 @@ import com.unzer.payment.communication.json.JsonIdeal;
 import com.unzer.payment.communication.json.JsonInstallmentSecuredRatePlan;
 import com.unzer.payment.communication.json.JsonInstallmentSecuredRatePlanList;
 import com.unzer.payment.communication.json.JsonObject;
-import com.unzer.payment.communication.json.JsonPaylaterInstallment;
 import com.unzer.payment.communication.json.JsonPayout;
 import com.unzer.payment.communication.json.JsonPaypal;
 import com.unzer.payment.communication.json.JsonPis;
@@ -273,7 +273,7 @@ public class PaymentService {
       case BANCONTACT:
         return new JsonBancontact();
       case PAYLATER_INSTALLMENT:
-        return new JsonPaylaterInstallment();
+        return new ApiPaylaterInstallment();
       default:
         throw new PaymentException("Type '" + typeId + "' is currently not supported by the SDK");
     }

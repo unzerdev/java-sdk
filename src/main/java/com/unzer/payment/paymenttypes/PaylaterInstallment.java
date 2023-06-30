@@ -17,9 +17,9 @@
 package com.unzer.payment.paymenttypes;
 
 import com.unzer.payment.GeoLocation;
+import com.unzer.payment.communication.json.ApiPaylaterInstallment;
 import com.unzer.payment.communication.json.JsonIdObject;
 import com.unzer.payment.communication.json.JsonObject;
-import com.unzer.payment.communication.json.JsonPaylaterInstallment;
 
 public class PaylaterInstallment extends AbstractPaymentType implements PaymentType {
 
@@ -77,13 +77,13 @@ public class PaylaterInstallment extends AbstractPaymentType implements PaymentT
   @Override
   public PaymentType map(PaymentType pit, JsonObject jsonPit) {
     ((PaylaterInstallment) pit).setId(jsonPit.getId());
-    ((PaylaterInstallment) pit).setInquiryId(((JsonPaylaterInstallment) jsonPit).getInquiryId());
+    ((PaylaterInstallment) pit).setInquiryId(((ApiPaylaterInstallment) jsonPit).getInquiryId());
     ((PaylaterInstallment) pit).setNumberOfRates(
-        ((JsonPaylaterInstallment) jsonPit).getNumberOfRates());
-    ((PaylaterInstallment) pit).setIban(((JsonPaylaterInstallment) jsonPit).getIban());
-    ((PaylaterInstallment) pit).setCountry(((JsonPaylaterInstallment) jsonPit).getCountry());
-    ((PaylaterInstallment) pit).setHolder(((JsonPaylaterInstallment) jsonPit).getHolder());
-    ((PaylaterInstallment) pit).setRecurring(((JsonPaylaterInstallment) jsonPit).getRecurring());
+        ((ApiPaylaterInstallment) jsonPit).getNumberOfRates());
+    ((PaylaterInstallment) pit).setIban(((ApiPaylaterInstallment) jsonPit).getIban());
+    ((PaylaterInstallment) pit).setCountry(((ApiPaylaterInstallment) jsonPit).getCountry());
+    ((PaylaterInstallment) pit).setHolder(((ApiPaylaterInstallment) jsonPit).getHolder());
+    ((PaylaterInstallment) pit).setRecurring(((ApiPaylaterInstallment) jsonPit).getRecurring());
     GeoLocation geoLocation =
         new GeoLocation(((JsonIdObject) jsonPit).getGeoLocation().getClientIp(),
             ((JsonIdObject) jsonPit).getGeoLocation().getCountryIsoA2());

@@ -16,7 +16,7 @@
 
 package com.unzer.payment.communication.json;
 
-public class JsonPaylaterInstallment extends JsonIdObject implements JsonObject {
+public class ApiPaylaterInstallment extends JsonIdObject implements JsonObject {
   private String inquiryId;
   private Integer numberOfRates;
   private String iban;
@@ -27,7 +27,7 @@ public class JsonPaylaterInstallment extends JsonIdObject implements JsonObject 
     return inquiryId;
   }
 
-  public JsonPaylaterInstallment setInquiryId(String inquiryId) {
+  public ApiPaylaterInstallment setInquiryId(String inquiryId) {
     this.inquiryId = inquiryId;
     return this;
   }
@@ -36,7 +36,7 @@ public class JsonPaylaterInstallment extends JsonIdObject implements JsonObject 
     return numberOfRates;
   }
 
-  public JsonPaylaterInstallment setNumberOfRates(Integer numberOfRates) {
+  public ApiPaylaterInstallment setNumberOfRates(Integer numberOfRates) {
     this.numberOfRates = numberOfRates;
     return this;
   }
@@ -45,7 +45,7 @@ public class JsonPaylaterInstallment extends JsonIdObject implements JsonObject 
     return iban;
   }
 
-  public JsonPaylaterInstallment setIban(String iban) {
+  public ApiPaylaterInstallment setIban(String iban) {
     this.iban = iban;
     return this;
   }
@@ -54,7 +54,7 @@ public class JsonPaylaterInstallment extends JsonIdObject implements JsonObject 
     return country;
   }
 
-  public JsonPaylaterInstallment setCountry(String country) {
+  public ApiPaylaterInstallment setCountry(String country) {
     this.country = country;
     return this;
   }
@@ -63,7 +63,7 @@ public class JsonPaylaterInstallment extends JsonIdObject implements JsonObject 
     return holder;
   }
 
-  public JsonPaylaterInstallment setHolder(String holder) {
+  public ApiPaylaterInstallment setHolder(String holder) {
     this.holder = holder;
     return this;
   }
