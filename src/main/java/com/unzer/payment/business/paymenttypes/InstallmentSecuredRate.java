@@ -18,6 +18,9 @@ package com.unzer.payment.business.paymenttypes;
 
 import java.math.BigDecimal;
 
+/**
+ * @deprecated together with {@link InstallmentSecuredRatePlan}
+ */
 public class InstallmentSecuredRate {
   private BigDecimal amountOfRepayment;
   private BigDecimal rate;

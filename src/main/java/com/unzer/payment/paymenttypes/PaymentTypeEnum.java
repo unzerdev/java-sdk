@@ -40,12 +40,14 @@ public enum PaymentTypeEnum {
   WECHATPAY("wcp"),
   APPLEPAY("apl"),
   HIRE_PURCHASE_RATE_PLAN("hdd"),
+  @Deprecated
   INSTALLMENT_SECURED_RATE_PLAN("ins"),
   BANCONTACT("bct"),
   PF_CARD("pfc"),
   PF_EFINANCE("pfe"),
   UNZER_PAYLATER_INVOICE("piv"),
   KLARNA("kla"),
+  PAYLATER_INSTALLMENT("pit"),
   UNKNOWN("unknown");
 
   private final String shortName;

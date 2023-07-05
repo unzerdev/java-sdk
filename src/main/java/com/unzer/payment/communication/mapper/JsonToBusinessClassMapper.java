@@ -24,6 +24,7 @@ import com.unzer.payment.CommercialSector;
 import com.unzer.payment.Customer;
 import com.unzer.payment.CustomerCompanyData;
 import com.unzer.payment.Linkpay;
+import com.unzer.payment.PaylaterInstallmentPlans;
 import com.unzer.payment.Payout;
 import com.unzer.payment.Paypage;
 import com.unzer.payment.Processing;
@@ -46,6 +47,7 @@ import com.unzer.payment.communication.json.JsonResources;
 import com.unzer.payment.communication.json.JsonShipment;
 import com.unzer.payment.communication.json.JsonState;
 import com.unzer.payment.communication.json.TransactionStatus;
+import com.unzer.payment.communication.json.paylater.ApiInstallmentPlans;
 import com.unzer.payment.marketplace.MarketplaceCancel;
 import com.unzer.payment.paymenttypes.PaymentType;
 import java.util.Locale;
@@ -530,5 +532,11 @@ public class JsonToBusinessClassMapper {
 
   public PaymentType mapToBusinessObject(PaymentType out, JsonIdObject src) {
     return out.map(out, src);
+  }
+
+  public PaylaterInstallmentPlans mapToBusinessObject(PaylaterInstallmentPlans installmentPlans,
+                                                      ApiInstallmentPlans jsonInstallmentPlans) {
+    installmentPlans.setStatus(extractStatus(jsonInstallmentPlans));
+    return installmentPlans.map(installmentPlans, jsonInstallmentPlans);
   }
 }

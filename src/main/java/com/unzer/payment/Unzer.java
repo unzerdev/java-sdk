@@ -30,6 +30,8 @@ import com.unzer.payment.models.CardTransactionData;
 import com.unzer.payment.models.CustomerType;
 import com.unzer.payment.models.PaylaterInvoiceConfig;
 import com.unzer.payment.models.PaylaterInvoiceConfigRequest;
+import com.unzer.payment.models.paylater.InstallmentPlansRequest;
+import com.unzer.payment.paymenttypes.PaylaterInstallment;
 import com.unzer.payment.paymenttypes.PaymentType;
 import com.unzer.payment.service.LinkpayService;
 import com.unzer.payment.service.PaymentService;
@@ -1390,6 +1392,20 @@ public class Unzer {
     return recurring;
   }
 
+  /**
+   * @param installmentPlansRequest Contains information for requested plan.
+   * @return Response contains a list of available installment plans the customer can choose from.
+   * @throws HttpCommunicationException generic Payment API communication error
+   */
+  public PaylaterInstallmentPlans fetchPaylaterInstallmentPlans(
+      InstallmentPlansRequest installmentPlansRequest) throws HttpCommunicationException {
+    return paymentService.fetchPaylaterInstallmentPlans(installmentPlansRequest);
+  }
+
+  /**
+   * @deprecated Use {@link Unzer#fetchPaylaterInstallmentPlans(InstallmentPlansRequest)} together
+   * with payment type {@link PaylaterInstallment} instead.
+   */
   public List<InstallmentSecuredRatePlan> installmentSecuredRates(BigDecimal amount,
                                                                   Currency currency,
                                                                   BigDecimal effectiveInterestRate,

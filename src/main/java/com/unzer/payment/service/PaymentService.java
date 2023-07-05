@@ -24,6 +24,7 @@ import com.unzer.payment.Charge;
 import com.unzer.payment.Chargeback;
 import com.unzer.payment.Customer;
 import com.unzer.payment.Metadata;
+import com.unzer.payment.PaylaterInstallmentPlans;
 import com.unzer.payment.Payment;
 import com.unzer.payment.PaymentException;
 import com.unzer.payment.Payout;
@@ -35,6 +36,7 @@ import com.unzer.payment.communication.HttpCommunicationException;
 import com.unzer.payment.communication.JsonParser;
 import com.unzer.payment.communication.UnzerRestCommunication;
 import com.unzer.payment.communication.json.ApiChargeback;
+import com.unzer.payment.communication.json.ApiPaylaterInstallment;
 import com.unzer.payment.communication.json.ApiPayment;
 import com.unzer.payment.communication.json.ApiTransaction;
 import com.unzer.payment.communication.json.JsonApplepayResponse;
@@ -55,9 +57,11 @@ import com.unzer.payment.communication.json.JsonPis;
 import com.unzer.payment.communication.json.JsonRecurring;
 import com.unzer.payment.communication.json.JsonSepaDirectDebit;
 import com.unzer.payment.communication.json.JsonShipment;
+import com.unzer.payment.communication.json.paylater.ApiInstallmentPlans;
 import com.unzer.payment.communication.mapper.JsonToBusinessClassMapper;
 import com.unzer.payment.models.PaylaterInvoiceConfig;
 import com.unzer.payment.models.PaylaterInvoiceConfigRequest;
+import com.unzer.payment.models.paylater.InstallmentPlansRequest;
 import com.unzer.payment.paymenttypes.AbstractPaymentType;
 import com.unzer.payment.paymenttypes.Alipay;
 import com.unzer.payment.paymenttypes.Applepay;
@@ -69,6 +73,7 @@ import com.unzer.payment.paymenttypes.Ideal;
 import com.unzer.payment.paymenttypes.Invoice;
 import com.unzer.payment.paymenttypes.InvoiceSecured;
 import com.unzer.payment.paymenttypes.Klarna;
+import com.unzer.payment.paymenttypes.PaylaterInstallment;
 import com.unzer.payment.paymenttypes.PaylaterInvoice;
 import com.unzer.payment.paymenttypes.PaymentType;
 import com.unzer.payment.paymenttypes.PaymentTypeEnum;
@@ -116,6 +121,19 @@ public class PaymentService {
     this.urlUtil = new UrlUtil(unzer.getPrivateKey());
     this.restCommunication = restCommunication;
     this.jsonParser = new JsonParser();
+  }
+
+  public PaylaterInstallmentPlans fetchPaylaterInstallmentPlans(
+      InstallmentPlansRequest installmentPlansRequest) throws HttpCommunicationException {
+    String url = this.urlUtil.getApiEndpoint() + installmentPlansRequest.getRequestUrl();
+
+    String response = restCommunication.httpGet(
+        url,
+        unzer.getPrivateKey());
+
+    ApiInstallmentPlans json = jsonParser.fromJson(response,
+        ApiInstallmentPlans.class);
+    return apiToSdkMapper.mapToBusinessObject(new PaylaterInstallmentPlans(), json);
   }
 
   public List<InstallmentSecuredRatePlan> installmentSecuredPlan(BigDecimal amount,
@@ -208,6 +226,8 @@ public class PaymentService {
         return new PaylaterInvoice();
       case KLARNA:
         return new Klarna();
+      case PAYLATER_INSTALLMENT:
+        return new PaylaterInstallment();
       default:
         throw new PaymentException("Type '" + typeId + "' is currently not supported by the SDK");
     }
@@ -252,6 +272,8 @@ public class PaymentService {
         return new JsonInstallmentSecuredRatePlan();
       case BANCONTACT:
         return new JsonBancontact();
+      case PAYLATER_INSTALLMENT:
+        return new ApiPaylaterInstallment();
       default:
         throw new PaymentException("Type '" + typeId + "' is currently not supported by the SDK");
     }

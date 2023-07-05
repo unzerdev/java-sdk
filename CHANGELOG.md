@@ -6,10 +6,15 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres
 to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
-## [UNRELEASED]
+## [UNRELEASED](https://github.com/unzerdev/java-sdk/compare/4.1.0..4.2.0)
+
+This Java SDK version supports Unzer Paylater Installment.
 
 ### Added
 
+* Add Paylater Installment support:
+    * Add `com.unzer.payment.service.PaymentService.fetchPaylaterInstallmentPlans()` to get available installment plans.
+    * Add payment type `com.unzer.payment.paymenttypes.PaylaterInstallment`.
 * `com.unzer.payment.fetchPayment` now fetches chargeback transactions of the payment. See `com.unzer.payment.Payment.chargebackList`
 * Added field `paypageId` to payment and its transactions (authorize, charge, cancel, chargeback). See: `com.unzer.payment.AbstractPayment.paypageId`, `com.unzer.payment.AbstractTransaction.paypageId` 
 
@@ -21,6 +26,12 @@ to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 * Renamed internal classes at `com.unzer.payment.communication.json`:
   * `JsonPayment` -> `ApiPayment`
   * `JsonTransaction` -> `ApiTransaction`
+
+### Deprecated
+*   Installment Secured: 
+    * method `com.unzer.payment.Unzer.installmentSecuredRates()`
+    * class `com.unzer.payment.business.paymenttypes.InstallmentSecuredRatePlan`
+    * class `com.unzer.payment.business.paymenttypes.InstallmentSecuredRate`
 
 ## [4.1.0](https://github.com/unzerdev/java-sdk/compare/4.0.0..4.1.0)
 

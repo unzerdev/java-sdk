@@ -1,0 +1,9 @@
+{
+  "id": "s-pit-vs6pjunvuick",
+  "method": "paylater-installment",
+  "recurring": false,
+  "geoLocation": {
+    "clientIp": "123.123.123.123",
+    "countryIsoA2": "US"
+  }
+}

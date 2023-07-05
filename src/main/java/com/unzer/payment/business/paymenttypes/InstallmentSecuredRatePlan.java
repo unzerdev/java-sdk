@@ -24,6 +24,7 @@ import com.unzer.payment.communication.JsonDateConverter;
 import com.unzer.payment.communication.json.JsonInstallmentSecuredRatePlan;
 import com.unzer.payment.communication.json.JsonObject;
 import com.unzer.payment.paymenttypes.AbstractPaymentType;
+import com.unzer.payment.paymenttypes.PaylaterInstallment;
 import com.unzer.payment.paymenttypes.PaymentType;
 import java.math.BigDecimal;
 import java.net.URL;
@@ -32,6 +33,9 @@ import java.util.Currency;
 import java.util.Date;
 import java.util.List;
 
+/**
+ * @deprecated Will be replaced by {@link PaylaterInstallment} in the future.
+ */
 public class InstallmentSecuredRatePlan extends AbstractPaymentType
     implements PaymentType, JsonObject {
 
