@@ -1,4 +1,4 @@
-![Logo](docs/images/unzer_logo.svg)
+<img src="docs/images/unzer_logo.svg" height="120px" alt="Unzer logo"/>
 
 # Unzer Java Payment SDK
 
@@ -14,7 +14,7 @@ Java 1.8 or later.
 <dependency>
   <groupId>com.unzer.payment</groupId>
   <artifactId>java-sdk</artifactId>
-  <version>4.1.0</version>
+  <version>4.2.0</version>
 </dependency>
 ```
 

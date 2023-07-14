@@ -712,8 +712,10 @@ public class PaymentService {
   }
 
   private Cancel cancel(Cancel cancel, String url) throws HttpCommunicationException {
-    String response = restCommunication.httpPost(url, unzer.getPrivateKey(),
-        apiToSdkMapper.map(cancel));
+    String response = restCommunication.httpPost(
+        url, unzer.getPrivateKey(),
+        apiToSdkMapper.map(cancel)
+    );
     JsonCancel jsonCancel = jsonParser.fromJson(response, JsonCancel.class);
     cancel = (Cancel) apiToSdkMapper.mapToBusinessObject(jsonCancel, cancel);
     cancel.setPayment(fetchPayment(jsonCancel.getResources().getPaymentId()));
