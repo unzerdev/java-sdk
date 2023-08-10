@@ -30,9 +30,12 @@ jobs:
           UNZER_LEGACY_PRIVATE_KEY: ${{ secrets.UNZER_LEGACY_PRIVATE_KEY }}
           UNZER_ALT_LEGACY_PRIVATE_KEY: ${{ secrets.UNZER_ALT_LEGACY_PRIVATE_KEY }}
         run: |
-          mvn -B test --file pom.xml \
+          mvn -B test --batch-mode --fail-at-end \
           -DdefaultPublicKey="$UNZER_PUBLIC_KEY" \
           -DdefaultPrivateKey="$UNZER_DEFAULT_PRIVATE_KEY" \
           -Dno3dsPrivateKey="$UNZER_NO3DS_PRIVATE_KEY" \
           -DlegacyPrivateKey="$UNZER_LEGACY_PRIVATE_KEY" \
           -DaltLegacyPrivateKey="$UNZER_ALT_LEGACY_PRIVATE_KEY"
+      - name: Publish Test Report
+        if: success() || failure()
+        uses: scacap/action-surefire-report
