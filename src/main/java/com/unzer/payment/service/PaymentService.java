@@ -73,6 +73,7 @@ import com.unzer.payment.paymenttypes.Ideal;
 import com.unzer.payment.paymenttypes.Invoice;
 import com.unzer.payment.paymenttypes.InvoiceSecured;
 import com.unzer.payment.paymenttypes.Klarna;
+import com.unzer.payment.paymenttypes.PayU;
 import com.unzer.payment.paymenttypes.PaylaterInstallment;
 import com.unzer.payment.paymenttypes.PaylaterInvoice;
 import com.unzer.payment.paymenttypes.PaymentType;
@@ -194,6 +195,8 @@ public class PaymentService {
         return new InvoiceSecured();
       case PAYPAL:
         return new Paypal();
+      case PAYU:
+        return new PayU();
       case PREPAYMENT:
         return new Prepayment();
       case PRZELEWY24:
@@ -245,6 +248,7 @@ public class PaymentService {
       case INVOICE_SECURED:
       case PREPAYMENT:
       case PRZELEWY24:
+      case PAYU:
       case SOFORT:
       case ALIPAY:
       case WECHATPAY:

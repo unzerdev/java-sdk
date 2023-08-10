@@ -27,6 +27,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import com.github.tomakehurst.wiremock.junit5.WireMockTest;
 import com.unzer.payment.Authorization;
 import com.unzer.payment.Unzer;
+import com.unzer.payment.communication.HttpClientMock;
 import com.unzer.payment.enums.RecurrenceType;
 import com.unzer.payment.models.AdditionalTransactionData;
 import com.unzer.payment.models.CardTransactionData;
@@ -40,7 +41,7 @@ import org.junit.jupiter.api.Test;
 class CardTest {
   @Test
   void test_card_liability() {
-    Unzer unzer = new Unzer(new HttpClientTestImpl(), "s-private-key");
+    Unzer unzer = new Unzer(new HttpClientMock(), "s-private-key");
     stubFor(post("/v1/payments/authorize").willReturn(
         jsonResponse(getResponse("card-authorize.json"), 200)));
     stubFor(get("/v1/payments/s-pay-286").willReturn(
@@ -73,7 +74,7 @@ class CardTest {
 
   @Test
   void test_card_exemption() {
-    Unzer unzer = new Unzer(new HttpClientTestImpl(), "s-private-key");
+    Unzer unzer = new Unzer(new HttpClientMock(), "s-private-key");
     stubFor(post("/v1/payments/authorize").willReturn(
         jsonResponse(getResponse("card-authorize.json"), 200)));
     stubFor(get("/v1/payments/s-pay-286").willReturn(

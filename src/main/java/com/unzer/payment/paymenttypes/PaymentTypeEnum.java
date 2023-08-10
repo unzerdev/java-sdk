@@ -31,6 +31,7 @@ public enum PaymentTypeEnum {
   PAYPAL("ppl"),
   PREPAYMENT("ppy"),
   PRZELEWY24("p24"),
+  PAYU("pyu"),
   SEPA_DIRECT_DEBIT("sdd"),
   SEPA_DIRECT_DEBIT_GUARANTEED("ddg"),
   SEPA_DIRECT_DEBIT_SECURED("dds"),
