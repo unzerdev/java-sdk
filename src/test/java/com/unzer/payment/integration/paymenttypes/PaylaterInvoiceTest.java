@@ -429,9 +429,9 @@ public class PaylaterInvoiceTest extends AbstractPaymentTest {
                         CustomerType.B2B,
                         Locale.GERMANY,
                         new PaylaterInvoiceConfig(
-                                "https://test-payment.paylater.unzer.com/payolution-payment/infoport/dataprivacyconsent?channelId=heidelpay-invoice-b2b-b2c",
-                                "https://test-payment.paylater.unzer.com/payolution-payment/infoport/dataprivacydeclaration?channelId=heidelpay-invoice-b2b-b2c",
-                                "https://test-payment.paylater.unzer.com/payolution-payment/infoport/termsandconditions?channelId=heidelpay-invoice-b2b-b2c"
+                                "https://test-payment.paylater.unzer.com/payolution-payment/infoport/dataprivacyconsent?channelId=unzerupl-invoice-b2b-b2c",
+                                "https://test-payment.paylater.unzer.com/payolution-payment/infoport/dataprivacydeclaration?channelId=unzerupl-invoice-b2b-b2c",
+                                "https://test-payment.paylater.unzer.com/payolution-payment/infoport/termsandconditions?channelId=unzerupl-invoice-b2b-b2c"
                         )
                 ),
 
@@ -440,9 +440,9 @@ public class PaylaterInvoiceTest extends AbstractPaymentTest {
                         CustomerType.B2C,
                         Locale.GERMANY,
                         new PaylaterInvoiceConfig(
-                                "https://test-payment.paylater.unzer.com/payolution-payment/infoport/dataprivacyconsent?channelId=heidelpay-invoice-b2b-b2c",
-                                "https://test-payment.paylater.unzer.com/payolution-payment/infoport/dataprivacydeclaration?channelId=heidelpay-invoice-b2b-b2c",
-                                "https://test-payment.paylater.unzer.com/payolution-payment/infoport/termsandconditions?channelId=heidelpay-invoice-b2b-b2c"
+                                "https://test-payment.paylater.unzer.com/payolution-payment/infoport/dataprivacyconsent?channelId=unzerupl-invoice-b2b-b2c",
+                                "https://test-payment.paylater.unzer.com/payolution-payment/infoport/dataprivacydeclaration?channelId=unzerupl-invoice-b2b-b2c",
+                                "https://test-payment.paylater.unzer.com/payolution-payment/infoport/termsandconditions?channelId=unzerupl-invoice-b2b-b2c"
                         )
                 ),
 
@@ -451,9 +451,9 @@ public class PaylaterInvoiceTest extends AbstractPaymentTest {
                         CustomerType.B2C,
                         Locale.ITALY,
                         new PaylaterInvoiceConfig(
-                                "https://test-payment.paylater.unzer.com/payolution-payment/infoport/dataprivacyconsent?channelId=heidelpay-invoice-b2b-b2c",
-                                "https://test-payment.paylater.unzer.com/payolution-payment/infoport/dataprivacydeclaration?channelId=heidelpay-invoice-b2b-b2c",
-                                "https://test-payment.paylater.unzer.com/payolution-payment/infoport/termsandconditions?channelId=heidelpay-invoice-b2b-b2c"
+                                "https://test-payment.paylater.unzer.com/payolution-payment/infoport/dataprivacyconsent?channelId=unzerupl-invoice-b2b-b2c",
+                                "https://test-payment.paylater.unzer.com/payolution-payment/infoport/dataprivacydeclaration?channelId=unzerupl-invoice-b2b-b2c",
+                                "https://test-payment.paylater.unzer.com/payolution-payment/infoport/termsandconditions?channelId=unzerupl-invoice-b2b-b2c"
                         )
                 ),
 
@@ -462,9 +462,9 @@ public class PaylaterInvoiceTest extends AbstractPaymentTest {
                         CustomerType.B2C,
                         null,
                         new PaylaterInvoiceConfig(
-                                "https://test-payment.paylater.unzer.com/payolution-payment/infoport/dataprivacyconsent?channelId=heidelpay-invoice-b2b-b2c",
-                                "https://test-payment.paylater.unzer.com/payolution-payment/infoport/dataprivacydeclaration?channelId=heidelpay-invoice-b2b-b2c",
-                                "https://test-payment.paylater.unzer.com/payolution-payment/infoport/termsandconditions?channelId=heidelpay-invoice-b2b-b2c"
+                                "https://test-payment.paylater.unzer.com/payolution-payment/infoport/dataprivacyconsent?channelId=unzerupl-invoice-b2b-b2c",
+                                "https://test-payment.paylater.unzer.com/payolution-payment/infoport/dataprivacydeclaration?channelId=unzerupl-invoice-b2b-b2c",
+                                "https://test-payment.paylater.unzer.com/payolution-payment/infoport/termsandconditions?channelId=unzerupl-invoice-b2b-b2c"
                         )
                 ),
 
@@ -473,9 +473,9 @@ public class PaylaterInvoiceTest extends AbstractPaymentTest {
                         CustomerType.B2C,
                         Locale.ENGLISH,
                         new PaylaterInvoiceConfig(
-                                "https://test-payment.paylater.unzer.com/payolution-payment/infoport/dataprivacyconsent?channelId=heidelpay-invoice-b2b-b2c",
-                                "https://test-payment.paylater.unzer.com/payolution-payment/infoport/dataprivacydeclaration?channelId=heidelpay-invoice-b2b-b2c",
-                                "https://test-payment.paylater.unzer.com/payolution-payment/infoport/termsandconditions?channelId=heidelpay-invoice-b2b-b2c"
+                                "https://test-payment.paylater.unzer.com/payolution-payment/infoport/dataprivacyconsent?channelId=unzerupl-invoice-b2b-b2c",
+                                "https://test-payment.paylater.unzer.com/payolution-payment/infoport/dataprivacydeclaration?channelId=unzerupl-invoice-b2b-b2c",
+                                "https://test-payment.paylater.unzer.com/payolution-payment/infoport/termsandconditions?channelId=unzerupl-invoice-b2b-b2c"
                         )
                 )
         ).map(tc -> dynamicTest(tc.name, () -> {
