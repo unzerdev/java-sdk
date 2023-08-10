@@ -38,4 +38,4 @@ jobs:
           -DaltLegacyPrivateKey="$UNZER_ALT_LEGACY_PRIVATE_KEY"
       - name: Publish Test Report
         if: success() || failure()
-        uses: scacap/action-surefire-report
+        uses: scacap/action-surefire-report@v1.7.2
