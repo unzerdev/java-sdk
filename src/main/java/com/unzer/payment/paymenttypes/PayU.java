@@ -27,7 +27,7 @@ import java.net.URL;
 import java.util.Currency;
 
 /**
- * P24 business object
+ * PayU payment type
  *
  * @author Unzer E-Com GmbH
  */
@@ -39,14 +39,14 @@ public class PayU extends AbstractPaymentType implements PaymentType {
   }
 
   @Override
-  public PaymentType map(PaymentType przelewy24, JsonObject jsonId) {
-    ((PayU) przelewy24).setId(jsonId.getId());
-    ((PayU) przelewy24).setRecurring(((JsonIdObject) jsonId).getRecurring());
+  public PaymentType map(PaymentType payu, JsonObject jsonId) {
+    ((PayU) payu).setId(jsonId.getId());
+    ((PayU) payu).setRecurring(((JsonIdObject) jsonId).getRecurring());
     GeoLocation tempGeoLocation =
         new GeoLocation(((JsonIdObject) jsonId).getGeoLocation().getClientIp(),
             ((JsonIdObject) jsonId).getGeoLocation().getCountryIsoA2());
-    ((PayU) przelewy24).setGeoLocation(tempGeoLocation);
-    return przelewy24;
+    ((PayU) payu).setGeoLocation(tempGeoLocation);
+    return payu;
   }
 
   public Charge charge(BigDecimal amount, Currency currency, URL returnUrl)
