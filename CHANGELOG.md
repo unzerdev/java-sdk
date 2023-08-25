@@ -6,6 +6,11 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres
 to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## UNRELEASED
+
+* Add PayU payment method support
+* Add Linkpay.Action set of constants for Authorize and Charge actions
+
 ## [4.2.0](https://github.com/unzerdev/java-sdk/compare/4.1.0..4.2.0)
 
 This Java SDK version delivers Unzer Paylater Installment to Java projects.

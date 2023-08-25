@@ -28,7 +28,7 @@ import static org.junit.jupiter.api.Assertions.*;
 public class LinkpayTest extends AbstractPaymentTest {
 
     @Test
-    public void testMaximumLinkpay() throws MalformedURLException, HttpCommunicationException {
+    public void charge_MaximumLinkpay() throws HttpCommunicationException {
         Linkpay request = getMaximumLinkpay();
         Linkpay response = getUnzer().linkpay(request);
         assertNull(response.getCard3ds());
@@ -59,7 +59,7 @@ public class LinkpayTest extends AbstractPaymentTest {
         assertEquals(Arrays.toString(request.getExcludeTypes()), Arrays.toString(response.getExcludeTypes()));
         assertEquals(request.getOneTimeUse(), response.getOneTimeUse());
         assertEquals(request.getIntention(), response.getIntention());
-        assertEquals("charge", response.getAction().toLowerCase());
+        assertEquals(Linkpay.Action.CHARGE, response.getAction());
 
         for (String key : response.getCss().keySet()) {
             assertEquals(request.getCss().get(key), response.getCss().get(key));
@@ -67,7 +67,7 @@ public class LinkpayTest extends AbstractPaymentTest {
     }
 
     @Test
-    public void testLinkpay_WithEmptyCssMap() throws MalformedURLException, HttpCommunicationException {
+    public void charge_Linkpay_WithEmptyCssMap() throws HttpCommunicationException {
         Linkpay request = getMaximumLinkpay();
         request.setCss(null);
 
@@ -98,6 +98,6 @@ public class LinkpayTest extends AbstractPaymentTest {
         assertEquals(request.getBillingAddressRequired(), response.getBillingAddressRequired());
         assertEquals(request.getShippingAddressRequired(), response.getShippingAddressRequired());
         assertEquals(Arrays.toString(request.getExcludeTypes()), Arrays.toString(response.getExcludeTypes()));
-        assertEquals("charge", response.getAction().toLowerCase());
+        assertEquals(Linkpay.Action.CHARGE, response.getAction());
     }
 }

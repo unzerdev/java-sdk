@@ -567,4 +567,8 @@ public class Linkpay implements PaymentType {
     this.basketId = basketId;
   }
 
+  public interface Action {
+    String CHARGE = "CHARGE";
+    String AUTHORIZE = "AUTHORIZE";
+  }
 }
