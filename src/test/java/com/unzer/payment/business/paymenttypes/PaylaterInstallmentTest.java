@@ -29,6 +29,7 @@ import com.github.tomakehurst.wiremock.junit5.WireMockTest;
 import com.unzer.payment.AbstractTransaction;
 import com.unzer.payment.PaylaterInstallmentPlans;
 import com.unzer.payment.Unzer;
+import com.unzer.payment.communication.HttpClientMock;
 import com.unzer.payment.communication.JsonParser;
 import com.unzer.payment.communication.json.paylater.ApiInstallmentPlan;
 import com.unzer.payment.communication.json.paylater.ApiInstallmentPlanRate;
@@ -50,7 +51,7 @@ import org.junit.jupiter.api.Test;
 class PaylaterInstallmentTest {
   @Test
   void test_installment_plans() {
-    Unzer unzer = new Unzer(new HttpClientTestImpl(), "s-private-key");
+    Unzer unzer = new Unzer(new HttpClientMock(), "s-private-key");
     String jsonBody = getPlansresponse("fetch-installment-plans.json");
     stubFor(
         get("/v1/types/paylater-installment/plans?amount=99.99&currency=EUR&country=DE&customerType=B2C").willReturn(
@@ -78,7 +79,7 @@ class PaylaterInstallmentTest {
 
   @Test
   void test_installment_type_creation() {
-    Unzer unzer = new Unzer(new HttpClientTestImpl(), "s-private-key");
+    Unzer unzer = new Unzer(new HttpClientMock(), "s-private-key");
     String jsonBody = getPlansresponse("create-paylater-installment-type.json");
     stubFor(
         post("/v1/types/paylater-installment").willReturn(

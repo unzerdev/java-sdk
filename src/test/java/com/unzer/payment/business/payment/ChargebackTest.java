@@ -29,7 +29,7 @@ import com.unzer.payment.Chargeback;
 import com.unzer.payment.Payment;
 import com.unzer.payment.Processing;
 import com.unzer.payment.Unzer;
-import com.unzer.payment.business.paymenttypes.HttpClientTestImpl;
+import com.unzer.payment.communication.HttpClientMock;
 import com.unzer.payment.communication.json.JsonMessage;
 import com.unzer.payment.enums.RecurrenceType;
 import com.unzer.payment.models.AdditionalTransactionData;
@@ -62,7 +62,7 @@ public class ChargebackTest {
             jsonResponse(getResponse("fetch-chargeback.json"), 200))
     );
 
-    Unzer unzer = new Unzer(new HttpClientTestImpl(), "s-private-key");
+    Unzer unzer = new Unzer(new HttpClientMock(), "s-private-key");
 
     Payment fetchedPayment = unzer.fetchPayment("s-pay-286");
     assertNotNull(fetchedPayment);

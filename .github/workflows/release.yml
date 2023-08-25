@@ -58,7 +58,7 @@ jobs:
         uses: ./.github/actions/release-automator
         with:
           command: tweet
-          version: ${{inputs.version}}
+          version: ${{github.ref_name}}
       - name: Copy out tweet file
         run: |
           sudo cp target/tweet.txt tweet.txt

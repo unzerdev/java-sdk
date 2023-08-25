@@ -14,11 +14,8 @@
  * limitations under the License.
  */
 
-package com.unzer.payment.business.paymenttypes;
+package com.unzer.payment.communication;
 
-import com.unzer.payment.communication.HttpCommunicationException;
-import com.unzer.payment.communication.JsonParser;
-import com.unzer.payment.communication.UnzerRestCommunication;
 import java.io.IOException;
 import org.apache.hc.client5.http.classic.methods.HttpDelete;
 import org.apache.hc.client5.http.classic.methods.HttpGet;
@@ -35,8 +32,8 @@ import org.apache.hc.core5.http.io.entity.StringEntity;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-public class HttpClientTestImpl implements UnzerRestCommunication {
-  private static final Logger logger = LogManager.getLogger(HttpClientTestImpl.class);
+public class HttpClientMock implements UnzerRestCommunication {
+  private static final Logger logger = LogManager.getLogger(HttpClientMock.class);
 
   @Override
   public String httpGet(String url, String privateKey) throws HttpCommunicationException {
