@@ -1351,6 +1351,16 @@ public class Unzer {
     return linkpayService.initialize(linkpay);
   }
 
+  /**
+   * Retrieves created Linkpay by id
+   *
+   * @param id paypage id
+   * @return paypage
+   */
+  public Linkpay fetchLinkpay(String id) {
+    return linkpayService.fetch(id);
+  }
+
   public Recurring recurring(String typeId, String customerId, String metadataId, URL returnUrl,
                              RecurrenceType recurrenceType) throws HttpCommunicationException {
     return paymentService.recurring(
@@ -1406,12 +1416,16 @@ public class Unzer {
    * @deprecated Use {@link Unzer#fetchPaylaterInstallmentPlans(InstallmentPlansRequest)} together
    * with payment type {@link PaylaterInstallment} instead.
    */
-  public List<InstallmentSecuredRatePlan> installmentSecuredRates(BigDecimal amount,
-                                                                  Currency currency,
-                                                                  BigDecimal effectiveInterestRate,
-                                                                  Date orderDate)
-      throws HttpCommunicationException {
-    return paymentService.installmentSecuredPlan(amount, currency, effectiveInterestRate,
+  public List<InstallmentSecuredRatePlan> installmentSecuredRates(
+      BigDecimal amount,
+      Currency currency,
+      BigDecimal effectiveInterestRate,
+      Date orderDate
+  ) throws HttpCommunicationException {
+    return paymentService.installmentSecuredPlan(
+        amount,
+        currency,
+        effectiveInterestRate,
         orderDate);
   }
 
@@ -1431,22 +1445,22 @@ public class Unzer {
    *                       <br>
    *                       Request example:
    *                       <pre>
-   *                                             {
-   *                                                "url": "https://domain.com",
-   *                                                "event": "types"
-   *                                             }
-   *                                              <pre>
-   * @return Webhook refers to webhook has been created.
-   *                                              <br>
-   *                                              Response example:
-   *                                              <pre>
-   *                                              {
-   *                                                "id": "s-whk-61873",
-   *                                                "url": "https://domain.com",
-   *                                                "event": "types"
-   *                                              }
-   *                                              <pre>
-   *                                              @throws HttpCommunicationException
+   *                                                                                                               {
+   *                                                                                                                  "url": "https://domain.com",
+   *                                                                                                                  "event": "types"
+   *                                                                                                               }
+   *                                                                                                                <pre>
+   *                                                                   @return Webhook refers to webhook has been created.
+   *                                                                                                                <br>
+   *                                                                                                                Response example:
+   *                                                                                                                <pre>
+   *                                                                                                                {
+   *                                                                                                                  "id": "s-whk-61873",
+   *                                                                                                                  "url": "https://domain.com",
+   *                                                                                                                  "event": "types"
+   *                                                                                                                }
+   *                                                                                                                <pre>
+   *                                                                                                                @throws HttpCommunicationException
    */
   public Webhook registerSingleWebhook(Webhook webhookRequest) throws HttpCommunicationException {
     return webhookService.registerSingleWebhook(webhookRequest);
@@ -1461,29 +1475,29 @@ public class Unzer {
    *                       <br>
    *                       Request example:
    *                       <pre>
-   *                       {
-   *                         "url": "https://domain.com",
-   *                         "eventList": ["types", "payments"]
-   *                       }
-   *                       <pre>
-   *                       @return WebhookList refers to list of webhooks have been created.
-   *                        * <br>
-   *                       Response example:
-   *                       <pre>
-   *                       {
-   *                          "events":[{
-   *                             "id": "s-whk-61873",
-   *                             "url": "https://domain.com",
-   *                             "event": "types"
-   *                          },
-   *                          {
-   *                             "id": "s-whk-61874",
-   *                             "url": "https://domain.com",
-   *                             "event": "payments"
-   *                          }]
-   *                       }
-   *                       <pre>
-   *                       @throws HttpCommunicationException
+   *                                                                                         {
+   *                                                                                           "url": "https://domain.com",
+   *                                                                                           "eventList": ["types", "payments"]
+   *                                                                                         }
+   *                                                                                         <pre>
+   *                                                                                         @return WebhookList refers to list of webhooks have been created.
+   *                                                                                          * <br>
+   *                                                                                         Response example:
+   *                                                                                         <pre>
+   *                                                                                         {
+   *                                                                                            "events":[{
+   *                                                                                               "id": "s-whk-61873",
+   *                                                                                               "url": "https://domain.com",
+   *                                                                                               "event": "types"
+   *                                                                                            },
+   *                                                                                            {
+   *                                                                                               "id": "s-whk-61874",
+   *                                                                                               "url": "https://domain.com",
+   *                                                                                               "event": "payments"
+   *                                                                                            }]
+   *                                                                                         }
+   *                                                                                         <pre>
+   *                                                                                         @throws HttpCommunicationException
    */
   public WebhookList registerMultiWebhooks(Webhook webhookRequest)
       throws HttpCommunicationException {

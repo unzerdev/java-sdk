@@ -58,7 +58,7 @@ import com.unzer.payment.communication.json.JsonRecurring;
 import com.unzer.payment.communication.json.JsonSepaDirectDebit;
 import com.unzer.payment.communication.json.JsonShipment;
 import com.unzer.payment.communication.json.paylater.ApiInstallmentPlans;
-import com.unzer.payment.communication.mapper.JsonToBusinessClassMapper;
+import com.unzer.payment.communication.mapper.ApiToSdkConverter;
 import com.unzer.payment.models.PaylaterInvoiceConfig;
 import com.unzer.payment.models.PaylaterInvoiceConfigRequest;
 import com.unzer.payment.models.paylater.InstallmentPlansRequest;
@@ -102,7 +102,7 @@ import java.util.stream.Stream;
 public class PaymentService {
   protected UnzerRestCommunication restCommunication;
   protected UrlUtil urlUtil;
-  protected JsonToBusinessClassMapper apiToSdkMapper = new JsonToBusinessClassMapper();
+  protected ApiToSdkConverter apiToSdkMapper = new ApiToSdkConverter();
   protected Unzer unzer;
   protected JsonParser jsonParser;
 
