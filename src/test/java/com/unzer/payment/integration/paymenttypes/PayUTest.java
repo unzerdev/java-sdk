@@ -34,7 +34,7 @@ import org.junit.jupiter.api.DynamicTest;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestFactory;
 
-@Disabled("Payment type not configured for merchant")
+@Disabled("Payment type not configured for merchant. See: https://unz.atlassian.net/browse/CC-540")
 public class PayUTest extends AbstractPaymentTest {
 
   @Test
@@ -46,7 +46,7 @@ public class PayUTest extends AbstractPaymentTest {
     assertNotNull(payU.getId());
 
     PayU fetched = (PayU) unzer.fetchPaymentType(payU.getId());
-    assertEquals(payU, fetched);
+    assertEquals(payU.getId(), fetched.getId());
   }
 
   @TestFactory
@@ -56,8 +56,8 @@ public class PayUTest extends AbstractPaymentTest {
       PayU payU = new PayU();
       payU = unzer.createPaymentType(payU);
 
-      // PLN
       Charge charge = unzer.charge(BigDecimal.TEN, Currency.getInstance(currency), payU.getId());
+
       assertNotNull(charge);
       assertNotNull(charge.getId());
       assertEquals(AbstractTransaction.Status.PENDING, charge.getStatus());

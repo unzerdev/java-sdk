@@ -58,5 +58,4 @@ public class PayU extends AbstractPaymentType implements PaymentType {
       throws HttpCommunicationException {
     return getUnzer().charge(amount, currency, this, returnUrl, customer);
   }
-
 }
