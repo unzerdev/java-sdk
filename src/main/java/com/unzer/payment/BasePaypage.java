@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package com.unzer.payment;
 
 import com.unzer.payment.communication.json.JsonObject;

@@ -224,7 +224,9 @@ public class UrlUtil {
       Date orderDate
   ) {
     return String.format(
+        //CHECKSTYLE:OFF
         "%stypes/hire-purchase-direct-debit/plans?amount=%s&currency=%s&effectiveInterest=%s&orderDate=%s",
+        //CHECKSTYLE:ON
         getRestUrl(),
         getBigDecimal(amount),
         currency.getCurrencyCode(),
