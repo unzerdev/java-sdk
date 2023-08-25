@@ -857,7 +857,7 @@ public class Unzer {
    * @throws HttpCommunicationException in case communication to Unzer didn't work
    */
   public MarketplaceCharge marketplaceChargeAuthorization(String paymentId, String authorizeId,
-                                                          MarketplaceCharge charge)
+                                MarketplaceCharge charge)
       throws HttpCommunicationException {
     return marketplacePaymentService.marketplaceChargeAuthorization(paymentId, authorizeId, charge);
   }
@@ -1026,7 +1026,7 @@ public class Unzer {
    * @throws HttpCommunicationException generic Payment API communication error
    */
   public MarketplacePayment marketplaceFullAuthorizationsCancel(String paymentId,
-                                                                MarketplaceCancel cancel)
+                                      MarketplaceCancel cancel)
       throws HttpCommunicationException {
     return marketplacePaymentService.marketplaceFullAuthorizationsCancel(paymentId, cancel);
   }
@@ -1056,7 +1056,7 @@ public class Unzer {
    * @throws HttpCommunicationException generic Payment API communication error
    */
   public MarketplaceCancel marketplaceAuthorizationCancel(String paymentId, String authorizeId,
-                                                          MarketplaceCancel cancel)
+                                MarketplaceCancel cancel)
       throws HttpCommunicationException {
     return marketplacePaymentService.marketplaceAuthorizationCancel(paymentId, authorizeId, cancel);
   }
@@ -1071,7 +1071,7 @@ public class Unzer {
    * @throws HttpCommunicationException generic Payment API communication error
    */
   public MarketplaceCancel marketplaceChargeCancel(String paymentId, String chargeId,
-                                                   MarketplaceCancel cancel)
+                         MarketplaceCancel cancel)
       throws HttpCommunicationException {
     return marketplacePaymentService.marketplaceChargeCancel(paymentId, chargeId, cancel);
   }
@@ -1086,7 +1086,7 @@ public class Unzer {
    * @throws HttpCommunicationException generic Payment API communication error
    */
   public MarketplacePayment marketplaceFullChargeAuthorizations(String paymentId,
-                                                                String paymentReference)
+                                      String paymentReference)
       throws HttpCommunicationException {
     return marketplacePaymentService.marketplaceFullChargeAuthorizations(paymentId,
         paymentReference);
@@ -1234,7 +1234,7 @@ public class Unzer {
    * @throws HttpCommunicationException in case communication to Unzer didn't work
    */
   public MarketplaceAuthorization fetchMarketplaceAuthorization(String paymentId,
-                                                                String authorizeId)
+                                      String authorizeId)
       throws HttpCommunicationException {
     return marketplacePaymentService.fetchMarketplaceAuthorization(paymentId, authorizeId);
   }
@@ -1351,6 +1351,16 @@ public class Unzer {
     return linkpayService.initialize(linkpay);
   }
 
+  /**
+   * Retrieves created Linkpay by id
+   *
+   * @param id paypage id
+   * @return paypage
+   */
+  public Linkpay fetchLinkpay(String id) {
+    return linkpayService.fetch(id);
+  }
+
   public Recurring recurring(String typeId, String customerId, String metadataId, URL returnUrl,
                              RecurrenceType recurrenceType) throws HttpCommunicationException {
     return paymentService.recurring(
@@ -1406,12 +1416,16 @@ public class Unzer {
    * @deprecated Use {@link Unzer#fetchPaylaterInstallmentPlans(InstallmentPlansRequest)} together
    * with payment type {@link PaylaterInstallment} instead.
    */
-  public List<InstallmentSecuredRatePlan> installmentSecuredRates(BigDecimal amount,
-                                                                  Currency currency,
-                                                                  BigDecimal effectiveInterestRate,
-                                                                  Date orderDate)
-      throws HttpCommunicationException {
-    return paymentService.installmentSecuredPlan(amount, currency, effectiveInterestRate,
+  public List<InstallmentSecuredRatePlan> installmentSecuredRates(
+      BigDecimal amount,
+      Currency currency,
+      BigDecimal effectiveInterestRate,
+      Date orderDate
+  ) throws HttpCommunicationException {
+    return paymentService.installmentSecuredPlan(
+        amount,
+        currency,
+        effectiveInterestRate,
         orderDate);
   }
 
@@ -1431,22 +1445,22 @@ public class Unzer {
    *                       <br>
    *                       Request example:
    *                       <pre>
-   *                                             {
-   *                                                "url": "https://domain.com",
-   *                                                "event": "types"
-   *                                             }
-   *                                              <pre>
+   *                  {
+   *                     "url": "https://domain.com",
+   *                     "event": "types"
+   *                  }
+   *                        </pre>
    * @return Webhook refers to webhook has been created.
-   *                                              <br>
-   *                                              Response example:
-   *                                              <pre>
-   *                                              {
-   *                                                "id": "s-whk-61873",
-   *                                                "url": "https://domain.com",
-   *                                                "event": "types"
-   *                                              }
-   *                                              <pre>
-   *                                              @throws HttpCommunicationException
+   *                   <br>
+   *                   Response example:
+   *                   <pre>
+   *                   {
+   *                     "id": "s-whk-61873",
+   *                     "url": "https://domain.com",
+   *                     "event": "types"
+   *                   }
+   *                   <pre>
+   *                   @throws HttpCommunicationException
    */
   public Webhook registerSingleWebhook(Webhook webhookRequest) throws HttpCommunicationException {
     return webhookService.registerSingleWebhook(webhookRequest);
@@ -1462,28 +1476,28 @@ public class Unzer {
    *                       Request example:
    *                       <pre>
    *                       {
-   *                         "url": "https://domain.com",
-   *                         "eventList": ["types", "payments"]
+   *                        "url": "https://domain.com",
+   *                        "eventList": ["types", "payments"]
    *                       }
    *                       <pre>
    *                       @return WebhookList refers to list of webhooks have been created.
-   *                        * <br>
+   *                       * <br>
    *                       Response example:
    *                       <pre>
    *                       {
-   *                          "events":[{
-   *                             "id": "s-whk-61873",
-   *                             "url": "https://domain.com",
-   *                             "event": "types"
-   *                          },
-   *                          {
-   *                             "id": "s-whk-61874",
-   *                             "url": "https://domain.com",
-   *                             "event": "payments"
-   *                          }]
+   *                         "events":[{
+   *                            "id": "s-whk-61873",
+   *                            "url": "https://domain.com",
+   *                            "event": "types"
+   *                         },
+   *                         {
+   *                            "id": "s-whk-61874",
+   *                            "url": "https://domain.com",
+   *                            "event": "payments"
+   *                         }]
    *                       }
-   *                       <pre>
-   *                       @throws HttpCommunicationException
+   *                       </pre>
+   * @throws HttpCommunicationException
    */
   public WebhookList registerMultiWebhooks(Webhook webhookRequest)
       throws HttpCommunicationException {

@@ -14,82 +14,53 @@
  * limitations under the License.
  */
 
-package com.unzer.payment.communication.json;
+package com.unzer.payment;
 
+import com.unzer.payment.communication.json.JsonObject;
+import com.unzer.payment.paymenttypes.PaymentType;
 import java.math.BigDecimal;
 import java.net.URL;
 import java.util.Currency;
 import java.util.Map;
 
-public class JsonLinkpay implements JsonObject {
-
+public abstract class BasePaypage implements PaymentType {
   private String id;
-
-  private String redirectUrl;
-
-  private String version;
-
-  private String alias;
-
-  private String orderId;
-
-  private String invoiceId;
-
   private BigDecimal amount;
-
   private Currency currency;
-
   private URL returnUrl;
-
   private String logoImage;
-
   private String fullPageImage;
-
   private String shopName;
-
   private String shopDescription;
-
   private String tagline;
-
   private Map<String, String> css;
-
   private URL termsAndConditionUrl;
-
   private URL privacyPolicyUrl;
-
   private URL imprintUrl;
-
   private URL helpUrl;
-
   private URL contactUrl;
-
+  private String invoiceId;
+  private String orderId;
   private String card3ds;
-
   private String billingAddressRequired;
-
   private String shippingAddressRequired;
-
-  private String expires;
-
-  private String intention;
-
-  private String paymentReference;
-
   private Map<String, String> additionalAttributes;
-
-  private String orderIdRequired;
-
-  private String invoiceIdRequired;
-
-  private String oneTimeUse;
-
-  private String successfullyProcessed;
-
   private String[] excludeTypes;
-
-  private JsonResources resources;
-
+  private Status status;
   private String action;
+  private String redirectUrl;
+  private String customerId;
+  private String metadataId;
+  private String paymentId;
+  private String basketId;
+
+  public String getAction() {
+    return action;
+  }
+
+  public void setAction(String action) {
+    this.action = action;
+  }
 
   public String getId() {
     return id;
@@ -97,6 +68,10 @@ public class JsonLinkpay implements JsonObject {
 
   public void setId(String id) {
     this.id = id;
+  }
+
+  public PaymentType map(PaymentType paymentType, JsonObject jsonObject) {
+    return null;
   }
 
   public BigDecimal getAmount() {
@@ -187,12 +162,44 @@ public class JsonLinkpay implements JsonObject {
     this.orderId = orderId;
   }
 
-  public JsonResources getResources() {
-    return resources;
+  public String getCustomerId() {
+    return customerId;
   }
 
-  public void setResources(JsonResources resources) {
-    this.resources = resources;
+  public void setCustomerId(String customerId) {
+    this.customerId = customerId;
+  }
+
+  public String getMetadataId() {
+    return metadataId;
+  }
+
+  public void setMetadataId(String metadataId) {
+    this.metadataId = metadataId;
+  }
+
+  public String getPaymentId() {
+    return paymentId;
+  }
+
+  public void setPaymentId(String paymentId) {
+    this.paymentId = paymentId;
+  }
+
+  public String getBasketId() {
+    return basketId;
+  }
+
+  public void setBasketId(String basketId) {
+    this.basketId = basketId;
+  }
+
+  public Status getStatus() {
+    return status;
+  }
+
+  public void setStatus(Status status) {
+    this.status = status;
   }
 
   public String getRedirectUrl() {
@@ -229,6 +236,20 @@ public class JsonLinkpay implements JsonObject {
    */
   public void setTagline(String tagline) {
     this.tagline = tagline;
+  }
+
+  /**
+   * @return the css
+   */
+  public Map<String, String> getCss() {
+    return css;
+  }
+
+  /**
+   * @param css the css to set
+   */
+  public void setCss(Map<String, String> css) {
+    this.css = css;
   }
 
   /**
@@ -316,20 +337,6 @@ public class JsonLinkpay implements JsonObject {
   }
 
   /**
-   * @return the action
-   */
-  public String getAction() {
-    return action;
-  }
-
-  /**
-   * @param action the action to set
-   */
-  public void setAction(String action) {
-    this.action = action;
-  }
-
-  /**
    * @return the excludeTypes
    */
   public String[] getExcludeTypes() {
@@ -343,89 +350,10 @@ public class JsonLinkpay implements JsonObject {
     this.excludeTypes = excludeTypes;
   }
 
-  /**
-   * @return the css
-   */
-  public Map<String, String> getCss() {
-    return css;
-  }
+  public enum Status { SUCCESS, PENDING, ERROR }
 
-  /**
-   * @param css the css to set
-   */
-  public void setCss(Map<String, String> css) {
-    this.css = css;
-  }
-
-  public String getAlias() {
-    return alias;
-  }
-
-  public void setAlias(String alias) {
-    this.alias = alias;
-  }
-
-  public String getExpires() {
-    return expires;
-  }
-
-  public void setExpires(String expires) {
-    this.expires = expires;
-  }
-
-  public String getIntention() {
-    return intention;
-  }
-
-  public void setIntention(String intention) {
-    this.intention = intention;
-  }
-
-  public String getPaymentReference() {
-    return paymentReference;
-  }
-
-  public void setPaymentReference(String paymentReference) {
-    this.paymentReference = paymentReference;
-  }
-
-  public String getOrderIdRequired() {
-    return orderIdRequired;
-  }
-
-  public void setOrderIdRequired(String orderIdRequired) {
-    this.orderIdRequired = orderIdRequired;
-  }
-
-  public String getInvoiceIdRequired() {
-    return invoiceIdRequired;
-  }
-
-  public void setInvoiceIdRequired(String invoiceIdRequired) {
-    this.invoiceIdRequired = invoiceIdRequired;
-  }
-
-  public String getOneTimeUse() {
-    return oneTimeUse;
-  }
-
-  public void setOneTimeUse(String oneTimeUse) {
-    this.oneTimeUse = oneTimeUse;
-  }
-
-  public String getSuccessfullyProcessed() {
-    return successfullyProcessed;
-  }
-
-  public void setSuccessfullyProcessed(String successfullyProcessed) {
-    this.successfullyProcessed = successfullyProcessed;
-  }
-
-  public String getVersion() {
-    return version;
-  }
-
-  public void setVersion(String version) {
-    this.version = version;
+  public interface Action {
+    String CHARGE = "CHARGE";
+    String AUTHORIZE = "AUTHORIZE";
   }
 }

@@ -16,8 +16,8 @@
 
 package com.unzer.payment.service;
 
+import com.unzer.payment.BasePaypage;
 import com.unzer.payment.Basket;
-import com.unzer.payment.Paypage;
 import com.unzer.payment.Recurring;
 import com.unzer.payment.paymenttypes.PaymentType;
 import java.math.BigDecimal;
@@ -217,14 +217,22 @@ public class UrlUtil {
     return apiEndpoint;
   }
 
-  public String getHirePurchaseRateUrl(BigDecimal amount, Currency currency,
-                                       BigDecimal effectiveInterestRate, Date orderDate) {
-    return getRestUrl()
-        + "types/hire-purchase-direct-debit/plans?"
-        + "amount=" + getBigDecimal(amount) + "&"
-        + "currency=" + currency.getCurrencyCode() + "&"
-        + "effectiveInterest=" + getBigDecimal(effectiveInterestRate)
-        + "&" + "orderDate=" + getDate(orderDate);
+  public String getHirePurchaseRateUrl(
+      BigDecimal amount,
+      Currency currency,
+      BigDecimal effectiveInterestRate,
+      Date orderDate
+  ) {
+    return String.format(
+        //CHECKSTYLE:OFF
+        "%stypes/hire-purchase-direct-debit/plans?amount=%s&currency=%s&effectiveInterest=%s&orderDate=%s",
+        //CHECKSTYLE:ON
+        getRestUrl(),
+        getBigDecimal(amount),
+        currency.getCurrencyCode(),
+        getBigDecimal(effectiveInterestRate),
+        getDate(orderDate)
+        );
   }
 
   private String getBigDecimal(BigDecimal decimal) {
@@ -239,16 +247,16 @@ public class UrlUtil {
     return new SimpleDateFormat("yyyy-MM-dd").format(date);
   }
 
-  public String getInitPaypageUrl(Paypage paypage) {
+  public String getInitPaypageUrl(BasePaypage page) {
     StringBuilder stringBuilder = new StringBuilder();
     stringBuilder.append(getRestUrl());
     appendSlashIfNeeded(stringBuilder);
-    stringBuilder.append(paypage.getTypeUrl());
+    stringBuilder.append(page.getTypeUrl());
     appendSlashIfNeeded(stringBuilder);
 
     String action = Optional
-        .ofNullable(paypage.getAction())
-        .orElse(Paypage.Action.CHARGE)
+        .ofNullable(page.getAction())
+        .orElse(BasePaypage.Action.CHARGE)
         .toLowerCase();
     stringBuilder.append(action);
 
