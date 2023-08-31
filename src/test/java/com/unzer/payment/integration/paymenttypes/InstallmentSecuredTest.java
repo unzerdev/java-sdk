@@ -55,7 +55,7 @@ import org.junit.jupiter.api.Test;
 public class InstallmentSecuredTest extends AbstractPaymentTest {
 
   @Test
-  public void testRateRetrieval() throws HttpCommunicationException, ParseException {
+  public void testRateRetrieval() throws HttpCommunicationException {
     BigDecimal effectiveInterestRate = new BigDecimal(5.5).setScale(4, RoundingMode.HALF_UP);
     Date orderDate = getDate("21.06.2019");
     Unzer unzer = getUnzer(Keys.LEGACY_PRIVATE_KEY);

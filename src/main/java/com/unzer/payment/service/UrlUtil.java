@@ -224,7 +224,7 @@ public class UrlUtil {
       Date orderDate
   ) {
     return getRestUrl()
-        + "/hire-purchase-direct-debit/plans?amount="
+        + "types/hire-purchase-direct-debit/plans?amount="
         + getBigDecimal(amount)
         + "&currency="
         + currency.getCurrencyCode()
