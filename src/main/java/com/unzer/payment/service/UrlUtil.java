@@ -223,16 +223,15 @@ public class UrlUtil {
       BigDecimal effectiveInterestRate,
       Date orderDate
   ) {
-    return String.format(
-        //CHECKSTYLE:OFF
-        "%stypes/hire-purchase-direct-debit/plans?amount=%s&currency=%s&effectiveInterest=%s&orderDate=%s",
-        //CHECKSTYLE:ON
-        getRestUrl(),
-        getBigDecimal(amount),
-        currency.getCurrencyCode(),
-        getBigDecimal(effectiveInterestRate),
-        getDate(orderDate)
-        );
+    return getRestUrl()
+        + "/hire-purchase-direct-debit/plans?amount="
+        + getBigDecimal(amount)
+        + "&currency="
+        + currency.getCurrencyCode()
+        + "&effectiveInterest="
+        + getBigDecimal(effectiveInterestRate)
+        + "&orderDate="
+        + getDate(orderDate);
   }
 
   private String getBigDecimal(BigDecimal decimal) {

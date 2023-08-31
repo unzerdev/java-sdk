@@ -118,7 +118,7 @@ public class RecurringTest extends AbstractPaymentTest {
 
     @Test
     public void testRecurringSepaDirectDebitDuringCharge() throws MalformedURLException, HttpCommunicationException, ParseException {
-        Unzer unzer = getUnzer();
+        Unzer unzer = getUnzer(Keys.LEGACY_PRIVATE_KEY);
         SepaDirectDebit sdd = unzer.createPaymentType(getSepaDirectDebit());
         sdd = (SepaDirectDebit) unzer.fetchPaymentType(sdd.getId());
         assertEquals(false, sdd.getRecurring());

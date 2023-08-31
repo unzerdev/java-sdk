@@ -17,6 +17,7 @@
 package com.unzer.payment.integration.paymenttypes;
 
 
+import static com.unzer.payment.util.Url.unsafeUrl;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.DynamicTest.dynamicTest;
@@ -34,7 +35,6 @@ import org.junit.jupiter.api.DynamicTest;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestFactory;
 
-@Disabled("Payment type not configured for merchant. See: https://unz.atlassian.net/browse/CC-540")
 public class PayUTest extends AbstractPaymentTest {
 
   @Test
@@ -56,7 +56,13 @@ public class PayUTest extends AbstractPaymentTest {
       PayU payU = new PayU();
       payU = unzer.createPaymentType(payU);
 
-      Charge charge = unzer.charge(BigDecimal.TEN, Currency.getInstance(currency), payU.getId());
+      Charge charge = unzer.charge(
+          (Charge) new Charge()
+              .setAmount(BigDecimal.TEN)
+              .setCurrency(Currency.getInstance(currency))
+              .setTypeId(payU.getId())
+              .setReturnUrl(unsafeUrl("https://unzer.com"))
+      );
 
       assertNotNull(charge);
       assertNotNull(charge.getId());
