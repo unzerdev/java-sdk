@@ -8,8 +8,17 @@ to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
 ## UNRELEASED
 
-* Add PayU payment method support
-* Add Linkpay.Action set of constants for Authorize and Charge actions
+This release adds support for PayU payment method and fixes some LinkPay issues
+
+### Added
+
+* Added PayU payment method support
+* Added BasePaypage.Action set of constants for Authorize and Charge actions for Paypage/Linkpay
+* Added Authorize support for Linkpay: `Linkpay.setAction(BasePaypage.Action.AUTHORIZE)`
+
+### Deprecated
+
+* Deprecated `Paypage.Action`. Use `BasePaypage.Action` instead
 
 ## [4.2.0](https://github.com/unzerdev/java-sdk/compare/4.1.0..4.2.0)
 
@@ -25,7 +34,7 @@ This Java SDK version delivers Unzer Paylater Installment to Java projects.
 
 ### Changed
 
-* Refactored internal class `com.unzer.payment.communication.mapper.JsonToBusinessClassMapper`:
+* Refactored internal class `com.unzer.payment.communication.mapper.ApiToSdkConverter`:
   * Unified parameter names to `src` and `output`
   * Changed parameters order. First parameter is `src`, second is `output`
 * Renamed internal classes at `com.unzer.payment.communication.json`:

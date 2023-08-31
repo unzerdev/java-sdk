@@ -30,17 +30,17 @@ import com.unzer.payment.Paypage;
 import com.unzer.payment.Processing;
 import com.unzer.payment.Recurring;
 import com.unzer.payment.Shipment;
+import com.unzer.payment.communication.json.ApiLinkpay;
 import com.unzer.payment.communication.json.ApiPayment;
+import com.unzer.payment.communication.json.ApiPaypage;
 import com.unzer.payment.communication.json.JsonAuthorization;
 import com.unzer.payment.communication.json.JsonCancel;
 import com.unzer.payment.communication.json.JsonCompanyInfo;
 import com.unzer.payment.communication.json.JsonCustomer;
 import com.unzer.payment.communication.json.JsonIdObject;
 import com.unzer.payment.communication.json.JsonInitPayment;
-import com.unzer.payment.communication.json.JsonLinkpay;
 import com.unzer.payment.communication.json.JsonObject;
 import com.unzer.payment.communication.json.JsonPayout;
-import com.unzer.payment.communication.json.JsonPaypage;
 import com.unzer.payment.communication.json.JsonProcessing;
 import com.unzer.payment.communication.json.JsonRecurring;
 import com.unzer.payment.communication.json.JsonResources;
@@ -53,7 +53,7 @@ import com.unzer.payment.paymenttypes.PaymentType;
 import java.util.Locale;
 import java.util.Optional;
 
-public class JsonToBusinessClassMapper {
+public class ApiToSdkConverter {
 
   public JsonObject map(AbstractTransaction<? extends AbstractPayment> src) {
     JsonInitPayment out = new JsonInitPayment();
@@ -128,7 +128,7 @@ public class JsonToBusinessClassMapper {
   }
 
   public JsonObject map(Paypage src) {
-    JsonPaypage out = new JsonPaypage();
+    ApiPaypage out = new ApiPaypage();
     out.setId(src.getId());
     out.setAmount(src.getAmount());
     out.setCurrency(src.getCurrency());
@@ -164,7 +164,7 @@ public class JsonToBusinessClassMapper {
   }
 
   public JsonObject map(Linkpay src) {
-    JsonLinkpay out = new JsonLinkpay();
+    ApiLinkpay out = new ApiLinkpay();
     out.setId(src.getId());
     out.setAmount(src.getAmount());
     out.setCurrency(src.getCurrency());
@@ -210,7 +210,7 @@ public class JsonToBusinessClassMapper {
     return out;
   }
 
-  public Linkpay mapToBusinessObject(Linkpay out, JsonLinkpay src) {
+  public Linkpay mapToBusinessObject(Linkpay out, ApiLinkpay src) {
     out.setId(src.getId());
     out.setAmount(src.getAmount());
     out.setCurrency(src.getCurrency());
@@ -254,7 +254,7 @@ public class JsonToBusinessClassMapper {
     return out;
   }
 
-  public Paypage mapToBusinessObject(Paypage out, JsonPaypage src) {
+  public Paypage mapToBusinessObject(Paypage out, ApiPaypage src) {
     out.setId(src.getId());
     out.setAmount(src.getAmount());
     out.setCurrency(src.getCurrency());

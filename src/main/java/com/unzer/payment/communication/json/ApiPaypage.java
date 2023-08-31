@@ -21,7 +21,7 @@ import java.net.URL;
 import java.util.Currency;
 import java.util.Map;
 
-public class JsonPaypage implements JsonObject {
+public class ApiPaypage implements JsonObject {
   private String id;
 
   private BigDecimal amount;

@@ -562,32 +562,4 @@ public abstract class AbstractPaymentTest {
         cssMap.put("helpUrl", "color: blue; font-size: 30px");
         return cssMap;
     }
-
-    protected Linkpay getMaximumLinkpay() {
-        Linkpay linkpay = new Linkpay();
-        String[] excludeTypes = {"paypal"};
-        linkpay.setExcludeTypes(excludeTypes);
-        linkpay.setAmount(BigDecimal.ONE);
-        linkpay.setCurrency(Currency.getInstance("EUR"));
-        linkpay.setReturnUrl(unsafeUrl("https://unzer.com"));
-        linkpay.setShopName("Unzer Demo Shop");
-        linkpay.setShopDescription("Unzer Demo Shop Description");
-        linkpay.setTagline("Unzer Tagline");
-        linkpay.setTermsAndConditionUrl(unsafeUrl("https://www.unzer.com/en/datenschutz/"));
-        linkpay.setPrivacyPolicyUrl(unsafeUrl("https://www.unzer.com/en/datenschutz/"));
-        linkpay.setCss(getCssMap());
-
-        linkpay.setLogoImage("https://docs.unzer.com/payment-nutshell/payment-in-nutshell.png");
-        linkpay.setFullPageImage("https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/iphone-12-pro-family-hero");
-
-        linkpay.setContactUrl(unsafeUrl("mailto:support@unzer.com"));
-        linkpay.setHelpUrl(unsafeUrl("https://www.unzer.com/en/support/"));
-        linkpay.setImprintUrl(unsafeUrl("https://www.unzer.com/en/impressum/"));
-        linkpay.setPrivacyPolicyUrl(unsafeUrl("https://www.unzer.com/en/datenschutz/"));
-        linkpay.setTermsAndConditionUrl(unsafeUrl("https://www.unzer.com/en/datenschutz/"));
-
-        linkpay.setInvoiceId(generateUuid());
-        linkpay.setOrderId(generateUuid());
-        return linkpay;
-    }
 }

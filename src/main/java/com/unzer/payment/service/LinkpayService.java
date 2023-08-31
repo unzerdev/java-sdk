@@ -21,14 +21,14 @@ import com.unzer.payment.Unzer;
 import com.unzer.payment.communication.HttpCommunicationException;
 import com.unzer.payment.communication.JsonParser;
 import com.unzer.payment.communication.UnzerRestCommunication;
-import com.unzer.payment.communication.json.JsonLinkpay;
-import com.unzer.payment.communication.mapper.JsonToBusinessClassMapper;
+import com.unzer.payment.communication.json.ApiLinkpay;
+import com.unzer.payment.communication.mapper.ApiToSdkConverter;
 
 public class LinkpayService {
-  private final UnzerRestCommunication restCommunication;
+  private final UnzerRestCommunication client;
 
   private final UrlUtil urlUtil;
-  private final JsonToBusinessClassMapper jsonToObjectMapper = new JsonToBusinessClassMapper();
+  private final ApiToSdkConverter apiToSdkConverter = new ApiToSdkConverter();
   private final Unzer unzer;
 
   /**
@@ -43,19 +43,25 @@ public class LinkpayService {
   public LinkpayService(Unzer unzer, UnzerRestCommunication restCommunication) {
     this.unzer = unzer;
     this.urlUtil = new UrlUtil(unzer.getPrivateKey());
-    this.restCommunication = restCommunication;
+    this.client = restCommunication;
   }
 
-  public Linkpay initialize(Linkpay linkpay) throws HttpCommunicationException {
-    return initialize(linkpay, urlUtil.getRestUrl(linkpay));
+  public Linkpay initialize(Linkpay page) throws HttpCommunicationException {
+    String response = client.httpPost(
+        urlUtil.getInitPaypageUrl(page), unzer.getPrivateKey(),
+        apiToSdkConverter.map(page)
+    );
+    ApiLinkpay resource = new JsonParser().fromJson(response, ApiLinkpay.class);
+    page = apiToSdkConverter.mapToBusinessObject(page, resource);
+    return page;
   }
 
-  public Linkpay initialize(Linkpay linkpay, String url) throws HttpCommunicationException {
-    String response = restCommunication.httpPost(url, unzer.getPrivateKey(),
-        jsonToObjectMapper.map(linkpay));
-    JsonLinkpay jsonLinkpay = new JsonParser().fromJson(response, JsonLinkpay.class);
-    linkpay = jsonToObjectMapper.mapToBusinessObject(linkpay, jsonLinkpay);
-    return linkpay;
+  public Linkpay fetch(String id) {
+    String response = client.httpGet(
+        urlUtil.getHttpGetUrl(new Linkpay(), id),
+        unzer.getPrivateKey()
+    );
+    ApiLinkpay resource = new JsonParser().fromJson(response, ApiLinkpay.class);
+    return apiToSdkConverter.mapToBusinessObject(new Linkpay(), resource);
   }
-
 }

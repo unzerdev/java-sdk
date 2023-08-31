@@ -21,14 +21,14 @@ import com.unzer.payment.Unzer;
 import com.unzer.payment.communication.HttpCommunicationException;
 import com.unzer.payment.communication.JsonParser;
 import com.unzer.payment.communication.UnzerRestCommunication;
-import com.unzer.payment.communication.json.JsonPaypage;
-import com.unzer.payment.communication.mapper.JsonToBusinessClassMapper;
+import com.unzer.payment.communication.json.ApiPaypage;
+import com.unzer.payment.communication.mapper.ApiToSdkConverter;
 
 public class PaypageService {
   private final UnzerRestCommunication restCommunication;
 
   private final UrlUtil urlUtil;
-  private final JsonToBusinessClassMapper jsonToObjectMapper = new JsonToBusinessClassMapper();
+  private final ApiToSdkConverter jsonToObjectMapper = new ApiToSdkConverter();
   private final Unzer unzer;
 
   /**
@@ -54,15 +54,15 @@ public class PaypageService {
   public Paypage initialize(Paypage paypage, String url) throws HttpCommunicationException {
     String response = restCommunication.httpPost(url, unzer.getPrivateKey(),
         jsonToObjectMapper.map(paypage));
-    JsonPaypage jsonPaypage = new JsonParser().fromJson(response, JsonPaypage.class);
-    paypage = jsonToObjectMapper.mapToBusinessObject(paypage, jsonPaypage);
+    ApiPaypage apiPaypage = new JsonParser().fromJson(response, ApiPaypage.class);
+    paypage = jsonToObjectMapper.mapToBusinessObject(paypage, apiPaypage);
     return paypage;
   }
 
   public Paypage fetch(String paypageId) {
     String response = restCommunication.httpGet(urlUtil.getHttpGetUrl(new Paypage(), paypageId),
         unzer.getPrivateKey());
-    JsonPaypage jsonPaypage = new JsonParser().fromJson(response, JsonPaypage.class);
-    return jsonToObjectMapper.mapToBusinessObject(new Paypage(), jsonPaypage);
+    ApiPaypage apiPaypage = new JsonParser().fromJson(response, ApiPaypage.class);
+    return jsonToObjectMapper.mapToBusinessObject(new Paypage(), apiPaypage);
   }
 }

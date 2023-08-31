@@ -16,21 +16,40 @@
 package com.unzer.payment.business;
 
 
+import static com.unzer.payment.util.Url.unsafeUrl;
+import static com.unzer.payment.util.Uuid.generateUuid;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+
+import com.unzer.payment.BasePaypage;
 import com.unzer.payment.Linkpay;
+import com.unzer.payment.Unzer;
 import com.unzer.payment.communication.HttpCommunicationException;
+import java.math.BigDecimal;
+import java.util.Arrays;
+import java.util.Currency;
 import org.junit.jupiter.api.Test;
 
-import java.net.MalformedURLException;
-import java.util.Arrays;
-
-import static org.junit.jupiter.api.Assertions.*;
-
 public class LinkpayTest extends AbstractPaymentTest {
+    @Test
+    public void fetch_linkpay() {
+        Unzer unzer = getUnzer();
+        Linkpay newLinkpay = getMaximumLinkpay();
+        Linkpay createdLinkpay = unzer.linkpay(newLinkpay);
+        assertNotNull(createdLinkpay.getId());
+
+        Linkpay fetchLinkpay = unzer.fetchLinkpay(createdLinkpay.getId());
+        assertEquals(createdLinkpay.getId(), fetchLinkpay.getId());
+    }
 
     @Test
     public void charge_MaximumLinkpay() throws HttpCommunicationException {
+        Unzer unzer = getUnzer();
         Linkpay request = getMaximumLinkpay();
-        Linkpay response = getUnzer().linkpay(request);
+        request = unzer.linkpay(request);
+        Linkpay response = unzer.fetchLinkpay(request.getId());
+
         assertNull(response.getCard3ds());
 
         assertNotNull(response);
@@ -59,7 +78,7 @@ public class LinkpayTest extends AbstractPaymentTest {
         assertEquals(Arrays.toString(request.getExcludeTypes()), Arrays.toString(response.getExcludeTypes()));
         assertEquals(request.getOneTimeUse(), response.getOneTimeUse());
         assertEquals(request.getIntention(), response.getIntention());
-        assertEquals(Linkpay.Action.CHARGE, response.getAction());
+        assertEquals(BasePaypage.Action.CHARGE, response.getAction());
 
         for (String key : response.getCss().keySet()) {
             assertEquals(request.getCss().get(key), response.getCss().get(key));
@@ -68,10 +87,14 @@ public class LinkpayTest extends AbstractPaymentTest {
 
     @Test
     public void charge_Linkpay_WithEmptyCssMap() throws HttpCommunicationException {
+        Unzer unzer = getUnzer();
+
         Linkpay request = getMaximumLinkpay();
         request.setCss(null);
 
-        Linkpay response = getUnzer().linkpay(request);
+        request = unzer.linkpay(request);
+        Linkpay response = unzer.fetchLinkpay(request.getId());
+
         assertNull(response.getCard3ds());
 
         assertNotNull(response);
@@ -98,6 +121,46 @@ public class LinkpayTest extends AbstractPaymentTest {
         assertEquals(request.getBillingAddressRequired(), response.getBillingAddressRequired());
         assertEquals(request.getShippingAddressRequired(), response.getShippingAddressRequired());
         assertEquals(Arrays.toString(request.getExcludeTypes()), Arrays.toString(response.getExcludeTypes()));
-        assertEquals(Linkpay.Action.CHARGE, response.getAction());
+        assertEquals(BasePaypage.Action.CHARGE, response.getAction());
+    }
+
+    @Test
+    public void testAuthorize() throws HttpCommunicationException {
+        Unzer unzer = getUnzer();
+        Linkpay request = getMaximumLinkpay();
+        request.setAction(BasePaypage.Action.AUTHORIZE);
+        Linkpay created = unzer.linkpay(request);
+
+        Linkpay fetched = unzer.fetchLinkpay(created.getId());
+
+        assertEquals("AUTHORIZE", fetched.getAction());
+    }
+
+    private Linkpay getMaximumLinkpay() {
+        Linkpay linkpay = new Linkpay();
+        String[] excludeTypes = {"paypal"};
+        linkpay.setExcludeTypes(excludeTypes);
+        linkpay.setAmount(BigDecimal.ONE);
+        linkpay.setCurrency(Currency.getInstance("EUR"));
+        linkpay.setReturnUrl(unsafeUrl("https://unzer.com"));
+        linkpay.setShopName("Unzer Demo Shop");
+        linkpay.setShopDescription("Unzer Demo Shop Description");
+        linkpay.setTagline("Unzer Tagline");
+        linkpay.setTermsAndConditionUrl(unsafeUrl("https://www.unzer.com/en/datenschutz/"));
+        linkpay.setPrivacyPolicyUrl(unsafeUrl("https://www.unzer.com/en/datenschutz/"));
+        linkpay.setCss(getCssMap());
+
+        linkpay.setLogoImage("https://docs.unzer.com/payment-nutshell/payment-in-nutshell.png");
+        linkpay.setFullPageImage("https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/iphone-12-pro-family-hero");
+
+        linkpay.setContactUrl(unsafeUrl("mailto:support@unzer.com"));
+        linkpay.setHelpUrl(unsafeUrl("https://www.unzer.com/en/support/"));
+        linkpay.setImprintUrl(unsafeUrl("https://www.unzer.com/en/impressum/"));
+        linkpay.setPrivacyPolicyUrl(unsafeUrl("https://www.unzer.com/en/datenschutz/"));
+        linkpay.setTermsAndConditionUrl(unsafeUrl("https://www.unzer.com/en/datenschutz/"));
+
+        linkpay.setInvoiceId(generateUuid());
+        linkpay.setOrderId(generateUuid());
+        return linkpay;
     }
 }
