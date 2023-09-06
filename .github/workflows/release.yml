@@ -38,7 +38,7 @@ jobs:
         run: |
           echo $CONFIG | base64 --decode > release.yaml
       - name: Run release-automator
-        uses: ./.github/actions/release-automator
+        uses: unzerdev/unzer-tech-toolbox/.github/actions/release-changelog@main
         with:
           command: mail
           version: ${{github.ref_name}}
@@ -55,7 +55,7 @@ jobs:
         run: |
           echo $CONFIG | base64 --decode > release.yaml
       - name: Run release-automator
-        uses: ./.github/actions/release-automator
+        uses: unzerdev/unzer-tech-toolbox/.github/actions/release-changelog@main
         with:
           command: tweet
           version: ${{github.ref_name}}

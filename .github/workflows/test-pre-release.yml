@@ -1,0 +1,34 @@
+name: Test Pre-release Java SDK
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: Release version
+        type: string
+        required: true
+jobs:
+  release-notes:
+    name: Generate release notes
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Decode configuration
+        env:
+          CONFIG: ${{ secrets.RELEASE_AUTOMATOR_BASE64_CONFIG }}
+        run: |
+          echo $CONFIG | base64 --decode > release.yaml
+      - name: Run release-automator
+        uses: unzerdev/unzer-tech-toolbox/.github/actions/release-changelog@main
+        with:
+          command: notes
+          version: ${{ inputs.version }}
+      - name: Copy out release notes file
+        run: |
+          sudo cp target/ReleaseNotes.md ReleaseNotes.md
+      - name: Attach release notes
+        uses: actions/upload-artifact@v3
+        with:
+          name: ReleaseNotes
+          path: ReleaseNotes.md
+          retention-days: 5
