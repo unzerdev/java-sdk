@@ -17,8 +17,8 @@
 package com.unzer.payment.paymenttypes;
 
 import com.unzer.payment.GeoLocation;
-import com.unzer.payment.communication.json.JsonIdObject;
-import com.unzer.payment.communication.json.JsonObject;
+import com.unzer.payment.communication.json.ApiIdObject;
+import com.unzer.payment.communication.json.ApiObject;
 
 /**
  * PaylaterInvoice is a part of our Buy Now Pay Later (BNPL) offering and it’s a very convenient
@@ -36,12 +36,12 @@ public class PaylaterInvoice extends AbstractPaymentType {
   }
 
   @Override
-  public PaymentType map(PaymentType paymentType, JsonObject jsonObject) {
-    ((PaylaterInvoice) paymentType).setId(jsonObject.getId());
-    ((PaylaterInvoice) paymentType).setRecurring(((JsonIdObject) jsonObject).getRecurring());
+  public PaymentType map(PaymentType paymentType, ApiObject apiObject) {
+    ((PaylaterInvoice) paymentType).setId(apiObject.getId());
+    ((PaylaterInvoice) paymentType).setRecurring(((ApiIdObject) apiObject).getRecurring());
     GeoLocation tempGeoLocation =
-        new GeoLocation(((JsonIdObject) jsonObject).getGeoLocation().getClientIp(),
-            ((JsonIdObject) jsonObject).getGeoLocation().getCountryIsoA2());
+        new GeoLocation(((ApiIdObject) apiObject).getGeoLocation().getClientIp(),
+            ((ApiIdObject) apiObject).getGeoLocation().getCountryIsoA2());
     ((PaylaterInvoice) paymentType).setGeoLocation(tempGeoLocation);
 
     return paymentType;

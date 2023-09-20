@@ -19,8 +19,8 @@ package com.unzer.payment.paymenttypes;
 import com.unzer.payment.Charge;
 import com.unzer.payment.Customer;
 import com.unzer.payment.communication.HttpCommunicationException;
-import com.unzer.payment.communication.json.JsonIdObject;
-import com.unzer.payment.communication.json.JsonObject;
+import com.unzer.payment.communication.json.ApiIdObject;
+import com.unzer.payment.communication.json.ApiObject;
 import java.math.BigDecimal;
 import java.net.URL;
 import java.util.Currency;
@@ -40,9 +40,9 @@ public class Invoice extends AbstractPaymentType implements PaymentType {
   }
 
   @Override
-  public PaymentType map(PaymentType invoice, JsonObject jsonId) {
+  public PaymentType map(PaymentType invoice, ApiObject jsonId) {
     ((Invoice) invoice).setId(jsonId.getId());
-    ((Invoice) invoice).setRecurring(((JsonIdObject) jsonId).getRecurring());
+    ((Invoice) invoice).setRecurring(((ApiIdObject) jsonId).getRecurring());
     return invoice;
   }
 

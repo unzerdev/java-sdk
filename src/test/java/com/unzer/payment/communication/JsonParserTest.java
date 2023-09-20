@@ -21,7 +21,7 @@ import com.unzer.payment.PaymentError;
 import com.unzer.payment.PaymentException;
 import com.unzer.payment.TestData;
 import com.unzer.payment.business.AbstractPaymentTest;
-import com.unzer.payment.communication.json.JsonCharge;
+import com.unzer.payment.communication.json.ApiCharge;
 import com.unzer.payment.communication.json.JsonErrorObject;
 import org.junit.jupiter.api.Test;
 
@@ -33,7 +33,7 @@ public class JsonParserTest extends AbstractPaymentTest {
     public void given_an_error_message_then_payment_exception_is_thrown() {
         try {
             JsonParser parser = new JsonParser();
-            parser.fromJson(TestData.errorJson(), JsonCharge.class);
+            parser.fromJson(TestData.errorJson(), ApiCharge.class);
 
             fail("Expected PaymentException");
         } catch (PaymentException exception) {

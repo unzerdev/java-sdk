@@ -21,9 +21,9 @@ import com.unzer.payment.Charge;
 import com.unzer.payment.Customer;
 import com.unzer.payment.GeoLocation;
 import com.unzer.payment.communication.HttpCommunicationException;
-import com.unzer.payment.communication.json.JsonIdObject;
-import com.unzer.payment.communication.json.JsonObject;
-import com.unzer.payment.communication.json.JsonPaypal;
+import com.unzer.payment.communication.json.ApiIdObject;
+import com.unzer.payment.communication.json.ApiObject;
+import com.unzer.payment.communication.json.ApiPaypal;
 import java.math.BigDecimal;
 import java.net.URL;
 import java.util.Currency;
@@ -43,15 +43,15 @@ public class Paypal extends AbstractPaymentType implements PaymentType {
   }
 
   @Override
-  public PaymentType map(PaymentType paypal, JsonObject jsonId) {
+  public PaymentType map(PaymentType paypal, ApiObject jsonId) {
     ((Paypal) paypal).setId(jsonId.getId());
-    ((Paypal) paypal).setRecurring(((JsonIdObject) jsonId).getRecurring());
+    ((Paypal) paypal).setRecurring(((ApiIdObject) jsonId).getRecurring());
     GeoLocation tempGeoLocation =
-        new GeoLocation(((JsonIdObject) jsonId).getGeoLocation().getClientIp(),
-            ((JsonIdObject) jsonId).getGeoLocation().getCountryIsoA2());
+        new GeoLocation(((ApiIdObject) jsonId).getGeoLocation().getClientIp(),
+            ((ApiIdObject) jsonId).getGeoLocation().getCountryIsoA2());
     ((Paypal) paypal).setGeoLocation(tempGeoLocation);
-    ((Paypal) paypal).setRecurring(((JsonPaypal) jsonId).getRecurring());
-    ((Paypal) paypal).setEmail(((JsonPaypal) jsonId).getEmail());
+    ((Paypal) paypal).setRecurring(((ApiPaypal) jsonId).getRecurring());
+    ((Paypal) paypal).setEmail(((ApiPaypal) jsonId).getEmail());
     return paypal;
   }
 

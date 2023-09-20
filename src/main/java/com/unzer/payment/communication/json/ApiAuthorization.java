@@ -16,13 +16,13 @@
 
 package com.unzer.payment.communication.json;
 
-public class JsonAuthorization extends JsonInitPayment implements JsonObject {
+public class ApiAuthorization extends ApiInitPayment implements ApiObject {
 
-  public JsonAuthorization() {
+  public ApiAuthorization() {
     super();
   }
 
-  public JsonAuthorization(JsonInitPayment json) {
+  public ApiAuthorization(ApiInitPayment json) {
     super();
     this.setAmount(json.getAmount());
     this.setCard3ds(json.getCard3ds());

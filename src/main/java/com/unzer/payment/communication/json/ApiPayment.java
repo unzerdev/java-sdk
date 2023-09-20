@@ -19,7 +19,7 @@ package com.unzer.payment.communication.json;
 import java.util.Currency;
 import java.util.List;
 
-public class ApiPayment extends JsonIdObject {
+public class ApiPayment extends ApiIdObject {
 
   private JsonState state;
   private JsonAmount amount;

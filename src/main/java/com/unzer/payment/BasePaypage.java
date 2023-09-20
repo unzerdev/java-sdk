@@ -16,7 +16,7 @@
 
 package com.unzer.payment;
 
-import com.unzer.payment.communication.json.JsonObject;
+import com.unzer.payment.communication.json.ApiObject;
 import com.unzer.payment.paymenttypes.PaymentType;
 import java.math.BigDecimal;
 import java.net.URL;
@@ -70,7 +70,7 @@ public abstract class BasePaypage implements PaymentType {
     this.id = id;
   }
 
-  public PaymentType map(PaymentType paymentType, JsonObject jsonObject) {
+  public PaymentType map(PaymentType paymentType, ApiObject apiObject) {
     return null;
   }
 

@@ -16,7 +16,7 @@
 
 package com.unzer.payment.communication.json;
 
-public class ApiPaylaterInstallment extends JsonIdObject implements JsonObject {
+public class ApiPaylaterInstallment extends ApiIdObject implements ApiObject {
   private String inquiryId;
   private Integer numberOfRates;
   private String iban;

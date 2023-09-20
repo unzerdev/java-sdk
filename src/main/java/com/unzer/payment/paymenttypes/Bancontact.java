@@ -20,8 +20,8 @@ import com.unzer.payment.Charge;
 import com.unzer.payment.Customer;
 import com.unzer.payment.Unzer;
 import com.unzer.payment.communication.HttpCommunicationException;
-import com.unzer.payment.communication.json.JsonBancontact;
-import com.unzer.payment.communication.json.JsonObject;
+import com.unzer.payment.communication.json.ApiBancontact;
+import com.unzer.payment.communication.json.ApiObject;
 import java.math.BigDecimal;
 import java.net.URL;
 import java.util.Currency;
@@ -48,11 +48,11 @@ public class Bancontact extends AbstractPaymentType implements PaymentType {
   }
 
   @Override
-  public PaymentType map(PaymentType bancontact, JsonObject jsonId) {
-    if (bancontact instanceof Bancontact && jsonId instanceof JsonBancontact) {
+  public PaymentType map(PaymentType bancontact, ApiObject jsonId) {
+    if (bancontact instanceof Bancontact && jsonId instanceof ApiBancontact) {
       ((Bancontact) bancontact).setId(jsonId.getId());
-      ((Bancontact) bancontact).setRecurring(((JsonBancontact) jsonId).getRecurring());
-      ((Bancontact) bancontact).setHolder(((JsonBancontact) jsonId).getHolder());
+      ((Bancontact) bancontact).setRecurring(((ApiBancontact) jsonId).getRecurring());
+      ((Bancontact) bancontact).setHolder(((ApiBancontact) jsonId).getHolder());
     }
     return bancontact;
   }

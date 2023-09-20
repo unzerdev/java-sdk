@@ -18,7 +18,7 @@ package com.unzer.payment.communication.json;
 
 import com.google.gson.annotations.SerializedName;
 
-public class JsonCard extends JsonIdObject implements JsonObject {
+public class ApiCard extends ApiIdObject implements ApiObject {
   private String number;
   private String cvc;
   private String expiryDate;
@@ -34,7 +34,7 @@ public class JsonCard extends JsonIdObject implements JsonObject {
     return number;
   }
 
-  public JsonCard setNumber(String number) {
+  public ApiCard setNumber(String number) {
     this.number = number;
     return this;
   }
@@ -43,7 +43,7 @@ public class JsonCard extends JsonIdObject implements JsonObject {
     return cvc;
   }
 
-  public JsonCard setCvc(String cvc) {
+  public ApiCard setCvc(String cvc) {
     this.cvc = cvc;
     return this;
   }
@@ -52,7 +52,7 @@ public class JsonCard extends JsonIdObject implements JsonObject {
     return expiryDate;
   }
 
-  public JsonCard setExpiryDate(String expiryDate) {
+  public ApiCard setExpiryDate(String expiryDate) {
     this.expiryDate = expiryDate;
     return this;
   }

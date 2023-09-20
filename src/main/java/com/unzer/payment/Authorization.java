@@ -17,7 +17,7 @@
 package com.unzer.payment;
 
 import com.unzer.payment.communication.HttpCommunicationException;
-import com.unzer.payment.communication.json.JsonObject;
+import com.unzer.payment.communication.json.ApiObject;
 import com.unzer.payment.paymenttypes.PaymentType;
 import java.math.BigDecimal;
 import java.util.List;
@@ -100,7 +100,7 @@ public class Authorization extends AbstractTransaction<Payment> {
   }
 
   @Override
-  public PaymentType map(PaymentType paymentType, JsonObject jsonObject) {
+  public PaymentType map(PaymentType paymentType, ApiObject apiObject) {
     return null;
   }
 

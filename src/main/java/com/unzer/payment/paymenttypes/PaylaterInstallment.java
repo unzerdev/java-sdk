@@ -18,8 +18,8 @@ package com.unzer.payment.paymenttypes;
 
 import com.unzer.payment.GeoLocation;
 import com.unzer.payment.communication.json.ApiPaylaterInstallment;
-import com.unzer.payment.communication.json.JsonIdObject;
-import com.unzer.payment.communication.json.JsonObject;
+import com.unzer.payment.communication.json.ApiIdObject;
+import com.unzer.payment.communication.json.ApiObject;
 
 public class PaylaterInstallment extends AbstractPaymentType implements PaymentType {
 
@@ -75,7 +75,7 @@ public class PaylaterInstallment extends AbstractPaymentType implements PaymentT
   }
 
   @Override
-  public PaymentType map(PaymentType pit, JsonObject jsonPit) {
+  public PaymentType map(PaymentType pit, ApiObject jsonPit) {
     ((PaylaterInstallment) pit).setId(jsonPit.getId());
     ((PaylaterInstallment) pit).setInquiryId(((ApiPaylaterInstallment) jsonPit).getInquiryId());
     ((PaylaterInstallment) pit).setNumberOfRates(
@@ -85,8 +85,8 @@ public class PaylaterInstallment extends AbstractPaymentType implements PaymentT
     ((PaylaterInstallment) pit).setHolder(((ApiPaylaterInstallment) jsonPit).getHolder());
     ((PaylaterInstallment) pit).setRecurring(((ApiPaylaterInstallment) jsonPit).getRecurring());
     GeoLocation geoLocation =
-        new GeoLocation(((JsonIdObject) jsonPit).getGeoLocation().getClientIp(),
-            ((JsonIdObject) jsonPit).getGeoLocation().getCountryIsoA2());
+        new GeoLocation(((ApiIdObject) jsonPit).getGeoLocation().getClientIp(),
+            ((ApiIdObject) jsonPit).getGeoLocation().getCountryIsoA2());
     ((PaylaterInstallment) pit).setGeoLocation(geoLocation);
     return pit;
   }

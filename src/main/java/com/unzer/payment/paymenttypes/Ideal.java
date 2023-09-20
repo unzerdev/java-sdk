@@ -19,8 +19,8 @@ package com.unzer.payment.paymenttypes;
 import com.unzer.payment.Charge;
 import com.unzer.payment.Customer;
 import com.unzer.payment.communication.HttpCommunicationException;
-import com.unzer.payment.communication.json.JsonIdeal;
-import com.unzer.payment.communication.json.JsonObject;
+import com.unzer.payment.communication.json.ApiIdeal;
+import com.unzer.payment.communication.json.ApiObject;
 import java.math.BigDecimal;
 import java.net.URL;
 import java.util.Currency;
@@ -40,10 +40,10 @@ public class Ideal extends AbstractPaymentType implements PaymentType {
   }
 
   @Override
-  public PaymentType map(PaymentType ideal, JsonObject jsonIdeal) {
+  public PaymentType map(PaymentType ideal, ApiObject jsonIdeal) {
     ((Ideal) ideal).setId(jsonIdeal.getId());
-    ((Ideal) ideal).setBic(((JsonIdeal) jsonIdeal).getBankName());
-    ((Ideal) ideal).setRecurring(((JsonIdeal) jsonIdeal).getRecurring());
+    ((Ideal) ideal).setBic(((ApiIdeal) jsonIdeal).getBankName());
+    ((Ideal) ideal).setRecurring(((ApiIdeal) jsonIdeal).getRecurring());
     return ideal;
   }
 

@@ -49,6 +49,7 @@ public enum PaymentTypeEnum {
   UNZER_PAYLATER_INVOICE("piv"),
   KLARNA("kla"),
   PAYLATER_INSTALLMENT("pit"),
+  PAYLATER_DIRECT_DEBIT("pdd"),
   UNKNOWN("unknown");
 
   private final String shortName;

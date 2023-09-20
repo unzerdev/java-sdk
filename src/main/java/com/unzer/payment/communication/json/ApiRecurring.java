@@ -17,60 +17,32 @@
 package com.unzer.payment.communication.json;
 
 import com.unzer.payment.models.AdditionalTransactionData;
-import java.math.BigDecimal;
 import java.net.URL;
-import java.util.Currency;
 import java.util.Date;
 
-public class JsonInitPayment extends JsonIdObject implements JsonObject, TransactionStatus {
+public class ApiRecurring extends ApiIdObject implements ApiObject, TransactionStatus {
   private Boolean isSuccess;
   private Boolean isPending;
   private Boolean isError;
-  private Boolean isResumed;
   private JsonMessage message;
   private Date date;
 
-  private String orderId;
-  private String invoiceId;
-  private BigDecimal amount;
-  private Currency currency;
   private URL returnUrl;
-  private URL redirectUrl;
-  private Boolean card3ds;
-  private String paymentReference;
-  private BigDecimal effectiveInterestRate;
-  private AdditionalTransactionData additionalTransactionData;
 
   private JsonResources resources;
   private JsonProcessing processing = new JsonProcessing();
+  private URL redirectUrl;
+  private AdditionalTransactionData additionalTransactionData;
 
-  public JsonInitPayment() {
+  public ApiRecurring() {
     super();
-  }
-
-  public BigDecimal getAmount() {
-    return amount;
-  }
-
-  public JsonInitPayment setAmount(BigDecimal amount) {
-    this.amount = amount;
-    return this;
-  }
-
-  public Currency getCurrency() {
-    return currency;
-  }
-
-  public JsonInitPayment setCurrency(Currency currency) {
-    this.currency = currency;
-    return this;
   }
 
   public URL getReturnUrl() {
     return returnUrl;
   }
 
-  public JsonInitPayment setReturnUrl(URL returnUrl) {
+  public ApiRecurring setReturnUrl(URL returnUrl) {
     this.returnUrl = returnUrl;
     return this;
   }
@@ -79,7 +51,7 @@ public class JsonInitPayment extends JsonIdObject implements JsonObject, Transac
     return processing;
   }
 
-  public JsonInitPayment setProcessing(JsonProcessing processing) {
+  public ApiRecurring setProcessing(JsonProcessing processing) {
     this.processing = processing;
     return this;
   }
@@ -109,22 +81,6 @@ public class JsonInitPayment extends JsonIdObject implements JsonObject, Transac
     this.date = date;
   }
 
-  public URL getRedirectUrl() {
-    return redirectUrl;
-  }
-
-  public void setRedirectUrl(URL redirectUrl) {
-    this.redirectUrl = redirectUrl;
-  }
-
-  public String getOrderId() {
-    return orderId;
-  }
-
-  public void setOrderId(String orderId) {
-    this.orderId = orderId;
-  }
-
   public Boolean getSuccess() {
     return isSuccess;
   }
@@ -150,56 +106,26 @@ public class JsonInitPayment extends JsonIdObject implements JsonObject, Transac
   }
 
   public Boolean getResumed() {
-    return isResumed;
+    return null;
   }
 
-  public void setResumed(Boolean resumed) {
-    isResumed = resumed;
+  public void setResumed(Boolean value) {
+    // Do nothing
   }
 
-  public Boolean getCard3ds() {
-    return card3ds;
+  public URL getRedirectUrl() {
+    return redirectUrl;
   }
 
-  public JsonInitPayment setCard3ds(Boolean card3ds) {
-    this.card3ds = card3ds;
-    return this;
-  }
-
-  public String getPaymentReference() {
-    return paymentReference;
-  }
-
-  public JsonInitPayment setPaymentReference(String paymentReference) {
-    this.paymentReference = paymentReference;
-    return this;
-  }
-
-  public BigDecimal getEffectiveInterestRate() {
-    return effectiveInterestRate;
-  }
-
-  public JsonInitPayment setEffectiveInterestRate(BigDecimal effectiveInterestRate) {
-    this.effectiveInterestRate = effectiveInterestRate;
-    return this;
+  public void setRedirectUrl(URL redirectUrl) {
+    this.redirectUrl = redirectUrl;
   }
 
   public AdditionalTransactionData getAdditionalTransactionData() {
     return additionalTransactionData;
   }
 
-  public JsonInitPayment setAdditionalTransactionData(
-      AdditionalTransactionData additionalTransactionData) {
+  public void setAdditionalTransactionData(AdditionalTransactionData additionalTransactionData) {
     this.additionalTransactionData = additionalTransactionData;
-    return this;
-  }
-
-  public String getInvoiceId() {
-    return invoiceId;
-  }
-
-  public JsonInitPayment setInvoiceId(String invoiceId) {
-    this.invoiceId = invoiceId;
-    return this;
   }
 }

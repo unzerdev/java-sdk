@@ -21,8 +21,8 @@ import com.unzer.payment.Charge;
 import com.unzer.payment.Customer;
 import com.unzer.payment.GeoLocation;
 import com.unzer.payment.communication.HttpCommunicationException;
-import com.unzer.payment.communication.json.JsonObject;
-import com.unzer.payment.communication.json.JsonSepaDirectDebit;
+import com.unzer.payment.communication.json.ApiObject;
+import com.unzer.payment.communication.json.ApiSepaDirectDebit;
 import java.math.BigDecimal;
 import java.net.URL;
 import java.util.Currency;
@@ -32,6 +32,7 @@ import java.util.Currency;
  *
  * @author Unzer E-Com GmbH
  */
+@Deprecated
 public class SepaDirectDebit extends AbstractPaymentType implements PaymentType {
   private String iban;
   private String bic;
@@ -75,15 +76,15 @@ public class SepaDirectDebit extends AbstractPaymentType implements PaymentType 
   }
 
   @Override
-  public PaymentType map(PaymentType sdd, JsonObject jsonSdd) {
+  public PaymentType map(PaymentType sdd, ApiObject jsonSdd) {
     ((SepaDirectDebit) sdd).setId(jsonSdd.getId());
-    ((SepaDirectDebit) sdd).setBic(((JsonSepaDirectDebit) jsonSdd).getBic());
-    ((SepaDirectDebit) sdd).setIban(((JsonSepaDirectDebit) jsonSdd).getIban());
-    ((SepaDirectDebit) sdd).setHolder(((JsonSepaDirectDebit) jsonSdd).getHolder());
-    ((SepaDirectDebit) sdd).setRecurring(((JsonSepaDirectDebit) jsonSdd).getRecurring());
+    ((SepaDirectDebit) sdd).setBic(((ApiSepaDirectDebit) jsonSdd).getBic());
+    ((SepaDirectDebit) sdd).setIban(((ApiSepaDirectDebit) jsonSdd).getIban());
+    ((SepaDirectDebit) sdd).setHolder(((ApiSepaDirectDebit) jsonSdd).getHolder());
+    ((SepaDirectDebit) sdd).setRecurring(((ApiSepaDirectDebit) jsonSdd).getRecurring());
     GeoLocation tempGeoLocation =
-        new GeoLocation(((JsonSepaDirectDebit) jsonSdd).getGeoLocation().getClientIp(),
-            ((JsonSepaDirectDebit) jsonSdd).getGeoLocation().getCountryIsoA2());
+        new GeoLocation(((ApiSepaDirectDebit) jsonSdd).getGeoLocation().getClientIp(),
+            ((ApiSepaDirectDebit) jsonSdd).getGeoLocation().getCountryIsoA2());
     ((SepaDirectDebit) sdd).setGeoLocation(tempGeoLocation);
     return sdd;
   }

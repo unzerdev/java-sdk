@@ -16,13 +16,13 @@
 
 package com.unzer.payment.communication.json;
 
-public class JsonPayout extends JsonInitPayment implements JsonObject {
+public class ApiPayout extends ApiInitPayment implements ApiObject {
 
-  public JsonPayout() {
+  public ApiPayout() {
     super();
   }
 
-  public JsonPayout(JsonInitPayment json) {
+  public ApiPayout(ApiInitPayment json) {
     super();
     this.setAmount(json.getAmount());
     this.setCard3ds(json.getCard3ds());

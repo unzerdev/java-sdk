@@ -21,9 +21,9 @@ import com.unzer.payment.communication.HttpCommunicationException;
 import com.unzer.payment.communication.UnzerRestCommunication;
 import com.unzer.payment.communication.json.ApiPayment;
 import com.unzer.payment.communication.json.ApiTransaction;
-import com.unzer.payment.communication.json.JsonAuthorization;
-import com.unzer.payment.communication.json.JsonCancel;
-import com.unzer.payment.communication.json.JsonCharge;
+import com.unzer.payment.communication.json.ApiAuthorization;
+import com.unzer.payment.communication.json.ApiCancel;
+import com.unzer.payment.communication.json.ApiCharge;
 import com.unzer.payment.marketplace.MarketplaceAuthorization;
 import com.unzer.payment.marketplace.MarketplaceCancel;
 import com.unzer.payment.marketplace.MarketplaceCharge;
@@ -51,7 +51,7 @@ public class MarketplacePaymentService extends PaymentService {
     String response =
         restCommunication.httpPost(urlUtil.getRestUrl(authorization), unzer.getPrivateKey(),
             apiToSdkMapper.map(authorization));
-    JsonAuthorization jsonAuthorization = jsonParser.fromJson(response, JsonAuthorization.class);
+    ApiAuthorization jsonAuthorization = jsonParser.fromJson(response, ApiAuthorization.class);
     authorization =
         (MarketplaceAuthorization) apiToSdkMapper.mapToBusinessObject(jsonAuthorization,
             authorization
@@ -171,7 +171,7 @@ public class MarketplacePaymentService extends PaymentService {
   private MarketplaceCancel fetchCancel(MarketplacePayment payment, MarketplaceCancel cancel,
                                         URL url) throws HttpCommunicationException {
     String response = restCommunication.httpGet(url.toString(), unzer.getPrivateKey());
-    JsonCancel jsonCancel = jsonParser.fromJson(response, JsonCancel.class);
+    ApiCancel jsonCancel = jsonParser.fromJson(response, ApiCancel.class);
     cancel = (MarketplaceCancel) apiToSdkMapper.mapToBusinessObject(jsonCancel, cancel);
     cancel.setPayment(payment);
     cancel.setResourceUrl(url);
@@ -182,8 +182,8 @@ public class MarketplacePaymentService extends PaymentService {
                                                       MarketplaceAuthorization authorization,
                                                       URL url) throws HttpCommunicationException {
     String response = restCommunication.httpGet(url.toString(), unzer.getPrivateKey());
-    JsonAuthorization jsonAuthorization = jsonParser.fromJson(response,
-        JsonAuthorization.class);
+    ApiAuthorization jsonAuthorization = jsonParser.fromJson(response,
+        ApiAuthorization.class);
     authorization =
         (MarketplaceAuthorization) apiToSdkMapper.mapToBusinessObject(jsonAuthorization,
             authorization
@@ -216,7 +216,7 @@ public class MarketplacePaymentService extends PaymentService {
   private MarketplaceCharge fetchCharge(MarketplacePayment payment, MarketplaceCharge charge,
                                         URL url) throws HttpCommunicationException {
     String response = restCommunication.httpGet(url.toString(), unzer.getPrivateKey());
-    JsonCharge jsonCharge = jsonParser.fromJson(response, JsonCharge.class);
+    ApiCharge jsonCharge = jsonParser.fromJson(response, ApiCharge.class);
     charge = (MarketplaceCharge) apiToSdkMapper.mapToBusinessObject(jsonCharge, charge);
     charge.setInvoiceId(jsonCharge.getInvoiceId());
     charge.setPayment(payment);
@@ -235,7 +235,7 @@ public class MarketplacePaymentService extends PaymentService {
       throws HttpCommunicationException {
     String response = restCommunication.httpPost(urlUtil.getRestUrl(charge), unzer.getPrivateKey(),
         apiToSdkMapper.map(charge));
-    JsonCharge jsonCharge = jsonParser.fromJson(response, JsonCharge.class);
+    ApiCharge jsonCharge = jsonParser.fromJson(response, ApiCharge.class);
     charge = (MarketplaceCharge) apiToSdkMapper.mapToBusinessObject(jsonCharge, charge);
     charge.setInvoiceId(jsonCharge.getInvoiceId());
     charge.setPayment(fetchMarketplacePayment(jsonCharge.getResources().getPaymentId()));
@@ -260,7 +260,7 @@ public class MarketplacePaymentService extends PaymentService {
         .concat(charge.getChargeAuthorizationUrl(paymentId, authorizeId));
     String response = restCommunication.httpPost(url, unzer.getPrivateKey(),
         apiToSdkMapper.map(charge));
-    JsonCharge jsonCharge = jsonParser.fromJson(response, JsonCharge.class);
+    ApiCharge jsonCharge = jsonParser.fromJson(response, ApiCharge.class);
     charge = (MarketplaceCharge) apiToSdkMapper.mapToBusinessObject(jsonCharge, charge);
     charge.setInvoiceId(jsonCharge.getInvoiceId());
     charge.setPayment(fetchMarketplacePayment(jsonCharge.getResources().getPaymentId()));
@@ -330,7 +330,7 @@ public class MarketplacePaymentService extends PaymentService {
     charge.setId(chargeId);
     String response = restCommunication.httpGet(urlUtil.getPaymentUrl(charge, paymentId, chargeId),
         unzer.getPrivateKey());
-    JsonCharge jsonCharge = jsonParser.fromJson(response, JsonCharge.class);
+    ApiCharge jsonCharge = jsonParser.fromJson(response, ApiCharge.class);
     charge = (MarketplaceCharge) apiToSdkMapper.mapToBusinessObject(jsonCharge, charge);
     charge.setPayment(fetchMarketplacePayment(jsonCharge.getResources().getPaymentId()));
     return charge;
@@ -352,7 +352,7 @@ public class MarketplacePaymentService extends PaymentService {
     String response =
         restCommunication.httpGet(urlUtil.getPaymentUrl(authorization, paymentId, authorizeId),
             unzer.getPrivateKey());
-    JsonAuthorization jsonAuthorization = jsonParser.fromJson(response, JsonAuthorization.class);
+    ApiAuthorization jsonAuthorization = jsonParser.fromJson(response, ApiAuthorization.class);
     authorization =
         (MarketplaceAuthorization) apiToSdkMapper.mapToBusinessObject(jsonAuthorization,
             authorization
@@ -449,7 +449,7 @@ public class MarketplacePaymentService extends PaymentService {
       throws HttpCommunicationException {
     String response = restCommunication.httpPost(url, unzer.getPrivateKey(),
         apiToSdkMapper.map(cancel));
-    JsonCancel jsonCancel = jsonParser.fromJson(response, JsonCancel.class);
+    ApiCancel jsonCancel = jsonParser.fromJson(response, ApiCancel.class);
     cancel = (MarketplaceCancel) apiToSdkMapper.mapToBusinessObject(jsonCancel, cancel);
     cancel.setPayment(fetchMarketplacePayment(paymentId));
     cancel.setUnzer(unzer);

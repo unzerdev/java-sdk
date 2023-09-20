@@ -20,8 +20,8 @@ import com.unzer.payment.Charge;
 import com.unzer.payment.Customer;
 import com.unzer.payment.GeoLocation;
 import com.unzer.payment.communication.HttpCommunicationException;
-import com.unzer.payment.communication.json.JsonIdObject;
-import com.unzer.payment.communication.json.JsonObject;
+import com.unzer.payment.communication.json.ApiIdObject;
+import com.unzer.payment.communication.json.ApiObject;
 import java.math.BigDecimal;
 import java.net.URL;
 import java.util.Currency;
@@ -39,12 +39,12 @@ public class Przelewy24 extends AbstractPaymentType implements PaymentType {
   }
 
   @Override
-  public PaymentType map(PaymentType przelewy24, JsonObject jsonId) {
+  public PaymentType map(PaymentType przelewy24, ApiObject jsonId) {
     ((Przelewy24) przelewy24).setId(jsonId.getId());
-    ((Przelewy24) przelewy24).setRecurring(((JsonIdObject) jsonId).getRecurring());
+    ((Przelewy24) przelewy24).setRecurring(((ApiIdObject) jsonId).getRecurring());
     GeoLocation tempGeoLocation =
-        new GeoLocation(((JsonIdObject) jsonId).getGeoLocation().getClientIp(),
-            ((JsonIdObject) jsonId).getGeoLocation().getCountryIsoA2());
+        new GeoLocation(((ApiIdObject) jsonId).getGeoLocation().getClientIp(),
+            ((ApiIdObject) jsonId).getGeoLocation().getCountryIsoA2());
     ((Przelewy24) przelewy24).setGeoLocation(tempGeoLocation);
     return przelewy24;
   }

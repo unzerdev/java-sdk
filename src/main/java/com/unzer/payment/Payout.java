@@ -16,7 +16,7 @@
 
 package com.unzer.payment;
 
-import com.unzer.payment.communication.json.JsonObject;
+import com.unzer.payment.communication.json.ApiObject;
 import com.unzer.payment.paymenttypes.PaymentType;
 
 public class Payout extends AbstractTransaction<Payment> {
@@ -35,7 +35,7 @@ public class Payout extends AbstractTransaction<Payment> {
   }
 
   @Override
-  public PaymentType map(PaymentType paymentType, JsonObject jsonObject) {
+  public PaymentType map(PaymentType paymentType, ApiObject apiObject) {
     return null;
   }
 

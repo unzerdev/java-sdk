@@ -16,13 +16,6 @@
 
 package com.unzer.payment;
 
-import com.unzer.payment.communication.json.JsonObject;
-import com.unzer.payment.paymenttypes.PaymentType;
-import java.math.BigDecimal;
-import java.net.URL;
-import java.util.Currency;
-import java.util.Map;
-
 public class Paypage extends BasePaypage {
   @Override
   public String getTypeUrl() {

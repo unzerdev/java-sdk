@@ -21,6 +21,7 @@ import java.math.BigDecimal;
 /**
  * @deprecated together with {@link InstallmentSecuredRatePlan}
  */
+@Deprecated
 public class InstallmentSecuredRate {
   private BigDecimal amountOfRepayment;
   private BigDecimal rate;

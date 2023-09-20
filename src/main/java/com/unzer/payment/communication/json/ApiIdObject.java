@@ -16,15 +16,24 @@
 
 package com.unzer.payment.communication.json;
 
-public class JsonIdeal extends JsonIdObject {
-  private String bankName;
+public class ApiIdObject implements ApiObject {
+  private String id;
+  private Boolean recurring;
+  private JsonGeoLocation geoLocation;
 
-  public String getBankName() {
-    return bankName;
+  public String getId() {
+    return id;
   }
 
-  public void setBankName(String bankName) {
-    this.bankName = bankName;
+  public void setId(String id) {
+    this.id = id;
   }
 
+  public Boolean getRecurring() {
+    return recurring;
+  }
+
+  public JsonGeoLocation getGeoLocation() {
+    return geoLocation;
+  }
 }

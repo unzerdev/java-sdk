@@ -17,7 +17,7 @@
 package com.unzer.payment;
 
 import com.google.gson.annotations.SerializedName;
-import com.unzer.payment.communication.json.JsonObject;
+import com.unzer.payment.communication.json.ApiObject;
 import com.unzer.payment.paymenttypes.PaymentType;
 import java.util.Date;
 import java.util.Locale;
@@ -151,7 +151,7 @@ public class Customer implements PaymentType {
   }
 
   @Override
-  public PaymentType map(PaymentType paymentType, JsonObject jsonObject) {
+  public PaymentType map(PaymentType paymentType, ApiObject apiObject) {
     return null;
   }
 

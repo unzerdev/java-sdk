@@ -21,7 +21,7 @@ package com.unzer.payment.communication.json;
  *
  * @author Unzer E-Com GmbH
  */
-public class JsonApplepay extends JsonIdObject implements JsonObject {
+public class ApiApplepay extends ApiIdObject implements ApiObject {
   private String version;
   private String data;
   private String signature;
