@@ -7,9 +7,6 @@ import com.unzer.payment.communication.json.ApiSepaDirectDebit;
 public class PaylaterDirectDebit extends AbstractPaymentType {
   private String iban;
   private String holder;
-  // TODO: delete
-  @Deprecated
-  private String country;
 
   public PaylaterDirectDebit() {
   }
@@ -33,18 +30,6 @@ public class PaylaterDirectDebit extends AbstractPaymentType {
 
   public void setHolder(String holder) {
     this.holder = holder;
-  }
-
-  // TODO: delete
-  @Deprecated
-  public String getCountry() {
-    return country;
-  }
-
-  // TODO: delete
-  @Deprecated
-  public void setCountry(String country) {
-    this.country = country;
   }
 
   @Override

@@ -42,7 +42,10 @@ public class PaylaterDirectDebitTest extends AbstractPaymentTest {
   @Test
   public void create_and_fetch_payment_type_ok() {
     Unzer unzer = getUnzer();
-    PaylaterDirectDebit type = paymentType();
+    PaylaterDirectDebit type = new PaylaterDirectDebit(
+        "DE89370400440532013000",
+        "Max Mustermann"
+    );
     PaylaterDirectDebit response = unzer.createPaymentType(type);
     assertNotNull(response);
     assertNotNull(response.getId());
@@ -52,19 +55,15 @@ public class PaylaterDirectDebitTest extends AbstractPaymentTest {
     assertEquals(response.getId(), fetched.getId());
   }
 
-  private static PaylaterDirectDebit paymentType() {
-    PaylaterDirectDebit type = new PaylaterDirectDebit(
-        "DE89370400440532013000",
-        "Max Mustermann"
-    );
-    type.setCountry("DE");
-    return type;
-  }
-
   @Test
   public void authorize_and_charge_ok() {
     Unzer unzer = getUnzer();
-    PaylaterDirectDebit type = unzer.createPaymentType(paymentType());
+    PaylaterDirectDebit type = unzer.createPaymentType(
+        new PaylaterDirectDebit(
+            "DE89370400440532013000",
+            "Max Mustermann"
+        )
+    );
     assertNotNull(type.getId());
 
     Customer customer = unzer.createCustomer(getMaximumCustomer(generateUuid()));
