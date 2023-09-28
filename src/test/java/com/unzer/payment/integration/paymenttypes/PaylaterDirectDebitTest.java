@@ -21,19 +21,14 @@ import static com.unzer.payment.util.Uuid.generateUuid;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-import com.beust.ah.A;
 import com.unzer.payment.AbstractTransaction;
 import com.unzer.payment.Authorization;
 import com.unzer.payment.Charge;
 import com.unzer.payment.Customer;
 import com.unzer.payment.Unzer;
 import com.unzer.payment.business.AbstractPaymentTest;
-import com.unzer.payment.communication.HttpCommunicationException;
 import com.unzer.payment.paymenttypes.PaylaterDirectDebit;
-import com.unzer.payment.paymenttypes.Paypal;
 import java.math.BigDecimal;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.Currency;
 import org.junit.jupiter.api.Test;
 
