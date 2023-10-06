@@ -19,8 +19,8 @@ package com.unzer.payment.paymenttypes;
 import com.unzer.payment.Charge;
 import com.unzer.payment.Customer;
 import com.unzer.payment.communication.HttpCommunicationException;
-import com.unzer.payment.communication.json.JsonIdObject;
-import com.unzer.payment.communication.json.JsonObject;
+import com.unzer.payment.communication.json.ApiIdObject;
+import com.unzer.payment.communication.json.ApiObject;
 import java.math.BigDecimal;
 import java.net.URL;
 import java.util.Currency;
@@ -38,9 +38,9 @@ public class Wechatpay extends AbstractPaymentType implements PaymentType {
   }
 
   @Override
-  public PaymentType map(PaymentType wechatpay, JsonObject jsonId) {
+  public PaymentType map(PaymentType wechatpay, ApiObject jsonId) {
     ((Wechatpay) wechatpay).setId(jsonId.getId());
-    ((Wechatpay) wechatpay).setRecurring(((JsonIdObject) jsonId).getRecurring());
+    ((Wechatpay) wechatpay).setRecurring(((ApiIdObject) jsonId).getRecurring());
     return wechatpay;
   }
 

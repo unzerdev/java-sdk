@@ -21,7 +21,7 @@ import java.net.URL;
 import java.util.Currency;
 import java.util.Map;
 
-public class ApiLinkpay implements JsonObject {
+public class ApiLinkpay implements ApiObject {
 
   private String id;
 

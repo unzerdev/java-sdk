@@ -22,9 +22,9 @@ import com.unzer.payment.Charge;
 import com.unzer.payment.Customer;
 import com.unzer.payment.GeoLocation;
 import com.unzer.payment.communication.HttpCommunicationException;
-import com.unzer.payment.communication.json.JsonCard;
+import com.unzer.payment.communication.json.ApiCard;
 import com.unzer.payment.communication.json.JsonCardDetails;
-import com.unzer.payment.communication.json.JsonObject;
+import com.unzer.payment.communication.json.ApiObject;
 import java.math.BigDecimal;
 import java.net.URL;
 import java.util.Currency;
@@ -103,22 +103,22 @@ public class Card extends AbstractPaymentType implements PaymentType {
   }
 
   @Override
-  public PaymentType map(PaymentType card, JsonObject jsonCard) {
-    ((Card) card).setCvc(((JsonCard) jsonCard).getCvc());
-    ((Card) card).setExpiryDate(((JsonCard) jsonCard).getExpiryDate());
-    ((Card) card).setNumber(((JsonCard) jsonCard).getNumber());
+  public PaymentType map(PaymentType card, ApiObject jsonCard) {
+    ((Card) card).setCvc(((ApiCard) jsonCard).getCvc());
+    ((Card) card).setExpiryDate(((ApiCard) jsonCard).getExpiryDate());
+    ((Card) card).setNumber(((ApiCard) jsonCard).getNumber());
     ((Card) card).setId(jsonCard.getId());
-    ((Card) card).set3ds(((JsonCard) jsonCard).get3ds());
-    ((Card) card).setRecurring(((JsonCard) jsonCard).getRecurring());
-    ((Card) card).setBrand(((JsonCard) jsonCard).getBrand());
-    ((Card) card).setMethod(((JsonCard) jsonCard).getMethod());
-    ((Card) card).setCardHolder(((JsonCard) jsonCard).getCardHolder());
-    ((Card) card).setEmail(((JsonCard) jsonCard).getEmail());
-    CardDetails tempCardDetails = mapCardDetails(((JsonCard) jsonCard).getCardDetails());
+    ((Card) card).set3ds(((ApiCard) jsonCard).get3ds());
+    ((Card) card).setRecurring(((ApiCard) jsonCard).getRecurring());
+    ((Card) card).setBrand(((ApiCard) jsonCard).getBrand());
+    ((Card) card).setMethod(((ApiCard) jsonCard).getMethod());
+    ((Card) card).setCardHolder(((ApiCard) jsonCard).getCardHolder());
+    ((Card) card).setEmail(((ApiCard) jsonCard).getEmail());
+    CardDetails tempCardDetails = mapCardDetails(((ApiCard) jsonCard).getCardDetails());
     ((Card) card).setCardDetails(tempCardDetails);
     GeoLocation tempGeoLocation =
-        new GeoLocation(((JsonCard) jsonCard).getGeoLocation().getClientIp(),
-            ((JsonCard) jsonCard).getGeoLocation().getCountryIsoA2());
+        new GeoLocation(((ApiCard) jsonCard).getGeoLocation().getClientIp(),
+            ((ApiCard) jsonCard).getGeoLocation().getCountryIsoA2());
     ((Card) card).setGeoLocation(tempGeoLocation);
     return card;
   }

@@ -21,8 +21,8 @@ import com.google.gson.annotations.SerializedName;
 import com.unzer.payment.Authorization;
 import com.unzer.payment.communication.HttpCommunicationException;
 import com.unzer.payment.communication.JsonDateConverter;
-import com.unzer.payment.communication.json.JsonInstallmentSecuredRatePlan;
-import com.unzer.payment.communication.json.JsonObject;
+import com.unzer.payment.communication.json.ApiInstallmentSecuredRatePlan;
+import com.unzer.payment.communication.json.ApiObject;
 import com.unzer.payment.paymenttypes.AbstractPaymentType;
 import com.unzer.payment.paymenttypes.PaylaterInstallment;
 import com.unzer.payment.paymenttypes.PaymentType;
@@ -36,8 +36,9 @@ import java.util.List;
 /**
  * @deprecated Will be replaced by {@link PaylaterInstallment} in the future.
  */
+@Deprecated
 public class InstallmentSecuredRatePlan extends AbstractPaymentType
-    implements PaymentType, JsonObject {
+    implements PaymentType, ApiObject {
 
   private String iban;
   private String bic;
@@ -165,46 +166,46 @@ public class InstallmentSecuredRatePlan extends AbstractPaymentType
   }
 
   @Override
-  public PaymentType map(PaymentType paymentType, JsonObject jsonPaymentType) {
+  public PaymentType map(PaymentType paymentType, ApiObject jsonPaymentType) {
     if (paymentType instanceof InstallmentSecuredRatePlan
-        && jsonPaymentType instanceof JsonInstallmentSecuredRatePlan) {
+        && jsonPaymentType instanceof ApiInstallmentSecuredRatePlan) {
       ((InstallmentSecuredRatePlan) paymentType).setAccountHolder(
-          ((JsonInstallmentSecuredRatePlan) jsonPaymentType).getAccountHolder());
+          ((ApiInstallmentSecuredRatePlan) jsonPaymentType).getAccountHolder());
       ((InstallmentSecuredRatePlan) paymentType).setBic(
-          ((JsonInstallmentSecuredRatePlan) jsonPaymentType).getBic());
+          ((ApiInstallmentSecuredRatePlan) jsonPaymentType).getBic());
       ((InstallmentSecuredRatePlan) paymentType).setEffectiveInterestRate(
-          ((JsonInstallmentSecuredRatePlan) jsonPaymentType).getEffectiveInterestRate());
+          ((ApiInstallmentSecuredRatePlan) jsonPaymentType).getEffectiveInterestRate());
       ((InstallmentSecuredRatePlan) paymentType).setFeeFirstRate(
-          ((JsonInstallmentSecuredRatePlan) jsonPaymentType).getFeeFirstRate());
+          ((ApiInstallmentSecuredRatePlan) jsonPaymentType).getFeeFirstRate());
       ((InstallmentSecuredRatePlan) paymentType).setFeePerRate(
-          ((JsonInstallmentSecuredRatePlan) jsonPaymentType).getFeePerRate());
+          ((ApiInstallmentSecuredRatePlan) jsonPaymentType).getFeePerRate());
       ((InstallmentSecuredRatePlan) paymentType).setIban(
-          ((JsonInstallmentSecuredRatePlan) jsonPaymentType).getIban());
+          ((ApiInstallmentSecuredRatePlan) jsonPaymentType).getIban());
       ((InstallmentSecuredRatePlan) paymentType).setId(jsonPaymentType.getId());
       ((InstallmentSecuredRatePlan) paymentType).setInvoiceDate(
-          ((JsonInstallmentSecuredRatePlan) jsonPaymentType).getInvoiceDate());
+          ((ApiInstallmentSecuredRatePlan) jsonPaymentType).getInvoiceDate());
       ((InstallmentSecuredRatePlan) paymentType).setInvoiceDueDate(
-          ((JsonInstallmentSecuredRatePlan) jsonPaymentType).getInvoiceDueDate());
+          ((ApiInstallmentSecuredRatePlan) jsonPaymentType).getInvoiceDueDate());
       ((InstallmentSecuredRatePlan) paymentType).setLastRate(
-          ((JsonInstallmentSecuredRatePlan) jsonPaymentType).getLastRate());
+          ((ApiInstallmentSecuredRatePlan) jsonPaymentType).getLastRate());
       ((InstallmentSecuredRatePlan) paymentType).setMonthlyRate(
-          ((JsonInstallmentSecuredRatePlan) jsonPaymentType).getMonthlyRate());
+          ((ApiInstallmentSecuredRatePlan) jsonPaymentType).getMonthlyRate());
       ((InstallmentSecuredRatePlan) paymentType).setNominalInterestRate(
-          ((JsonInstallmentSecuredRatePlan) jsonPaymentType).getNominalInterestRate());
+          ((ApiInstallmentSecuredRatePlan) jsonPaymentType).getNominalInterestRate());
       ((InstallmentSecuredRatePlan) paymentType).setNumberOfRates(
-          ((JsonInstallmentSecuredRatePlan) jsonPaymentType).getNumberOfRates());
+          ((ApiInstallmentSecuredRatePlan) jsonPaymentType).getNumberOfRates());
       ((InstallmentSecuredRatePlan) paymentType).setOrderDate(
-          ((JsonInstallmentSecuredRatePlan) jsonPaymentType).getOrderDate());
+          ((ApiInstallmentSecuredRatePlan) jsonPaymentType).getOrderDate());
       ((InstallmentSecuredRatePlan) paymentType).setRateList(
-          ((JsonInstallmentSecuredRatePlan) jsonPaymentType).getRateList());
+          ((ApiInstallmentSecuredRatePlan) jsonPaymentType).getRateList());
       ((InstallmentSecuredRatePlan) paymentType).setRecurring(
-          ((JsonInstallmentSecuredRatePlan) jsonPaymentType).getRecurring());
+          ((ApiInstallmentSecuredRatePlan) jsonPaymentType).getRecurring());
       ((InstallmentSecuredRatePlan) paymentType).setTotalAmount(
-          ((JsonInstallmentSecuredRatePlan) jsonPaymentType).getTotalAmount());
+          ((ApiInstallmentSecuredRatePlan) jsonPaymentType).getTotalAmount());
       ((InstallmentSecuredRatePlan) paymentType).setTotalInterestAmount(
-          ((JsonInstallmentSecuredRatePlan) jsonPaymentType).getTotalInterestAmount());
+          ((ApiInstallmentSecuredRatePlan) jsonPaymentType).getTotalInterestAmount());
       ((InstallmentSecuredRatePlan) paymentType).setTotalPurchaseAmount(
-          ((JsonInstallmentSecuredRatePlan) jsonPaymentType).getTotalPurchaseAmount());
+          ((ApiInstallmentSecuredRatePlan) jsonPaymentType).getTotalPurchaseAmount());
     }
     return paymentType;
   }

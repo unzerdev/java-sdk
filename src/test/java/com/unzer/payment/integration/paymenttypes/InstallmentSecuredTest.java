@@ -37,7 +37,7 @@ import com.unzer.payment.business.paymenttypes.InstallmentSecuredRatePlan;
 import com.unzer.payment.communication.HttpCommunicationException;
 import com.unzer.payment.communication.JsonParser;
 import com.unzer.payment.communication.impl.HttpClientBasedRestCommunication;
-import com.unzer.payment.communication.json.JsonIdObject;
+import com.unzer.payment.communication.json.ApiIdObject;
 import com.unzer.payment.service.PaymentService;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -636,7 +636,7 @@ public class InstallmentSecuredTest extends AbstractPaymentTest {
         unzer.getPrivateKey(),
         getInstallmentSecuredRatePlan(new BigDecimal(380.48))
     );
-    JsonIdObject jsonResponse = jsonParser.fromJson(response, JsonIdObject.class);
+    ApiIdObject jsonResponse = jsonParser.fromJson(response, ApiIdObject.class);
     InstallmentSecuredRatePlan installmentSecuredRatePlan =
         paymentService.fetchPaymentType(jsonResponse.getId());
 
@@ -683,7 +683,7 @@ public class InstallmentSecuredTest extends AbstractPaymentTest {
         unzer.getPrivateKey(),
         getInstallmentSecuredRatePlan(new BigDecimal(380.48))
     );
-    JsonIdObject jsonResponse = jsonParser.fromJson(response, JsonIdObject.class);
+    ApiIdObject jsonResponse = jsonParser.fromJson(response, ApiIdObject.class);
     InstallmentSecuredRatePlan installmentSecuredRatePlan =
         paymentService.fetchPaymentType(jsonResponse.getId());
 

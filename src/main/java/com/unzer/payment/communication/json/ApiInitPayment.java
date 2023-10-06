@@ -16,38 +16,43 @@
 
 package com.unzer.payment.communication.json;
 
-import com.unzer.payment.marketplace.MarketplaceCancelBasket;
+import com.unzer.payment.models.AdditionalTransactionData;
 import java.math.BigDecimal;
 import java.net.URL;
 import java.util.Currency;
 import java.util.Date;
 
-public class JsonCancel extends JsonIdObject implements JsonObject, TransactionStatus {
+public class ApiInitPayment extends ApiIdObject implements ApiObject, TransactionStatus {
   private Boolean isSuccess;
   private Boolean isPending;
   private Boolean isError;
-
+  private Boolean isResumed;
   private JsonMessage message;
   private Date date;
-  private String paymentReference;
-  private String reasonCode;
 
   private String orderId;
   private String invoiceId;
-
   private BigDecimal amount;
   private Currency currency;
   private URL returnUrl;
+  private URL redirectUrl;
+  private Boolean card3ds;
+  private String paymentReference;
+  private BigDecimal effectiveInterestRate;
+  private AdditionalTransactionData additionalTransactionData;
 
   private JsonResources resources;
   private JsonProcessing processing = new JsonProcessing();
-  private MarketplaceCancelBasket canceledBasket;
+
+  public ApiInitPayment() {
+    super();
+  }
 
   public BigDecimal getAmount() {
     return amount;
   }
 
-  public JsonCancel setAmount(BigDecimal amount) {
+  public ApiInitPayment setAmount(BigDecimal amount) {
     this.amount = amount;
     return this;
   }
@@ -56,7 +61,7 @@ public class JsonCancel extends JsonIdObject implements JsonObject, TransactionS
     return currency;
   }
 
-  public JsonCancel setCurrency(Currency currency) {
+  public ApiInitPayment setCurrency(Currency currency) {
     this.currency = currency;
     return this;
   }
@@ -65,7 +70,7 @@ public class JsonCancel extends JsonIdObject implements JsonObject, TransactionS
     return returnUrl;
   }
 
-  public JsonCancel setReturnUrl(URL returnUrl) {
+  public ApiInitPayment setReturnUrl(URL returnUrl) {
     this.returnUrl = returnUrl;
     return this;
   }
@@ -74,7 +79,7 @@ public class JsonCancel extends JsonIdObject implements JsonObject, TransactionS
     return processing;
   }
 
-  public JsonCancel setProcessing(JsonProcessing processing) {
+  public ApiInitPayment setProcessing(JsonProcessing processing) {
     this.processing = processing;
     return this;
   }
@@ -104,6 +109,22 @@ public class JsonCancel extends JsonIdObject implements JsonObject, TransactionS
     this.date = date;
   }
 
+  public URL getRedirectUrl() {
+    return redirectUrl;
+  }
+
+  public void setRedirectUrl(URL redirectUrl) {
+    this.redirectUrl = redirectUrl;
+  }
+
+  public String getOrderId() {
+    return orderId;
+  }
+
+  public void setOrderId(String orderId) {
+    this.orderId = orderId;
+  }
+
   public Boolean getSuccess() {
     return isSuccess;
   }
@@ -120,16 +141,6 @@ public class JsonCancel extends JsonIdObject implements JsonObject, TransactionS
     this.isPending = isPending;
   }
 
-  @Override
-  public Boolean getResumed() {
-    return null;
-  }
-
-  @Override
-  public void setResumed(Boolean value) {
-    // Do nothing
-  }
-
   public Boolean getError() {
     return isError;
   }
@@ -138,43 +149,57 @@ public class JsonCancel extends JsonIdObject implements JsonObject, TransactionS
     this.isError = isError;
   }
 
+  public Boolean getResumed() {
+    return isResumed;
+  }
+
+  public void setResumed(Boolean resumed) {
+    isResumed = resumed;
+  }
+
+  public Boolean getCard3ds() {
+    return card3ds;
+  }
+
+  public ApiInitPayment setCard3ds(Boolean card3ds) {
+    this.card3ds = card3ds;
+    return this;
+  }
+
   public String getPaymentReference() {
     return paymentReference;
   }
 
-  public void setPaymentReference(String paymentReference) {
+  public ApiInitPayment setPaymentReference(String paymentReference) {
     this.paymentReference = paymentReference;
+    return this;
   }
 
-  public MarketplaceCancelBasket getCanceledBasket() {
-    return canceledBasket;
+  public BigDecimal getEffectiveInterestRate() {
+    return effectiveInterestRate;
   }
 
-  public void setCanceledBasket(MarketplaceCancelBasket canceledBasket) {
-    this.canceledBasket = canceledBasket;
+  public ApiInitPayment setEffectiveInterestRate(BigDecimal effectiveInterestRate) {
+    this.effectiveInterestRate = effectiveInterestRate;
+    return this;
+  }
+
+  public AdditionalTransactionData getAdditionalTransactionData() {
+    return additionalTransactionData;
+  }
+
+  public ApiInitPayment setAdditionalTransactionData(
+      AdditionalTransactionData additionalTransactionData) {
+    this.additionalTransactionData = additionalTransactionData;
+    return this;
   }
 
   public String getInvoiceId() {
     return invoiceId;
   }
 
-  public void setInvoiceId(String invoiceId) {
+  public ApiInitPayment setInvoiceId(String invoiceId) {
     this.invoiceId = invoiceId;
-  }
-
-  public String getOrderId() {
-    return orderId;
-  }
-
-  public void setOrderId(String orderId) {
-    this.orderId = orderId;
-  }
-
-  public String getReasonCode() {
-    return reasonCode;
-  }
-
-  public void setReasonCode(String reasonCode) {
-    this.reasonCode = reasonCode;
+    return this;
   }
 }

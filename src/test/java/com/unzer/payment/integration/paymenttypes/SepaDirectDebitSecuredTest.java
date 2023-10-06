@@ -23,7 +23,7 @@ import com.unzer.payment.business.Keys;
 import com.unzer.payment.communication.HttpCommunicationException;
 import com.unzer.payment.communication.JsonParser;
 import com.unzer.payment.communication.impl.HttpClientBasedRestCommunication;
-import com.unzer.payment.communication.json.JsonIdObject;
+import com.unzer.payment.communication.json.ApiIdObject;
 import com.unzer.payment.paymenttypes.SepaDirectDebitSecured;
 import com.unzer.payment.service.PaymentService;
 import org.junit.jupiter.api.Test;
@@ -34,7 +34,6 @@ import java.util.Currency;
 
 import static com.unzer.payment.business.BasketV1TestData.getMinTestBasketV1;
 import static com.unzer.payment.business.BasketV2TestData.getMinTestBasketV2;
-import static com.unzer.payment.business.Keys.ALT_LEGACY_PRIVATE_KEY;
 import static com.unzer.payment.business.Keys.LEGACY_PRIVATE_KEY;
 import static com.unzer.payment.util.Url.unsafeUrl;
 import static com.unzer.payment.util.Uuid.generateUuid;
@@ -107,7 +106,7 @@ public class SepaDirectDebitSecuredTest extends AbstractPaymentTest {
         PaymentService paymentService = new PaymentService(unzer, restCommunication);
 
         String response = restCommunication.httpPost("https://api.unzer.com/v1/types/sepa-direct-debit-guaranteed", unzer.getPrivateKey(), new SepaDirectDebitSecured("DE89370400440532013000"));
-        JsonIdObject jsonResponse = jsonParser.fromJson(response, JsonIdObject.class);
+        ApiIdObject jsonResponse = jsonParser.fromJson(response, ApiIdObject.class);
         SepaDirectDebitSecured sepaDirectDebitSecured = paymentService.fetchPaymentType(jsonResponse.getId());
 
         boolean matches = sepaDirectDebitSecured.getId().matches("s-ddg-\\w*");

@@ -23,7 +23,7 @@ import com.unzer.payment.ShippingAddress;
 import com.unzer.payment.communication.JsonDateConverter;
 import java.util.Date;
 
-public class JsonCustomer extends JsonIdObject implements JsonObject {
+public class ApiCustomer extends ApiIdObject implements ApiObject {
   private String firstname;
   private String lastname;
   private String company;

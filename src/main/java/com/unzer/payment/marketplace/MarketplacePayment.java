@@ -19,7 +19,7 @@ package com.unzer.payment.marketplace;
 import com.unzer.payment.AbstractPayment;
 import com.unzer.payment.Unzer;
 import com.unzer.payment.communication.HttpCommunicationException;
-import com.unzer.payment.communication.json.JsonObject;
+import com.unzer.payment.communication.json.ApiObject;
 import com.unzer.payment.paymenttypes.PaymentType;
 import java.util.List;
 
@@ -44,7 +44,7 @@ public class MarketplacePayment extends AbstractPayment {
   }
 
   @Override
-  public PaymentType map(PaymentType paymentType, JsonObject jsonObject) {
+  public PaymentType map(PaymentType paymentType, ApiObject apiObject) {
     return null;
   }
 

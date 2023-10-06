@@ -20,7 +20,7 @@ import java.math.BigDecimal;
 import java.util.Currency;
 import java.util.Date;
 
-public class JsonShipment extends JsonIdObject implements JsonObject {
+public class ApiShipment extends ApiIdObject implements ApiObject {
   private String isSuccess;
   private String isPending;
   private String isError;
@@ -33,7 +33,7 @@ public class JsonShipment extends JsonIdObject implements JsonObject {
   private JsonResources resources;
   private JsonProcessing processing = new JsonProcessing();
 
-  public JsonShipment() {
+  public ApiShipment() {
     super();
   }
 
@@ -41,7 +41,7 @@ public class JsonShipment extends JsonIdObject implements JsonObject {
     return amount;
   }
 
-  public JsonShipment setAmount(BigDecimal amount) {
+  public ApiShipment setAmount(BigDecimal amount) {
     this.amount = amount;
     return this;
   }
@@ -50,7 +50,7 @@ public class JsonShipment extends JsonIdObject implements JsonObject {
     return currency;
   }
 
-  public JsonShipment setCurrency(Currency currency) {
+  public ApiShipment setCurrency(Currency currency) {
     this.currency = currency;
     return this;
   }
@@ -59,7 +59,7 @@ public class JsonShipment extends JsonIdObject implements JsonObject {
     return processing;
   }
 
-  public JsonShipment setProcessing(JsonProcessing processing) {
+  public ApiShipment setProcessing(JsonProcessing processing) {
     this.processing = processing;
     return this;
   }

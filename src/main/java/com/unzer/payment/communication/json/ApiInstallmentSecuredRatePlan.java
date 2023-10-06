@@ -25,7 +25,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-public class JsonInstallmentSecuredRatePlan extends JsonIdObject implements JsonObject {
+public class ApiInstallmentSecuredRatePlan extends ApiIdObject implements ApiObject {
 
 
   private String iban;

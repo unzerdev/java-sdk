@@ -16,13 +16,13 @@
 
 package com.unzer.payment.communication.json.paylater;
 
-import com.unzer.payment.communication.json.JsonIdObject;
-import com.unzer.payment.communication.json.JsonObject;
+import com.unzer.payment.communication.json.ApiIdObject;
+import com.unzer.payment.communication.json.ApiObject;
 import java.math.BigDecimal;
 import java.net.URL;
 import java.util.List;
 
-public class ApiInstallmentPlan extends JsonIdObject implements JsonObject {
+public class ApiInstallmentPlan extends ApiIdObject implements ApiObject {
 
   private BigDecimal totalAmount;
   private int numberOfRates;

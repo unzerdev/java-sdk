@@ -20,8 +20,8 @@ import com.unzer.payment.Charge;
 import com.unzer.payment.Customer;
 import com.unzer.payment.GeoLocation;
 import com.unzer.payment.communication.HttpCommunicationException;
-import com.unzer.payment.communication.json.JsonIdObject;
-import com.unzer.payment.communication.json.JsonObject;
+import com.unzer.payment.communication.json.ApiIdObject;
+import com.unzer.payment.communication.json.ApiObject;
 import java.math.BigDecimal;
 import java.net.URL;
 import java.util.Currency;
@@ -39,12 +39,12 @@ public class Prepayment extends AbstractPaymentType implements PaymentType {
   }
 
   @Override
-  public PaymentType map(PaymentType prepayment, JsonObject jsonId) {
+  public PaymentType map(PaymentType prepayment, ApiObject jsonId) {
     ((Prepayment) prepayment).setId(jsonId.getId());
-    ((Prepayment) prepayment).setRecurring(((JsonIdObject) jsonId).getRecurring());
+    ((Prepayment) prepayment).setRecurring(((ApiIdObject) jsonId).getRecurring());
     GeoLocation tempGeoLocation =
-        new GeoLocation(((JsonIdObject) jsonId).getGeoLocation().getClientIp(),
-            ((JsonIdObject) jsonId).getGeoLocation().getCountryIsoA2());
+        new GeoLocation(((ApiIdObject) jsonId).getGeoLocation().getClientIp(),
+            ((ApiIdObject) jsonId).getGeoLocation().getCountryIsoA2());
     ((Prepayment) prepayment).setGeoLocation(tempGeoLocation);
     return prepayment;
   }

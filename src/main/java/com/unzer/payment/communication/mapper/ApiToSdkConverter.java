@@ -33,18 +33,18 @@ import com.unzer.payment.Shipment;
 import com.unzer.payment.communication.json.ApiLinkpay;
 import com.unzer.payment.communication.json.ApiPayment;
 import com.unzer.payment.communication.json.ApiPaypage;
-import com.unzer.payment.communication.json.JsonAuthorization;
-import com.unzer.payment.communication.json.JsonCancel;
+import com.unzer.payment.communication.json.ApiAuthorization;
+import com.unzer.payment.communication.json.ApiCancel;
 import com.unzer.payment.communication.json.JsonCompanyInfo;
-import com.unzer.payment.communication.json.JsonCustomer;
-import com.unzer.payment.communication.json.JsonIdObject;
-import com.unzer.payment.communication.json.JsonInitPayment;
-import com.unzer.payment.communication.json.JsonObject;
-import com.unzer.payment.communication.json.JsonPayout;
+import com.unzer.payment.communication.json.ApiCustomer;
+import com.unzer.payment.communication.json.ApiIdObject;
+import com.unzer.payment.communication.json.ApiInitPayment;
+import com.unzer.payment.communication.json.ApiObject;
+import com.unzer.payment.communication.json.ApiPayout;
 import com.unzer.payment.communication.json.JsonProcessing;
-import com.unzer.payment.communication.json.JsonRecurring;
+import com.unzer.payment.communication.json.ApiRecurring;
 import com.unzer.payment.communication.json.JsonResources;
-import com.unzer.payment.communication.json.JsonShipment;
+import com.unzer.payment.communication.json.ApiShipment;
 import com.unzer.payment.communication.json.JsonState;
 import com.unzer.payment.communication.json.TransactionStatus;
 import com.unzer.payment.communication.json.paylater.ApiInstallmentPlans;
@@ -55,8 +55,8 @@ import java.util.Optional;
 
 public class ApiToSdkConverter {
 
-  public JsonObject map(AbstractTransaction<? extends AbstractPayment> src) {
-    JsonInitPayment out = new JsonInitPayment();
+  public ApiObject map(AbstractTransaction<? extends AbstractPayment> src) {
+    ApiInitPayment out = new ApiInitPayment();
     out.setAmount(src.getAmount());
     out.setCurrency(src.getCurrency());
     out.setReturnUrl(src.getReturnUrl());
@@ -68,9 +68,9 @@ public class ApiToSdkConverter {
     out.setAdditionalTransactionData(src.getAdditionalTransactionData());
 
     if (src instanceof Payout) {
-      out = new JsonPayout(out);
+      out = new ApiPayout(out);
     } else if (src instanceof Authorization) {
-      out = new JsonAuthorization(out);
+      out = new ApiAuthorization(out);
       out.setEffectiveInterestRate(
           ((Authorization) src).getEffectiveInterestRate());
     }
@@ -92,8 +92,8 @@ public class ApiToSdkConverter {
     return out;
   }
 
-  public JsonRecurring map(Recurring src) {
-    JsonRecurring out = new JsonRecurring();
+  public ApiRecurring map(Recurring src) {
+    ApiRecurring out = new ApiRecurring();
     out.setReturnUrl(src.getReturnUrl());
     out.setResources(getResources(src));
     out.setAdditionalTransactionData(src.getAdditionalTransactionData());
@@ -107,8 +107,8 @@ public class ApiToSdkConverter {
     return out;
   }
 
-  public JsonCancel map(Cancel src) {
-    JsonCancel out = new JsonCancel();
+  public ApiCancel map(Cancel src) {
+    ApiCancel out = new ApiCancel();
     out.setAmount(src.getAmount());
     out.setOrderId(src.getOrderId());
     out.setInvoiceId(src.getInvoiceId());
@@ -120,14 +120,14 @@ public class ApiToSdkConverter {
     return out;
   }
 
-  public JsonObject map(MarketplaceCancel src) {
-    JsonCancel out = new JsonCancel();
+  public ApiObject map(MarketplaceCancel src) {
+    ApiCancel out = new ApiCancel();
     out.setPaymentReference(src.getPaymentReference());
     out.setCanceledBasket(src.getCanceledBasket());
     return out;
   }
 
-  public JsonObject map(Paypage src) {
+  public ApiObject map(Paypage src) {
     ApiPaypage out = new ApiPaypage();
     out.setId(src.getId());
     out.setAmount(src.getAmount());
@@ -163,7 +163,7 @@ public class ApiToSdkConverter {
     return out;
   }
 
-  public JsonObject map(Linkpay src) {
+  public ApiObject map(Linkpay src) {
     ApiLinkpay out = new ApiLinkpay();
     out.setId(src.getId());
     out.setAmount(src.getAmount());
@@ -289,7 +289,7 @@ public class ApiToSdkConverter {
     return out;
   }
 
-  public Recurring mapToBusinessObject(Recurring out, JsonRecurring src) {
+  public Recurring mapToBusinessObject(Recurring out, ApiRecurring src) {
     out.setDate(src.getDate());
     out.setMessage(src.getMessage());
     if (src.getResources() != null) {
@@ -341,7 +341,7 @@ public class ApiToSdkConverter {
   }
 
   public <T extends AbstractPayment> AbstractTransaction<T> mapToBusinessObject(
-      JsonInitPayment src, AbstractTransaction<T> out
+      ApiInitPayment src, AbstractTransaction<T> out
   ) {
     out.setId(src.getId());
     out.setAmount(src.getAmount());
@@ -371,8 +371,8 @@ public class ApiToSdkConverter {
     return out;
   }
 
-  public JsonCustomer map(Customer src) {
-    JsonCustomer out = new JsonCustomer();
+  public ApiCustomer map(Customer src) {
+    ApiCustomer out = new ApiCustomer();
     out.setFirstname(src.getFirstname());
     out.setLastname(src.getLastname());
     out.setCompany(src.getCompany());
@@ -420,7 +420,7 @@ public class ApiToSdkConverter {
     }
   }
 
-  public Customer mapToBusinessObject(JsonCustomer src, Customer out) {
+  public Customer mapToBusinessObject(ApiCustomer src, Customer out) {
     out.setId(src.getId());
     out.setFirstname(src.getFirstname());
     out.setLastname(src.getLastname());
@@ -476,7 +476,7 @@ public class ApiToSdkConverter {
   }
 
   public <T extends AbstractPayment> AbstractTransaction<T> mapToBusinessObject(
-      JsonCancel src, AbstractTransaction<T> out
+      ApiCancel src, AbstractTransaction<T> out
   ) {
     out.setId(src.getId());
     out.setAmount(src.getAmount());
@@ -490,7 +490,7 @@ public class ApiToSdkConverter {
     return out;
   }
 
-  public Shipment mapToBusinessObject(JsonShipment src, Shipment out) {
+  public Shipment mapToBusinessObject(ApiShipment src, Shipment out) {
     out.setId(src.getId());
     out.setMessage(src.getMessage());
     out.setDate(src.getDate());
@@ -530,7 +530,7 @@ public class ApiToSdkConverter {
     return null;
   }
 
-  public PaymentType mapToBusinessObject(PaymentType out, JsonIdObject src) {
+  public PaymentType mapToBusinessObject(PaymentType out, ApiIdObject src) {
     return out.map(out, src);
   }
 

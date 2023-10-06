@@ -16,6 +16,7 @@
 
 package com.unzer.payment.paymenttypes;
 
+@Deprecated
 public class SepaDirectDebitSecured extends SepaDirectDebit implements PaymentType {
 
   public SepaDirectDebitSecured(String iban) {

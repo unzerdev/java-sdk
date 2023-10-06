@@ -20,8 +20,8 @@ import com.unzer.payment.Charge;
 import com.unzer.payment.Customer;
 import com.unzer.payment.GeoLocation;
 import com.unzer.payment.communication.HttpCommunicationException;
-import com.unzer.payment.communication.json.JsonIdObject;
-import com.unzer.payment.communication.json.JsonObject;
+import com.unzer.payment.communication.json.ApiIdObject;
+import com.unzer.payment.communication.json.ApiObject;
 import java.math.BigDecimal;
 import java.net.URL;
 import java.util.Currency;
@@ -35,13 +35,13 @@ public class PostFinanceEFinance extends AbstractPaymentType implements PaymentT
   }
 
   @Override
-  public PaymentType map(PaymentType type, JsonObject jsonId) {
+  public PaymentType map(PaymentType type, ApiObject jsonId) {
     ((PostFinanceEFinance) type).setId(jsonId.getId());
     ((PostFinanceEFinance) type).setRecurring(
-        ((JsonIdObject) jsonId).getRecurring());
+        ((ApiIdObject) jsonId).getRecurring());
     GeoLocation tempGeoLocation =
-        new GeoLocation(((JsonIdObject) jsonId).getGeoLocation().getClientIp(),
-            ((JsonIdObject) jsonId).getGeoLocation().getCountryIsoA2());
+        new GeoLocation(((ApiIdObject) jsonId).getGeoLocation().getClientIp(),
+            ((ApiIdObject) jsonId).getGeoLocation().getCountryIsoA2());
     ((PostFinanceEFinance) type).setGeoLocation(tempGeoLocation);
     return type;
   }

@@ -23,7 +23,7 @@ import java.math.BigDecimal;
  *
  * @author Unzer E-Com GmbH
  */
-public class JsonApplepayResponse extends JsonIdObject implements JsonObject {
+public class ApiApplepayResponse extends ApiIdObject implements ApiObject {
   private String applicationPrimaryAccountNumber;
   private String applicationExpirationDate;
   private String currencyCode;

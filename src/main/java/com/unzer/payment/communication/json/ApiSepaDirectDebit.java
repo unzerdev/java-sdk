@@ -16,10 +16,14 @@
 
 package com.unzer.payment.communication.json;
 
-public class JsonPis extends JsonIdObject implements JsonObject {
+public class ApiSepaDirectDebit extends ApiIdObject {
   private String iban;
   private String bic;
   private String holder;
+
+  public ApiSepaDirectDebit() {
+    super();
+  }
 
   public String getIban() {
     return iban;

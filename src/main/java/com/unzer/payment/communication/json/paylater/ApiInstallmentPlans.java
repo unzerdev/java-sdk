@@ -16,14 +16,14 @@
 
 package com.unzer.payment.communication.json.paylater;
 
-import com.unzer.payment.communication.json.JsonIdObject;
-import com.unzer.payment.communication.json.JsonObject;
+import com.unzer.payment.communication.json.ApiIdObject;
+import com.unzer.payment.communication.json.ApiObject;
 import com.unzer.payment.communication.json.TransactionStatus;
 import java.math.BigDecimal;
 import java.util.Currency;
 import java.util.List;
 
-public class ApiInstallmentPlans extends JsonIdObject implements JsonObject, TransactionStatus {
+public class ApiInstallmentPlans extends ApiIdObject implements ApiObject, TransactionStatus {
   private BigDecimal amount;
   private Currency currency;
   private List<ApiInstallmentPlan> plans;

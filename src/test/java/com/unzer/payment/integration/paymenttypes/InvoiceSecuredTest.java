@@ -22,7 +22,7 @@ import com.unzer.payment.business.Keys;
 import com.unzer.payment.communication.HttpCommunicationException;
 import com.unzer.payment.communication.JsonParser;
 import com.unzer.payment.communication.impl.HttpClientBasedRestCommunication;
-import com.unzer.payment.communication.json.JsonIdObject;
+import com.unzer.payment.communication.json.ApiIdObject;
 import com.unzer.payment.paymenttypes.InvoiceSecured;
 import com.unzer.payment.service.PaymentService;
 import org.junit.jupiter.api.DynamicTest;
@@ -172,7 +172,7 @@ public class InvoiceSecuredTest extends AbstractPaymentTest {
         PaymentService paymentService = new PaymentService(unzer, restCommunication);
 
         String response = restCommunication.httpPost("https://api.unzer.com/v1/types/invoice-guaranteed", unzer.getPrivateKey(), new InvoiceSecured());
-        JsonIdObject jsonResponse = jsonParser.fromJson(response, JsonIdObject.class);
+        ApiIdObject jsonResponse = jsonParser.fromJson(response, ApiIdObject.class);
         InvoiceSecured invoiceSecured = paymentService.fetchPaymentType(jsonResponse.getId());
 
         boolean matches = invoiceSecured.getId().matches("s-ivg-\\w*");
@@ -191,7 +191,7 @@ public class InvoiceSecuredTest extends AbstractPaymentTest {
         PaymentService paymentService = new PaymentService(unzer, restCommunication);
 
         String response = restCommunication.httpPost("https://api.unzer.com/v1/types/invoice-factoring", unzer.getPrivateKey(), new InvoiceSecured());
-        JsonIdObject jsonResponse = jsonParser.fromJson(response, JsonIdObject.class);
+        ApiIdObject jsonResponse = jsonParser.fromJson(response, ApiIdObject.class);
         InvoiceSecured invoiceSecured = paymentService.fetchPaymentType(jsonResponse.getId());
 
         boolean matches = invoiceSecured.getId().matches("s-ivf-\\w*");
@@ -215,7 +215,7 @@ public class InvoiceSecuredTest extends AbstractPaymentTest {
         PaymentService paymentService = new PaymentService(unzer, restCommunication);
 
         String response = restCommunication.httpPost("https://api.unzer.com/v1/types/invoice-factoring", unzer.getPrivateKey(), new InvoiceSecured());
-        JsonIdObject jsonResponse = jsonParser.fromJson(response, JsonIdObject.class);
+        ApiIdObject jsonResponse = jsonParser.fromJson(response, ApiIdObject.class);
         InvoiceSecured invoiceSecured = paymentService.fetchPaymentType(jsonResponse.getId());
 
         boolean matches = invoiceSecured.getId().matches("s-ivf-\\w*");

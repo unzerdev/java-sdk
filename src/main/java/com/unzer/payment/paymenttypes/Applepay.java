@@ -21,8 +21,8 @@ import com.unzer.payment.Charge;
 import com.unzer.payment.Customer;
 import com.unzer.payment.GeoLocation;
 import com.unzer.payment.communication.HttpCommunicationException;
-import com.unzer.payment.communication.json.JsonApplepayResponse;
-import com.unzer.payment.communication.json.JsonObject;
+import com.unzer.payment.communication.json.ApiApplepayResponse;
+import com.unzer.payment.communication.json.ApiObject;
 import java.math.BigDecimal;
 import java.net.URL;
 import java.util.Currency;
@@ -60,19 +60,19 @@ public class Applepay extends AbstractPaymentType implements PaymentType {
   }
 
   @Override
-  public PaymentType map(PaymentType applepay, JsonObject jsonApplePay) {
+  public PaymentType map(PaymentType applepay, ApiObject jsonApplePay) {
     ((Applepay) applepay).setId(jsonApplePay.getId());
     ((Applepay) applepay).setApplicationExpirationDate(
-        ((JsonApplepayResponse) jsonApplePay).getApplicationExpirationDate());
+        ((ApiApplepayResponse) jsonApplePay).getApplicationExpirationDate());
     ((Applepay) applepay).setApplicationPrimaryAccountNumber(
-        ((JsonApplepayResponse) jsonApplePay).getApplicationPrimaryAccountNumber());
-    ((Applepay) applepay).setCurrencyCode(((JsonApplepayResponse) jsonApplePay).getCurrencyCode());
+        ((ApiApplepayResponse) jsonApplePay).getApplicationPrimaryAccountNumber());
+    ((Applepay) applepay).setCurrencyCode(((ApiApplepayResponse) jsonApplePay).getCurrencyCode());
     ((Applepay) applepay).setTransactionAmount(
-        ((JsonApplepayResponse) jsonApplePay).getTransactionAmount());
-    ((Applepay) applepay).setRecurring(((JsonApplepayResponse) jsonApplePay).getRecurring());
+        ((ApiApplepayResponse) jsonApplePay).getTransactionAmount());
+    ((Applepay) applepay).setRecurring(((ApiApplepayResponse) jsonApplePay).getRecurring());
     GeoLocation tempGeoLocation =
-        new GeoLocation(((JsonApplepayResponse) jsonApplePay).getGeoLocation().getClientIp(),
-            ((JsonApplepayResponse) jsonApplePay).getGeoLocation().getCountryIsoA2());
+        new GeoLocation(((ApiApplepayResponse) jsonApplePay).getGeoLocation().getClientIp(),
+            ((ApiApplepayResponse) jsonApplePay).getGeoLocation().getCountryIsoA2());
     ((Applepay) applepay).setGeoLocation(tempGeoLocation);
     return applepay;
   }

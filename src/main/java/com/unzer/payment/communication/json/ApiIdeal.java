@@ -16,10 +16,15 @@
 
 package com.unzer.payment.communication.json;
 
-public class JsonBancontact extends JsonIdObject implements JsonObject {
-  private String holder;
+public class ApiIdeal extends ApiIdObject {
+  private String bankName;
 
-  public String getHolder() {
-    return holder;
+  public String getBankName() {
+    return bankName;
   }
+
+  public void setBankName(String bankName) {
+    this.bankName = bankName;
+  }
+
 }

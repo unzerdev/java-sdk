@@ -20,8 +20,8 @@ import com.unzer.payment.Charge;
 import com.unzer.payment.Customer;
 import com.unzer.payment.GeoLocation;
 import com.unzer.payment.communication.HttpCommunicationException;
-import com.unzer.payment.communication.json.JsonObject;
-import com.unzer.payment.communication.json.JsonPis;
+import com.unzer.payment.communication.json.ApiObject;
+import com.unzer.payment.communication.json.ApiPis;
 import java.math.BigDecimal;
 import java.net.URL;
 import java.util.Currency;
@@ -58,15 +58,15 @@ public class Pis extends AbstractPaymentType implements PaymentType {
   }
 
   @Override
-  public PaymentType map(PaymentType pis, JsonObject jsonPis) {
+  public PaymentType map(PaymentType pis, ApiObject jsonPis) {
     ((Pis) pis).setId(jsonPis.getId());
-    ((Pis) pis).setRecurring(((JsonPis) jsonPis).getRecurring());
-    ((Pis) pis).setBic(((JsonPis) jsonPis).getBic());
-    ((Pis) pis).setIban(((JsonPis) jsonPis).getIban());
-    ((Pis) pis).setHolder(((JsonPis) jsonPis).getHolder());
+    ((Pis) pis).setRecurring(((ApiPis) jsonPis).getRecurring());
+    ((Pis) pis).setBic(((ApiPis) jsonPis).getBic());
+    ((Pis) pis).setIban(((ApiPis) jsonPis).getIban());
+    ((Pis) pis).setHolder(((ApiPis) jsonPis).getHolder());
     GeoLocation tempGeoLocation =
-        new GeoLocation(((JsonPis) jsonPis).getGeoLocation().getClientIp(),
-            ((JsonPis) jsonPis).getGeoLocation().getCountryIsoA2());
+        new GeoLocation(((ApiPis) jsonPis).getGeoLocation().getClientIp(),
+            ((ApiPis) jsonPis).getGeoLocation().getCountryIsoA2());
     ((Pis) pis).setGeoLocation(tempGeoLocation);
     return pis;
   }
