@@ -1,7 +1,25 @@
 package com.unzer.payment.integration.paymenttypes;
 
 
-import com.unzer.payment.*;
+import static com.unzer.payment.business.BasketV1TestData.getMaxTestBasketV1;
+import static com.unzer.payment.business.BasketV1TestData.getMinTestBasketV1;
+import static com.unzer.payment.business.BasketV2TestData.getMaxTestBasketV2;
+import static com.unzer.payment.business.BasketV2TestData.getMinTestBasketV2;
+import static com.unzer.payment.util.Url.unsafeUrl;
+import static com.unzer.payment.util.Uuid.generateUuid;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.DynamicTest.dynamicTest;
+
+import com.unzer.payment.Basket;
+import com.unzer.payment.Cancel;
+import com.unzer.payment.Charge;
+import com.unzer.payment.PaymentError;
+import com.unzer.payment.PaymentException;
+import com.unzer.payment.Shipment;
+import com.unzer.payment.Unzer;
 import com.unzer.payment.business.AbstractPaymentTest;
 import com.unzer.payment.business.Keys;
 import com.unzer.payment.communication.HttpCommunicationException;
@@ -10,10 +28,6 @@ import com.unzer.payment.communication.impl.HttpClientBasedRestCommunication;
 import com.unzer.payment.communication.json.ApiIdObject;
 import com.unzer.payment.paymenttypes.InvoiceSecured;
 import com.unzer.payment.service.PaymentService;
-import org.junit.jupiter.api.DynamicTest;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestFactory;
-
 import java.math.BigDecimal;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -22,15 +36,9 @@ import java.util.Currency;
 import java.util.Date;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-
-import static com.unzer.payment.business.BasketV1TestData.getMaxTestBasketV1;
-import static com.unzer.payment.business.BasketV1TestData.getMinTestBasketV1;
-import static com.unzer.payment.business.BasketV2TestData.getMaxTestBasketV2;
-import static com.unzer.payment.business.BasketV2TestData.getMinTestBasketV2;
-import static com.unzer.payment.util.Url.unsafeUrl;
-import static com.unzer.payment.util.Uuid.generateUuid;
-import static org.junit.jupiter.api.Assertions.*;
-import static org.junit.jupiter.api.DynamicTest.dynamicTest;
+import org.junit.jupiter.api.DynamicTest;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestFactory;
 
 public class InvoiceSecuredTest extends AbstractPaymentTest {
 

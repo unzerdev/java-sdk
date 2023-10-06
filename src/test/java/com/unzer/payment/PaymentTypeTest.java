@@ -1,10 +1,10 @@
 package com.unzer.payment;
 
 
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
 import com.unzer.payment.business.AbstractPaymentTest;
 import org.junit.jupiter.api.Test;
-
-import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class PaymentTypeTest extends AbstractPaymentTest {
 

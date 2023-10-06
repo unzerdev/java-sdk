@@ -1,12 +1,13 @@
 package com.unzer.payment;
 
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import com.unzer.payment.communication.HttpCommunicationException;
-import org.junit.jupiter.api.Test;
-
 import java.math.BigDecimal;
-
-import static org.junit.jupiter.api.Assertions.*;
+import org.junit.jupiter.api.Test;
 
 public class PaymentTest {
 

@@ -1,16 +1,15 @@
 package com.unzer.payment.business;
 
 
+import static com.unzer.payment.util.Uuid.generateUuid;
+
 import com.unzer.payment.Basket;
 import com.unzer.payment.BasketItem;
-
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Currency;
-
-import static com.unzer.payment.util.Uuid.generateUuid;
 
 public class BasketV1TestData {
     @Deprecated

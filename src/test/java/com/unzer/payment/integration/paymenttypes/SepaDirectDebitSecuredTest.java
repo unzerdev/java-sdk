@@ -1,5 +1,14 @@
 package com.unzer.payment.integration.paymenttypes;
 
+import static com.unzer.payment.business.BasketV1TestData.getMinTestBasketV1;
+import static com.unzer.payment.business.BasketV2TestData.getMinTestBasketV2;
+import static com.unzer.payment.business.Keys.LEGACY_PRIVATE_KEY;
+import static com.unzer.payment.util.Url.unsafeUrl;
+import static com.unzer.payment.util.Uuid.generateUuid;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import com.unzer.payment.Basket;
 import com.unzer.payment.Charge;
 import com.unzer.payment.Unzer;
@@ -11,18 +20,10 @@ import com.unzer.payment.communication.impl.HttpClientBasedRestCommunication;
 import com.unzer.payment.communication.json.ApiIdObject;
 import com.unzer.payment.paymenttypes.SepaDirectDebitSecured;
 import com.unzer.payment.service.PaymentService;
-import org.junit.jupiter.api.Test;
-
 import java.math.BigDecimal;
 import java.text.ParseException;
 import java.util.Currency;
-
-import static com.unzer.payment.business.BasketV1TestData.getMinTestBasketV1;
-import static com.unzer.payment.business.BasketV2TestData.getMinTestBasketV2;
-import static com.unzer.payment.business.Keys.LEGACY_PRIVATE_KEY;
-import static com.unzer.payment.util.Url.unsafeUrl;
-import static com.unzer.payment.util.Uuid.generateUuid;
-import static org.junit.jupiter.api.Assertions.*;
+import org.junit.jupiter.api.Test;
 
 
 public class SepaDirectDebitSecuredTest extends AbstractPaymentTest {

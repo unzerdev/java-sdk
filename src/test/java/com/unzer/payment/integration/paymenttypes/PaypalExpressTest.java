@@ -1,7 +1,15 @@
 package com.unzer.payment.integration.paymenttypes;
 
+import static com.unzer.payment.util.Url.unsafeUrl;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 import com.unzer.payment.AbstractTransaction.Status;
-import com.unzer.payment.*;
+import com.unzer.payment.Authorization;
+import com.unzer.payment.Basket;
+import com.unzer.payment.BasketItem;
+import com.unzer.payment.Cancel;
+import com.unzer.payment.Charge;
+import com.unzer.payment.Unzer;
 import com.unzer.payment.business.AbstractPaymentTest;
 import com.unzer.payment.business.BasketV2TestData;
 import com.unzer.payment.communication.HttpCommunicationException;
@@ -9,6 +17,10 @@ import com.unzer.payment.models.AdditionalTransactionData;
 import com.unzer.payment.models.PaypalData;
 import com.unzer.payment.paymenttypes.Paypal;
 import io.github.bonigarcia.wdm.WebDriverManager;
+import java.math.BigDecimal;
+import java.time.Duration;
+import java.util.AbstractMap;
+import java.util.Currency;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
@@ -18,14 +30,6 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
-
-import java.math.BigDecimal;
-import java.time.Duration;
-import java.util.AbstractMap;
-import java.util.Currency;
-
-import static com.unzer.payment.util.Url.unsafeUrl;
-import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class PaypalExpressTest extends AbstractPaymentTest {
     @BeforeAll

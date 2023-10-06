@@ -1,11 +1,10 @@
 package com.unzer.payment.util;
 
-import org.junit.jupiter.api.Tag;
-
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
+import org.junit.jupiter.api.Tag;
 
 /**
  * Integration annotation is used to filter integration tests (slow tests that communicate with PAPI).

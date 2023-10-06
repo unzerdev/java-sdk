@@ -1,8 +1,22 @@
 package com.unzer.payment.business;
 
 
+import static com.unzer.payment.business.BasketV1TestData.getMaxTestBasketV1;
+import static com.unzer.payment.business.Keys.DEFAULT;
+import static com.unzer.payment.business.Keys.MARKETPLACE_KEY;
+import static com.unzer.payment.util.Uuid.generateUuid;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import com.google.gson.GsonBuilder;
-import com.unzer.payment.*;
+import com.unzer.payment.AbstractTransaction;
+import com.unzer.payment.Basket;
+import com.unzer.payment.Charge;
+import com.unzer.payment.Customer;
+import com.unzer.payment.Payment;
+import com.unzer.payment.Unzer;
 import com.unzer.payment.communication.HttpCommunicationException;
 import com.unzer.payment.communication.JsonFieldIgnoreStragegy;
 import com.unzer.payment.marketplace.MarketplaceCharge;
@@ -10,21 +24,14 @@ import com.unzer.payment.marketplace.MarketplacePayment;
 import com.unzer.payment.paymenttypes.Card;
 import com.unzer.payment.paymenttypes.SepaDirectDebit;
 import com.unzer.payment.paymenttypes.Sofort;
-import org.junit.jupiter.api.Disabled;
-import org.junit.jupiter.api.Test;
-
 import java.math.BigDecimal;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.text.ParseException;
 import java.time.LocalDate;
 import java.util.Currency;
-
-import static com.unzer.payment.business.BasketV1TestData.getMaxTestBasketV1;
-import static com.unzer.payment.business.Keys.DEFAULT;
-import static com.unzer.payment.business.Keys.MARKETPLACE_KEY;
-import static com.unzer.payment.util.Uuid.generateUuid;
-import static org.junit.jupiter.api.Assertions.*;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
 
 public class ChargeTest extends AbstractPaymentTest {
 

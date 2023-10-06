@@ -1,7 +1,6 @@
 package com.unzer.payment.integration.paymenttypes;
 
 
-import static com.unzer.payment.business.Keys.ALT_LEGACY_PRIVATE_KEY;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import com.unzer.payment.Charge;

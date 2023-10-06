@@ -1,5 +1,8 @@
 package com.unzer.payment.service;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.DynamicTest.dynamicTest;
+
 import com.unzer.payment.business.AbstractPaymentTest;
 import com.unzer.payment.business.Keys;
 import com.unzer.payment.business.paymenttypes.InstallmentSecuredRatePlan;
@@ -7,17 +10,13 @@ import com.unzer.payment.communication.HttpCommunicationException;
 import com.unzer.payment.paymenttypes.InvoiceSecured;
 import com.unzer.payment.paymenttypes.PaymentType;
 import com.unzer.payment.paymenttypes.SepaDirectDebitSecured;
+import java.util.Collection;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 import org.junit.jupiter.api.DynamicTest;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestFactory;
 import uk.org.webcompere.systemstubs.environment.EnvironmentVariables;
-
-import java.util.Collection;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.DynamicTest.dynamicTest;
 
 
 public class UrlUtilTest extends AbstractPaymentTest {

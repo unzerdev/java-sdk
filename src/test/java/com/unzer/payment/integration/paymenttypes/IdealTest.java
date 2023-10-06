@@ -1,19 +1,18 @@
 package com.unzer.payment.integration.paymenttypes;
 
 
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+
 import com.unzer.payment.Charge;
 import com.unzer.payment.business.AbstractPaymentTest;
 import com.unzer.payment.business.Keys;
 import com.unzer.payment.communication.HttpCommunicationException;
 import com.unzer.payment.paymenttypes.Ideal;
-import org.junit.jupiter.api.Test;
-
 import java.math.BigDecimal;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Currency;
-
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import org.junit.jupiter.api.Test;
 
 public class IdealTest extends AbstractPaymentTest {
 

@@ -10,7 +10,6 @@ import com.unzer.payment.Metadata;
 import com.unzer.payment.Payment;
 import com.unzer.payment.Unzer;
 import com.unzer.payment.communication.HttpCommunicationException;
-import java.net.MalformedURLException;
 import org.junit.jupiter.api.Test;
 
 public class MetadataTest extends AbstractPaymentTest {

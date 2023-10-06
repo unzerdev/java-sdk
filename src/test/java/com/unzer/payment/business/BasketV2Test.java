@@ -1,21 +1,26 @@
 package com.unzer.payment.business;
 
 
-import com.unzer.payment.*;
+import static com.unzer.payment.business.BasketV2TestData.getMaxTestBasketV2;
+import static com.unzer.payment.business.BasketV2TestData.getMinTestBasketV2;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+
+import com.unzer.payment.Authorization;
+import com.unzer.payment.Basket;
+import com.unzer.payment.BasketItem;
+import com.unzer.payment.Charge;
+import com.unzer.payment.Payment;
 import com.unzer.payment.communication.HttpCommunicationException;
 import com.unzer.payment.communication.JsonParser;
-import org.assertj.core.data.MapEntry;
-import org.junit.jupiter.api.Test;
-
 import java.math.BigDecimal;
 import java.net.MalformedURLException;
 import java.util.Arrays;
 import java.util.List;
-
-import static com.unzer.payment.business.BasketV2TestData.getMaxTestBasketV2;
-import static com.unzer.payment.business.BasketV2TestData.getMinTestBasketV2;
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
+import org.assertj.core.data.MapEntry;
+import org.junit.jupiter.api.Test;
 
 public class BasketV2Test extends AbstractPaymentTest {
     @Test

@@ -2,7 +2,6 @@ package com.unzer.payment.communication;
 
 
 import com.unzer.payment.communication.UnzerHttpRequest.UnzerHttpMethod;
-
 import java.util.Locale;
 
 public class MockUnzerRestCommunication extends AbstractUnzerRestCommunication {

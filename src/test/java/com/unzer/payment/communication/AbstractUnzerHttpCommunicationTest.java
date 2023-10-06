@@ -1,15 +1,17 @@
 package com.unzer.payment.communication;
 
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+
 import com.unzer.payment.PaymentError;
 import com.unzer.payment.PaymentException;
 import com.unzer.payment.util.SDKInfo;
+import java.util.Base64;
+import java.util.HashMap;
+import java.util.Locale;
+import java.util.Map;
 import org.junit.jupiter.api.Test;
-
-import java.util.*;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 public class AbstractUnzerHttpCommunicationTest {
 

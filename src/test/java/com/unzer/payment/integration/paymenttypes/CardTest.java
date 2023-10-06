@@ -1,6 +1,21 @@
 package com.unzer.payment.integration.paymenttypes;
 
-import com.unzer.payment.*;
+import static com.unzer.payment.business.Keys.ALT_LEGACY_PRIVATE_KEY;
+import static com.unzer.payment.util.Url.unsafeUrl;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
+import com.unzer.payment.AbstractTransaction;
+import com.unzer.payment.Authorization;
+import com.unzer.payment.Charge;
+import com.unzer.payment.Payment;
+import com.unzer.payment.PaymentException;
+import com.unzer.payment.Recurring;
+import com.unzer.payment.Unzer;
 import com.unzer.payment.business.AbstractPaymentTest;
 import com.unzer.payment.communication.HttpCommunicationException;
 import com.unzer.payment.communication.impl.HttpClientBasedRestCommunication;
@@ -8,17 +23,12 @@ import com.unzer.payment.enums.RecurrenceType;
 import com.unzer.payment.models.AdditionalTransactionData;
 import com.unzer.payment.models.CardTransactionData;
 import com.unzer.payment.paymenttypes.Card;
-import org.junit.jupiter.api.Disabled;
-import org.junit.jupiter.api.Test;
-
 import java.math.BigDecimal;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Currency;
-
-import static com.unzer.payment.business.Keys.ALT_LEGACY_PRIVATE_KEY;
-import static com.unzer.payment.util.Url.unsafeUrl;
-import static org.junit.jupiter.api.Assertions.*;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
 
 
 public class CardTest extends AbstractPaymentTest {

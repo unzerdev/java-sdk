@@ -1,16 +1,31 @@
 package com.unzer.payment.integration.paymenttypes;
 
-import com.unzer.payment.*;
-import com.unzer.payment.business.AbstractPaymentTest;
-import com.unzer.payment.business.Keys;
-import com.unzer.payment.communication.HttpCommunicationException;
-import com.unzer.payment.models.*;
-import com.unzer.payment.paymenttypes.PaylaterInvoice;
-import org.junit.jupiter.api.Disabled;
-import org.junit.jupiter.api.DynamicTest;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestFactory;
+import static com.unzer.payment.util.Url.unsafeUrl;
+import static com.unzer.payment.util.Uuid.generateUuid;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.DynamicTest.dynamicTest;
 
+import com.unzer.payment.AbstractTransaction;
+import com.unzer.payment.Authorization;
+import com.unzer.payment.Basket;
+import com.unzer.payment.BasketItem;
+import com.unzer.payment.Cancel;
+import com.unzer.payment.Charge;
+import com.unzer.payment.Customer;
+import com.unzer.payment.PaymentException;
+import com.unzer.payment.Unzer;
+import com.unzer.payment.business.AbstractPaymentTest;
+import com.unzer.payment.communication.HttpCommunicationException;
+import com.unzer.payment.models.AdditionalTransactionData;
+import com.unzer.payment.models.CustomerType;
+import com.unzer.payment.models.PaylaterInvoiceConfig;
+import com.unzer.payment.models.RiskData;
+import com.unzer.payment.models.ShippingTransactionData;
+import com.unzer.payment.paymenttypes.PaylaterInvoice;
 import java.math.BigDecimal;
 import java.util.Collection;
 import java.util.Currency;
@@ -18,11 +33,9 @@ import java.util.Date;
 import java.util.Locale;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-
-import static com.unzer.payment.util.Url.unsafeUrl;
-import static com.unzer.payment.util.Uuid.generateUuid;
-import static org.junit.jupiter.api.Assertions.*;
-import static org.junit.jupiter.api.DynamicTest.dynamicTest;
+import org.junit.jupiter.api.DynamicTest;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestFactory;
 
 
 public class PaylaterInvoiceTest extends AbstractPaymentTest {

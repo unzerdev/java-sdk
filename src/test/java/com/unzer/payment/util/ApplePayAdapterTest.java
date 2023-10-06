@@ -1,16 +1,17 @@
 package com.unzer.payment.util;
 
 
+import static com.unzer.payment.util.ApplePayAdapterUtil.doesUrlContainValidDomainName;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
+import java.net.URISyntaxException;
+import java.util.Collections;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.parallel.Execution;
 import org.junit.jupiter.api.parallel.ExecutionMode;
-
-import java.net.URISyntaxException;
-import java.util.Collections;
-
-import static com.unzer.payment.util.ApplePayAdapterUtil.doesUrlContainValidDomainName;
-import static org.junit.jupiter.api.Assertions.*;
 
 
 @Execution(ExecutionMode.SAME_THREAD)

@@ -1,21 +1,19 @@
 package com.unzer.payment.integration.paymenttypes;
 
 
+import static com.unzer.payment.business.Keys.LEGACY_PRIVATE_KEY;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+
 import com.unzer.payment.Charge;
 import com.unzer.payment.Unzer;
 import com.unzer.payment.business.AbstractPaymentTest;
 import com.unzer.payment.communication.HttpCommunicationException;
 import com.unzer.payment.paymenttypes.Invoice;
-import org.junit.jupiter.api.Test;
-
 import java.math.BigDecimal;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Currency;
-
-import static com.unzer.payment.business.Keys.DEFAULT;
-import static com.unzer.payment.business.Keys.LEGACY_PRIVATE_KEY;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import org.junit.jupiter.api.Test;
 
 public class InvoiceTest extends AbstractPaymentTest {
 

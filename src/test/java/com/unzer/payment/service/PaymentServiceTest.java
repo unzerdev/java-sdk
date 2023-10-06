@@ -1,14 +1,18 @@
 package com.unzer.payment.service;
 
 
-import com.unzer.payment.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+
+import com.unzer.payment.Charge;
+import com.unzer.payment.PaymentError;
+import com.unzer.payment.PaymentException;
+import com.unzer.payment.TestData;
+import com.unzer.payment.Unzer;
 import com.unzer.payment.communication.HttpCommunicationException;
 import com.unzer.payment.communication.HttpCommunicationMockUtils;
 import com.unzer.payment.communication.UnzerRestCommunication;
 import org.junit.jupiter.api.Test;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 public class PaymentServiceTest {
 

@@ -1,9 +1,9 @@
 package com.unzer.payment.paymenttypes;
 
 import com.unzer.payment.GeoLocation;
-import com.unzer.payment.communication.json.ApiPaylaterInstallment;
 import com.unzer.payment.communication.json.ApiIdObject;
 import com.unzer.payment.communication.json.ApiObject;
+import com.unzer.payment.communication.json.ApiPaylaterInstallment;
 
 public class PaylaterInstallment extends AbstractPaymentType implements PaymentType {
 
