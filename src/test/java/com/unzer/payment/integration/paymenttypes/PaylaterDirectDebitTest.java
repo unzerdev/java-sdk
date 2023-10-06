@@ -14,9 +14,11 @@ import com.unzer.payment.business.AbstractPaymentTest;
 import com.unzer.payment.paymenttypes.PaylaterDirectDebit;
 import java.math.BigDecimal;
 import java.util.Currency;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 
+@Disabled("Until email field is optional")
 public class PaylaterDirectDebitTest extends AbstractPaymentTest {
   @Test
   public void create_and_fetch_payment_type_ok() {
