@@ -1,22 +1,24 @@
-/*
- * Copyright 2020-today Unzer E-Com GmbH
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
 package com.unzer.payment.business;
 
-import com.unzer.payment.*;
+import static com.unzer.payment.util.Url.unsafeUrl;
+import static com.unzer.payment.util.Uuid.generateUuid;
+import static java.util.concurrent.TimeUnit.SECONDS;
+import static org.awaitility.Awaitility.await;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
+import com.unzer.payment.Address;
+import com.unzer.payment.Authorization;
+import com.unzer.payment.BasketItem;
+import com.unzer.payment.Cancel;
+import com.unzer.payment.Charge;
+import com.unzer.payment.Customer;
 import com.unzer.payment.Customer.Salutation;
+import com.unzer.payment.CustomerCompanyData;
+import com.unzer.payment.Metadata;
+import com.unzer.payment.Paypage;
+import com.unzer.payment.Processing;
+import com.unzer.payment.ShippingAddress;
+import com.unzer.payment.Unzer;
 import com.unzer.payment.communication.HttpCommunicationException;
 import com.unzer.payment.communication.impl.HttpClientBasedRestCommunication;
 import com.unzer.payment.marketplace.MarketplaceAuthorization;
@@ -26,15 +28,6 @@ import com.unzer.payment.marketplace.MarketplaceCharge;
 import com.unzer.payment.models.AdditionalTransactionData;
 import com.unzer.payment.paymenttypes.Card;
 import com.unzer.payment.paymenttypes.SepaDirectDebit;
-import org.apache.hc.client5.http.classic.HttpClient;
-import org.apache.hc.client5.http.classic.methods.HttpGet;
-import org.apache.hc.client5.http.classic.methods.HttpPost;
-import org.apache.hc.client5.http.impl.classic.HttpClients;
-import org.apache.hc.core5.http.ClassicHttpResponse;
-import org.apache.hc.core5.http.HttpResponse;
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -44,13 +37,20 @@ import java.text.ParseException;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
-import java.util.*;
-
-import static com.unzer.payment.util.Url.unsafeUrl;
-import static com.unzer.payment.util.Uuid.generateUuid;
-import static java.util.concurrent.TimeUnit.SECONDS;
-import static org.awaitility.Awaitility.await;
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import java.util.ArrayList;
+import java.util.Currency;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+import org.apache.hc.client5.http.classic.HttpClient;
+import org.apache.hc.client5.http.classic.methods.HttpGet;
+import org.apache.hc.client5.http.classic.methods.HttpPost;
+import org.apache.hc.client5.http.impl.classic.HttpClients;
+import org.apache.hc.core5.http.ClassicHttpResponse;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
 
 
 public abstract class AbstractPaymentTest {

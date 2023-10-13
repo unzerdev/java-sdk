@@ -204,34 +204,6 @@
                     </execution>
                 </executions>
             </plugin>
-            <plugin>
-                <groupId>com.mycila</groupId>
-                <artifactId>license-maven-plugin</artifactId>
-                <version>4.1</version>
-                <configuration>
-                    <licenseSets>
-                        <licenseSet>
-                            <header>NOTICE</header>
-                            <excludes>
-                                <exclude>**/*.md</exclude>
-                                <exclude>**/*.xml</exclude>
-                                <exclude>src/test/resources/**</exclude>
-                                <exclude>src/main/resources/**</exclude>
-                                <exclude>*</exclude>
-                            </excludes>
-                        </licenseSet>
-                    </licenseSets>
-                </configuration>
-                <executions>
-                    <execution>
-                        <id>check-license-headers</id>
-                        <phase>validate</phase>
-                        <goals>
-                            <goal>check</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
         </plugins>
     </build>
 

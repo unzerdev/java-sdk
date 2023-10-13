@@ -1,46 +1,51 @@
-/*
- * Copyright 2020-today Unzer E-Com GmbH
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
 package com.unzer.payment.integration.paymenttypes;
 
-import com.unzer.payment.*;
+import static com.unzer.payment.util.Url.unsafeUrl;
+import static com.unzer.payment.util.Uuid.generateUuid;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.DynamicTest.dynamicTest;
+
+import com.unzer.payment.AbstractTransaction;
+import com.unzer.payment.Authorization;
+import com.unzer.payment.Basket;
+import com.unzer.payment.BasketItem;
+import com.unzer.payment.Cancel;
+import com.unzer.payment.Charge;
+import com.unzer.payment.Customer;
+import com.unzer.payment.PaymentError;
+import com.unzer.payment.PaymentException;
+import com.unzer.payment.Unzer;
 import com.unzer.payment.business.AbstractPaymentTest;
-import com.unzer.payment.business.Keys;
 import com.unzer.payment.communication.HttpCommunicationException;
 import com.unzer.payment.models.AdditionalTransactionData;
 import com.unzer.payment.paymenttypes.Klarna;
 import com.unzer.payment.util.Integration;
 import io.github.bonigarcia.wdm.WebDriverManager;
-import org.junit.jupiter.api.*;
+import java.math.BigDecimal;
+import java.time.Duration;
+import java.util.AbstractMap;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Currency;
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.DynamicTest;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestFactory;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
-
-import java.math.BigDecimal;
-import java.time.Duration;
-import java.util.*;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
-
-import static com.unzer.payment.util.Url.unsafeUrl;
-import static com.unzer.payment.util.Uuid.generateUuid;
-import static org.junit.jupiter.api.Assertions.*;
-import static org.junit.jupiter.api.DynamicTest.dynamicTest;
 
 
 public class KlarnaTest extends AbstractPaymentTest {

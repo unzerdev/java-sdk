@@ -1,21 +1,21 @@
-/*
- * Copyright 2020-today Unzer E-Com GmbH
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
 package com.unzer.payment.integration.paymenttypes;
 
-import com.unzer.payment.*;
+import static com.unzer.payment.business.Keys.ALT_LEGACY_PRIVATE_KEY;
+import static com.unzer.payment.util.Url.unsafeUrl;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
+import com.unzer.payment.AbstractTransaction;
+import com.unzer.payment.Authorization;
+import com.unzer.payment.Charge;
+import com.unzer.payment.Payment;
+import com.unzer.payment.PaymentException;
+import com.unzer.payment.Recurring;
+import com.unzer.payment.Unzer;
 import com.unzer.payment.business.AbstractPaymentTest;
 import com.unzer.payment.communication.HttpCommunicationException;
 import com.unzer.payment.communication.impl.HttpClientBasedRestCommunication;
@@ -23,17 +23,12 @@ import com.unzer.payment.enums.RecurrenceType;
 import com.unzer.payment.models.AdditionalTransactionData;
 import com.unzer.payment.models.CardTransactionData;
 import com.unzer.payment.paymenttypes.Card;
-import org.junit.jupiter.api.Disabled;
-import org.junit.jupiter.api.Test;
-
 import java.math.BigDecimal;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Currency;
-
-import static com.unzer.payment.business.Keys.ALT_LEGACY_PRIVATE_KEY;
-import static com.unzer.payment.util.Url.unsafeUrl;
-import static org.junit.jupiter.api.Assertions.*;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
 
 
 public class CardTest extends AbstractPaymentTest {
