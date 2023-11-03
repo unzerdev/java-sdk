@@ -1,8 +1,8 @@
 package com.unzer.payment.communication.mapper;
 
+import com.unzer.payment.Authorization;
 import com.unzer.payment.BasePayment;
 import com.unzer.payment.BaseTransaction;
-import com.unzer.payment.Authorization;
 import com.unzer.payment.Cancel;
 import com.unzer.payment.CommercialSector;
 import com.unzer.payment.Customer;

@@ -1,8 +1,5 @@
 package com.unzer.payment;
 
-import com.unzer.payment.communication.json.ApiObject;
-import com.unzer.payment.paymenttypes.PaymentType;
-
 public class Linkpay extends BasePaypage {
   private String version;
 

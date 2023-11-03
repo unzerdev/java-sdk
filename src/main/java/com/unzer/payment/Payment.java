@@ -2,7 +2,6 @@ package com.unzer.payment;
 
 import com.unzer.payment.communication.HttpCommunicationException;
 import com.unzer.payment.paymenttypes.BasePaymentType;
-import com.unzer.payment.paymenttypes.PaymentType;
 import java.math.BigDecimal;
 import java.net.URL;
 import java.util.ArrayList;

@@ -2,8 +2,6 @@ package com.unzer.payment.marketplace;
 
 import com.unzer.payment.BaseTransaction;
 import com.unzer.payment.Unzer;
-import com.unzer.payment.communication.json.ApiObject;
-import com.unzer.payment.paymenttypes.PaymentType;
 import java.math.BigDecimal;
 
 public class MarketplaceCancel extends BaseTransaction<MarketplacePayment> {
