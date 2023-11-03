@@ -16,7 +16,7 @@ import java.util.Currency;
  *
  * @author Unzer E-Com GmbH
  */
-public class Applepay extends AbstractPaymentType implements PaymentType {
+public class Applepay extends BasePaymentType {
   private String version;
   private String data;
   private String signature;
@@ -39,8 +39,8 @@ public class Applepay extends AbstractPaymentType implements PaymentType {
   }
 
   @Override
-  public String getTypeUrl() {
-    return "types/applepay";
+  public String getResourceUrl() {
+    return "/v1/types/applepay/<resourceId>";
   }
 
   @Override

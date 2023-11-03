@@ -30,7 +30,7 @@ public class WebhookService {
    * @throws HttpCommunicationException generic Payment API communication error
    */
   public Webhook registerSingleWebhook(Webhook registerRequest) throws HttpCommunicationException {
-    String response = restCommunication.httpPost(urlUtil.getUrl().concat(WEBHOOK_BASE_URL),
+    String response = restCommunication.httpPost(urlUtil.getRestUrl().concat(WEBHOOK_BASE_URL),
         unzer.getPrivateKey(), registerRequest);
     return jsonParser.fromJson(response, Webhook.class);
   }
@@ -44,13 +44,13 @@ public class WebhookService {
    */
   public WebhookList registerMultiWebhooks(Webhook registerRequest)
       throws HttpCommunicationException {
-    String response = restCommunication.httpPost(urlUtil.getUrl().concat(WEBHOOK_BASE_URL),
+    String response = restCommunication.httpPost(urlUtil.getRestUrl().concat(WEBHOOK_BASE_URL),
         unzer.getPrivateKey(), registerRequest);
     return jsonParser.fromJson(response, WebhookList.class);
   }
 
   public WebhookList getWebhooks() throws HttpCommunicationException {
-    String response = restCommunication.httpGet(urlUtil.getUrl().concat(WEBHOOK_BASE_URL),
+    String response = restCommunication.httpGet(urlUtil.getRestUrl().concat(WEBHOOK_BASE_URL),
         unzer.getPrivateKey());
     return jsonParser.fromJson(response, WebhookList.class);
   }
@@ -61,7 +61,7 @@ public class WebhookService {
       deleteId = webhookId;
     }
     String response = restCommunication.httpDelete(
-        urlUtil.getUrl().concat(WEBHOOK_BASE_URL.concat("/").concat(deleteId)),
+        urlUtil.getRestUrl().concat(WEBHOOK_BASE_URL.concat("/").concat(deleteId)),
         unzer.getPrivateKey());
     return jsonParser.fromJson(response, Webhook.class);
   }
@@ -73,7 +73,7 @@ public class WebhookService {
    * @throws HttpCommunicationException generic Payment API communication error
    */
   public WebhookList deleteMultiWebhook() throws HttpCommunicationException {
-    String response = restCommunication.httpDelete(urlUtil.getUrl().concat(WEBHOOK_BASE_URL),
+    String response = restCommunication.httpDelete(urlUtil.getRestUrl().concat(WEBHOOK_BASE_URL),
         unzer.getPrivateKey());
     return jsonParser.fromJson(response, WebhookList.class);
   }
@@ -81,7 +81,7 @@ public class WebhookService {
   public Webhook updateSingleWebhook(String updateId, Webhook updateWebhook)
       throws HttpCommunicationException {
     String response = restCommunication.httpPut(
-        urlUtil.getUrl().concat(WEBHOOK_BASE_URL.concat("/").concat(updateId)),
+        urlUtil.getRestUrl().concat(WEBHOOK_BASE_URL.concat("/").concat(updateId)),
         unzer.getPrivateKey(), updateWebhook);
     return jsonParser.fromJson(response, Webhook.class);
   }

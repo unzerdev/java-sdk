@@ -14,13 +14,13 @@ import java.util.Currency;
  *
  * @author Unzer E-Com GmbH
  */
-public class Ideal extends AbstractPaymentType implements PaymentType {
+public class Ideal extends BasePaymentType {
 
   private String bic;
 
   @Override
-  public String getTypeUrl() {
-    return "types/ideal";
+  public String getResourceUrl() {
+    return "/v1/types/ideal/<resourceId>";
   }
 
   @Override
@@ -40,11 +40,13 @@ public class Ideal extends AbstractPaymentType implements PaymentType {
     return this;
   }
 
+  @Deprecated
   public Charge charge(BigDecimal amount, Currency currency, URL returnUrl)
       throws HttpCommunicationException {
     return getUnzer().charge(amount, currency, this, returnUrl);
   }
 
+  @Deprecated
   public Charge charge(BigDecimal amount, Currency currency, URL returnUrl, Customer customer)
       throws HttpCommunicationException {
     return getUnzer().charge(amount, currency, this, returnUrl, customer);

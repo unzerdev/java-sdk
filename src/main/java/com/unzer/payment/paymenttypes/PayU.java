@@ -15,11 +15,11 @@ import java.util.Currency;
  *
  * @author Unzer E-Com GmbH
  */
-public class PayU extends AbstractPaymentType implements PaymentType {
+public class PayU extends BasePaymentType {
 
   @Override
-  public String getTypeUrl() {
-    return "types/payu";
+  public String getResourceUrl() {
+    return "/v1/types/payu/<resourceId>";
   }
 
   @Override
@@ -33,11 +33,13 @@ public class PayU extends AbstractPaymentType implements PaymentType {
     return payu;
   }
 
+  @Deprecated
   public Charge charge(BigDecimal amount, Currency currency, URL returnUrl)
       throws HttpCommunicationException {
     return getUnzer().charge(amount, currency, this, returnUrl);
   }
 
+  @Deprecated
   public Charge charge(BigDecimal amount, Currency currency, URL returnUrl, Customer customer)
       throws HttpCommunicationException {
     return getUnzer().charge(amount, currency, this, returnUrl, customer);

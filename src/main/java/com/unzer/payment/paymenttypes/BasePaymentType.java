@@ -1,9 +1,10 @@
 package com.unzer.payment.paymenttypes;
 
+import com.unzer.payment.BaseResource;
 import com.unzer.payment.GeoLocation;
 import com.unzer.payment.Unzer;
 
-public abstract class AbstractPaymentType implements PaymentType {
+public abstract class BasePaymentType extends BaseResource implements PaymentType {
   private String id;
   private Boolean recurring;
   private GeoLocation geoLocation;
@@ -11,15 +12,19 @@ public abstract class AbstractPaymentType implements PaymentType {
   private transient Unzer unzer;
 
   @Deprecated
-  public AbstractPaymentType(Unzer unzer) {
-    super();
+  public BasePaymentType(Unzer unzer) {
     this.setUnzer(unzer);
   }
 
-  public AbstractPaymentType() {
-    super();
+  public BasePaymentType() {
   }
 
+  @Override
+  public String getTypeUrl() {
+    return getResourceUrl();
+  }
+
+  @Override
   public String getId() {
     return id;
   }

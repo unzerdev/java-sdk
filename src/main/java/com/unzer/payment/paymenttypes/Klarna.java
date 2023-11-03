@@ -4,10 +4,10 @@ import com.unzer.payment.GeoLocation;
 import com.unzer.payment.communication.json.ApiIdObject;
 import com.unzer.payment.communication.json.ApiObject;
 
-public class Klarna extends AbstractPaymentType {
+public class Klarna extends BasePaymentType {
   @Override
-  public String getTypeUrl() {
-    return "types/klarna";
+  public String getResourceUrl() {
+    return "/v1/types/klarna/<resourceId>";
   }
 
   @Override

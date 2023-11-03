@@ -7,7 +7,7 @@ import com.unzer.payment.communication.HttpCommunicationException;
 import com.unzer.payment.communication.JsonDateConverter;
 import com.unzer.payment.communication.json.ApiInstallmentSecuredRatePlan;
 import com.unzer.payment.communication.json.ApiObject;
-import com.unzer.payment.paymenttypes.AbstractPaymentType;
+import com.unzer.payment.paymenttypes.BasePaymentType;
 import com.unzer.payment.paymenttypes.PaylaterInstallment;
 import com.unzer.payment.paymenttypes.PaymentType;
 import java.math.BigDecimal;
@@ -21,8 +21,7 @@ import java.util.List;
  * @deprecated Will be replaced by {@link PaylaterInstallment} in the future.
  */
 @Deprecated
-public class InstallmentSecuredRatePlan extends AbstractPaymentType
-    implements PaymentType, ApiObject {
+public class InstallmentSecuredRatePlan extends BasePaymentType implements ApiObject {
 
   private String iban;
   private String bic;
@@ -145,8 +144,8 @@ public class InstallmentSecuredRatePlan extends AbstractPaymentType
   }
 
   @Override
-  public String getTypeUrl() {
-    return "types/installment-secured";
+  protected String getResourceUrl() {
+    return "/v1/types/installment-secured/<resourceId>";
   }
 
   @Override
@@ -255,5 +254,4 @@ public class InstallmentSecuredRatePlan extends AbstractPaymentType
     authorization.setEffectiveInterestRate(effectiveInterestRate);
     return authorization;
   }
-
 }

@@ -15,11 +15,11 @@ import java.util.Currency;
  *
  * @author Unzer E-Com GmbH
  */
-public class Przelewy24 extends AbstractPaymentType implements PaymentType {
+public class Przelewy24 extends BasePaymentType {
 
   @Override
-  public String getTypeUrl() {
-    return "types/przelewy24";
+  public String getResourceUrl() {
+    return "/v1/types/przelewy24/<resourceId>";
   }
 
   @Override
@@ -33,11 +33,13 @@ public class Przelewy24 extends AbstractPaymentType implements PaymentType {
     return przelewy24;
   }
 
+  @Deprecated
   public Charge charge(BigDecimal amount, Currency currency, URL returnUrl)
       throws HttpCommunicationException {
     return getUnzer().charge(amount, currency, this, returnUrl);
   }
 
+  @Deprecated
   public Charge charge(BigDecimal amount, Currency currency, URL returnUrl, Customer customer)
       throws HttpCommunicationException {
     return getUnzer().charge(amount, currency, this, returnUrl, customer);

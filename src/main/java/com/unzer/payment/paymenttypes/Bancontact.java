@@ -10,7 +10,7 @@ import java.math.BigDecimal;
 import java.net.URL;
 import java.util.Currency;
 
-public class Bancontact extends AbstractPaymentType implements PaymentType {
+public class Bancontact extends BasePaymentType {
 
   private String holder;
 
@@ -27,8 +27,8 @@ public class Bancontact extends AbstractPaymentType implements PaymentType {
   }
 
   @Override
-  public String getTypeUrl() {
-    return "types/bancontact";
+  protected String getResourceUrl() {
+    return "/v1/types/bancontact/<resourceId>";
   }
 
   @Override
@@ -49,14 +49,15 @@ public class Bancontact extends AbstractPaymentType implements PaymentType {
     this.holder = holder;
   }
 
+  @Deprecated
   public Charge charge(BigDecimal amount, Currency currency, URL returnUrl)
       throws HttpCommunicationException {
-    return getUnzer().charge(amount, currency, this, returnUrl);
+    return getUnzer().charge(amount, currency, new Bancontact(), returnUrl);
   }
 
+  @Deprecated
   public Charge charge(BigDecimal amount, Currency currency, URL returnUrl, Customer customer)
       throws HttpCommunicationException {
-    return getUnzer().charge(amount, currency, this, returnUrl, customer);
+    return getUnzer().charge(amount, currency, new Bancontact(), returnUrl, customer);
   }
-
 }

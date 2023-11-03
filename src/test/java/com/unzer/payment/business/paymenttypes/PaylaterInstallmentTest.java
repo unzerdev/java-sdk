@@ -66,7 +66,7 @@ class PaylaterInstallmentTest {
     Unzer unzer = new Unzer(new HttpClientMock(), "s-private-key");
     String jsonBody = getPlansresponse("create-paylater-installment-type.json");
     stubFor(
-        post("/v1/types/paylater-installment").willReturn(
+        post("/v1/types/paylater-installment/").willReturn(
             jsonResponse(jsonBody, 200)));
     stubFor(
         get("/v1/types/s-pit-vs6pjunvuick").willReturn(

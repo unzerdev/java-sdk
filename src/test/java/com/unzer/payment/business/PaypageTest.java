@@ -145,7 +145,7 @@ public class PaypageTest extends AbstractPaymentTest {
       Paypage paypage = getMaximumPaypage(t.action);
 
       String actualUrl = urlUtil.getUrl(paypage);
-      String expectedUrl = urlUtil.getUrl() + t.expectedUrlPart;
+      String expectedUrl = urlUtil.getRestUrl() + t.expectedUrlPart;
 
       assertEquals(expectedUrl, actualUrl);
     })).collect(Collectors.toList());

@@ -33,7 +33,7 @@ public class MarketplacePaymentService extends PaymentService {
   public MarketplaceAuthorization marketplaceAuthorize(MarketplaceAuthorization authorization)
       throws HttpCommunicationException {
     String response =
-        restCommunication.httpPost(urlUtil.getUrl(authorization), unzer.getPrivateKey(),
+        restCommunication.httpPost(urlUtil.getRestUrl(authorization), unzer.getPrivateKey(),
             apiToSdkMapper.map(authorization));
     ApiAuthorization jsonAuthorization = jsonParser.fromJson(response, ApiAuthorization.class);
     authorization =
@@ -217,7 +217,7 @@ public class MarketplacePaymentService extends PaymentService {
    */
   public MarketplaceCharge marketplaceCharge(MarketplaceCharge charge)
       throws HttpCommunicationException {
-    String response = restCommunication.httpPost(urlUtil.getUrl(charge), unzer.getPrivateKey(),
+    String response = restCommunication.httpPost(urlUtil.getRestUrl(charge), unzer.getPrivateKey(),
         apiToSdkMapper.map(charge));
     ApiCharge jsonCharge = jsonParser.fromJson(response, ApiCharge.class);
     charge = (MarketplaceCharge) apiToSdkMapper.mapToBusinessObject(jsonCharge, charge);
@@ -240,7 +240,7 @@ public class MarketplacePaymentService extends PaymentService {
   public MarketplaceCharge marketplaceChargeAuthorization(String paymentId, String authorizeId,
                                                           MarketplaceCharge charge)
       throws HttpCommunicationException {
-    String url = urlUtil.getUrl().concat("/")
+    String url = urlUtil.getRestUrl().concat("/")
         .concat(charge.getChargeAuthorizationUrl(paymentId, authorizeId));
     String response = restCommunication.httpPost(url, unzer.getPrivateKey(),
         apiToSdkMapper.map(charge));
@@ -268,7 +268,7 @@ public class MarketplacePaymentService extends PaymentService {
     charge.setPaymentReference(paymentReference);
 
     String url =
-        urlUtil.getUrl().concat("/").concat(charge.getFullChargeAuthorizationsUrl(paymentId));
+        urlUtil.getRestUrl().concat("/").concat(charge.getFullChargeAuthorizationsUrl(paymentId));
     String response = restCommunication.httpPost(url, unzer.getPrivateKey(),
         apiToSdkMapper.map(charge));
     ApiPayment apiPayment = jsonParser.fromJson(response, ApiPayment.class);
@@ -357,7 +357,7 @@ public class MarketplacePaymentService extends PaymentService {
   public MarketplacePayment marketplaceFullAuthorizationsCancel(String paymentId,
                                                                 MarketplaceCancel cancel)
       throws HttpCommunicationException {
-    String url = urlUtil.getUrl().concat(cancel.getFullAuthorizeCancelUrl(paymentId));
+    String url = urlUtil.getRestUrl().concat(cancel.getFullAuthorizeCancelUrl(paymentId));
     return marketplaceFullCancel(paymentId, url, cancel);
   }
 
@@ -404,7 +404,7 @@ public class MarketplacePaymentService extends PaymentService {
    */
   public MarketplacePayment marketplaceFullChargesCancel(String paymentId, MarketplaceCancel cancel)
       throws HttpCommunicationException {
-    String url = urlUtil.getUrl().concat(cancel.getFullChargesCancelUrl(paymentId));
+    String url = urlUtil.getRestUrl().concat(cancel.getFullChargesCancelUrl(paymentId));
     return marketplaceFullCancel(paymentId, url, cancel);
   }
 
@@ -421,7 +421,7 @@ public class MarketplacePaymentService extends PaymentService {
                                                           MarketplaceCancel cancel)
       throws HttpCommunicationException {
     String url =
-        urlUtil.getUrl().concat(cancel.getPartialAuthorizeCancelUrl(paymentId, authorizeId));
+        urlUtil.getRestUrl().concat(cancel.getPartialAuthorizeCancelUrl(paymentId, authorizeId));
     return marketplaceCancel(paymentId, url, cancel);
   }
 
@@ -451,7 +451,7 @@ public class MarketplacePaymentService extends PaymentService {
   public MarketplaceCancel marketplaceChargeCancel(String paymentId, String chargeId,
                                                    MarketplaceCancel cancel)
       throws HttpCommunicationException {
-    String url = urlUtil.getUrl().concat(cancel.getPartialChargeCancelUrl(paymentId, chargeId));
+    String url = urlUtil.getRestUrl().concat(cancel.getPartialChargeCancelUrl(paymentId, chargeId));
     return marketplaceCancel(paymentId, url, cancel);
   }
 }

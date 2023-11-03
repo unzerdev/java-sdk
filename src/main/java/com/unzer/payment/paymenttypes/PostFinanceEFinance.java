@@ -11,11 +11,11 @@ import java.net.URL;
 import java.util.Currency;
 
 @SuppressWarnings("checkstyle:AbbreviationAsWordInName")
-public class PostFinanceEFinance extends AbstractPaymentType implements PaymentType {
+public class PostFinanceEFinance extends BasePaymentType {
 
   @Override
-  public String getTypeUrl() {
-    return "types/post-finance-efinance";
+  public String getResourceUrl() {
+    return "/v1/types/post-finance-efinance/<resourceId>";
   }
 
   @Override
@@ -30,11 +30,13 @@ public class PostFinanceEFinance extends AbstractPaymentType implements PaymentT
     return type;
   }
 
+  @Deprecated
   public Charge charge(BigDecimal amount, Currency currency, URL returnUrl)
       throws HttpCommunicationException {
     return getUnzer().charge(amount, currency, this, returnUrl);
   }
 
+  @Deprecated
   public Charge charge(BigDecimal amount, Currency currency, URL returnUrl, Customer customer)
       throws HttpCommunicationException {
     return getUnzer().charge(amount, currency, this, returnUrl, customer);

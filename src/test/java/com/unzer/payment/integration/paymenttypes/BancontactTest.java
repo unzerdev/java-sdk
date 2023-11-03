@@ -6,6 +6,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import com.unzer.payment.Charge;
+import com.unzer.payment.Unzer;
 import com.unzer.payment.business.AbstractPaymentTest;
 import com.unzer.payment.paymenttypes.Bancontact;
 import java.math.BigDecimal;
@@ -32,9 +33,14 @@ public class BancontactTest extends AbstractPaymentTest {
 
   @Test
   public void testChargeBancontactType() {
-    Bancontact bancontact = getUnzer().createPaymentType(new Bancontact());
-    Charge charge = bancontact.charge(BigDecimal.ONE, Currency.getInstance("EUR"),
-        unsafeUrl("https://www.unzer.com"));
+    Unzer unzer = getUnzer();
+    Bancontact bancontact = unzer.createPaymentType(new Bancontact());
+    Charge charge = unzer.charge(
+        BigDecimal.ONE,
+        Currency.getInstance("EUR"),
+        bancontact.getId(),
+        unsafeUrl("https://www.unzer.com")
+    );
     assertNotNull(charge);
     assertNotNull(charge.getId());
     assertNotNull(charge.getRedirectUrl());

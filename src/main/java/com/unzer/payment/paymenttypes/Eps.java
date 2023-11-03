@@ -11,7 +11,7 @@ import java.math.BigDecimal;
 import java.net.URL;
 import java.util.Currency;
 
-public class Eps extends AbstractPaymentType implements PaymentType {
+public class Eps extends BasePaymentType {
 
   private String bic;
 
@@ -23,13 +23,14 @@ public class Eps extends AbstractPaymentType implements PaymentType {
     super();
   }
 
+  @Deprecated
   public Eps(Unzer unzer) {
     super(unzer);
   }
 
   @Override
-  public String getTypeUrl() {
-    return "types/eps";
+  public String getResourceUrl() {
+    return "/v1/types/eps/<resourceId>";
   }
 
   @Override
@@ -51,11 +52,13 @@ public class Eps extends AbstractPaymentType implements PaymentType {
     this.bic = bic;
   }
 
+  @Deprecated
   public Charge charge(BigDecimal amount, Currency currency, URL returnUrl)
       throws HttpCommunicationException {
     return getUnzer().charge(amount, currency, this, returnUrl);
   }
 
+  @Deprecated
   public Charge charge(BigDecimal amount, Currency currency, URL returnUrl, Customer customer)
       throws HttpCommunicationException {
     return getUnzer().charge(amount, currency, this, returnUrl, customer);

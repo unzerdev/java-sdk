@@ -5,7 +5,7 @@ import com.unzer.payment.communication.json.ApiIdObject;
 import com.unzer.payment.communication.json.ApiObject;
 import com.unzer.payment.communication.json.ApiPaylaterInstallment;
 
-public class PaylaterInstallment extends AbstractPaymentType implements PaymentType {
+public class PaylaterInstallment extends BasePaymentType {
 
   private String inquiryId;
   private Integer numberOfRates;
@@ -76,7 +76,7 @@ public class PaylaterInstallment extends AbstractPaymentType implements PaymentT
   }
 
   @Override
-  public String getTypeUrl() {
-    return "types/paylater-installment";
+  public String getResourceUrl() {
+    return "/v1/types/paylater-installment/<resourceId>";
   }
 }

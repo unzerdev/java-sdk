@@ -5,6 +5,7 @@ import static com.unzer.payment.util.Url.unsafeUrl;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import com.unzer.payment.Charge;
+import com.unzer.payment.Unzer;
 import com.unzer.payment.business.AbstractPaymentTest;
 import com.unzer.payment.paymenttypes.Alipay;
 import java.math.BigDecimal;
@@ -23,8 +24,14 @@ public class AlipayTest extends AbstractPaymentTest {
 
     @Test
     public void testChargeAlipayType() {
-        Alipay alipay = getUnzer().createPaymentType(new Alipay());
-        Charge charge = alipay.charge(BigDecimal.ONE, Currency.getInstance("EUR"), unsafeUrl("https://www.unzer.com"));
+        Unzer unzer = getUnzer();
+        Alipay alipay = unzer.createPaymentType(new Alipay());
+        Charge charge = unzer.charge(
+            BigDecimal.ONE,
+            Currency.getInstance("EUR"),
+            alipay.getId(),
+            unsafeUrl("https://www.unzer.com")
+        );
         assertNotNull(charge);
         assertNotNull(charge.getId());
         assertNotNull(charge.getRedirectUrl());

@@ -1,5 +1,7 @@
 package com.unzer.payment.paymenttypes;
 
+import java.util.Arrays;
+
 public enum PaymentTypeEnum {
   CARD("crd"),
   EPS("eps"),
@@ -43,16 +45,9 @@ public enum PaymentTypeEnum {
   }
 
   public static PaymentTypeEnum getPaymentTypeEnumByShortName(String shortName) {
-    for (PaymentTypeEnum typeEnum : PaymentTypeEnum.values()) {
-      if (typeEnum.getShortName().equals(shortName)) {
-        return typeEnum;
-      }
-    }
-
-    return PaymentTypeEnum.UNKNOWN;
-  }
-
-  public String getShortName() {
-    return this.shortName;
+    return Arrays.stream(values())
+        .filter(t -> t.shortName.equals(shortName))
+        .findFirst()
+        .orElse(PaymentTypeEnum.UNKNOWN);
   }
 }

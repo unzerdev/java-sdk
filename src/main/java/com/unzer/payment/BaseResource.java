@@ -5,9 +5,6 @@ public abstract class BaseResource implements Resource {
 
   @Override
   public String getUrl() {
-//    return getId() == null
-//        ? getResourceUrl()
-//        : getResourceUrl().replaceAll(RESOURCE_ID_TOKEN, getId());
     return getResourceUrl().replaceAll(RESOURCE_ID_TOKEN, getId() == null ? "" : getId());
   }
 

@@ -4,7 +4,7 @@ import com.unzer.payment.GeoLocation;
 import com.unzer.payment.communication.json.ApiObject;
 import com.unzer.payment.communication.json.ApiSepaDirectDebit;
 
-public class PaylaterDirectDebit extends AbstractPaymentType {
+public class PaylaterDirectDebit extends BasePaymentType {
   private String iban;
   private String holder;
 
@@ -33,8 +33,8 @@ public class PaylaterDirectDebit extends AbstractPaymentType {
   }
 
   @Override
-  public String getTypeUrl() {
-    return "types/paylater-direct-debit";
+  public String getResourceUrl() {
+    return "/v1/types/paylater-direct-debit/<resourceId>";
   }
 
   @Override

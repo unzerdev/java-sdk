@@ -39,7 +39,7 @@ public class PaylaterInstallmentTest extends AbstractPaymentTest {
     InstallmentPlansRequest request =
         new InstallmentPlansRequest(amount, "EUR", "DE", CustomerType.B2C);
 
-    String uri = request.getRequestUrl();
+    String uri = request.getUrl();
     assertEquals(
         "/v1/types/paylater-installment/plans?amount=33.33&currency=EUR&country=DE&customerType=B2C",
         uri);
@@ -64,9 +64,20 @@ public class PaylaterInstallmentTest extends AbstractPaymentTest {
     assertPlans(plans);
   }
 
+  private void assertPlans(List<InstallmentPlan> plans) {
+    plans.forEach((plan) -> {
+      assertNotNull(plan.getTotalAmount());
+      assertNotNull(plan.getNumberOfRates());
+      assertNotNull(plan.getNominalInterestRate());
+      assertNotNull(plan.getEffectiveInterestRate());
+      assertNotNull(plan.getInstallmentRates());
+      assertNotNull(plan.getSecciUrl());
+      assertEquals(plan.getNumberOfRates(), plan.getInstallmentRates().size());
+    });
+  }
+
   @Test
-  public void testCreatePaylaterInstallmentTypeWithAllParameter()
-      {
+  public void testCreatePaylaterInstallmentTypeWithAllParameter() {
     PaylaterInstallmentPlans installmentPlans = getPaylaterInstallmentPlans();
     InstallmentPlan selectedPlan = installmentPlans.getPlans().get(0);
 
@@ -89,6 +100,17 @@ public class PaylaterInstallmentTest extends AbstractPaymentTest {
     assertNull(paylaterInstallment.getNumberOfRates());
     assertNull(paylaterInstallment.getCountry());
     assertNull(paylaterInstallment.getHolder());
+  }
+
+  private PaylaterInstallmentPlans getPaylaterInstallmentPlans() {
+    return getUnzer().fetchPaylaterInstallmentPlans(
+        new InstallmentPlansRequest(getOrderAmount(), "EUR", "DE", CustomerType.B2C)
+    );
+  }
+
+  private BigDecimal getOrderAmount() {
+    BigDecimal amount = new BigDecimal("99.9900");
+    return amount.setScale(2, RoundingMode.HALF_UP);
   }
 
   @Test
@@ -117,6 +139,33 @@ public class PaylaterInstallmentTest extends AbstractPaymentTest {
     // then
     assertEquals(AbstractTransaction.Status.SUCCESS, authorization.getStatus());
     assertNumberEquals(getOrderAmount(), authorization.getAmount());
+  }
+
+  private Basket getBasket() {
+    return new Basket()
+        .setTotalValueGross(getOrderAmount())
+        .setCurrencyCode(Currency.getInstance("EUR"))
+        .addBasketItem(
+            new BasketItem()
+                .setBasketItemReferenceId("Artikelnummer4711")
+                .setQuantity(1)
+                .setVat(BigDecimal.ZERO)
+                .setAmountDiscountPerUnitGross(BigDecimal.ZERO)
+                .setAmountPerUnitGross(getOrderAmount())
+                .setTitle("Some Title")
+        );
+  }
+
+  protected Authorization getAuthorization(String typeId, String customerId, String basketId) {
+    Authorization authorization = new Authorization();
+    authorization
+        .setAmount(getOrderAmount())
+        .setCurrency(Currency.getInstance("EUR"))
+        .setTypeId(typeId)
+        .setReturnUrl(unsafeUrl("https://www.unzer.com"))
+        .setCustomerId(customerId)
+        .setBasketId(basketId);
+    return authorization;
   }
 
   @Test
@@ -182,7 +231,6 @@ public class PaylaterInstallmentTest extends AbstractPaymentTest {
     assertEquals(AbstractTransaction.Status.SUCCESS, charge.getStatus());
     assertNumberEquals(partialChargeAmount, charge.getAmount());
   }
-
 
   @Test
   public void testFullCancelAfterAuthorization() throws HttpCommunicationException, ParseException {
@@ -280,56 +328,5 @@ public class PaylaterInstallmentTest extends AbstractPaymentTest {
     // then
     assertEquals(AbstractTransaction.Status.SUCCESS, cancel.getStatus());
     assertNumberEquals(partialCancelAmount, cancel.getAmount());
-  }
-
-  private void assertPlans(List<InstallmentPlan> plans) {
-    plans.forEach((plan) -> {
-      assertNotNull(plan.getTotalAmount());
-      assertNotNull(plan.getNumberOfRates());
-      assertNotNull(plan.getNominalInterestRate());
-      assertNotNull(plan.getEffectiveInterestRate());
-      assertNotNull(plan.getInstallmentRates());
-      assertNotNull(plan.getSecciUrl());
-      assertEquals(plan.getNumberOfRates(), plan.getInstallmentRates().size());
-    });
-  }
-
-  private Basket getBasket() {
-    return new Basket()
-        .setTotalValueGross(getOrderAmount())
-        .setCurrencyCode(Currency.getInstance("EUR"))
-        .addBasketItem(
-            new BasketItem()
-                .setBasketItemReferenceId("Artikelnummer4711")
-                .setQuantity(1)
-                .setVat(BigDecimal.ZERO)
-                .setAmountDiscountPerUnitGross(BigDecimal.ZERO)
-                .setAmountPerUnitGross(getOrderAmount())
-                .setTitle("Some Title")
-        );
-  }
-
-  protected Authorization getAuthorization(String typeId, String customerId, String basketId) {
-    Authorization authorization = new Authorization();
-    authorization
-        .setAmount(getOrderAmount())
-        .setCurrency(Currency.getInstance("EUR"))
-        .setTypeId(typeId)
-        .setReturnUrl(unsafeUrl("https://www.unzer.com"))
-        .setCustomerId(customerId)
-        .setBasketId(basketId);
-    return authorization;
-  }
-
-  private BigDecimal getOrderAmount() {
-    BigDecimal amount = new BigDecimal("99.9900");
-    return amount.setScale(2, RoundingMode.HALF_UP);
-  }
-
-  private PaylaterInstallmentPlans getPaylaterInstallmentPlans()
-      {
-    return getUnzer().fetchPaylaterInstallmentPlans(
-        new InstallmentPlansRequest(getOrderAmount(), "EUR", "DE", CustomerType.B2C)
-    );
   }
 }

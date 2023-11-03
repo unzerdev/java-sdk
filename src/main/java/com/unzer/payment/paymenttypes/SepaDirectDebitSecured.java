@@ -8,8 +8,8 @@ public class SepaDirectDebitSecured extends SepaDirectDebit implements PaymentTy
   }
 
   @Override
-  public String getTypeUrl() {
-    return "types/sepa-direct-debit-secured";
+  public String getResourceUrl() {
+    return "/v1/types/sepa-direct-debit-secured/<resourceId>";
   }
 
 }

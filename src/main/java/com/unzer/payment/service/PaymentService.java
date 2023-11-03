@@ -46,10 +46,10 @@ import com.unzer.payment.communication.mapper.ApiToSdkConverter;
 import com.unzer.payment.models.PaylaterInvoiceConfig;
 import com.unzer.payment.models.PaylaterInvoiceConfigRequest;
 import com.unzer.payment.models.paylater.InstallmentPlansRequest;
-import com.unzer.payment.paymenttypes.AbstractPaymentType;
 import com.unzer.payment.paymenttypes.Alipay;
 import com.unzer.payment.paymenttypes.Applepay;
 import com.unzer.payment.paymenttypes.Bancontact;
+import com.unzer.payment.paymenttypes.BasePaymentType;
 import com.unzer.payment.paymenttypes.Card;
 import com.unzer.payment.paymenttypes.Eps;
 import com.unzer.payment.paymenttypes.Giropay;
@@ -135,11 +135,13 @@ public class PaymentService {
     return json.getEntity();
   }
 
-  public <T extends PaymentType> T createPaymentType(T paymentType)
+  public <T extends BasePaymentType> T createPaymentType(T type)
       throws HttpCommunicationException {
-    String response =
-        restCommunication.httpPost(urlUtil.getUrl(paymentType), unzer.getPrivateKey(),
-            paymentType);
+    String response = restCommunication.httpPost(
+        urlUtil.getUrl(type),
+        unzer.getPrivateKey(),
+        type
+    );
     ApiIdObject jsonResponse = jsonParser.fromJson(response, ApiIdObject.class);
     return fetchPaymentType(jsonResponse.getId());
   }
@@ -147,7 +149,7 @@ public class PaymentService {
   @SuppressWarnings("unchecked")
   public <T extends PaymentType> T fetchPaymentType(String typeId)
       throws HttpCommunicationException {
-    AbstractPaymentType paymentType = getPaymentTypeFromTypeId(typeId);
+    BasePaymentType paymentType = getPaymentTypeFromTypeId(typeId);
     paymentType.setUnzer(unzer);
     String response = restCommunication.httpGet(urlUtil.getHttpGetUrl(typeId),
         unzer.getPrivateKey());
@@ -156,7 +158,7 @@ public class PaymentService {
     return (T) apiToSdkMapper.mapToBusinessObject(paymentType, jsonPaymentType);
   }
 
-  private AbstractPaymentType getPaymentTypeFromTypeId(String typeId) {
+  private BasePaymentType getPaymentTypeFromTypeId(String typeId) {
     if (typeId.length() < 5) {
       throw new PaymentException("TypeId '" + typeId + "' is invalid");
     }
@@ -276,25 +278,17 @@ public class PaymentService {
     return typeId.substring(2, 5);
   }
 
-  public <T extends PaymentType> T updatePaymentType(T paymentType)
+  public <T extends BasePaymentType> T updatePaymentType(T paymentType)
       throws HttpCommunicationException {
     String url = urlUtil.getUrl(paymentType);
-    url = addId(url, paymentType.getId());
     String response = restCommunication.httpPut(url, unzer.getPrivateKey(), paymentType);
     ApiIdObject jsonResponse = jsonParser.fromJson(response, ApiIdObject.class);
     return fetchPaymentType(jsonResponse.getId());
   }
 
-  private String addId(String url, String id) {
-    if (!url.endsWith("/")) {
-      url += "/";
-    }
-    return url + id;
-  }
-
   public Customer createCustomer(Customer customer) throws HttpCommunicationException {
     String response =
-        restCommunication.httpPost(urlUtil.getUrl(customer), unzer.getPrivateKey(),
+        restCommunication.httpPost(urlUtil.getRestUrl(customer), unzer.getPrivateKey(),
             apiToSdkMapper.map(customer));
     ApiIdObject jsonId = jsonParser.fromJson(response, ApiIdObject.class);
     return fetchCustomer(jsonId.getId());
@@ -354,7 +348,7 @@ public class PaymentService {
 
   public Metadata createMetadata(Metadata metadata) throws HttpCommunicationException {
     String response =
-        restCommunication.httpPost(urlUtil.getUrl(metadata), unzer.getPrivateKey(),
+        restCommunication.httpPost(urlUtil.getRestUrl(metadata), unzer.getPrivateKey(),
             metadata.getMetadataMap());
     Metadata metadataJson = jsonParser.fromJson(response, Metadata.class);
     metadata.setUnzer(unzer);
@@ -393,7 +387,7 @@ public class PaymentService {
    */
   public Authorization authorize(Authorization authorization) throws HttpCommunicationException {
     String response =
-        restCommunication.httpPost(urlUtil.getUrl(authorization), unzer.getPrivateKey(),
+        restCommunication.httpPost(urlUtil.getRestUrl(authorization), unzer.getPrivateKey(),
             apiToSdkMapper.map(authorization));
     ApiAuthorization jsonAuthorization = jsonParser.fromJson(response, ApiAuthorization.class);
     authorization = (Authorization) apiToSdkMapper.mapToBusinessObject(jsonAuthorization,
@@ -658,7 +652,7 @@ public class PaymentService {
   }
 
   public Charge charge(Charge charge) throws HttpCommunicationException {
-    return charge(charge, urlUtil.getUrl(charge));
+    return charge(charge, urlUtil.getRestUrl(charge));
   }
 
   private Charge charge(Charge charge, String url) throws HttpCommunicationException {
@@ -698,7 +692,7 @@ public class PaymentService {
   public Payout payout(Payout payout) throws HttpCommunicationException {
     ApiObject json = apiToSdkMapper.map(payout);
     String response =
-        restCommunication.httpPost(urlUtil.getUrl(payout), unzer.getPrivateKey(), json);
+        restCommunication.httpPost(urlUtil.getRestUrl(payout), unzer.getPrivateKey(), json);
     ApiPayout jsonPayout = jsonParser.fromJson(response, ApiPayout.class);
     payout = (Payout) apiToSdkMapper.mapToBusinessObject(jsonPayout, payout);
     payout.setPayment(fetchPayment(jsonPayout.getResources().getPaymentId()));

@@ -181,17 +181,18 @@ public class CardTest extends AbstractPaymentTest {
 
     @Test
     public void testCardMailOverridingWithValue() {
+        Unzer unzer = getUnzer();
         Card card = new Card("4444333322221111", "03/99");
         card.setCvc("123");
         card.setEmail(null);
-        card = getUnzer().createPaymentType(card);
+        card = unzer.createPaymentType(card);
 
         card.setNumber("4444333322221111");
         card.setCvc("123");
         card.setExpiryDate("03/99");
         card.setEmail(MAIL_STRING);
         card.setCardHolder(PERSON_STRING);
-        card = getUnzer().updatePaymentType(card);
+        card = unzer.updatePaymentType(card);
 
         assertFalse(card.getEmail().isEmpty());
         assertEquals(MAIL_STRING, card.getEmail());

@@ -15,8 +15,8 @@ import com.unzer.payment.models.CustomerType;
 import com.unzer.payment.models.PaylaterInvoiceConfig;
 import com.unzer.payment.models.PaylaterInvoiceConfigRequest;
 import com.unzer.payment.models.paylater.InstallmentPlansRequest;
+import com.unzer.payment.paymenttypes.BasePaymentType;
 import com.unzer.payment.paymenttypes.PaylaterInstallment;
-import com.unzer.payment.paymenttypes.PaymentType;
 import com.unzer.payment.service.LinkpayService;
 import com.unzer.payment.service.PaymentService;
 import com.unzer.payment.service.PaypageService;
@@ -148,7 +148,7 @@ public class Unzer {
     return paymentService.updateBasket(basket);
   }
 
-  public <T extends PaymentType> T updatePaymentType(T paymentType)
+  public <T extends BasePaymentType> T updatePaymentType(T paymentType)
       throws HttpCommunicationException {
     if (paymentType != null && paymentType.getId() == null) {
       return paymentService.createPaymentType(paymentType);
@@ -331,7 +331,7 @@ public class Unzer {
    * @return Authorization with paymentId and authorize id
    * @throws HttpCommunicationException in case communication to Unzer didn't work
    */
-  public Authorization authorize(BigDecimal amount, Currency currency, PaymentType paymentType,
+  public Authorization authorize(BigDecimal amount, Currency currency, BasePaymentType paymentType,
                                  URL returnUrl)
       throws HttpCommunicationException {
     return authorize(amount, currency, paymentType, returnUrl, null, null);
@@ -353,7 +353,7 @@ public class Unzer {
    * @return Authorization with paymentId and authorize id
    * @throws HttpCommunicationException in case communication to Unzer didn't work
    */
-  public Authorization authorize(BigDecimal amount, Currency currency, PaymentType paymentType,
+  public Authorization authorize(BigDecimal amount, Currency currency, BasePaymentType paymentType,
                                  URL returnUrl,
                                  Customer customer, Boolean card3ds)
       throws HttpCommunicationException {
@@ -370,15 +370,9 @@ public class Unzer {
    * @return PaymentType Object with an id
    * @throws HttpCommunicationException in case communication to Unzer didn't work
    */
-  public <T extends PaymentType> T createPaymentType(T paymentType)
+  public <T extends BasePaymentType> T createPaymentType(T paymentType)
       throws HttpCommunicationException {
-    if (paymentType != null && paymentType.getId() == null) {
-      return paymentService.createPaymentType(paymentType);
-    } else if (paymentType != null && paymentType.getId() != null) {
-      return paymentType;
-    } else {
-      return null;
-    }
+    return paymentService.createPaymentType(paymentType);
   }
 
   /**
@@ -396,7 +390,7 @@ public class Unzer {
    * @return Authorization with paymentId and authorize id
    * @throws HttpCommunicationException in case communication to Unzer didn't work
    */
-  public Authorization authorize(BigDecimal amount, Currency currency, PaymentType paymentType,
+  public Authorization authorize(BigDecimal amount, Currency currency, BasePaymentType paymentType,
                                  URL returnUrl, Boolean card3ds)
       throws HttpCommunicationException {
     return authorize(amount, currency, paymentType, returnUrl, null, card3ds);
@@ -414,10 +408,13 @@ public class Unzer {
    * @return Authorization with paymentId and authorize id
    * @throws HttpCommunicationException in case communication to Unzer didn't work
    */
-  public Authorization authorize(BigDecimal amount, Currency currency, PaymentType paymentType,
+  public Authorization authorize(BigDecimal amount, Currency currency, BasePaymentType paymentType,
                                  URL returnUrl, Customer customer)
       throws HttpCommunicationException {
-    return authorize(amount, currency, createPaymentType(paymentType).getId(), returnUrl,
+    if (paymentType.getId() == null) {
+      paymentType = createPaymentType(paymentType);
+    }
+    return authorize(amount, currency, paymentType.getId(), returnUrl,
         getCustomerId(createCustomerIfPresent(customer)), null);
   }
 
@@ -603,7 +600,7 @@ public class Unzer {
    * @return Charge with paymentId and authorize id
    * @throws HttpCommunicationException in case communication to Unzer didn't work
    */
-  public Charge charge(BigDecimal amount, Currency currency, PaymentType paymentType)
+  public Charge charge(BigDecimal amount, Currency currency, BasePaymentType paymentType)
       throws HttpCommunicationException {
     return charge(amount, currency, createPaymentType(paymentType).getId(), null, (String) null);
   }
@@ -619,9 +616,13 @@ public class Unzer {
    * @return Charge with paymentId and authorize id
    * @throws HttpCommunicationException in case communication to Unzer didn't work
    */
-  public Charge charge(BigDecimal amount, Currency currency, PaymentType paymentType, URL returnUrl)
+  public Charge charge(BigDecimal amount, Currency currency, BasePaymentType paymentType,
+                       URL returnUrl)
       throws HttpCommunicationException {
-    return charge(amount, currency, createPaymentType(paymentType).getId(), returnUrl, "");
+    if (paymentType.getId() == null) {
+      paymentType = createPaymentType(paymentType);
+    }
+    return charge(amount, currency, paymentType.getId(), returnUrl, "");
   }
 
   /**
@@ -636,7 +637,8 @@ public class Unzer {
    * @return Charge with paymentId and authorize id
    * @throws HttpCommunicationException in case communication to Unzer didn't work
    */
-  public Charge charge(BigDecimal amount, Currency currency, PaymentType paymentType, URL returnUrl,
+  public Charge charge(BigDecimal amount, Currency currency, BasePaymentType paymentType,
+                       URL returnUrl,
                        Boolean card3ds)
       throws HttpCommunicationException {
     return charge(amount, currency, createPaymentType(paymentType).getId(), returnUrl, card3ds);
@@ -672,9 +674,13 @@ public class Unzer {
    * @return Charge with paymentId and authorize id
    * @throws HttpCommunicationException in case communication to Unzer didn't work
    */
-  public Charge charge(BigDecimal amount, Currency currency, PaymentType paymentType, URL returnUrl,
+  public Charge charge(BigDecimal amount, Currency currency, BasePaymentType paymentType,
+                       URL returnUrl,
                        Customer customer) throws HttpCommunicationException {
-    return charge(amount, currency, createPaymentType(paymentType).getId(), returnUrl,
+    if (paymentType.getId() == null) {
+      paymentType = createPaymentType(paymentType);
+    }
+    return charge(amount, currency, paymentType.getId(), returnUrl,
         getCustomerId(createCustomerIfPresent(customer)));
   }
 
@@ -691,9 +697,13 @@ public class Unzer {
    * @return Charge with paymentId and authorize id
    * @throws HttpCommunicationException in case communication to Unzer didn't work
    */
-  public Charge charge(BigDecimal amount, Currency currency, PaymentType paymentType, URL returnUrl,
+  public Charge charge(BigDecimal amount, Currency currency, BasePaymentType paymentType,
+                       URL returnUrl,
                        Customer customer, Basket basket) throws HttpCommunicationException {
-    return charge(amount, currency, createPaymentType(paymentType).getId(), returnUrl,
+    if (paymentType.getId() == null) {
+        paymentType = createPaymentType(paymentType);
+    }
+    return charge(amount, currency, paymentType.getId(), returnUrl,
         getCustomerId(createCustomerIfPresent(customer)), getBasketId(createBasket(basket)), null);
   }
 
@@ -743,7 +753,8 @@ public class Unzer {
    * @return Charge with paymentId and authorize id
    * @throws HttpCommunicationException in case communication to Unzer didn't work
    */
-  public Charge charge(BigDecimal amount, Currency currency, PaymentType paymentType, URL returnUrl,
+  public Charge charge(BigDecimal amount, Currency currency, BasePaymentType paymentType,
+                       URL returnUrl,
                        Customer customer, Boolean card3ds) throws HttpCommunicationException {
     return charge(amount, currency, createPaymentType(paymentType).getId(), returnUrl,
         getCustomerId(createCustomerIfPresent(customer)), card3ds);
@@ -844,7 +855,7 @@ public class Unzer {
    * @throws HttpCommunicationException in case communication to Unzer didn't work
    */
   public MarketplaceCharge marketplaceChargeAuthorization(String paymentId, String authorizeId,
-                                MarketplaceCharge charge)
+                                                          MarketplaceCharge charge)
       throws HttpCommunicationException {
     return marketplacePaymentService.marketplaceChargeAuthorization(paymentId, authorizeId, charge);
   }
@@ -1013,7 +1024,7 @@ public class Unzer {
    * @throws HttpCommunicationException generic Payment API communication error
    */
   public MarketplacePayment marketplaceFullAuthorizationsCancel(String paymentId,
-                                      MarketplaceCancel cancel)
+                                                                MarketplaceCancel cancel)
       throws HttpCommunicationException {
     return marketplacePaymentService.marketplaceFullAuthorizationsCancel(paymentId, cancel);
   }
@@ -1043,7 +1054,7 @@ public class Unzer {
    * @throws HttpCommunicationException generic Payment API communication error
    */
   public MarketplaceCancel marketplaceAuthorizationCancel(String paymentId, String authorizeId,
-                                MarketplaceCancel cancel)
+                                                          MarketplaceCancel cancel)
       throws HttpCommunicationException {
     return marketplacePaymentService.marketplaceAuthorizationCancel(paymentId, authorizeId, cancel);
   }
@@ -1058,7 +1069,7 @@ public class Unzer {
    * @throws HttpCommunicationException generic Payment API communication error
    */
   public MarketplaceCancel marketplaceChargeCancel(String paymentId, String chargeId,
-                         MarketplaceCancel cancel)
+                                                   MarketplaceCancel cancel)
       throws HttpCommunicationException {
     return marketplacePaymentService.marketplaceChargeCancel(paymentId, chargeId, cancel);
   }
@@ -1073,7 +1084,7 @@ public class Unzer {
    * @throws HttpCommunicationException generic Payment API communication error
    */
   public MarketplacePayment marketplaceFullChargeAuthorizations(String paymentId,
-                                      String paymentReference)
+                                                                String paymentReference)
       throws HttpCommunicationException {
     return marketplacePaymentService.marketplaceFullChargeAuthorizations(paymentId,
         paymentReference);
@@ -1221,7 +1232,7 @@ public class Unzer {
    * @throws HttpCommunicationException in case communication to Unzer didn't work
    */
   public MarketplaceAuthorization fetchMarketplaceAuthorization(String paymentId,
-                                      String authorizeId)
+                                                                String authorizeId)
       throws HttpCommunicationException {
     return marketplacePaymentService.fetchMarketplaceAuthorization(paymentId, authorizeId);
   }
@@ -1307,7 +1318,7 @@ public class Unzer {
    * @return PaymentType object
    * @throws HttpCommunicationException in case communication to Unzer didn't work
    */
-  public PaymentType fetchPaymentType(String typeId) throws HttpCommunicationException {
+  public BasePaymentType fetchPaymentType(String typeId) throws HttpCommunicationException {
     return paymentService.fetchPaymentType(typeId);
   }
 
@@ -1321,8 +1332,8 @@ public class Unzer {
    * @throws HttpCommunicationException in case communication to Unzer didn't work
    */
   public Paypage paypage(Paypage paypage) throws HttpCommunicationException {
-    if(Objects.isNull(paypage.getAction())) {
-        paypage.setAction(BasePaypage.Action.CHARGE);
+    if (Objects.isNull(paypage.getAction())) {
+      paypage.setAction(BasePaypage.Action.CHARGE);
     }
     return paypageService.initialize(paypage);
   }
@@ -1338,7 +1349,7 @@ public class Unzer {
   }
 
   public Linkpay linkpay(Linkpay linkpay) throws HttpCommunicationException {
-    if(Objects.isNull(linkpay.getAction())) {
+    if (Objects.isNull(linkpay.getAction())) {
       linkpay.setAction(BasePaypage.Action.CHARGE);
     }
     return linkpayService.initialize(linkpay);
@@ -1438,15 +1449,15 @@ public class Unzer {
    *                       <br>
    *                       Request example:
    *                       <pre>
-   *                  {
-   *                     "url": "https://domain.com",
-   *                     "event": "types"
-   *                  }
-   *                        </pre>
+   *                                                                                    {
+   *                                                                                       "url": "https://domain.com",
+   *                                                                                       "event": "types"
+   *                                                                                    }
+   *                                                                                          </pre>
    * @return Webhook refers to webhook has been created.
-   *                   <br>
-   *                   Response example:
-   *                   <pre>
+   * <br>
+   * Response example:
+   * <pre>
    *                   {
    *                     "id": "s-whk-61873",
    *                     "url": "https://domain.com",
@@ -1468,28 +1479,28 @@ public class Unzer {
    *                       <br>
    *                       Request example:
    *                       <pre>
-   *                       {
-   *                        "url": "https://domain.com",
-   *                        "eventList": ["types", "payments"]
-   *                       }
-   *                       <pre>
-   *                       @return WebhookList refers to list of webhooks have been created.
-   *                       * <br>
-   *                       Response example:
-   *                       <pre>
-   *                       {
-   *                         "events":[{
-   *                            "id": "s-whk-61873",
-   *                            "url": "https://domain.com",
-   *                            "event": "types"
-   *                         },
-   *                         {
-   *                            "id": "s-whk-61874",
-   *                            "url": "https://domain.com",
-   *                            "event": "payments"
-   *                         }]
-   *                       }
-   *                       </pre>
+   *                                                                                         {
+   *                                                                                          "url": "https://domain.com",
+   *                                                                                          "eventList": ["types", "payments"]
+   *                                                                                         }
+   *                                                                                         <pre>
+   *                                                                                         @return WebhookList refers to list of webhooks have been created.
+   *                                                                                         * <br>
+   *                                                                                         Response example:
+   *                                                                                         <pre>
+   *                                                                                         {
+   *                                                                                           "events":[{
+   *                                                                                              "id": "s-whk-61873",
+   *                                                                                              "url": "https://domain.com",
+   *                                                                                              "event": "types"
+   *                                                                                           },
+   *                                                                                           {
+   *                                                                                              "id": "s-whk-61874",
+   *                                                                                              "url": "https://domain.com",
+   *                                                                                              "event": "payments"
+   *                                                                                           }]
+   *                                                                                         }
+   *                                                                                         </pre>
    * @throws HttpCommunicationException
    */
   public WebhookList registerMultiWebhooks(Webhook webhookRequest)

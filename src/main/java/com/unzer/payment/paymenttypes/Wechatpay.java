@@ -14,11 +14,11 @@ import java.util.Currency;
  *
  * @author Unzer E-Com GmbH
  */
-public class Wechatpay extends AbstractPaymentType implements PaymentType {
+public class Wechatpay extends BasePaymentType {
 
   @Override
-  public String getTypeUrl() {
-    return "types/wechatpay";
+  public String getResourceUrl() {
+    return "/v1/types/wechatpay/<resourceId>";
   }
 
   @Override
@@ -28,11 +28,13 @@ public class Wechatpay extends AbstractPaymentType implements PaymentType {
     return wechatpay;
   }
 
+  @Deprecated
   public Charge charge(BigDecimal amount, Currency currency, URL returnUrl)
       throws HttpCommunicationException {
     return getUnzer().charge(amount, currency, this, returnUrl);
   }
 
+  @Deprecated
   public Charge charge(BigDecimal amount, Currency currency, URL returnUrl, Customer customer)
       throws HttpCommunicationException {
     return getUnzer().charge(amount, currency, this, returnUrl, customer);

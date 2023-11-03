@@ -15,11 +15,10 @@ import java.util.Currency;
  *
  * @author Unzer E-Com GmbH
  */
-public class Alipay extends AbstractPaymentType implements PaymentType {
-
+public class Alipay extends BasePaymentType {
   @Override
-  public String getTypeUrl() {
-    return "types/alipay";
+  protected String getResourceUrl() {
+    return "/v1/types/alipay/<resourceId>";
   }
 
   @Override
@@ -33,14 +32,15 @@ public class Alipay extends AbstractPaymentType implements PaymentType {
     return alipay;
   }
 
+  @Deprecated
   public Charge charge(BigDecimal amount, Currency currency, URL returnUrl)
       throws HttpCommunicationException {
-    return getUnzer().charge(amount, currency, this, returnUrl);
+    return getUnzer().charge(amount, currency, new Alipay(), returnUrl);
   }
 
+  @Deprecated
   public Charge charge(BigDecimal amount, Currency currency, URL returnUrl, Customer customer)
       throws HttpCommunicationException {
     return getUnzer().charge(amount, currency, this, returnUrl, customer);
   }
-
 }

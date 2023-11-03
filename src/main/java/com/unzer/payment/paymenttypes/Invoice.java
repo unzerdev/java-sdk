@@ -16,11 +16,11 @@ import java.util.Currency;
  * @deprecated use {@link PaylaterInvoice} instead
  */
 @Deprecated
-public class Invoice extends AbstractPaymentType implements PaymentType {
+public class Invoice extends BasePaymentType {
 
   @Override
-  public String getTypeUrl() {
-    return "types/invoice";
+  public String getResourceUrl() {
+    return "/v1/types/invoice/<resourceId>";
   }
 
   @Override

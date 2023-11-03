@@ -15,11 +15,10 @@ import java.util.Currency;
  *
  * @author Unzer E-Com GmbH
  */
-public class Giropay extends AbstractPaymentType implements PaymentType {
-
+public class Giropay extends BasePaymentType {
   @Override
-  public String getTypeUrl() {
-    return "types/giropay";
+  public String getResourceUrl() {
+    return "/v1/types/giropay/<resourceId>";
   }
 
   @Override
@@ -33,11 +32,13 @@ public class Giropay extends AbstractPaymentType implements PaymentType {
     return giropay;
   }
 
+  @Deprecated
   public Charge charge(BigDecimal amount, Currency currency, URL returnUrl)
       throws HttpCommunicationException {
     return getUnzer().charge(amount, currency, this, returnUrl);
   }
 
+  @Deprecated
   public Charge charge(BigDecimal amount, Currency currency, URL returnUrl, Customer customer)
       throws HttpCommunicationException {
     return getUnzer().charge(amount, currency, this, returnUrl, customer);

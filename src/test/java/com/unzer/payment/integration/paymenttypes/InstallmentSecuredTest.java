@@ -304,9 +304,9 @@ public class InstallmentSecuredTest extends AbstractPaymentTest {
   @Deprecated
   public void testChargeViaAuthorizeBasketV1() throws HttpCommunicationException, ParseException {
     Unzer unzer = getUnzer(Keys.LEGACY_PRIVATE_KEY);
-    InstallmentSecuredRatePlan ratePlan =
-        unzer.createPaymentType(getInstallmentSecuredRatePlan());
-    InstallmentSecuredRatePlan ratePlanReturned = unzer.createPaymentType(ratePlan);
+    InstallmentSecuredRatePlan ratePlan = unzer.createPaymentType(getInstallmentSecuredRatePlan());
+    InstallmentSecuredRatePlan ratePlanReturned =
+        (InstallmentSecuredRatePlan) unzer.fetchPaymentType(ratePlan.getId());
     assertNotNull(ratePlanReturned);
     assertRatePlan(ratePlan, ratePlanReturned);
 
@@ -363,7 +363,8 @@ public class InstallmentSecuredTest extends AbstractPaymentTest {
     Unzer unzer = getUnzer(Keys.LEGACY_PRIVATE_KEY);
     InstallmentSecuredRatePlan ratePlan =
         unzer.createPaymentType(getInstallmentSecuredRatePlan());
-    InstallmentSecuredRatePlan ratePlanReturned = unzer.createPaymentType(ratePlan);
+    InstallmentSecuredRatePlan ratePlanReturned =
+        (InstallmentSecuredRatePlan) unzer.fetchPaymentType(ratePlan.getId());
     assertNotNull(ratePlanReturned);
     assertRatePlan(ratePlan, ratePlanReturned);
 
@@ -426,7 +427,8 @@ public class InstallmentSecuredTest extends AbstractPaymentTest {
     Unzer unzer = getUnzer(Keys.LEGACY_PRIVATE_KEY);
     InstallmentSecuredRatePlan ratePlan =
         unzer.createPaymentType(getInstallmentSecuredRatePlan());
-    InstallmentSecuredRatePlan ratePlanReturned = unzer.createPaymentType(ratePlan);
+    InstallmentSecuredRatePlan ratePlanReturned =
+        (InstallmentSecuredRatePlan) unzer.fetchPaymentType(ratePlan.getId());
     assertNotNull(ratePlanReturned);
     assertRatePlan(ratePlan, ratePlanReturned);
 

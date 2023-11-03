@@ -14,11 +14,11 @@ import java.util.Currency;
  * Invoice secured is an Invoice payment with guarantee for the Merchant
  */
 @Deprecated
-public class InvoiceSecured extends AbstractPaymentType implements PaymentType {
+public class InvoiceSecured extends BasePaymentType {
 
   @Override
-  public String getTypeUrl() {
-    return "types/invoice-secured";
+  public String getResourceUrl() {
+    return "/v1/types/invoice-secured/<resourceId>";
   }
 
   @Override
@@ -54,10 +54,14 @@ public class InvoiceSecured extends AbstractPaymentType implements PaymentType {
                            URL returnUrl,
                            Customer customer, Basket basket, String invoiceId)
       throws HttpCommunicationException {
+    if (invoiceSecured.getId() == null) {
+        invoiceSecured = getUnzer().createPaymentType(invoiceSecured);
+    }
+
     return (Charge) new Charge()
         .setAmount(amount)
         .setCurrency(currency)
-        .setTypeId(getUnzer().createPaymentType(invoiceSecured).getId())
+        .setTypeId(invoiceSecured.getId())
         .setReturnUrl(returnUrl)
         .setCustomerId(getUnzer().createCustomerIfPresent(customer).getId())
         .setBasketId(getUnzer().createBasket(basket).getId())

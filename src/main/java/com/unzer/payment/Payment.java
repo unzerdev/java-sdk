@@ -2,6 +2,7 @@ package com.unzer.payment;
 
 import com.unzer.payment.communication.HttpCommunicationException;
 import com.unzer.payment.communication.json.ApiObject;
+import com.unzer.payment.paymenttypes.BasePaymentType;
 import com.unzer.payment.paymenttypes.PaymentType;
 import java.math.BigDecimal;
 import java.net.URL;
@@ -73,7 +74,7 @@ public class Payment extends AbstractPayment {
    * @deprecated use {@link Unzer#charge(Charge)} instead
    */
   @Deprecated
-  public Charge charge(BigDecimal amount, Currency currency, PaymentType paymentType)
+  public Charge charge(BigDecimal amount, Currency currency, BasePaymentType paymentType)
       throws HttpCommunicationException {
     return getUnzer().charge(amount, currency, paymentType);
   }
@@ -100,7 +101,7 @@ public class Payment extends AbstractPayment {
    * @deprecated use {@link Unzer#charge(Charge)} instead
    */
   @Deprecated
-  public Charge charge(BigDecimal amount, Currency currency, PaymentType paymentType, URL returnUrl,
+  public Charge charge(BigDecimal amount, Currency currency, BasePaymentType paymentType, URL returnUrl,
                        Customer customer) throws HttpCommunicationException {
     return getUnzer().charge(amount, currency, paymentType, returnUrl, customer);
   }
@@ -127,7 +128,7 @@ public class Payment extends AbstractPayment {
    * @deprecated use {@link Unzer#authorize(Authorization)} instead
    */
   @Deprecated
-  public Authorization authorize(BigDecimal amount, Currency currency, PaymentType paymentType,
+  public Authorization authorize(BigDecimal amount, Currency currency, BasePaymentType paymentType,
                                  URL returnUrl, Customer customer)
       throws HttpCommunicationException {
     return getUnzer().authorize(amount, currency, paymentType, returnUrl, customer);

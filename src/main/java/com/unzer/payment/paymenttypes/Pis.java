@@ -15,7 +15,7 @@ import java.util.Currency;
  *
  * @author Unzer E-Com GmbH
  */
-public class Pis extends AbstractPaymentType implements PaymentType {
+public class Pis extends BasePaymentType {
 
   private String iban;
   private String bic;
@@ -26,19 +26,17 @@ public class Pis extends AbstractPaymentType implements PaymentType {
   }
 
   public Pis(String iban) {
-    super();
     this.iban = iban;
   }
 
   public Pis(String iban, String bic) {
-    super();
     this.iban = iban;
     this.bic = bic;
   }
 
   @Override
-  public String getTypeUrl() {
-    return "types/pis";
+  public String getResourceUrl() {
+    return "/v1/types/pis/<resourceId>";
   }
 
   @Override
@@ -55,11 +53,13 @@ public class Pis extends AbstractPaymentType implements PaymentType {
     return pis;
   }
 
+  @Deprecated
   public Charge charge(BigDecimal amount, Currency currency, URL returnUrl)
       throws HttpCommunicationException {
     return getUnzer().charge(amount, currency, this, returnUrl);
   }
 
+  @Deprecated
   public Charge charge(BigDecimal amount, Currency currency, URL returnUrl, Customer customer)
       throws HttpCommunicationException {
     return getUnzer().charge(amount, currency, this, returnUrl, customer);

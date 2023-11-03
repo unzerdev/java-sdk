@@ -19,7 +19,7 @@ import java.util.Currency;
  *
  * @author Unzer E-Com GmbH
  */
-public class Card extends AbstractPaymentType implements PaymentType {
+public class Card extends BasePaymentType {
   private String number;
   private String cvc;
   private String expiryDate;
@@ -54,6 +54,11 @@ public class Card extends AbstractPaymentType implements PaymentType {
     this.email = email;
   }
 
+  @Override
+  protected String getResourceUrl() {
+    return "/v1/types/card/<resourceId>";
+  }
+
   public String getNumber() {
     return number;
   }
@@ -79,11 +84,6 @@ public class Card extends AbstractPaymentType implements PaymentType {
   public Card setExpiryDate(String expiryDate) {
     this.expiryDate = expiryDate;
     return this;
-  }
-
-  @Override
-  public String getTypeUrl() {
-    return "types/card";
   }
 
   @Override

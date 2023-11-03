@@ -13,10 +13,10 @@ import com.unzer.payment.communication.json.ApiObject;
  * <p>
  * See more: <a href="https://docs.unzer.com/payment-methods/unzer-invoice-upl/">Unzer Docs</a>
  */
-public class PaylaterInvoice extends AbstractPaymentType {
+public class PaylaterInvoice extends BasePaymentType {
   @Override
-  public String getTypeUrl() {
-    return "types/paylater-invoice";
+  public String getResourceUrl() {
+    return "/v1/types/paylater-invoice/<resourceId>";
   }
 
   @Override
