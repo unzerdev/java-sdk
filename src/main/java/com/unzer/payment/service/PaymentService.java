@@ -784,7 +784,7 @@ public class PaymentService {
   }
 
   public Recurring recurring(Recurring recurring) throws HttpCommunicationException {
-    String url = urlUtil.getRecurringUrl(recurring);
+    String url = urlUtil.getUrl(recurring);
     String response = restCommunication.httpPost(url, unzer.getPrivateKey(),
         apiToSdkMapper.map(recurring));
     ApiRecurring json = jsonParser.fromJson(response, ApiRecurring.class);
