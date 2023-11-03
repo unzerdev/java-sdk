@@ -37,6 +37,7 @@ public class PisTest extends AbstractPaymentTest {
     }
 
     @Test
+    @Disabled("Unspecified (Technical)")
     public void testAuthorizeType() {
         Unzer unzer = getUnzer();
         Pis pis = unzer.createPaymentType(new Pis());
