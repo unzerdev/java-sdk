@@ -15,12 +15,7 @@ import java.util.Optional;
 public class UrlUtil {
   private static final String PRODUCTION_ENDPOINT = "https://api.unzer.com";
   private static final String SANDBOX_ENDPOINT = "https://sbx-api.unzer.com";
-  private static final String DEVELOPMENT_ENDPOINT = "https://dev-api.unzer.com";
-  private static final String STAGING_ENDPOINT = "https://stg-api.unzer.com";
-  private static final String DEVELOPMENT_ENVIRONMENT = "DEV";
-  private static final String STAGING_ENVIRONMENT = "STG";
   private static final char PRODUCTION_KEY_PREFIX = 'p';
-  private static final String PAPI_ENV_NAME = "UNZER_PAPI_ENV";
   private static final String PLACEHOLDER_CHARGE_ID = "<chargeId>";
   private static final String PLACEHOLDER_PAYMENT_ID = "<paymentId>";
   private static final String PLACEHOLDER_TYPE_ID = "<typeId>";
@@ -35,46 +30,11 @@ public class UrlUtil {
     this.apiEndpoint = resolveApiEndpoint(privateKey);
   }
 
-  /**
-   * API endpoint depends on key type and a configured environment.
-   * <p/>
-   * <table>
-   *     <tr><th>Key type</th><th>Configured environment</th><th>Endpoint</th></tr>
-   *   <tr>
-   *     <td> Production </td> <td> [any] </td> <td>PROD: https://api.unzer.com</td>
-   *   </tr>
-   *   <tr>
-   *     <td> Non-production </td> <td> dev </td> <td>DEV: https://dev-api.unzer.com</td>
-   *   </tr>
-   *   <tr>
-   *     <td> Non-production </td> <td> stg </td> <td>STG: https://stg-api.unzer.com</td>
-   *   </tr>
-   *   <tr>
-   *     <td> Non-production </td> <td> [not dev/stg] </td> <td>SBX: https://sbx-api.unzer.com</td>
-   *   </tr>
-   * </table>
-   *
-   * @param privateKey private key to access API
-   * @return API endpoint
-   */
   private String resolveApiEndpoint(String privateKey) {
-    // Production keys are always routed to production endpoint
-    if (privateKey.charAt(0) == PRODUCTION_KEY_PREFIX) {
-      return PRODUCTION_ENDPOINT;
-    }
-
-    String restEnv = Optional.ofNullable(System.getenv(PAPI_ENV_NAME))
-        .orElse("")
-        .toUpperCase();
-
-    switch (restEnv) {
-      case DEVELOPMENT_ENVIRONMENT:
-        return DEVELOPMENT_ENDPOINT;
-      case STAGING_ENVIRONMENT:
-        return STAGING_ENDPOINT;
-      default:
-        return SANDBOX_ENDPOINT;
-    }
+    // 'p-' for production, 's-' for sandbox
+    return privateKey.charAt(0) == PRODUCTION_KEY_PREFIX
+        ? PRODUCTION_ENDPOINT
+        : SANDBOX_ENDPOINT;
   }
 
   public String getRefundUrl(String paymentId, String chargeId) {

@@ -18,7 +18,6 @@ import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 
-@Disabled("Until email field is optional")
 public class PaylaterDirectDebitTest extends AbstractPaymentTest {
   @Test
   public void create_and_fetch_payment_type_ok() {

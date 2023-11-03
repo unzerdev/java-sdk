@@ -488,10 +488,12 @@ public class PaymentService {
     authorization.setPayment(payment);
     authorization.setResourceUrl(apiTransaction.getUrl());
     authorization.setType(apiTransaction.getType());
-    authorization.setCancelList(payment.getCancelList().stream()
-        .filter(c -> c.getType().equalsIgnoreCase(TransactionType.CANCEL_AUTHORIZE.apiName()))
-        .collect(
-            Collectors.toList()));
+    authorization.setCancelList(
+        payment.getCancelList()
+            .parallelStream()
+            .filter(c -> c.getType().equalsIgnoreCase(TransactionType.CANCEL_AUTHORIZE.apiName()))
+            .collect(Collectors.toList())
+    );
     authorization.setBasketId(payment.getBasketId());
     return authorization;
   }
@@ -499,12 +501,13 @@ public class PaymentService {
   private ApiTransaction getAuthorizationFromTransactions(List<ApiTransaction> transactions) {
     List<ApiTransaction> authorizeList =
         getTypedTransactions(transactions, TransactionType.AUTHORIZE);
-    return !authorizeList.isEmpty() ? authorizeList.get(0) : null;
+    return authorizeList.isEmpty() ? null : authorizeList.get(0);
   }
 
-  private List<Charge> fetchChargeList(Payment payment,
-                                       List<ApiTransaction> jsonChargesTransactionList)
-      throws HttpCommunicationException {
+  private List<Charge> fetchChargeList(
+      Payment payment,
+      List<ApiTransaction> jsonChargesTransactionList
+  ) throws HttpCommunicationException {
     if (jsonChargesTransactionList == null || jsonChargesTransactionList.isEmpty()) {
       return new ArrayList<>();
     }
@@ -523,9 +526,12 @@ public class PaymentService {
 
   protected List<ApiTransaction> getTypedTransactions(
       List<ApiTransaction> transactions,
-      TransactionType type) {
-    return transactions.stream().filter(t -> t.getType().equalsIgnoreCase(type.apiName())).collect(
-        Collectors.toList());
+      TransactionType type
+  ) {
+    return transactions
+        .parallelStream()
+        .filter(t -> t.getType().equalsIgnoreCase(type.apiName()))
+        .collect(Collectors.toList());
   }
 
   private List<Payout> fetchPayoutList(Payment payment, List<ApiTransaction> apiTransactionList)
@@ -563,13 +569,16 @@ public class PaymentService {
       throws HttpCommunicationException {
     String response = restCommunication.httpGet(url.toString(), unzer.getPrivateKey());
     ApiAuthorization jsonAuthorization = jsonParser.fromJson(response, ApiAuthorization.class);
-    authorization = (Authorization) apiToSdkMapper.mapToBusinessObject(jsonAuthorization,
+    authorization = (Authorization) apiToSdkMapper.mapToBusinessObject(
+        jsonAuthorization,
         authorization
     );
-    authorization.setCancelList(payment.getCancelList().stream()
+    authorization.setCancelList(payment.getCancelList().parallelStream()
         .filter(c -> c.getType().equalsIgnoreCase(TransactionType.CANCEL_AUTHORIZE.apiName()))
         .collect(
-            Collectors.toList()));
+            Collectors.toList()
+        )
+    );
     authorization.setUnzer(unzer);
     return authorization;
   }
@@ -586,7 +595,7 @@ public class PaymentService {
   }
 
   private List<Cancel> getCancelListForCharge(List<Cancel> list, String chargeId) {
-    return list.stream()
+    return list.parallelStream()
         .filter(c -> c.getType().equalsIgnoreCase(TransactionType.CANCEL_CHARGE.apiName()))
         .filter(c -> c.getResourceUrl().toString().contains(chargeId))
         .collect(Collectors.toList());
@@ -623,8 +632,10 @@ public class PaymentService {
    */
   public Authorization updateAuthorization(Authorization authorization)
       throws HttpCommunicationException {
-    return this.updateAuthorization(authorization,
-        urlUtil.getPaymentUrl(authorization, authorization.getPaymentId()));
+    return this.updateAuthorization(
+        authorization,
+        urlUtil.getPaymentUrl(authorization, authorization.getPaymentId())
+    );
   }
 
   private Authorization updateAuthorization(Authorization authorization, String url)
@@ -632,8 +643,7 @@ public class PaymentService {
     String response = restCommunication.httpPatch(url, unzer.getPrivateKey(),
         apiToSdkMapper.map(authorization));
     ApiAuthorization jsonCharge = jsonParser.fromJson(response, ApiAuthorization.class);
-    authorization =
-        (Authorization) apiToSdkMapper.mapToBusinessObject(jsonCharge, authorization);
+    authorization = (Authorization) apiToSdkMapper.mapToBusinessObject(jsonCharge, authorization);
     authorization.setPayment(fetchPayment(jsonCharge.getResources().getPaymentId()));
     authorization.setPaymentId(jsonCharge.getResources().getPaymentId());
     authorization.setUnzer(unzer);
