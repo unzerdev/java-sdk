@@ -1,10 +1,7 @@
 package com.unzer.payment.integration.paymenttypes;
 
-import static com.unzer.payment.util.Url.unsafeUrl;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-
-import com.unzer.payment.BaseTransaction.Status;
 import com.unzer.payment.Authorization;
+import com.unzer.payment.BaseTransaction.Status;
 import com.unzer.payment.Basket;
 import com.unzer.payment.Charge;
 import com.unzer.payment.Unzer;
@@ -13,9 +10,13 @@ import com.unzer.payment.business.BasketV2TestData;
 import com.unzer.payment.models.AdditionalTransactionData;
 import com.unzer.payment.models.PaypalData;
 import com.unzer.payment.paymenttypes.Paypal;
+import org.junit.jupiter.api.Test;
+
 import java.math.BigDecimal;
 import java.util.Currency;
-import org.junit.jupiter.api.Test;
+
+import static com.unzer.payment.util.Url.unsafeUrl;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class PaypalExpressTest extends AbstractPaymentTest {
     @Test

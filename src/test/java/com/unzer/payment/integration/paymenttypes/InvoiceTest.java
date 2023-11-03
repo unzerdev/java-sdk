@@ -1,17 +1,18 @@
 package com.unzer.payment.integration.paymenttypes;
 
 
-import static com.unzer.payment.business.Keys.LEGACY_PRIVATE_KEY;
-import static com.unzer.payment.util.Url.unsafeUrl;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-
 import com.unzer.payment.Charge;
 import com.unzer.payment.Unzer;
 import com.unzer.payment.business.AbstractPaymentTest;
 import com.unzer.payment.paymenttypes.Invoice;
+import org.junit.jupiter.api.Test;
+
 import java.math.BigDecimal;
 import java.util.Currency;
-import org.junit.jupiter.api.Test;
+
+import static com.unzer.payment.business.Keys.LEGACY_PRIVATE_KEY;
+import static com.unzer.payment.util.Url.unsafeUrl;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 public class InvoiceTest extends AbstractPaymentTest {
 
@@ -32,12 +33,11 @@ public class InvoiceTest extends AbstractPaymentTest {
     @Test
     public void testFetchInvoiceType() {
         Unzer unzer = getUnzer(LEGACY_PRIVATE_KEY);
-		Invoice invoice = unzer.createPaymentType(new Invoice());
+        Invoice invoice = unzer.createPaymentType(new Invoice());
         assertNotNull(invoice.getId());
         Invoice fetchedInvoice = (Invoice) unzer.fetchPaymentType(invoice.getId());
         assertNotNull(fetchedInvoice.getId());
     }
-
 
 
 }

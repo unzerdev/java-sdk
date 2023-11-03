@@ -1,17 +1,18 @@
 package com.unzer.payment.integration.paymenttypes;
 
 
-import static com.unzer.payment.util.Url.unsafeUrl;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-
 import com.unzer.payment.Charge;
 import com.unzer.payment.Unzer;
 import com.unzer.payment.business.AbstractPaymentTest;
 import com.unzer.payment.paymenttypes.Pis;
-import java.math.BigDecimal;
-import java.util.Currency;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
+
+import java.math.BigDecimal;
+import java.util.Currency;
+
+import static com.unzer.payment.util.Url.unsafeUrl;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 public class PisTest extends AbstractPaymentTest {
 
@@ -42,10 +43,10 @@ public class PisTest extends AbstractPaymentTest {
         Unzer unzer = getUnzer();
         Pis pis = unzer.createPaymentType(new Pis());
         Charge charge = unzer.charge(
-            BigDecimal.ONE,
-            Currency.getInstance("EUR"),
-            pis.getId(),
-            unsafeUrl("https://www.meinShop.de")
+                BigDecimal.ONE,
+                Currency.getInstance("EUR"),
+                pis.getId(),
+                unsafeUrl("https://www.meinShop.de")
         );
         assertNotNull(charge);
         assertNotNull(charge.getId());

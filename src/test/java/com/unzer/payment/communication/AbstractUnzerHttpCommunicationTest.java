@@ -1,17 +1,18 @@
 package com.unzer.payment.communication;
 
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-
 import com.unzer.payment.PaymentError;
 import com.unzer.payment.PaymentException;
 import com.unzer.payment.util.SDKInfo;
+import org.junit.jupiter.api.Test;
+
 import java.util.Base64;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
-import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 public class AbstractUnzerHttpCommunicationTest {
 
@@ -33,7 +34,7 @@ public class AbstractUnzerHttpCommunicationTest {
         assertNotNull(exception);
         assertEquals("2018-09-13 22:47:35", exception.getTimestamp());
         assertEquals("https://unzer.com", exception.getUrl());
-        assertEquals(new Integer(409), exception.getStatusCode());
+        assertEquals(Integer.valueOf(409), exception.getStatusCode());
         PaymentError error = exception.getPaymentErrorList().get(0);
         assertEquals("API.410.200.010", error.getCode());
         assertEquals("Message for the customer.", error.getCustomerMessage());
@@ -153,7 +154,9 @@ public class AbstractUnzerHttpCommunicationTest {
 
         assertNotNull(rest.request);
         assertEquals(expectedHeaders, rest.request.headerMap);
-    }private void assertUserAgentHeader(MockUnzerHttpRequest request) {
+    }
+
+    private void assertUserAgentHeader(MockUnzerHttpRequest request) {
         assertEquals(AbstractUnzerRestCommunication.USER_AGENT_PREFIX + " - " + SDKInfo.VERSION, request.headerMap.get("User-Agent"));
     }
 

@@ -6,52 +6,52 @@ import java.net.URISyntaxException;
  * Minimal represenation of a http-response.
  */
 public class UnzerHttpResponse {
-  private final UnzerHttpRequest request;
-  private final String content;
-  private final int code;
+    private final UnzerHttpRequest request;
+    private final String content;
+    private final int code;
 
-  /**
-   * Creates the {@code UnzerHttpResponse} with the given content ond http-status code.
-   *
-   * @param content - the content of the response. will be application/son, UTF-8 in any cases
-   * @param code    - the http-status code
-   */
-  public UnzerHttpResponse(UnzerHttpRequest request, String content, int code) {
-    this.request = request;
-    this.content = content;
-    this.code = code;
-  }
-
-  /**
-   * @return the http-status code
-   */
-  public int getStatusCode() {
-    return code;
-  }
-
-  /**
-   * @return the content of the response. will be application/son, UTF-8 in any cases
-   */
-  public String getContent() {
-    return this.content;
-  }
-
-
-  /**
-   * Fail-safe method to reveal initial request URI
-   *
-   * @return initial request URI
-   */
-  @SuppressWarnings("checkstyle:AbbreviationAsWordInName")
-  public String getRequestURI() {
-    try {
-      return request.getURI().toString();
-    } catch (URISyntaxException e) {
-      return "UNKNOWN";
+    /**
+     * Creates the {@code UnzerHttpResponse} with the given content ond http-status code.
+     *
+     * @param content - the content of the response. will be application/son, UTF-8 in any cases
+     * @param code    - the http-status code
+     */
+    public UnzerHttpResponse(UnzerHttpRequest request, String content, int code) {
+        this.request = request;
+        this.content = content;
+        this.code = code;
     }
-  }
 
-  public UnzerHttpRequest getRequest() {
-    return this.request;
-  }
+    /**
+     * @return the http-status code
+     */
+    public int getStatusCode() {
+        return code;
+    }
+
+    /**
+     * @return the content of the response. will be application/son, UTF-8 in any cases
+     */
+    public String getContent() {
+        return this.content;
+    }
+
+
+    /**
+     * Fail-safe method to reveal initial request URI
+     *
+     * @return initial request URI
+     */
+    @SuppressWarnings("checkstyle:AbbreviationAsWordInName")
+    public String getRequestURI() {
+        try {
+            return request.getURI().toString();
+        } catch (URISyntaxException e) {
+            return "UNKNOWN";
+        }
+    }
+
+    public UnzerHttpRequest getRequest() {
+        return this.request;
+    }
 }

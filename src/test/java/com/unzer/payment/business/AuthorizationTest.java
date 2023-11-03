@@ -1,31 +1,27 @@
 package com.unzer.payment.business;
 
-import static com.unzer.payment.business.BasketV1TestData.getMaxTestBasketV1;
-import static com.unzer.payment.util.Uuid.generateUuid;
-import static java.util.concurrent.TimeUnit.SECONDS;
-import static org.awaitility.Awaitility.await;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-
-import com.unzer.payment.BaseTransaction;
-import com.unzer.payment.Authorization;
-import com.unzer.payment.Basket;
-import com.unzer.payment.Customer;
-import com.unzer.payment.Payment;
-import com.unzer.payment.Unzer;
+import com.unzer.payment.*;
 import com.unzer.payment.communication.HttpCommunicationException;
 import com.unzer.payment.marketplace.MarketplaceAuthorization;
 import com.unzer.payment.marketplace.MarketplacePayment;
 import com.unzer.payment.paymenttypes.Card;
+import org.apache.hc.core5.http.HttpStatus;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
+
 import java.math.BigDecimal;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.text.ParseException;
 import java.time.LocalDate;
 import java.util.Currency;
-import org.apache.hc.core5.http.HttpStatus;
-import org.junit.jupiter.api.Disabled;
-import org.junit.jupiter.api.Test;
+
+import static com.unzer.payment.business.BasketV1TestData.getMaxTestBasketV1;
+import static com.unzer.payment.util.Uuid.generateUuid;
+import static java.util.concurrent.TimeUnit.SECONDS;
+import static org.awaitility.Awaitility.await;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 
 public class AuthorizationTest extends AbstractPaymentTest {
@@ -60,7 +56,8 @@ public class AuthorizationTest extends AbstractPaymentTest {
 
     @Test
     public void testAuthorizeWithPaymentType() throws MalformedURLException, HttpCommunicationException {
-        Unzer unzer = getUnzer(Keys.DEFAULT);LocalDate locaDateNow = LocalDate.now();
+        Unzer unzer = getUnzer(Keys.DEFAULT);
+        LocalDate locaDateNow = LocalDate.now();
         Card card = new Card("4444333322221111", "12/" + (locaDateNow.getYear() + 1));
         Authorization authorize = unzer.authorize(BigDecimal.ONE, Currency.getInstance("EUR"), card, new URL("https://www.unzer.com"), false);
         assertNotNull(authorize);
@@ -71,7 +68,8 @@ public class AuthorizationTest extends AbstractPaymentTest {
 
     @Test
     public void testAuthorizeReturnPaymentTypeAndCustomer() throws MalformedURLException, HttpCommunicationException {
-        Unzer unzer = getUnzer(Keys.DEFAULT);LocalDate locaDateNow = LocalDate.now();
+        Unzer unzer = getUnzer(Keys.DEFAULT);
+        LocalDate locaDateNow = LocalDate.now();
         Card card = new Card("4444333322221111", "12/" + (locaDateNow.getYear() + 1));
         Customer customer = new Customer("Max", "Mustermann");
         Authorization authorize = unzer.authorize(BigDecimal.ONE, Currency.getInstance("EUR"), card, new URL("https://www.unzer.com"), customer, false);
@@ -104,7 +102,8 @@ public class AuthorizationTest extends AbstractPaymentTest {
 
     @Test
     public void testAuthorizeWithCustomerTypeReturnUrl() throws MalformedURLException, HttpCommunicationException {
-        Unzer unzer = getUnzer(Keys.DEFAULT);LocalDate locaDateNow = LocalDate.now();
+        Unzer unzer = getUnzer(Keys.DEFAULT);
+        LocalDate locaDateNow = LocalDate.now();
         Card card = new Card("4444333322221111", "12/" + (locaDateNow.getYear() + 1));
         Customer customer = new Customer("Max", "Mustermann");
         Authorization authorize = unzer.authorize(BigDecimal.ONE, Currency.getInstance("EUR"), card, new URL("https://www.unzer.com"), customer, false);
@@ -198,12 +197,12 @@ public class AuthorizationTest extends AbstractPaymentTest {
     public void testAuthorizeWithAuthorizeObject() throws MalformedURLException, HttpCommunicationException {
         Authorization authorization = getAuthorization(createPaymentTypeCard(getUnzer(), "4711100000000000").getId());
         authorization.setPaymentReference("pmt-ref");
-        authorization.setAmount(new BigDecimal(1.0));
+        authorization.setAmount(new BigDecimal("1.0"));
         Authorization authorize = getUnzer().authorize(authorization);
         assertNotNull(authorize);
         assertNotNull(authorize.getId());
         assertEquals("pmt-ref", authorize.getPaymentReference());
-        assertEquals(new BigDecimal(1.0000).setScale(4), authorize.getAmount());
+        assertEquals(new BigDecimal("1.0000").setScale(4), authorize.getAmount());
     }
 
     @Disabled("Needs further configuration in Testdata")

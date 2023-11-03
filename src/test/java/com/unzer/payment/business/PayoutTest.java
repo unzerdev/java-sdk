@@ -1,23 +1,24 @@
 package com.unzer.payment.business;
 
 
-import static com.unzer.payment.business.BasketV1TestData.getMaxTestBasketV1;
-import static com.unzer.payment.util.Uuid.generateUuid;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-
 import com.unzer.payment.PaymentException;
 import com.unzer.payment.Payout;
 import com.unzer.payment.Unzer;
 import com.unzer.payment.communication.HttpCommunicationException;
 import com.unzer.payment.paymenttypes.Card;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
+
 import java.math.BigDecimal;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.text.ParseException;
 import java.util.Currency;
-import org.junit.jupiter.api.Disabled;
-import org.junit.jupiter.api.Test;
+
+import static com.unzer.payment.business.BasketV1TestData.getMaxTestBasketV1;
+import static com.unzer.payment.util.Uuid.generateUuid;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 public class PayoutTest extends AbstractPaymentTest {
 
@@ -66,7 +67,7 @@ public class PayoutTest extends AbstractPaymentTest {
     private Payout getTestPayout(String typeId) throws PaymentException, HttpCommunicationException, ParseException, MalformedURLException {
         Unzer unzer = getUnzer();
         Payout payout = new Payout();
-        payout.setAmount(new BigDecimal(856.4900));
+        payout.setAmount(new BigDecimal("856.4900"));
         payout.setCurrency(Currency.getInstance("EUR"));
         payout.setOrderId(generateUuid());
         payout.setPaymentReference("My Payment Reference");

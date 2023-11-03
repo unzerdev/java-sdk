@@ -1,23 +1,8 @@
 package com.unzer.payment.business;
 
 
-import static com.unzer.payment.business.BasketV1TestData.getMaxTestBasketV1;
-import static com.unzer.payment.business.Keys.DEFAULT;
-import static com.unzer.payment.business.Keys.MARKETPLACE_KEY;
-import static com.unzer.payment.util.Url.unsafeUrl;
-import static com.unzer.payment.util.Uuid.generateUuid;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-
 import com.google.gson.GsonBuilder;
-import com.unzer.payment.BaseTransaction;
-import com.unzer.payment.Basket;
-import com.unzer.payment.Charge;
-import com.unzer.payment.Customer;
-import com.unzer.payment.Payment;
-import com.unzer.payment.Unzer;
+import com.unzer.payment.*;
 import com.unzer.payment.communication.HttpCommunicationException;
 import com.unzer.payment.communication.JsonFieldIgnoreStragegy;
 import com.unzer.payment.marketplace.MarketplaceCharge;
@@ -25,14 +10,22 @@ import com.unzer.payment.marketplace.MarketplacePayment;
 import com.unzer.payment.paymenttypes.Card;
 import com.unzer.payment.paymenttypes.SepaDirectDebit;
 import com.unzer.payment.paymenttypes.Sofort;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
+
 import java.math.BigDecimal;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.text.ParseException;
 import java.time.LocalDate;
 import java.util.Currency;
-import org.junit.jupiter.api.Disabled;
-import org.junit.jupiter.api.Test;
+
+import static com.unzer.payment.business.BasketV1TestData.getMaxTestBasketV1;
+import static com.unzer.payment.business.Keys.DEFAULT;
+import static com.unzer.payment.business.Keys.MARKETPLACE_KEY;
+import static com.unzer.payment.util.Url.unsafeUrl;
+import static com.unzer.payment.util.Uuid.generateUuid;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class ChargeTest extends AbstractPaymentTest {
 
@@ -73,7 +66,8 @@ public class ChargeTest extends AbstractPaymentTest {
 
     @Test
     public void testChargeWithPaymentType() throws MalformedURLException, HttpCommunicationException {
-        Unzer unzer = getUnzer(DEFAULT);LocalDate locaDateNow = LocalDate.now();
+        Unzer unzer = getUnzer(DEFAULT);
+        LocalDate locaDateNow = LocalDate.now();
         Card card = new Card("4444333322221111", "12/" + (locaDateNow.getYear() + 1));
         Charge charge = unzer.charge(BigDecimal.ONE, Currency.getInstance("EUR"), card, new URL("https://www.unzer.com"), false);
         assertNotNull(charge);
@@ -93,7 +87,8 @@ public class ChargeTest extends AbstractPaymentTest {
 
     @Test
     public void testChargeWithCustomerTypeReturnUrl() throws MalformedURLException, HttpCommunicationException {
-        Unzer unzer = getUnzer(DEFAULT);LocalDate locaDateNow = LocalDate.now();
+        Unzer unzer = getUnzer(DEFAULT);
+        LocalDate locaDateNow = LocalDate.now();
         Card card = new Card("4444333322221111", "12/" + (locaDateNow.getYear() + 1));
         Customer customer = new Customer("Max", "Mustermann");
         Charge charge = unzer.charge(BigDecimal.ONE, Currency.getInstance("EUR"), card, new URL("https://www.unzer.com"), customer, false);
@@ -114,7 +109,8 @@ public class ChargeTest extends AbstractPaymentTest {
 
     @Test
     public void testChargeReturnPayment() throws MalformedURLException, HttpCommunicationException {
-        Unzer unzer = getUnzer(DEFAULT);LocalDate locaDateNow = LocalDate.now();
+        Unzer unzer = getUnzer(DEFAULT);
+        LocalDate locaDateNow = LocalDate.now();
         Card card = new Card("4444333322221111", "12/" + (locaDateNow.getYear() + 1));
         Charge charge = unzer.charge(BigDecimal.ONE, Currency.getInstance("EUR"), card, new URL("https://www.unzer.com"), false);
         assertNotNull(charge);
@@ -194,12 +190,12 @@ public class ChargeTest extends AbstractPaymentTest {
         String orderId = generateUuid();
         Charge chargeObj = getCharge(orderId, true, null);
         chargeObj.setPaymentReference("pmt-ref");
-        chargeObj.setAmount(new BigDecimal(1.0));
+        chargeObj.setAmount(new BigDecimal("1.0"));
         Charge charge = getUnzer().charge(chargeObj);
         assertNotNull(charge);
         assertNotNull(charge.getId());
         assertEquals("pmt-ref", charge.getPaymentReference());
-        assertEquals(new BigDecimal(1.0000).setScale(4), charge.getAmount());
+        assertEquals(new BigDecimal("1.0000").setScale(4), charge.getAmount());
     }
 
     @Test

@@ -1,16 +1,17 @@
 package com.unzer.payment.integration.paymenttypes;
 
 
-import static com.unzer.payment.util.Url.unsafeUrl;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-
 import com.unzer.payment.Charge;
 import com.unzer.payment.business.AbstractPaymentTest;
 import com.unzer.payment.paymenttypes.Sofort;
-import java.math.BigDecimal;
-import java.util.Currency;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
+
+import java.math.BigDecimal;
+import java.util.Currency;
+
+import static com.unzer.payment.util.Url.unsafeUrl;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 public class SofortTest extends AbstractPaymentTest {
 

@@ -1,23 +1,22 @@
 package com.unzer.payment.business;
 
 
-import static com.unzer.payment.util.Url.unsafeUrl;
-import static com.unzer.payment.util.Uuid.generateUuid;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.junit.jupiter.api.DynamicTest.dynamicTest;
-
 import com.unzer.payment.BasePaypage;
 import com.unzer.payment.Linkpay;
 import com.unzer.payment.Unzer;
+import org.junit.jupiter.api.DynamicTest;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestFactory;
+
 import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.Currency;
 import java.util.stream.Stream;
-import org.junit.jupiter.api.DynamicTest;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestFactory;
+
+import static com.unzer.payment.util.Url.unsafeUrl;
+import static com.unzer.payment.util.Uuid.generateUuid;
+import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.DynamicTest.dynamicTest;
 
 public class LinkpayTest extends AbstractPaymentTest {
     @Test
@@ -127,21 +126,21 @@ public class LinkpayTest extends AbstractPaymentTest {
         }
 
         return Stream.of(
-            new TestCase(
-                "authorize",
-                getMaximumLinkpay(BasePaypage.Action.AUTHORIZE),
-                "AUTHORIZE"
-            ),
-            new TestCase(
-                "charge",
-                getMaximumLinkpay(BasePaypage.Action.CHARGE),
-                "CHARGE"
-            ),
-            new TestCase(
-                "default charge",
-                getMaximumLinkpay(null),
-                "CHARGE"
-            )
+                new TestCase(
+                        "authorize",
+                        getMaximumLinkpay(BasePaypage.Action.AUTHORIZE),
+                        "AUTHORIZE"
+                ),
+                new TestCase(
+                        "charge",
+                        getMaximumLinkpay(BasePaypage.Action.CHARGE),
+                        "CHARGE"
+                ),
+                new TestCase(
+                        "default charge",
+                        getMaximumLinkpay(null),
+                        "CHARGE"
+                )
         ).map(tc -> dynamicTest(tc.name, () -> {
             Unzer unzer = getUnzer();
             Linkpay createdPage = unzer.linkpay(tc.page);

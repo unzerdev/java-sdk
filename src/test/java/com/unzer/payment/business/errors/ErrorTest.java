@@ -1,27 +1,19 @@
 package com.unzer.payment.business.errors;
 
 
-import static com.unzer.payment.util.Uuid.generateUuid;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-
-import com.unzer.payment.Authorization;
-import com.unzer.payment.Charge;
-import com.unzer.payment.Customer;
-import com.unzer.payment.PaymentError;
-import com.unzer.payment.PaymentException;
-import com.unzer.payment.Unzer;
+import com.unzer.payment.*;
 import com.unzer.payment.business.AbstractPaymentTest;
 import com.unzer.payment.business.Keys;
 import com.unzer.payment.communication.HttpCommunicationException;
 import com.unzer.payment.paymenttypes.Card;
+import org.junit.jupiter.api.Test;
+
 import java.net.MalformedURLException;
 import java.text.ParseException;
 import java.util.List;
-import org.junit.jupiter.api.Test;
+
+import static com.unzer.payment.util.Uuid.generateUuid;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class ErrorTest extends AbstractPaymentTest {
     @Test

@@ -14,20 +14,20 @@ import com.unzer.payment.communication.json.ApiObject;
  * See more: <a href="https://docs.unzer.com/payment-methods/unzer-invoice-upl/">Unzer Docs</a>
  */
 public class PaylaterInvoice extends BasePaymentType {
-  @Override
-  public String getResourceUrl() {
-    return "/v1/types/paylater-invoice/<resourceId>";
-  }
+    @Override
+    public String getResourceUrl() {
+        return "/v1/types/paylater-invoice/<resourceId>";
+    }
 
-  @Override
-  public PaymentType map(PaymentType paymentType, ApiObject apiObject) {
-    ((PaylaterInvoice) paymentType).setId(apiObject.getId());
-    ((PaylaterInvoice) paymentType).setRecurring(((ApiIdObject) apiObject).getRecurring());
-    GeoLocation tempGeoLocation =
-        new GeoLocation(((ApiIdObject) apiObject).getGeoLocation().getClientIp(),
-            ((ApiIdObject) apiObject).getGeoLocation().getCountryIsoA2());
-    ((PaylaterInvoice) paymentType).setGeoLocation(tempGeoLocation);
+    @Override
+    public PaymentType map(PaymentType paymentType, ApiObject apiObject) {
+        ((PaylaterInvoice) paymentType).setId(apiObject.getId());
+        ((PaylaterInvoice) paymentType).setRecurring(((ApiIdObject) apiObject).getRecurring());
+        GeoLocation tempGeoLocation =
+                new GeoLocation(((ApiIdObject) apiObject).getGeoLocation().getClientIp(),
+                        ((ApiIdObject) apiObject).getGeoLocation().getCountryIsoA2());
+        ((PaylaterInvoice) paymentType).setGeoLocation(tempGeoLocation);
 
-    return paymentType;
-  }
+        return paymentType;
+    }
 }

@@ -1,13 +1,12 @@
 package com.unzer.payment;
 
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.List;
-import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 public class PaymentExceptionTest {
 
@@ -29,14 +28,14 @@ public class PaymentExceptionTest {
     @Test
     public void testPaymentErrorListEmptyAndMessageNotEmpty() {
         PaymentException paymentException = new PaymentException(new ArrayList<PaymentError>(), "An Error occurred!");
-        assertTrue(paymentException.getMessage() != null);
+        assertNotNull(paymentException.getMessage());
         assertEquals("An Error occurred!", paymentException.getMessage());
     }
 
     @Test
     public void testPaymentErrorListEmptyAndMessageIsEmpty() {
         PaymentException paymentException = new PaymentException(new ArrayList<PaymentError>(), "");
-        assertTrue(paymentException.getMessage() != null);
+        assertNotNull(paymentException.getMessage());
         assertEquals("Unzer responded with 0 when calling . ", paymentException.getMessage());
     }
 
@@ -51,14 +50,14 @@ public class PaymentExceptionTest {
         paymentErrorList.add(paymentError);
 
         PaymentException paymentException = new PaymentException(paymentErrorList, "");
-        assertTrue(paymentException.getMessage() != null);
+        assertNotNull(paymentException.getMessage());
         assertEquals("This is a Merchant Error Message!", paymentException.getMessage());
     }
 
     @Test
     public void testMessageIsNull() {
         PaymentException paymentException = new PaymentException(null);
-        assertTrue(paymentException.getMessage() != null);
+        assertNotNull(paymentException.getMessage());
         assertEquals("Unzer responded with 0 when calling . ", paymentException.getMessage());
     }
 

@@ -5,55 +5,55 @@ import java.util.Map;
 import java.util.TreeMap;
 
 public class Metadata extends BaseResource {
-  private String id;
-  private Map<String, String> metadataMap;
-  private Unzer unzer;
+    private String id;
+    private Map<String, String> metadataMap;
+    private Unzer unzer;
 
-  public Metadata() {
-    this(false);
-  }
-
-  public Metadata(boolean sorted) {
-    if (sorted) {
-      metadataMap = new TreeMap<String, String>();
-    } else {
-      metadataMap = new LinkedHashMap<String, String>();
+    public Metadata() {
+        this(false);
     }
-  }
 
-  public Metadata addMetadata(String key, String value) {
-    getMetadataMap().put(key, value);
-    return this;
-  }
+    public Metadata(boolean sorted) {
+        if (sorted) {
+            metadataMap = new TreeMap<String, String>();
+        } else {
+            metadataMap = new LinkedHashMap<String, String>();
+        }
+    }
 
-  public Map<String, String> getMetadataMap() {
-    return metadataMap;
-  }
+    public Metadata addMetadata(String key, String value) {
+        getMetadataMap().put(key, value);
+        return this;
+    }
 
-  public void setMetadataMap(Map<String, String> metadataMap) {
-    this.metadataMap = metadataMap;
-  }
+    public Map<String, String> getMetadataMap() {
+        return metadataMap;
+    }
 
-  public String getId() {
-    return id;
-  }
+    public void setMetadataMap(Map<String, String> metadataMap) {
+        this.metadataMap = metadataMap;
+    }
 
-  public void setId(String id) {
-    this.id = id;
-  }
+    public String getId() {
+        return id;
+    }
 
-  @Override
-  public String getResourceUrl() {
-    return "/v1/metadata/<resourceId>";
-  }
+    public void setId(String id) {
+        this.id = id;
+    }
 
-  @Deprecated
-  public Unzer getUnzer() {
-    return unzer;
-  }
+    @Override
+    public String getResourceUrl() {
+        return "/v1/metadata/<resourceId>";
+    }
 
-  @Deprecated
-  public void setUnzer(Unzer unzer) {
-    this.unzer = unzer;
-  }
+    @Deprecated
+    public Unzer getUnzer() {
+        return unzer;
+    }
+
+    @Deprecated
+    public void setUnzer(Unzer unzer) {
+        this.unzer = unzer;
+    }
 }

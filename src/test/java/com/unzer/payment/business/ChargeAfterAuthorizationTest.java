@@ -1,5 +1,18 @@
 package com.unzer.payment.business;
 
+import com.unzer.payment.*;
+import com.unzer.payment.communication.HttpCommunicationException;
+import com.unzer.payment.marketplace.MarketplaceAuthorization;
+import com.unzer.payment.marketplace.MarketplaceCharge;
+import com.unzer.payment.marketplace.MarketplacePayment;
+import com.unzer.payment.paymenttypes.Card;
+import org.apache.hc.core5.http.HttpStatus;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
+
+import java.math.BigDecimal;
+import java.net.MalformedURLException;
+
 import static com.unzer.payment.business.BasketV1TestData.getMaxTestBasketV1;
 import static com.unzer.payment.business.Keys.MARKETPLACE_KEY;
 import static com.unzer.payment.util.Uuid.generateUuid;
@@ -7,22 +20,6 @@ import static java.util.concurrent.TimeUnit.SECONDS;
 import static org.awaitility.Awaitility.await;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-
-import com.unzer.payment.BaseTransaction;
-import com.unzer.payment.Authorization;
-import com.unzer.payment.Basket;
-import com.unzer.payment.Charge;
-import com.unzer.payment.Payment;
-import com.unzer.payment.communication.HttpCommunicationException;
-import com.unzer.payment.marketplace.MarketplaceAuthorization;
-import com.unzer.payment.marketplace.MarketplaceCharge;
-import com.unzer.payment.marketplace.MarketplacePayment;
-import com.unzer.payment.paymenttypes.Card;
-import java.math.BigDecimal;
-import java.net.MalformedURLException;
-import org.apache.hc.core5.http.HttpStatus;
-import org.junit.jupiter.api.Disabled;
-import org.junit.jupiter.api.Test;
 
 
 public class ChargeAfterAuthorizationTest extends AbstractPaymentTest {
@@ -59,7 +56,7 @@ public class ChargeAfterAuthorizationTest extends AbstractPaymentTest {
     public void partialChargeAfterAuthorization() {
         Authorization authorize = getUnzer().authorize(getAuthorization(createPaymentTypeCard(getUnzer(), "4711100000000000").getId(), false));
         Authorization authorization = getUnzer().fetchAuthorization(authorize.getPaymentId());
-        Charge charge = authorization.charge(new BigDecimal(0.1));
+        Charge charge = authorization.charge(new BigDecimal("0.1"));
         assertNotNull(charge);
         assertNotNull(charge.getId());
     }
@@ -67,7 +64,7 @@ public class ChargeAfterAuthorizationTest extends AbstractPaymentTest {
     @Test
     public void chargeAfterAuthorizationWithPaymentReference() {
         Authorization authorize = getUnzer().authorize(getAuthorization(createPaymentTypeCard(getUnzer(), "4711100000000000").getId(), false));
-        Charge charge = authorize.charge(new BigDecimal(1.0), "pmt-ref");
+        Charge charge = authorize.charge(new BigDecimal("1.0"), "pmt-ref");
         assertNotNull(charge);
         assertNotNull(charge.getId());
         assertEquals("pmt-ref", charge.getPaymentReference());

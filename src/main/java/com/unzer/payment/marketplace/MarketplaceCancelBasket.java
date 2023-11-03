@@ -14,14 +14,14 @@ import java.util.List;
  * @author Unzer E-Com GmbH
  */
 public class MarketplaceCancelBasket {
-  private List<MarketplaceCancelBasketItem> items;
+    private List<MarketplaceCancelBasketItem> items;
 
-  public List<MarketplaceCancelBasketItem> getItems() {
-    return items;
-  }
+    public List<MarketplaceCancelBasketItem> getItems() {
+        return items;
+    }
 
-  public void setItems(List<MarketplaceCancelBasketItem> items) {
-    this.items = items;
-  }
+    public void setItems(List<MarketplaceCancelBasketItem> items) {
+        this.items = items;
+    }
 
 }

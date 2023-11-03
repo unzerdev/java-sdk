@@ -1,28 +1,24 @@
 package com.unzer.payment.business;
 
+import com.unzer.payment.*;
+import com.unzer.payment.communication.HttpCommunicationException;
+import com.unzer.payment.marketplace.MarketplaceAuthorization;
+import com.unzer.payment.marketplace.MarketplaceCancel;
+import com.unzer.payment.marketplace.MarketplacePayment;
+import com.unzer.payment.paymenttypes.Card;
+import org.apache.hc.core5.http.HttpStatus;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
+
+import java.math.BigDecimal;
+import java.net.MalformedURLException;
+
 import static com.unzer.payment.business.BasketV1TestData.getMaxTestBasketV1;
 import static com.unzer.payment.business.Keys.MARKETPLACE_KEY;
 import static java.util.concurrent.TimeUnit.SECONDS;
 import static org.awaitility.Awaitility.await;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-
-import com.unzer.payment.BasePayment;
-import com.unzer.payment.BaseTransaction;
-import com.unzer.payment.Authorization;
-import com.unzer.payment.Basket;
-import com.unzer.payment.Cancel;
-import com.unzer.payment.Payment;
-import com.unzer.payment.communication.HttpCommunicationException;
-import com.unzer.payment.marketplace.MarketplaceAuthorization;
-import com.unzer.payment.marketplace.MarketplaceCancel;
-import com.unzer.payment.marketplace.MarketplacePayment;
-import com.unzer.payment.paymenttypes.Card;
-import java.math.BigDecimal;
-import java.net.MalformedURLException;
-import org.apache.hc.core5.http.HttpStatus;
-import org.junit.jupiter.api.Disabled;
-import org.junit.jupiter.api.Test;
 
 
 public class CancelAfterAuthorizationTest extends AbstractPaymentTest {
@@ -47,7 +43,7 @@ public class CancelAfterAuthorizationTest extends AbstractPaymentTest {
     public void partialCancelPayment() {
         Authorization authorize = getUnzer().authorize(getAuthorization(createPaymentTypeCard(getUnzer(), "4711100000000000").getId(), false));
         Payment payment = getUnzer().fetchPayment(authorize.getPaymentId());
-        Cancel cancel = payment.cancel(new BigDecimal(0.1));
+        Cancel cancel = payment.cancel(new BigDecimal("0.1"));
         assertNotNull(cancel);
         assertNotNull(cancel.getId());
         assertEquals(getBigDecimal("0.1000"), cancel.getAmount());
@@ -57,7 +53,7 @@ public class CancelAfterAuthorizationTest extends AbstractPaymentTest {
     public void partialCancelAfterAuthorization() {
         Authorization authorize = getUnzer().authorize(getAuthorization(createPaymentTypeCard(getUnzer(), "4711100000000000").getId(), false));
         Authorization authorization = getUnzer().fetchAuthorization(authorize.getPaymentId());
-        Cancel cancel = authorization.cancel(new BigDecimal(0.1));
+        Cancel cancel = authorization.cancel(new BigDecimal("0.1"));
         assertNotNull(cancel);
         assertNotNull(cancel.getId());
         assertEquals(getBigDecimal("0.1000"), cancel.getAmount());

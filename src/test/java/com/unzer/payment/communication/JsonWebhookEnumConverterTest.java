@@ -1,12 +1,12 @@
 package com.unzer.payment.communication;
 
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNull;
-
 import com.google.gson.JsonObject;
 import com.unzer.payment.webhook.WebhookEventEnum;
 import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 public class JsonWebhookEnumConverterTest {
 

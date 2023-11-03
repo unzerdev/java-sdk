@@ -1,17 +1,13 @@
 package com.unzer.payment.communication.impl;
 
 import com.unzer.payment.communication.UnzerHttpRequest;
-import java.net.URI;
-import java.net.URISyntaxException;
-import org.apache.hc.client5.http.classic.methods.HttpDelete;
-import org.apache.hc.client5.http.classic.methods.HttpGet;
-import org.apache.hc.client5.http.classic.methods.HttpPatch;
-import org.apache.hc.client5.http.classic.methods.HttpPost;
-import org.apache.hc.client5.http.classic.methods.HttpPut;
-import org.apache.hc.client5.http.classic.methods.HttpUriRequest;
+import org.apache.hc.client5.http.classic.methods.*;
 import org.apache.hc.core5.http.ClassicHttpRequest;
 import org.apache.hc.core5.http.ContentType;
 import org.apache.hc.core5.http.io.entity.StringEntity;
+
+import java.net.URI;
+import java.net.URISyntaxException;
 
 /**
  * Implementation of the {@code UnzerHttpRequest} wrapping an apache
@@ -24,79 +20,79 @@ import org.apache.hc.core5.http.io.entity.StringEntity;
  * </ul>
  */
 public class HttpClientBasedHttpRequest implements UnzerHttpRequest {
-  protected ClassicHttpRequest request;
-  protected UnzerHttpMethod method;
+    protected ClassicHttpRequest request;
+    protected UnzerHttpMethod method;
 
-  /**
-   * Creates a {@code HttpClientBasedHttpRequest} wrapping a
-   * {@code HttpUriRequest} defined by the given {@code UnzerHttpMethod}.
-   *
-   * @param uri    - the RUI of the request
-   * @param method - the {@code UnzerHttpMethod} representing one of
-   *               {@code HttpGet}, {@code HttpPost}, {@code HttpPut},
-   *               {@code HttpDelete}
-   */
-  public HttpClientBasedHttpRequest(String uri, UnzerHttpMethod method) {
-    this.method = method;
-    request = createRequestForMethod(uri, method);
-  }
-
-  private HttpUriRequest createRequestForMethod(String url, UnzerHttpMethod method) {
-    switch (method) {
-      case GET:
-        return new HttpGet(url);
-      case POST:
-        return new HttpPost(url);
-      case PUT:
-        return new HttpPut(url);
-      case DELETE:
-        return new HttpDelete(url);
-      case PATCH:
-        return new HttpPatch(url);
-      default:
-        throw new IllegalArgumentException("Unsupported HttpMethod given " + method);
+    /**
+     * Creates a {@code HttpClientBasedHttpRequest} wrapping a
+     * {@code HttpUriRequest} defined by the given {@code UnzerHttpMethod}.
+     *
+     * @param uri    - the RUI of the request
+     * @param method - the {@code UnzerHttpMethod} representing one of
+     *               {@code HttpGet}, {@code HttpPost}, {@code HttpPut},
+     *               {@code HttpDelete}
+     */
+    public HttpClientBasedHttpRequest(String uri, UnzerHttpMethod method) {
+        this.method = method;
+        request = createRequestForMethod(uri, method);
     }
-  }
 
-  @Override
-  public void addHeader(String header, String value) {
-    this.request.addHeader(header, value);
-  }
+    private HttpUriRequest createRequestForMethod(String url, UnzerHttpMethod method) {
+        switch (method) {
+            case GET:
+                return new HttpGet(url);
+            case POST:
+                return new HttpPost(url);
+            case PUT:
+                return new HttpPut(url);
+            case DELETE:
+                return new HttpDelete(url);
+            case PATCH:
+                return new HttpPatch(url);
+            default:
+                throw new IllegalArgumentException("Unsupported HttpMethod given " + method);
+        }
+    }
 
-  /**
-   * Returns the wrapped {@code HttpUriRequest} to be passed to the {@code HttpClient}
-   * within the {@code HttpClientBasedRestCommunication} implementation.
-   *
-   * @return - the wrapped {@code HttpUriRequest}
-   */
-  public ClassicHttpRequest getRequest() {
-    return request;
-  }
+    @Override
+    public void addHeader(String header, String value) {
+        this.request.addHeader(header, value);
+    }
 
-  @Override
-  public URI getURI() throws URISyntaxException {
-    return request.getUri();
-  }
+    /**
+     * Returns the wrapped {@code HttpUriRequest} to be passed to the {@code HttpClient}
+     * within the {@code HttpClientBasedRestCommunication} implementation.
+     *
+     * @return - the wrapped {@code HttpUriRequest}
+     */
+    public ClassicHttpRequest getRequest() {
+        return request;
+    }
 
-  @Override
-  public void setContent(String content, String encoding) {
-    StringEntity entity = new StringEntity(
-        content,
-        ContentType.APPLICATION_JSON,
-        encoding,
-        false
-    );
-    request.setEntity(entity);
-  }
+    @Override
+    public URI getURI() throws URISyntaxException {
+        return request.getUri();
+    }
 
-  @Override
-  public UnzerHttpMethod getMethod() {
-    return this.method;
-  }
+    @Override
+    public void setContent(String content, String encoding) {
+        StringEntity entity = new StringEntity(
+                content,
+                ContentType.APPLICATION_JSON,
+                encoding,
+                false
+        );
+        request.setEntity(entity);
+    }
 
-  @Override
-  public String toString() {
-    return this.request.toString();
-  }
+    @Override
+    public UnzerHttpMethod getMethod() {
+        return this.method;
+    }
+
+    @Override
+    public String toString() {
+        return this.request.toString();
+    }
 
 }
