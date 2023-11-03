@@ -22,17 +22,6 @@ public class Linkpay extends BasePaypage {
 
   private String successfullyProcessed;
 
-  @Override
-  public String getTypeUrl() {
-    return "linkpay";
-  }
-
-
-  @Override
-  public PaymentType map(PaymentType paymentType, ApiObject apiObject) {
-    return null;
-  }
-
   /**
    * @return the alias
    */
@@ -132,6 +121,6 @@ public class Linkpay extends BasePaypage {
 
   @Override
   protected String getResourceUrl() {
-    return "/v1/linkpay/<resourceId>";
+    return "/v1/linkpay/<action>/<resourceId>";
   }
 }

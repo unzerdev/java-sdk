@@ -161,22 +161,6 @@ public class UrlUtil {
         + Format.date(orderDate);
   }
 
-  public String getInitPaypageUrl(BasePaypage page) {
-    StringBuilder stringBuilder = new StringBuilder();
-    stringBuilder.append(getUrl());
-    appendSlashIfNeeded(stringBuilder);
-    stringBuilder.append(page.getTypeUrl());
-    appendSlashIfNeeded(stringBuilder);
-
-    String action = Optional
-        .ofNullable(page.getAction())
-        .orElse(BasePaypage.Action.CHARGE)
-        .toLowerCase();
-    stringBuilder.append(action);
-
-    return stringBuilder.toString();
-  }
-
   public String getPaymentTypeConfigUrl(PaylaterInvoiceConfigRequest configRequest) {
     return apiEndpoint + configRequest.getRequestUrl();
   }

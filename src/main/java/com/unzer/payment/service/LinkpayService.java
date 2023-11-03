@@ -32,7 +32,7 @@ public class LinkpayService {
 
   public Linkpay initialize(Linkpay page) throws HttpCommunicationException {
     String response = client.httpPost(
-        urlUtil.getInitPaypageUrl(page), unzer.getPrivateKey(),
+        urlUtil.getUrl(page), unzer.getPrivateKey(),
         apiToSdkConverter.map(page)
     );
     ApiLinkpay resource = new JsonParser().fromJson(response, ApiLinkpay.class);
@@ -41,8 +41,10 @@ public class LinkpayService {
   }
 
   public Linkpay fetch(String id) {
+    Linkpay linkpay = new Linkpay();
+    linkpay.setId(id);
     String response = client.httpGet(
-        urlUtil.getHttpGetUrl(new Linkpay(), id),
+        urlUtil.getUrl(linkpay),
         unzer.getPrivateKey()
     );
     ApiLinkpay resource = new JsonParser().fromJson(response, ApiLinkpay.class);

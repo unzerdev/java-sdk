@@ -32,19 +32,25 @@ public class PaypageService {
   }
 
   public Paypage initialize(Paypage paypage) throws HttpCommunicationException {
-    return initialize(paypage, urlUtil.getInitPaypageUrl(paypage));
+    return initialize(paypage, urlUtil.getUrl(paypage));
   }
 
   public Paypage initialize(Paypage paypage, String url) throws HttpCommunicationException {
-    String response = restCommunication.httpPost(url, unzer.getPrivateKey(),
-        jsonToObjectMapper.map(paypage));
+    String response = restCommunication.httpPost(
+        url,
+        unzer.getPrivateKey(),
+        jsonToObjectMapper.map(paypage)
+    );
     ApiPaypage apiPaypage = new JsonParser().fromJson(response, ApiPaypage.class);
     paypage = jsonToObjectMapper.mapToBusinessObject(paypage, apiPaypage);
     return paypage;
   }
 
   public Paypage fetch(String paypageId) {
-    String response = restCommunication.httpGet(urlUtil.getHttpGetUrl(new Paypage(), paypageId),
+    Paypage paypage = new Paypage();
+    paypage.setId(paypageId);
+
+    String response = restCommunication.httpGet(urlUtil.getUrl(paypage),
         unzer.getPrivateKey());
     ApiPaypage apiPaypage = new JsonParser().fromJson(response, ApiPaypage.class);
     return jsonToObjectMapper.mapToBusinessObject(new Paypage(), apiPaypage);

@@ -522,35 +522,6 @@ public abstract class AbstractPaymentTest {
         return cancelBasket;
     }
 
-    protected Paypage getMaximumPaypage() {
-        Paypage paypage = new Paypage();
-        String[] excludeTypes = {"paypal"};
-        paypage.setExcludeTypes(excludeTypes);
-        paypage.setAmount(BigDecimal.ONE);
-        paypage.setCurrency(Currency.getInstance("EUR"));
-        paypage.setReturnUrl(unsafeUrl("https://www.unzer.com/"));
-        paypage.setShopName("Unzer Demo Shop");
-        paypage.setShopDescription("Unzer Demo Shop Description");
-        paypage.setTagline("Unzer Tagline");
-        paypage.setTermsAndConditionUrl(unsafeUrl("https://www.unzer.com/en/privacy-statement/"));
-        paypage.setPrivacyPolicyUrl(unsafeUrl("https://www.unzer.com/en/privacy-statement/"));
-        paypage.setCss(getCssMap());
-
-        paypage.setLogoImage("https://docs.unzer.com/payment-nutshell/payment-in-nutshell.png");
-        paypage.setFullPageImage("https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/iphone-12-pro-family-hero");
-
-        paypage.setContactUrl(unsafeUrl("mailto:support@unzer.com"));
-        paypage.setHelpUrl(unsafeUrl("https://www.unzer.com/en/support/"));
-        paypage.setImprintUrl(unsafeUrl("https://www.unzer.com/en/impressum/"));
-        paypage.setPrivacyPolicyUrl(unsafeUrl("https://www.unzer.com/en/datenschutz/"));
-        paypage.setTermsAndConditionUrl(unsafeUrl("https://www.unzer.com/en/datenschutz/"));
-
-        paypage.setInvoiceId(generateUuid());
-        paypage.setOrderId(generateUuid());
-        return paypage;
-    }
-
-
     protected Map<String, String> getCssMap() {
         Map<String, String> cssMap = new HashMap<String, String>();
         cssMap.put("shopDescription", "color: blue; font-size: 30px");

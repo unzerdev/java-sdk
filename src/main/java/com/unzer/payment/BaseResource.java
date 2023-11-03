@@ -1,7 +1,7 @@
 package com.unzer.payment;
 
 public abstract class BaseResource implements Resource {
-  private final static String RESOURCE_ID_TOKEN = "<resourceId>";
+  protected final static String RESOURCE_ID_TOKEN = "<resourceId>";
 
   @Override
   public String getUrl() {

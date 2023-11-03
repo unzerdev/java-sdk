@@ -7,7 +7,9 @@ import java.net.URL;
 import java.util.Currency;
 import java.util.Map;
 
-public abstract class BasePaypage extends BaseResource implements PaymentType {
+public abstract class BasePaypage extends BaseResource {
+  private final static String ACTION_TOKEN = "<action>";
+
   private String id;
   private BigDecimal amount;
   private Currency currency;
@@ -37,26 +39,6 @@ public abstract class BasePaypage extends BaseResource implements PaymentType {
   private String metadataId;
   private String paymentId;
   private String basketId;
-
-  public String getAction() {
-    return action;
-  }
-
-  public void setAction(String action) {
-    this.action = action;
-  }
-
-  public String getId() {
-    return id;
-  }
-
-  public void setId(String id) {
-    this.id = id;
-  }
-
-  public PaymentType map(PaymentType paymentType, ApiObject apiObject) {
-    return null;
-  }
 
   public BigDecimal getAmount() {
     return amount;
@@ -332,6 +314,31 @@ public abstract class BasePaypage extends BaseResource implements PaymentType {
    */
   public void setExcludeTypes(String[] excludeTypes) {
     this.excludeTypes = excludeTypes;
+  }
+
+  @Override
+  public String getUrl() {
+    String preprocessedUrl = getAction() == null
+        ? getResourceUrl().replaceAll(ACTION_TOKEN + "/", "")
+        : getResourceUrl().replaceAll(ACTION_TOKEN, getAction().toLowerCase());
+
+    return preprocessedUrl.replaceAll(RESOURCE_ID_TOKEN, getId() == null ? "" : getId());
+  }
+
+  public String getAction() {
+    return action;
+  }
+
+  public void setAction(String action) {
+    this.action = action;
+  }
+
+  public String getId() {
+    return id;
+  }
+
+  public void setId(String id) {
+    this.id = id;
   }
 
   public enum Status { SUCCESS, PENDING, ERROR }

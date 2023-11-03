@@ -1,16 +1,21 @@
 package com.unzer.payment.business;
 
 
+import static com.unzer.payment.util.Url.unsafeUrl;
+import static com.unzer.payment.util.Uuid.generateUuid;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.DynamicTest.dynamicTest;
 
 import com.unzer.payment.BasePaypage;
 import com.unzer.payment.Paypage;
 import com.unzer.payment.Unzer;
 import com.unzer.payment.service.UrlUtil;
+import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Currency;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import org.junit.jupiter.api.DynamicTest;
@@ -23,7 +28,7 @@ public class PaypageTest extends AbstractPaymentTest {
   public void testMaximumPaypage() {
     Unzer unzer = getUnzer();
 
-    Paypage request = getMaximumPaypage();
+    Paypage request = getMaximumPaypage(null);
     Paypage createdPaypage = unzer.paypage(request);
 
     Paypage fetchedPaypage = unzer.fetchPaypage(createdPaypage.getId());
@@ -69,7 +74,7 @@ public class PaypageTest extends AbstractPaymentTest {
   public void testPaypage_WithEmptyCssMap() {
     Unzer unzer = getUnzer();
 
-    Paypage request = getMaximumPaypage();
+    Paypage request = getMaximumPaypage(null);
     request.setCss(null);
 
     Paypage createdPaypage = unzer.paypage(request);
@@ -127,40 +132,91 @@ public class PaypageTest extends AbstractPaymentTest {
 
     return Stream.of(
         new TestCase(
-            "null",
-            null,
-            "paypage/charge"
-        ),
-        new TestCase(
             "charge",
             BasePaypage.Action.CHARGE,
-            "paypage/charge"
+            "paypage/charge/"
         ),
         new TestCase(
             "authorize",
             BasePaypage.Action.AUTHORIZE,
-            "paypage/authorize"
+            "paypage/authorize/"
         )
-    ).map(t -> DynamicTest.dynamicTest(t.name, () -> {
-      Paypage paypage = getMaximumPaypage();
-      paypage.setAction(t.action);
+    ).map(t -> dynamicTest(t.name, () -> {
+      Paypage paypage = getMaximumPaypage(t.action);
 
-      String actualUrl = urlUtil.getInitPaypageUrl(paypage);
+      String actualUrl = urlUtil.getUrl(paypage);
       String expectedUrl = urlUtil.getUrl() + t.expectedUrlPart;
 
       assertEquals(expectedUrl, actualUrl);
     })).collect(Collectors.toList());
   }
 
-  @Test
-  public void testAuthorize() {
-    Unzer unzer = getUnzer();
-    Paypage request = getMaximumPaypage();
-    request.setAction(BasePaypage.Action.AUTHORIZE);
-    Paypage createdPaypage = unzer.paypage(request);
+  @TestFactory
+  public Stream<DynamicTest> test_action() {
+    class TestCase {
+        final String name;
+        final Paypage paypage;
+        final String expectedAction;
 
-    Paypage fetchedPaypage = unzer.fetchPaypage(createdPaypage.getId());
+        public TestCase(String name, Paypage paypage, String expectedAction) {
+            this.name = name;
+            this.paypage = paypage;
+            this.expectedAction = expectedAction;
+        }
+    }
 
-    assertEquals("AUTHORIZE", fetchedPaypage.getAction());
+    return Stream.of(
+        new TestCase(
+            "authorize",
+            getMaximumPaypage(BasePaypage.Action.AUTHORIZE),
+            "AUTHORIZE"
+        ),
+        new TestCase(
+            "charge",
+            getMaximumPaypage(BasePaypage.Action.CHARGE),
+            "CHARGE"
+        ),
+        new TestCase(
+            "default charge",
+            getMaximumPaypage(null),
+            "CHARGE"
+        )
+    ).map(tc -> dynamicTest(tc.name, () -> {
+      Unzer unzer = getUnzer();
+      Paypage createdPaypage = unzer.paypage(tc.paypage);
+
+      Paypage fetchedPaypage = unzer.fetchPaypage(createdPaypage.getId());
+
+      assertEquals(tc.expectedAction, fetchedPaypage.getAction());
+    }));
+  }
+
+  private Paypage getMaximumPaypage(String action) {
+    Paypage paypage = new Paypage();
+    String[] excludeTypes = {"paypal"};
+    paypage.setExcludeTypes(excludeTypes);
+    paypage.setAmount(BigDecimal.ONE);
+    paypage.setCurrency(Currency.getInstance("EUR"));
+    paypage.setReturnUrl(unsafeUrl("https://www.unzer.com/"));
+    paypage.setShopName("Unzer Demo Shop");
+    paypage.setShopDescription("Unzer Demo Shop Description");
+    paypage.setTagline("Unzer Tagline");
+    paypage.setTermsAndConditionUrl(unsafeUrl("https://www.unzer.com/en/privacy-statement/"));
+    paypage.setPrivacyPolicyUrl(unsafeUrl("https://www.unzer.com/en/privacy-statement/"));
+    paypage.setCss(getCssMap());
+    paypage.setAction(action);
+
+    paypage.setLogoImage("https://docs.unzer.com/payment-nutshell/payment-in-nutshell.png");
+    paypage.setFullPageImage("https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/iphone-12-pro-family-hero");
+
+    paypage.setContactUrl(unsafeUrl("mailto:support@unzer.com"));
+    paypage.setHelpUrl(unsafeUrl("https://www.unzer.com/en/support/"));
+    paypage.setImprintUrl(unsafeUrl("https://www.unzer.com/en/impressum/"));
+    paypage.setPrivacyPolicyUrl(unsafeUrl("https://www.unzer.com/en/datenschutz/"));
+    paypage.setTermsAndConditionUrl(unsafeUrl("https://www.unzer.com/en/datenschutz/"));
+
+    paypage.setInvoiceId(generateUuid());
+    paypage.setOrderId(generateUuid());
+    return paypage;
   }
 }

@@ -30,6 +30,7 @@ import java.util.Currency;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+import java.util.Objects;
 
 /**
  * {@code Unzer} is a facade to the Unzer REST Api. The facade is
@@ -1320,6 +1321,9 @@ public class Unzer {
    * @throws HttpCommunicationException in case communication to Unzer didn't work
    */
   public Paypage paypage(Paypage paypage) throws HttpCommunicationException {
+    if(Objects.isNull(paypage.getAction())) {
+        paypage.setAction(BasePaypage.Action.CHARGE);
+    }
     return paypageService.initialize(paypage);
   }
 
@@ -1334,6 +1338,9 @@ public class Unzer {
   }
 
   public Linkpay linkpay(Linkpay linkpay) throws HttpCommunicationException {
+    if(Objects.isNull(linkpay.getAction())) {
+      linkpay.setAction(BasePaypage.Action.CHARGE);
+    }
     return linkpayService.initialize(linkpay);
   }
 
