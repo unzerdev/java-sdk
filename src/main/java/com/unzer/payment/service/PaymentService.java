@@ -110,12 +110,12 @@ public class PaymentService {
   }
 
   public PaylaterInstallmentPlans fetchPaylaterInstallmentPlans(
-      InstallmentPlansRequest installmentPlansRequest) throws HttpCommunicationException {
-    String url = this.urlUtil.getApiEndpoint() + installmentPlansRequest.getRequestUrl();
-
+      InstallmentPlansRequest installmentPlansRequest
+  ) throws HttpCommunicationException {
     String response = restCommunication.httpGet(
-        url,
-        unzer.getPrivateKey());
+        this.urlUtil.getInstallmentPlanUrl(installmentPlansRequest),
+        unzer.getPrivateKey()
+    );
 
     ApiInstallmentPlans json = jsonParser.fromJson(response,
         ApiInstallmentPlans.class);
@@ -815,8 +815,10 @@ public class PaymentService {
 
   public PaylaterInvoiceConfig fetchPaymentTypeConfig(PaylaterInvoiceConfigRequest configRequest)
       throws HttpCommunicationException {
-    String url = this.urlUtil.getApiEndpoint() + configRequest.getRequestUrl();
-    String response = this.restCommunication.httpGet(url, unzer.getPrivateKey());
+    String response = this.restCommunication.httpGet(
+        this.urlUtil.getPaymentTypeConfigUrl(configRequest),
+        unzer.getPrivateKey()
+    );
     return this.jsonParser.fromJson(response, PaylaterInvoiceConfig.class);
   }
 

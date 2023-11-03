@@ -3,6 +3,8 @@ package com.unzer.payment.service;
 import com.unzer.payment.BasePaypage;
 import com.unzer.payment.Basket;
 import com.unzer.payment.Recurring;
+import com.unzer.payment.models.PaylaterInvoiceConfigRequest;
+import com.unzer.payment.models.paylater.InstallmentPlansRequest;
 import com.unzer.payment.paymenttypes.PaymentType;
 import java.math.BigDecimal;
 import java.text.NumberFormat;
@@ -30,7 +32,7 @@ public class UrlUtil {
     this.apiEndpoint = resolveApiEndpoint(privateKey);
   }
 
-  private String resolveApiEndpoint(String privateKey) {
+  private static String resolveApiEndpoint(String privateKey) {
     // 'p-' for production, 's-' for sandbox
     return privateKey.charAt(0) == PRODUCTION_KEY_PREFIX
         ? PRODUCTION_ENDPOINT
@@ -157,10 +159,6 @@ public class UrlUtil {
     return result;
   }
 
-  public String getApiEndpoint() {
-    return apiEndpoint;
-  }
-
   public String getHirePurchaseRateUrl(
       BigDecimal amount,
       Currency currency,
@@ -169,25 +167,13 @@ public class UrlUtil {
   ) {
     return getRestUrl()
         + "types/hire-purchase-direct-debit/plans?amount="
-        + getBigDecimal(amount)
+        + Format.bigDecimal(amount)
         + "&currency="
         + currency.getCurrencyCode()
         + "&effectiveInterest="
-        + getBigDecimal(effectiveInterestRate)
+        + Format.bigDecimal(effectiveInterestRate)
         + "&orderDate="
-        + getDate(orderDate);
-  }
-
-  private String getBigDecimal(BigDecimal decimal) {
-    NumberFormat df = NumberFormat.getNumberInstance(Locale.ENGLISH);
-    df.setMaximumFractionDigits(4);
-    df.setMinimumFractionDigits(0);
-    df.setGroupingUsed(false);
-    return df.format(decimal);
-  }
-
-  private String getDate(Date date) {
-    return new SimpleDateFormat("yyyy-MM-dd").format(date);
+        + Format.date(orderDate);
   }
 
   public String getInitPaypageUrl(BasePaypage page) {
@@ -204,5 +190,27 @@ public class UrlUtil {
     stringBuilder.append(action);
 
     return stringBuilder.toString();
+  }
+
+  public String getPaymentTypeConfigUrl(PaylaterInvoiceConfigRequest configRequest) {
+    return apiEndpoint + configRequest.getRequestUrl();
+  }
+
+  public String getInstallmentPlanUrl(InstallmentPlansRequest installmentPlansRequest) {
+    return apiEndpoint + installmentPlansRequest.getRequestUrl();
+  }
+
+  private static class Format {
+    public static String bigDecimal(BigDecimal decimal) {
+      NumberFormat df = NumberFormat.getNumberInstance(Locale.ENGLISH);
+      df.setMaximumFractionDigits(4);
+      df.setMinimumFractionDigits(0);
+      df.setGroupingUsed(false);
+      return df.format(decimal);
+    }
+
+    public static String date(Date date) {
+      return new SimpleDateFormat("yyyy-MM-dd").format(date);
+    }
   }
 }
