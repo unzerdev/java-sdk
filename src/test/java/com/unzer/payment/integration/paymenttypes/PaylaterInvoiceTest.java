@@ -9,14 +9,13 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.DynamicTest.dynamicTest;
 
-import com.unzer.payment.AbstractTransaction;
+import com.unzer.payment.BaseTransaction;
 import com.unzer.payment.Authorization;
 import com.unzer.payment.Basket;
 import com.unzer.payment.BasketItem;
 import com.unzer.payment.Cancel;
 import com.unzer.payment.Charge;
 import com.unzer.payment.Customer;
-import com.unzer.payment.PaymentException;
 import com.unzer.payment.Unzer;
 import com.unzer.payment.business.AbstractPaymentTest;
 import com.unzer.payment.models.AdditionalTransactionData;
@@ -158,7 +157,7 @@ public class PaylaterInvoiceTest extends AbstractPaymentTest {
       assertNotNull(responseAuthorization);
       assertNotNull(responseAuthorization.getId());
       assertFalse(responseAuthorization.getId().isEmpty());
-      assertEquals(AbstractTransaction.Status.SUCCESS, responseAuthorization.getStatus());
+      assertEquals(BaseTransaction.Status.SUCCESS, responseAuthorization.getStatus());
       assertNotNull(responseAuthorization.getPaymentId());
       assertFalse(responseAuthorization.getPaymentId().isEmpty());
       assertEquals(tc.authorization.getInvoiceId(), responseAuthorization.getInvoiceId());
@@ -167,7 +166,7 @@ public class PaylaterInvoiceTest extends AbstractPaymentTest {
       // Charge
       Charge responseCharge = unzer.chargeAuthorization(responseAuthorization.getPaymentId());
       assertNotNull(responseCharge);
-      assertEquals(AbstractTransaction.Status.SUCCESS, responseCharge.getStatus());
+      assertEquals(BaseTransaction.Status.SUCCESS, responseCharge.getStatus());
       assertNotNull(responseCharge.getId());
       assertEquals(tc.authorization.getInvoiceId(), responseCharge.getInvoiceId());
       assertEquals(tc.authorization.getOrderId(), responseCharge.getOrderId());
@@ -278,7 +277,7 @@ public class PaylaterInvoiceTest extends AbstractPaymentTest {
       assertNotNull(responseAuthorization);
       assertNotNull(responseAuthorization.getId());
       assertFalse(responseAuthorization.getId().isEmpty());
-      assertEquals(AbstractTransaction.Status.SUCCESS, responseAuthorization.getStatus());
+      assertEquals(BaseTransaction.Status.SUCCESS, responseAuthorization.getStatus());
       assertNotNull(responseAuthorization.getPaymentId());
       assertFalse(responseAuthorization.getPaymentId().isEmpty());
 
@@ -286,7 +285,7 @@ public class PaylaterInvoiceTest extends AbstractPaymentTest {
       Cancel cancelResponse =
           unzer.cancelAuthorization(responseAuthorization.getPaymentId(), tc.amount);
       assertNotNull(cancelResponse);
-      assertEquals(AbstractTransaction.Status.SUCCESS, cancelResponse.getStatus());
+      assertEquals(BaseTransaction.Status.SUCCESS, cancelResponse.getStatus());
       assertNotNull(cancelResponse.getId());
       assertEquals(tc.authorization.getInvoiceId(), cancelResponse.getInvoiceId());
       assertEquals(tc.authorization.getOrderId(), cancelResponse.getOrderId());
@@ -390,20 +389,20 @@ public class PaylaterInvoiceTest extends AbstractPaymentTest {
       assertNotNull(responseAuthorization);
       assertNotNull(responseAuthorization.getId());
       assertFalse(responseAuthorization.getId().isEmpty());
-      assertEquals(AbstractTransaction.Status.SUCCESS, responseAuthorization.getStatus());
+      assertEquals(BaseTransaction.Status.SUCCESS, responseAuthorization.getStatus());
       assertNotNull(responseAuthorization.getPaymentId());
       assertFalse(responseAuthorization.getPaymentId().isEmpty());
 
       // Charge
       Charge responseCharge = unzer.chargeAuthorization(responseAuthorization.getPaymentId());
       assertNotNull(responseCharge);
-      assertEquals(AbstractTransaction.Status.SUCCESS, responseCharge.getStatus());
+      assertEquals(BaseTransaction.Status.SUCCESS, responseCharge.getStatus());
       assertNotNull(responseCharge.getId());
 
       // Cancel charge v1/payments/{PAYMENT_ID}/charges/cancels
       Cancel cancelResponse = unzer.cancelCharge(responseCharge.getPaymentId(), tc.amount);
       assertNotNull(cancelResponse);
-      assertEquals(AbstractTransaction.Status.SUCCESS, cancelResponse.getStatus());
+      assertEquals(BaseTransaction.Status.SUCCESS, cancelResponse.getStatus());
       assertNotNull(cancelResponse.getId());
       assertEquals(tc.amount.setScale(3), cancelResponse.getAmount().setScale(3));
     })).collect(Collectors.toList());

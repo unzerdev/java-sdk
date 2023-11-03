@@ -7,8 +7,8 @@ import static org.awaitility.Awaitility.await;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-import com.unzer.payment.AbstractPayment;
-import com.unzer.payment.AbstractTransaction;
+import com.unzer.payment.BasePayment;
+import com.unzer.payment.BaseTransaction;
 import com.unzer.payment.Authorization;
 import com.unzer.payment.Basket;
 import com.unzer.payment.Cancel;
@@ -148,7 +148,7 @@ public class CancelAfterAuthorizationTest extends AbstractPaymentTest {
         MarketplaceAuthorization authorize = getUnzer(MARKETPLACE_KEY).marketplaceAuthorize(authorizeRequest);
         assertNotNull(authorize.getId());
         assertNotNull(authorize);
-        assertEquals(AbstractTransaction.Status.PENDING, authorize.getStatus());
+        assertEquals(BaseTransaction.Status.PENDING, authorize.getStatus());
         assertEquals(participantId_2, authorize.getProcessing().getParticipantId());
 
         //confirm authorization
@@ -196,7 +196,7 @@ public class CancelAfterAuthorizationTest extends AbstractPaymentTest {
         MarketplaceAuthorization authorize = getUnzer(MARKETPLACE_KEY).marketplaceAuthorize(authorizeRequest);
         assertNotNull(authorize.getId());
         assertNotNull(authorize);
-        assertEquals(AbstractTransaction.Status.PENDING, authorize.getStatus());
+        assertEquals(BaseTransaction.Status.PENDING, authorize.getStatus());
         assertEquals(participantId_2, authorize.getProcessing().getParticipantId());
 
         //confirm authorization
@@ -214,12 +214,12 @@ public class CancelAfterAuthorizationTest extends AbstractPaymentTest {
 
         MarketplaceCancel cancelResponse = authorize.cancel(cancelRequest);
         assertNotNull(cancelResponse);
-        assertEquals(AbstractTransaction.Status.SUCCESS, cancelResponse.getStatus());
+        assertEquals(BaseTransaction.Status.SUCCESS, cancelResponse.getStatus());
         assertEquals(authorize.getProcessing().getParticipantId(), cancelResponse.getProcessing().getParticipantId());
 
         //assert payment
         MarketplacePayment paymentAfterCancel = cancelResponse.getPayment();
-        assertEquals(AbstractPayment.State.PENDING, payment.getPaymentState());
+        assertEquals(BasePayment.State.PENDING, payment.getPaymentState());
         assertEquals(payment.getAmountTotal().subtract(cancelResponse.getAmount()), paymentAfterCancel.getAmountTotal());
     }
 }

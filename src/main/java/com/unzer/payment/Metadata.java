@@ -1,12 +1,10 @@
 package com.unzer.payment;
 
-import com.unzer.payment.communication.json.ApiObject;
-import com.unzer.payment.paymenttypes.PaymentType;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.TreeMap;
 
-public class Metadata implements PaymentType {
+public class Metadata extends BaseResource {
   private String id;
   private Map<String, String> metadataMap;
   private Unzer unzer;
@@ -16,7 +14,6 @@ public class Metadata implements PaymentType {
   }
 
   public Metadata(boolean sorted) {
-    super();
     if (sorted) {
       metadataMap = new TreeMap<String, String>();
     } else {
@@ -29,6 +26,14 @@ public class Metadata implements PaymentType {
     return this;
   }
 
+  public Map<String, String> getMetadataMap() {
+    return metadataMap;
+  }
+
+  public void setMetadataMap(Map<String, String> metadataMap) {
+    this.metadataMap = metadataMap;
+  }
+
   public String getId() {
     return id;
   }
@@ -38,13 +43,8 @@ public class Metadata implements PaymentType {
   }
 
   @Override
-  public PaymentType map(PaymentType paymentType, ApiObject apiObject) {
-    return null;
-  }
-
-  @Override
-  public String getTypeUrl() {
-    return "metadata";
+  public String getResourceUrl() {
+    return "/v1/metadata/<resourceId>";
   }
 
   @Deprecated
@@ -55,13 +55,5 @@ public class Metadata implements PaymentType {
   @Deprecated
   public void setUnzer(Unzer unzer) {
     this.unzer = unzer;
-  }
-
-  public Map<String, String> getMetadataMap() {
-    return metadataMap;
-  }
-
-  public void setMetadataMap(Map<String, String> metadataMap) {
-    this.metadataMap = metadataMap;
   }
 }

@@ -1,13 +1,13 @@
 package com.unzer.payment.marketplace;
 
-import com.unzer.payment.AbstractTransaction;
+import com.unzer.payment.BaseTransaction;
 import com.unzer.payment.Unzer;
 import com.unzer.payment.communication.HttpCommunicationException;
 import com.unzer.payment.communication.json.ApiObject;
 import com.unzer.payment.paymenttypes.PaymentType;
 import java.util.List;
 
-public class MarketplaceAuthorization extends AbstractTransaction<MarketplacePayment> {
+public class MarketplaceAuthorization extends BaseTransaction<MarketplacePayment> {
 
   private List<MarketplaceCancel> cancelList;
 
@@ -21,13 +21,8 @@ public class MarketplaceAuthorization extends AbstractTransaction<MarketplacePay
   }
 
   @Override
-  public String getTypeUrl() {
-    return "marketplace/payments/<paymentId>/authorize";
-  }
-
-  @Override
-  public PaymentType map(PaymentType paymentType, ApiObject apiObject) {
-    return null;
+  public String getTransactionUrl() {
+    return "/v1/marketplace/payments/<paymentId>/authorize/<transactionId>";
   }
 
   public List<MarketplaceCancel> getCancelList() {

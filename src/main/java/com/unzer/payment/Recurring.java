@@ -3,19 +3,9 @@ package com.unzer.payment;
 import com.unzer.payment.communication.json.ApiObject;
 import com.unzer.payment.paymenttypes.PaymentType;
 
-public class Recurring extends AbstractTransaction<Payment> {
-
-  public Recurring() {
-    super();
-  }
-
+public class Recurring extends BaseTransaction<Payment> {
   @Override
-  public String getTypeUrl() {
-    return "types/<typeId>/recurring";
-  }
-
-  @Override
-  public PaymentType map(PaymentType paymentType, ApiObject apiObject) {
-    return null;
+  protected String getTransactionUrl() {
+    return "/v1/types/<typeId>/recurring";
   }
 }

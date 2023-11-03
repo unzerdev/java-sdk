@@ -1,16 +1,11 @@
 package com.unzer.payment;
 
-import com.unzer.payment.communication.json.ApiObject;
-import com.unzer.payment.paymenttypes.PaymentType;
-
-public class Chargeback extends AbstractTransaction {
+/**
+ * First chargeback transaction of a given charge
+ */
+public class Chargeback extends BaseTransaction<Payment> {
   @Override
-  public String getTypeUrl() {
-    return "payments/{paymentId}/charges/{chargeId}/chargebacks/{chargebackId}";
-  }
-
-  @Override
-  public PaymentType map(PaymentType paymentType, ApiObject apiObject) {
-    return null;
+  public String getTransactionUrl() {
+    return "/v1/payments/<paymentId>/charges/<resourceId>/chargebacks";
   }
 }

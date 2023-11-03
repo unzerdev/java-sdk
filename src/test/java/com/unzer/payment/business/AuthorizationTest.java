@@ -7,7 +7,7 @@ import static org.awaitility.Awaitility.await;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-import com.unzer.payment.AbstractTransaction;
+import com.unzer.payment.BaseTransaction;
 import com.unzer.payment.Authorization;
 import com.unzer.payment.Basket;
 import com.unzer.payment.Customer;
@@ -55,7 +55,7 @@ public class AuthorizationTest extends AbstractPaymentTest {
         assertNotNull(authorize.getId());
         assertEquals("COR.000.100.112", authorize.getMessage().getCode());
         assertNotNull(authorize.getMessage().getCustomer());
-        assertEquals(AbstractTransaction.Status.SUCCESS, authorize.getStatus());
+        assertEquals(BaseTransaction.Status.SUCCESS, authorize.getStatus());
     }
 
     @Test
@@ -237,7 +237,7 @@ public class AuthorizationTest extends AbstractPaymentTest {
         MarketplaceAuthorization authorize = getUnzer(Keys.MARKETPLACE_KEY).marketplaceAuthorize(authorizeRequest);
         assertNotNull(authorize.getId());
         assertNotNull(authorize);
-        assertEquals(AbstractTransaction.Status.PENDING, authorize.getStatus());
+        assertEquals(BaseTransaction.Status.PENDING, authorize.getStatus());
         assertEquals(participantId_2, authorize.getProcessing().getParticipantId());
 
         int redirectStatus = confirmMarketplacePendingTransaction(authorize.getRedirectUrl().toString());
@@ -256,7 +256,7 @@ public class AuthorizationTest extends AbstractPaymentTest {
         authorize = getUnzer(Keys.MARKETPLACE_KEY).fetchMarketplaceAuthorization(authorize.getPayment().getId(), authorize.getId());
         assertNotNull(authorize.getId());
         assertNotNull(authorize);
-        assertEquals(AbstractTransaction.Status.SUCCESS, authorize.getStatus());
+        assertEquals(BaseTransaction.Status.SUCCESS, authorize.getStatus());
         assertEquals(participantId_2, authorize.getProcessing().getParticipantId());
     }
 }

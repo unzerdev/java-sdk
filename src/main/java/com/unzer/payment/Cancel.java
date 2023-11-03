@@ -1,7 +1,5 @@
 package com.unzer.payment;
 
-import com.unzer.payment.communication.json.ApiObject;
-import com.unzer.payment.paymenttypes.PaymentType;
 import java.math.BigDecimal;
 
 /**
@@ -9,7 +7,7 @@ import java.math.BigDecimal;
  *
  * @author Unzer E-Com GmbH
  */
-public class Cancel extends AbstractTransaction<Payment> {
+public class Cancel extends BaseTransaction<Payment> {
 
   private BigDecimal amountGross;
   private BigDecimal amountNet;
@@ -26,13 +24,9 @@ public class Cancel extends AbstractTransaction<Payment> {
   }
 
   @Override
-  public String getTypeUrl() {
-    return "payments/<paymentId>/authorize/cancels";
-  }
-
-  @Override
-  public PaymentType map(PaymentType paymentType, ApiObject apiObject) {
-    return null;
+  public String getTransactionUrl() {
+    // TODO: <authorizeId>: https://stg-api.unzer.com/api-reference/index.html#tag/Payments/operation/getCancelByAuthorize
+    return "/v1/payments/<paymentId>/authorize/cancels/<transactionId>";
   }
 
   public BigDecimal getAmountGross() {

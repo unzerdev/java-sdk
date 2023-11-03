@@ -8,7 +8,7 @@ import static org.awaitility.Awaitility.await;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-import com.unzer.payment.AbstractTransaction;
+import com.unzer.payment.BaseTransaction;
 import com.unzer.payment.Authorization;
 import com.unzer.payment.Basket;
 import com.unzer.payment.Charge;
@@ -105,7 +105,7 @@ public class ChargeAfterAuthorizationTest extends AbstractPaymentTest {
         MarketplaceAuthorization authorize = getUnzer(MARKETPLACE_KEY).marketplaceAuthorize(authorizeRequest);
         assertNotNull(authorize.getId());
         assertNotNull(authorize);
-        assertEquals(AbstractTransaction.Status.PENDING, authorize.getStatus());
+        assertEquals(BaseTransaction.Status.PENDING, authorize.getStatus());
         assertEquals(participantId_2, authorize.getProcessing().getParticipantId());
 
         //confirm authorization
@@ -158,7 +158,7 @@ public class ChargeAfterAuthorizationTest extends AbstractPaymentTest {
         MarketplaceAuthorization authorize = getUnzer(MARKETPLACE_KEY).marketplaceAuthorize(authorizeRequest);
         assertNotNull(authorize.getId());
         assertNotNull(authorize);
-        assertEquals(AbstractTransaction.Status.PENDING, authorize.getStatus());
+        assertEquals(BaseTransaction.Status.PENDING, authorize.getStatus());
         assertEquals(participantId_2, authorize.getProcessing().getParticipantId());
 
         //confirm authorization

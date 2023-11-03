@@ -1,7 +1,7 @@
 package com.unzer.payment.service;
 
-import com.unzer.payment.AbstractPayment;
 import com.unzer.payment.Authorization;
+import com.unzer.payment.BasePayment;
 import com.unzer.payment.Basket;
 import com.unzer.payment.Cancel;
 import com.unzer.payment.Charge;
@@ -135,7 +135,7 @@ public class PaymentService {
     return json.getEntity();
   }
 
-  public <T extends BasePaymentType> T createPaymentType(T type)
+  public <T extends PaymentType> T createPaymentType(T type)
       throws HttpCommunicationException {
     String response = restCommunication.httpPost(
         urlUtil.getUrl(type),
@@ -149,8 +149,8 @@ public class PaymentService {
   @SuppressWarnings("unchecked")
   public <T extends PaymentType> T fetchPaymentType(String typeId)
       throws HttpCommunicationException {
-    BasePaymentType paymentType = getPaymentTypeFromTypeId(typeId);
-    paymentType.setUnzer(unzer);
+    PaymentType paymentType = getPaymentTypeFromTypeId(typeId);
+    ((BasePaymentType) paymentType).setUnzer(unzer);
     String response = restCommunication.httpGet(urlUtil.getHttpGetUrl(typeId),
         unzer.getPrivateKey());
     ApiIdObject jsonPaymentType =
@@ -158,7 +158,7 @@ public class PaymentService {
     return (T) apiToSdkMapper.mapToBusinessObject(paymentType, jsonPaymentType);
   }
 
-  private BasePaymentType getPaymentTypeFromTypeId(String typeId) {
+  private PaymentType getPaymentTypeFromTypeId(String typeId) {
     if (typeId.length() < 5) {
       throw new PaymentException("TypeId '" + typeId + "' is invalid");
     }
@@ -278,7 +278,7 @@ public class PaymentService {
     return typeId.substring(2, 5);
   }
 
-  public <T extends BasePaymentType> T updatePaymentType(T paymentType)
+  public <T extends PaymentType> T updatePaymentType(T paymentType)
       throws HttpCommunicationException {
     String url = urlUtil.getUrl(paymentType);
     String response = restCommunication.httpPut(url, unzer.getPrivateKey(), paymentType);
@@ -288,7 +288,7 @@ public class PaymentService {
 
   public Customer createCustomer(Customer customer) throws HttpCommunicationException {
     String response =
-        restCommunication.httpPost(urlUtil.getRestUrl(customer), unzer.getPrivateKey(),
+        restCommunication.httpPost(urlUtil.getUrl(customer), unzer.getPrivateKey(),
             apiToSdkMapper.map(customer));
     ApiIdObject jsonId = jsonParser.fromJson(response, ApiIdObject.class);
     return fetchCustomer(jsonId.getId());
@@ -298,14 +298,17 @@ public class PaymentService {
       throws HttpCommunicationException, PaymentException {
     Customer customer = new Customer("", "");
     customer.setId(customerId);
-    String response = restCommunication.httpGet(urlUtil.getHttpGetUrl(customer, customer.getId()),
-        unzer.getPrivateKey());
+    String response = restCommunication.httpGet(
+        urlUtil.getUrl(customer),
+        unzer.getPrivateKey()
+    );
     ApiCustomer json = jsonParser.fromJson(response, ApiCustomer.class);
     return apiToSdkMapper.mapToBusinessObject(json, new Customer("", ""));
   }
 
   public Customer updateCustomer(String id, Customer customer) throws HttpCommunicationException {
-    restCommunication.httpPut(urlUtil.getHttpGetUrl(customer, id), unzer.getPrivateKey(),
+    customer.setId(id);
+    restCommunication.httpPut(urlUtil.getUrl(customer), unzer.getPrivateKey(),
         apiToSdkMapper.map(customer));
     return fetchCustomer(id);
   }
@@ -347,9 +350,11 @@ public class PaymentService {
   }
 
   public Metadata createMetadata(Metadata metadata) throws HttpCommunicationException {
-    String response =
-        restCommunication.httpPost(urlUtil.getRestUrl(metadata), unzer.getPrivateKey(),
-            metadata.getMetadataMap());
+    String response = restCommunication.httpPost(
+        urlUtil.getUrl(metadata),
+        unzer.getPrivateKey(),
+        metadata.getMetadataMap()
+    );
     Metadata metadataJson = jsonParser.fromJson(response, Metadata.class);
     metadata.setUnzer(unzer);
     metadata.setId(metadataJson.getId());
@@ -359,8 +364,10 @@ public class PaymentService {
   public Metadata fetchMetadata(String id) throws HttpCommunicationException {
     Metadata metadata = new Metadata();
     metadata.setId(id);
-    String response = restCommunication.httpGet(urlUtil.getHttpGetUrl(metadata, metadata.getId()),
-        unzer.getPrivateKey());
+    String response = restCommunication.httpGet(
+        urlUtil.getUrl(metadata),
+        unzer.getPrivateKey()
+    );
     Map<String, String> metadataMap = jsonParser.fromJson(response, HashMap.class);
     metadata.setMetadataMap(metadataMap);
     return metadata;
@@ -386,9 +393,9 @@ public class PaymentService {
    * @throws HttpCommunicationException generic Payment API communication error
    */
   public Authorization authorize(Authorization authorization) throws HttpCommunicationException {
-    String response =
-        restCommunication.httpPost(urlUtil.getRestUrl(authorization), unzer.getPrivateKey(),
-            apiToSdkMapper.map(authorization));
+    String response = restCommunication.httpPost(
+        urlUtil.getUrl(authorization), unzer.getPrivateKey(),
+        apiToSdkMapper.map(authorization));
     ApiAuthorization jsonAuthorization = jsonParser.fromJson(response, ApiAuthorization.class);
     authorization = (Authorization) apiToSdkMapper.mapToBusinessObject(jsonAuthorization,
         authorization
@@ -449,10 +456,12 @@ public class PaymentService {
     return sdkPayment;
   }
 
-  protected <T extends AbstractPayment> String getPayment(T payment)
+  protected <T extends BasePayment> String getPayment(T payment)
       throws HttpCommunicationException {
-    return restCommunication.httpGet(urlUtil.getHttpGetUrl(payment, payment.getId()),
-        unzer.getPrivateKey());
+    return restCommunication.httpGet(
+        urlUtil.getUrl(payment),
+        unzer.getPrivateKey()
+    );
   }
 
   private List<Cancel> fetchCancelList(
@@ -635,7 +644,7 @@ public class PaymentService {
       throws HttpCommunicationException {
     return this.updateAuthorization(
         authorization,
-        urlUtil.getPaymentUrl(authorization, authorization.getPaymentId())
+        urlUtil.getUrl(authorization)
     );
   }
 
@@ -652,7 +661,7 @@ public class PaymentService {
   }
 
   public Charge charge(Charge charge) throws HttpCommunicationException {
-    return charge(charge, urlUtil.getRestUrl(charge));
+    return charge(charge, urlUtil.getUrl(charge));
   }
 
   private Charge charge(Charge charge, String url) throws HttpCommunicationException {
@@ -674,7 +683,7 @@ public class PaymentService {
    * @return Charge The resulting object of the Charge resource.
    */
   public Charge updateCharge(Charge charge) throws HttpCommunicationException {
-    return updateCharge(charge, urlUtil.getPaymentUrl(charge, charge.getPaymentId()));
+    return updateCharge(charge, urlUtil.getUrl(charge));
   }
 
   private Charge updateCharge(Charge charge, String url) throws HttpCommunicationException {
@@ -692,7 +701,7 @@ public class PaymentService {
   public Payout payout(Payout payout) throws HttpCommunicationException {
     ApiObject json = apiToSdkMapper.map(payout);
     String response =
-        restCommunication.httpPost(urlUtil.getRestUrl(payout), unzer.getPrivateKey(), json);
+        restCommunication.httpPost(urlUtil.getUrl(payout), unzer.getPrivateKey(), json);
     ApiPayout jsonPayout = jsonParser.fromJson(response, ApiPayout.class);
     payout = (Payout) apiToSdkMapper.mapToBusinessObject(jsonPayout, payout);
     payout.setPayment(fetchPayment(jsonPayout.getResources().getPaymentId()));
@@ -702,7 +711,7 @@ public class PaymentService {
   }
 
   public Charge chargeAuthorization(Charge charge) throws HttpCommunicationException {
-    return charge(charge, urlUtil.getPaymentUrl(charge, charge.getPaymentId()));
+    return charge(charge, urlUtil.getUrl(charge));
   }
 
   public Cancel cancelAuthorization(String paymentId) throws HttpCommunicationException {
@@ -712,7 +721,8 @@ public class PaymentService {
 
   public Cancel cancelAuthorization(String paymentId, Cancel cancel)
       throws HttpCommunicationException {
-    return cancel(cancel, urlUtil.getPaymentUrl(cancel, paymentId));
+    cancel.setPaymentId(paymentId);
+    return cancel(cancel, urlUtil.getUrl(cancel));
   }
 
   private Cancel cancel(Cancel cancel, String url) throws HttpCommunicationException {
@@ -753,8 +763,10 @@ public class PaymentService {
 
   public Shipment shipment(String paymentId, String invoiceId, String orderId)
       throws HttpCommunicationException {
-    return shipment(new Shipment(invoiceId, orderId),
-        urlUtil.getPaymentUrl(new Shipment(), paymentId));
+    return shipment(
+        new Shipment(invoiceId, orderId),
+        urlUtil.getUrl(new Shipment().setPaymentId(paymentId))
+    );
   }
 
   private Shipment shipment(Shipment shipment, String url) throws HttpCommunicationException {
@@ -768,7 +780,7 @@ public class PaymentService {
 
   public Shipment doShipment(Shipment shipment, String paymentId)
       throws HttpCommunicationException {
-    return shipment(shipment, urlUtil.getPaymentUrl(new Shipment(), paymentId));
+    return shipment(shipment, urlUtil.getUrl(new Shipment().setPaymentId(paymentId)));
   }
 
   public Recurring recurring(Recurring recurring) throws HttpCommunicationException {
@@ -783,9 +795,14 @@ public class PaymentService {
   }
 
   public String deleteCustomer(String customerId) throws HttpCommunicationException {
+    Customer customer = new Customer("a", "b");
+    customer.setId(customerId);
+    customer.setCustomerId(customerId);
     String response =
-        restCommunication.httpDelete(urlUtil.getHttpGetUrl(new Customer("a", "b"), customerId),
-            unzer.getPrivateKey());
+        restCommunication.httpDelete(
+            urlUtil.getUrl(customer),
+            unzer.getPrivateKey()
+        );
     if (response == null || response.isEmpty()) {
       throw new PaymentException("Customer '" + customerId + "' cannot be deleted");
     }

@@ -6,7 +6,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.DynamicTest.dynamicTest;
 
-import com.unzer.payment.AbstractTransaction;
+import com.unzer.payment.BaseTransaction;
 import com.unzer.payment.Charge;
 import com.unzer.payment.Unzer;
 import com.unzer.payment.business.AbstractPaymentTest;
@@ -49,7 +49,7 @@ public class PayUTest extends AbstractPaymentTest {
 
       assertNotNull(charge);
       assertNotNull(charge.getId());
-      assertEquals(AbstractTransaction.Status.PENDING, charge.getStatus());
+      assertEquals(BaseTransaction.Status.PENDING, charge.getStatus());
     }));
   }
 }

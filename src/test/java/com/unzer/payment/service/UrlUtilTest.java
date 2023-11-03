@@ -6,6 +6,7 @@ import static org.junit.jupiter.api.DynamicTest.dynamicTest;
 import com.unzer.payment.business.AbstractPaymentTest;
 import com.unzer.payment.business.Keys;
 import com.unzer.payment.business.paymenttypes.InstallmentSecuredRatePlan;
+import com.unzer.payment.paymenttypes.BasePaymentType;
 import com.unzer.payment.paymenttypes.InvoiceSecured;
 import com.unzer.payment.paymenttypes.Klarna;
 import com.unzer.payment.paymenttypes.PaymentType;
@@ -20,15 +21,6 @@ import org.junit.jupiter.api.TestFactory;
 
 public class UrlUtilTest extends AbstractPaymentTest {
   private static final String sbxTypesUrl = "https://sbx-api.unzer.com/v1/types/";
-  private static final String id = "random-id";
-
-  @Test
-  public void testUnknownPaymentType() {
-    assertEquals(
-        sbxTypesUrl + id,
-        new UrlUtil(Keys.KEY_WITHOUT_3DS).getHttpGetUrl(id)
-    );
-  }
 
   @TestFactory
   public Collection<DynamicTest> testGetApiEndpoint() {
@@ -48,12 +40,12 @@ public class UrlUtilTest extends AbstractPaymentTest {
             new KeyTestCase(
                 "whenProductionKey_returnsProductionEndpoint",
                 "p-random-key",
-                "https://api.unzer.com/v1/types/klarna"
+                "https://api.unzer.com/v1/types/klarna/"
             ),
             new KeyTestCase(
                 "whenSbxKey_returnsSbxEndpoint",
                 "s-random-key",
-                "https://sbx-api.unzer.com/v1/types/klarna"
+                "https://sbx-api.unzer.com/v1/types/klarna/"
             )
         ).map(tc -> dynamicTest(tc.name,
             () -> assertEquals(tc.expectedEndpoint, new UrlUtil(tc.key).getUrl(new Klarna()))))
@@ -64,10 +56,10 @@ public class UrlUtilTest extends AbstractPaymentTest {
   public Collection<DynamicTest> testGetUrlForPaymentTypeInvoiceSecured() {
     class TestCase {
       final String name;
-      final PaymentType type;
+      final BasePaymentType type;
       final String expectedUrl;
 
-      public TestCase(String name, PaymentType type, String expectedUrl) {
+      public TestCase(String name, BasePaymentType type, String expectedUrl) {
         this.name = name;
         this.type = type;
         this.expectedUrl = expectedUrl;
@@ -77,15 +69,15 @@ public class UrlUtilTest extends AbstractPaymentTest {
     return Stream.of(
         new TestCase("whenInvoiceSecured_returnsInvoiceSecuredUrl",
             new InvoiceSecured(),
-            sbxTypesUrl + "invoice-secured/" + id),
+            sbxTypesUrl + "invoice-secured/"),
         new TestCase("whenInstallmentSecured_returnsInstallmentSecuredUrl",
             new InstallmentSecuredRatePlan(),
-            sbxTypesUrl + "installment-secured/" + id),
+            sbxTypesUrl + "installment-secured/"),
         new TestCase("whenSepaDirectDebitSecured_returnsSepaDirectDebitSecuredUrl",
             new SepaDirectDebitSecured(""),
-            sbxTypesUrl + "sepa-direct-debit-secured/" + id)
+            sbxTypesUrl + "sepa-direct-debit-secured/")
     ).map(tc -> dynamicTest(tc.name, () -> {
-      assertEquals(tc.expectedUrl, new UrlUtil(Keys.KEY_WITHOUT_3DS).getHttpGetUrl(tc.type, id));
+      assertEquals(tc.expectedUrl, new UrlUtil(Keys.KEY_WITHOUT_3DS).getUrl(tc.type));
     })).collect(Collectors.toList());
   }
 }

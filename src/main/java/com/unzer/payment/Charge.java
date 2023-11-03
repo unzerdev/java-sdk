@@ -1,8 +1,6 @@
 package com.unzer.payment;
 
 import com.unzer.payment.communication.HttpCommunicationException;
-import com.unzer.payment.communication.json.ApiObject;
-import com.unzer.payment.paymenttypes.PaymentType;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
@@ -14,7 +12,7 @@ import java.util.List;
  *
  * @author Unzer E-Com GmbH
  */
-public class Charge extends AbstractTransaction<Payment> {
+public class Charge extends BaseTransaction<Payment> {
   private List<Cancel> cancelList;
 
   public Charge() {
@@ -26,6 +24,11 @@ public class Charge extends AbstractTransaction<Payment> {
   public Charge(Unzer unzer) {
     super(unzer);
     setCancelList(new ArrayList<Cancel>());
+  }
+
+  @Override
+  protected String getTransactionUrl() {
+    return "/v1/payments/<paymentId>/charges/<transactionId>";
   }
 
   /**
@@ -50,16 +53,6 @@ public class Charge extends AbstractTransaction<Payment> {
   @Deprecated
   public Cancel cancel(Cancel cancel) throws HttpCommunicationException {
     return getUnzer().cancelCharge(getPayment().getId(), getId(), cancel);
-  }
-
-  @Override
-  public String getTypeUrl() {
-    return "payments/<paymentId>/charges";
-  }
-
-  @Override
-  public PaymentType map(PaymentType paymentType, ApiObject apiObject) {
-    return null;
   }
 
   public List<Cancel> getCancelList() {

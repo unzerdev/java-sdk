@@ -17,7 +17,7 @@ public class PaylaterInstallmentPlans {
   private BigDecimal amount;
   private Currency currency;
   private List<InstallmentPlan> plans = new ArrayList<>();
-  private AbstractTransaction.Status status;
+  private BaseTransaction.Status status;
 
   public BigDecimal getAmount() {
     return amount;
@@ -59,11 +59,11 @@ public class PaylaterInstallmentPlans {
     return this;
   }
 
-  public AbstractTransaction.Status getStatus() {
+  public BaseTransaction.Status getStatus() {
     return status;
   }
 
-  public PaylaterInstallmentPlans setStatus(AbstractTransaction.Status status) {
+  public PaylaterInstallmentPlans setStatus(BaseTransaction.Status status) {
     this.status = status;
     return this;
   }

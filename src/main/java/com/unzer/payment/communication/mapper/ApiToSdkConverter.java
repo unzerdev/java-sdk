@@ -1,7 +1,7 @@
 package com.unzer.payment.communication.mapper;
 
-import com.unzer.payment.AbstractPayment;
-import com.unzer.payment.AbstractTransaction;
+import com.unzer.payment.BasePayment;
+import com.unzer.payment.BaseTransaction;
 import com.unzer.payment.Authorization;
 import com.unzer.payment.Cancel;
 import com.unzer.payment.CommercialSector;
@@ -39,7 +39,7 @@ import java.util.Optional;
 
 public class ApiToSdkConverter {
 
-  public ApiObject map(AbstractTransaction<? extends AbstractPayment> src) {
+  public ApiObject map(BaseTransaction<? extends BasePayment> src) {
     ApiInitPayment out = new ApiInitPayment();
     out.setAmount(src.getAmount());
     out.setCurrency(src.getCurrency());
@@ -63,7 +63,7 @@ public class ApiToSdkConverter {
   }
 
   private JsonResources getResources(
-      AbstractTransaction<? extends AbstractPayment> src
+      BaseTransaction<? extends BasePayment> src
   ) {
     JsonResources out = new JsonResources();
     out.setCustomerId(src.getCustomerId());
@@ -306,26 +306,26 @@ public class ApiToSdkConverter {
     return out;
   }
 
-  private AbstractTransaction.Status extractStatus(TransactionStatus src) {
+  private BaseTransaction.Status extractStatus(TransactionStatus src) {
     // Resumed has to be the first,
     // because currently Payment API returns several statuses if isResumed set
     if (Optional.ofNullable(src.getResumed()).orElse(false)) {
-      return AbstractTransaction.Status.RESUMED;
+      return BaseTransaction.Status.RESUMED;
     }
 
     if (src.getSuccess()) {
-      return AbstractTransaction.Status.SUCCESS;
+      return BaseTransaction.Status.SUCCESS;
     } else if (src.getPending()) {
-      return AbstractTransaction.Status.PENDING;
+      return BaseTransaction.Status.PENDING;
     } else if (src.getError()) {
-      return AbstractTransaction.Status.ERROR;
+      return BaseTransaction.Status.ERROR;
     }
 
     return null;
   }
 
-  public <T extends AbstractPayment> AbstractTransaction<T> mapToBusinessObject(
-      ApiInitPayment src, AbstractTransaction<T> out
+  public <T extends BasePayment> BaseTransaction<T> mapToBusinessObject(
+      ApiInitPayment src, BaseTransaction<T> out
   ) {
     out.setId(src.getId());
     out.setAmount(src.getAmount());
@@ -459,8 +459,8 @@ public class ApiToSdkConverter {
     return src.getRegistrationType() == null;
   }
 
-  public <T extends AbstractPayment> AbstractTransaction<T> mapToBusinessObject(
-      ApiCancel src, AbstractTransaction<T> out
+  public <T extends BasePayment> BaseTransaction<T> mapToBusinessObject(
+      ApiCancel src, BaseTransaction<T> out
   ) {
     out.setId(src.getId());
     out.setAmount(src.getAmount());
@@ -471,6 +471,7 @@ public class ApiToSdkConverter {
     out.setInvoiceId(src.getInvoiceId());
     out.setOrderId(src.getOrderId());
     out.setStatus(extractStatus(src));
+    out.setPaymentId(src.getResources().getPaymentId());
     return out;
   }
 
@@ -481,7 +482,7 @@ public class ApiToSdkConverter {
     return out;
   }
 
-  public <T extends AbstractPayment> T mapToBusinessObject(ApiPayment src, T out) {
+  public <T extends BasePayment> T mapToBusinessObject(ApiPayment src, T out) {
     out.setAmountTotal(src.getAmount().getTotal());
     out.setAmountCanceled(src.getAmount().getCanceled());
     out.setAmountCharged(src.getAmount().getCharged());
@@ -502,13 +503,13 @@ public class ApiToSdkConverter {
     return out;
   }
 
-  private AbstractPayment.State getPaymentState(JsonState src) {
+  private BasePayment.State getPaymentState(JsonState src) {
     if (src == null) {
       return null;
     }
 
     if (src.getId() >= 0 && src.getId() <= 5) {
-      return AbstractPayment.State.values()[src.getId()];
+      return BasePayment.State.values()[src.getId()];
     }
 
     return null;

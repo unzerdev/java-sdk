@@ -9,7 +9,7 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import com.unzer.payment.AbstractTransaction;
+import com.unzer.payment.BaseTransaction;
 import com.unzer.payment.Authorization;
 import com.unzer.payment.Charge;
 import com.unzer.payment.Payment;
@@ -223,7 +223,7 @@ public class CardTest extends AbstractPaymentTest {
         Recurring recurring = getUnzer().recurring(card.getId(), unsafeUrl("https://www.meinShop.de"));
         assertNotNull(recurring);
         assertNotNull(recurring.getRedirectUrl());
-        assertEquals(AbstractTransaction.Status.PENDING, recurring.getStatus());
+        assertEquals(BaseTransaction.Status.PENDING, recurring.getStatus());
     }
 
     @Test
@@ -233,7 +233,7 @@ public class CardTest extends AbstractPaymentTest {
         card = getUnzer().createPaymentType(card);
 
         Recurring recurring = getUnzer().recurring(card.getId(), null, null, unsafeUrl("https://www.meinShop.de"), RecurrenceType.SCHEDULED);
-        assertEquals(AbstractTransaction.Status.PENDING, recurring.getStatus());
+        assertEquals(BaseTransaction.Status.PENDING, recurring.getStatus());
         assertNotNull(recurring.getAdditionalTransactionData());
         assertNotNull(recurring.getAdditionalTransactionData().getCard());
         assertEquals(RecurrenceType.SCHEDULED, recurring.getAdditionalTransactionData().getCard().getRecurrenceType());
@@ -246,7 +246,7 @@ public class CardTest extends AbstractPaymentTest {
         card = getUnzer().createPaymentType(card);
 
         Recurring recurring = getUnzer().recurring(card.getId(), null, null, unsafeUrl("https://www.meinShop.de"), RecurrenceType.UNSCHEDULED);
-        assertEquals(AbstractTransaction.Status.PENDING, recurring.getStatus());
+        assertEquals(BaseTransaction.Status.PENDING, recurring.getStatus());
         assertNotNull(recurring.getAdditionalTransactionData());
         assertNotNull(recurring.getAdditionalTransactionData().getCard());
         assertEquals(RecurrenceType.UNSCHEDULED, recurring.getAdditionalTransactionData().getCard().getRecurrenceType());
@@ -260,7 +260,7 @@ public class CardTest extends AbstractPaymentTest {
         Authorization authorization = getUnzer().authorize(BigDecimal.ONE, Currency.getInstance("EUR"), card.getId(), unsafeUrl("https://www.meinShop.de"), null, true, RecurrenceType.ONECLICK);
 
         assertTrue(authorization.getCard3ds());
-        assertEquals(AbstractTransaction.Status.PENDING, authorization.getStatus());
+        assertEquals(BaseTransaction.Status.PENDING, authorization.getStatus());
         assertNotNull(authorization.getAdditionalTransactionData());
         assertNotNull(authorization.getAdditionalTransactionData().getCard());
         assertEquals(RecurrenceType.ONECLICK, authorization.getAdditionalTransactionData().getCard().getRecurrenceType());
@@ -274,7 +274,7 @@ public class CardTest extends AbstractPaymentTest {
         Authorization authorization = getUnzer().authorize(BigDecimal.ONE, Currency.getInstance("EUR"), card.getId(), unsafeUrl("https://www.meinShop.de"), null, false, RecurrenceType.ONECLICK);
 
         assertFalse(authorization.getCard3ds());
-        assertEquals(AbstractTransaction.Status.SUCCESS, authorization.getStatus());
+        assertEquals(BaseTransaction.Status.SUCCESS, authorization.getStatus());
         assertNull(authorization.getRedirectUrl());
         assertNotNull(authorization.getAdditionalTransactionData());
         assertNotNull(authorization.getAdditionalTransactionData().getCard());
@@ -289,7 +289,7 @@ public class CardTest extends AbstractPaymentTest {
         Charge charge = getUnzer().charge(BigDecimal.ONE, Currency.getInstance("EUR"), card.getId(), unsafeUrl("https://www.meinShop.de"), null, true, RecurrenceType.ONECLICK);
 
         assertTrue(charge.getCard3ds());
-        assertEquals(AbstractTransaction.Status.PENDING, charge.getStatus());
+        assertEquals(BaseTransaction.Status.PENDING, charge.getStatus());
         assertNotNull(charge.getAdditionalTransactionData());
         assertNotNull(charge.getAdditionalTransactionData().getCard());
         assertEquals(RecurrenceType.ONECLICK, charge.getAdditionalTransactionData().getCard().getRecurrenceType());
@@ -303,7 +303,7 @@ public class CardTest extends AbstractPaymentTest {
         Charge charge = getUnzer().charge(BigDecimal.ONE, Currency.getInstance("EUR"), card.getId(), unsafeUrl("https://www.meinShop.de"), null, false, RecurrenceType.ONECLICK);
 
         assertFalse(charge.getCard3ds());
-        assertEquals(AbstractTransaction.Status.SUCCESS, charge.getStatus());
+        assertEquals(BaseTransaction.Status.SUCCESS, charge.getStatus());
         assertNull(charge.getRedirectUrl());
         assertNotNull(charge.getAdditionalTransactionData());
         assertNotNull(charge.getAdditionalTransactionData().getCard());
@@ -318,7 +318,7 @@ public class CardTest extends AbstractPaymentTest {
         Authorization authorization = getUnzer().authorize(BigDecimal.ONE, Currency.getInstance("EUR"), card.getId(), unsafeUrl("https://www.meinShop.de"), null, true, RecurrenceType.SCHEDULED);
 
         assertTrue(authorization.getCard3ds());
-        assertEquals(AbstractTransaction.Status.PENDING, authorization.getStatus());
+        assertEquals(BaseTransaction.Status.PENDING, authorization.getStatus());
         assertNotNull(authorization.getAdditionalTransactionData());
         assertNotNull(authorization.getAdditionalTransactionData().getCard());
         assertEquals(RecurrenceType.SCHEDULED, authorization.getAdditionalTransactionData().getCard().getRecurrenceType());
@@ -332,7 +332,7 @@ public class CardTest extends AbstractPaymentTest {
         Authorization authorization = getUnzer().authorize(BigDecimal.ONE, Currency.getInstance("EUR"), card.getId(), unsafeUrl("https://www.meinShop.de"), null, false, RecurrenceType.SCHEDULED);
 
         assertFalse(authorization.getCard3ds());
-        assertEquals(AbstractTransaction.Status.SUCCESS, authorization.getStatus());
+        assertEquals(BaseTransaction.Status.SUCCESS, authorization.getStatus());
         assertNull(authorization.getRedirectUrl());
         assertNotNull(authorization.getAdditionalTransactionData());
         assertNotNull(authorization.getAdditionalTransactionData().getCard());
@@ -347,7 +347,7 @@ public class CardTest extends AbstractPaymentTest {
         Charge charge = getUnzer().charge(BigDecimal.ONE, Currency.getInstance("EUR"), card.getId(), unsafeUrl("https://www.meinShop.de"), null, true, RecurrenceType.SCHEDULED);
 
         assertTrue(charge.getCard3ds());
-        assertEquals(AbstractTransaction.Status.PENDING, charge.getStatus());
+        assertEquals(BaseTransaction.Status.PENDING, charge.getStatus());
         assertNotNull(charge.getAdditionalTransactionData());
         assertNotNull(charge.getAdditionalTransactionData().getCard());
         assertEquals(RecurrenceType.SCHEDULED, charge.getAdditionalTransactionData().getCard().getRecurrenceType());
@@ -361,7 +361,7 @@ public class CardTest extends AbstractPaymentTest {
         Charge charge = getUnzer().charge(BigDecimal.ONE, Currency.getInstance("EUR"), card.getId(), unsafeUrl("https://www.meinShop.de"), null, false, RecurrenceType.SCHEDULED);
 
         assertFalse(charge.getCard3ds());
-        assertEquals(AbstractTransaction.Status.SUCCESS, charge.getStatus());
+        assertEquals(BaseTransaction.Status.SUCCESS, charge.getStatus());
         assertNull(charge.getRedirectUrl());
         assertNotNull(charge.getAdditionalTransactionData());
         assertNotNull(charge.getAdditionalTransactionData().getCard());
@@ -376,7 +376,7 @@ public class CardTest extends AbstractPaymentTest {
         Authorization authorization = getUnzer().authorize(BigDecimal.ONE, Currency.getInstance("EUR"), card.getId(), unsafeUrl("https://www.meinShop.de"), null, true, RecurrenceType.UNSCHEDULED);
 
         assertTrue(authorization.getCard3ds());
-        assertEquals(AbstractTransaction.Status.PENDING, authorization.getStatus());
+        assertEquals(BaseTransaction.Status.PENDING, authorization.getStatus());
         assertNotNull(authorization.getAdditionalTransactionData());
         assertNotNull(authorization.getAdditionalTransactionData().getCard());
         assertEquals(RecurrenceType.UNSCHEDULED, authorization.getAdditionalTransactionData().getCard().getRecurrenceType());
@@ -390,7 +390,7 @@ public class CardTest extends AbstractPaymentTest {
         Authorization authorization = getUnzer().authorize(BigDecimal.ONE, Currency.getInstance("EUR"), card.getId(), unsafeUrl("https://www.meinShop.de"), null, false, RecurrenceType.UNSCHEDULED);
 
         assertFalse(authorization.getCard3ds());
-        assertEquals(AbstractTransaction.Status.SUCCESS, authorization.getStatus());
+        assertEquals(BaseTransaction.Status.SUCCESS, authorization.getStatus());
         assertNull(authorization.getRedirectUrl());
         assertNotNull(authorization.getAdditionalTransactionData());
         assertNotNull(authorization.getAdditionalTransactionData().getCard());
@@ -405,7 +405,7 @@ public class CardTest extends AbstractPaymentTest {
         Charge charge = getUnzer().charge(BigDecimal.ONE, Currency.getInstance("EUR"), card.getId(), unsafeUrl("https://www.meinShop.de"), null, true, RecurrenceType.UNSCHEDULED);
 
         assertTrue(charge.getCard3ds());
-        assertEquals(AbstractTransaction.Status.PENDING, charge.getStatus());
+        assertEquals(BaseTransaction.Status.PENDING, charge.getStatus());
         assertNotNull(charge.getAdditionalTransactionData());
         assertNotNull(charge.getAdditionalTransactionData().getCard());
         assertEquals(RecurrenceType.UNSCHEDULED, charge.getAdditionalTransactionData().getCard().getRecurrenceType());
@@ -419,7 +419,7 @@ public class CardTest extends AbstractPaymentTest {
         Charge charge = getUnzer().charge(BigDecimal.ONE, Currency.getInstance("EUR"), card.getId(), unsafeUrl("https://www.meinShop.de"), null, false, RecurrenceType.UNSCHEDULED);
 
         assertFalse(charge.getCard3ds());
-        assertEquals(AbstractTransaction.Status.SUCCESS, charge.getStatus());
+        assertEquals(BaseTransaction.Status.SUCCESS, charge.getStatus());
         assertNull(charge.getRedirectUrl());
         assertNotNull(charge.getAdditionalTransactionData());
         assertNotNull(charge.getAdditionalTransactionData().getCard());

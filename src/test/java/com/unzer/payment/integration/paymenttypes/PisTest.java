@@ -43,7 +43,7 @@ public class PisTest extends AbstractPaymentTest {
         Charge charge = unzer.charge(
             BigDecimal.ONE,
             Currency.getInstance("EUR"),
-            pis,
+            pis.getId(),
             unsafeUrl("https://www.meinShop.de")
         );
         assertNotNull(charge);

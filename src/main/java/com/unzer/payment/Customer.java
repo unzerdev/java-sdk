@@ -1,8 +1,6 @@
 package com.unzer.payment;
 
 import com.google.gson.annotations.SerializedName;
-import com.unzer.payment.communication.json.ApiObject;
-import com.unzer.payment.paymenttypes.PaymentType;
 import java.util.Date;
 import java.util.Locale;
 
@@ -13,7 +11,7 @@ import java.util.Locale;
  *
  * @author Unzer E-Com GmbH
  */
-public class Customer implements PaymentType {
+public class Customer extends BaseResource {
   private String id;
   private String firstname;
   private String lastname;
@@ -129,16 +127,6 @@ public class Customer implements PaymentType {
     return this;
   }
 
-  @Override
-  public String getTypeUrl() {
-    return "customers";
-  }
-
-  @Override
-  public PaymentType map(PaymentType paymentType, ApiObject apiObject) {
-    return null;
-  }
-
   public ShippingAddress getShippingAddress() {
     return shippingAddress;
   }
@@ -190,6 +178,11 @@ public class Customer implements PaymentType {
   public Customer setLanguage(Locale language) {
     this.language = language;
     return this;
+  }
+
+  @Override
+  public String getResourceUrl() {
+    return "/v1/customers/<resourceId>";
   }
 
   public enum Salutation {

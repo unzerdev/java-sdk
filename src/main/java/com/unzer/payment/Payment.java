@@ -1,7 +1,6 @@
 package com.unzer.payment;
 
 import com.unzer.payment.communication.HttpCommunicationException;
-import com.unzer.payment.communication.json.ApiObject;
 import com.unzer.payment.paymenttypes.BasePaymentType;
 import com.unzer.payment.paymenttypes.PaymentType;
 import java.math.BigDecimal;
@@ -19,7 +18,7 @@ import java.util.List;
  *
  * @author Unzer E-Com GmbH
  */
-public class Payment extends AbstractPayment {
+public class Payment extends BasePayment {
 
   private Authorization authorization;
   private List<Charge> chargesList;
@@ -101,7 +100,8 @@ public class Payment extends AbstractPayment {
    * @deprecated use {@link Unzer#charge(Charge)} instead
    */
   @Deprecated
-  public Charge charge(BigDecimal amount, Currency currency, BasePaymentType paymentType, URL returnUrl,
+  public Charge charge(BigDecimal amount, Currency currency, BasePaymentType paymentType,
+                       URL returnUrl,
                        Customer customer) throws HttpCommunicationException {
     return getUnzer().charge(amount, currency, paymentType, returnUrl, customer);
   }
@@ -178,7 +178,7 @@ public class Payment extends AbstractPayment {
     return findById(chargesList, chargeId);
   }
 
-  private <T extends PaymentType> T findById(Collection<T> collection, String id) {
+  private <T extends BaseTransaction<Payment>> T findById(Collection<T> collection, String id) {
     if (collection == null) {
       return null;
     }
@@ -221,16 +221,6 @@ public class Payment extends AbstractPayment {
     return new Cancel();
   }
 
-  @Override
-  public String getTypeUrl() {
-    return "payments";
-  }
-
-  @Override
-  public PaymentType map(PaymentType paymentType, ApiObject apiObject) {
-    return null;
-  }
-
   public List<Payout> getPayoutList() {
     return payoutList;
   }
@@ -245,5 +235,10 @@ public class Payment extends AbstractPayment {
 
   public void setChargebackList(List<Chargeback> chargebackList) {
     this.chargebackList = chargebackList;
+  }
+
+  @Override
+  public String getResourceUrl() {
+    return "/v1/payments/<resourceId>";
   }
 }

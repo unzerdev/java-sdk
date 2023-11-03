@@ -7,7 +7,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-import com.unzer.payment.AbstractTransaction;
+import com.unzer.payment.BaseTransaction;
 import com.unzer.payment.Authorization;
 import com.unzer.payment.Cancel;
 import com.unzer.payment.Charge;
@@ -83,7 +83,7 @@ public class PaymentTest extends AbstractPaymentTest {
 
     Card card = createPaymentTypeCard(unzer, "4711100000000000");
     Authorization authorize = unzer.authorize(getAuthorization(card.getId()));
-    assertEquals(AbstractTransaction.Status.SUCCESS, authorize.getStatus());
+    assertEquals(BaseTransaction.Status.SUCCESS, authorize.getStatus());
 
     Payment payment = unzer.fetchPayment(authorize.getPayment().getId());
 

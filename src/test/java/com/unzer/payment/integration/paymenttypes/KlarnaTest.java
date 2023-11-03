@@ -9,7 +9,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.DynamicTest.dynamicTest;
 
-import com.unzer.payment.AbstractTransaction;
+import com.unzer.payment.BaseTransaction;
 import com.unzer.payment.Authorization;
 import com.unzer.payment.Basket;
 import com.unzer.payment.BasketItem;
@@ -185,7 +185,7 @@ public class KlarnaTest extends AbstractPaymentTest {
         assertNotNull(createdAuth);
         assertNotNull(createdAuth.getId());
         assertFalse(createdAuth.getId().isEmpty());
-        assertNotEquals(AbstractTransaction.Status.ERROR, createdAuth.getStatus());
+        assertNotEquals(BaseTransaction.Status.ERROR, createdAuth.getStatus());
         assertNotNull(createdAuth.getPaymentId());
         assertFalse(createdAuth.getPaymentId().isEmpty());
         assertNotNull(createdAuth.getRedirectUrl());

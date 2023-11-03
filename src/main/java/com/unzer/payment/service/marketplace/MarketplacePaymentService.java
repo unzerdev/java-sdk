@@ -33,7 +33,7 @@ public class MarketplacePaymentService extends PaymentService {
   public MarketplaceAuthorization marketplaceAuthorize(MarketplaceAuthorization authorization)
       throws HttpCommunicationException {
     String response =
-        restCommunication.httpPost(urlUtil.getRestUrl(authorization), unzer.getPrivateKey(),
+        restCommunication.httpPost(urlUtil.getUrl(authorization), unzer.getPrivateKey(),
             apiToSdkMapper.map(authorization));
     ApiAuthorization jsonAuthorization = jsonParser.fromJson(response, ApiAuthorization.class);
     authorization =
@@ -217,7 +217,7 @@ public class MarketplacePaymentService extends PaymentService {
    */
   public MarketplaceCharge marketplaceCharge(MarketplaceCharge charge)
       throws HttpCommunicationException {
-    String response = restCommunication.httpPost(urlUtil.getRestUrl(charge), unzer.getPrivateKey(),
+    String response = restCommunication.httpPost(urlUtil.getUrl(charge), unzer.getPrivateKey(),
         apiToSdkMapper.map(charge));
     ApiCharge jsonCharge = jsonParser.fromJson(response, ApiCharge.class);
     charge = (MarketplaceCharge) apiToSdkMapper.mapToBusinessObject(jsonCharge, charge);
@@ -312,8 +312,11 @@ public class MarketplacePaymentService extends PaymentService {
       throws HttpCommunicationException {
     MarketplaceCharge charge = new MarketplaceCharge(unzer);
     charge.setId(chargeId);
-    String response = restCommunication.httpGet(urlUtil.getPaymentUrl(charge, paymentId, chargeId),
-        unzer.getPrivateKey());
+    charge.setPaymentId(paymentId);
+    String response = restCommunication.httpGet(
+        urlUtil.getUrl(charge),
+        unzer.getPrivateKey()
+    );
     ApiCharge jsonCharge = jsonParser.fromJson(response, ApiCharge.class);
     charge = (MarketplaceCharge) apiToSdkMapper.mapToBusinessObject(jsonCharge, charge);
     charge.setPayment(fetchMarketplacePayment(jsonCharge.getResources().getPaymentId()));
@@ -333,9 +336,11 @@ public class MarketplacePaymentService extends PaymentService {
       throws HttpCommunicationException {
     MarketplaceAuthorization authorization = new MarketplaceAuthorization(unzer);
     authorization.setId(authorizeId);
-    String response =
-        restCommunication.httpGet(urlUtil.getPaymentUrl(authorization, paymentId, authorizeId),
-            unzer.getPrivateKey());
+    authorization.setPaymentId(paymentId);
+    String response = restCommunication.httpGet(
+        urlUtil.getUrl(authorization),
+        unzer.getPrivateKey()
+    );
     ApiAuthorization jsonAuthorization = jsonParser.fromJson(response, ApiAuthorization.class);
     authorization =
         (MarketplaceAuthorization) apiToSdkMapper.mapToBusinessObject(jsonAuthorization,

@@ -2,13 +2,14 @@ package com.unzer.payment;
 
 import com.unzer.payment.communication.JsonFieldIgnore;
 import com.unzer.payment.models.AdditionalTransactionData;
-import com.unzer.payment.paymenttypes.PaymentType;
 import java.math.BigDecimal;
 import java.net.URL;
 import java.util.Currency;
 import java.util.Date;
 
-public abstract class AbstractTransaction<T extends AbstractPayment> implements PaymentType {
+public abstract class BaseTransaction<T extends BasePayment> implements Resource {
+  protected final static String TRANSACTION_ID_TOKEN = "<transactionId>";
+  protected final static String PAYMENT_ID_TOKEN = "<paymentId>";
   private String id;
   private BigDecimal amount;
   private Currency currency;
@@ -39,12 +40,12 @@ public abstract class AbstractTransaction<T extends AbstractPayment> implements 
   @JsonFieldIgnore
   private URL resourceUrl;
 
-  public AbstractTransaction() {
+  public BaseTransaction() {
     super();
   }
 
   @Deprecated
-  public AbstractTransaction(Unzer unzer) {
+  public BaseTransaction(Unzer unzer) {
     this.unzer = unzer;
   }
 
@@ -73,7 +74,7 @@ public abstract class AbstractTransaction<T extends AbstractPayment> implements 
     result = 31 * result + (getType() != null ? getType().hashCode() : 0);
     result = 31 * result
         + (getAdditionalTransactionData() != null ? getAdditionalTransactionData().hashCode() : 0);
-    result = 31 * result + (getResourceUrl() != null ? getResourceUrl().hashCode() : 0);
+    result = 31 * result + (getTransactionUrl() != null ? getTransactionUrl().hashCode() : 0);
     return result;
   }
 
@@ -86,7 +87,7 @@ public abstract class AbstractTransaction<T extends AbstractPayment> implements 
       return false;
     }
 
-    AbstractTransaction<?> that = (AbstractTransaction<?>) o;
+    BaseTransaction<?> that = (BaseTransaction<?>) o;
 
     if (getId() != null ? !getId().equals(that.getId()) : that.getId() != null) {
       return false;
@@ -179,8 +180,17 @@ public abstract class AbstractTransaction<T extends AbstractPayment> implements 
       return false;
     }
 
-    return getResourceUrl() != null ? getResourceUrl().equals(that.getResourceUrl()) :
-        that.getResourceUrl() == null;
+    return getTransactionUrl() != null ? getTransactionUrl().equals(that.getTransactionUrl()) :
+        that.getTransactionUrl() == null;
+  }
+
+  public Processing getProcessing() {
+    return processing;
+  }
+
+  public BaseTransaction<T> setProcessing(Processing processing) {
+    this.processing = processing;
+    return this;
   }
 
   public String getId() {
@@ -191,7 +201,7 @@ public abstract class AbstractTransaction<T extends AbstractPayment> implements 
     return amount;
   }
 
-  public AbstractTransaction<T> setAmount(BigDecimal amount) {
+  public BaseTransaction<T> setAmount(BigDecimal amount) {
     this.amount = amount;
     return this;
   }
@@ -200,7 +210,7 @@ public abstract class AbstractTransaction<T extends AbstractPayment> implements 
     return currency;
   }
 
-  public AbstractTransaction<T> setCurrency(Currency currency) {
+  public BaseTransaction<T> setCurrency(Currency currency) {
     this.currency = currency;
     return this;
   }
@@ -209,7 +219,7 @@ public abstract class AbstractTransaction<T extends AbstractPayment> implements 
     return returnUrl;
   }
 
-  public AbstractTransaction<T> setReturnUrl(URL returnUrl) {
+  public BaseTransaction<T> setReturnUrl(URL returnUrl) {
     this.returnUrl = returnUrl;
     return this;
   }
@@ -218,7 +228,7 @@ public abstract class AbstractTransaction<T extends AbstractPayment> implements 
     return card3ds;
   }
 
-  public AbstractTransaction<T> setCard3ds(Boolean card3ds) {
+  public BaseTransaction<T> setCard3ds(Boolean card3ds) {
     this.card3ds = card3ds;
     return this;
   }
@@ -227,7 +237,7 @@ public abstract class AbstractTransaction<T extends AbstractPayment> implements 
     return orderId;
   }
 
-  public AbstractTransaction<T> setOrderId(String orderId) {
+  public BaseTransaction<T> setOrderId(String orderId) {
     this.orderId = orderId;
     return this;
   }
@@ -240,7 +250,7 @@ public abstract class AbstractTransaction<T extends AbstractPayment> implements 
     return typeId;
   }
 
-  public AbstractTransaction<T> setTypeId(String typeId) {
+  public BaseTransaction<T> setTypeId(String typeId) {
     this.typeId = typeId;
     return this;
   }
@@ -249,7 +259,7 @@ public abstract class AbstractTransaction<T extends AbstractPayment> implements 
     return customerId;
   }
 
-  public AbstractTransaction<T> setCustomerId(String customerId) {
+  public BaseTransaction<T> setCustomerId(String customerId) {
     this.customerId = customerId;
     return this;
   }
@@ -258,7 +268,7 @@ public abstract class AbstractTransaction<T extends AbstractPayment> implements 
     return metadataId;
   }
 
-  public AbstractTransaction<T> setMetadataId(String metadataId) {
+  public BaseTransaction<T> setMetadataId(String metadataId) {
     this.metadataId = metadataId;
     return this;
   }
@@ -267,16 +277,11 @@ public abstract class AbstractTransaction<T extends AbstractPayment> implements 
     return paymentId;
   }
 
-  public AbstractTransaction<T> setPaymentId(String paymentId) {
-    this.paymentId = paymentId;
-    return this;
-  }
-
   public String getRiskId() {
     return riskId;
   }
 
-  public AbstractTransaction<T> setRiskId(String riskId) {
+  public BaseTransaction<T> setRiskId(String riskId) {
     this.riskId = riskId;
     return this;
   }
@@ -285,7 +290,7 @@ public abstract class AbstractTransaction<T extends AbstractPayment> implements 
     return basketId;
   }
 
-  public AbstractTransaction<T> setBasketId(String basketId) {
+  public BaseTransaction<T> setBasketId(String basketId) {
     this.basketId = basketId;
     return this;
   }
@@ -302,7 +307,7 @@ public abstract class AbstractTransaction<T extends AbstractPayment> implements 
     return status;
   }
 
-  public AbstractTransaction<T> setStatus(Status status) {
+  public BaseTransaction<T> setStatus(Status status) {
     this.status = status;
     return this;
   }
@@ -319,7 +324,7 @@ public abstract class AbstractTransaction<T extends AbstractPayment> implements 
     return traceId;
   }
 
-  public AbstractTransaction<T> setTraceId(String traceId) {
+  public BaseTransaction<T> setTraceId(String traceId) {
     this.traceId = traceId;
     return this;
   }
@@ -328,7 +333,7 @@ public abstract class AbstractTransaction<T extends AbstractPayment> implements 
     return message;
   }
 
-  public AbstractTransaction<T> setMessage(Message message) {
+  public BaseTransaction<T> setMessage(Message message) {
     this.message = message;
     return this;
   }
@@ -337,7 +342,7 @@ public abstract class AbstractTransaction<T extends AbstractPayment> implements 
     return date;
   }
 
-  public AbstractTransaction<T> setDate(Date date) {
+  public BaseTransaction<T> setDate(Date date) {
     this.date = date;
     return this;
   }
@@ -350,7 +355,7 @@ public abstract class AbstractTransaction<T extends AbstractPayment> implements 
     return additionalTransactionData;
   }
 
-  public AbstractTransaction<T> setAdditionalTransactionData(
+  public BaseTransaction<T> setAdditionalTransactionData(
       AdditionalTransactionData additionalTransactionData) {
     this.additionalTransactionData = additionalTransactionData;
     return this;
@@ -360,50 +365,58 @@ public abstract class AbstractTransaction<T extends AbstractPayment> implements 
     return resourceUrl;
   }
 
-  public AbstractTransaction<T> setResourceUrl(URL resourceUrl) {
+  public BaseTransaction<T> setResourceUrl(URL resourceUrl) {
     this.resourceUrl = resourceUrl;
     return this;
   }
 
-  public AbstractTransaction<T> setType(String type) {
+  public BaseTransaction<T> setType(String type) {
     this.type = type;
     return this;
   }
 
-  public AbstractTransaction<T> setPaymentReference(String paymentReference) {
+  public BaseTransaction<T> setPaymentReference(String paymentReference) {
     this.paymentReference = paymentReference;
     return this;
   }
 
-  public AbstractTransaction<T> setPaypageId(String paypageId) {
+  public BaseTransaction<T> setPaypageId(String paypageId) {
     this.paypageId = paypageId;
     return this;
   }
 
-  public AbstractTransaction<T> setInvoiceId(String invoiceId) {
+  public BaseTransaction<T> setPaymentId(String paymentId) {
+    this.paymentId = paymentId;
+    return this;
+  }
+
+  public BaseTransaction<T> setInvoiceId(String invoiceId) {
     this.invoiceId = invoiceId;
     return this;
   }
 
-  public AbstractTransaction<T> setId(String id) {
+  public BaseTransaction<T> setId(String id) {
     this.id = id;
     return this;
   }
 
-  public Processing getProcessing() {
-    return processing;
+  @Override
+  public String getUrl() {
+    String partialResult = getPaymentId() == null
+        ? getTransactionUrl().replaceAll(PAYMENT_ID_TOKEN + "/", "")
+        : getTransactionUrl().replaceAll(PAYMENT_ID_TOKEN, getPaymentId());
+
+    return partialResult
+        .replaceAll(TRANSACTION_ID_TOKEN, getId() == null ? "" : getId());
   }
 
-  public AbstractTransaction<T> setProcessing(Processing processing) {
-    this.processing = processing;
-    return this;
-  }
+  protected abstract String getTransactionUrl();
 
   public T getPayment() {
     return payment;
   }
 
-  public AbstractTransaction<T> setPayment(T payment) {
+  public BaseTransaction<T> setPayment(T payment) {
     this.payment = payment;
     return this;
   }
@@ -414,7 +427,7 @@ public abstract class AbstractTransaction<T extends AbstractPayment> implements 
   }
 
   @Deprecated
-  public AbstractTransaction<T> setUnzer(Unzer unzer) {
+  public BaseTransaction<T> setUnzer(Unzer unzer) {
     this.unzer = unzer;
     return this;
   }

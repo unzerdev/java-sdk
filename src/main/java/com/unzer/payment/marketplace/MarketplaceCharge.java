@@ -1,6 +1,6 @@
 package com.unzer.payment.marketplace;
 
-import com.unzer.payment.AbstractTransaction;
+import com.unzer.payment.BaseTransaction;
 import com.unzer.payment.Unzer;
 import com.unzer.payment.communication.HttpCommunicationException;
 import com.unzer.payment.communication.json.ApiObject;
@@ -8,16 +8,16 @@ import com.unzer.payment.paymenttypes.PaymentType;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MarketplaceCharge extends AbstractTransaction<MarketplacePayment> {
+public class MarketplaceCharge extends BaseTransaction<MarketplacePayment> {
 
   private static final String MARKETPLACE_AUTHORIZATION_CHARGES =
-      "marketplace/payments/%1$s/authorize/%2$s/charges";
+      "/v1/marketplace/payments/%1$s/authorize/%2$s/charges";
 
   private static final String MARKETPLACE_FULL_AUTHORIZATIONS_CHARGES =
-      "marketplace/payments/%1$s/authorize/charges";
+      "/v1/marketplace/payments/%1$s/authorize/charges";
 
   private static final String MARKETPLACE_DIRECT_CHARGES =
-      "marketplace/payments/<paymentId>/charges";
+      "/v1/marketplace/payments/<paymentId>/charges";
 
   private String invoiceId;
 
@@ -35,7 +35,7 @@ public class MarketplaceCharge extends AbstractTransaction<MarketplacePayment> {
   }
 
   @Override
-  public String getTypeUrl() {
+  public String getTransactionUrl() {
     return MARKETPLACE_DIRECT_CHARGES;
   }
 
@@ -45,11 +45,6 @@ public class MarketplaceCharge extends AbstractTransaction<MarketplacePayment> {
 
   public String getChargeAuthorizationUrl(String paymentId, String authorizeId) {
     return String.format(MARKETPLACE_AUTHORIZATION_CHARGES, paymentId, authorizeId);
-  }
-
-  @Override
-  public PaymentType map(PaymentType paymentType, ApiObject apiObject) {
-    return null;
   }
 
   public String getInvoiceId() {

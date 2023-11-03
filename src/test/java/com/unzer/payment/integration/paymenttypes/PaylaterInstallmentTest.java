@@ -9,7 +9,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import com.unzer.payment.AbstractTransaction;
+import com.unzer.payment.BaseTransaction;
 import com.unzer.payment.Authorization;
 import com.unzer.payment.Basket;
 import com.unzer.payment.BasketItem;
@@ -55,7 +55,7 @@ public class PaylaterInstallmentTest extends AbstractPaymentTest {
     assertNotEquals("", installmentPlans.getId());
     assertNumberEquals(new BigDecimal("99.99"), installmentPlans.getAmount());
     assertEquals(Currency.getInstance("EUR"), installmentPlans.getCurrency());
-    assertEquals(AbstractTransaction.Status.SUCCESS, installmentPlans.getStatus());
+    assertEquals(BaseTransaction.Status.SUCCESS, installmentPlans.getStatus());
 
     List<InstallmentPlan> plans = installmentPlans.getPlans();
 
@@ -137,7 +137,7 @@ public class PaylaterInstallmentTest extends AbstractPaymentTest {
     );
 
     // then
-    assertEquals(AbstractTransaction.Status.SUCCESS, authorization.getStatus());
+    assertEquals(BaseTransaction.Status.SUCCESS, authorization.getStatus());
     assertNumberEquals(getOrderAmount(), authorization.getAmount());
   }
 
@@ -194,7 +194,7 @@ public class PaylaterInstallmentTest extends AbstractPaymentTest {
     Charge charge = getUnzer().chargeAuthorization(authorization.getPaymentId());
 
     // then
-    assertEquals(AbstractTransaction.Status.SUCCESS, charge.getStatus());
+    assertEquals(BaseTransaction.Status.SUCCESS, charge.getStatus());
     assertNumberEquals(getOrderAmount(), charge.getAmount());
   }
 
@@ -228,7 +228,7 @@ public class PaylaterInstallmentTest extends AbstractPaymentTest {
     );
 
     // then
-    assertEquals(AbstractTransaction.Status.SUCCESS, charge.getStatus());
+    assertEquals(BaseTransaction.Status.SUCCESS, charge.getStatus());
     assertNumberEquals(partialChargeAmount, charge.getAmount());
   }
 
@@ -259,7 +259,7 @@ public class PaylaterInstallmentTest extends AbstractPaymentTest {
     Cancel cancel = getUnzer().cancelAuthorization(authorization.getPaymentId(), getOrderAmount());
 
     // then
-    assertEquals(AbstractTransaction.Status.SUCCESS, authorization.getStatus());
+    assertEquals(BaseTransaction.Status.SUCCESS, authorization.getStatus());
     assertNumberEquals(getOrderAmount(), authorization.getAmount());
   }
 
@@ -292,7 +292,7 @@ public class PaylaterInstallmentTest extends AbstractPaymentTest {
     Cancel cancel = getUnzer().cancelCharge(charge.getPaymentId(), getOrderAmount());
 
     // then
-    assertEquals(AbstractTransaction.Status.SUCCESS, cancel.getStatus());
+    assertEquals(BaseTransaction.Status.SUCCESS, cancel.getStatus());
     assertNumberEquals(getOrderAmount(), cancel.getAmount());
   }
 
@@ -326,7 +326,7 @@ public class PaylaterInstallmentTest extends AbstractPaymentTest {
     Cancel cancel = getUnzer().cancelCharge(charge.getPaymentId(), partialCancelAmount);
 
     // then
-    assertEquals(AbstractTransaction.Status.SUCCESS, cancel.getStatus());
+    assertEquals(BaseTransaction.Status.SUCCESS, cancel.getStatus());
     assertNumberEquals(partialCancelAmount, cancel.getAmount());
   }
 }

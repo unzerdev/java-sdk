@@ -410,7 +410,7 @@ public abstract class AbstractPaymentTest {
         assertEquals(initCharge.getReturnUrl(), charge.getReturnUrl());
         assertEquals(initCharge.getRiskId(), charge.getRiskId());
         assertEquals(initCharge.getTypeId(), charge.getTypeId());
-        assertEquals(initCharge.getTypeUrl(), charge.getTypeUrl());
+        assertEquals(initCharge.getUrl(), charge.getUrl());
         assertEquals(initCharge.getCancelList(), charge.getCancelList());
         assertProcessingEquals(initCharge.getProcessing(), charge.getProcessing());
     }
@@ -453,7 +453,7 @@ public abstract class AbstractPaymentTest {
     protected void assertCancelEquals(Cancel cancelInit, Cancel cancel) {
         assertEquals(cancelInit.getAmount(), cancel.getAmount());
         assertEquals(cancelInit.getId(), cancel.getId());
-        assertEquals(cancelInit.getTypeUrl(), cancel.getTypeUrl());
+        assertEquals(cancelInit.getUrl(), cancel.getUrl());
     }
 
     protected void assertNumberEquals(BigDecimal expected, BigDecimal actual) {

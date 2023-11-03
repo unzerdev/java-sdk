@@ -10,7 +10,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
 import com.github.tomakehurst.wiremock.junit5.WireMockTest;
-import com.unzer.payment.AbstractTransaction;
+import com.unzer.payment.BaseTransaction;
 import com.unzer.payment.PaylaterInstallmentPlans;
 import com.unzer.payment.Unzer;
 import com.unzer.payment.communication.HttpClientMock;
@@ -53,7 +53,7 @@ class PaylaterInstallmentTest {
     assertEquals("Tx-xyz", installmentPlans.getId());
     assertEquals(Currency.getInstance("EUR"), installmentPlans.getCurrency());
     assertEquals(new BigDecimal("99.99").setScale(4), installmentPlans.getAmount());
-    assertEquals(AbstractTransaction.Status.valueOf("SUCCESS"), installmentPlans.getStatus());
+    assertEquals(BaseTransaction.Status.valueOf("SUCCESS"), installmentPlans.getStatus());
 
     List<InstallmentPlan> plans = installmentPlans.getPlans();
     assertEquals(5, plans.size());

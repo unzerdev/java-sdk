@@ -1,20 +1,21 @@
 package com.unzer.payment.marketplace;
 
-import com.unzer.payment.AbstractTransaction;
+import com.unzer.payment.BaseTransaction;
 import com.unzer.payment.Unzer;
 import com.unzer.payment.communication.json.ApiObject;
 import com.unzer.payment.paymenttypes.PaymentType;
 import java.math.BigDecimal;
 
-public class MarketplaceCancel extends AbstractTransaction<MarketplacePayment> {
+public class MarketplaceCancel extends BaseTransaction<MarketplacePayment> {
 
   private static final String FULL_AUTHORIZE_CANCEL_URL =
-      "marketplace/payments/%1$s/authorize/cancels";
-  private static final String FULL_CHARGES_CANCEL_URL = "marketplace/payments/%1$s/charges/cancels";
+      "/v1/marketplace/payments/%1$s/authorize/cancels";
+  private static final String FULL_CHARGES_CANCEL_URL =
+      "/v1/marketplace/payments/%1$s/charges/cancels";
   private static final String PARTIAL_AUTHORIZE_CANCEL_URL =
-      "marketplace/payments/%1$s/authorize/%2$s/cancels";
+      "/v1/marketplace/payments/%1$s/authorize/%2$s/cancels";
   private static final String PARTIAL_CHARGE_CANCEL_URL =
-      "marketplace/payments/%1$s/charges/%2$s/cancels";
+      "/v1/marketplace/payments/%1$s/charges/%2$s/cancels";
 
   private BigDecimal amountGross;
   private BigDecimal amountNet;
@@ -47,14 +48,9 @@ public class MarketplaceCancel extends AbstractTransaction<MarketplacePayment> {
   }
 
   @Override
-  public String getTypeUrl() {
+  public String getTransactionUrl() {
     throw new UnsupportedOperationException(
-        "Unsupport method. Please use other specific get URL methods.");
-  }
-
-  @Override
-  public PaymentType map(PaymentType paymentType, ApiObject apiObject) {
-    return null;
+        "Unsupported method. Please use other specific get URL methods.");
   }
 
   public BigDecimal getAmountGross() {

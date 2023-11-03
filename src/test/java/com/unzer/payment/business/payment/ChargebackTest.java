@@ -8,7 +8,7 @@ import static org.junit.jupiter.api.Assertions.assertIterableEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import com.github.tomakehurst.wiremock.junit5.WireMockTest;
-import com.unzer.payment.AbstractTransaction;
+import com.unzer.payment.BaseTransaction;
 import com.unzer.payment.Chargeback;
 import com.unzer.payment.Payment;
 import com.unzer.payment.Processing;
@@ -52,7 +52,7 @@ public class ChargebackTest {
     assertNotNull(fetchedPayment);
 
     List<Chargeback> actualChargebacks = fetchedPayment.getChargebackList();
-    actualChargebacks.sort(Comparator.comparing(AbstractTransaction::getId));
+    actualChargebacks.sort(Comparator.comparing(BaseTransaction::getId));
 
     List<Chargeback> expectedChargeBacks = Arrays.asList(
         (Chargeback) new Chargeback()
@@ -72,7 +72,7 @@ public class ChargebackTest {
             )
             .setDate(
                 new SimpleDateFormat("dd-MMM-yyyy hh:mm:ss").parse("31-Jan-2023 05:44:41"))
-            .setStatus(AbstractTransaction.Status.SUCCESS)
+            .setStatus(BaseTransaction.Status.SUCCESS)
             .setAdditionalTransactionData(
                 new AdditionalTransactionData()
                     .setCard(

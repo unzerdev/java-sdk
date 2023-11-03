@@ -5,7 +5,7 @@ import static com.unzer.payment.util.Uuid.generateUuid;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-import com.unzer.payment.AbstractTransaction;
+import com.unzer.payment.BaseTransaction;
 import com.unzer.payment.Authorization;
 import com.unzer.payment.Charge;
 import com.unzer.payment.Customer;
@@ -58,10 +58,10 @@ public class PaylaterDirectDebitTest extends AbstractPaymentTest {
     assertNotNull(authorize);
     assertNotNull(authorize.getId());
     assertNotNull(authorize.getPaymentId());
-    assertEquals(AbstractTransaction.Status.SUCCESS, authorize.getStatus());
+    assertEquals(BaseTransaction.Status.SUCCESS, authorize.getStatus());
 
     Charge charge = unzer.chargeAuthorization(authorize.getPaymentId());
     assertNotNull(charge.getId());
-    assertEquals(AbstractTransaction.Status.SUCCESS, authorize.getStatus());
+    assertEquals(BaseTransaction.Status.SUCCESS, authorize.getStatus());
   }
 }

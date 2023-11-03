@@ -1,13 +1,11 @@
 package com.unzer.payment.marketplace;
 
-import com.unzer.payment.AbstractPayment;
+import com.unzer.payment.BasePayment;
 import com.unzer.payment.Unzer;
 import com.unzer.payment.communication.HttpCommunicationException;
-import com.unzer.payment.communication.json.ApiObject;
-import com.unzer.payment.paymenttypes.PaymentType;
 import java.util.List;
 
-public class MarketplacePayment extends AbstractPayment {
+public class MarketplacePayment extends BasePayment {
 
   private List<MarketplaceAuthorization> authorizationsList;
   private List<MarketplaceCharge> chargesList;
@@ -20,16 +18,6 @@ public class MarketplacePayment extends AbstractPayment {
   @Deprecated
   public MarketplacePayment(Unzer unzer) {
     super(unzer);
-  }
-
-  @Override
-  public String getTypeUrl() {
-    return "marketplace/payments";
-  }
-
-  @Override
-  public PaymentType map(PaymentType paymentType, ApiObject apiObject) {
-    return null;
   }
 
   public MarketplaceCharge getCharge(String chargeId) {
@@ -147,5 +135,10 @@ public class MarketplacePayment extends AbstractPayment {
   public MarketplacePayment fullChargeAuthorizations(String paymentReference)
       throws HttpCommunicationException {
     return getUnzer().marketplaceFullChargeAuthorizations(this.getId(), paymentReference);
+  }
+
+  @Override
+  protected String getResourceUrl() {
+    return "/v1/marketplace/payments/<resourceId>";
   }
 }

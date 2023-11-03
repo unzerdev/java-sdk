@@ -5,9 +5,9 @@ import com.unzer.payment.paymenttypes.PaymentType;
 import java.math.BigDecimal;
 
 /**
- * AbstractPayment is a base type for other payment types.
+ * BasePayment is a base type for other payment types.
  */
-public abstract class AbstractPayment implements PaymentType {
+public abstract class BasePayment extends BaseResource {
   protected static final String CANCEL_IS_ONLY_POSSIBLE_FOR_AN_AUTHORIZATION =
       "Cancel is only possible for an Authorization";
   protected static final String PAYMENT_CANCELLATION_NOT_POSSIBLE =
@@ -32,12 +32,12 @@ public abstract class AbstractPayment implements PaymentType {
   private transient Unzer unzer;
 
   @Deprecated
-  public AbstractPayment(Unzer unzer) {
+  public BasePayment(Unzer unzer) {
     super();
     this.setUnzer(unzer);
   }
 
-  public AbstractPayment() {
+  public BasePayment() {
     super();
   }
 

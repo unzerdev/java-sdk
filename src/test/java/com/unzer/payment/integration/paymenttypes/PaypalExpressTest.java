@@ -3,7 +3,7 @@ package com.unzer.payment.integration.paymenttypes;
 import static com.unzer.payment.util.Url.unsafeUrl;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import com.unzer.payment.AbstractTransaction.Status;
+import com.unzer.payment.BaseTransaction.Status;
 import com.unzer.payment.Authorization;
 import com.unzer.payment.Basket;
 import com.unzer.payment.Charge;

@@ -15,7 +15,7 @@ import com.unzer.payment.models.CustomerType;
 import com.unzer.payment.models.PaylaterInvoiceConfig;
 import com.unzer.payment.models.PaylaterInvoiceConfigRequest;
 import com.unzer.payment.models.paylater.InstallmentPlansRequest;
-import com.unzer.payment.paymenttypes.BasePaymentType;
+import com.unzer.payment.paymenttypes.PaymentType;
 import com.unzer.payment.paymenttypes.PaylaterInstallment;
 import com.unzer.payment.service.LinkpayService;
 import com.unzer.payment.service.PaymentService;
@@ -148,7 +148,7 @@ public class Unzer {
     return paymentService.updateBasket(basket);
   }
 
-  public <T extends BasePaymentType> T updatePaymentType(T paymentType)
+  public <T extends PaymentType> T updatePaymentType(T paymentType)
       throws HttpCommunicationException {
     if (paymentType != null && paymentType.getId() == null) {
       return paymentService.createPaymentType(paymentType);
@@ -226,7 +226,7 @@ public class Unzer {
     return authorization;
   }
 
-  private void setRecurrenceType(AbstractTransaction transaction, RecurrenceType recurrenceType) {
+  private void setRecurrenceType(BaseTransaction transaction, RecurrenceType recurrenceType) {
     if (recurrenceType == null) {
       return;
     }
@@ -331,7 +331,7 @@ public class Unzer {
    * @return Authorization with paymentId and authorize id
    * @throws HttpCommunicationException in case communication to Unzer didn't work
    */
-  public Authorization authorize(BigDecimal amount, Currency currency, BasePaymentType paymentType,
+  public Authorization authorize(BigDecimal amount, Currency currency, PaymentType paymentType,
                                  URL returnUrl)
       throws HttpCommunicationException {
     return authorize(amount, currency, paymentType, returnUrl, null, null);
@@ -353,7 +353,7 @@ public class Unzer {
    * @return Authorization with paymentId and authorize id
    * @throws HttpCommunicationException in case communication to Unzer didn't work
    */
-  public Authorization authorize(BigDecimal amount, Currency currency, BasePaymentType paymentType,
+  public Authorization authorize(BigDecimal amount, Currency currency, PaymentType paymentType,
                                  URL returnUrl,
                                  Customer customer, Boolean card3ds)
       throws HttpCommunicationException {
@@ -370,7 +370,7 @@ public class Unzer {
    * @return PaymentType Object with an id
    * @throws HttpCommunicationException in case communication to Unzer didn't work
    */
-  public <T extends BasePaymentType> T createPaymentType(T paymentType)
+  public <T extends PaymentType> T createPaymentType(T paymentType)
       throws HttpCommunicationException {
     return paymentService.createPaymentType(paymentType);
   }
@@ -390,7 +390,7 @@ public class Unzer {
    * @return Authorization with paymentId and authorize id
    * @throws HttpCommunicationException in case communication to Unzer didn't work
    */
-  public Authorization authorize(BigDecimal amount, Currency currency, BasePaymentType paymentType,
+  public Authorization authorize(BigDecimal amount, Currency currency, PaymentType paymentType,
                                  URL returnUrl, Boolean card3ds)
       throws HttpCommunicationException {
     return authorize(amount, currency, paymentType, returnUrl, null, card3ds);
@@ -408,7 +408,7 @@ public class Unzer {
    * @return Authorization with paymentId and authorize id
    * @throws HttpCommunicationException in case communication to Unzer didn't work
    */
-  public Authorization authorize(BigDecimal amount, Currency currency, BasePaymentType paymentType,
+  public Authorization authorize(BigDecimal amount, Currency currency, PaymentType paymentType,
                                  URL returnUrl, Customer customer)
       throws HttpCommunicationException {
     if (paymentType.getId() == null) {
@@ -600,7 +600,7 @@ public class Unzer {
    * @return Charge with paymentId and authorize id
    * @throws HttpCommunicationException in case communication to Unzer didn't work
    */
-  public Charge charge(BigDecimal amount, Currency currency, BasePaymentType paymentType)
+  public Charge charge(BigDecimal amount, Currency currency, PaymentType paymentType)
       throws HttpCommunicationException {
     return charge(amount, currency, createPaymentType(paymentType).getId(), null, (String) null);
   }
@@ -616,7 +616,7 @@ public class Unzer {
    * @return Charge with paymentId and authorize id
    * @throws HttpCommunicationException in case communication to Unzer didn't work
    */
-  public Charge charge(BigDecimal amount, Currency currency, BasePaymentType paymentType,
+  public Charge charge(BigDecimal amount, Currency currency, PaymentType paymentType,
                        URL returnUrl)
       throws HttpCommunicationException {
     if (paymentType.getId() == null) {
@@ -637,7 +637,7 @@ public class Unzer {
    * @return Charge with paymentId and authorize id
    * @throws HttpCommunicationException in case communication to Unzer didn't work
    */
-  public Charge charge(BigDecimal amount, Currency currency, BasePaymentType paymentType,
+  public Charge charge(BigDecimal amount, Currency currency, PaymentType paymentType,
                        URL returnUrl,
                        Boolean card3ds)
       throws HttpCommunicationException {
@@ -674,7 +674,7 @@ public class Unzer {
    * @return Charge with paymentId and authorize id
    * @throws HttpCommunicationException in case communication to Unzer didn't work
    */
-  public Charge charge(BigDecimal amount, Currency currency, BasePaymentType paymentType,
+  public Charge charge(BigDecimal amount, Currency currency, PaymentType paymentType,
                        URL returnUrl,
                        Customer customer) throws HttpCommunicationException {
     if (paymentType.getId() == null) {
@@ -697,7 +697,7 @@ public class Unzer {
    * @return Charge with paymentId and authorize id
    * @throws HttpCommunicationException in case communication to Unzer didn't work
    */
-  public Charge charge(BigDecimal amount, Currency currency, BasePaymentType paymentType,
+  public Charge charge(BigDecimal amount, Currency currency, PaymentType paymentType,
                        URL returnUrl,
                        Customer customer, Basket basket) throws HttpCommunicationException {
     if (paymentType.getId() == null) {
@@ -753,7 +753,7 @@ public class Unzer {
    * @return Charge with paymentId and authorize id
    * @throws HttpCommunicationException in case communication to Unzer didn't work
    */
-  public Charge charge(BigDecimal amount, Currency currency, BasePaymentType paymentType,
+  public Charge charge(BigDecimal amount, Currency currency, PaymentType paymentType,
                        URL returnUrl,
                        Customer customer, Boolean card3ds) throws HttpCommunicationException {
     return charge(amount, currency, createPaymentType(paymentType).getId(), returnUrl,
@@ -1318,7 +1318,7 @@ public class Unzer {
    * @return PaymentType object
    * @throws HttpCommunicationException in case communication to Unzer didn't work
    */
-  public BasePaymentType fetchPaymentType(String typeId) throws HttpCommunicationException {
+  public PaymentType fetchPaymentType(String typeId) throws HttpCommunicationException {
     return paymentService.fetchPaymentType(typeId);
   }
 

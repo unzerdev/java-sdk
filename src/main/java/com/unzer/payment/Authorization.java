@@ -1,8 +1,6 @@
 package com.unzer.payment;
 
 import com.unzer.payment.communication.HttpCommunicationException;
-import com.unzer.payment.communication.json.ApiObject;
-import com.unzer.payment.paymenttypes.PaymentType;
 import java.math.BigDecimal;
 import java.util.List;
 
@@ -14,7 +12,7 @@ import java.util.List;
  *
  * @author Unzer E-Com GmbH
  */
-public class Authorization extends AbstractTransaction<Payment> {
+public class Authorization extends BaseTransaction<Payment> {
 
   private BigDecimal effectiveInterestRate;
 
@@ -27,6 +25,11 @@ public class Authorization extends AbstractTransaction<Payment> {
   @Deprecated
   public Authorization(Unzer unzer) {
     super(unzer);
+  }
+
+  @Override
+  protected String getTransactionUrl() {
+    return "/v1/payments/<paymentId>/authorize/<transactionId>";
   }
 
   /**
@@ -76,16 +79,6 @@ public class Authorization extends AbstractTransaction<Payment> {
   @Deprecated
   public Cancel cancel(Cancel cancel) throws HttpCommunicationException {
     return getUnzer().cancelAuthorization(getPayment().getId(), cancel);
-  }
-
-  @Override
-  public String getTypeUrl() {
-    return "payments/<paymentId>/authorize";
-  }
-
-  @Override
-  public PaymentType map(PaymentType paymentType, ApiObject apiObject) {
-    return null;
   }
 
   public BigDecimal getEffectiveInterestRate() {

@@ -26,7 +26,7 @@ class CardTest {
   @Test
   void test_card_liability() {
     Unzer unzer = new Unzer(new HttpClientMock(), "s-private-key");
-    stubFor(post("/v1/payments/authorize").willReturn(
+    stubFor(post("/v1/payments/authorize/").willReturn(
         jsonResponse(getResponse("card-authorize.json"), 200)));
     stubFor(get("/v1/payments/s-pay-286").willReturn(
         jsonResponse(getResponse("card-fetch-payment.json"), 200)));
@@ -59,7 +59,7 @@ class CardTest {
   @Test
   void test_card_exemption() {
     Unzer unzer = new Unzer(new HttpClientMock(), "s-private-key");
-    stubFor(post("/v1/payments/authorize").willReturn(
+    stubFor(post("/v1/payments/authorize/").willReturn(
         jsonResponse(getResponse("card-authorize.json"), 200)));
     stubFor(get("/v1/payments/s-pay-286").willReturn(
         jsonResponse(getResponse("card-fetch-payment.json"), 200)));

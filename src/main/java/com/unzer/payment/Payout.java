@@ -1,12 +1,7 @@
 package com.unzer.payment;
 
-import com.unzer.payment.communication.json.ApiObject;
-import com.unzer.payment.paymenttypes.PaymentType;
-
-public class Payout extends AbstractTransaction<Payment> {
-
-  public Payout() {
-  }
+public class Payout extends BaseTransaction<Payment> {
+  public Payout() {}
 
   @Deprecated
   public Payout(Unzer unzer) {
@@ -14,13 +9,7 @@ public class Payout extends AbstractTransaction<Payment> {
   }
 
   @Override
-  public String getTypeUrl() {
-    return "payments/<paymentId>/payouts";
+  public String getTransactionUrl() {
+    return "/v1/payments/<paymentId>/payouts/<transactionId>";
   }
-
-  @Override
-  public PaymentType map(PaymentType paymentType, ApiObject apiObject) {
-    return null;
-  }
-
 }

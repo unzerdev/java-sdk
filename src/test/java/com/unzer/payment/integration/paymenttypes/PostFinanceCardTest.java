@@ -22,8 +22,7 @@ public class PostFinanceCardTest extends AbstractPaymentTest {
   }
 
   @Test
-  public void testChargePostFinanceCardType()
-      {
+  public void testChargePostFinanceCardType() {
     Unzer unzer = getUnzer();
     PostFinanceCard pfCard = unzer.createPaymentType(getPostFinanceCard());
     Charge charge = pfCard.charge(BigDecimal.ONE, Currency.getInstance("CHF"),

@@ -12,7 +12,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.google.gson.GsonBuilder;
-import com.unzer.payment.AbstractTransaction;
+import com.unzer.payment.BaseTransaction;
 import com.unzer.payment.Basket;
 import com.unzer.payment.Charge;
 import com.unzer.payment.Customer;
@@ -242,7 +242,7 @@ public class ChargeTest extends AbstractPaymentTest {
         MarketplaceCharge charge = getUnzer(MARKETPLACE_KEY).marketplaceCharge(chargeRequest);
         assertNotNull(charge.getId());
         assertNotNull(charge);
-        assertEquals(AbstractTransaction.Status.PENDING, charge.getStatus());
+        assertEquals(BaseTransaction.Status.PENDING, charge.getStatus());
         assertEquals(participantId_2, charge.getProcessing().getParticipantId());
 
         //get marketplace payment
@@ -285,7 +285,7 @@ public class ChargeTest extends AbstractPaymentTest {
         MarketplaceCharge charge = getUnzer(MARKETPLACE_KEY).marketplaceCharge(chargeRequest);
         assertNotNull(charge.getId());
         assertNotNull(charge);
-        assertEquals(AbstractTransaction.Status.SUCCESS, charge.getStatus());
+        assertEquals(BaseTransaction.Status.SUCCESS, charge.getStatus());
 
         //get marketplace payment
         MarketplacePayment payment = getUnzer(MARKETPLACE_KEY).fetchMarketplacePayment(charge.getPayment().getId());
@@ -327,7 +327,7 @@ public class ChargeTest extends AbstractPaymentTest {
         MarketplaceCharge charge = getUnzer(MARKETPLACE_KEY).marketplaceCharge(chargeRequest);
         assertNotNull(charge.getId());
         assertNotNull(charge);
-        assertEquals(AbstractTransaction.Status.PENDING, charge.getStatus());
+        assertEquals(BaseTransaction.Status.PENDING, charge.getStatus());
 
         //get marketplace payment
         MarketplacePayment payment = getUnzer(MARKETPLACE_KEY).fetchMarketplacePayment(charge.getPayment().getId());
@@ -341,6 +341,6 @@ public class ChargeTest extends AbstractPaymentTest {
         MarketplaceCharge getCharge = getUnzer(MARKETPLACE_KEY).fetchMarketplaceCharge(charge.getPayment().getId(), charge.getId());
         assertNotNull(getCharge);
         assertEquals(charge.getId(), getCharge.getId());
-        assertEquals(AbstractTransaction.Status.PENDING, charge.getStatus());
+        assertEquals(BaseTransaction.Status.PENDING, charge.getStatus());
     }
 }
