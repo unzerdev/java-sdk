@@ -3,6 +3,7 @@ package com.unzer.payment.service;
 import com.unzer.payment.BasePaypage;
 import com.unzer.payment.Basket;
 import com.unzer.payment.Recurring;
+import com.unzer.payment.Resource;
 import com.unzer.payment.models.PaylaterInvoiceConfigRequest;
 import com.unzer.payment.models.paylater.InstallmentPlansRequest;
 import com.unzer.payment.paymenttypes.PaymentType;
@@ -23,8 +24,6 @@ public class UrlUtil {
   private static final String PLACEHOLDER_TYPE_ID = "<typeId>";
   private static final String REFUND_URL = "payments/<paymentId>/charges/<chargeId>/cancels";
   private static final String RECURRING_URL = "types/<typeId>/recurring";
-  private static final String APIVERSION_2 = "v2";
-  private static final String APIVERSION_1 = "v1";
 
   private final String apiEndpoint;
 
@@ -41,7 +40,7 @@ public class UrlUtil {
 
   public String getRefundUrl(String paymentId, String chargeId) {
     StringBuilder stringBuilder = new StringBuilder();
-    stringBuilder.append(getRestUrl());
+    stringBuilder.append(getUrl());
     appendSlashIfNeeded(stringBuilder);
     stringBuilder.append(REFUND_URL);
     String result = stringBuilder.toString();
@@ -54,10 +53,10 @@ public class UrlUtil {
     return result;
   }
 
-  public String getRestUrl() {
+  public String getUrl() {
     StringBuilder stringBuilder = new StringBuilder(apiEndpoint);
     appendSlashIfNeeded(stringBuilder);
-    stringBuilder.append(APIVERSION_1);
+    stringBuilder.append("v1");
     appendSlashIfNeeded(stringBuilder);
     return stringBuilder.toString();
   }
@@ -80,31 +79,13 @@ public class UrlUtil {
   private String getRestUrlInternal(PaymentType paymentType) {
     // FIXME: remove after Basket v1 is not supported
     if (paymentType instanceof Basket) {
-      return getRestUrlInternal((Basket) paymentType);
+      return apiEndpoint + ((Basket) paymentType).getUrl();
     }
 
     StringBuilder stringBuilder = new StringBuilder();
-    stringBuilder.append(getRestUrl());
+    stringBuilder.append(getUrl());
     appendSlashIfNeeded(stringBuilder);
     stringBuilder.append(paymentType.getTypeUrl());
-    return stringBuilder.toString();
-  }
-
-  @Deprecated
-  private String getRestUrlInternal(Basket basket) {
-    StringBuilder stringBuilder = new StringBuilder();
-    stringBuilder.append(apiEndpoint);
-    appendSlashIfNeeded(stringBuilder);
-
-    // v2 is the default Basket resource version
-    if (basket.isV2()) {
-      stringBuilder.append(APIVERSION_2);
-    } else {
-      stringBuilder.append(APIVERSION_1);
-    }
-
-    appendSlashIfNeeded(stringBuilder);
-    stringBuilder.append(basket.getTypeUrl());
     return stringBuilder.toString();
   }
 
@@ -118,14 +99,18 @@ public class UrlUtil {
 
   public String getHttpGetUrl(PaymentType paymentType, String id) {
     StringBuilder stringBuilder = new StringBuilder();
-    stringBuilder.append(getRestUrl(paymentType));
+    stringBuilder.append(getUrl(paymentType));
     appendSlashIfNeeded(stringBuilder);
     stringBuilder.append(id);
     return stringBuilder.toString();
   }
 
-  public String getRestUrl(PaymentType paymentType) {
+  public String getUrl(PaymentType paymentType) {
     return getRestUrlInternal(paymentType).replace(PLACEHOLDER_PAYMENT_ID + "/", "");
+  }
+
+  public String getUrl(Resource resource) {
+    return apiEndpoint + resource.getUrl();
   }
 
   public String getHttpGetUrl(String id) {
@@ -142,7 +127,7 @@ public class UrlUtil {
 
   private String getRestUrlInternal() {
     StringBuilder stringBuilder = new StringBuilder();
-    stringBuilder.append(getRestUrl());
+    stringBuilder.append(getUrl());
     appendSlashIfNeeded(stringBuilder);
     stringBuilder.append("types");
     appendSlashIfNeeded(stringBuilder);
@@ -151,7 +136,7 @@ public class UrlUtil {
 
   public String getRecurringUrl(Recurring recurring) {
     StringBuilder stringBuilder = new StringBuilder();
-    stringBuilder.append(getRestUrl());
+    stringBuilder.append(getUrl());
     appendSlashIfNeeded(stringBuilder);
     stringBuilder.append(RECURRING_URL);
     String result = stringBuilder.toString();
@@ -165,7 +150,7 @@ public class UrlUtil {
       BigDecimal effectiveInterestRate,
       Date orderDate
   ) {
-    return getRestUrl()
+    return getUrl()
         + "types/hire-purchase-direct-debit/plans?amount="
         + Format.bigDecimal(amount)
         + "&currency="
@@ -178,7 +163,7 @@ public class UrlUtil {
 
   public String getInitPaypageUrl(BasePaypage page) {
     StringBuilder stringBuilder = new StringBuilder();
-    stringBuilder.append(getRestUrl());
+    stringBuilder.append(getUrl());
     appendSlashIfNeeded(stringBuilder);
     stringBuilder.append(page.getTypeUrl());
     appendSlashIfNeeded(stringBuilder);

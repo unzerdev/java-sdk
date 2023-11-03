@@ -194,7 +194,7 @@ public class InvoiceSecuredTest extends AbstractPaymentTest {
                 Currency.getInstance("EUR"),
                 unsafeUrl("https://www.meinShop.de"),
                 getMaximumCustomerSameAddress(generateUuid()),
-                unzer.createBasket(getMaxTestBasketV1()),
+                getMaxTestBasketV1(),
                 generateUuid());
         assertNotNull(charge.getPaymentId());
     }
@@ -217,7 +217,7 @@ public class InvoiceSecuredTest extends AbstractPaymentTest {
                 Currency.getInstance("EUR"),
                 unsafeUrl("https://www.meinShop.de"),
                 getMaximumCustomerSameAddress(generateUuid()),
-                unzer.createBasket(getMaxTestBasketV2()),
+                getMaxTestBasketV2(),
                 generateUuid());
         assertNotNull(charge.getPaymentId());
     }

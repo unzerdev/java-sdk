@@ -1,13 +1,12 @@
 package com.unzer.payment;
 
-import com.unzer.payment.communication.json.ApiObject;
-import com.unzer.payment.paymenttypes.PaymentType;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Currency;
 import java.util.List;
+import java.util.Objects;
 
-public class Basket implements PaymentType {
+public class Basket extends BaseResource implements Resource {
 
   private String id;
   private Currency currencyCode;
@@ -22,21 +21,6 @@ public class Basket implements PaymentType {
   private BigDecimal amountTotalVat;
   @Deprecated
   private BigDecimal amountTotalDiscount;
-
-  /**
-   * Get generated unique id
-   */
-  public String getId() {
-    return id;
-  }
-
-  /**
-   * Get basket id
-   */
-  public Basket setId(String id) {
-    this.id = id;
-    return this;
-  }
 
   /**
    * Currency code in ISO_4217 format
@@ -89,7 +73,6 @@ public class Basket implements PaymentType {
     return note;
   }
 
-
   /**
    * Set additional details for the basket.
    */
@@ -98,6 +81,10 @@ public class Basket implements PaymentType {
     return this;
   }
 
+  public Basket addBasketItem(BasketItem basketItem) {
+    getBasketItems().add(basketItem);
+    return this;
+  }
 
   /**
    * List of items in the basket
@@ -111,14 +98,19 @@ public class Basket implements PaymentType {
     return this;
   }
 
-  public Basket addBasketItem(BasketItem basketItem) {
-    getBasketItems().add(basketItem);
-    return this;
+  /**
+   * Get generated unique id
+   */
+  public String getId() {
+    return id;
   }
 
-  @Override
-  public String getTypeUrl() {
-    return "baskets";
+  /**
+   * Get basket id
+   */
+  public Basket setId(String id) {
+    this.id = id;
+    return this;
   }
 
   @Deprecated
@@ -130,11 +122,6 @@ public class Basket implements PaymentType {
   public Basket setAmountTotalDiscount(BigDecimal amountTotalDiscount) {
     this.amountTotalDiscount = amountTotalDiscount;
     return this;
-  }
-
-  @Override
-  public PaymentType map(PaymentType paymentType, ApiObject apiObject) {
-    return null;
   }
 
   @Deprecated
@@ -159,8 +146,10 @@ public class Basket implements PaymentType {
     return this;
   }
 
-  @Deprecated
-  public boolean isV2() {
-    return this.totalValueGross != null; // mandatory v2 attribute is not null
+  @Override
+  protected String getResourceUrl() {
+    return Objects.isNull(this.totalValueGross)
+        ? "/v1/baskets/<resourceId>"
+        : "/v2/baskets/<resourceId>";
   }
 }

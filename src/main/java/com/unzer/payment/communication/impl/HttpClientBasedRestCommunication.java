@@ -9,7 +9,6 @@ import java.net.URISyntaxException;
 import java.util.Locale;
 import org.apache.hc.client5.http.impl.classic.CloseableHttpClient;
 import org.apache.hc.client5.http.impl.classic.CloseableHttpResponse;
-import org.apache.hc.client5.http.impl.classic.HttpClientBuilder;
 import org.apache.hc.client5.http.impl.classic.HttpClients;
 import org.apache.hc.core5.http.ParseException;
 import org.apache.hc.core5.http.io.entity.EntityUtils;
@@ -65,7 +64,7 @@ public class HttpClientBasedRestCommunication extends AbstractUnzerRestCommunica
     }
 
     CloseableHttpResponse response = null;
-    try (CloseableHttpClient client = createClient()) {
+    try (CloseableHttpClient client = HttpClients.custom().useSystemProperties().build()) {
       response = client.execute(((HttpClientBasedHttpRequest) request).getRequest());
       return new UnzerHttpResponse(request, EntityUtils.toString(response.getEntity()),
           response.getCode());
@@ -77,7 +76,7 @@ public class HttpClientBasedRestCommunication extends AbstractUnzerRestCommunica
             e.getMessage()
         ));
       } catch (URISyntaxException ex) {
-        // raises never, because uri validation happens in the beginning of this method
+        // never happens, because uri validation happens in the beginning of this method
         throw new RuntimeException(ex);
       }
     } finally {
@@ -99,11 +98,4 @@ public class HttpClientBasedRestCommunication extends AbstractUnzerRestCommunica
         response.getStatusCode(),
         response.getContent());
   }
-
-  @Deprecated
-  private CloseableHttpClient createClient() {
-    HttpClientBuilder builder = HttpClients.custom().useSystemProperties();
-    return builder.build();
-  }
-
 }

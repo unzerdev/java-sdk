@@ -146,7 +146,7 @@ public class PaypageTest extends AbstractPaymentTest {
       paypage.setAction(t.action);
 
       String actualUrl = urlUtil.getInitPaypageUrl(paypage);
-      String expectedUrl = urlUtil.getRestUrl() + t.expectedUrlPart;
+      String expectedUrl = urlUtil.getUrl() + t.expectedUrlPart;
 
       assertEquals(expectedUrl, actualUrl);
     })).collect(Collectors.toList());

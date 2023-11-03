@@ -56,7 +56,7 @@ public class UrlUtilTest extends AbstractPaymentTest {
                 "https://sbx-api.unzer.com/v1/types/klarna"
             )
         ).map(tc -> dynamicTest(tc.name,
-            () -> assertEquals(tc.expectedEndpoint, new UrlUtil(tc.key).getRestUrl(new Klarna()))))
+            () -> assertEquals(tc.expectedEndpoint, new UrlUtil(tc.key).getUrl(new Klarna()))))
         .collect(Collectors.toList());
   }
 

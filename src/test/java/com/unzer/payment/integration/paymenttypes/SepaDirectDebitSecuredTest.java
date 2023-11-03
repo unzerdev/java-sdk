@@ -58,8 +58,14 @@ public class SepaDirectDebitSecuredTest extends AbstractPaymentTest {
         Unzer unzer = getUnzer(Keys.LEGACY_PRIVATE_KEY);
         SepaDirectDebitSecured sdd = unzer.createPaymentType(getSepaDirectDebitSecured());
         assertNotNull(sdd.getId());
-        Basket basket = unzer.createBasket(getMinTestBasketV1());
-        sdd.charge(basket.getAmountTotalGross(), Currency.getInstance("EUR"), unsafeUrl("https://www.unzer.com"), getMaximumCustomerSameAddress(generateUuid()), basket);
+        Basket basket = getMinTestBasketV1();
+        sdd.charge(
+            basket.getAmountTotalGross(),
+            Currency.getInstance("EUR"),
+            unsafeUrl("https://www.unzer.com"),
+            getMaximumCustomerSameAddress(generateUuid()),
+            basket
+        );
     }
 
     @Test
@@ -67,7 +73,7 @@ public class SepaDirectDebitSecuredTest extends AbstractPaymentTest {
         Unzer unzer = getUnzer(Keys.LEGACY_PRIVATE_KEY);
         SepaDirectDebitSecured sdd = unzer.createPaymentType(getSepaDirectDebitSecured());
         assertNotNull(sdd.getId());
-        Basket basket = unzer.createBasket(getMinTestBasketV2());
+        Basket basket = getMinTestBasketV2();
         sdd.charge(
                 basket.getTotalValueGross(),
                 Currency.getInstance("EUR"),

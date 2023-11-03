@@ -138,7 +138,7 @@ public class PaymentService {
   public <T extends PaymentType> T createPaymentType(T paymentType)
       throws HttpCommunicationException {
     String response =
-        restCommunication.httpPost(urlUtil.getRestUrl(paymentType), unzer.getPrivateKey(),
+        restCommunication.httpPost(urlUtil.getUrl(paymentType), unzer.getPrivateKey(),
             paymentType);
     ApiIdObject jsonResponse = jsonParser.fromJson(response, ApiIdObject.class);
     return fetchPaymentType(jsonResponse.getId());
@@ -278,7 +278,7 @@ public class PaymentService {
 
   public <T extends PaymentType> T updatePaymentType(T paymentType)
       throws HttpCommunicationException {
-    String url = urlUtil.getRestUrl(paymentType);
+    String url = urlUtil.getUrl(paymentType);
     url = addId(url, paymentType.getId());
     String response = restCommunication.httpPut(url, unzer.getPrivateKey(), paymentType);
     ApiIdObject jsonResponse = jsonParser.fromJson(response, ApiIdObject.class);
@@ -294,7 +294,7 @@ public class PaymentService {
 
   public Customer createCustomer(Customer customer) throws HttpCommunicationException {
     String response =
-        restCommunication.httpPost(urlUtil.getRestUrl(customer), unzer.getPrivateKey(),
+        restCommunication.httpPost(urlUtil.getUrl(customer), unzer.getPrivateKey(),
             apiToSdkMapper.map(customer));
     ApiIdObject jsonId = jsonParser.fromJson(response, ApiIdObject.class);
     return fetchCustomer(jsonId.getId());
@@ -316,9 +316,9 @@ public class PaymentService {
     return fetchCustomer(id);
   }
 
-  public Basket updateBasket(String id, Basket basket) throws HttpCommunicationException {
-    restCommunication.httpPut(urlUtil.getHttpGetUrl(basket, id), unzer.getPrivateKey(), basket);
-    return fetchBasket(id);
+  public Basket updateBasket(Basket basket) throws HttpCommunicationException {
+    restCommunication.httpPut(urlUtil.getUrl(basket), unzer.getPrivateKey(), basket);
+    return fetchBasket(basket.getId());
   }
 
   public Basket fetchBasket(String id) throws HttpCommunicationException {
@@ -326,16 +326,20 @@ public class PaymentService {
 
     try {
       // Try fetch Basket version 2
+
+      // basket v2 has totalvaluegross. this object is not sent to api
+      Basket basket = new Basket()
+          .setId(id)
+          .setTotalValueGross(BigDecimal.ONE);
       response = restCommunication.httpGet(
-          urlUtil.getHttpGetUrl(new Basket().setTotalValueGross(BigDecimal.ONE), id),
-          // basket v2 has totalvaluegross. this object is not sent to api
+          urlUtil.getUrl(basket),
           unzer.getPrivateKey()
       );
     } catch (PaymentException ex) {
       // ... or Basket version 1
       if (ex.getStatusCode() == 404) { // not found
         response = restCommunication.httpGet(
-            urlUtil.getHttpGetUrl(new Basket(), id),
+            urlUtil.getUrl(new Basket().setId(id)),
             unzer.getPrivateKey()
         );
       } else {
@@ -350,7 +354,7 @@ public class PaymentService {
 
   public Metadata createMetadata(Metadata metadata) throws HttpCommunicationException {
     String response =
-        restCommunication.httpPost(urlUtil.getRestUrl(metadata), unzer.getPrivateKey(),
+        restCommunication.httpPost(urlUtil.getUrl(metadata), unzer.getPrivateKey(),
             metadata.getMetadataMap());
     Metadata metadataJson = jsonParser.fromJson(response, Metadata.class);
     metadata.setUnzer(unzer);
@@ -369,8 +373,11 @@ public class PaymentService {
   }
 
   public Basket createBasket(Basket basket) throws HttpCommunicationException {
-    String response =
-        restCommunication.httpPost(urlUtil.getRestUrl(basket), unzer.getPrivateKey(), basket);
+    String response = restCommunication.httpPost(
+        urlUtil.getUrl(basket),
+        unzer.getPrivateKey(),
+        basket
+    );
     Basket jsonBasket = jsonParser.fromJson(response, Basket.class);
     basket.setId(jsonBasket.getId());
     return basket;
@@ -386,7 +393,7 @@ public class PaymentService {
    */
   public Authorization authorize(Authorization authorization) throws HttpCommunicationException {
     String response =
-        restCommunication.httpPost(urlUtil.getRestUrl(authorization), unzer.getPrivateKey(),
+        restCommunication.httpPost(urlUtil.getUrl(authorization), unzer.getPrivateKey(),
             apiToSdkMapper.map(authorization));
     ApiAuthorization jsonAuthorization = jsonParser.fromJson(response, ApiAuthorization.class);
     authorization = (Authorization) apiToSdkMapper.mapToBusinessObject(jsonAuthorization,
@@ -651,7 +658,7 @@ public class PaymentService {
   }
 
   public Charge charge(Charge charge) throws HttpCommunicationException {
-    return charge(charge, urlUtil.getRestUrl(charge));
+    return charge(charge, urlUtil.getUrl(charge));
   }
 
   private Charge charge(Charge charge, String url) throws HttpCommunicationException {
@@ -691,7 +698,7 @@ public class PaymentService {
   public Payout payout(Payout payout) throws HttpCommunicationException {
     ApiObject json = apiToSdkMapper.map(payout);
     String response =
-        restCommunication.httpPost(urlUtil.getRestUrl(payout), unzer.getPrivateKey(), json);
+        restCommunication.httpPost(urlUtil.getUrl(payout), unzer.getPrivateKey(), json);
     ApiPayout jsonPayout = jsonParser.fromJson(response, ApiPayout.class);
     payout = (Payout) apiToSdkMapper.mapToBusinessObject(jsonPayout, payout);
     payout.setPayment(fetchPayment(jsonPayout.getResources().getPaymentId()));

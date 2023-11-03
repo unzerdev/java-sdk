@@ -129,4 +129,9 @@ public class Linkpay extends BasePaypage {
   public void setPaymentReference(String paymentReference) {
     this.paymentReference = paymentReference;
   }
+
+  @Override
+  protected String getResourceUrl() {
+    return "/v1/linkpay/<resourceId>";
+  }
 }

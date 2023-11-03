@@ -7,7 +7,7 @@ import java.net.URL;
 import java.util.Currency;
 import java.util.Map;
 
-public abstract class BasePaypage implements PaymentType {
+public abstract class BasePaypage extends BaseResource implements PaymentType {
   private String id;
   private BigDecimal amount;
   private Currency currency;

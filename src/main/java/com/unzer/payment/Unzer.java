@@ -141,8 +141,10 @@ public class Unzer {
     return paymentService.fetchBasket(id);
   }
 
+  @Deprecated
   public Basket updateBasket(Basket basket, String id) throws HttpCommunicationException {
-    return paymentService.updateBasket(id, basket);
+    basket.setId(id);
+    return paymentService.updateBasket(basket);
   }
 
   public <T extends PaymentType> T updatePaymentType(T paymentType)

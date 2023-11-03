@@ -45,7 +45,7 @@ public class BasketV1Test extends AbstractPaymentTest {
     assertEquals(expected.getCurrencyCode(), actual.getCurrencyCode());
     assertEquals(expected.getNote(), actual.getNote());
     assertEquals(expected.getOrderId(), actual.getOrderId());
-    assertEquals(expected.getTypeUrl(), actual.getTypeUrl());
+    assertEquals(expected.getUrl(), actual.getUrl());
     assertBasketItemsEquals(expected.getBasketItems(), actual.getBasketItems());
   }
 
@@ -163,7 +163,7 @@ public class BasketV1Test extends AbstractPaymentTest {
 
     UrlUtil urlUtil = new UrlUtil(Keys.KEY_WITHOUT_3DS);
 
-    String url = urlUtil.getPaymentUrl(basket, "id");
+    String url = urlUtil.getUrl(basket);
     assertTrue(url.startsWith("https://sbx-api.unzer.com/v2/"));
   }
 }
