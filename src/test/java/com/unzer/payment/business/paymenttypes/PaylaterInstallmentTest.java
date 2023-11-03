@@ -72,7 +72,7 @@ class PaylaterInstallmentTest {
                 post("/v1/types/paylater-installment/").willReturn(
                         jsonResponse(jsonBody, 200)));
         stubFor(
-                get("/v1/types/s-pit-vs6pjunvuick").willReturn(
+                get("/v1/types/paylater-installment/s-pit-vs6pjunvuick").willReturn(
                         jsonResponse(jsonBody, 200)));
 
         PaylaterInstallment paylaterInstallment = unzer.createPaymentType(new PaylaterInstallment()

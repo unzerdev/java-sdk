@@ -1,7 +1,7 @@
 package com.unzer.payment.service;
 
 import com.unzer.payment.*;
-import com.unzer.payment.business.paymenttypes.InstallmentSecuredRatePlan;
+import com.unzer.payment.business.paymenttypes.*;
 import com.unzer.payment.communication.HttpCommunicationException;
 import com.unzer.payment.communication.JsonParser;
 import com.unzer.payment.communication.UnzerRestCommunication;
@@ -86,8 +86,12 @@ public class PaymentService {
             throws HttpCommunicationException {
         PaymentType paymentType = getPaymentTypeFromTypeId(typeId);
         ((BasePaymentType) paymentType).setUnzer(unzer);
-        String response = restCommunication.httpGet(urlUtil.getHttpGetUrl(typeId),
-                unzer.getPrivateKey());
+        ((BasePaymentType) paymentType).setId(typeId);
+
+        String response = restCommunication.httpGet(
+                urlUtil.getUrl(paymentType),
+                unzer.getPrivateKey()
+        );
         ApiIdObject jsonPaymentType =
                 jsonParser.fromJson(response, getJsonObjectFromTypeId(typeId).getClass());
         return (T) apiToSdkMapper.mapToBusinessObject(paymentType, jsonPaymentType);
@@ -112,7 +116,9 @@ public class PaymentService {
             case INVOICE:
                 return new Invoice();
             case INVOICE_GUARANTEED:
+                return new InvoiceGuaranteed();
             case INVOICE_FACTORING:
+                return new InvoiceFactoring();
             case INVOICE_SECURED:
                 return new InvoiceSecured();
             case PAYPAL:
@@ -126,6 +132,7 @@ public class PaymentService {
             case SEPA_DIRECT_DEBIT:
                 return new SepaDirectDebit("");
             case SEPA_DIRECT_DEBIT_GUARANTEED:
+                return new SepaDirectDebitGuaranteed("");
             case SEPA_DIRECT_DEBIT_SECURED:
                 return new SepaDirectDebitSecured("");
             case SOFORT:
@@ -139,6 +146,7 @@ public class PaymentService {
             case APPLEPAY:
                 return new Applepay(null, null, null, null);
             case HIRE_PURCHASE_RATE_PLAN:
+                return new HirePurchaseDirectDebit();
             case INSTALLMENT_SECURED_RATE_PLAN:
                 return new InstallmentSecuredRatePlan();
             case BANCONTACT:
@@ -460,6 +468,9 @@ public class PaymentService {
         for (ApiTransaction apiTransaction : jsonChargesTransactionList) {
             Charge charge = fetchCharge(payment, new Charge(unzer), apiTransaction.getUrl());
             charge.setCancelList(getCancelListForCharge(payment.getCancelList(), charge.getId()));
+
+            charge.getCancelList().forEach(c -> c.setTransactionType(Cancel.TransactionType.CHARGES));
+
             charge.setType(apiTransaction.getType());
             charge.setBasketId(payment.getBasketId());
             charge.setCustomerId(payment.getCustomerId());
@@ -657,6 +668,7 @@ public class PaymentService {
     public Cancel cancelAuthorization(String paymentId, Cancel cancel)
             throws HttpCommunicationException {
         cancel.setPaymentId(paymentId);
+        cancel.setTransactionType(Cancel.TransactionType.AUTHORIZE);
         return cancel(cancel, urlUtil.getUrl(cancel));
     }
 
@@ -686,7 +698,9 @@ public class PaymentService {
 
     public Cancel cancelCharge(String paymentId, String chargeId, Cancel cancel)
             throws HttpCommunicationException {
-        return cancel(cancel, urlUtil.getRefundUrl(paymentId, chargeId));
+        cancel.setTransactionType(Cancel.TransactionType.CHARGES);
+        cancel.setPaymentId(paymentId);
+        return cancel(cancel, urlUtil.getUrl(cancel));
     }
 
     public Cancel cancelCharge(String paymentId, String chargeId, BigDecimal amount)

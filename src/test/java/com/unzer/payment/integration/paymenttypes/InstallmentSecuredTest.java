@@ -119,7 +119,6 @@ public class InstallmentSecuredTest extends AbstractPaymentTest {
                 ratePlanReturned.getTotalInterestAmount());
         assertNumberEquals(ratePlan.getTotalPurchaseAmount(),
                 ratePlanReturned.getTotalPurchaseAmount());
-        assertEquals(ratePlan.getTypeUrl(), ratePlanReturned.getTypeUrl());
     }
 
     private void assertDateEquals(Date expected, Date actual) {
@@ -611,13 +610,12 @@ public class InstallmentSecuredTest extends AbstractPaymentTest {
 
         // FIXME: hardcoded endpoint
         String response = restCommunication.httpPost(
-                "https://api.unzer.com/v1/types/hire-purchase-direct-debit",
-                unzer.getPrivateKey(),
+                "https://sbx-api.unzer.com/v1/types/hire-purchase-direct-debit",
+                Keys.LEGACY_PRIVATE_KEY,
                 getInstallmentSecuredRatePlan(new BigDecimal("380.48"))
         );
         ApiIdObject jsonResponse = jsonParser.fromJson(response, ApiIdObject.class);
-        InstallmentSecuredRatePlan installmentSecuredRatePlan =
-                paymentService.fetchPaymentType(jsonResponse.getId());
+        InstallmentSecuredRatePlan installmentSecuredRatePlan = paymentService.fetchPaymentType(jsonResponse.getId());
 
         assertTrue(
                 installmentSecuredRatePlan.getId().matches("s-hdd-\\w*")

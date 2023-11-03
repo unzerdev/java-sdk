@@ -148,15 +148,14 @@ public class InvoiceSecuredTest extends AbstractPaymentTest {
     }
 
     @Test
-    public void testChargeInvoiceGuaranteed() throws HttpCommunicationException, MalformedURLException {
+    public void testChargeInvoiceGuaranteed() throws HttpCommunicationException {
         Unzer unzer = getUnzer(Keys.LEGACY_PRIVATE_KEY);
         HttpClientBasedRestCommunication restCommunication = new HttpClientBasedRestCommunication();
         JsonParser jsonParser = new JsonParser();
-        PaymentService paymentService = new PaymentService(unzer, restCommunication);
 
         String response = restCommunication.httpPost("https://api.unzer.com/v1/types/invoice-guaranteed", unzer.getPrivateKey(), new InvoiceSecured());
         ApiIdObject jsonResponse = jsonParser.fromJson(response, ApiIdObject.class);
-        InvoiceSecured invoiceSecured = paymentService.fetchPaymentType(jsonResponse.getId());
+        InvoiceSecured invoiceSecured = (InvoiceSecured) unzer.fetchPaymentType(jsonResponse.getId());
 
         boolean matches = invoiceSecured.getId().matches("s-ivg-\\w*");
         assertTrue(matches);
@@ -167,15 +166,14 @@ public class InvoiceSecuredTest extends AbstractPaymentTest {
 
     @Test
     @Deprecated
-    public void testChargeInvoiceFactoringBasketV1() throws HttpCommunicationException, MalformedURLException {
+    public void testChargeInvoiceFactoringBasketV1() throws HttpCommunicationException {
         Unzer unzer = getUnzer(Keys.LEGACY_PRIVATE_KEY);
         HttpClientBasedRestCommunication restCommunication = new HttpClientBasedRestCommunication();
         JsonParser jsonParser = new JsonParser();
-        PaymentService paymentService = new PaymentService(unzer, restCommunication);
 
-        String response = restCommunication.httpPost("https://api.unzer.com/v1/types/invoice-factoring", unzer.getPrivateKey(), new InvoiceSecured());
+        String response = restCommunication.httpPost("https://sbx-api.unzer.com/v1/types/invoice-factoring", Keys.LEGACY_PRIVATE_KEY, new InvoiceSecured());
         ApiIdObject jsonResponse = jsonParser.fromJson(response, ApiIdObject.class);
-        InvoiceSecured invoiceSecured = paymentService.fetchPaymentType(jsonResponse.getId());
+        InvoiceSecured invoiceSecured = (InvoiceSecured) unzer.fetchPaymentType(jsonResponse.getId());
 
         boolean matches = invoiceSecured.getId().matches("s-ivf-\\w*");
         assertTrue(matches);
@@ -247,7 +245,7 @@ public class InvoiceSecuredTest extends AbstractPaymentTest {
         PaymentError expectedError = new PaymentError(
                 "Reason code is mandatory for the payment type INVOICE_SECURED",
                 "Reason code is mandatory for the payment type INVOICE_SECURED. Please contact us for more information.",
-                "API.340.100.024"
+                "API.330.100.024"
         );
 
         Unzer unzer = getUnzer(Keys.LEGACY_PRIVATE_KEY);

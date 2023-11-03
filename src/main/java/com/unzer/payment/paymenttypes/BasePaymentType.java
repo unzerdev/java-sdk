@@ -20,11 +20,6 @@ public abstract class BasePaymentType extends BaseResource implements PaymentTyp
     }
 
     @Override
-    public String getTypeUrl() {
-        return getResourceUrl();
-    }
-
-    @Override
     public String getId() {
         return id;
     }

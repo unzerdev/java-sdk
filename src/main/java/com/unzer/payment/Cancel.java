@@ -8,11 +8,13 @@ import java.math.BigDecimal;
  * @author Unzer E-Com GmbH
  */
 public class Cancel extends BaseTransaction<Payment> {
+    private final static String TRANSACTION_TYPE_TOKEN = "<transactionType>";
 
     private BigDecimal amountGross;
     private BigDecimal amountNet;
     private BigDecimal amountVat;
     private ReasonCode reasonCode;
+    private String transactionType = TransactionType.AUTHORIZE;
 
     public Cancel() {
         super();
@@ -25,8 +27,18 @@ public class Cancel extends BaseTransaction<Payment> {
 
     @Override
     public String getTransactionUrl() {
-        // TODO: <authorizeId>: https://stg-api.unzer.com/api-reference/index.html#tag/Payments/operation/getCancelByAuthorize
-        return "/v1/payments/<paymentId>/authorize/cancels/<transactionId>";
+        return "/v1/payments/<paymentId>/<transactionType>/<transactionId>/cancels";
+    }
+
+    @Override
+    public String getUrl() {
+        String partialResult = getPaymentId() == null
+                ? getTransactionUrl().replaceAll(PAYMENT_ID_TOKEN + "/", "")
+                : getTransactionUrl().replaceAll(PAYMENT_ID_TOKEN, getPaymentId());
+
+        return partialResult
+                .replaceAll(TRANSACTION_TYPE_TOKEN, getTransactionType() == null ? TransactionType.AUTHORIZE : getTransactionType())
+                .replaceAll(TRANSACTION_ID_TOKEN, getId() == null ? "" : getId());
     }
 
     public BigDecimal getAmountGross() {
@@ -62,7 +74,20 @@ public class Cancel extends BaseTransaction<Payment> {
         return this;
     }
 
+    public String getTransactionType() {
+        return transactionType;
+    }
+
+    public void setTransactionType(String transactionType) {
+        this.transactionType = transactionType;
+    }
+
     public enum ReasonCode {
         CANCEL, RETURN, CREDIT
+    }
+
+    public interface TransactionType {
+        String CHARGES = "charges";
+        String AUTHORIZE = "authorize";
     }
 }

@@ -12,10 +12,6 @@ import java.util.Date;
 import java.util.Locale;
 
 public class UrlUtil {
-    private static final String REFUND_URL = "payments/<paymentId>/charges/<chargeId>/cancels";
-    private static final String PLACEHOLDER_CHARGE_ID = "<chargeId>";
-    private static final String PLACEHOLDER_PAYMENT_ID = "<paymentId>";
-
     private final String apiEndpoint;
 
     public UrlUtil(String privateKey) {
@@ -27,21 +23,6 @@ public class UrlUtil {
         return privateKey.charAt(0) == 'p'
                 ? "https://api.unzer.com"
                 : "https://sbx-api.unzer.com";
-    }
-
-    public String getRefundUrl(String paymentId, String chargeId) {
-        StringBuilder stringBuilder = new StringBuilder();
-        stringBuilder.append(getRestUrl());
-        appendSlashIfNeeded(stringBuilder);
-        stringBuilder.append(REFUND_URL);
-        String result = stringBuilder.toString();
-        result = result.replace(PLACEHOLDER_PAYMENT_ID, paymentId);
-        if (chargeId != null) {
-            result = result.replace(PLACEHOLDER_CHARGE_ID, chargeId);
-        } else {
-            result = result.replace(PLACEHOLDER_CHARGE_ID + "/", "");
-        }
-        return result;
     }
 
     public String getRestUrl() {
@@ -60,27 +41,6 @@ public class UrlUtil {
 
     public String getUrl(Resource resource) {
         return apiEndpoint + resource.getUrl();
-    }
-
-    public String getHttpGetUrl(String id) {
-        StringBuilder stringBuilder = new StringBuilder();
-        stringBuilder.append(getRestUrlWithOutPaymentType());
-        appendSlashIfNeeded(stringBuilder);
-        stringBuilder.append(id);
-        return stringBuilder.toString();
-    }
-
-    public String getRestUrlWithOutPaymentType() {
-        return getRestUrlInternal().replace(PLACEHOLDER_PAYMENT_ID + "/", "");
-    }
-
-    private String getRestUrlInternal() {
-        StringBuilder stringBuilder = new StringBuilder();
-        stringBuilder.append(getRestUrl());
-        appendSlashIfNeeded(stringBuilder);
-        stringBuilder.append("types");
-        appendSlashIfNeeded(stringBuilder);
-        return stringBuilder.toString();
     }
 
     public String getHirePurchaseRateUrl(

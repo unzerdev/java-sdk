@@ -11,8 +11,6 @@ import java.util.Date;
 import java.util.List;
 
 public class ApiInstallmentSecuredRatePlan extends ApiIdObject implements ApiObject {
-
-
     private String iban;
     private String bic;
     private String accountHolder;

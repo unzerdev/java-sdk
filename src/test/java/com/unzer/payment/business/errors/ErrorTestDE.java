@@ -49,7 +49,7 @@ public class ErrorTestDE extends AbstractPaymentTest {
         } catch (PaymentException e) {
             assertNotNull(e.getPaymentErrorList());
             assertTrue(e.getPaymentErrorList().size() > 0);
-            assertEquals("API.000.000.003", e.getPaymentErrorList().get(0).getCode());
+            assertEquals("API.710.000.003", e.getPaymentErrorList().get(0).getCode());
             assertEquals(
                     "Sie sind nicht zum Zugriff auf diese Ressource berechtigt. Wenden Sie sich für weitere Informationen bitte an uns.",
                     e.getPaymentErrorList().get(0).getCustomerMessage());
