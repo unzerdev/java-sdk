@@ -1,23 +1,21 @@
 package com.unzer.payment.integration.paymenttypes;
 
 
+import static com.unzer.payment.util.Url.unsafeUrl;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import com.unzer.payment.Charge;
 import com.unzer.payment.Unzer;
 import com.unzer.payment.business.AbstractPaymentTest;
-import com.unzer.payment.communication.HttpCommunicationException;
 import com.unzer.payment.paymenttypes.PostFinanceCard;
 import java.math.BigDecimal;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.Currency;
 import org.junit.jupiter.api.Test;
 
 public class PostFinanceCardTest extends AbstractPaymentTest {
 
   @Test
-  public void testCreatePostFinanceCardMandatoryType() throws HttpCommunicationException {
+  public void testCreatePostFinanceCardMandatoryType() {
     PostFinanceCard pfCard = new PostFinanceCard();
     pfCard = getUnzer().createPaymentType(pfCard);
     assertNotNull(pfCard.getId());
@@ -25,11 +23,11 @@ public class PostFinanceCardTest extends AbstractPaymentTest {
 
   @Test
   public void testChargePostFinanceCardType()
-      throws HttpCommunicationException, MalformedURLException {
+      {
     Unzer unzer = getUnzer();
     PostFinanceCard pfCard = unzer.createPaymentType(getPostFinanceCard());
     Charge charge = pfCard.charge(BigDecimal.ONE, Currency.getInstance("CHF"),
-        new URL("https://www.google.at"));
+        unsafeUrl("https://www.google.at"));
     assertNotNull(charge);
     assertNotNull(charge.getId());
     assertNotNull(charge.getRedirectUrl());
@@ -41,7 +39,7 @@ public class PostFinanceCardTest extends AbstractPaymentTest {
   }
 
   @Test
-  public void testFetchPostFinanceCardType() throws HttpCommunicationException {
+  public void testFetchPostFinanceCardType() {
     Unzer unzer = getUnzer();
     PostFinanceCard pfCard = unzer.createPaymentType(getPostFinanceCard());
     assertNotNull(pfCard.getId());

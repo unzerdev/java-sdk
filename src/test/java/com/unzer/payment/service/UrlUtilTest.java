@@ -6,7 +6,6 @@ import static org.junit.jupiter.api.DynamicTest.dynamicTest;
 import com.unzer.payment.business.AbstractPaymentTest;
 import com.unzer.payment.business.Keys;
 import com.unzer.payment.business.paymenttypes.InstallmentSecuredRatePlan;
-import com.unzer.payment.communication.HttpCommunicationException;
 import com.unzer.payment.paymenttypes.InvoiceSecured;
 import com.unzer.payment.paymenttypes.PaymentType;
 import com.unzer.payment.paymenttypes.SepaDirectDebitSecured;
@@ -75,7 +74,7 @@ public class UrlUtilTest extends AbstractPaymentTest {
   }
 
   @Test
-  public void testGetUrlForPaymentTypeSepaDirectDebitSecured() throws HttpCommunicationException {
+  public void testGetUrlForPaymentTypeSepaDirectDebitSecured() {
     runGetHttpGetUrlTest(new SepaDirectDebitSecured(""), "sepa-direct-debit-secured/");
   }
 }

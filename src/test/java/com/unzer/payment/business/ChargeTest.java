@@ -4,6 +4,7 @@ package com.unzer.payment.business;
 import static com.unzer.payment.business.BasketV1TestData.getMaxTestBasketV1;
 import static com.unzer.payment.business.Keys.DEFAULT;
 import static com.unzer.payment.business.Keys.MARKETPLACE_KEY;
+import static com.unzer.payment.util.Url.unsafeUrl;
 import static com.unzer.payment.util.Uuid.generateUuid;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -202,8 +203,8 @@ public class ChargeTest extends AbstractPaymentTest {
     }
 
     @Test
-    public void testChargeObjectIsParsableWithGson() throws HttpCommunicationException, MalformedURLException {
-        Charge charge = getUnzer().charge(BigDecimal.ONE, Currency.getInstance("EUR"), createPaymentTypeCard(getUnzer(), "4711100000000000").getId(), new URL("https://integration.splitit.com//gateways/Proxy/Execute?publicToken=9e517919-9e3d-4d5f-825e-99f7712eefd1"), false);
+    public void testChargeObjectIsParsableWithGson() {
+        Charge charge = getUnzer().charge(BigDecimal.ONE, Currency.getInstance("EUR"), createPaymentTypeCard(getUnzer(), "4711100000000000").getId(), unsafeUrl("https://integration.splitit.com//gateways/Proxy/Execute?publicToken=9e517919-9e3d-4d5f-825e-99f7712eefd1"), false);
         assertEquals(String.class, new GsonBuilder()
                 .addSerializationExclusionStrategy(new JsonFieldIgnoreStragegy())
                 .create()

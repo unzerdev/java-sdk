@@ -18,7 +18,7 @@ public class BusinessCustomerTest extends AbstractPaymentTest {
 
 
     @Test
-    public void testCreateRegisteredBusinessCustomer() throws HttpCommunicationException {
+    public void testCreateRegisteredBusinessCustomer() {
         Customer customer = getUnzer().createCustomer(getRegisterdMinimumBusinessCustomer());
         assertNotNull(customer);
         assertNotNull(customer.getId());

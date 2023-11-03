@@ -20,30 +20,30 @@ public class HttpClientMock implements UnzerRestCommunication {
   private static final Logger logger = LogManager.getLogger(HttpClientMock.class);
 
   @Override
-  public String httpGet(String url, String privateKey) throws HttpCommunicationException {
+  public String httpGet(String url, String privateKey) {
     return execute(new HttpGet(proxyUrl(url)), null);
   }
 
   @Override
   public String httpPost(String url, String privateKey, Object data)
-      throws HttpCommunicationException {
+      {
     return execute(new HttpPost(proxyUrl(url)), data);
   }
 
   @Override
   public String httpPut(String url, String privateKey, Object data)
-      throws HttpCommunicationException {
+      {
     return execute(new HttpPut(proxyUrl(url)), data);
   }
 
   @Override
-  public String httpDelete(String url, String privateKey) throws HttpCommunicationException {
+  public String httpDelete(String url, String privateKey) {
     return execute(new HttpDelete(proxyUrl(url)), null);
   }
 
   @Override
   public String httpPatch(String url, String privateKey, Object data)
-      throws HttpCommunicationException {
+      {
     return execute(new HttpPatch(proxyUrl(url)), data);
   }
 

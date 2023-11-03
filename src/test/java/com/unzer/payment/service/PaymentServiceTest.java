@@ -9,7 +9,6 @@ import com.unzer.payment.PaymentError;
 import com.unzer.payment.PaymentException;
 import com.unzer.payment.TestData;
 import com.unzer.payment.Unzer;
-import com.unzer.payment.communication.HttpCommunicationException;
 import com.unzer.payment.communication.HttpCommunicationMockUtils;
 import com.unzer.payment.communication.UnzerRestCommunication;
 import org.junit.jupiter.api.Test;
@@ -24,7 +23,7 @@ public class PaymentServiceTest {
     }
 
     @Test
-    public void testChargeInCaseOfCoreException() throws HttpCommunicationException {
+    public void testChargeInCaseOfCoreException() {
         PaymentService paymentService = setUpPaymentService(TestData.errorJson(), 500);
         PaymentException exception = null;
         try {
@@ -42,7 +41,7 @@ public class PaymentServiceTest {
     }
 
     @Test
-    public void test200WithErrorJsonIsConvertedToPaymentException() throws HttpCommunicationException {
+    public void test200WithErrorJsonIsConvertedToPaymentException() {
         PaymentService paymentService = setUpPaymentService(TestData.errorJson(), 200);
         PaymentException exception = null;
         try {

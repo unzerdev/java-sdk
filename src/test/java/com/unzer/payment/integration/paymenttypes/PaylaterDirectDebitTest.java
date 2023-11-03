@@ -14,7 +14,6 @@ import com.unzer.payment.business.AbstractPaymentTest;
 import com.unzer.payment.paymenttypes.PaylaterDirectDebit;
 import java.math.BigDecimal;
 import java.util.Currency;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 

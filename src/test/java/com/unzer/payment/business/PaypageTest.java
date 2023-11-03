@@ -8,7 +8,6 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import com.unzer.payment.BasePaypage;
 import com.unzer.payment.Paypage;
 import com.unzer.payment.Unzer;
-import com.unzer.payment.communication.HttpCommunicationException;
 import com.unzer.payment.service.UrlUtil;
 import java.util.Arrays;
 import java.util.Collection;
@@ -21,7 +20,7 @@ import org.junit.jupiter.api.TestFactory;
 public class PaypageTest extends AbstractPaymentTest {
 
   @Test
-  public void testMaximumPaypage() throws HttpCommunicationException {
+  public void testMaximumPaypage() {
     Unzer unzer = getUnzer();
 
     Paypage request = getMaximumPaypage();
@@ -67,7 +66,7 @@ public class PaypageTest extends AbstractPaymentTest {
   }
 
   @Test
-  public void testPaypage_WithEmptyCssMap() throws HttpCommunicationException {
+  public void testPaypage_WithEmptyCssMap() {
     Unzer unzer = getUnzer();
 
     Paypage request = getMaximumPaypage();
@@ -154,7 +153,7 @@ public class PaypageTest extends AbstractPaymentTest {
   }
 
   @Test
-  public void testAuthorize() throws HttpCommunicationException {
+  public void testAuthorize() {
     Unzer unzer = getUnzer();
     Paypage request = getMaximumPaypage();
     request.setAction(BasePaypage.Action.AUTHORIZE);

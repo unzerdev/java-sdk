@@ -5,7 +5,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import com.unzer.payment.communication.HttpCommunicationException;
 import java.math.BigDecimal;
 import org.junit.jupiter.api.Test;
 
@@ -21,7 +20,7 @@ public class PaymentTest {
     }
 
     @Test
-    public void testChargeOnNullAuthorization() throws HttpCommunicationException {
+    public void testChargeOnNullAuthorization() {
         Payment payment = new Payment(getUnzer());
 
         try {

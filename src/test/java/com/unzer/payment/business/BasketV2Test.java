@@ -24,7 +24,7 @@ import org.junit.jupiter.api.Test;
 
 public class BasketV2Test extends AbstractPaymentTest {
     @Test
-    public void testCreateFetchBasket() throws HttpCommunicationException {
+    public void testCreateFetchBasket() {
         Basket maxBasket = getMaxTestBasketV2();
         Basket basket = getUnzer().createBasket(maxBasket);
         Basket basketFetched = getUnzer().fetchBasket(basket.getId());
@@ -34,7 +34,7 @@ public class BasketV2Test extends AbstractPaymentTest {
     }
 
     @Test
-    public void testCreateFetchMinBasket() throws HttpCommunicationException {
+    public void testCreateFetchMinBasket() {
         Basket minBasket = getMinTestBasketV2();
         Basket basket = getUnzer().createBasket(minBasket);
         Basket basketFetched = getUnzer().fetchBasket(basket.getId());
@@ -44,7 +44,7 @@ public class BasketV2Test extends AbstractPaymentTest {
     }
 
     @Test
-    public void testUpdateBasket() throws HttpCommunicationException {
+    public void testUpdateBasket() {
         Basket minBasket = getMinTestBasketV2();
         Basket basket = getUnzer().createBasket(minBasket);
         Basket basketFetched = getUnzer().fetchBasket(basket.getId());
@@ -59,7 +59,7 @@ public class BasketV2Test extends AbstractPaymentTest {
     }
 
     @Test
-    public void testUpdateBasketWithFetched() throws HttpCommunicationException {
+    public void testUpdateBasketWithFetched() {
         Basket minBasket = getMinTestBasketV2();
         Basket basket = getUnzer().createBasket(minBasket);
         Basket basketFetched = getUnzer().fetchBasket(basket.getId());

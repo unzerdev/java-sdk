@@ -11,7 +11,6 @@ import static org.junit.jupiter.api.DynamicTest.dynamicTest;
 import com.unzer.payment.Customer;
 import com.unzer.payment.PaymentException;
 import com.unzer.payment.Unzer;
-import com.unzer.payment.communication.HttpCommunicationException;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.Calendar;
@@ -26,7 +25,7 @@ import org.junit.jupiter.api.TestFactory;
 public class CustomerTest extends AbstractPaymentTest {
 
   @Test
-  public void testCreateMinimumCustomer() throws HttpCommunicationException {
+  public void testCreateMinimumCustomer() {
     Customer customer = getUnzer().createCustomer(getMinimumCustomer());
     assertNotNull(customer);
     assertNotNull(customer.getId());
@@ -35,7 +34,7 @@ public class CustomerTest extends AbstractPaymentTest {
   }
 
   @Test
-  public void testCreateMaximumCustomer() throws HttpCommunicationException {
+  public void testCreateMaximumCustomer() {
     Customer maxCustomer = getMaximumCustomer(generateUuid());
     Customer customer = getUnzer().createCustomer(maxCustomer);
     assertNotNull(customer);
@@ -44,7 +43,7 @@ public class CustomerTest extends AbstractPaymentTest {
   }
 
   @Test
-  public void testCreateMaximumMrsCustomer() throws HttpCommunicationException {
+  public void testCreateMaximumMrsCustomer() {
     Customer maxMrsCustomer = getMaximumMrsCustomer(generateUuid());
     Customer customer = getUnzer().createCustomer(maxMrsCustomer);
     assertNotNull(customer);
@@ -53,7 +52,7 @@ public class CustomerTest extends AbstractPaymentTest {
   }
 
   @Test
-  public void testCreateMaximumUnknownCustomer() throws HttpCommunicationException {
+  public void testCreateMaximumUnknownCustomer() {
     Customer unknownMrsCustomer = getMaximumUnknownCustomer(generateUuid());
     Customer customer = getUnzer().createCustomer(unknownMrsCustomer);
     assertNotNull(customer);
@@ -62,7 +61,7 @@ public class CustomerTest extends AbstractPaymentTest {
   }
 
   @Test
-  public void testFetchCustomerMinimum() throws HttpCommunicationException {
+  public void testFetchCustomerMinimum() {
     Customer customer = getUnzer().createCustomer(getMinimumCustomer());
     assertNotNull(customer);
     assertNotNull(customer.getId());
@@ -72,7 +71,7 @@ public class CustomerTest extends AbstractPaymentTest {
   }
 
   @Test
-  public void testFetchCustomerMaximum() throws HttpCommunicationException {
+  public void testFetchCustomerMaximum() {
     Customer expectedCustomer = getMaximumCustomer(generateUuid());
     Customer customer = getUnzer().createCustomer(expectedCustomer);
     assertNotNull(customer);
@@ -83,7 +82,7 @@ public class CustomerTest extends AbstractPaymentTest {
   }
 
   @Test
-  public void testUpdateCustomer() throws HttpCommunicationException {
+  public void testUpdateCustomer() {
     Customer customer = getUnzer().createCustomer(getMaximumCustomer(generateUuid()));
     assertNotNull(customer);
     assertNotNull(customer.getId());
@@ -96,7 +95,7 @@ public class CustomerTest extends AbstractPaymentTest {
   }
 
   @Test
-  public void testDeleteCustomer() throws HttpCommunicationException {
+  public void testDeleteCustomer() {
     Customer customer = getUnzer().createCustomer(getMaximumCustomer(generateUuid()));
     assertNotNull(customer);
     assertNotNull(customer.getId());

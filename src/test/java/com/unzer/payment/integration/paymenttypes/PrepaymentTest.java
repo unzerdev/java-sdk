@@ -1,31 +1,29 @@
 package com.unzer.payment.integration.paymenttypes;
 
 
+import static com.unzer.payment.util.Url.unsafeUrl;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import com.unzer.payment.Charge;
 import com.unzer.payment.business.AbstractPaymentTest;
-import com.unzer.payment.communication.HttpCommunicationException;
 import com.unzer.payment.paymenttypes.Prepayment;
 import java.math.BigDecimal;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.Currency;
 import org.junit.jupiter.api.Test;
 
 public class PrepaymentTest extends AbstractPaymentTest {
 
     @Test
-    public void testCreatePrepaymentManatoryType() throws HttpCommunicationException {
+    public void testCreatePrepaymentManatoryType() {
         Prepayment prepayment = new Prepayment();
         prepayment = getUnzer().createPaymentType(prepayment);
         assertNotNull(prepayment.getId());
     }
 
     @Test
-    public void testChargePrepaymentType() throws HttpCommunicationException, MalformedURLException {
+    public void testChargePrepaymentType() {
         Prepayment prepayment = getUnzer().createPaymentType(getPrepayment());
-        Charge charge = prepayment.charge(BigDecimal.ONE, Currency.getInstance("EUR"), new URL("https://www.meinShop.de"));
+        Charge charge = prepayment.charge(BigDecimal.ONE, Currency.getInstance("EUR"), unsafeUrl("https://www.meinShop.de"));
         assertNotNull(charge);
         assertNotNull(charge.getId());
         assertNotNull(charge.getProcessing());
@@ -36,7 +34,7 @@ public class PrepaymentTest extends AbstractPaymentTest {
     }
 
     @Test
-    public void testFetchPrepaymentType() throws HttpCommunicationException {
+    public void testFetchPrepaymentType() {
         Prepayment prepayment = getUnzer().createPaymentType(getPrepayment());
         assertNotNull(prepayment.getId());
         Prepayment fetchedPrepayment = (Prepayment) getUnzer().fetchPaymentType(prepayment.getId());

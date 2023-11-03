@@ -10,7 +10,6 @@ import com.unzer.payment.Charge;
 import com.unzer.payment.Unzer;
 import com.unzer.payment.business.AbstractPaymentTest;
 import com.unzer.payment.business.BasketV2TestData;
-import com.unzer.payment.communication.HttpCommunicationException;
 import com.unzer.payment.models.AdditionalTransactionData;
 import com.unzer.payment.models.PaypalData;
 import com.unzer.payment.paymenttypes.Paypal;
@@ -20,7 +19,7 @@ import org.junit.jupiter.api.Test;
 
 public class PaypalExpressTest extends AbstractPaymentTest {
     @Test
-    public void testAuthorize() throws HttpCommunicationException {
+    public void testAuthorize() {
         Unzer unzer = getUnzer();
 
         Paypal type = unzer.createPaymentType(new Paypal());
@@ -44,7 +43,7 @@ public class PaypalExpressTest extends AbstractPaymentTest {
 
 
     @Test
-    public void testCharge() throws HttpCommunicationException {
+    public void testCharge() {
         Unzer unzer = getUnzer();
 
         Paypal type = unzer.createPaymentType(new Paypal());

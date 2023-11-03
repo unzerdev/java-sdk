@@ -66,7 +66,7 @@ public class PaylaterInstallmentTest extends AbstractPaymentTest {
 
   @Test
   public void testCreatePaylaterInstallmentTypeWithAllParameter()
-      throws HttpCommunicationException {
+      {
     PaylaterInstallmentPlans installmentPlans = getPaylaterInstallmentPlans();
     InstallmentPlan selectedPlan = installmentPlans.getPlans().get(0);
 
@@ -327,7 +327,7 @@ public class PaylaterInstallmentTest extends AbstractPaymentTest {
   }
 
   private PaylaterInstallmentPlans getPaylaterInstallmentPlans()
-      throws HttpCommunicationException {
+      {
     return getUnzer().fetchPaylaterInstallmentPlans(
         new InstallmentPlansRequest(getOrderAmount(), "EUR", "DE", CustomerType.B2C)
     );

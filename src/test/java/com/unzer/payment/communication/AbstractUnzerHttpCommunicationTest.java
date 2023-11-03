@@ -19,7 +19,7 @@ public class AbstractUnzerHttpCommunicationTest {
     private final String privateKey = "samplekey";
 
     @Test
-    public void testApiErrorsAreTranslatedToPaymentException() throws HttpCommunicationException {
+    public void testApiErrorsAreTranslatedToPaymentException() {
 
         PaymentException exception = null;
         MockUnzerRestCommunication rest = setupRest(errorJson(), 409);
@@ -134,7 +134,7 @@ public class AbstractUnzerHttpCommunicationTest {
     }
 
     @Test
-    public void testClientIpHeader() throws HttpCommunicationException {
+    public void testClientIpHeader() {
         MockUnzerRestCommunication rest = new MockUnzerRestCommunication(Locale.ITALY, "192.168.1.1");
         rest.responseMockStatus = 200;
         rest.responseMockContent = validJsonResponse();

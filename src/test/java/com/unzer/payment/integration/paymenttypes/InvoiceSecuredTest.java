@@ -30,7 +30,6 @@ import com.unzer.payment.paymenttypes.InvoiceSecured;
 import com.unzer.payment.service.PaymentService;
 import java.math.BigDecimal;
 import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.Collection;
 import java.util.Currency;
 import java.util.Date;
@@ -45,12 +44,12 @@ public class InvoiceSecuredTest extends AbstractPaymentTest {
     @Test
     @Deprecated
     public void testChargeTypeWithInvoiceIdBasketV1()
-            throws HttpCommunicationException, MalformedURLException {
+            {
         InvoiceSecured invoice = getUnzer(Keys.LEGACY_PRIVATE_KEY).createPaymentType(getInvoiceSecured());
         Basket basket = getMinTestBasketV1();
         String invoiceId = getRandomInvoiceId();
         Charge charge = invoice.charge(basket.getAmountTotalGross(), Currency.getInstance("EUR"),
-                new URL("https://www.meinShop.de"), getMaximumCustomerSameAddress(generateUuid()), basket,
+                unsafeUrl("https://www.meinShop.de"), getMaximumCustomerSameAddress(generateUuid()), basket,
                 invoiceId);
         assertNotNull(charge);
         assertNotNull(charge.getPaymentId());
@@ -63,7 +62,7 @@ public class InvoiceSecuredTest extends AbstractPaymentTest {
         Basket basket = getMinTestBasketV2();
         String invoiceId = getRandomInvoiceId();
         Charge charge = invoice.charge(basket.getTotalValueGross(), Currency.getInstance("EUR"),
-                new URL("https://www.meinShop.de"), getMaximumCustomerSameAddress(generateUuid()), basket,
+                unsafeUrl("https://www.meinShop.de"), getMaximumCustomerSameAddress(generateUuid()), basket,
                 invoiceId);
         assertNotNull(charge);
         assertNotNull(charge.getPaymentId());
@@ -71,17 +70,17 @@ public class InvoiceSecuredTest extends AbstractPaymentTest {
     }
 
     @Test
-    public void testCreateInvoiceSecuredMandatoryType() throws HttpCommunicationException {
+    public void testCreateInvoiceSecuredMandatoryType() {
         InvoiceSecured invoice = getUnzer(Keys.LEGACY_PRIVATE_KEY).createPaymentType(getInvoiceSecured());
         assertNotNull(invoice.getId());
     }
 
     @Test
     @Deprecated
-    public void testChargeTypeBasketV1() throws HttpCommunicationException, MalformedURLException {
+    public void testChargeTypeBasketV1() {
         InvoiceSecured invoice = getUnzer(Keys.LEGACY_PRIVATE_KEY).createPaymentType(getInvoiceSecured());
         Basket basket = getMinTestBasketV1();
-        Charge chargeResult = invoice.charge(basket.getAmountTotalGross(), Currency.getInstance("EUR"), new URL("https://www.meinShop.de"), getMaximumCustomerSameAddress(generateUuid()), basket, invoice.getId());
+        Charge chargeResult = invoice.charge(basket.getAmountTotalGross(), Currency.getInstance("EUR"), unsafeUrl("https://www.meinShop.de"), getMaximumCustomerSameAddress(generateUuid()), basket, invoice.getId());
         assertNotNull(chargeResult);
     }
 
@@ -89,37 +88,37 @@ public class InvoiceSecuredTest extends AbstractPaymentTest {
     public void testChargeTypeBasketV2() throws HttpCommunicationException, MalformedURLException  {
         InvoiceSecured invoice = getUnzer(Keys.LEGACY_PRIVATE_KEY).createPaymentType(getInvoiceSecured());
         Basket basket = getMinTestBasketV2();
-        Charge chargeResult = invoice.charge(basket.getTotalValueGross(), Currency.getInstance("EUR"), new URL("https://www.meinShop.de"), getMaximumCustomerSameAddress(generateUuid()), basket, invoice.getId());
+        Charge chargeResult = invoice.charge(basket.getTotalValueGross(), Currency.getInstance("EUR"), unsafeUrl("https://www.meinShop.de"), getMaximumCustomerSameAddress(generateUuid()), basket, invoice.getId());
         assertNotNull(chargeResult);
     }
 
 
     @Test
     @Deprecated
-    public void testChargeTypeWithInvalidCurrencyBasketV1() throws HttpCommunicationException {
+    public void testChargeTypeWithInvalidCurrencyBasketV1() {
         InvoiceSecured invoice = getUnzer(Keys.LEGACY_PRIVATE_KEY).createPaymentType(getInvoiceSecured());
         Basket basket = getMinTestBasketV1();
 
         assertThrows(PaymentException.class, () -> {
-            invoice.charge(basket.getAmountTotalGross(), Currency.getInstance("PLN"), new URL("https://www.meinShop.de"), getMaximumCustomerSameAddress(generateUuid()), basket, invoice.getId());
+            invoice.charge(basket.getAmountTotalGross(), Currency.getInstance("PLN"), unsafeUrl("https://www.meinShop.de"), getMaximumCustomerSameAddress(generateUuid()), basket, invoice.getId());
         });
     }
 
     @Test
-    public void testChargeTypeWithInvalidCurrencyBasketV2() throws HttpCommunicationException {
+    public void testChargeTypeWithInvalidCurrencyBasketV2() {
         InvoiceSecured invoice = getUnzer(Keys.LEGACY_PRIVATE_KEY).createPaymentType(getInvoiceSecured());
         Basket basket = getMinTestBasketV2();
         assertThrows(PaymentException.class, () -> {
-            invoice.charge(basket.getTotalValueGross(), Currency.getInstance("PLN"), new URL("https://www.meinShop.de"), getMaximumCustomerSameAddress(generateUuid()), basket, invoice.getId());
+            invoice.charge(basket.getTotalValueGross(), Currency.getInstance("PLN"), unsafeUrl("https://www.meinShop.de"), getMaximumCustomerSameAddress(generateUuid()), basket, invoice.getId());
         });
     }
 
 
     @Test
-    public void testChargeTypeDifferentAddresses() throws HttpCommunicationException {
+    public void testChargeTypeDifferentAddresses() {
         InvoiceSecured invoice = getUnzer(Keys.LEGACY_PRIVATE_KEY).createPaymentType(getInvoiceSecured());
         assertThrows(PaymentException.class, () -> {
-            invoice.charge(BigDecimal.TEN, Currency.getInstance("EUR"), new URL("https://www.meinShop.de"), getMaximumCustomer(generateUuid()));
+            invoice.charge(BigDecimal.TEN, Currency.getInstance("EUR"), unsafeUrl("https://www.meinShop.de"), getMaximumCustomer(generateUuid()));
         });
     }
 
@@ -129,7 +128,7 @@ public class InvoiceSecuredTest extends AbstractPaymentTest {
         InvoiceSecured invoice = getUnzer(Keys.LEGACY_PRIVATE_KEY).createPaymentType(getInvoiceSecured());
         Basket basket = getMinTestBasketV1();
         String invoiceId = new Date().getTime() + "";
-        Charge charge = getUnzer(Keys.LEGACY_PRIVATE_KEY).charge(basket.getAmountTotalGross(), Currency.getInstance("EUR"), invoice, new URL("https://www.meinShop.de"), getMaximumCustomerSameAddress(generateUuid()), basket);
+        Charge charge = getUnzer(Keys.LEGACY_PRIVATE_KEY).charge(basket.getAmountTotalGross(), Currency.getInstance("EUR"), invoice, unsafeUrl("https://www.meinShop.de"), getMaximumCustomerSameAddress(generateUuid()), basket);
         Shipment shipment = getUnzer(Keys.LEGACY_PRIVATE_KEY).shipment(charge.getPaymentId(), invoiceId);
         assertNotNull(shipment);
         assertNotNull(shipment.getId());
@@ -141,7 +140,7 @@ public class InvoiceSecuredTest extends AbstractPaymentTest {
         InvoiceSecured invoice = getUnzer(Keys.LEGACY_PRIVATE_KEY).createPaymentType(getInvoiceSecured());
         Basket basket = getMinTestBasketV2();
         String invoiceId = new Date().getTime() + "";
-        Charge charge = getUnzer(Keys.LEGACY_PRIVATE_KEY).charge(basket.getTotalValueGross(), Currency.getInstance("EUR"), invoice, new URL("https://www.meinShop.de"), getMaximumCustomerSameAddress(generateUuid()), basket);
+        Charge charge = getUnzer(Keys.LEGACY_PRIVATE_KEY).charge(basket.getTotalValueGross(), Currency.getInstance("EUR"), invoice, unsafeUrl("https://www.meinShop.de"), getMaximumCustomerSameAddress(generateUuid()), basket);
         Shipment shipment = getUnzer(Keys.LEGACY_PRIVATE_KEY).shipment(charge.getPaymentId(), invoiceId);
         assertNotNull(shipment);
         assertNotNull(shipment.getId());
@@ -150,7 +149,7 @@ public class InvoiceSecuredTest extends AbstractPaymentTest {
 
 
     @Test
-    public void testFetchInvoiceSecuredType() throws HttpCommunicationException {
+    public void testFetchInvoiceSecuredType() {
         InvoiceSecured invoice = getUnzer(Keys.LEGACY_PRIVATE_KEY).createPaymentType(getInvoiceSecured());
         assertNotNull(invoice.getId());
         InvoiceSecured fetchedInvoiceSecured = (InvoiceSecured) getUnzer(Keys.LEGACY_PRIVATE_KEY).fetchPaymentType(invoice.getId());
@@ -171,7 +170,7 @@ public class InvoiceSecuredTest extends AbstractPaymentTest {
         boolean matches = invoiceSecured.getId().matches("s-ivg-\\w*");
         assertTrue(matches);
 
-        Charge charge = invoiceSecured.charge(BigDecimal.TEN, Currency.getInstance("EUR"), new URL("https://www.meinShop.de"), getMaximumCustomerSameAddress(generateUuid()));
+        Charge charge = invoiceSecured.charge(BigDecimal.TEN, Currency.getInstance("EUR"), unsafeUrl("https://www.meinShop.de"), getMaximumCustomerSameAddress(generateUuid()));
         assertNotNull(charge.getPaymentId());
     }
 
@@ -193,7 +192,7 @@ public class InvoiceSecuredTest extends AbstractPaymentTest {
         Charge charge = invoiceSecured.charge(
                 BigDecimal.TEN,
                 Currency.getInstance("EUR"),
-                new URL("https://www.meinShop.de"),
+                unsafeUrl("https://www.meinShop.de"),
                 getMaximumCustomerSameAddress(generateUuid()),
                 unzer.createBasket(getMaxTestBasketV1()),
                 generateUuid());
@@ -201,7 +200,7 @@ public class InvoiceSecuredTest extends AbstractPaymentTest {
     }
 
     @Test
-    public void testChargeInvoiceFactoringBasketV2() throws HttpCommunicationException {
+    public void testChargeInvoiceFactoringBasketV2() {
         Unzer unzer = getUnzer(Keys.LEGACY_PRIVATE_KEY);
         HttpClientBasedRestCommunication restCommunication = new HttpClientBasedRestCommunication();
         JsonParser jsonParser = new JsonParser();
@@ -253,7 +252,7 @@ public class InvoiceSecuredTest extends AbstractPaymentTest {
     }
 
     @Test
-    public void testCancelFailsWithoutReasonCode() throws HttpCommunicationException {
+    public void testCancelFailsWithoutReasonCode() {
         PaymentError expectedError = new PaymentError(
                 "Reason code is mandatory for the payment type INVOICE_SECURED",
                 "Reason code is mandatory for the payment type INVOICE_SECURED. Please contact us for more information.",

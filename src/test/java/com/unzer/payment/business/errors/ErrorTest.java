@@ -57,7 +57,7 @@ public class ErrorTest extends AbstractPaymentTest {
     // Card resources can only be created directly with a valid PCI certification.
     // Please contact Unzer to grant permission for PCI level SAQ-D or SAQ-A EP
     @Test
-    public void testPCILevelSaqA() throws HttpCommunicationException {
+    public void testPCILevelSaqA() {
         try {
             getUnzer(Keys.PUBLIC_KEY).createPaymentType(getPaymentTypeCard()); // Prod Sandbox
         } catch (PaymentException e) {
@@ -75,7 +75,7 @@ public class ErrorTest extends AbstractPaymentTest {
     // Payment type '/types/s-crd-jbrjthrghag2' not found
     //FIXME tests nothing
     @Test
-    public void testInvalidAccess() throws HttpCommunicationException {
+    public void testInvalidAccess() {
         Card card = createPaymentTypeCard(getUnzer(), "4711100000000000");
         try {
             getUnzer(Keys.DEFAULT).fetchPaymentType(card.getId());  // Prod-Sandbox
@@ -118,7 +118,7 @@ public class ErrorTest extends AbstractPaymentTest {
     }
 
     @Test
-    public void testFetchNonExistingPayment() throws HttpCommunicationException {
+    public void testFetchNonExistingPayment() {
         try {
             getUnzer().fetchAuthorization("213");
         } catch (PaymentException e) {

@@ -29,21 +29,21 @@ import org.junit.jupiter.api.Test;
 public class SepaDirectDebitSecuredTest extends AbstractPaymentTest {
 
     @Test
-    public void testCreateSepaDirectDebitSecuredManatoryType() throws HttpCommunicationException {
+    public void testCreateSepaDirectDebitSecuredManatoryType() {
         SepaDirectDebitSecured sdd = new SepaDirectDebitSecured("DE89370400440532013000");
         sdd = getUnzer(LEGACY_PRIVATE_KEY).createPaymentType(sdd);
         assertNotNull(sdd.getId());
     }
 
     @Test
-    public void testCreateSepaDirectDebitSecuredFullType() throws HttpCommunicationException {
+    public void testCreateSepaDirectDebitSecuredFullType() {
         SepaDirectDebitSecured sddOriginal = getSepaDirectDebitSecured();
         SepaDirectDebitSecured sddCreated = getUnzer(LEGACY_PRIVATE_KEY).createPaymentType(sddOriginal);
         assertSddEquals(sddOriginal, sddCreated);
     }
 
     @Test
-    public void testFetchSepaDirectDebitSecuredType() throws HttpCommunicationException {
+    public void testFetchSepaDirectDebitSecuredType() {
         Unzer unzer = getUnzer(LEGACY_PRIVATE_KEY);
         SepaDirectDebitSecured sdd = unzer.createPaymentType(getSepaDirectDebitSecured());
         assertNotNull(sdd.getId());
@@ -85,7 +85,7 @@ public class SepaDirectDebitSecuredTest extends AbstractPaymentTest {
     }
 
     @Test
-    public void testChargeSepaDirectDebitGuaranteed() throws HttpCommunicationException {
+    public void testChargeSepaDirectDebitGuaranteed() {
         Unzer unzer = getUnzer(Keys.LEGACY_PRIVATE_KEY);
         HttpClientBasedRestCommunication restCommunication = new HttpClientBasedRestCommunication();
         JsonParser jsonParser = new JsonParser();

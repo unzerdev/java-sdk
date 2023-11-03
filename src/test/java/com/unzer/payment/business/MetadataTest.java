@@ -9,13 +9,12 @@ import com.unzer.payment.Charge;
 import com.unzer.payment.Metadata;
 import com.unzer.payment.Payment;
 import com.unzer.payment.Unzer;
-import com.unzer.payment.communication.HttpCommunicationException;
 import org.junit.jupiter.api.Test;
 
 public class MetadataTest extends AbstractPaymentTest {
 
   @Test
-  public void testCreateFetchMetadata() throws HttpCommunicationException {
+  public void testCreateFetchMetadata() {
     Metadata metadata = getUnzer().createMetadata(getTestMetadata());
     Metadata metadataFetched = getUnzer().fetchMetadata(metadata.getId());
     assertNotNull(metadataFetched);
@@ -24,7 +23,7 @@ public class MetadataTest extends AbstractPaymentTest {
   }
 
   @Test
-  public void testSortedMetadata() throws HttpCommunicationException {
+  public void testSortedMetadata() {
     Metadata metadataRequest = getTestMetadata(true);
     Metadata metadata = getUnzer().createMetadata(metadataRequest);
     assertEquals("delivery-date", metadata.getMetadataMap().keySet().toArray()[0]);
@@ -37,7 +36,7 @@ public class MetadataTest extends AbstractPaymentTest {
 
   @Test
   public void testAuthorizationWithMetadata()
-      throws HttpCommunicationException {
+      {
     Unzer unzer = getUnzer();
     String metadataId = unzer.createMetadata(getTestMetadata()).getId();
     Authorization authorize = unzer.authorize(
@@ -54,7 +53,7 @@ public class MetadataTest extends AbstractPaymentTest {
   }
 
   @Test
-  public void testChargeWithMetadata() throws HttpCommunicationException {
+  public void testChargeWithMetadata() {
     Unzer unzer = getUnzer();
     String metadataId = unzer.createMetadata(getTestMetadata()).getId();
     Charge charge = unzer.charge(

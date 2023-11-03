@@ -10,7 +10,6 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import com.unzer.payment.BasePaypage;
 import com.unzer.payment.Linkpay;
 import com.unzer.payment.Unzer;
-import com.unzer.payment.communication.HttpCommunicationException;
 import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.Currency;
@@ -29,7 +28,7 @@ public class LinkpayTest extends AbstractPaymentTest {
     }
 
     @Test
-    public void charge_MaximumLinkpay() throws HttpCommunicationException {
+    public void charge_MaximumLinkpay() {
         Unzer unzer = getUnzer();
         Linkpay request = getMaximumLinkpay();
         request = unzer.linkpay(request);
@@ -71,7 +70,7 @@ public class LinkpayTest extends AbstractPaymentTest {
     }
 
     @Test
-    public void charge_Linkpay_WithEmptyCssMap() throws HttpCommunicationException {
+    public void charge_Linkpay_WithEmptyCssMap() {
         Unzer unzer = getUnzer();
 
         Linkpay request = getMaximumLinkpay();
@@ -110,7 +109,7 @@ public class LinkpayTest extends AbstractPaymentTest {
     }
 
     @Test
-    public void testAuthorize() throws HttpCommunicationException {
+    public void testAuthorize() {
         Unzer unzer = getUnzer();
         Linkpay request = getMaximumLinkpay();
         request.setAction(BasePaypage.Action.AUTHORIZE);

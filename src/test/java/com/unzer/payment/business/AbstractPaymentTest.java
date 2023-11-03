@@ -19,7 +19,6 @@ import com.unzer.payment.Paypage;
 import com.unzer.payment.Processing;
 import com.unzer.payment.ShippingAddress;
 import com.unzer.payment.Unzer;
-import com.unzer.payment.communication.HttpCommunicationException;
 import com.unzer.payment.communication.impl.HttpClientBasedRestCommunication;
 import com.unzer.payment.marketplace.MarketplaceAuthorization;
 import com.unzer.payment.marketplace.MarketplaceCancelBasket;
@@ -167,25 +166,25 @@ public abstract class AbstractPaymentTest {
         return authorization;
     }
 
-    protected Charge getCharge() throws HttpCommunicationException {
+    protected Charge getCharge() {
         return getCharge(null);
     }
 
-    protected Charge getCharge(String orderId) throws HttpCommunicationException {
+    protected Charge getCharge(String orderId) {
         Charge charge = getCharge(createPaymentTypeCard(getUnzer(), "4711100000000000").getId(), null, null);
         charge.setOrderId(orderId);
         return charge;
     }
 
-    protected Charge getCharge(String orderId, Boolean card3ds, AdditionalTransactionData additionalTransactionData) throws HttpCommunicationException {
+    protected Charge getCharge(String orderId, Boolean card3ds, AdditionalTransactionData additionalTransactionData) {
         return getCharge(createPaymentTypeCard(getUnzer(), "4711100000000000").getId(), null, orderId, null, null, card3ds, additionalTransactionData);
     }
 
-    protected Charge getCharge(String typeId, String customerId, String orderId, String metadataId, String basketId, AdditionalTransactionData additionalTransactionData) throws HttpCommunicationException {
+    protected Charge getCharge(String typeId, String customerId, String orderId, String metadataId, String basketId, AdditionalTransactionData additionalTransactionData) {
         return getCharge(typeId, customerId, orderId, metadataId, basketId, null, additionalTransactionData);
     }
 
-    protected Charge getCharge(String typeId, String customerId, String orderId, String metadataId, String basketId, Boolean card3ds, AdditionalTransactionData additionalTransactionData) throws HttpCommunicationException {
+    protected Charge getCharge(String typeId, String customerId, String orderId, String metadataId, String basketId, Boolean card3ds, AdditionalTransactionData additionalTransactionData) {
         Charge charge = new Charge();
         charge.setAmount(BigDecimal.ONE)
                 .setCurrency(Currency.getInstance("EUR"))
@@ -200,7 +199,7 @@ public abstract class AbstractPaymentTest {
         return charge;
     }
 
-    protected Card createPaymentTypeCard(Unzer unzer, String cardNumber) throws HttpCommunicationException {
+    protected Card createPaymentTypeCard(Unzer unzer, String cardNumber) {
         Card card = getPaymentTypeCard(cardNumber);
         card = unzer.createPaymentType(card);
         return card;
