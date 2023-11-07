@@ -26,17 +26,7 @@ public class UrlUtil {
     }
 
     public String getRestUrl() {
-        StringBuilder stringBuilder = new StringBuilder(apiEndpoint);
-        appendSlashIfNeeded(stringBuilder);
-        stringBuilder.append("v1");
-        appendSlashIfNeeded(stringBuilder);
-        return stringBuilder.toString();
-    }
-
-    private void appendSlashIfNeeded(StringBuilder stringBuilder) {
-        if (stringBuilder.charAt(stringBuilder.length() - 1) != '/') {
-            stringBuilder.append("/");
-        }
+        return apiEndpoint + "/v1/";
     }
 
     public String getUrl(Resource resource) {

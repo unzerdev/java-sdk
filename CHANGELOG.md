@@ -6,6 +6,23 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres
 to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## [UNRELEASED](https://github.com/unzerdev/java-sdk/compare/4.4.0..5.0.0)
+
+Consists of internal refactorings and improvements.
+
+### Added
+
+* Added `com.unzer.payment.Resource` interface.
+
+### Changed
+
+* Refactored `UrlUtil`: moved Resource URL construction logic to `Resource`-classes.
+* Every Unzer Payment Gateway resource implements `Resource` instead of `PaymentType`: `Customer`, `Basket`, `Payment`, etc.
+
+### Removed
+
+* Removed `PaymentType::getId()` and `PaymentType::getTypeUrl()` methods. Use `Resource::getId()` and `Resource::getUrl()` instead.
+
 ## [4.4.0](https://github.com/unzerdev/java-sdk/compare/4.3.0..4.4.0)
 
 ### Added
