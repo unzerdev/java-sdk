@@ -1,7 +1,5 @@
 package com.unzer.payment;
 
-import com.unzer.payment.communication.json.ApiObject;
-import com.unzer.payment.paymenttypes.PaymentType;
 import java.math.BigDecimal;
 
 /**
@@ -9,66 +7,87 @@ import java.math.BigDecimal;
  *
  * @author Unzer E-Com GmbH
  */
-public class Cancel extends AbstractTransaction<Payment> {
+public class Cancel extends BaseTransaction<Payment> {
+    private final static String TRANSACTION_TYPE_TOKEN = "<transactionType>";
 
-  private BigDecimal amountGross;
-  private BigDecimal amountNet;
-  private BigDecimal amountVat;
-  private ReasonCode reasonCode;
+    private BigDecimal amountGross;
+    private BigDecimal amountNet;
+    private BigDecimal amountVat;
+    private ReasonCode reasonCode;
+    private String transactionType = TransactionType.AUTHORIZE;
 
-  public Cancel() {
-    super();
-  }
+    public Cancel() {
+        super();
+    }
 
-  @Deprecated
-  public Cancel(Unzer unzer) {
-    super(unzer);
-  }
+    @Deprecated
+    public Cancel(Unzer unzer) {
+        super(unzer);
+    }
 
-  @Override
-  public String getTypeUrl() {
-    return "payments/<paymentId>/authorize/cancels";
-  }
+    @Override
+    public String getTransactionUrl() {
+        return "/v1/payments/<paymentId>/<transactionType>/<transactionId>/cancels";
+    }
 
-  @Override
-  public PaymentType map(PaymentType paymentType, ApiObject apiObject) {
-    return null;
-  }
+    @Override
+    public String getUrl() {
+        String partialResult = getPaymentId() == null
+                ? getTransactionUrl().replaceAll(PAYMENT_ID_TOKEN + "/", "")
+                : getTransactionUrl().replaceAll(PAYMENT_ID_TOKEN, getPaymentId());
 
-  public BigDecimal getAmountGross() {
-    return amountGross;
-  }
+        return partialResult
+                .replaceAll(TRANSACTION_TYPE_TOKEN, getTransactionType() == null ? TransactionType.AUTHORIZE : getTransactionType())
+                .replaceAll(TRANSACTION_ID_TOKEN, getId() == null ? "" : getId());
+    }
 
-  public void setAmountGross(BigDecimal amountGross) {
-    this.amountGross = amountGross;
-  }
+    public BigDecimal getAmountGross() {
+        return amountGross;
+    }
 
-  public BigDecimal getAmountNet() {
-    return amountNet;
-  }
+    public void setAmountGross(BigDecimal amountGross) {
+        this.amountGross = amountGross;
+    }
 
-  public void setAmountNet(BigDecimal amountNet) {
-    this.amountNet = amountNet;
-  }
+    public BigDecimal getAmountNet() {
+        return amountNet;
+    }
 
-  public BigDecimal getAmountVat() {
-    return amountVat;
-  }
+    public void setAmountNet(BigDecimal amountNet) {
+        this.amountNet = amountNet;
+    }
 
-  public void setAmountVat(BigDecimal amountVat) {
-    this.amountVat = amountVat;
-  }
+    public BigDecimal getAmountVat() {
+        return amountVat;
+    }
 
-  public ReasonCode getReasonCode() {
-    return reasonCode;
-  }
+    public void setAmountVat(BigDecimal amountVat) {
+        this.amountVat = amountVat;
+    }
 
-  public Cancel setReasonCode(ReasonCode reasonCode) {
-    this.reasonCode = reasonCode;
-    return this;
-  }
+    public ReasonCode getReasonCode() {
+        return reasonCode;
+    }
 
-  public enum ReasonCode {
-    CANCEL, RETURN, CREDIT
-  }
+    public Cancel setReasonCode(ReasonCode reasonCode) {
+        this.reasonCode = reasonCode;
+        return this;
+    }
+
+    public String getTransactionType() {
+        return transactionType;
+    }
+
+    public void setTransactionType(String transactionType) {
+        this.transactionType = transactionType;
+    }
+
+    public enum ReasonCode {
+        CANCEL, RETURN, CREDIT
+    }
+
+    public interface TransactionType {
+        String CHARGES = "charges";
+        String AUTHORIZE = "authorize";
+    }
 }

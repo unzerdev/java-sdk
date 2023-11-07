@@ -2,6 +2,7 @@ package com.unzer.payment.communication;
 
 
 import com.unzer.payment.communication.UnzerHttpRequest.UnzerHttpMethod;
+
 import java.util.Locale;
 
 public class MockUnzerRestCommunication extends AbstractUnzerRestCommunication {
@@ -16,7 +17,7 @@ public class MockUnzerRestCommunication extends AbstractUnzerRestCommunication {
     String loggedBody;
 
     public MockUnzerRestCommunication() {
-        this(null,null);
+        this(null, null);
     }
 
     public MockUnzerRestCommunication(Locale locale, String clientIp) {

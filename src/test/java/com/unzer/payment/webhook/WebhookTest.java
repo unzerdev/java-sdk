@@ -1,37 +1,37 @@
 package com.unzer.payment.webhook;
 
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-
 import com.unzer.payment.business.AbstractPaymentTest;
-import com.unzer.payment.communication.HttpCommunicationException;
-import java.util.Arrays;
-import java.util.List;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.parallel.Execution;
 import org.junit.jupiter.api.parallel.ExecutionMode;
 
+import java.util.Arrays;
+import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+
 
 @Execution(ExecutionMode.SAME_THREAD)
 public class WebhookTest extends AbstractPaymentTest {
 
     @BeforeEach
-    public void clearDataBeforeTest() throws HttpCommunicationException {
+    public void clearDataBeforeTest() {
         WebhookList deleteResult = getUnzer().deleteMultiWebhook();
         assertNotNull(deleteResult);
     }
 
     @AfterEach
-    public void clearDataAfterTest() throws HttpCommunicationException {
+    public void clearDataAfterTest() {
         WebhookList deleteResult = getUnzer().deleteMultiWebhook();
         assertNotNull(deleteResult);
     }
 
     @Test
-    public void testRegisterSingleWebhookWithValidEvent() throws HttpCommunicationException {
+    public void testRegisterSingleWebhookWithValidEvent() {
         Webhook registerRequest = new Webhook("https://domain.com", WebhookEventEnum.AUTHORIZE_CANCELED);
         Webhook registerResult = getUnzer().registerSingleWebhook(registerRequest);
         assertNotNull(registerResult);
@@ -40,7 +40,7 @@ public class WebhookTest extends AbstractPaymentTest {
     }
 
     @Test
-    public void testRegisterMultiWebhookWithValidEvent() throws HttpCommunicationException {
+    public void testRegisterMultiWebhookWithValidEvent() {
         List<WebhookEventEnum> listWebhookEvents = Arrays.asList(WebhookEventEnum.CHARGE_CANCELED, WebhookEventEnum.AUTHORIZE_CANCELED, WebhookEventEnum.BASKET_CREATE);
         Webhook registerRequest = new Webhook("https://domain.com", listWebhookEvents);
         WebhookList registerResult = getUnzer().registerMultiWebhooks(registerRequest);
@@ -53,7 +53,7 @@ public class WebhookTest extends AbstractPaymentTest {
     }
 
     @Test
-    public void testDeleteSingleWebhook() throws HttpCommunicationException {
+    public void testDeleteSingleWebhook() {
         Webhook registerRequest = new Webhook("https://domain.com", WebhookEventEnum.AUTHORIZE_CANCELED);
         Webhook registerResult = getUnzer().registerSingleWebhook(registerRequest);
         assertNotNull(registerResult);
@@ -66,7 +66,7 @@ public class WebhookTest extends AbstractPaymentTest {
     }
 
     @Test
-    public void updateSingleWebhook() throws HttpCommunicationException {
+    public void updateSingleWebhook() {
         Webhook registerRequest = new Webhook("https://domain.com", WebhookEventEnum.AUTHORIZE_CANCELED);
         Webhook registerResult = getUnzer().registerSingleWebhook(registerRequest);
         assertNotNull(registerResult);

@@ -6,66 +6,66 @@ package com.unzer.payment;
  * @author Unzer E-Com GmbH
  */
 public class Address {
-  private String name;
-  private String street;
-  private String state;
-  private String zip;
-  private String city;
-  private String country;
+    private String name;
+    private String street;
+    private String state;
+    private String zip;
+    private String city;
+    private String country;
 
-  public String getName() {
-    return name;
-  }
+    public String getName() {
+        return name;
+    }
 
-  public Address setName(String name) {
-    this.name = name;
-    return this;
-  }
+    public Address setName(String name) {
+        this.name = name;
+        return this;
+    }
 
-  public String getStreet() {
-    return street;
-  }
+    public String getStreet() {
+        return street;
+    }
 
-  public Address setStreet(String street) {
-    this.street = street;
-    return this;
-  }
+    public Address setStreet(String street) {
+        this.street = street;
+        return this;
+    }
 
-  public String getState() {
-    return state;
-  }
+    public String getState() {
+        return state;
+    }
 
-  public Address setState(String state) {
-    this.state = state;
-    return this;
-  }
+    public Address setState(String state) {
+        this.state = state;
+        return this;
+    }
 
-  public String getZip() {
-    return zip;
-  }
+    public String getZip() {
+        return zip;
+    }
 
-  public Address setZip(String zip) {
-    this.zip = zip;
-    return this;
-  }
+    public Address setZip(String zip) {
+        this.zip = zip;
+        return this;
+    }
 
-  public String getCity() {
-    return city;
-  }
+    public String getCity() {
+        return city;
+    }
 
-  public Address setCity(String city) {
-    this.city = city;
-    return this;
-  }
+    public Address setCity(String city) {
+        this.city = city;
+        return this;
+    }
 
-  public String getCountry() {
-    return country;
-  }
+    public String getCountry() {
+        return country;
+    }
 
-  public Address setCountry(String country) {
-    this.country = country;
-    return this;
-  }
+    public Address setCountry(String country) {
+        this.country = country;
+        return this;
+    }
 
 
 }

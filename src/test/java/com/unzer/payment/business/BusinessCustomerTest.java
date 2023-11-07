@@ -1,24 +1,23 @@
 package com.unzer.payment.business;
 
 
-import static com.unzer.payment.util.Uuid.generateUuid;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-
 import com.unzer.payment.Customer;
 import com.unzer.payment.CustomerCompanyData;
 import com.unzer.payment.PaymentException;
 import com.unzer.payment.communication.HttpCommunicationException;
-import java.text.ParseException;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
+
+import java.text.ParseException;
+
+import static com.unzer.payment.util.Uuid.generateUuid;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class BusinessCustomerTest extends AbstractPaymentTest {
 
 
     @Test
-    public void testCreateRegisteredBusinessCustomer() throws HttpCommunicationException {
+    public void testCreateRegisteredBusinessCustomer() {
         Customer customer = getUnzer().createCustomer(getRegisterdMinimumBusinessCustomer());
         assertNotNull(customer);
         assertNotNull(customer.getId());

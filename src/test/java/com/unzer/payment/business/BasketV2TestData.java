@@ -1,13 +1,14 @@
 package com.unzer.payment.business;
 
 
-import static com.unzer.payment.util.Url.unsafeUrl;
-import static com.unzer.payment.util.Uuid.generateUuid;
-
 import com.unzer.payment.Basket;
 import com.unzer.payment.BasketItem;
+
 import java.math.BigDecimal;
 import java.util.Currency;
+
+import static com.unzer.payment.util.Url.unsafeUrl;
+import static com.unzer.payment.util.Uuid.generateUuid;
 
 public class BasketV2TestData {
     // TODO: remove unused

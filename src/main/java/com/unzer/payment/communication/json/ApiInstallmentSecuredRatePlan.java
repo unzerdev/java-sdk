@@ -4,172 +4,171 @@ import com.google.gson.annotations.JsonAdapter;
 import com.google.gson.annotations.SerializedName;
 import com.unzer.payment.business.paymenttypes.InstallmentSecuredRate;
 import com.unzer.payment.communication.JsonDateConverter;
+
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 public class ApiInstallmentSecuredRatePlan extends ApiIdObject implements ApiObject {
+    private String iban;
+    private String bic;
+    private String accountHolder;
+    @JsonAdapter(JsonDateConverter.class)
+    private Date invoiceDate;
+    @JsonAdapter(JsonDateConverter.class)
+    private Date invoiceDueDate;
 
+    private int numberOfRates;
 
-  private String iban;
-  private String bic;
-  private String accountHolder;
-  @JsonAdapter(JsonDateConverter.class)
-  private Date invoiceDate;
-  @JsonAdapter(JsonDateConverter.class)
-  private Date invoiceDueDate;
+    @SerializedName("dayOfPurchase")
+    @JsonAdapter(JsonDateConverter.class)
+    private Date orderDate;
 
-  private int numberOfRates;
+    private BigDecimal totalPurchaseAmount;
+    private BigDecimal totalInterestAmount;
+    private BigDecimal totalAmount;
+    private BigDecimal effectiveInterestRate;
+    private BigDecimal nominalInterestRate;
+    private BigDecimal feeFirstRate;
+    private BigDecimal feePerRate;
+    private BigDecimal monthlyRate;
+    private BigDecimal lastRate;
+    private List<InstallmentSecuredRate> rateList = new ArrayList<InstallmentSecuredRate>();
 
-  @SerializedName("dayOfPurchase")
-  @JsonAdapter(JsonDateConverter.class)
-  private Date orderDate;
+    public int getNumberOfRates() {
+        return numberOfRates;
+    }
 
-  private BigDecimal totalPurchaseAmount;
-  private BigDecimal totalInterestAmount;
-  private BigDecimal totalAmount;
-  private BigDecimal effectiveInterestRate;
-  private BigDecimal nominalInterestRate;
-  private BigDecimal feeFirstRate;
-  private BigDecimal feePerRate;
-  private BigDecimal monthlyRate;
-  private BigDecimal lastRate;
-  private List<InstallmentSecuredRate> rateList = new ArrayList<InstallmentSecuredRate>();
+    public void setNumberOfRates(int numberOfRates) {
+        this.numberOfRates = numberOfRates;
+    }
 
-  public int getNumberOfRates() {
-    return numberOfRates;
-  }
+    public Date getOrderDate() {
+        return orderDate;
+    }
 
-  public void setNumberOfRates(int numberOfRates) {
-    this.numberOfRates = numberOfRates;
-  }
+    public void setOrderDate(Date orderDate) {
+        this.orderDate = orderDate;
+    }
 
-  public Date getOrderDate() {
-    return orderDate;
-  }
+    public BigDecimal getTotalPurchaseAmount() {
+        return totalPurchaseAmount;
+    }
 
-  public void setOrderDate(Date orderDate) {
-    this.orderDate = orderDate;
-  }
+    public void setTotalPurchaseAmount(BigDecimal totalPurchaseAmount) {
+        this.totalPurchaseAmount = totalPurchaseAmount;
+    }
 
-  public BigDecimal getTotalPurchaseAmount() {
-    return totalPurchaseAmount;
-  }
+    public BigDecimal getTotalInterestAmount() {
+        return totalInterestAmount;
+    }
 
-  public void setTotalPurchaseAmount(BigDecimal totalPurchaseAmount) {
-    this.totalPurchaseAmount = totalPurchaseAmount;
-  }
+    public void setTotalInterestAmount(BigDecimal totalInterestAmount) {
+        this.totalInterestAmount = totalInterestAmount;
+    }
 
-  public BigDecimal getTotalInterestAmount() {
-    return totalInterestAmount;
-  }
+    public BigDecimal getTotalAmount() {
+        return totalAmount;
+    }
 
-  public void setTotalInterestAmount(BigDecimal totalInterestAmount) {
-    this.totalInterestAmount = totalInterestAmount;
-  }
+    public void setTotalAmount(BigDecimal totalAmount) {
+        this.totalAmount = totalAmount;
+    }
 
-  public BigDecimal getTotalAmount() {
-    return totalAmount;
-  }
+    public BigDecimal getEffectiveInterestRate() {
+        return effectiveInterestRate;
+    }
 
-  public void setTotalAmount(BigDecimal totalAmount) {
-    this.totalAmount = totalAmount;
-  }
+    public void setEffectiveInterestRate(BigDecimal effectiveInterestRate) {
+        this.effectiveInterestRate = effectiveInterestRate;
+    }
 
-  public BigDecimal getEffectiveInterestRate() {
-    return effectiveInterestRate;
-  }
+    public BigDecimal getNominalInterestRate() {
+        return nominalInterestRate;
+    }
 
-  public void setEffectiveInterestRate(BigDecimal effectiveInterestRate) {
-    this.effectiveInterestRate = effectiveInterestRate;
-  }
+    public void setNominalInterestRate(BigDecimal nominalInterestRate) {
+        this.nominalInterestRate = nominalInterestRate;
+    }
 
-  public BigDecimal getNominalInterestRate() {
-    return nominalInterestRate;
-  }
+    public BigDecimal getFeeFirstRate() {
+        return feeFirstRate;
+    }
 
-  public void setNominalInterestRate(BigDecimal nominalInterestRate) {
-    this.nominalInterestRate = nominalInterestRate;
-  }
+    public void setFeeFirstRate(BigDecimal feeFirstRate) {
+        this.feeFirstRate = feeFirstRate;
+    }
 
-  public BigDecimal getFeeFirstRate() {
-    return feeFirstRate;
-  }
+    public BigDecimal getFeePerRate() {
+        return feePerRate;
+    }
 
-  public void setFeeFirstRate(BigDecimal feeFirstRate) {
-    this.feeFirstRate = feeFirstRate;
-  }
+    public void setFeePerRate(BigDecimal feePerRate) {
+        this.feePerRate = feePerRate;
+    }
 
-  public BigDecimal getFeePerRate() {
-    return feePerRate;
-  }
+    public BigDecimal getMonthlyRate() {
+        return monthlyRate;
+    }
 
-  public void setFeePerRate(BigDecimal feePerRate) {
-    this.feePerRate = feePerRate;
-  }
+    public void setMonthlyRate(BigDecimal monthlyRate) {
+        this.monthlyRate = monthlyRate;
+    }
 
-  public BigDecimal getMonthlyRate() {
-    return monthlyRate;
-  }
+    public BigDecimal getLastRate() {
+        return lastRate;
+    }
 
-  public void setMonthlyRate(BigDecimal monthlyRate) {
-    this.monthlyRate = monthlyRate;
-  }
+    public void setLastRate(BigDecimal lastRate) {
+        this.lastRate = lastRate;
+    }
 
-  public BigDecimal getLastRate() {
-    return lastRate;
-  }
+    public List<InstallmentSecuredRate> getRateList() {
+        return rateList;
+    }
 
-  public void setLastRate(BigDecimal lastRate) {
-    this.lastRate = lastRate;
-  }
+    public void setRateList(List<InstallmentSecuredRate> rateList) {
+        this.rateList = rateList;
+    }
 
-  public List<InstallmentSecuredRate> getRateList() {
-    return rateList;
-  }
+    public String getIban() {
+        return iban;
+    }
 
-  public void setRateList(List<InstallmentSecuredRate> rateList) {
-    this.rateList = rateList;
-  }
+    public void setIban(String iban) {
+        this.iban = iban;
+    }
 
-  public String getIban() {
-    return iban;
-  }
+    public String getBic() {
+        return bic;
+    }
 
-  public void setIban(String iban) {
-    this.iban = iban;
-  }
+    public void setBic(String bic) {
+        this.bic = bic;
+    }
 
-  public String getBic() {
-    return bic;
-  }
+    public Date getInvoiceDate() {
+        return invoiceDate;
+    }
 
-  public void setBic(String bic) {
-    this.bic = bic;
-  }
+    public void setInvoiceDate(Date invoiceDate) {
+        this.invoiceDate = invoiceDate;
+    }
 
-  public Date getInvoiceDate() {
-    return invoiceDate;
-  }
+    public Date getInvoiceDueDate() {
+        return invoiceDueDate;
+    }
 
-  public void setInvoiceDate(Date invoiceDate) {
-    this.invoiceDate = invoiceDate;
-  }
+    public void setInvoiceDueDate(Date invoiceDueDate) {
+        this.invoiceDueDate = invoiceDueDate;
+    }
 
-  public Date getInvoiceDueDate() {
-    return invoiceDueDate;
-  }
+    public String getAccountHolder() {
+        return accountHolder;
+    }
 
-  public void setInvoiceDueDate(Date invoiceDueDate) {
-    this.invoiceDueDate = invoiceDueDate;
-  }
-
-  public String getAccountHolder() {
-    return accountHolder;
-  }
-
-  public void setAccountHolder(String accountHolder) {
-    this.accountHolder = accountHolder;
-  }
+    public void setAccountHolder(String accountHolder) {
+        this.accountHolder = accountHolder;
+    }
 }

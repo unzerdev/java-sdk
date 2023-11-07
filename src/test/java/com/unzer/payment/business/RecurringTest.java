@@ -1,26 +1,21 @@
 package com.unzer.payment.business;
 
 
-import static com.unzer.payment.util.Uuid.generateUuid;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNull;
-
-import com.unzer.payment.Charge;
-import com.unzer.payment.Customer;
-import com.unzer.payment.Metadata;
-import com.unzer.payment.Recurring;
-import com.unzer.payment.Unzer;
+import com.unzer.payment.*;
 import com.unzer.payment.communication.HttpCommunicationException;
 import com.unzer.payment.paymenttypes.Card;
 import com.unzer.payment.paymenttypes.Paypal;
 import com.unzer.payment.paymenttypes.SepaDirectDebit;
+import org.junit.jupiter.api.Test;
+
 import java.math.BigDecimal;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.text.ParseException;
 import java.util.Currency;
-import org.junit.jupiter.api.Test;
+
+import static com.unzer.payment.util.Uuid.generateUuid;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class RecurringTest extends AbstractPaymentTest {
     @Test

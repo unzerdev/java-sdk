@@ -1,26 +1,28 @@
 package com.unzer.payment.business;
 
 
-import static com.unzer.payment.util.Url.unsafeUrl;
-import static com.unzer.payment.util.Uuid.generateUuid;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNull;
-
 import com.unzer.payment.BasePaypage;
 import com.unzer.payment.Linkpay;
 import com.unzer.payment.Unzer;
-import com.unzer.payment.communication.HttpCommunicationException;
+import org.junit.jupiter.api.DynamicTest;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestFactory;
+
 import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.Currency;
-import org.junit.jupiter.api.Test;
+import java.util.stream.Stream;
+
+import static com.unzer.payment.util.Url.unsafeUrl;
+import static com.unzer.payment.util.Uuid.generateUuid;
+import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.DynamicTest.dynamicTest;
 
 public class LinkpayTest extends AbstractPaymentTest {
     @Test
     public void fetch_linkpay() {
         Unzer unzer = getUnzer();
-        Linkpay newLinkpay = getMaximumLinkpay();
+        Linkpay newLinkpay = getMaximumLinkpay(null);
         Linkpay createdLinkpay = unzer.linkpay(newLinkpay);
         assertNotNull(createdLinkpay.getId());
 
@@ -29,9 +31,9 @@ public class LinkpayTest extends AbstractPaymentTest {
     }
 
     @Test
-    public void charge_MaximumLinkpay() throws HttpCommunicationException {
+    public void charge_MaximumLinkpay() {
         Unzer unzer = getUnzer();
-        Linkpay request = getMaximumLinkpay();
+        Linkpay request = getMaximumLinkpay(null);
         request = unzer.linkpay(request);
         Linkpay response = unzer.fetchLinkpay(request.getId());
 
@@ -71,10 +73,10 @@ public class LinkpayTest extends AbstractPaymentTest {
     }
 
     @Test
-    public void charge_Linkpay_WithEmptyCssMap() throws HttpCommunicationException {
+    public void charge_Linkpay_WithEmptyCssMap() {
         Unzer unzer = getUnzer();
 
-        Linkpay request = getMaximumLinkpay();
+        Linkpay request = getMaximumLinkpay(null);
         request.setCss(null);
 
         request = unzer.linkpay(request);
@@ -109,43 +111,70 @@ public class LinkpayTest extends AbstractPaymentTest {
         assertEquals(BasePaypage.Action.CHARGE, response.getAction());
     }
 
-    @Test
-    public void testAuthorize() throws HttpCommunicationException {
-        Unzer unzer = getUnzer();
-        Linkpay request = getMaximumLinkpay();
-        request.setAction(BasePaypage.Action.AUTHORIZE);
-        Linkpay created = unzer.linkpay(request);
+    @TestFactory
+    public Stream<DynamicTest> test_action() {
+        class TestCase {
+            final String name;
+            final Linkpay page;
+            final String expectedAction;
 
-        Linkpay fetched = unzer.fetchLinkpay(created.getId());
+            public TestCase(String name, Linkpay page, String expectedAction) {
+                this.name = name;
+                this.page = page;
+                this.expectedAction = expectedAction;
+            }
+        }
 
-        assertEquals("AUTHORIZE", fetched.getAction());
+        return Stream.of(
+                new TestCase(
+                        "authorize",
+                        getMaximumLinkpay(BasePaypage.Action.AUTHORIZE),
+                        "AUTHORIZE"
+                ),
+                new TestCase(
+                        "charge",
+                        getMaximumLinkpay(BasePaypage.Action.CHARGE),
+                        "CHARGE"
+                ),
+                new TestCase(
+                        "default charge",
+                        getMaximumLinkpay(null),
+                        "CHARGE"
+                )
+        ).map(tc -> dynamicTest(tc.name, () -> {
+            Unzer unzer = getUnzer();
+            Linkpay createdPage = unzer.linkpay(tc.page);
+            Linkpay fetchedPage = unzer.fetchLinkpay(createdPage.getId());
+            assertEquals(tc.expectedAction, fetchedPage.getAction());
+        }));
     }
 
-    private Linkpay getMaximumLinkpay() {
-        Linkpay linkpay = new Linkpay();
+    private Linkpay getMaximumLinkpay(String action) {
+        Linkpay page = new Linkpay();
         String[] excludeTypes = {"paypal"};
-        linkpay.setExcludeTypes(excludeTypes);
-        linkpay.setAmount(BigDecimal.ONE);
-        linkpay.setCurrency(Currency.getInstance("EUR"));
-        linkpay.setReturnUrl(unsafeUrl("https://unzer.com"));
-        linkpay.setShopName("Unzer Demo Shop");
-        linkpay.setShopDescription("Unzer Demo Shop Description");
-        linkpay.setTagline("Unzer Tagline");
-        linkpay.setTermsAndConditionUrl(unsafeUrl("https://www.unzer.com/en/datenschutz/"));
-        linkpay.setPrivacyPolicyUrl(unsafeUrl("https://www.unzer.com/en/datenschutz/"));
-        linkpay.setCss(getCssMap());
+        page.setExcludeTypes(excludeTypes);
+        page.setAmount(BigDecimal.ONE);
+        page.setCurrency(Currency.getInstance("EUR"));
+        page.setReturnUrl(unsafeUrl("https://unzer.com"));
+        page.setShopName("Unzer Demo Shop");
+        page.setShopDescription("Unzer Demo Shop Description");
+        page.setTagline("Unzer Tagline");
+        page.setTermsAndConditionUrl(unsafeUrl("https://www.unzer.com/en/datenschutz/"));
+        page.setPrivacyPolicyUrl(unsafeUrl("https://www.unzer.com/en/datenschutz/"));
+        page.setCss(getCssMap());
+        page.setAction(action);
 
-        linkpay.setLogoImage("https://docs.unzer.com/payment-nutshell/payment-in-nutshell.png");
-        linkpay.setFullPageImage("https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/iphone-12-pro-family-hero");
+        page.setLogoImage("https://docs.unzer.com/payment-nutshell/payment-in-nutshell.png");
+        page.setFullPageImage("https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/iphone-12-pro-family-hero");
 
-        linkpay.setContactUrl(unsafeUrl("mailto:support@unzer.com"));
-        linkpay.setHelpUrl(unsafeUrl("https://www.unzer.com/en/support/"));
-        linkpay.setImprintUrl(unsafeUrl("https://www.unzer.com/en/impressum/"));
-        linkpay.setPrivacyPolicyUrl(unsafeUrl("https://www.unzer.com/en/datenschutz/"));
-        linkpay.setTermsAndConditionUrl(unsafeUrl("https://www.unzer.com/en/datenschutz/"));
+        page.setContactUrl(unsafeUrl("mailto:support@unzer.com"));
+        page.setHelpUrl(unsafeUrl("https://www.unzer.com/en/support/"));
+        page.setImprintUrl(unsafeUrl("https://www.unzer.com/en/impressum/"));
+        page.setPrivacyPolicyUrl(unsafeUrl("https://www.unzer.com/en/datenschutz/"));
+        page.setTermsAndConditionUrl(unsafeUrl("https://www.unzer.com/en/datenschutz/"));
 
-        linkpay.setInvoiceId(generateUuid());
-        linkpay.setOrderId(generateUuid());
-        return linkpay;
+        page.setInvoiceId(generateUuid());
+        page.setOrderId(generateUuid());
+        return page;
     }
 }

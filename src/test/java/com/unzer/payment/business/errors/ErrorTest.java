@@ -1,27 +1,19 @@
 package com.unzer.payment.business.errors;
 
 
-import static com.unzer.payment.util.Uuid.generateUuid;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-
-import com.unzer.payment.Authorization;
-import com.unzer.payment.Charge;
-import com.unzer.payment.Customer;
-import com.unzer.payment.PaymentError;
-import com.unzer.payment.PaymentException;
-import com.unzer.payment.Unzer;
+import com.unzer.payment.*;
 import com.unzer.payment.business.AbstractPaymentTest;
 import com.unzer.payment.business.Keys;
 import com.unzer.payment.communication.HttpCommunicationException;
 import com.unzer.payment.paymenttypes.Card;
+import org.junit.jupiter.api.Test;
+
 import java.net.MalformedURLException;
 import java.text.ParseException;
 import java.util.List;
-import org.junit.jupiter.api.Test;
+
+import static com.unzer.payment.util.Uuid.generateUuid;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class ErrorTest extends AbstractPaymentTest {
     @Test
@@ -57,13 +49,13 @@ public class ErrorTest extends AbstractPaymentTest {
     // Card resources can only be created directly with a valid PCI certification.
     // Please contact Unzer to grant permission for PCI level SAQ-D or SAQ-A EP
     @Test
-    public void testPCILevelSaqA() throws HttpCommunicationException {
+    public void testPCILevelSaqA() {
         try {
             getUnzer(Keys.PUBLIC_KEY).createPaymentType(getPaymentTypeCard()); // Prod Sandbox
         } catch (PaymentException e) {
             assertNotNull(e.getPaymentErrorList());
             assertTrue(e.getPaymentErrorList().size() > 0);
-            assertEquals("API.000.000.003", e.getPaymentErrorList().get(0).getCode());
+            assertEquals("API.710.000.003", e.getPaymentErrorList().get(0).getCode());
             assertEquals(
                     "You do not have permission to access this resource. Please contact the owner of the shop.",
                     e.getPaymentErrorList().get(0).getCustomerMessage());
@@ -75,7 +67,7 @@ public class ErrorTest extends AbstractPaymentTest {
     // Payment type '/types/s-crd-jbrjthrghag2' not found
     //FIXME tests nothing
     @Test
-    public void testInvalidAccess() throws HttpCommunicationException {
+    public void testInvalidAccess() {
         Card card = createPaymentTypeCard(getUnzer(), "4711100000000000");
         try {
             getUnzer(Keys.DEFAULT).fetchPaymentType(card.getId());  // Prod-Sandbox
@@ -118,7 +110,7 @@ public class ErrorTest extends AbstractPaymentTest {
     }
 
     @Test
-    public void testFetchNonExistingPayment() throws HttpCommunicationException {
+    public void testFetchNonExistingPayment() {
         try {
             getUnzer().fetchAuthorization("213");
         } catch (PaymentException e) {

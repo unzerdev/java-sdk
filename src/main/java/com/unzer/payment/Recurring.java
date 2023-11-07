@@ -1,21 +1,24 @@
 package com.unzer.payment;
 
-import com.unzer.payment.communication.json.ApiObject;
-import com.unzer.payment.paymenttypes.PaymentType;
+public class Recurring extends BaseTransaction<Payment> {
+    private final static String TYPE_ID_TOKEN = "<typeId>";
 
-public class Recurring extends AbstractTransaction<Payment> {
+    @Override
+    public String getUrl() {
+        String partialResult = getPaymentId() == null
+                ? getTransactionUrl().replaceAll(PAYMENT_ID_TOKEN + "/", "")
+                : getTransactionUrl().replaceAll(PAYMENT_ID_TOKEN, getPaymentId());
 
-  public Recurring() {
-    super();
-  }
+        partialResult = getTypeId() == null
+                ? partialResult.replaceAll(TYPE_ID_TOKEN + "/", "")
+                : partialResult.replaceAll(TYPE_ID_TOKEN, getTypeId());
 
-  @Override
-  public String getTypeUrl() {
-    return "types/<typeId>/recurring";
-  }
+        return partialResult
+                .replaceAll(TRANSACTION_ID_TOKEN, getId() == null ? "" : getId());
+    }
 
-  @Override
-  public PaymentType map(PaymentType paymentType, ApiObject apiObject) {
-    return null;
-  }
+    @Override
+    protected String getTransactionUrl() {
+        return "/v1/types/<typeId>/recurring";
+    }
 }

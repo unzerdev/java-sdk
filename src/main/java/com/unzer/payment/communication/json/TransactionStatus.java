@@ -1,19 +1,19 @@
 package com.unzer.payment.communication.json;
 
 public interface TransactionStatus {
-  Boolean getSuccess();
+    Boolean getSuccess();
 
-  void setSuccess(Boolean value);
+    void setSuccess(Boolean value);
 
-  Boolean getError();
+    Boolean getError();
 
-  void setError(Boolean value);
+    void setError(Boolean value);
 
-  Boolean getPending();
+    Boolean getPending();
 
-  void setPending(Boolean value);
+    void setPending(Boolean value);
 
-  Boolean getResumed();
+    Boolean getResumed();
 
-  void setResumed(Boolean value);
+    void setResumed(Boolean value);
 }

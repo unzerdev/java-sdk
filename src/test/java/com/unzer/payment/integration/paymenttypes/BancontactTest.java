@@ -1,31 +1,31 @@
 package com.unzer.payment.integration.paymenttypes;
 
 
+import com.unzer.payment.Charge;
+import com.unzer.payment.Unzer;
+import com.unzer.payment.business.AbstractPaymentTest;
+import com.unzer.payment.paymenttypes.Bancontact;
+import org.junit.jupiter.api.Test;
+
+import java.math.BigDecimal;
+import java.util.Currency;
+
+import static com.unzer.payment.util.Url.unsafeUrl;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-
-import com.unzer.payment.Charge;
-import com.unzer.payment.business.AbstractPaymentTest;
-import com.unzer.payment.communication.HttpCommunicationException;
-import com.unzer.payment.paymenttypes.Bancontact;
-import java.math.BigDecimal;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.util.Currency;
-import org.junit.jupiter.api.Test;
 
 
 public class BancontactTest extends AbstractPaymentTest {
 
     @Test
-    public void testCreateBancontactWithoutHolder() throws HttpCommunicationException {
+    public void testCreateBancontactWithoutHolder() {
         Bancontact bacncontact = new Bancontact();
         bacncontact = getUnzer().createPaymentType(bacncontact);
         assertNotNull(bacncontact.getId());
     }
 
     @Test
-    public void testCreateBancontactWithHolder() throws HttpCommunicationException {
+    public void testCreateBancontactWithHolder() {
         Bancontact bancontact = new Bancontact("test holder");
         bancontact = getUnzer().createPaymentType(bancontact);
         assertNotNull(bancontact.getId());
@@ -33,24 +33,25 @@ public class BancontactTest extends AbstractPaymentTest {
     }
 
     @Test
-    public void testChargeBancontactType() throws HttpCommunicationException, MalformedURLException {
-        Bancontact bancontact = getUnzer().createPaymentType(getBancontact());
-        Charge charge = bancontact.charge(BigDecimal.ONE, Currency.getInstance("EUR"), new URL("https://www.unzer.com"));
+    public void testChargeBancontactType() {
+        Unzer unzer = getUnzer();
+        Bancontact bancontact = unzer.createPaymentType(new Bancontact());
+        Charge charge = unzer.charge(
+                BigDecimal.ONE,
+                Currency.getInstance("EUR"),
+                bancontact.getId(),
+                unsafeUrl("https://www.unzer.com")
+        );
         assertNotNull(charge);
         assertNotNull(charge.getId());
         assertNotNull(charge.getRedirectUrl());
     }
 
     @Test
-    public void testFetchBancontactType() throws HttpCommunicationException {
-        Bancontact bancontact = getUnzer().createPaymentType(getBancontact());
+    public void testFetchBancontactType() {
+        Bancontact bancontact = getUnzer().createPaymentType(new Bancontact());
         assertNotNull(bancontact.getId());
         Bancontact fetchedBancontact = (Bancontact) getUnzer().fetchPaymentType(bancontact.getId());
         assertNotNull(fetchedBancontact.getId());
-    }
-
-    private Bancontact getBancontact() {
-        Bancontact bancontact = new Bancontact();
-        return bancontact;
     }
 }

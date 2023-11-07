@@ -1,25 +1,7 @@
 package com.unzer.payment.business;
 
-import static com.unzer.payment.util.Url.unsafeUrl;
-import static com.unzer.payment.util.Uuid.generateUuid;
-import static java.util.concurrent.TimeUnit.SECONDS;
-import static org.awaitility.Awaitility.await;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-
-import com.unzer.payment.Address;
-import com.unzer.payment.Authorization;
-import com.unzer.payment.BasketItem;
-import com.unzer.payment.Cancel;
-import com.unzer.payment.Charge;
-import com.unzer.payment.Customer;
+import com.unzer.payment.*;
 import com.unzer.payment.Customer.Salutation;
-import com.unzer.payment.CustomerCompanyData;
-import com.unzer.payment.Metadata;
-import com.unzer.payment.Paypage;
-import com.unzer.payment.Processing;
-import com.unzer.payment.ShippingAddress;
-import com.unzer.payment.Unzer;
-import com.unzer.payment.communication.HttpCommunicationException;
 import com.unzer.payment.communication.impl.HttpClientBasedRestCommunication;
 import com.unzer.payment.marketplace.MarketplaceAuthorization;
 import com.unzer.payment.marketplace.MarketplaceCancelBasket;
@@ -28,6 +10,14 @@ import com.unzer.payment.marketplace.MarketplaceCharge;
 import com.unzer.payment.models.AdditionalTransactionData;
 import com.unzer.payment.paymenttypes.Card;
 import com.unzer.payment.paymenttypes.SepaDirectDebit;
+import org.apache.hc.client5.http.classic.HttpClient;
+import org.apache.hc.client5.http.classic.methods.HttpGet;
+import org.apache.hc.client5.http.classic.methods.HttpPost;
+import org.apache.hc.client5.http.impl.classic.HttpClients;
+import org.apache.hc.core5.http.ClassicHttpResponse;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -37,20 +27,13 @@ import java.text.ParseException;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.Currency;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-import org.apache.hc.client5.http.classic.HttpClient;
-import org.apache.hc.client5.http.classic.methods.HttpGet;
-import org.apache.hc.client5.http.classic.methods.HttpPost;
-import org.apache.hc.client5.http.impl.classic.HttpClients;
-import org.apache.hc.core5.http.ClassicHttpResponse;
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
+import java.util.*;
+
+import static com.unzer.payment.util.Url.unsafeUrl;
+import static com.unzer.payment.util.Uuid.generateUuid;
+import static java.util.concurrent.TimeUnit.SECONDS;
+import static org.awaitility.Awaitility.await;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 
 public abstract class AbstractPaymentTest {
@@ -167,25 +150,25 @@ public abstract class AbstractPaymentTest {
         return authorization;
     }
 
-    protected Charge getCharge() throws HttpCommunicationException {
+    protected Charge getCharge() {
         return getCharge(null);
     }
 
-    protected Charge getCharge(String orderId) throws HttpCommunicationException {
+    protected Charge getCharge(String orderId) {
         Charge charge = getCharge(createPaymentTypeCard(getUnzer(), "4711100000000000").getId(), null, null);
         charge.setOrderId(orderId);
         return charge;
     }
 
-    protected Charge getCharge(String orderId, Boolean card3ds, AdditionalTransactionData additionalTransactionData) throws HttpCommunicationException {
+    protected Charge getCharge(String orderId, Boolean card3ds, AdditionalTransactionData additionalTransactionData) {
         return getCharge(createPaymentTypeCard(getUnzer(), "4711100000000000").getId(), null, orderId, null, null, card3ds, additionalTransactionData);
     }
 
-    protected Charge getCharge(String typeId, String customerId, String orderId, String metadataId, String basketId, AdditionalTransactionData additionalTransactionData) throws HttpCommunicationException {
+    protected Charge getCharge(String typeId, String customerId, String orderId, String metadataId, String basketId, AdditionalTransactionData additionalTransactionData) {
         return getCharge(typeId, customerId, orderId, metadataId, basketId, null, additionalTransactionData);
     }
 
-    protected Charge getCharge(String typeId, String customerId, String orderId, String metadataId, String basketId, Boolean card3ds, AdditionalTransactionData additionalTransactionData) throws HttpCommunicationException {
+    protected Charge getCharge(String typeId, String customerId, String orderId, String metadataId, String basketId, Boolean card3ds, AdditionalTransactionData additionalTransactionData) {
         Charge charge = new Charge();
         charge.setAmount(BigDecimal.ONE)
                 .setCurrency(Currency.getInstance("EUR"))
@@ -200,7 +183,7 @@ public abstract class AbstractPaymentTest {
         return charge;
     }
 
-    protected Card createPaymentTypeCard(Unzer unzer, String cardNumber) throws HttpCommunicationException {
+    protected Card createPaymentTypeCard(Unzer unzer, String cardNumber) {
         Card card = getPaymentTypeCard(cardNumber);
         card = unzer.createPaymentType(card);
         return card;
@@ -411,7 +394,7 @@ public abstract class AbstractPaymentTest {
         assertEquals(initCharge.getReturnUrl(), charge.getReturnUrl());
         assertEquals(initCharge.getRiskId(), charge.getRiskId());
         assertEquals(initCharge.getTypeId(), charge.getTypeId());
-        assertEquals(initCharge.getTypeUrl(), charge.getTypeUrl());
+        assertEquals(initCharge.getUrl(), charge.getUrl());
         assertEquals(initCharge.getCancelList(), charge.getCancelList());
         assertProcessingEquals(initCharge.getProcessing(), charge.getProcessing());
     }
@@ -454,7 +437,7 @@ public abstract class AbstractPaymentTest {
     protected void assertCancelEquals(Cancel cancelInit, Cancel cancel) {
         assertEquals(cancelInit.getAmount(), cancel.getAmount());
         assertEquals(cancelInit.getId(), cancel.getId());
-        assertEquals(cancelInit.getTypeUrl(), cancel.getTypeUrl());
+        assertEquals(cancelInit.getUrl(), cancel.getUrl());
     }
 
     protected void assertNumberEquals(BigDecimal expected, BigDecimal actual) {
@@ -522,35 +505,6 @@ public abstract class AbstractPaymentTest {
         cancelBasket.setItems(cancelBasketItems);
         return cancelBasket;
     }
-
-    protected Paypage getMaximumPaypage() {
-        Paypage paypage = new Paypage();
-        String[] excludeTypes = {"paypal"};
-        paypage.setExcludeTypes(excludeTypes);
-        paypage.setAmount(BigDecimal.ONE);
-        paypage.setCurrency(Currency.getInstance("EUR"));
-        paypage.setReturnUrl(unsafeUrl("https://www.unzer.com/"));
-        paypage.setShopName("Unzer Demo Shop");
-        paypage.setShopDescription("Unzer Demo Shop Description");
-        paypage.setTagline("Unzer Tagline");
-        paypage.setTermsAndConditionUrl(unsafeUrl("https://www.unzer.com/en/privacy-statement/"));
-        paypage.setPrivacyPolicyUrl(unsafeUrl("https://www.unzer.com/en/privacy-statement/"));
-        paypage.setCss(getCssMap());
-
-        paypage.setLogoImage("https://docs.unzer.com/payment-nutshell/payment-in-nutshell.png");
-        paypage.setFullPageImage("https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/iphone-12-pro-family-hero");
-
-        paypage.setContactUrl(unsafeUrl("mailto:support@unzer.com"));
-        paypage.setHelpUrl(unsafeUrl("https://www.unzer.com/en/support/"));
-        paypage.setImprintUrl(unsafeUrl("https://www.unzer.com/en/impressum/"));
-        paypage.setPrivacyPolicyUrl(unsafeUrl("https://www.unzer.com/en/datenschutz/"));
-        paypage.setTermsAndConditionUrl(unsafeUrl("https://www.unzer.com/en/datenschutz/"));
-
-        paypage.setInvoiceId(generateUuid());
-        paypage.setOrderId(generateUuid());
-        return paypage;
-    }
-
 
     protected Map<String, String> getCssMap() {
         Map<String, String> cssMap = new HashMap<String, String>();

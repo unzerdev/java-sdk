@@ -1,67 +1,59 @@
 package com.unzer.payment;
 
-import com.unzer.payment.communication.json.ApiObject;
-import com.unzer.payment.paymenttypes.PaymentType;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.TreeMap;
 
-public class Metadata implements PaymentType {
-  private String id;
-  private Map<String, String> metadataMap;
-  private Unzer unzer;
+public class Metadata extends BaseResource {
+    private String id;
+    private Map<String, String> metadataMap;
+    private Unzer unzer;
 
-  public Metadata() {
-    this(false);
-  }
-
-  public Metadata(boolean sorted) {
-    super();
-    if (sorted) {
-      metadataMap = new TreeMap<String, String>();
-    } else {
-      metadataMap = new LinkedHashMap<String, String>();
+    public Metadata() {
+        this(false);
     }
-  }
 
-  public Metadata addMetadata(String key, String value) {
-    getMetadataMap().put(key, value);
-    return this;
-  }
+    public Metadata(boolean sorted) {
+        if (sorted) {
+            metadataMap = new TreeMap<String, String>();
+        } else {
+            metadataMap = new LinkedHashMap<String, String>();
+        }
+    }
 
-  public String getId() {
-    return id;
-  }
+    public Metadata addMetadata(String key, String value) {
+        getMetadataMap().put(key, value);
+        return this;
+    }
 
-  public void setId(String id) {
-    this.id = id;
-  }
+    public Map<String, String> getMetadataMap() {
+        return metadataMap;
+    }
 
-  @Override
-  public PaymentType map(PaymentType paymentType, ApiObject apiObject) {
-    return null;
-  }
+    public void setMetadataMap(Map<String, String> metadataMap) {
+        this.metadataMap = metadataMap;
+    }
 
-  @Override
-  public String getTypeUrl() {
-    return "metadata";
-  }
+    public String getId() {
+        return id;
+    }
 
-  @Deprecated
-  public Unzer getUnzer() {
-    return unzer;
-  }
+    public void setId(String id) {
+        this.id = id;
+    }
 
-  @Deprecated
-  public void setUnzer(Unzer unzer) {
-    this.unzer = unzer;
-  }
+    @Override
+    public String getResourceUrl() {
+        return "/v1/metadata/<resourceId>";
+    }
 
-  public Map<String, String> getMetadataMap() {
-    return metadataMap;
-  }
+    @Deprecated
+    public Unzer getUnzer() {
+        return unzer;
+    }
 
-  public void setMetadataMap(Map<String, String> metadataMap) {
-    this.metadataMap = metadataMap;
-  }
+    @Deprecated
+    public void setUnzer(Unzer unzer) {
+        this.unzer = unzer;
+    }
 }

@@ -1,72 +1,73 @@
 package com.unzer.payment.communication;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-
 import com.google.gson.JsonObject;
+import org.junit.jupiter.api.Test;
+
 import java.time.format.DateTimeParseException;
 import java.util.Calendar;
 import java.util.Date;
-import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 
 public class JsonDateTimeConverterTest {
-  private static final JsonDateTimeConverter converter = new JsonDateTimeConverter();
+    private static final JsonDateTimeConverter converter = new JsonDateTimeConverter();
 
-  @Test
-  public void date_parsed_fine() {
-    JsonObject jsonObject = new JsonObject();
-    jsonObject.addProperty("date", "1980-12-01");
+    @Test
+    public void date_parsed_fine() {
+        JsonObject jsonObject = new JsonObject();
+        jsonObject.addProperty("date", "1980-12-01");
 
-    Date jsonDate = converter.deserialize(jsonObject.get("date"), null, null);
-    assertEquals("Mon Dec 01 01:00:00 CET 1980", jsonDate.toString());
-  }
+        Date jsonDate = converter.deserialize(jsonObject.get("date"), null, null);
+        assertEquals("Mon Dec 01 01:00:00 CET 1980", jsonDate.toString());
+    }
 
-  @Test
-  public void dateTime_parsed_fine() {
-    JsonObject jsonObject = new JsonObject();
-    jsonObject.addProperty("date", "1980-12-01 11:59:00");
+    @Test
+    public void dateTime_parsed_fine() {
+        JsonObject jsonObject = new JsonObject();
+        jsonObject.addProperty("date", "1980-12-01 11:59:00");
 
-    Date parsedDate = converter.deserialize(jsonObject.get("date"), null, null);
-    assertEquals("Mon Dec 01 12:59:00 CET 1980", parsedDate.toString());
+        Date parsedDate = converter.deserialize(jsonObject.get("date"), null, null);
+        assertEquals("Mon Dec 01 12:59:00 CET 1980", parsedDate.toString());
 
-  }
+    }
 
-  @Test
-  public void getDateTestWrongFormat() {
-    JsonObject jsonObject = new JsonObject();
-    jsonObject.addProperty("date", "1980-12-01 12:00");
-
-
-    assertThrows(DateTimeParseException.class,
-        () -> converter.deserialize(jsonObject.get("date"), null, null));
-  }
-
-  @Test
-  public void getDateTestInvalidDate() {
-    JsonObject jsonObject = new JsonObject();
-    jsonObject.addProperty("date", "2000-12-32");
+    @Test
+    public void getDateTestWrongFormat() {
+        JsonObject jsonObject = new JsonObject();
+        jsonObject.addProperty("date", "1980-12-01 12:00");
 
 
-    assertThrows(DateTimeParseException.class,
-        () -> converter.deserialize(jsonObject.get("date"), null, null));
-  }
+        assertThrows(DateTimeParseException.class,
+                () -> converter.deserialize(jsonObject.get("date"), null, null));
+    }
 
-  @Test
-  public void getDateTestInvalidDateTime() {
-    JsonObject jsonObject = new JsonObject();
-    jsonObject.addProperty("date", "2000-12-31 25:00:00");
+    @Test
+    public void getDateTestInvalidDate() {
+        JsonObject jsonObject = new JsonObject();
+        jsonObject.addProperty("date", "2000-12-32");
 
 
-    assertThrows(DateTimeParseException.class,
-        () -> converter.deserialize(jsonObject.get("date"), null, null));
-  }
+        assertThrows(DateTimeParseException.class,
+                () -> converter.deserialize(jsonObject.get("date"), null, null));
+    }
 
-  @Test
-  public void date_time_converted_with_time() {
-    Date initialDate = new Date(94, Calendar.DECEMBER, 1, 11, 59, 31);
+    @Test
+    public void getDateTestInvalidDateTime() {
+        JsonObject jsonObject = new JsonObject();
+        jsonObject.addProperty("date", "2000-12-31 25:00:00");
 
-    String convertedDate = converter.serialize(initialDate, null, null).getAsString();
-    assertEquals("1994-12-01 11:59:31", convertedDate);
-  }
+
+        assertThrows(DateTimeParseException.class,
+                () -> converter.deserialize(jsonObject.get("date"), null, null));
+    }
+
+    @Test
+    public void date_time_converted_with_time() {
+        Date initialDate = new Date(94, Calendar.DECEMBER, 1, 11, 59, 31);
+
+        String convertedDate = converter.serialize(initialDate, null, null).getAsString();
+        assertEquals("1994-12-01 11:59:31", convertedDate);
+    }
 }

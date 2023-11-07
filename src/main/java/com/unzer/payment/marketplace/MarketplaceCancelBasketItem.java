@@ -9,41 +9,41 @@ import java.math.BigDecimal;
  * @author Unzer E-Com GmbH
  */
 public class MarketplaceCancelBasketItem {
-  private String participantId;
-  private String basketItemReferenceId;
-  private int quantity;
-  private BigDecimal amountGross;
+    private String participantId;
+    private String basketItemReferenceId;
+    private int quantity;
+    private BigDecimal amountGross;
 
-  public String getParticipantId() {
-    return participantId;
-  }
+    public String getParticipantId() {
+        return participantId;
+    }
 
-  public void setParticipantId(String participantId) {
-    this.participantId = participantId;
-  }
+    public void setParticipantId(String participantId) {
+        this.participantId = participantId;
+    }
 
-  public String getBasketItemReferenceId() {
-    return basketItemReferenceId;
-  }
+    public String getBasketItemReferenceId() {
+        return basketItemReferenceId;
+    }
 
-  public void setBasketItemReferenceId(String basketItemReferenceId) {
-    this.basketItemReferenceId = basketItemReferenceId;
-  }
+    public void setBasketItemReferenceId(String basketItemReferenceId) {
+        this.basketItemReferenceId = basketItemReferenceId;
+    }
 
-  public int getQuantity() {
-    return quantity;
-  }
+    public int getQuantity() {
+        return quantity;
+    }
 
-  public void setQuantity(int quantity) {
-    this.quantity = quantity;
-  }
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
+    }
 
-  public BigDecimal getAmountGross() {
-    return amountGross;
-  }
+    public BigDecimal getAmountGross() {
+        return amountGross;
+    }
 
-  public void setAmountGross(BigDecimal amountGross) {
-    this.amountGross = amountGross;
-  }
+    public void setAmountGross(BigDecimal amountGross) {
+        this.amountGross = amountGross;
+    }
 
 }

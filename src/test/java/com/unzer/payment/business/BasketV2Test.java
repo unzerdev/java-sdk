@@ -1,30 +1,23 @@
 package com.unzer.payment.business;
 
 
-import static com.unzer.payment.business.BasketV2TestData.getMaxTestBasketV2;
-import static com.unzer.payment.business.BasketV2TestData.getMinTestBasketV2;
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNull;
-
-import com.unzer.payment.Authorization;
-import com.unzer.payment.Basket;
-import com.unzer.payment.BasketItem;
-import com.unzer.payment.Charge;
-import com.unzer.payment.Payment;
-import com.unzer.payment.communication.HttpCommunicationException;
+import com.unzer.payment.*;
 import com.unzer.payment.communication.JsonParser;
-import java.math.BigDecimal;
-import java.net.MalformedURLException;
-import java.util.Arrays;
-import java.util.List;
 import org.assertj.core.data.MapEntry;
 import org.junit.jupiter.api.Test;
 
+import java.math.BigDecimal;
+import java.util.Arrays;
+import java.util.List;
+
+import static com.unzer.payment.business.BasketV2TestData.getMaxTestBasketV2;
+import static com.unzer.payment.business.BasketV2TestData.getMinTestBasketV2;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.*;
+
 public class BasketV2Test extends AbstractPaymentTest {
     @Test
-    public void testCreateFetchBasket() throws HttpCommunicationException {
+    public void testCreateFetchBasket() {
         Basket maxBasket = getMaxTestBasketV2();
         Basket basket = getUnzer().createBasket(maxBasket);
         Basket basketFetched = getUnzer().fetchBasket(basket.getId());
@@ -33,8 +26,15 @@ public class BasketV2Test extends AbstractPaymentTest {
         assertBasketEquals(maxBasket, basketFetched);
     }
 
+    private void assertBasketEquals(Basket expected, Basket actual) {
+        assertThat(expected)
+                .usingComparatorForType(BigDecimal::compareTo, BigDecimal.class)
+                .usingRecursiveComparison()
+                .isEqualTo(actual);
+    }
+
     @Test
-    public void testCreateFetchMinBasket() throws HttpCommunicationException {
+    public void testCreateFetchMinBasket() {
         Basket minBasket = getMinTestBasketV2();
         Basket basket = getUnzer().createBasket(minBasket);
         Basket basketFetched = getUnzer().fetchBasket(basket.getId());
@@ -44,7 +44,7 @@ public class BasketV2Test extends AbstractPaymentTest {
     }
 
     @Test
-    public void testUpdateBasket() throws HttpCommunicationException {
+    public void testUpdateBasket() {
         Basket minBasket = getMinTestBasketV2();
         Basket basket = getUnzer().createBasket(minBasket);
         Basket basketFetched = getUnzer().fetchBasket(basket.getId());
@@ -59,7 +59,7 @@ public class BasketV2Test extends AbstractPaymentTest {
     }
 
     @Test
-    public void testUpdateBasketWithFetched() throws HttpCommunicationException {
+    public void testUpdateBasketWithFetched() {
         Basket minBasket = getMinTestBasketV2();
         Basket basket = getUnzer().createBasket(minBasket);
         Basket basketFetched = getUnzer().fetchBasket(basket.getId());
@@ -70,12 +70,19 @@ public class BasketV2Test extends AbstractPaymentTest {
     }
 
     @Test
-    public void testAuthorizationWithBasket() throws MalformedURLException, HttpCommunicationException {
-        Basket basket = getUnzer().createBasket(getMaxTestBasketV2());
-        Authorization authorization = getAuthorization(createPaymentTypeCard(getUnzer(), "4711100000000000").getId(), null, null, null, basket.getId());
+    public void testAuthorizationWithBasket() {
+        Unzer unzer = getUnzer();
+        Basket basket = unzer.createBasket(getMaxTestBasketV2());
+        Authorization authorization = getAuthorization(
+                createPaymentTypeCard(unzer, "4711100000000000").getId(),
+                null,
+                null,
+                null,
+                basket.getId()
+        );
         authorization.setAmount(BigDecimal.valueOf(684.47));
-        Authorization authorize = getUnzer().authorize(authorization);
-        Payment payment = getUnzer().fetchPayment(authorize.getPayment().getId());
+        Authorization authorize = unzer.authorize(authorization);
+        Payment payment = unzer.fetchPayment(authorize.getPayment().getId());
         assertNotNull(payment);
         assertNotNull(payment.getId());
         assertNotNull(payment.getAuthorization());
@@ -85,9 +92,11 @@ public class BasketV2Test extends AbstractPaymentTest {
     }
 
     @Test
-    public void testChargeWithBasket() throws MalformedURLException, HttpCommunicationException {
+    public void testChargeWithBasket() {
         Basket basket = getUnzer().createBasket(getMaxTestBasketV2());
-        Charge chargeReq = getCharge(createPaymentTypeCard(getUnzer(), "4711100000000000").getId(), null, null, null, basket.getId(), null);
+        Charge chargeReq =
+                getCharge(createPaymentTypeCard(getUnzer(), "4711100000000000").getId(), null, null, null,
+                        basket.getId(), null);
         chargeReq.setAmount(BigDecimal.valueOf(684.47));
         Charge charge = getUnzer().charge(chargeReq);
         Payment payment = getUnzer().fetchPayment(charge.getPayment().getId());
@@ -131,12 +140,5 @@ public class BasketV2Test extends AbstractPaymentTest {
         BasketItem basketItem = jsonParser.fromJson(basketItemJson, BasketItem.class);
 
         assertNull(basketItem.getType());
-    }
-
-    private void assertBasketEquals(Basket expected, Basket actual) {
-        assertThat(expected)
-                .usingComparatorForType(BigDecimal::compareTo, BigDecimal.class)
-                .usingRecursiveComparison()
-                .isEqualTo(actual);
     }
 }

@@ -1,11 +1,6 @@
 package com.unzer.payment.business.errors;
 
 
-import static com.unzer.payment.util.Uuid.generateUuid;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-
 import com.unzer.payment.Authorization;
 import com.unzer.payment.Customer;
 import com.unzer.payment.PaymentError;
@@ -14,10 +9,14 @@ import com.unzer.payment.business.AbstractPaymentTest;
 import com.unzer.payment.business.Keys;
 import com.unzer.payment.communication.HttpCommunicationException;
 import com.unzer.payment.paymenttypes.Card;
+import org.junit.jupiter.api.Test;
+
 import java.net.MalformedURLException;
 import java.text.ParseException;
 import java.util.List;
-import org.junit.jupiter.api.Test;
+
+import static com.unzer.payment.util.Uuid.generateUuid;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class ErrorTestDE extends AbstractPaymentTest {
 
@@ -44,13 +43,13 @@ public class ErrorTestDE extends AbstractPaymentTest {
     // Card resources can only be created directly with a valid PCI certification.
     // Please contact Unzer to grant permission for PCI level SAQ-D or SAQ-A EP
     @Test
-    public void testPCILevelSaqA() throws HttpCommunicationException {
+    public void testPCILevelSaqA() {
         try {
             getUnzerDE(Keys.PUBLIC_KEY).createPaymentType(getPaymentTypeCard()); // Prod Sandbox
         } catch (PaymentException e) {
             assertNotNull(e.getPaymentErrorList());
             assertTrue(e.getPaymentErrorList().size() > 0);
-            assertEquals("API.000.000.003", e.getPaymentErrorList().get(0).getCode());
+            assertEquals("API.710.000.003", e.getPaymentErrorList().get(0).getCode());
             assertEquals(
                     "Sie sind nicht zum Zugriff auf diese Ressource berechtigt. Wenden Sie sich für weitere Informationen bitte an uns.",
                     e.getPaymentErrorList().get(0).getCustomerMessage());
@@ -61,7 +60,7 @@ public class ErrorTestDE extends AbstractPaymentTest {
     // s-crd-jy8xfchnfte2.
     // Payment type '/types/s-crd-jbrjthrghag2' not found
     @Test
-    public void testInvalidAccess() throws HttpCommunicationException {
+    public void testInvalidAccess() {
         Card card = createPaymentTypeCard(getUnzer(), "4711100000000000");
         try {
             getUnzerDE(Keys.DEFAULT).fetchPaymentType(card.getId());  // Prod-Sandbox
@@ -111,7 +110,7 @@ public class ErrorTestDE extends AbstractPaymentTest {
     }
 
     @Test
-    public void testFetchNonExistingPayment() throws HttpCommunicationException {
+    public void testFetchNonExistingPayment() {
         try {
             getUnzerDE().fetchAuthorization("213");
         } catch (PaymentException e) {
