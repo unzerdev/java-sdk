@@ -1,9 +1,8 @@
 package com.unzer.payment.business;
 
 
-import com.unzer.payment.Authorization;
-import com.unzer.payment.Cancel;
-import com.unzer.payment.Charge;
+import com.unzer.payment.*;
+import com.unzer.payment.paymenttypes.Card;
 import org.junit.jupiter.api.Test;
 
 import java.math.BigDecimal;
@@ -27,6 +26,26 @@ public class CancelTest extends AbstractPaymentTest {
         assertEquals("COR.000.100.112", cancel.getMessage().getCode());
         assertNotNull(cancel.getMessage().getCustomer());
         assertCancelEquals(cancelInit, cancel);
+    }
+
+    @Test
+    public void test_fetch_cancel_charge() {
+        Unzer unzer = getUnzer();
+        Card card = unzer.createPaymentType(new Card("4711100000000000", "03/30").setCvc("123"));
+        assertNotNull(card.getId());
+        Charge charge = unzer.charge(BigDecimal.ONE, Currency.getInstance("EUR"), card.getId(), unsafeUrl("https://www.unzer.com"), false);
+        assertNotNull(charge.getId());
+        assertEquals(BaseTransaction.Status.SUCCESS, charge.getStatus());
+
+        // Cancel
+        Cancel cancel = unzer.cancelCharge(charge.getPaymentId(), charge.getId());
+        assertNotNull(cancel.getId());
+        assertEquals(BaseTransaction.Status.SUCCESS, cancel.getStatus());
+
+        // Fetch cancel
+        Cancel fetchedCancel = unzer.fetchCancel(cancel.getPaymentId(), cancel.getId());
+        assertEquals(cancel.getId(), fetchedCancel.getId());
+        assertEquals(Cancel.TransactionType.CHARGES, fetchedCancel.getTransactionType());
     }
 
     @Test
