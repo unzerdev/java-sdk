@@ -316,14 +316,14 @@ public abstract class AbstractPaymentTest {
         return customer;
     }
 
-    protected CustomerCompanyData getUnregisteredCompanyData() {
-        CustomerCompanyData business = new CustomerCompanyData();
+    protected CompanyInfo getUnregisteredCompanyData() {
+        CompanyInfo business = new CompanyInfo();
         business.setCommercialRegisterNumber("HRB337681 MANNHEIM");
         return business;
     }
 
-    protected CustomerCompanyData getRegisteredCompanyData() {
-        CustomerCompanyData customerBusinessData = new CustomerCompanyData();
+    protected CompanyInfo getRegisteredCompanyData() {
+        CompanyInfo customerBusinessData = new CompanyInfo();
         customerBusinessData.setCommercialRegisterNumber("HRB337681 MANNHEIM");
         return customerBusinessData;
     }
@@ -404,7 +404,7 @@ public abstract class AbstractPaymentTest {
         assertEquals(initProcessing.getUniqueId(), processing.getUniqueId());
     }
 
-    protected void assertBusinessCustomerEquals(CustomerCompanyData customerExpected, CustomerCompanyData customer) {
+    protected void assertBusinessCustomerEquals(CompanyInfo customerExpected, CompanyInfo customer) {
         if (customerExpected == null && customer == null) return;
         assertEquals(customerExpected.getCommercialRegisterNumber(), customer.getCommercialRegisterNumber());
         assertEquals(customerExpected.getCommercialSector(), customer.getCommercialSector());

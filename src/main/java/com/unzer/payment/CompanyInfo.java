@@ -6,7 +6,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-public class CustomerCompanyData {
+public class CompanyInfo {
     private CompanyType companyType;
     private Owner owner;
     private RegistrationType registrationType;
@@ -17,7 +17,7 @@ public class CustomerCompanyData {
         return companyType;
     }
 
-    public CustomerCompanyData setCompanyType(CompanyType companyType) {
+    public CompanyInfo setCompanyType(CompanyType companyType) {
         this.companyType = companyType;
         return this;
     }
@@ -26,7 +26,7 @@ public class CustomerCompanyData {
         return owner;
     }
 
-    public CustomerCompanyData setOwner(Owner owner) {
+    public CompanyInfo setOwner(Owner owner) {
         this.owner = owner;
         return this;
     }
@@ -35,7 +35,7 @@ public class CustomerCompanyData {
         return registrationType;
     }
 
-    public CustomerCompanyData setRegistrationType(RegistrationType registrationType) {
+    public CompanyInfo setRegistrationType(RegistrationType registrationType) {
         this.registrationType = registrationType;
         return this;
     }
@@ -44,7 +44,7 @@ public class CustomerCompanyData {
         return commercialRegisterNumber;
     }
 
-    public CustomerCompanyData setCommercialRegisterNumber(String commercialRegisterNumber) {
+    public CompanyInfo setCommercialRegisterNumber(String commercialRegisterNumber) {
         this.commercialRegisterNumber = commercialRegisterNumber;
         return this;
     }
@@ -53,7 +53,7 @@ public class CustomerCompanyData {
         return commercialSector;
     }
 
-    public CustomerCompanyData setCommercialSector(CommercialSector commercialSector) {
+    public CompanyInfo setCommercialSector(CommercialSector commercialSector) {
         this.commercialSector = commercialSector;
         return this;
     }

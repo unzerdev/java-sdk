@@ -2,7 +2,7 @@ package com.unzer.payment.business;
 
 
 import com.unzer.payment.Customer;
-import com.unzer.payment.CustomerCompanyData;
+import com.unzer.payment.CompanyInfo;
 import com.unzer.payment.PaymentException;
 import com.unzer.payment.communication.HttpCommunicationException;
 import org.junit.jupiter.api.Disabled;
@@ -81,7 +81,7 @@ public class BusinessCustomerTest extends AbstractPaymentTest {
         assertNotNull(customer);
         assertNotNull(customer.getId());
         Customer customerToUpdate = new Customer("Unzer E-Com GmbH");
-        CustomerCompanyData company = getRegisteredCompanyData();
+        CompanyInfo company = getRegisteredCompanyData();
         company.setCommercialRegisterNumber("ABC993448 DÜSSELDORF");
         customerToUpdate.setCompanyData(company);
         Customer updatedCustomer = getUnzer().updateCustomer(customer.getId(), customerToUpdate);

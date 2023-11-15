@@ -1,6 +1,6 @@
 package com.unzer.payment.communication.json;
 
-import com.unzer.payment.CustomerCompanyData;
+import com.unzer.payment.CompanyInfo;
 
 public class JsonCompanyInfo {
 
@@ -8,8 +8,8 @@ public class JsonCompanyInfo {
     private String commercialRegisterNumber;
     private String function;
     private String commercialSector;
-    private CustomerCompanyData.CompanyType companyType;
-    private CustomerCompanyData.Owner owner;
+    private CompanyInfo.CompanyType companyType;
+    private CompanyInfo.Owner owner;
 
     public String getRegistrationType() {
         return registrationType;
@@ -46,11 +46,11 @@ public class JsonCompanyInfo {
         this.commercialSector = commercialSector;
     }
 
-    public CustomerCompanyData.CompanyType getCompanyType() {
+    public CompanyInfo.CompanyType getCompanyType() {
         return companyType;
     }
 
-    public void setCompanyType(CustomerCompanyData.CompanyType companyType) {
+    public void setCompanyType(CompanyInfo.CompanyType companyType) {
         this.companyType = companyType;
     }
 }
