@@ -34,7 +34,7 @@ public class Customer extends BaseResource {
      */
     private Locale language;
 
-    private CustomerCompanyData companyData;
+    private CompanyInfo companyInfo;
 
     public Customer(String firstname, String lastname) {
         super();
@@ -146,12 +146,12 @@ public class Customer extends BaseResource {
         return this;
     }
 
-    public CustomerCompanyData getCompanyData() {
-        return companyData;
+    public CompanyInfo getCompanyInfo() {
+        return companyInfo;
     }
 
-    public void setCompanyData(CustomerCompanyData companyData) {
-        this.companyData = companyData;
+    public void setCompanyInfo(CompanyInfo companyInfo) {
+        this.companyInfo = companyInfo;
     }
 
     public String getCompany() {

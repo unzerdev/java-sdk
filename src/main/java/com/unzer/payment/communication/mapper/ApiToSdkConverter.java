@@ -346,11 +346,11 @@ public class ApiToSdkConverter {
 
         out.setBillingAddress(src.getBillingAddress());
         out.setShippingAddress(src.getShippingAddress());
-        out.setCompanyInfo(getCompanyInfo(src.getCompanyData(), src.getCompany()));
+        out.setCompanyInfo(getCompanyInfo(src.getCompanyInfo(), src.getCompany()));
         return out;
     }
 
-    private JsonCompanyInfo getCompanyInfo(CustomerCompanyData src, String company) {
+    private JsonCompanyInfo getCompanyInfo(CompanyInfo src, String company) {
         if (src == null) {
             return null;
         }
@@ -363,12 +363,12 @@ public class ApiToSdkConverter {
         return out;
     }
 
-    private void mapRegisteredCompany(CustomerCompanyData src, JsonCompanyInfo out) {
+    private void mapRegisteredCompany(CompanyInfo src, JsonCompanyInfo out) {
         out.setRegistrationType("registered");
         out.setCommercialRegisterNumber(src.getCommercialRegisterNumber());
     }
 
-    private void mapUnregisteredCompany(CustomerCompanyData src, JsonCompanyInfo out) {
+    private void mapUnregisteredCompany(CompanyInfo src, JsonCompanyInfo out) {
         out.setFunction("OWNER");
         out.setRegistrationType("not_registered");
         if (src.getCommercialSector() != null) {
@@ -395,25 +395,25 @@ public class ApiToSdkConverter {
 
         out.setBillingAddress(src.getBillingAddress());
         out.setShippingAddress(src.getShippingAddress());
-        out.setCompanyData(getCompanyInfo(src.getCompanyInfo()));
+        out.setCompanyInfo(getCompanyInfo(src.getCompanyInfo()));
         return out;
     }
 
-    private CustomerCompanyData getCompanyInfo(JsonCompanyInfo src) {
+    private CompanyInfo getCompanyInfo(JsonCompanyInfo src) {
         if (src == null) {
             return null;
         }
         if (allFieldsNull(src)) {
             return null;
         }
-        CustomerCompanyData out = new CustomerCompanyData();
+        CompanyInfo out = new CompanyInfo();
         out.setCommercialRegisterNumber(src.getCommercialRegisterNumber());
         if (src.getCommercialSector() != null) {
             out.setCommercialSector(CommercialSector.valueOf(src.getCommercialSector()));
         }
         if (src.getRegistrationType() != null) {
             out.setRegistrationType(
-                    CustomerCompanyData.RegistrationType.valueOf(src.getRegistrationType().toUpperCase()));
+                    CompanyInfo.RegistrationType.valueOf(src.getRegistrationType().toUpperCase()));
         }
         return out;
     }

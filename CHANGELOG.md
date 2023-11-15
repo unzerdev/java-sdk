@@ -19,6 +19,11 @@ Consists of internal refactorings and improvements.
 * Renamed `AbstractTransaction` -> `BaseTransaction`
 * Refactored `UrlUtil`: moved Resource URL construction logic to `Resource`-classes.
 * Every Unzer Payment Gateway resource implements `Resource` instead of `PaymentType`: `Customer`, `Basket`, `Payment`, etc.
+* Renamed `com.unzer.payment.CustomerCompanyData` to `CompanyInfo`
+* Renamed property and methods of `com.unzer.payment.Customer.Customer` to match class name:
+    * property `companyData`-> `companyInfo`
+    * method `getCompanyData()` -> `getCompanyInfo()`
+    * method `setCompanyData()` -> `setCompanyInfo()`
 
 ### Removed
 
