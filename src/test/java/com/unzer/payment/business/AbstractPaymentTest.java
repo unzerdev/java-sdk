@@ -290,15 +290,15 @@ public abstract class AbstractPaymentTest {
     protected Customer getRegisterdMinimumBusinessCustomer() {
         Customer customer = getMinimumRegisteredCustomer();
         customer.setBillingAddress(getAddress());
-        customer.setCompanyData(getRegisteredCompanyData());
+        customer.setCompanyInfo(getRegisteredCompanyInfo());
         return customer;
     }
 
     protected Customer getRegisterdMaximumBusinessCustomer(String customerId) throws ParseException {
         Customer customer = getMaximumCustomer(customerId);
         customer.setCompany("Unzer E-Com GmbH");
-        getUnregisteredCompanyData();
-        customer.setCompanyData(getRegisteredCompanyData());
+        getUnregisteredCompanyInfo();
+        customer.setCompanyInfo(getRegisteredCompanyInfo());
         return customer;
     }
 
@@ -306,26 +306,26 @@ public abstract class AbstractPaymentTest {
         Customer customer = getMinimumCustomer();
         customer.setBillingAddress(getAddress());
 
-        customer.setCompanyData(getUnregisteredCompanyData());
+        customer.setCompanyInfo(getUnregisteredCompanyInfo());
         return customer;
     }
 
     protected Customer getUnRegisterdMaximumBusinessCustomer() throws ParseException {
         Customer customer = getMaximumCustomer(generateUuid());
-        customer.setCompanyData(getUnregisteredCompanyData());
+        customer.setCompanyInfo(getUnregisteredCompanyInfo());
         return customer;
     }
 
-    protected CompanyInfo getUnregisteredCompanyData() {
+    protected CompanyInfo getUnregisteredCompanyInfo() {
         CompanyInfo business = new CompanyInfo();
         business.setCommercialRegisterNumber("HRB337681 MANNHEIM");
         return business;
     }
 
-    protected CompanyInfo getRegisteredCompanyData() {
-        CompanyInfo customerBusinessData = new CompanyInfo();
-        customerBusinessData.setCommercialRegisterNumber("HRB337681 MANNHEIM");
-        return customerBusinessData;
+    protected CompanyInfo getRegisteredCompanyInfo() {
+        CompanyInfo companyInfo = new CompanyInfo();
+        companyInfo.setCommercialRegisterNumber("HRB337681 MANNHEIM");
+        return companyInfo;
     }
 
     protected Customer getFactoringOKCustomer(String customerId) throws ParseException {
@@ -421,7 +421,7 @@ public abstract class AbstractPaymentTest {
 
         assertAddressEquals(customerExpected.getBillingAddress(), customer.getBillingAddress());
         assertAddressEquals(customerExpected.getShippingAddress(), customer.getShippingAddress());
-        assertBusinessCustomerEquals(customerExpected.getCompanyData(), customer.getCompanyData());
+        assertBusinessCustomerEquals(customerExpected.getCompanyInfo(), customer.getCompanyInfo());
     }
 
     protected void assertAddressEquals(Address addressExpected, Address address) {

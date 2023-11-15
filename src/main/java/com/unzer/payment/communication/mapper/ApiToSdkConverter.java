@@ -346,7 +346,7 @@ public class ApiToSdkConverter {
 
         out.setBillingAddress(src.getBillingAddress());
         out.setShippingAddress(src.getShippingAddress());
-        out.setCompanyInfo(getCompanyInfo(src.getCompanyData(), src.getCompany()));
+        out.setCompanyInfo(getCompanyInfo(src.getCompanyInfo(), src.getCompany()));
         return out;
     }
 
@@ -395,7 +395,7 @@ public class ApiToSdkConverter {
 
         out.setBillingAddress(src.getBillingAddress());
         out.setShippingAddress(src.getShippingAddress());
-        out.setCompanyData(getCompanyInfo(src.getCompanyInfo()));
+        out.setCompanyInfo(getCompanyInfo(src.getCompanyInfo()));
         return out;
     }
 

@@ -69,6 +69,10 @@ This Java SDK version delivers Unzer Paylater Installment to Java projects.
   * `JsonPayment` -> `ApiPayment`
   * `JsonTransaction` -> `ApiTransaction`
 * Renamed `com.unzer.payment.CustomerCompanyData` to `CompanyInfo`
+* Renamed property and methods of `com.unzer.payment.Customer.Customer` to match class name:
+  * property `companyData`-> `companyInfo`
+  * method `getCompanyData()` -> `getCompanyInfo()`
+  * method `setCompanyData()` -> `setCompanyInfo()`
 
 ### Deprecated
 *   Installment Secured: 
