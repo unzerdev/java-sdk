@@ -6,6 +6,7 @@ public enum PaymentTypeEnum {
     CARD("crd"),
     EPS("eps"),
     GIROPAY("gro"),
+    GOOGLE_PAY("gop"),
     IDEAL("idl"),
     INVOICE("ivc"),
     @Deprecated

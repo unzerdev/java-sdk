@@ -111,6 +111,8 @@ public class PaymentService {
                 return new Eps();
             case GIROPAY:
                 return new Giropay();
+            case GOOGLE_PAY:
+                return new GooglePay();
             case IDEAL:
                 return new Ideal();
             case INVOICE:
@@ -191,6 +193,7 @@ public class PaymentService {
                 return new ApiIdObject();
             case PAYPAL:
                 return new ApiPaypal();
+            case GOOGLE_PAY:
             case CARD:
                 return new ApiCard();
             case IDEAL:
