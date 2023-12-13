@@ -1,6 +1,12 @@
 package com.unzer.payment.communication;
 
-import org.apache.hc.client5.http.classic.methods.*;
+import java.io.IOException;
+import org.apache.hc.client5.http.classic.methods.HttpDelete;
+import org.apache.hc.client5.http.classic.methods.HttpGet;
+import org.apache.hc.client5.http.classic.methods.HttpPatch;
+import org.apache.hc.client5.http.classic.methods.HttpPost;
+import org.apache.hc.client5.http.classic.methods.HttpPut;
+import org.apache.hc.client5.http.classic.methods.HttpUriRequest;
 import org.apache.hc.client5.http.impl.classic.CloseableHttpClient;
 import org.apache.hc.client5.http.impl.classic.HttpClients;
 import org.apache.hc.core5.http.ContentType;
@@ -9,8 +15,6 @@ import org.apache.hc.core5.http.io.entity.EntityUtils;
 import org.apache.hc.core5.http.io.entity.StringEntity;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-
-import java.io.IOException;
 
 public class HttpClientMock implements UnzerRestCommunication {
     private static final Logger logger = LogManager.getLogger(HttpClientMock.class);
@@ -41,11 +45,12 @@ public class HttpClientMock implements UnzerRestCommunication {
     }
 
     private String execute(HttpUriRequest request, Object data) {
-        logger.debug("Sending request: \n{}\n{}", request, data);
+        String jsonBody = data != null ? new JsonParser().toJson(data) : null;
+        logger.debug("Sending request: \n{}\n{}", request, jsonBody);
 
         if (data != null) {
             request.setEntity(new StringEntity(
-                    new JsonParser().toJson(data),
+                    jsonBody,
                     ContentType.APPLICATION_JSON,
                     "UTF-8",
                     false
