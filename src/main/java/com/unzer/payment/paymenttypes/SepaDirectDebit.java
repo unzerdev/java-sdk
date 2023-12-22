@@ -9,8 +9,6 @@ import com.unzer.payment.communication.json.ApiObject;
 import com.unzer.payment.communication.json.ApiSepaDirectDebit;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.Setter;
 
 import java.math.BigDecimal;
 import java.net.URL;
