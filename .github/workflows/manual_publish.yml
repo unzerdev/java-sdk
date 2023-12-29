@@ -1,4 +1,4 @@
-name: Deploy Java SDK
+name: [Manual] publish Java SDK
 on:
   workflow_dispatch:
 jobs:
