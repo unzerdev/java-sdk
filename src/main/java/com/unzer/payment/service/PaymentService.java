@@ -586,18 +586,9 @@ public class PaymentService {
      * @param authorization The Authorization object containing transaction specific information.
      * @return Authorization The resulting object of the Authorization resource.
      */
-    public Authorization updateAuthorization(Authorization authorization)
-            throws HttpCommunicationException {
-        return this.updateAuthorization(
-                authorization,
-                urlUtil.getUrl(authorization)
-        );
-    }
-
-    private Authorization updateAuthorization(Authorization authorization, String url)
-            throws HttpCommunicationException {
-        String response = restCommunication.httpPatch(url, unzer.getPrivateKey(),
-                apiToSdkMapper.map(authorization));
+    public Authorization updateAuthorization(Authorization authorization) throws HttpCommunicationException {
+        authorization.setId(null);
+        String response = restCommunication.httpPatch(urlUtil.getUrl(authorization), unzer.getPrivateKey(), apiToSdkMapper.map(authorization));
         ApiAuthorization jsonCharge = jsonParser.fromJson(response, ApiAuthorization.class);
         authorization = (Authorization) apiToSdkMapper.mapToBusinessObject(jsonCharge, authorization);
         authorization.setPayment(fetchPayment(jsonCharge.getResources().getPaymentId()));
@@ -629,6 +620,7 @@ public class PaymentService {
      * @return Charge The resulting object of the Charge resource.
      */
     public Charge updateCharge(Charge charge) throws HttpCommunicationException {
+        charge.setId(null);
         return updateCharge(charge, urlUtil.getUrl(charge));
     }
 
