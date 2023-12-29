@@ -31,11 +31,11 @@ class CardTest {
     void test_card_liability() {
         Unzer unzer = new Unzer(new HttpClientMock(), "s-private-key");
         stubFor(post("/v1/payments/authorize/").willReturn(
-                jsonResponse(getResponse("card-authorize.json"), 200)));
+                jsonResponse(getResponse("authorize.json"), 200)));
         stubFor(get("/v1/payments/s-pay-286").willReturn(
-                jsonResponse(getResponse("card-fetch-payment.json"), 200)));
+                jsonResponse(getResponse("fetch-payment.json"), 200)));
         stubFor(get("/v1/payments/s-pay-286/authorize/s-aut-1").willReturn(
-                jsonResponse(getResponse("card-fetch-authorization.json"), 200)));
+                jsonResponse(getResponse("fetch-authorization.json"), 200)));
 
         Authorization authorization = unzer.authorize((Authorization) new Authorization()
                 .setTypeId("s-crd-6tg6nwdkrcdk")
@@ -58,11 +58,11 @@ class CardTest {
     void test_card_exemption() {
         Unzer unzer = new Unzer(new HttpClientMock(), "s-private-key");
         stubFor(post("/v1/payments/authorize/").willReturn(
-                jsonResponse(getResponse("card-authorize.json"), 200)));
+                jsonResponse(getResponse("authorize.json"), 200)));
         stubFor(get("/v1/payments/s-pay-286").willReturn(
-                jsonResponse(getResponse("card-fetch-payment.json"), 200)));
+                jsonResponse(getResponse("fetch-payment.json"), 200)));
         stubFor(get("/v1/payments/s-pay-286/authorize/s-aut-1").willReturn(
-                jsonResponse(getResponse("card-fetch-authorization.json"), 200)));
+                jsonResponse(getResponse("fetch-authorization.json"), 200)));
 
         Authorization authorization = unzer.authorize((Authorization) new Authorization()
                 .setTypeId("s-crd-6tg6nwdkrcdk")
