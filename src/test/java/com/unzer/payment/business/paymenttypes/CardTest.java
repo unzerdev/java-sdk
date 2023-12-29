@@ -16,7 +16,7 @@ import java.util.Objects;
 import java.util.Scanner;
 
 import static com.github.tomakehurst.wiremock.client.WireMock.*;
-import static com.unzer.payment.util.Url.unsafeUrl;
+import static com.unzer.payment.util.Types.unsafeUrl;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @WireMockTest(httpPort = 8080)

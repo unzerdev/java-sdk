@@ -9,7 +9,7 @@ import org.junit.jupiter.api.Test;
 import java.math.BigDecimal;
 import java.util.Currency;
 
-import static com.unzer.payment.util.Url.unsafeUrl;
+import static com.unzer.payment.util.Types.unsafeUrl;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 public class PrepaymentTest extends AbstractPaymentTest {

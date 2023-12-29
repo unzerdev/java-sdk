@@ -9,7 +9,7 @@ import java.math.BigDecimal;
 import java.util.Currency;
 import java.util.List;
 
-import static com.unzer.payment.util.Url.unsafeUrl;
+import static com.unzer.payment.util.Types.unsafeUrl;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
