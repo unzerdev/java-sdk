@@ -20,7 +20,9 @@ public enum PaymentTypeEnum {
     PRZELEWY24("p24"),
     PAYU("pyu"),
     SEPA_DIRECT_DEBIT("sdd"),
+    @Deprecated
     SEPA_DIRECT_DEBIT_GUARANTEED("ddg"),
+    @Deprecated
     SEPA_DIRECT_DEBIT_SECURED("dds"),
     SOFORT("sft"),
     PIS("pis"),

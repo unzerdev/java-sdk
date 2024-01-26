@@ -7,7 +7,7 @@ import com.unzer.payment.BasketItem;
 import java.math.BigDecimal;
 import java.util.Currency;
 
-import static com.unzer.payment.util.Url.unsafeUrl;
+import static com.unzer.payment.util.Types.unsafeUrl;
 import static com.unzer.payment.util.Uuid.generateUuid;
 
 public class BasketV2TestData {

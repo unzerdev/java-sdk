@@ -20,7 +20,7 @@ import java.util.Currency;
 import static com.unzer.payment.business.BasketV1TestData.getMinTestBasketV1;
 import static com.unzer.payment.business.BasketV2TestData.getMinTestBasketV2;
 import static com.unzer.payment.business.Keys.LEGACY_PRIVATE_KEY;
-import static com.unzer.payment.util.Url.unsafeUrl;
+import static com.unzer.payment.util.Types.unsafeUrl;
 import static com.unzer.payment.util.Uuid.generateUuid;
 import static org.junit.jupiter.api.Assertions.*;
 

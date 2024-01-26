@@ -7,6 +7,8 @@ import com.unzer.payment.GeoLocation;
 import com.unzer.payment.communication.HttpCommunicationException;
 import com.unzer.payment.communication.json.ApiObject;
 import com.unzer.payment.communication.json.ApiSepaDirectDebit;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import java.math.BigDecimal;
 import java.net.URL;
@@ -17,8 +19,10 @@ import java.util.Currency;
  *
  * @author Unzer E-Com GmbH
  */
-@Deprecated
+@EqualsAndHashCode(callSuper = true)
+@Data
 public class SepaDirectDebit extends BasePaymentType {
+
     private String iban;
     private String bic;
     private String holder;
@@ -26,33 +30,6 @@ public class SepaDirectDebit extends BasePaymentType {
     public SepaDirectDebit(String iban) {
         super();
         this.iban = iban;
-    }
-
-    public String getIban() {
-        return iban;
-    }
-
-    public SepaDirectDebit setIban(String iban) {
-        this.iban = iban;
-        return this;
-    }
-
-    public String getBic() {
-        return bic;
-    }
-
-    public SepaDirectDebit setBic(String bic) {
-        this.bic = bic;
-        return this;
-    }
-
-    public String getHolder() {
-        return holder;
-    }
-
-    public SepaDirectDebit setHolder(String holder) {
-        this.holder = holder;
-        return this;
     }
 
     @Override
@@ -92,5 +69,4 @@ public class SepaDirectDebit extends BasePaymentType {
         return getUnzer().charge(amount, currency, this, returnUrl, customer, basket);
 
     }
-
 }

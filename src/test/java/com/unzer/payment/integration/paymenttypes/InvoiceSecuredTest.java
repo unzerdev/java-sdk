@@ -26,7 +26,7 @@ import static com.unzer.payment.business.BasketV1TestData.getMaxTestBasketV1;
 import static com.unzer.payment.business.BasketV1TestData.getMinTestBasketV1;
 import static com.unzer.payment.business.BasketV2TestData.getMaxTestBasketV2;
 import static com.unzer.payment.business.BasketV2TestData.getMinTestBasketV2;
-import static com.unzer.payment.util.Url.unsafeUrl;
+import static com.unzer.payment.util.Types.unsafeUrl;
 import static com.unzer.payment.util.Uuid.generateUuid;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.api.DynamicTest.dynamicTest;

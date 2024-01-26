@@ -15,7 +15,7 @@ import java.text.ParseException;
 import java.util.Currency;
 import java.util.List;
 
-import static com.unzer.payment.util.Url.unsafeUrl;
+import static com.unzer.payment.util.Types.unsafeUrl;
 import static com.unzer.payment.util.Uuid.generateUuid;
 import static org.junit.jupiter.api.Assertions.*;
 
