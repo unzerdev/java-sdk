@@ -6,6 +6,16 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres
 to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## [UNRELEASED]
+### Added
+
+* Added Google Pay payment method.
+
+### Fixed
+
+* Fixed `Unzer:updateCharge` and `Unzer:updateAuthorization` uses wrong endpoints
+* SEPA Direct Debit is restored from deprecation. See: `com.unzer.payment.paymenttypes.SepaDirectDebit`
+
 ## [5.0.0](https://github.com/unzerdev/java-sdk/compare/4.4.0..5.0.0)
 
 Consists of internal refactorings and improvements.
