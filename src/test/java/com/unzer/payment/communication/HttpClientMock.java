@@ -1,6 +1,7 @@
 package com.unzer.payment.communication;
 
 import java.io.IOException;
+import java.util.Optional;
 
 import org.apache.hc.client5.http.classic.methods.*;
 import org.apache.hc.client5.http.impl.classic.CloseableHttpClient;
@@ -11,6 +12,8 @@ import org.apache.hc.core5.http.io.entity.EntityUtils;
 import org.apache.hc.core5.http.io.entity.StringEntity;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+
+import javax.swing.text.html.Option;
 
 public class HttpClientMock implements UnzerRestCommunication {
     private static final Logger logger = LogManager.getLogger(HttpClientMock.class);
@@ -41,10 +44,10 @@ public class HttpClientMock implements UnzerRestCommunication {
     }
 
     private String execute(HttpUriRequest request, Object data) {
-        String jsonBody = data != null ? new JsonParser().toJson(data) : null;
-        logger.debug("Sending request: \n{}\n{}", request, jsonBody);
+        String jsonBody = null;
 
         if (data != null) {
+            jsonBody =  new JsonParser().toJson(data);
             request.setEntity(new StringEntity(
                     jsonBody,
                     ContentType.APPLICATION_JSON,
@@ -52,6 +55,8 @@ public class HttpClientMock implements UnzerRestCommunication {
                     false
             ));
         }
+
+        logger.debug("Sending request: \n{}\n{}", request, jsonBody);
 
         try (CloseableHttpClient client = HttpClients.createDefault()) {
             String response = EntityUtils.toString(client.execute(request).getEntity());
