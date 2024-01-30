@@ -55,7 +55,7 @@ class GooglePayTest {
         assertEquals(expectedJsonBody, googlepayJson);
     }
     @Test
-    void test_type_creation() {
+    void test_type_creation_and_verify_response() {
         Unzer unzer = new Unzer(new HttpClientMock(), "s-private-key");
         String jsonBody = getJsonBody("create-googlepay-type.json");
         stubFor(
