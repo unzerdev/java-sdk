@@ -1,0 +1,28 @@
+{
+  "id": "s-pay-290",
+  "state": {
+    "id": 0,
+    "name": "pending"
+  },
+  "amount": {
+    "total": "10.0000",
+    "charged": "0.0000",
+    "canceled": "0.0000",
+    "remaining": "10.0000"
+  },
+  "currency": "EUR",
+  "resources": {
+    "paymentId": "s-pay-290",
+    "traceId": "b2f9c67bebafa3cd49b3d50f9ff00639",
+    "typeId": "s-gop-q0nucec6itwe"
+  },
+  "transactions": [
+    {
+      "date": "2023-01-31 04:44:41",
+      "type": "charge",
+      "status": "success",
+      "url": "https://sbx-api.unzer.com/v1/payments/s-pay-290/charges/s-chg-1",
+      "amount": "10.0000"
+    }
+  ]
+}

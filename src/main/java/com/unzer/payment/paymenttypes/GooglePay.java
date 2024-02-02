@@ -6,13 +6,17 @@ import com.unzer.payment.communication.json.ApiIdObject;
 import com.unzer.payment.communication.json.ApiObject;
 import com.unzer.payment.models.googlepay.IntermediateSigningKey;
 import com.unzer.payment.models.googlepay.SignedMessage;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 /**
  * Google Pay business object. It requires data from payment method token returned by Google in the `PaymentData`.
  * These data are used to create the payment type on the Unzer API.
  */
+@NoArgsConstructor
+@AllArgsConstructor
 @Getter
 @Setter
 public class GooglePay extends BasePaymentType {
@@ -22,17 +26,6 @@ public class GooglePay extends BasePaymentType {
     private SignedMessage signedMessage;
     private String number;
     private String expiryDate;
-
-    public GooglePay() {
-    }
-
-    public GooglePay(String protocolVersion, String signature,
-                     IntermediateSigningKey intermediateSigningKey, SignedMessage signedMessage) {
-        this.protocolVersion = protocolVersion;
-        this.signature = signature;
-        this.intermediateSigningKey = intermediateSigningKey;
-        this.signedMessage = signedMessage;
-    }
 
     @Override
     protected String getResourceUrl() {
