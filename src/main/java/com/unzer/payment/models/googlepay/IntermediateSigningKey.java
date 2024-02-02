@@ -1,14 +1,11 @@
 package com.unzer.payment.models.googlepay;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 
 import java.util.List;
 
-@Getter
-@Setter
+@Data
 public class IntermediateSigningKey {
-    @Setter
     private SignedKey signedKey;
     private List<String> signatures;
 }

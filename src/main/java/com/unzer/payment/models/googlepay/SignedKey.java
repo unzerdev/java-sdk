@@ -1,11 +1,9 @@
 package com.unzer.payment.models.googlepay;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 
-@Getter
-@Setter
+@Data
 public class SignedKey {
-  private String keyExpiration;
-  private String keyValue;
+    private String keyExpiration;
+    private String keyValue;
 }

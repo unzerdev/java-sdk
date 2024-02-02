@@ -1,8 +1,5 @@
 package com.unzer.payment.communication;
 
-import java.io.IOException;
-import java.util.Optional;
-
 import org.apache.hc.client5.http.classic.methods.*;
 import org.apache.hc.client5.http.impl.classic.CloseableHttpClient;
 import org.apache.hc.client5.http.impl.classic.HttpClients;
@@ -13,7 +10,7 @@ import org.apache.hc.core5.http.io.entity.StringEntity;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import javax.swing.text.html.Option;
+import java.io.IOException;
 
 public class HttpClientMock implements UnzerRestCommunication {
     private static final Logger logger = LogManager.getLogger(HttpClientMock.class);
@@ -47,7 +44,7 @@ public class HttpClientMock implements UnzerRestCommunication {
         String jsonBody = null;
 
         if (data != null) {
-            jsonBody =  new JsonParser().toJson(data);
+            jsonBody = new JsonParser().toJson(data);
             request.setEntity(new StringEntity(
                     jsonBody,
                     ContentType.APPLICATION_JSON,

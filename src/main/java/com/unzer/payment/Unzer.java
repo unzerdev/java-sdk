@@ -1439,7 +1439,6 @@ public class Unzer {
      * Register single webhook. It may response error if <code><b>event</b></code> &
      * <code><b>eventList</b></code> are both defined.
      * The URL will be registered to all webhook events.
-     *
      */
     public WebhookList registerMultiWebhooks(Webhook webhookRequest)
             throws HttpCommunicationException {

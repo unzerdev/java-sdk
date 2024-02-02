@@ -1,13 +1,6 @@
 package com.unzer.payment.business.paymenttypes;
 
 
-import static com.github.tomakehurst.wiremock.client.WireMock.get;
-import static com.github.tomakehurst.wiremock.client.WireMock.jsonResponse;
-import static com.github.tomakehurst.wiremock.client.WireMock.post;
-import static com.github.tomakehurst.wiremock.client.WireMock.stubFor;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNull;
-
 import com.github.tomakehurst.wiremock.junit5.WireMockTest;
 import com.unzer.payment.Unzer;
 import com.unzer.payment.communication.HttpClientMock;
@@ -16,10 +9,16 @@ import com.unzer.payment.models.googlepay.IntermediateSigningKey;
 import com.unzer.payment.models.googlepay.SignedKey;
 import com.unzer.payment.models.googlepay.SignedMessage;
 import com.unzer.payment.paymenttypes.GooglePay;
+import org.junit.jupiter.api.Test;
+
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Objects;
 import java.util.Scanner;
-import org.junit.jupiter.api.Test;
+
+import static com.github.tomakehurst.wiremock.client.WireMock.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 @WireMockTest(httpPort = 8080)
 class GooglePayTest {
@@ -35,25 +34,26 @@ class GooglePayTest {
         String expectedJsonBody = getJsonBody("googlepay-example-request.json");
 
         IntermediateSigningKey intermediateSigningKey = new IntermediateSigningKey()
-            .setSignedKey(new SignedKey()
-                .setKeyExpiration("1542394027316")
-                .setKeyValue("key-value-xyz\\u003d\\u003d\"}")
-            )
-            .setSignatures(Arrays.asList("signature1"));
+                .setSignedKey(new SignedKey()
+                        .setKeyExpiration("1542394027316")
+                        .setKeyValue("key-value-xyz\\u003d\\u003d\"}")
+                )
+                .setSignatures(Collections.singletonList("signature1"));
 
         GooglePay googlepay = new GooglePay()
-            .setSignature("signature-xyz\u003d")
-            .setIntermediateSigningKey(intermediateSigningKey)
-            .setProtocolVersion("ECv2")
-            .setSignedMessage(new SignedMessage()
-                .setTag("001 Cryptogram 3ds")
-                .setEncryptedMessage("encryptedMessage-xyz\"")
-                .setEphemeralPublicKey("ephemeralPublicKey-xyz\\u003d\"")
-            );
+                .setSignature("signature-xyz\u003d")
+                .setIntermediateSigningKey(intermediateSigningKey)
+                .setProtocolVersion("ECv2")
+                .setSignedMessage(new SignedMessage()
+                        .setTag("001 Cryptogram 3ds")
+                        .setEncryptedMessage("encryptedMessage-xyz\"")
+                        .setEphemeralPublicKey("ephemeralPublicKey-xyz\\u003d\"")
+                );
 
         String googlepayJson = new JsonParser().toJson(googlepay);
         assertEquals(expectedJsonBody, googlepayJson);
     }
+
     @Test
     void test_type_creation_and_verify_response() {
         Unzer unzer = new Unzer(new HttpClientMock(), "s-private-key");
