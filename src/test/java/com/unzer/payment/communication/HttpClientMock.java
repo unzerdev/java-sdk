@@ -41,16 +41,21 @@ public class HttpClientMock implements UnzerRestCommunication {
     }
 
     private String execute(HttpUriRequest request, Object data) {
-        logger.debug("Sending request: \n{}\n{}", request, data);
+        String jsonBody = "";
 
         if (data != null) {
-            request.setEntity(new StringEntity(
-                    new JsonParser().toJson(data),
-                    ContentType.APPLICATION_JSON,
-                    "UTF-8",
-                    false
-            ));
+            jsonBody = new JsonParser().toJson(data);
+            request.setEntity(
+                    new StringEntity(
+                            jsonBody,
+                            ContentType.APPLICATION_JSON,
+                            "UTF-8",
+                            false
+                    )
+            );
         }
+
+        logger.debug("Sending request: \n{}\n{}", request, jsonBody);
 
         try (CloseableHttpClient client = HttpClients.createDefault()) {
             String response = EntityUtils.toString(client.execute(request).getEntity());

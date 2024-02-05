@@ -33,7 +33,7 @@ class PaylaterInstallmentTest {
     @Test
     void test_installment_plans() {
 
-        List<InstallmentPlan> expectedPlans = Arrays.asList(
+        List<InstallmentPlan> expectedPlans = Collections.singletonList(
                 new InstallmentPlan()
                         .setNumberOfRates(3)
                         .setTotalAmount(new BigDecimal("101.3100"))

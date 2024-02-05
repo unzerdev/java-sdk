@@ -6,19 +6,12 @@ import com.unzer.payment.Authorization;
 import com.unzer.payment.Charge;
 import com.unzer.payment.Unzer;
 import com.unzer.payment.communication.HttpClientMock;
-import com.unzer.payment.enums.RecurrenceType;
-import com.unzer.payment.models.AdditionalTransactionData;
-import com.unzer.payment.models.CardTransactionData;
 import org.junit.jupiter.api.Test;
 
-import java.math.BigDecimal;
-import java.util.Currency;
 import java.util.Objects;
 import java.util.Scanner;
 
 import static com.github.tomakehurst.wiremock.client.WireMock.*;
-import static com.unzer.payment.util.Types.unsafeUrl;
-import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @WireMockTest(httpPort = 8080)
 class PaypalExpressTest {

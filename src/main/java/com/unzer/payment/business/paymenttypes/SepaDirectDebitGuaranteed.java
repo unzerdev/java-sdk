@@ -1,7 +1,5 @@
 package com.unzer.payment.business.paymenttypes;
 
-import com.unzer.payment.paymenttypes.PaymentType;
-import com.unzer.payment.paymenttypes.SepaDirectDebit;
 import com.unzer.payment.paymenttypes.SepaDirectDebitSecured;
 
 @Deprecated

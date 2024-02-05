@@ -1,8 +1,8 @@
 package com.unzer.payment.business;
 
 
-import com.unzer.payment.Customer;
 import com.unzer.payment.CompanyInfo;
+import com.unzer.payment.Customer;
 import com.unzer.payment.PaymentException;
 import com.unzer.payment.communication.HttpCommunicationException;
 import org.junit.jupiter.api.Disabled;
