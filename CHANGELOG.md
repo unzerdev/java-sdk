@@ -7,9 +7,12 @@ and this project adheres
 to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
 ## [5.1.0](https://github.com/unzerdev/java-sdk/compare/5.0.0..5.1.0)
+
+Google Pay payment method is added to Java SDK.
+
 ### Added
 
-* Added Google Pay payment method.
+* Added `GooglePay` payment method.
 
 ### Fixed
 
