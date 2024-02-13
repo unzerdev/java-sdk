@@ -4,6 +4,7 @@ import java.util.Arrays;
 
 public enum PaymentTypeEnum {
     CARD("crd"),
+    CLICK_TO_PAY("c2p"),
     EPS("eps"),
     GIROPAY("gro"),
     GOOGLE_PAY("gop"),
