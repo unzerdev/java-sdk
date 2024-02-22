@@ -9,12 +9,14 @@ import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.util.Locale;
 
-public class JsonBigDecimalConverter
-        implements JsonDeserializer<BigDecimal>, JsonSerializer<BigDecimal> {
+public class JsonBigDecimalConverter implements JsonDeserializer<BigDecimal>, JsonSerializer<BigDecimal> {
 
     @Override
-    public BigDecimal deserialize(JsonElement json, Type typeOfT,
-                                  JsonDeserializationContext context) {
+    public BigDecimal deserialize(
+            JsonElement json,
+            Type typeOfT,
+            JsonDeserializationContext context
+    ) {
         String jsonValue = json.getAsJsonPrimitive().getAsString();
         if (jsonValue == null || "".equalsIgnoreCase(jsonValue)) {
             return null;
@@ -24,7 +26,11 @@ public class JsonBigDecimalConverter
     }
 
     @Override
-    public JsonElement serialize(BigDecimal src, Type typeOfSrc, JsonSerializationContext context) {
+    public JsonElement serialize(
+            BigDecimal src,
+            Type typeOfSrc,
+            JsonSerializationContext context
+    ) {
         DecimalFormat df = new DecimalFormat();
         df.setMaximumFractionDigits(4);
         df.setMinimumFractionDigits(4);
@@ -34,5 +40,4 @@ public class JsonBigDecimalConverter
         df.setGroupingUsed(false);
         return new JsonPrimitive(df.format(src.setScale(4, RoundingMode.HALF_UP)));
     }
-
 }
