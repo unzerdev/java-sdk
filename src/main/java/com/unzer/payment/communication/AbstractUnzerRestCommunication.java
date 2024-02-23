@@ -129,12 +129,12 @@ public abstract class AbstractUnzerRestCommunication implements UnzerRestCommuni
         addClientIpHeader(request);
         setContentType(request);
 
-        logRequest(request);
-
         if (!jsonBody.equals(EMPTY_JSON)) {
             request.setContent(jsonBody, "UTF-8");
             logRequestBody(jsonBody);
         }
+
+        logRequest(request);
 
         UnzerHttpResponse response = doExecute(request);
 
@@ -228,8 +228,7 @@ public abstract class AbstractUnzerRestCommunication implements UnzerRestCommuni
      * @return - the content and status-code of the response wrapped into a {@code UnzerHttpResponse}.
      * @throws HttpCommunicationException - thrown for any communication errors
      */
-    protected abstract UnzerHttpResponse doExecute(UnzerHttpRequest request)
-            throws HttpCommunicationException;
+    protected abstract UnzerHttpResponse doExecute(UnzerHttpRequest request) throws HttpCommunicationException;
 
     /**
      * Extension point for logging the response comming from the api.

@@ -1,17 +1,14 @@
 package com.unzer.payment.communication;
 
 import com.google.gson.*;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import lombok.extern.log4j.Log4j2;
 
 import java.lang.reflect.Type;
 import java.net.MalformedURLException;
 import java.net.URL;
 
-@SuppressWarnings("checkstyle:AbbreviationAsWordInName")
-public class JsonURLConverter
-        implements JsonDeserializer<URL>, JsonSerializer<URL> {
-    public static final Logger logger = LogManager.getLogger(JsonURLConverter.class);
+@Log4j2
+public class JsonURLConverter implements JsonDeserializer<URL>, JsonSerializer<URL> {
 
     @Override
     public URL deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) {
@@ -24,7 +21,7 @@ public class JsonURLConverter
         try {
             return new URL(urlValue);
         } catch (MalformedURLException e) {
-            logger.warn("Invalid URL '{}': {}", urlValue, e.getMessage());
+            log.warn("Invalid URL '{}': {}", urlValue, e.getMessage());
             return null;
         }
     }
@@ -33,5 +30,4 @@ public class JsonURLConverter
     public JsonElement serialize(URL src, Type typeOfSrc, JsonSerializationContext context) {
         return new JsonPrimitive(src.toString());
     }
-
 }

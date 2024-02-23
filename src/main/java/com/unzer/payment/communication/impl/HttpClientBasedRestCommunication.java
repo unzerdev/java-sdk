@@ -4,13 +4,12 @@ import com.unzer.payment.communication.AbstractUnzerRestCommunication;
 import com.unzer.payment.communication.HttpCommunicationException;
 import com.unzer.payment.communication.UnzerHttpRequest;
 import com.unzer.payment.communication.UnzerHttpResponse;
+import lombok.extern.log4j.Log4j2;
 import org.apache.hc.client5.http.impl.classic.CloseableHttpClient;
 import org.apache.hc.client5.http.impl.classic.CloseableHttpResponse;
 import org.apache.hc.client5.http.impl.classic.HttpClients;
 import org.apache.hc.core5.http.ParseException;
 import org.apache.hc.core5.http.io.entity.EntityUtils;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
@@ -19,10 +18,8 @@ import java.util.Locale;
 /**
  * Reference implementation of the UnzerRestCommunication, based on Apache HttpClient.
  */
+@Log4j2
 public class HttpClientBasedRestCommunication extends AbstractUnzerRestCommunication {
-
-    private static final Logger logger = LogManager.getLogger(HttpClientBasedRestCommunication.class);
-
     public HttpClientBasedRestCommunication() {
         this(null, null);
     }
@@ -42,17 +39,17 @@ public class HttpClientBasedRestCommunication extends AbstractUnzerRestCommunica
 
     @Override
     protected void logRequest(UnzerHttpRequest request) {
-        logger.debug("Sending request {}", request.toString());
+        log.debug("Sending request {}", request.toString());
     }
 
     @Override
     protected void logRequestBody(String body) {
-        logger.debug(body);
+        log.debug(body);
     }
 
     @Override
-    protected UnzerHttpResponse doExecute(UnzerHttpRequest request)
-            throws HttpCommunicationException {
+    protected UnzerHttpResponse doExecute(UnzerHttpRequest request) throws HttpCommunicationException {
+
         if (!(request instanceof HttpClientBasedHttpRequest)) {
             throw new IllegalArgumentException(
                     "Request is not an instance of HttpClientBasedHttpRequest");
@@ -67,17 +64,22 @@ public class HttpClientBasedRestCommunication extends AbstractUnzerRestCommunica
         CloseableHttpResponse response = null;
         try (CloseableHttpClient client = HttpClients.custom().useSystemProperties().build()) {
             response = client.execute(((HttpClientBasedHttpRequest) request).getRequest());
-            return new UnzerHttpResponse(request, EntityUtils.toString(response.getEntity()),
-                    response.getCode());
+            return new UnzerHttpResponse(
+                    request,
+                    EntityUtils.toString(response.getEntity()),
+                    response.getCode()
+            );
         } catch (IOException | ParseException e) {
             try {
-                throw new HttpCommunicationException(String.format(
-                        "Error communicating to %s: Detail: %s",
-                        request.getURI().toString(),
-                        e.getMessage()
-                ));
+                throw new HttpCommunicationException(
+                        String.format(
+                                "Error communicating to %s: Detail: %s",
+                                request.getURI().toString(),
+                                e.getMessage()
+                        )
+                );
             } catch (URISyntaxException ex) {
-                // never happens, because uri validation happens in the beginning of this method
+                // never raises, because uri validation happens in the beginning of this method
                 throw new RuntimeException(ex);
             }
         } finally {
@@ -85,7 +87,7 @@ public class HttpClientBasedRestCommunication extends AbstractUnzerRestCommunica
                 try {
                     response.close();
                 } catch (IOException e) {
-                    logger.debug("Closing the http stream threw an error: " + e.getMessage(), e);
+                    log.debug("Closing the http stream threw an error: " + e.getMessage(), e);
                 }
             }
         }
@@ -93,7 +95,8 @@ public class HttpClientBasedRestCommunication extends AbstractUnzerRestCommunica
 
     @Override
     protected void logResponse(UnzerHttpResponse response) {
-        logger.debug("Received response {} {}\nHTTP status {}\n{}",
+        log.debug(
+                "Received response {} {}\nHTTP status {}\n{}",
                 response.getRequest().getMethod(),
                 response.getRequestURI(),
                 response.getStatusCode(),
