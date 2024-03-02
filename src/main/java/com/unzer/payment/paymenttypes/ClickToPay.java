@@ -3,15 +3,11 @@ package com.unzer.payment.paymenttypes;
 import com.unzer.payment.GeoLocation;
 import com.unzer.payment.communication.json.ApiIdObject;
 import com.unzer.payment.communication.json.ApiObject;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 @NoArgsConstructor
 @AllArgsConstructor
-@Getter
-@Setter
+@Data
 public class ClickToPay extends BasePaymentType {
     private String mcCorrelationId;
     private String mcCxFlowId;
