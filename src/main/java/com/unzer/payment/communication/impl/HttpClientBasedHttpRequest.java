@@ -1,6 +1,7 @@
 package com.unzer.payment.communication.impl;
 
 import com.unzer.payment.communication.UnzerHttpRequest;
+import lombok.Getter;
 import org.apache.hc.client5.http.classic.methods.*;
 import org.apache.hc.core5.http.ClassicHttpRequest;
 import org.apache.hc.core5.http.ContentType;
@@ -19,6 +20,7 @@ import java.net.URISyntaxException;
  * <li>DELETE: mapped by {@code HttpDelete}</li>
  * </ul>
  */
+@Getter
 public class HttpClientBasedHttpRequest implements UnzerHttpRequest {
     protected ClassicHttpRequest request;
     protected UnzerHttpMethod method;
@@ -50,23 +52,13 @@ public class HttpClientBasedHttpRequest implements UnzerHttpRequest {
             case PATCH:
                 return new HttpPatch(url);
             default:
-                throw new IllegalArgumentException("Unsupported HttpMethod given " + method);
+                throw new IllegalArgumentException("Unsupported HttpMethod: " + method);
         }
     }
 
     @Override
     public void addHeader(String header, String value) {
         this.request.addHeader(header, value);
-    }
-
-    /**
-     * Returns the wrapped {@code HttpUriRequest} to be passed to the {@code HttpClient}
-     * within the {@code HttpClientBasedRestCommunication} implementation.
-     *
-     * @return - the wrapped {@code HttpUriRequest}
-     */
-    public ClassicHttpRequest getRequest() {
-        return request;
     }
 
     @Override
@@ -83,11 +75,6 @@ public class HttpClientBasedHttpRequest implements UnzerHttpRequest {
                 false
         );
         request.setEntity(entity);
-    }
-
-    @Override
-    public UnzerHttpMethod getMethod() {
-        return this.method;
     }
 
     @Override

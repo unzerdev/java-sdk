@@ -30,7 +30,7 @@ public class ErrorTestDE extends AbstractPaymentTest {
             assertNotNull(e.getPaymentErrorList());
             assertTrue(e.getPaymentErrorList().size() > 0);
             assertEquals("API.320.000.002", e.getPaymentErrorList().get(0).getCode());
-            assertEquals("Der angegebene key s-priv-123 ist unbekannt oder ungültig.",
+            assertEquals("Der angegebene key s-p****123 ist unbekannt oder ungültig.",
                     e.getPaymentErrorList().get(0).getMerchantMessage());
             assertEquals("Bei der Überprüfung Ihrer Anfrage ist ein Problem aufgetreten. " +
                             "Wenden Sie sich für weitere Informationen bitte an uns.",

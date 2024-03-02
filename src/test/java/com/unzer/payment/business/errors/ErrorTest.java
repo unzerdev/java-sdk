@@ -8,7 +8,6 @@ import com.unzer.payment.communication.HttpCommunicationException;
 import com.unzer.payment.paymenttypes.Card;
 import org.junit.jupiter.api.Test;
 
-import java.net.MalformedURLException;
 import java.text.ParseException;
 import java.util.List;
 
@@ -32,14 +31,14 @@ public class ErrorTest extends AbstractPaymentTest {
     // The given key something is unknown or invalid.
     // The key 's-priv-123' is invalid
     @Test
-    public void testInvalidKey() throws MalformedURLException, HttpCommunicationException {
+    public void testInvalidKey() throws HttpCommunicationException {
         try {
             getUnzer("s-priv-123").authorize(getAuthorization(""));
         } catch (PaymentException e) {
             assertNotNull(e.getPaymentErrorList());
             assertTrue(e.getPaymentErrorList().size() > 0);
             assertEquals("API.320.000.002", e.getPaymentErrorList().get(0).getCode());
-            assertEquals("The given key s-priv-123 is unknown or invalid.",
+            assertEquals("The given key s-p****123 is unknown or invalid.",
                     e.getPaymentErrorList().get(0).getMerchantMessage());
         }
     }
@@ -84,7 +83,7 @@ public class ErrorTest extends AbstractPaymentTest {
     // Invalid return URL
     // Return URL is mandatory
     @Test
-    public void testMissingReturnUrl() throws MalformedURLException, HttpCommunicationException {
+    public void testMissingReturnUrl() throws HttpCommunicationException {
         try {
             Authorization authorization = getAuthorization(createPaymentTypeCard(getUnzer(), "4711100000000000").getId());
             authorization.setReturnUrl(null);
@@ -98,7 +97,7 @@ public class ErrorTest extends AbstractPaymentTest {
     }
 
     @Test
-    public void testPaymentTypeIdInvalid() throws MalformedURLException, HttpCommunicationException {
+    public void testPaymentTypeIdInvalid() throws HttpCommunicationException {
         try {
             getUnzer().authorize(getAuthorization(""));
         } catch (PaymentException e) {
@@ -122,7 +121,7 @@ public class ErrorTest extends AbstractPaymentTest {
     }
 
     @Test
-    public void testFetchNonExistingCharge() throws MalformedURLException, HttpCommunicationException {
+    public void testFetchNonExistingCharge() throws HttpCommunicationException {
         Charge charge = getUnzer().charge(getCharge());
         Charge chargeFetched = getUnzer().fetchCharge(charge.getPaymentId(), "s-chg-200");
         assertNull(chargeFetched);
