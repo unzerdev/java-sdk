@@ -8,6 +8,13 @@ to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
 ## UNRELEASED
 
+Click To Pay payment method is added to Java SDK.
+
+### Added
+
+* Added `ClickToPay` payment method.
+
+
 ## [5.1.0](https://github.com/unzerdev/java-sdk/compare/5.0.0..5.1.0)
 
 Google Pay payment method is added to Java SDK.
