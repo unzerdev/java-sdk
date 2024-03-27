@@ -167,6 +167,8 @@ public class PaymentService {
                 return new PaylaterInstallment();
             case PAYLATER_DIRECT_DEBIT:
                 return new PaylaterDirectDebit();
+            case TWINT:
+                return new Twint();
             default:
                 throw new PaymentException("Type '" + typeId + "' is currently not supported by the SDK");
         }
@@ -193,6 +195,7 @@ public class PaymentService {
             case UNZER_PAYLATER_INVOICE:
             case KLARNA:
             case CLICK_TO_PAY:
+            case TWINT:
                 return new ApiIdObject();
             case PAYPAL:
                 return new ApiPaypal();
