@@ -1,0 +1,9 @@
+{
+  "id": "s-twt-q0nucec6itwe",
+  "method": "twint",
+  "recurring": false,
+  "geoLocation": {
+    "clientIp": "0:0:0:0:0:0:0:1",
+    "countryIsoA2": "DE"
+  }
+}

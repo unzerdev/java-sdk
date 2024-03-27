@@ -40,6 +40,7 @@ public enum PaymentTypeEnum {
     KLARNA("kla"),
     PAYLATER_INSTALLMENT("pit"),
     PAYLATER_DIRECT_DEBIT("pdd"),
+    TWINT("twt"),
     UNKNOWN("unknown");
 
     private final String shortName;
