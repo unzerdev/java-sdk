@@ -107,8 +107,6 @@ public class PaymentService {
         switch (paymentTypeEnum) {
             case CARD:
                 return new Card("", "");
-            case CLICK_TO_PAY:
-                return new ClickToPay();
             case EPS:
                 return new Eps();
             case GIROPAY:
@@ -194,7 +192,6 @@ public class PaymentService {
             case PF_EFINANCE:
             case UNZER_PAYLATER_INVOICE:
             case KLARNA:
-            case CLICK_TO_PAY:
             case TWINT:
                 return new ApiIdObject();
             case PAYPAL:
