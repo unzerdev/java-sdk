@@ -6,13 +6,20 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres
 to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
-## UNRELEASED
+## Unreleased
 
 Click To Pay payment method is added to Java SDK.
 
 ### Added
 
 * Added `ClickToPay` payment method.
+
+## [5.2.0](https://github.com/unzerdev/java-sdk/compare/5.1.0..5.2.0)
+
+Twint payment method is added to Java SDK.
+
+### Added
+
 * Added `Twint` payment method.
 
 ## [5.1.0](https://github.com/unzerdev/java-sdk/compare/5.0.0..5.1.0)
