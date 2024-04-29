@@ -8,14 +8,20 @@ import com.unzer.payment.models.AdditionalTransactionData;
 import com.unzer.payment.models.CardTransactionData;
 import com.unzer.payment.paymenttypes.Card;
 import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.DynamicTest;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestFactory;
 
 import java.math.BigDecimal;
+import java.util.Collection;
 import java.util.Currency;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import static com.unzer.payment.business.Keys.ALT_LEGACY_PRIVATE_KEY;
 import static com.unzer.payment.util.Types.unsafeUrl;
 import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.DynamicTest.dynamicTest;
 
 
 public class CardTest extends AbstractPaymentTest {
@@ -195,7 +201,7 @@ public class CardTest extends AbstractPaymentTest {
         card.setCvc("123");
         card.setEmail(INVALID_MAIL_STRING);
         try {
-            card = getUnzer().createPaymentType(card);
+            getUnzer().createPaymentType(card);
         } catch (PaymentException e) {
             assertNotNull(e.getPaymentErrorList());
             assertTrue(e.getPaymentErrorList().size() > 0);
@@ -447,64 +453,91 @@ public class CardTest extends AbstractPaymentTest {
         assertEquals(liability, fetchAuthorization.getAdditionalTransactionData().getCard().getLiability());
     }
 
-    @Test
-    public void testCardLowValueExemptionsForAuth() {
-        Unzer unzer = getUnzer();
+    @TestFactory
+    public Collection<DynamicTest> testExemptionTypesForAuth() {
+        class TestCase {
+            final CardTransactionData.ExemptionType exemptionType;
 
-        Card card = unzer.createPaymentType(
-                new Card(NO_3DS_VISA_CARD_NUMBER, "01/30")
-                        .setCvc("123")
-                        .set3ds(false)
-        );
+            public TestCase(CardTransactionData.ExemptionType exemptionType) {
+                this.exemptionType = exemptionType;
+            }
+        }
 
-        Authorization authorization = (Authorization) new Authorization()
-                .setTypeId(card.getId())
-                .setReturnUrl(unsafeUrl("https://unzer.com"))
-                .setAmount(BigDecimal.TEN)
-                .setCurrency(Currency.getInstance("EUR"))
-                .setOrderId("ord-Hi686u4Q4Y")
-                .setAdditionalTransactionData(
-                        new AdditionalTransactionData()
-                                .setCard(
-                                        new CardTransactionData()
-                                                .setRecurrenceType(RecurrenceType.UNSCHEDULED)
-                                                .setExemptionType(CardTransactionData.ExemptionType.LVP)
-                                )
-                );
-        authorization = unzer.authorize(authorization);
+        return Stream.of(
+                new TestCase(CardTransactionData.ExemptionType.LVP),
+                new TestCase(CardTransactionData.ExemptionType.TRA)
+        ).map(tc -> dynamicTest("exemptionType " + tc.exemptionType, () -> {
+                    Unzer unzer = getUnzer();
 
-        Authorization fetchAuthorization = unzer.fetchAuthorization(authorization.getPaymentId());
-        assertEquals(CardTransactionData.ExemptionType.LVP, fetchAuthorization.getAdditionalTransactionData().getCard().getExemptionType());
+                    Card card = unzer.createPaymentType(
+                            new Card(NO_3DS_VISA_CARD_NUMBER, "01/30")
+                                    .setCvc("123")
+                                    .set3ds(false)
+                    );
+
+                    Authorization authorization = (Authorization) new Authorization()
+                            .setTypeId(card.getId())
+                            .setReturnUrl(unsafeUrl("https://unzer.com"))
+                            .setAmount(BigDecimal.TEN)
+                            .setCurrency(Currency.getInstance("EUR"))
+                            .setOrderId("ord-Hi686u4Q4Y")
+                            .setAdditionalTransactionData(
+                                    new AdditionalTransactionData()
+                                            .setCard(
+                                                    new CardTransactionData()
+                                                            .setRecurrenceType(RecurrenceType.UNSCHEDULED)
+                                                            .setExemptionType(tc.exemptionType)
+                                            )
+                            );
+                    authorization = unzer.authorize(authorization);
+
+                    Authorization fetchAuthorization = unzer.fetchAuthorization(authorization.getPaymentId());
+                    assertEquals(tc.exemptionType, fetchAuthorization.getAdditionalTransactionData().getCard().getExemptionType());
+                })
+        ).collect(Collectors.toList());
     }
 
-    @Test
-    public void testCardLowValueExemptionsForCharge() {
-        Unzer unzer = getUnzer();
+    @TestFactory
+    public Collection<DynamicTest> testCardExemptionTypesForCharge() {
+        class TestCase {
+            final CardTransactionData.ExemptionType exemptionType;
 
-        Card card = unzer.createPaymentType(
-                new Card(NO_3DS_VISA_CARD_NUMBER, "01/30")
-                        .setCvc("123")
-                        .set3ds(false)
-        );
+            public TestCase(CardTransactionData.ExemptionType exemptionType) {
+                this.exemptionType = exemptionType;
+            }
+        }
 
-        Charge charge = (Charge) new Charge()
-                .setTypeId(card.getId())
-                .setReturnUrl(unsafeUrl("https://unzer.com"))
-                .setAmount(BigDecimal.TEN)
-                .setCurrency(Currency.getInstance("EUR"))
-                .setOrderId("ord-Hi686u4Q4Y")
-                .setAdditionalTransactionData(
-                        new AdditionalTransactionData()
-                                .setCard(
-                                        new CardTransactionData()
-                                                .setRecurrenceType(RecurrenceType.UNSCHEDULED)
-                                                .setExemptionType(CardTransactionData.ExemptionType.LVP)
-                                )
-                );
-        unzer.charge(charge);
+        return Stream.of(
+                new TestCase(CardTransactionData.ExemptionType.LVP),
+                new TestCase(CardTransactionData.ExemptionType.TRA)
+        ).map(tc -> dynamicTest("exemptionType " + tc.exemptionType, () -> {
+                    Unzer unzer = getUnzer();
 
-        Charge fetchCharge = unzer.fetchCharge(charge.getPaymentId(), "s-chg-1");
-        assertEquals(CardTransactionData.ExemptionType.LVP, fetchCharge.getAdditionalTransactionData().getCard().getExemptionType());
+                    Card card = unzer.createPaymentType(
+                            new Card(NO_3DS_VISA_CARD_NUMBER, "01/30")
+                                    .setCvc("123")
+                                    .set3ds(false)
+                    );
+
+                    Charge charge = (Charge) new Charge()
+                            .setTypeId(card.getId())
+                            .setReturnUrl(unsafeUrl("https://unzer.com"))
+                            .setAmount(BigDecimal.TEN)
+                            .setCurrency(Currency.getInstance("EUR"))
+                            .setOrderId("ord-Hi686u4Q4Y")
+                            .setAdditionalTransactionData(
+                                    new AdditionalTransactionData()
+                                            .setCard(
+                                                    new CardTransactionData()
+                                                            .setRecurrenceType(RecurrenceType.UNSCHEDULED)
+                                                            .setExemptionType(tc.exemptionType)
+                                            )
+                            );
+                    unzer.charge(charge);
+
+                    Charge fetchCharge = unzer.fetchCharge(charge.getPaymentId(), "s-chg-1");
+                    assertEquals(tc.exemptionType, fetchCharge.getAdditionalTransactionData().getCard().getExemptionType());
+                })
+        ).collect(Collectors.toList());
     }
-
 }
