@@ -76,7 +76,15 @@ public class CardTransactionData {
     }
 
     public enum ExemptionType {
+        /**
+         * Low Value Payment
+         */
         @SerializedName("lvp")
-        LVP
+        LVP,
+        /**
+         * Transaction Risk Analysis
+         */
+        @SerializedName("tra")
+        TRA
     }
 }
