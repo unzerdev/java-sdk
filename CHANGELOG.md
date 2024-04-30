@@ -13,6 +13,7 @@ Click To Pay payment method is added to Java SDK.
 ### Added
 
 * Added `ClickToPay` payment method.
+* Add exemption type for transaction risk analysis: `com.unzer.payment.models.CardTransactionData.ExemptionType.TRA`
 
 ## [5.2.0](https://github.com/unzerdev/java-sdk/compare/5.1.0..5.2.0)
 
