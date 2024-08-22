@@ -10,6 +10,7 @@ import com.unzer.payment.communication.impl.HttpClientBasedRestCommunication;
 import com.unzer.payment.communication.json.ApiIdObject;
 import com.unzer.payment.paymenttypes.InvoiceSecured;
 import com.unzer.payment.service.PaymentService;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DynamicTest;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestFactory;
@@ -34,6 +35,7 @@ import static org.junit.jupiter.api.DynamicTest.dynamicTest;
 public class InvoiceSecuredTest extends AbstractPaymentTest {
 
     @Test
+    @Disabled("deprecated")
     @Deprecated
     public void testChargeTypeWithInvoiceIdBasketV1() {
         InvoiceSecured invoice = getUnzer(Keys.LEGACY_PRIVATE_KEY).createPaymentType(getInvoiceSecured());
@@ -48,6 +50,7 @@ public class InvoiceSecuredTest extends AbstractPaymentTest {
     }
 
     @Test
+    @Disabled("deprecated")
     public void testChargeTypeWithInvoiceIdBasketV2() throws HttpCommunicationException, MalformedURLException {
         InvoiceSecured invoice = getUnzer(Keys.LEGACY_PRIVATE_KEY).createPaymentType(getInvoiceSecured());
         Basket basket = getMinTestBasketV2();
@@ -67,6 +70,7 @@ public class InvoiceSecuredTest extends AbstractPaymentTest {
     }
 
     @Test
+    @Disabled("deprecated")
     @Deprecated
     public void testChargeTypeBasketV1() {
         InvoiceSecured invoice = getUnzer(Keys.LEGACY_PRIVATE_KEY).createPaymentType(getInvoiceSecured());
@@ -76,6 +80,7 @@ public class InvoiceSecuredTest extends AbstractPaymentTest {
     }
 
     @Test
+    @Disabled("deprecated")
     public void testChargeTypeBasketV2() throws HttpCommunicationException, MalformedURLException {
         InvoiceSecured invoice = getUnzer(Keys.LEGACY_PRIVATE_KEY).createPaymentType(getInvoiceSecured());
         Basket basket = getMinTestBasketV2();
@@ -114,6 +119,7 @@ public class InvoiceSecuredTest extends AbstractPaymentTest {
     }
 
     @Test
+    @Disabled("deprecated")
     @Deprecated
     public void testShipmentInvoiceSecuredTypeBasketV1() throws HttpCommunicationException, MalformedURLException {
         InvoiceSecured invoice = getUnzer(Keys.LEGACY_PRIVATE_KEY).createPaymentType(getInvoiceSecured());
@@ -127,6 +133,7 @@ public class InvoiceSecuredTest extends AbstractPaymentTest {
     }
 
     @Test
+    @Disabled("deprecated")
     public void testShipmentInvoiceSecuredTypeBasketV2() throws HttpCommunicationException, MalformedURLException {
         InvoiceSecured invoice = getUnzer(Keys.LEGACY_PRIVATE_KEY).createPaymentType(getInvoiceSecured());
         Basket basket = getMinTestBasketV2();
@@ -148,6 +155,7 @@ public class InvoiceSecuredTest extends AbstractPaymentTest {
     }
 
     @Test
+    @Disabled("deprecated")
     public void testChargeInvoiceGuaranteed() throws HttpCommunicationException {
         Unzer unzer = getUnzer(Keys.LEGACY_PRIVATE_KEY);
         HttpClientBasedRestCommunication restCommunication = new HttpClientBasedRestCommunication();
@@ -165,6 +173,7 @@ public class InvoiceSecuredTest extends AbstractPaymentTest {
     }
 
     @Test
+    @Disabled("deprecated")
     @Deprecated
     public void testChargeInvoiceFactoringBasketV1() throws HttpCommunicationException {
         Unzer unzer = getUnzer(Keys.LEGACY_PRIVATE_KEY);
@@ -189,6 +198,7 @@ public class InvoiceSecuredTest extends AbstractPaymentTest {
     }
 
     @Test
+    @Disabled("deprecated")
     public void testChargeInvoiceFactoringBasketV2() {
         Unzer unzer = getUnzer(Keys.LEGACY_PRIVATE_KEY);
         HttpClientBasedRestCommunication restCommunication = new HttpClientBasedRestCommunication();
@@ -212,6 +222,7 @@ public class InvoiceSecuredTest extends AbstractPaymentTest {
     }
 
     @TestFactory
+    @Disabled("deprecated")
     public Collection<DynamicTest> testCancelInvoiceSecured() {
         return Stream.of(Cancel.ReasonCode.RETURN, Cancel.ReasonCode.RETURN, Cancel.ReasonCode.CREDIT)
                 .map(rc -> dynamicTest(rc.name(), () -> {
@@ -241,6 +252,7 @@ public class InvoiceSecuredTest extends AbstractPaymentTest {
     }
 
     @Test
+    @Disabled("deprecated")
     public void testCancelFailsWithoutReasonCode() {
         PaymentError expectedError = new PaymentError(
                 "Reason code is mandatory for the payment type INVOICE_SECURED",

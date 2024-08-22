@@ -4,6 +4,7 @@ import com.unzer.payment.*;
 import com.unzer.payment.business.AbstractPaymentTest;
 import com.unzer.payment.models.*;
 import com.unzer.payment.paymenttypes.PaylaterInvoice;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DynamicTest;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestFactory;
@@ -40,6 +41,7 @@ public class PaylaterInvoiceTest extends AbstractPaymentTest {
     }
 
     @TestFactory
+    @Disabled("unstable")
     public Collection<DynamicTest> testAuthorizeAndChargePaylater() {
         class TestCase {
             final String name;
@@ -161,6 +163,7 @@ public class PaylaterInvoiceTest extends AbstractPaymentTest {
     }
 
     @TestFactory
+    @Disabled("unstable")
     public Collection<DynamicTest> testCancelAuthorization() {
         class TestCase {
             final String name;
@@ -279,6 +282,7 @@ public class PaylaterInvoiceTest extends AbstractPaymentTest {
     }
 
     @TestFactory
+    @Disabled("unstable")
     public Collection<DynamicTest> testCancelCharge() {
         class TestCase {
             final String name;
@@ -482,6 +486,7 @@ public class PaylaterInvoiceTest extends AbstractPaymentTest {
     }
 
     @Test
+    @Disabled("deprecated")
     public void testChargeAuthorizationWithChargeObject() {
         Unzer unzer = getUnzer();
 

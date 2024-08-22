@@ -1,6 +1,8 @@
 package com.unzer.payment.service;
 
 import com.unzer.payment.Resource;
+import com.unzer.payment.communication.api.ApiConfig;
+import com.unzer.payment.communication.api.ApiConfigs;
 import com.unzer.payment.models.PaylaterInvoiceConfigRequest;
 import com.unzer.payment.models.paylater.InstallmentPlansRequest;
 
@@ -18,11 +20,19 @@ public class UrlUtil {
         this.apiEndpoint = resolveApiEndpoint(privateKey);
     }
 
-    private static String resolveApiEndpoint(String privateKey) {
+    public UrlUtil(String privateKey, ApiConfig apiConfig) {
+        this.apiEndpoint = resolveApiEndpoint(privateKey, apiConfig);
+    }
+
+    private static String resolveApiEndpoint(String privateKey, ApiConfig apiConfig) {
         // 'p-' for production, 's-' for sandbox
         return privateKey.charAt(0) == 'p'
-                ? "https://api.unzer.com"
-                : "https://sbx-api.unzer.com";
+                ? apiConfig.getBaseUrl()
+                : apiConfig.getTestBaseUrl();
+    }
+
+    private static String resolveApiEndpoint(String privateKey) {
+        return resolveApiEndpoint(privateKey, ApiConfigs.PAYMENT_API);
     }
 
     public String getRestUrl() {
