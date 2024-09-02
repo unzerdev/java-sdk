@@ -1,5 +1,6 @@
 package com.unzer.payment.communication;
 
+import com.unzer.payment.communication.api.ApiConfig;
 import org.apache.hc.client5.http.classic.methods.*;
 import org.apache.hc.client5.http.impl.classic.CloseableHttpClient;
 import org.apache.hc.client5.http.impl.classic.HttpClients;
@@ -22,6 +23,11 @@ public class HttpClientMock implements UnzerRestCommunication {
 
     @Override
     public String httpPost(String url, String privateKey, Object data) {
+        return execute(new HttpPost(proxyUrl(url)), data);
+    }
+
+    @Override
+    public String httpPost(String url, String privateKey, Object data, ApiConfig apiClientConfig) throws HttpCommunicationException {
         return execute(new HttpPost(proxyUrl(url)), data);
     }
 

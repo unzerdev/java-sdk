@@ -13,6 +13,7 @@ import com.unzer.payment.models.*;
 import com.unzer.payment.models.paylater.InstallmentPlansRequest;
 import com.unzer.payment.paymenttypes.PaylaterInstallment;
 import com.unzer.payment.paymenttypes.PaymentType;
+import com.unzer.payment.resources.PaypageV2;
 import com.unzer.payment.service.*;
 import com.unzer.payment.service.marketplace.MarketplacePaymentService;
 import com.unzer.payment.util.JwtHelper;
@@ -42,6 +43,7 @@ public class Unzer {
     private final transient PaymentService paymentService;
     private final transient MarketplacePaymentService marketplacePaymentService;
     private final transient PaypageService paypageService;
+    private final transient com.unzer.payment.service.v2.PaypageService paypageV2Service;
     private final transient LinkpayService linkpayService;
     private final transient WebhookService webhookService;
     private final transient TokenService tokenService;
@@ -82,6 +84,7 @@ public class Unzer {
         this.paymentService = new PaymentService(this, restCommunication);
         this.marketplacePaymentService = new MarketplacePaymentService(this, restCommunication);
         this.paypageService = new PaypageService(this, restCommunication);
+        this.paypageV2Service = new com.unzer.payment.service.v2.PaypageService(this, restCommunication);
         this.linkpayService = new LinkpayService(this, restCommunication);
         this.webhookService = new WebhookService(this, restCommunication);
         this.tokenService = new TokenService(this, restCommunication);
@@ -1316,6 +1319,16 @@ public class Unzer {
      */
     public PaymentType fetchPaymentType(String typeId) throws HttpCommunicationException {
         return paymentService.fetchPaymentType(typeId);
+    }
+
+    /**
+     * Create a Paypage v2.
+     *
+     * @param paypage
+     * @return
+     */
+    public PaypageV2 createPaypage(PaypageV2 paypage) {
+        return paypageV2Service.create(paypage);
     }
 
     /**

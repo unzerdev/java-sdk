@@ -4,20 +4,21 @@ import lombok.Getter;
 
 @Getter
 public class ApiConfig {
-    enum AUTH_METOD {
+
+    public enum AuthMethod {
         BASIC,
         BEARER;
     }
 
     private final String baseUrl;
     private final String testBaseUrl;
-    private final AUTH_METOD authMethod;
+    private final AuthMethod authMethod;
 
     public ApiConfig(String baseUrl, String testBaseUrl) {
-        this(baseUrl, testBaseUrl, AUTH_METOD.BASIC);
+        this(baseUrl, testBaseUrl, AuthMethod.BASIC);
     }
 
-    public ApiConfig(String baseUrl, String testBaseUrl, AUTH_METOD authMethod) {
+    public ApiConfig(String baseUrl, String testBaseUrl, AuthMethod authMethod) {
         this.baseUrl = baseUrl;
         this.testBaseUrl = testBaseUrl;
         this.authMethod = authMethod;

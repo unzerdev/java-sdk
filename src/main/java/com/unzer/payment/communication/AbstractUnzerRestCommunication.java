@@ -3,9 +3,12 @@ package com.unzer.payment.communication;
 import com.unzer.payment.PaymentError;
 import com.unzer.payment.PaymentException;
 import com.unzer.payment.communication.UnzerHttpRequest.UnzerHttpMethod;
+import com.unzer.payment.communication.api.ApiConfig;
+import com.unzer.payment.communication.api.ApiConfigs;
 import com.unzer.payment.communication.impl.HttpClientBasedRestCommunication;
 import com.unzer.payment.communication.json.JsonErrorObject;
 import com.unzer.payment.util.SDKInfo;
+import org.apache.hc.core5.http.HttpStatus;
 
 import javax.xml.bind.DatatypeConverter;
 import java.nio.charset.StandardCharsets;
@@ -40,6 +43,7 @@ import static org.apache.hc.core5.http.HttpHeaders.*;
 public abstract class AbstractUnzerRestCommunication implements UnzerRestCommunication {
 
     public static final String BASIC = "Basic ";
+    public static final String BEARER = "Bearer ";
     static final String USER_AGENT_PREFIX = "UnzerJava";
     private static final String CONTENT_TYPE_JSON = "application/json; charset=UTF-8";
     private static final String CLIENTIP_HEADER = "CLIENTIP";
@@ -94,6 +98,13 @@ public abstract class AbstractUnzerRestCommunication implements UnzerRestCommuni
     }
 
     @Override
+    public String httpPost(String url, String privateKey, Object data, ApiConfig apiClientConfig) throws HttpCommunicationException {
+        Objects.requireNonNull(url);
+        Objects.requireNonNull(data);
+        return sendRequestWithBody(createRequest(url, UnzerHttpMethod.POST), privateKey, data, apiClientConfig);
+    }
+
+    @Override
     public String httpPut(String url, String privateKey, Object data)
             throws HttpCommunicationException {
         Objects.requireNonNull(url);
@@ -120,10 +131,19 @@ public abstract class AbstractUnzerRestCommunication implements UnzerRestCommuni
         return this.execute(request, privateKey, json);
     }
 
+    private String sendRequestWithBody(UnzerHttpRequest request, String privateKey, Object data, ApiConfig apiClientConfig) {
+        String json = new JsonParser().toJson(data);
+        return this.execute(request, privateKey, json, apiClientConfig);
+    }
+
     String execute(UnzerHttpRequest request, String privateKey, String jsonBody)
             throws HttpCommunicationException {
+        return execute(request, privateKey, jsonBody, ApiConfigs.PAYMENT_API);
+    }
+
+    protected String execute(UnzerHttpRequest request, String privateKey, String jsonBody, ApiConfig apiClientConfig) {
         addUserAgent(request);
-        addUnzerAuthentication(privateKey, request);
+        addUnzerAuthentication(privateKey, request, apiClientConfig);
         addAcceptLanguageHeader(request);
         addSdkInfo(request);
         addClientIpHeader(request);
@@ -140,13 +160,17 @@ public abstract class AbstractUnzerRestCommunication implements UnzerRestCommuni
 
         logResponse(response);
 
+        if (apiClientConfig.getAuthMethod() == ApiConfig.AuthMethod.BEARER && isUnauthorized(response)) {
+            throw new PaymentException("Unauthorized");
+        }
+
         if (isError(response)) {
             throwPaymentException(response);
         }
 
         return response.getContent();
-
     }
+
 
     /**
      * Creates a {@code UnzerHttpRequest} for the given
@@ -166,8 +190,18 @@ public abstract class AbstractUnzerRestCommunication implements UnzerRestCommuni
         request.addHeader(USER_AGENT, USER_AGENT_PREFIX + " - " + SDKInfo.VERSION);
     }
 
-    private void addUnzerAuthentication(String privateKey, UnzerHttpRequest request) {
-        request.addHeader(AUTHORIZATION, BASIC + addAuthentication(privateKey));
+    /**
+     * @param authentication  the authentication string. Private key or JWT token based on the {@code ApiConfig}
+     * @param request
+     * @param apiClientConfig
+     */
+    private void addUnzerAuthentication(String authentication, UnzerHttpRequest request, ApiConfig apiClientConfig) {
+        if (Objects.requireNonNull(apiClientConfig.getAuthMethod()) == ApiConfig.AuthMethod.BEARER) {
+            request.addHeader(AUTHORIZATION, BEARER + authentication);
+            return;
+        }
+
+        request.addHeader(AUTHORIZATION, BASIC + addAuthentication(authentication));
     }
 
     private void addAcceptLanguageHeader(UnzerHttpRequest request) {
@@ -239,6 +273,10 @@ public abstract class AbstractUnzerRestCommunication implements UnzerRestCommuni
 
     private boolean isError(UnzerHttpResponse response) {
         return response.getStatusCode() > 201 || response.getStatusCode() < 200;
+    }
+
+    private boolean isUnauthorized(UnzerHttpResponse response) {
+        return response.getStatusCode() == HttpStatus.SC_UNAUTHORIZED;
     }
 
     private void throwPaymentException(UnzerHttpResponse response) {

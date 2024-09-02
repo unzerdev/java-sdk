@@ -1,5 +1,7 @@
 package com.unzer.payment.communication;
 
+import com.unzer.payment.communication.api.ApiConfig;
+
 /**
  * Defines the rest-communication used by the {@code PaymentService}.
  * <p>
@@ -30,6 +32,18 @@ public interface UnzerRestCommunication {
      * @throws HttpCommunicationException - thrown for any problems occurring in http-communication
      */
     String httpPost(String url, String privateKey, Object data) throws HttpCommunicationException;
+
+    /**
+     * Executes a POST Request to the given {@code url} authenticated with the given
+     * {@code privateKey}.
+     *
+     * @param url            - the url to be called
+     * @param authentication - the private or jwt token, depending on the {@code ApiConfig}
+     * @param data           - any data object as defined in the com.unzer.payment package
+     * @return - the Response as application/json, UTF-8
+     * @throws HttpCommunicationException - thrown for any problems occurring in http-communication
+     */
+    String httpPost(String url, String authentication, Object data, ApiConfig apiClientConfig) throws HttpCommunicationException;
 
     /**
      * Executes a PUT Request to the given {@code url} authenticated with the given
