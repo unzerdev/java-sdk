@@ -1,0 +1,29 @@
+{
+  "payments": [
+    {
+      "paymentId": "s-pay-0",
+      "transactionStatus": "failure",
+      "creationDate": "2024-09-04T15:08:23.223Z",
+      "messages": [
+        {
+          "code": "COR.000.000.000",
+          "customer": "Your payments have been successfully processed.",
+          "merchant": "Transaction succeeded"
+        }
+      ]
+    },
+    {
+      "paymentId": "s-pay-1",
+      "transactionStatus": "success",
+      "creationDate": "2024-09-04T15:08:23.223Z",
+      "messages": [
+        {
+          "code": "COR.000.000.000",
+          "customer": "Your payments have been successfully processed.",
+          "merchant": "Transaction succeeded"
+        }
+      ]
+    }
+  ],
+  "total": 2
+}

@@ -85,8 +85,13 @@ public abstract class AbstractUnzerRestCommunication implements UnzerRestCommuni
 
     @Override
     public String httpGet(String url, String privateKey) throws HttpCommunicationException {
+        return httpGet(url, privateKey, ApiConfigs.PAYMENT_API);
+    }
+
+    @Override
+    public String httpGet(String url, String privateKey, ApiConfig apiClientConfig) throws HttpCommunicationException {
         Objects.requireNonNull(url);
-        return this.execute(createRequest(url, UnzerHttpMethod.GET), privateKey, EMPTY_JSON);
+        return this.execute(createRequest(url, UnzerHttpMethod.GET), privateKey, EMPTY_JSON, apiClientConfig);
     }
 
     @Override

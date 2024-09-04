@@ -5,12 +5,14 @@ import com.unzer.payment.BaseResource;
 import com.unzer.payment.models.paypage.*;
 import lombok.AccessLevel;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.math.BigDecimal;
 import java.util.HashMap;
 
 @Data
+@NoArgsConstructor
 public class PaypageV2 extends BaseResource {
 
     private static String URI = "/v2/merchant/paypage";
@@ -70,16 +72,17 @@ public class PaypageV2 extends BaseResource {
     }
 
     public enum MethodName {
+        DEFAULT("default"),
         CARDS("cards"),
         PAYPAL("paypal"),
-        PAYLATERINSTALLMENT("paylaterInstallment"),
+        PAYLATER_INSTALLMENT("paylaterInstallment"),
         GOOGLEPAY("googlepay"),
         APPLEPAY("applepay"),
         KLARNA("klarna"),
-        SEPADIRECTDEBIT("sepaDirectDebit"),
+        SEPA_DIRECT_DEBIT("sepaDirectDebit"),
         EPS("eps"),
-        PAYLATERINVOICE("paylaterInvoice"),
-        PAYLATERDIRECTDEBIT("paylaterDirectDebit"),
+        PAYLATER_INVOICE("paylaterInvoice"),
+        PAYLATER_DIRECT_DEBIT("paylaterDirectDebit"),
         PREPAYMENT("prepayment"),
         PAYU("payu"),
         IDEAL("ideal"),
@@ -89,8 +92,7 @@ public class PaypageV2 extends BaseResource {
         BANCONTACT("bancontact"),
         PFCARD("pfcard"),
         PFEFINANCE("pfefinance"),
-        TWINT("twint"),
-        DEFAULT("default");
+        TWINT("twint");
 
         private final String name;
 
@@ -98,7 +100,7 @@ public class PaypageV2 extends BaseResource {
             this.name = name;
         }
 
-        public String get() {
+        public String value() {
             return name;
         }
     }

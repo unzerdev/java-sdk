@@ -47,4 +47,14 @@ public class PaypageService {
 
         return new JsonParser().fromJson(response, PaypageV2.class);
     }
+
+    public PaypageV2 fetch(String paypageId) {
+        unzer.prepareJwtToken();
+        String response = restCommunication.httpGet(
+                urlUtil.getUrl(new PaypageV2()) + "/" + paypageId,
+                unzer.getJwtToken(),
+                ApiConfigs.PAYPAGE_API
+        );
+        return new JsonParser().fromJson(response, PaypageV2.class);
+    }
 }

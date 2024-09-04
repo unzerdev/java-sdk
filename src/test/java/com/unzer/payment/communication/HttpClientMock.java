@@ -22,6 +22,11 @@ public class HttpClientMock implements UnzerRestCommunication {
     }
 
     @Override
+    public String httpGet(String url, String privateKey, ApiConfig apiClientConfig) throws HttpCommunicationException {
+        return execute(new HttpGet(proxyUrl(url)), null);
+    }
+
+    @Override
     public String httpPost(String url, String privateKey, Object data) {
         return execute(new HttpPost(proxyUrl(url)), data);
     }

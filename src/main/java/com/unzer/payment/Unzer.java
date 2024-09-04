@@ -1332,6 +1332,17 @@ public class Unzer {
     }
 
     /**
+     * Fetch a Paypage v2. Respons contains list of payments created wit the
+     * given paypage.
+     *
+     * @param paypage paypage id
+     * @return
+     */
+    public PaypageV2 fetchPaypagePayments(String paypage) {
+        return paypageV2Service.fetch(paypage);
+    }
+
+    /**
      * Initiates a paypage and returns the redirectUrl and an id to the paypage. The id will be
      * used for embedded paypage within Javascript components, the redirectUrl will be used
      * for hosted paypage to redirect customer to this url.
