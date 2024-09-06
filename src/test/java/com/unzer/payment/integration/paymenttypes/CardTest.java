@@ -465,7 +465,9 @@ public class CardTest extends AbstractPaymentTest {
 
         return Stream.of(
                 new TestCase(CardTransactionData.ExemptionType.LVP),
-                new TestCase(CardTransactionData.ExemptionType.TRA)
+                new TestCase(CardTransactionData.ExemptionType.TRA),
+                new TestCase(CardTransactionData.ExemptionType.SCP),
+                new TestCase(CardTransactionData.ExemptionType.NO_EXEMPTION)
         ).map(tc -> dynamicTest("exemptionType " + tc.exemptionType, () -> {
                     Unzer unzer = getUnzer();
 
