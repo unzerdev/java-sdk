@@ -202,28 +202,28 @@ class PaypageV2Test extends AbstractPaymentTest {
         HashMap<String, PaymentMethodConfig> withPaylaterConfig = new HashMap<>();
         withPaylaterConfig.put("cards", paylaterConfig);
 
-        HashMap<String, PaymentMethodConfig> withEnumMethodNames = new HashMap<>();
-        withEnumMethodNames.put(PaypageV2.MethodName.CARDS.value(), enabledConfig);
-        withEnumMethodNames.put(PaypageV2.MethodName.PAYPAL.value(), enabledConfig);
-        withEnumMethodNames.put(PaypageV2.MethodName.PAYLATER_INSTALLMENT.value(), enabledConfig);
-        withEnumMethodNames.put(PaypageV2.MethodName.GOOGLEPAY.value(), enabledConfig);
-        withEnumMethodNames.put(PaypageV2.MethodName.APPLEPAY.value(), enabledConfig);
-        withEnumMethodNames.put(PaypageV2.MethodName.KLARNA.value(), enabledConfig);
-        withEnumMethodNames.put(PaypageV2.MethodName.SEPA_DIRECT_DEBIT.value(), enabledConfig);
-        withEnumMethodNames.put(PaypageV2.MethodName.EPS.value(), enabledConfig);
-        withEnumMethodNames.put(PaypageV2.MethodName.PAYLATER_INVOICE.value(), enabledConfig);
-        withEnumMethodNames.put(PaypageV2.MethodName.PAYLATER_DIRECT_DEBIT.value(), enabledConfig);
-        withEnumMethodNames.put(PaypageV2.MethodName.PREPAYMENT.value(), enabledConfig);
-        withEnumMethodNames.put(PaypageV2.MethodName.PAYU.value(), enabledConfig);
-        withEnumMethodNames.put(PaypageV2.MethodName.IDEAL.value(), enabledConfig);
-        withEnumMethodNames.put(PaypageV2.MethodName.PRZELEWY24.value(), enabledConfig);
-        withEnumMethodNames.put(PaypageV2.MethodName.ALIPAY.value(), enabledConfig);
-        withEnumMethodNames.put(PaypageV2.MethodName.WECHATPAY.value(), enabledConfig);
-        withEnumMethodNames.put(PaypageV2.MethodName.BANCONTACT.value(), enabledConfig);
-        withEnumMethodNames.put(PaypageV2.MethodName.PFCARD.value(), enabledConfig);
-        withEnumMethodNames.put(PaypageV2.MethodName.PFEFINANCE.value(), enabledConfig);
-        withEnumMethodNames.put(PaypageV2.MethodName.TWINT.value(), enabledConfig);
-        withEnumMethodNames.put(PaypageV2.MethodName.DEFAULT.value(), enabledConfig);
+        HashMap<PaypageV2.MethodName, PaymentMethodConfig> withEnumMethodNames = new HashMap<>();
+        withEnumMethodNames.put(PaypageV2.MethodName.CARDS, enabledConfig);
+        withEnumMethodNames.put(PaypageV2.MethodName.PAYPAL, enabledConfig);
+        withEnumMethodNames.put(PaypageV2.MethodName.PAYLATER_INSTALLMENT, enabledConfig);
+        withEnumMethodNames.put(PaypageV2.MethodName.GOOGLEPAY, enabledConfig);
+        withEnumMethodNames.put(PaypageV2.MethodName.APPLEPAY, enabledConfig);
+        withEnumMethodNames.put(PaypageV2.MethodName.KLARNA, enabledConfig);
+        withEnumMethodNames.put(PaypageV2.MethodName.SEPA_DIRECT_DEBIT, enabledConfig);
+        withEnumMethodNames.put(PaypageV2.MethodName.EPS, enabledConfig);
+        withEnumMethodNames.put(PaypageV2.MethodName.PAYLATER_INVOICE, enabledConfig);
+        withEnumMethodNames.put(PaypageV2.MethodName.PAYLATER_DIRECT_DEBIT, enabledConfig);
+        withEnumMethodNames.put(PaypageV2.MethodName.PREPAYMENT, enabledConfig);
+        withEnumMethodNames.put(PaypageV2.MethodName.PAYU, enabledConfig);
+        withEnumMethodNames.put(PaypageV2.MethodName.IDEAL, enabledConfig);
+        withEnumMethodNames.put(PaypageV2.MethodName.PRZELEWY24, enabledConfig);
+        withEnumMethodNames.put(PaypageV2.MethodName.ALIPAY, enabledConfig);
+        withEnumMethodNames.put(PaypageV2.MethodName.WECHATPAY, enabledConfig);
+        withEnumMethodNames.put(PaypageV2.MethodName.BANCONTACT, enabledConfig);
+        withEnumMethodNames.put(PaypageV2.MethodName.PFCARD, enabledConfig);
+        withEnumMethodNames.put(PaypageV2.MethodName.PFEFINANCE, enabledConfig);
+        withEnumMethodNames.put(PaypageV2.MethodName.TWINT, enabledConfig);
+        withEnumMethodNames.put(PaypageV2.MethodName.DEFAULT, enabledConfig);
 
         return Stream.of(
                 Arguments.of("Empty", emptyConfig),

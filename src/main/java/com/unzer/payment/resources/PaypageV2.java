@@ -100,7 +100,8 @@ public class PaypageV2 extends BaseResource {
             this.name = name;
         }
 
-        public String value() {
+        @Override
+        public String toString() {
             return name;
         }
     }
