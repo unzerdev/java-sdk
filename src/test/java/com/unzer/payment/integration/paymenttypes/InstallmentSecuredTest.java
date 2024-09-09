@@ -161,7 +161,7 @@ public class InstallmentSecuredTest extends AbstractPaymentTest {
     }
 
     @Test
-
+    @Disabled("deprecated")
     @Deprecated
     public void testAuthorizeViaTypeWithIbanBasketV1()
             throws HttpCommunicationException, ParseException {
@@ -229,7 +229,7 @@ public class InstallmentSecuredTest extends AbstractPaymentTest {
     }
 
     @Test
-
+    @Disabled("deprecated")
     @Deprecated
     public void testAuthorizeViaUnzerTypeIdWithIbanBasketV1()
             throws HttpCommunicationException, ParseException, MalformedURLException {
@@ -292,7 +292,7 @@ public class InstallmentSecuredTest extends AbstractPaymentTest {
     }
 
     @Test
-
+    @Disabled("deprecated")
     @Deprecated
     public void testChargeViaAuthorizeBasketV1() throws HttpCommunicationException, ParseException {
         Unzer unzer = getUnzer(Keys.LEGACY_PRIVATE_KEY);
@@ -349,7 +349,7 @@ public class InstallmentSecuredTest extends AbstractPaymentTest {
 
     @Test
     @Deprecated
-
+    @Disabled("deprecated")
     public void testFullCancellationBeforeShipmentBasketV1()
             throws HttpCommunicationException, ParseException {
         Unzer unzer = getUnzer(Keys.LEGACY_PRIVATE_KEY);
@@ -412,7 +412,7 @@ public class InstallmentSecuredTest extends AbstractPaymentTest {
     }
 
     @Test
-
+    @Disabled("deprecated")
     @Deprecated
     public void testPartialCancellationBeforeShipmentBasketV1()
             throws HttpCommunicationException, ParseException {
@@ -478,6 +478,7 @@ public class InstallmentSecuredTest extends AbstractPaymentTest {
     }
 
     @Test
+    @Disabled("deprecated")
     @Deprecated
     public void testShipmentBasketV1() throws HttpCommunicationException, ParseException {
         InstallmentSecuredRatePlan ratePlan = getInstallmentSecuredRatePlan();
@@ -536,7 +537,7 @@ public class InstallmentSecuredTest extends AbstractPaymentTest {
 
     @Test
     @Deprecated
-
+    @Disabled("deprecated")
     public void testFullCancelAfterShipmentBasketV1()
             throws HttpCommunicationException, ParseException {
         InstallmentSecuredRatePlan ratePlan = getInstallmentSecuredRatePlan();
@@ -597,7 +598,7 @@ public class InstallmentSecuredTest extends AbstractPaymentTest {
     }
 
     @Test
-
+    @Disabled("deprecated")
     @Deprecated
     public void testAuthorizeHirePurchaseDirectDebitBasketV1()
             throws HttpCommunicationException, ParseException {

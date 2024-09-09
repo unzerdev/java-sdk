@@ -70,7 +70,7 @@ public class ChargebackTest {
                                         .setMerchant("Transaction succeeded")
                         )
                         .setDate(
-                                new SimpleDateFormat("dd-MMM-yyyy hh:mm:ss").parse("31-Jan-2023 05:44:41"))
+                                new SimpleDateFormat("dd-MMM-yyyy hh:mm:ss", Locale.ENGLISH).parse("31-Jan-2023 05:44:41"))
                         .setStatus(BaseTransaction.Status.SUCCESS)
                         .setAdditionalTransactionData(
                                 new AdditionalTransactionData()
