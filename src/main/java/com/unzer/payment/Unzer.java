@@ -13,11 +13,10 @@ import com.unzer.payment.models.*;
 import com.unzer.payment.models.paylater.InstallmentPlansRequest;
 import com.unzer.payment.paymenttypes.PaylaterInstallment;
 import com.unzer.payment.paymenttypes.PaymentType;
-import com.unzer.payment.service.LinkpayService;
-import com.unzer.payment.service.PaymentService;
-import com.unzer.payment.service.PaypageService;
-import com.unzer.payment.service.WebhookService;
+import com.unzer.payment.resources.PaypageV2;
+import com.unzer.payment.service.*;
 import com.unzer.payment.service.marketplace.MarketplacePaymentService;
+import com.unzer.payment.util.JwtHelper;
 import com.unzer.payment.webhook.Webhook;
 import com.unzer.payment.webhook.WebhookList;
 import lombok.Getter;
@@ -38,11 +37,16 @@ import java.util.*;
 public class Unzer {
     @Getter
     private final String privateKey;
+    @Getter
+    private String jwtToken;
+
     private final transient PaymentService paymentService;
     private final transient MarketplacePaymentService marketplacePaymentService;
     private final transient PaypageService paypageService;
+    private final transient com.unzer.payment.service.v2.PaypageService paypageV2Service;
     private final transient LinkpayService linkpayService;
     private final transient WebhookService webhookService;
+    private final transient TokenService tokenService;
 
     public Unzer(String privateKey) {
         this(privateKey, null, null);
@@ -80,8 +84,10 @@ public class Unzer {
         this.paymentService = new PaymentService(this, restCommunication);
         this.marketplacePaymentService = new MarketplacePaymentService(this, restCommunication);
         this.paypageService = new PaypageService(this, restCommunication);
+        this.paypageV2Service = new com.unzer.payment.service.v2.PaypageService(this, restCommunication);
         this.linkpayService = new LinkpayService(this, restCommunication);
         this.webhookService = new WebhookService(this, restCommunication);
+        this.tokenService = new TokenService(this, restCommunication);
     }
 
     public Unzer(String privateKey, Locale locale) {
@@ -1316,6 +1322,27 @@ public class Unzer {
     }
 
     /**
+     * Create a Paypage v2.
+     *
+     * @param paypage
+     * @return
+     */
+    public PaypageV2 createPaypage(PaypageV2 paypage) {
+        return paypageV2Service.create(paypage);
+    }
+
+    /**
+     * Fetch a Paypage v2. Respons contains list of payments created wit the
+     * given paypage.
+     *
+     * @param paypage paypage id
+     * @return
+     */
+    public PaypageV2 fetchPaypagePayments(String paypage) {
+        return paypageV2Service.fetch(paypage);
+    }
+
+    /**
      * Initiates a paypage and returns the redirectUrl and an id to the paypage. The id will be
      * used for embedded paypage within Javascript components, the redirectUrl will be used
      * for hosted paypage to redirect customer to this url.
@@ -1521,5 +1548,16 @@ public class Unzer {
      */
     public WebhookList getWebhooks() throws HttpCommunicationException {
         return webhookService.getWebhooks();
+    }
+
+    public AuthToken createAuthToken() throws HttpCommunicationException {
+        return tokenService.create();
+    }
+
+    public void prepareJwtToken() throws HttpCommunicationException {
+        if (this.jwtToken != null && JwtHelper.validateExpiryDate(this.jwtToken)) {
+            return;
+        }
+        this.jwtToken = tokenService.create().getAccessToken();
     }
 }

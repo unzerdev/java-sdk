@@ -85,6 +85,12 @@ public class CardTransactionData {
          * Transaction Risk Analysis
          */
         @SerializedName("tra")
-        TRA
+        TRA,
+
+        @SerializedName("scp")
+        SCP,
+
+        @SerializedName("no_exemption")
+        NO_EXEMPTION
     }
 }

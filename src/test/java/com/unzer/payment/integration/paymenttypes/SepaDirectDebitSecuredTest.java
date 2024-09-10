@@ -11,6 +11,7 @@ import com.unzer.payment.communication.impl.HttpClientBasedRestCommunication;
 import com.unzer.payment.communication.json.ApiIdObject;
 import com.unzer.payment.paymenttypes.SepaDirectDebitSecured;
 import com.unzer.payment.service.PaymentService;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.math.BigDecimal;
@@ -52,6 +53,7 @@ public class SepaDirectDebitSecuredTest extends AbstractPaymentTest {
     }
 
     @Test
+    @Disabled("deprecated")
     @Deprecated
     public void testChargeSepaDirectDebitSecuredTypeBasketV1() throws HttpCommunicationException, ParseException {
         Unzer unzer = getUnzer(Keys.LEGACY_PRIVATE_KEY);
@@ -68,6 +70,7 @@ public class SepaDirectDebitSecuredTest extends AbstractPaymentTest {
     }
 
     @Test
+    @Disabled("deprecated")
     public void testChargeSepaDirectDebitSecuredTypeBasketV2() throws HttpCommunicationException, ParseException {
         Unzer unzer = getUnzer(Keys.LEGACY_PRIVATE_KEY);
         SepaDirectDebitSecured sdd = unzer.createPaymentType(getSepaDirectDebitSecured());
@@ -90,6 +93,7 @@ public class SepaDirectDebitSecuredTest extends AbstractPaymentTest {
     }
 
     @Test
+    @Disabled("deprecated")
     public void testChargeSepaDirectDebitGuaranteed() {
         Unzer unzer = getUnzer(Keys.LEGACY_PRIVATE_KEY);
         HttpClientBasedRestCommunication restCommunication = new HttpClientBasedRestCommunication();
