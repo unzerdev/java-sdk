@@ -35,7 +35,8 @@ public class TokenService {
         String response = restCommunication.httpPost(
                 urlUtil.getUrl(authToken),
                 unzer.getPrivateKey(),
-                authToken
+                authToken,
+                API_CONFIG
         );
 
         return jsonParser.fromJson(response, AuthToken.class);

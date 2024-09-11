@@ -3,16 +3,11 @@ package com.unzer.payment.integration.resources;
 import com.unzer.payment.Basket;
 import com.unzer.payment.Customer;
 import com.unzer.payment.Metadata;
-import com.unzer.payment.Unzer;
-import com.unzer.payment.business.AbstractPaymentTest;
 import com.unzer.payment.business.BasketV2TestData;
-import com.unzer.payment.business.Keys;
 import com.unzer.payment.models.CardTransactionData;
 import com.unzer.payment.models.paypage.*;
 import com.unzer.payment.resources.PaypageV2;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -24,16 +19,7 @@ import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-@TestInstance(TestInstance.Lifecycle.PER_CLASS)
-class PaypageV2Test extends AbstractPaymentTest {
-
-    private Unzer unzer;
-
-    @BeforeAll
-    public void setUpBeforeAll() {
-        // Setup single unzer instance for all class tests. -> reusing jwt token stored in unzer instance.
-        unzer = new Unzer(Keys.DEFAULT);
-    }
+class PaypageV2Test extends PaypageV2BaseTest {
 
     @Test
     void minimumPaypageCreation() {
@@ -147,15 +133,6 @@ class PaypageV2Test extends AbstractPaymentTest {
         testPaypageCreation(paypage);
     }
 
-    private PaypageV2 testPaypageCreation(PaypageV2 paypage) {
-        // when
-        PaypageV2 response = unzer.createPaypage(paypage);
-
-        // then
-        assertCreatedPaypage(response);
-        return response;
-    }
-
     @ParameterizedTest(name = "Paypage can be created with \"{0}\"")
     @MethodSource("getPaymentMethodsConfigs")
     void createPaypageWithMethodConfigs(String name, HashMap<String, PaymentMethodConfig> configs) {
@@ -163,14 +140,6 @@ class PaypageV2Test extends AbstractPaymentTest {
         paypage.setPaymentMethodsConfigs(configs);
         // when
         testPaypageCreation(paypage);
-    }
-
-    private void assertCreatedPaypage(PaypageV2 paypage) {
-        String redirectUrl = paypage.getRedirectUrl();
-        String id = paypage.getId();
-        assertNotNull(redirectUrl);
-        assertNotNull(id);
-        assertTrue(redirectUrl.contains(id));
     }
 
     public static Stream<Arguments> getPaymentMethodsConfigs() {

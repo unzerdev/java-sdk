@@ -1,7 +1,9 @@
 package com.unzer.payment.resources;
 
+import com.google.gson.annotations.JsonAdapter;
 import com.google.gson.annotations.SerializedName;
 import com.unzer.payment.BaseResource;
+import com.unzer.payment.communication.JsonDateTimeIso8601Converter;
 import com.unzer.payment.models.paypage.*;
 import lombok.AccessLevel;
 import lombok.Data;
@@ -16,7 +18,7 @@ import java.util.HashMap;
 @NoArgsConstructor
 public class PaypageV2 extends BaseResource {
 
-    private static String URI = "/v2/merchant/paypage";
+    private static final String URI = "/v2/merchant/paypage";
 
     @SerializedName("paypageId")
     private String id;
@@ -45,6 +47,8 @@ public class PaypageV2 extends BaseResource {
     // Linkpay only.
     protected String alias;
     protected Boolean multiUse;
+
+    @JsonAdapter(value = JsonDateTimeIso8601Converter.class)
     protected Date expiresAt;
 
     // Response Parameter
@@ -56,7 +60,7 @@ public class PaypageV2 extends BaseResource {
     private Integer total;
 
     @Setter(AccessLevel.PRIVATE)
-    protected String qrCodeSvG;
+    private String qrCodeSvg;
 
     public PaypageV2(BigDecimal amount, String currency, String mode) {
         this.amount = amount;
@@ -65,9 +69,19 @@ public class PaypageV2 extends BaseResource {
     }
 
     public PaypageV2(BigDecimal amount, String currency) {
-        this.amount = amount;
-        this.currency = currency;
-        this.mode = "charge";
+        this(amount, currency, "charge");
+    }
+
+    public PaypageV2(String currency, String mode) {
+        this(null, currency, mode);
+    }
+
+    public PaypageV2 setupLinkpay(Date expiresAt, Boolean multiUse, String alias) {
+        this.type = "linkpay";
+        this.expiresAt = expiresAt;
+        this.multiUse = multiUse;
+        this.alias = alias;
+        return this;
     }
 
     @Override
@@ -112,6 +126,17 @@ public class PaypageV2 extends BaseResource {
         @Override
         public String toString() {
             return name;
+        }
+    }
+
+    public enum Types {
+        HOSTED,
+        EMBEDDED,
+        LINKPAY;
+
+        @Override
+        public String toString() {
+            return name().toLowerCase();
         }
     }
 }
