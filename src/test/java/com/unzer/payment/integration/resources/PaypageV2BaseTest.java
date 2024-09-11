@@ -34,9 +34,11 @@ abstract class PaypageV2BaseTest extends AbstractPaymentTest {
 
         // then
         assertCreatedPaypage(response);
-        if (paypage.getType().equals("linkpay")) {
+
+        if (paypage.getType() != null && paypage.getType().equals("linkpay")) {
             assertNotNull(response.getQrCodeSvg());
         }
+
         return response;
     }
 }
