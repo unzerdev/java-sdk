@@ -100,17 +100,17 @@ class PaypageV2Test extends AbstractPaymentTest {
     @Test
     void createPaypageWithStyle() {
         Style style = new Style()
-                .setFontFamily("comic sans")
-                .setButtonColor("red")
-                .setPrimaryTextColor("green")
-                .setLinkColor("blue")
-                .setBackgroundColor("black")
+                .setFont("comic sans")
+                .setBrandColor("#000000")
+                .setTextColor("#000000")
+                .setLinkColor("#000000")
+                .setBackgroundColor("#000000")
                 .setCornerRadius("5px")
                 .setShadows(true)
                 .setBackgroundImage("https://backgroundimage.com")
                 .setLogoImage("https://logoimage.com")
-                .setFooterColor("yellow")
-                .setHeaderColor("purple")
+                .setFooterColor("#000000")
+                .setHeaderColor("#000")
                 .setHideUnzerLogo(true);
 
         PaypageV2 paypage = new PaypageV2(new BigDecimal("9.99"), "EUR", "charge");

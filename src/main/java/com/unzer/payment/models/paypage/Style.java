@@ -4,9 +4,9 @@ import lombok.Data;
 
 @Data
 public class Style {
-    private String fontFamily;
-    private String buttonColor;
-    private String primaryTextColor;
+    private String font;
+    private String brandColor;
+    private String textColor;
     private String linkColor;
     private String backgroundColor;
     private String cornerRadius;
