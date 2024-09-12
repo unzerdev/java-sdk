@@ -12,4 +12,8 @@ public class Style {
     private String cornerRadius;
     private Boolean shadows;
     private Boolean hideUnzerLogo;
+    private String backgroundImage;
+    private String footerColor;
+    private String headerColor;
+    private String logoImage;
 }
