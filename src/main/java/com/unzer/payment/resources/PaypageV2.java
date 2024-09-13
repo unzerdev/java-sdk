@@ -24,7 +24,6 @@ public class PaypageV2 extends BaseResource {
     private String id;
     private String checkoutType;
     private String invoiceId;
-    private String logoImage;
     private String orderId;
     private String paymentReference;
     private String recurrenceType;
