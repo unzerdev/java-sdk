@@ -56,7 +56,7 @@ class PaypageV2Test extends AbstractPaymentTest {
         PaypageV2 fetchedPaypage = unzer.fetchPaypagePayments(paypageResponse.getId());
 
         // Paypage initially has no payments
-        assertEquals(fetchedPaypage.getTotal(), 0);
+        assertEquals(0, fetchedPaypage.getTotal());
         assertNotNull(fetchedPaypage.getPayments());
         assertArrayEquals(new PaypagePayment[0], fetchedPaypage.getPayments());
     }
@@ -66,7 +66,6 @@ class PaypageV2Test extends AbstractPaymentTest {
         PaypageV2 paypage = new PaypageV2(new BigDecimal("9.99"), "EUR", "charge");
         paypage.setCheckoutType("full");
         paypage.setInvoiceId("invoiceId");
-        paypage.setLogoImage("logoImage");
         paypage.setOrderId("orderId");
         paypage.setPaymentReference("paymentReference");
         paypage.setRecurrenceType("unscheduled");
@@ -100,15 +99,19 @@ class PaypageV2Test extends AbstractPaymentTest {
 
     @Test
     void createPaypageWithStyle() {
-        Style style = new Style();
-        style.setFontFamily("comic sans");
-        style.setButtonColor("red");
-        style.setPrimaryTextColor("green");
-        style.setLinkColor("blue");
-        style.setBackgroundColor("black");
-        style.setCornerRadius("5px");
-        style.setShadows(true);
-        style.setHideUnzerLogo(true);
+        Style style = new Style()
+                .setBackgroundColor("#000000")
+                .setBackgroundImage("https://backgroundimage.com")
+                .setBrandColor("#000000")
+                .setCornerRadius("5px")
+                .setFont("comic sans")
+                .setFooterColor("#000000")
+                .setHeaderColor("#000")
+                .setHideUnzerLogo(true)
+                .setLinkColor("#000000")
+                .setLogoImage("https://logoimage.com")
+                .setShadows(true)
+                .setTextColor("#000000");
 
         PaypageV2 paypage = new PaypageV2(new BigDecimal("9.99"), "EUR", "charge");
         paypage.setStyle(style);
