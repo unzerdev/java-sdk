@@ -6,6 +6,12 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres
 to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## [5.4.0](https://github.com/unzerdev/java-sdk/compare/5.3.0..5.4.0)
+
+### Added
+
+* Added support for paypage v2.
+
 ## [5.3.0](https://github.com/unzerdev/java-sdk/compare/5.2.0..5.3.0)
 
 Support for Click To Pay payment method is added to SDK.
