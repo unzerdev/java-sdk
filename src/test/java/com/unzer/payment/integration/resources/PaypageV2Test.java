@@ -5,6 +5,7 @@ import com.unzer.payment.Customer;
 import com.unzer.payment.Metadata;
 import com.unzer.payment.business.BasketV2TestData;
 import com.unzer.payment.models.CardTransactionData;
+import com.unzer.payment.models.RiskData;
 import com.unzer.payment.models.paypage.*;
 import com.unzer.payment.resources.PaypageV2;
 import org.junit.jupiter.api.Test;
@@ -70,7 +71,6 @@ class PaypageV2Test extends PaypageV2BaseTest {
         urls.setImprint("https://imprint.com");
         urls.setHelp("https://help.com");
         urls.setContact("https://contact.com");
-        urls.setFavicon("https://favicon.com");
         urls.setReturnSuccess("https://returnsuccess.com");
         urls.setReturnPending("https://returnpending.com");
         urls.setReturnFailure("https://returnfailure.com");
@@ -127,7 +127,7 @@ class PaypageV2Test extends PaypageV2BaseTest {
         Risk risk = new Risk();
 
         risk
-                .setCustomerGroup("top")
+                .setCustomerGroup(RiskData.CustomerGroup.TOP.toString())
                 .setConfirmedAmount(9.99)
                 .setConfirmedOrders(42)
                 .setRegistrationLevel(1)
