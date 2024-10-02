@@ -3,16 +3,12 @@ package com.unzer.payment.integration.resources;
 import com.unzer.payment.Basket;
 import com.unzer.payment.Customer;
 import com.unzer.payment.Metadata;
-import com.unzer.payment.Unzer;
-import com.unzer.payment.business.AbstractPaymentTest;
 import com.unzer.payment.business.BasketV2TestData;
-import com.unzer.payment.business.Keys;
 import com.unzer.payment.models.CardTransactionData;
+import com.unzer.payment.models.RiskData;
 import com.unzer.payment.models.paypage.*;
 import com.unzer.payment.resources.PaypageV2;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -24,16 +20,7 @@ import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-@TestInstance(TestInstance.Lifecycle.PER_CLASS)
-class PaypageV2Test extends AbstractPaymentTest {
-
-    private Unzer unzer;
-
-    @BeforeAll
-    public void setUpBeforeAll() {
-        // Setup single unzer instance for all class tests. -> reusing jwt token stored in unzer instance.
-        unzer = new Unzer(Keys.DEFAULT);
-    }
+class PaypageV2Test extends PaypageV2BaseTest {
 
     @Test
     void minimumPaypageCreation() {
@@ -84,7 +71,6 @@ class PaypageV2Test extends AbstractPaymentTest {
         urls.setImprint("https://imprint.com");
         urls.setHelp("https://help.com");
         urls.setContact("https://contact.com");
-        urls.setFavicon("https://favicon.com");
         urls.setReturnSuccess("https://returnsuccess.com");
         urls.setReturnPending("https://returnpending.com");
         urls.setReturnFailure("https://returnfailure.com");
@@ -104,9 +90,11 @@ class PaypageV2Test extends AbstractPaymentTest {
                 .setBackgroundImage("https://backgroundimage.com")
                 .setBrandColor("#000000")
                 .setCornerRadius("5px")
+                .setFavicon("https://favicon.com")
                 .setFont("comic sans")
                 .setFooterColor("#000000")
                 .setHeaderColor("#000")
+                .setHideBasket(true)
                 .setHideUnzerLogo(true)
                 .setLinkColor("#000000")
                 .setLogoImage("https://logoimage.com")
@@ -139,7 +127,7 @@ class PaypageV2Test extends AbstractPaymentTest {
         Risk risk = new Risk();
 
         risk
-                .setCustomerGroup("top")
+                .setCustomerGroup(RiskData.CustomerGroup.TOP.toString())
                 .setConfirmedAmount(9.99)
                 .setConfirmedOrders(42)
                 .setRegistrationLevel(1)
@@ -150,15 +138,6 @@ class PaypageV2Test extends AbstractPaymentTest {
         testPaypageCreation(paypage);
     }
 
-    private PaypageV2 testPaypageCreation(PaypageV2 paypage) {
-        // when
-        PaypageV2 response = unzer.createPaypage(paypage);
-
-        // then
-        assertCreatedPaypage(response);
-        return response;
-    }
-
     @ParameterizedTest(name = "Paypage can be created with \"{0}\"")
     @MethodSource("getPaymentMethodsConfigs")
     void createPaypageWithMethodConfigs(String name, HashMap<String, PaymentMethodConfig> configs) {
@@ -166,14 +145,6 @@ class PaypageV2Test extends AbstractPaymentTest {
         paypage.setPaymentMethodsConfigs(configs);
         // when
         testPaypageCreation(paypage);
-    }
-
-    private void assertCreatedPaypage(PaypageV2 paypage) {
-        String redirectUrl = paypage.getRedirectUrl();
-        String id = paypage.getId();
-        assertNotNull(redirectUrl);
-        assertNotNull(id);
-        assertTrue(redirectUrl.contains(id));
     }
 
     public static Stream<Arguments> getPaymentMethodsConfigs() {
@@ -205,28 +176,28 @@ class PaypageV2Test extends AbstractPaymentTest {
         HashMap<String, PaymentMethodConfig> withPaylaterConfig = new HashMap<>();
         withPaylaterConfig.put("cards", paylaterConfig);
 
-        HashMap<String, PaymentMethodConfig> withEnumMethodNames = new HashMap<>();
-        withEnumMethodNames.put(PaypageV2.MethodName.CARDS.value(), enabledConfig);
-        withEnumMethodNames.put(PaypageV2.MethodName.PAYPAL.value(), enabledConfig);
-        withEnumMethodNames.put(PaypageV2.MethodName.PAYLATER_INSTALLMENT.value(), enabledConfig);
-        withEnumMethodNames.put(PaypageV2.MethodName.GOOGLEPAY.value(), enabledConfig);
-        withEnumMethodNames.put(PaypageV2.MethodName.APPLEPAY.value(), enabledConfig);
-        withEnumMethodNames.put(PaypageV2.MethodName.KLARNA.value(), enabledConfig);
-        withEnumMethodNames.put(PaypageV2.MethodName.SEPA_DIRECT_DEBIT.value(), enabledConfig);
-        withEnumMethodNames.put(PaypageV2.MethodName.EPS.value(), enabledConfig);
-        withEnumMethodNames.put(PaypageV2.MethodName.PAYLATER_INVOICE.value(), enabledConfig);
-        withEnumMethodNames.put(PaypageV2.MethodName.PAYLATER_DIRECT_DEBIT.value(), enabledConfig);
-        withEnumMethodNames.put(PaypageV2.MethodName.PREPAYMENT.value(), enabledConfig);
-        withEnumMethodNames.put(PaypageV2.MethodName.PAYU.value(), enabledConfig);
-        withEnumMethodNames.put(PaypageV2.MethodName.IDEAL.value(), enabledConfig);
-        withEnumMethodNames.put(PaypageV2.MethodName.PRZELEWY24.value(), enabledConfig);
-        withEnumMethodNames.put(PaypageV2.MethodName.ALIPAY.value(), enabledConfig);
-        withEnumMethodNames.put(PaypageV2.MethodName.WECHATPAY.value(), enabledConfig);
-        withEnumMethodNames.put(PaypageV2.MethodName.BANCONTACT.value(), enabledConfig);
-        withEnumMethodNames.put(PaypageV2.MethodName.PFCARD.value(), enabledConfig);
-        withEnumMethodNames.put(PaypageV2.MethodName.PFEFINANCE.value(), enabledConfig);
-        withEnumMethodNames.put(PaypageV2.MethodName.TWINT.value(), enabledConfig);
-        withEnumMethodNames.put(PaypageV2.MethodName.DEFAULT.value(), enabledConfig);
+        HashMap<PaypageV2.MethodName, PaymentMethodConfig> withEnumMethodNames = new HashMap<>();
+        withEnumMethodNames.put(PaypageV2.MethodName.CARDS, enabledConfig);
+        withEnumMethodNames.put(PaypageV2.MethodName.PAYPAL, enabledConfig);
+        withEnumMethodNames.put(PaypageV2.MethodName.PAYLATER_INSTALLMENT, enabledConfig);
+        withEnumMethodNames.put(PaypageV2.MethodName.GOOGLEPAY, enabledConfig);
+        withEnumMethodNames.put(PaypageV2.MethodName.APPLEPAY, enabledConfig);
+        withEnumMethodNames.put(PaypageV2.MethodName.KLARNA, enabledConfig);
+        withEnumMethodNames.put(PaypageV2.MethodName.SEPA_DIRECT_DEBIT, enabledConfig);
+        withEnumMethodNames.put(PaypageV2.MethodName.EPS, enabledConfig);
+        withEnumMethodNames.put(PaypageV2.MethodName.PAYLATER_INVOICE, enabledConfig);
+        withEnumMethodNames.put(PaypageV2.MethodName.PAYLATER_DIRECT_DEBIT, enabledConfig);
+        withEnumMethodNames.put(PaypageV2.MethodName.PREPAYMENT, enabledConfig);
+        withEnumMethodNames.put(PaypageV2.MethodName.PAYU, enabledConfig);
+        withEnumMethodNames.put(PaypageV2.MethodName.IDEAL, enabledConfig);
+        withEnumMethodNames.put(PaypageV2.MethodName.PRZELEWY24, enabledConfig);
+        withEnumMethodNames.put(PaypageV2.MethodName.ALIPAY, enabledConfig);
+        withEnumMethodNames.put(PaypageV2.MethodName.WECHATPAY, enabledConfig);
+        withEnumMethodNames.put(PaypageV2.MethodName.BANCONTACT, enabledConfig);
+        withEnumMethodNames.put(PaypageV2.MethodName.PFCARD, enabledConfig);
+        withEnumMethodNames.put(PaypageV2.MethodName.PFEFINANCE, enabledConfig);
+        withEnumMethodNames.put(PaypageV2.MethodName.TWINT, enabledConfig);
+        withEnumMethodNames.put(PaypageV2.MethodName.DEFAULT, enabledConfig);
 
         return Stream.of(
                 Arguments.of("Empty", emptyConfig),
