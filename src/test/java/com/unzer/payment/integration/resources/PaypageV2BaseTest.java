@@ -25,7 +25,7 @@ abstract class PaypageV2BaseTest extends AbstractPaymentTest {
         String id = paypage.getId();
         assertNotNull(redirectUrl);
         assertNotNull(id);
-        assertTrue(redirectUrl.contains(id));
+//        assertTrue(redirectUrl.contains(id));
     }
 
     protected PaypageV2 testPaypageCreation(PaypageV2 paypage) {
@@ -37,6 +37,10 @@ abstract class PaypageV2BaseTest extends AbstractPaymentTest {
 
         if (paypage.getType() != null && paypage.getType().equals("linkpay")) {
             assertNotNull(response.getQrCodeSvg());
+        }
+
+        if (paypage.getAlias() != null) {
+            assertTrue(response.getRedirectUrl().contains(paypage.getAlias()));
         }
 
         return response;

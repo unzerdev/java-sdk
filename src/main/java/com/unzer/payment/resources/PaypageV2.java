@@ -37,6 +37,7 @@ public class PaypageV2 extends BaseResource {
      */
     private String mode;
 
+    private AmountSettings amountSettings;
     private Urls urls;
     private Style style;
     private Resources resources;
