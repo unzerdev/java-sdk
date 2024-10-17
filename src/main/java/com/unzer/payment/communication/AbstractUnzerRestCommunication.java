@@ -165,7 +165,8 @@ public abstract class AbstractUnzerRestCommunication implements UnzerRestCommuni
 
         logResponse(response);
 
-        if (apiClientConfig.getAuthMethod() == ApiConfig.AuthMethod.BEARER && isUnauthorized(response)) {
+        Boolean isPapiResponse = ApiConfigs.PAYMENT_API.equals(apiClientConfig);
+        if (!isPapiResponse && isUnauthorized(response)) {
             throw new PaymentException("Unauthorized");
         }
 

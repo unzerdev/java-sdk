@@ -9,7 +9,6 @@ public class Urls {
     private String imprint;
     private String help;
     private String contact;
-    private String favicon;
     private String returnSuccess;
     private String returnPending;
     private String returnFailure;
