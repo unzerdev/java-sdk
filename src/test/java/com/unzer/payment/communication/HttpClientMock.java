@@ -51,6 +51,11 @@ public class HttpClientMock implements UnzerRestCommunication {
         return execute(new HttpPatch(proxyUrl(url)), data);
     }
 
+    @Override
+    public String httpPatch(String url, String privateKey, Object data, ApiConfig apiClientConfig) throws HttpCommunicationException {
+        return httpPatch(url, privateKey, data);
+    }
+
     private String execute(HttpUriRequest request, Object data) {
         String jsonBody = "";
 

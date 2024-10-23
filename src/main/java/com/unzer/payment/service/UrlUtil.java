@@ -1,6 +1,7 @@
 package com.unzer.payment.service;
 
 import com.unzer.payment.Resource;
+import com.unzer.payment.communication.UnzerHttpRequest;
 import com.unzer.payment.communication.api.ApiConfig;
 import com.unzer.payment.communication.api.ApiConfigs;
 import com.unzer.payment.models.PaylaterInvoiceConfigRequest;
@@ -41,6 +42,12 @@ public class UrlUtil {
 
     public String getUrl(Resource resource) {
         return apiEndpoint + resource.getUrl();
+    }
+
+    public String getUrl(Resource resource, UnzerHttpRequest.UnzerHttpMethod httpMethod) {
+        return httpMethod == UnzerHttpRequest.UnzerHttpMethod.POST
+                ? apiEndpoint + resource.getUrl()
+                : apiEndpoint + resource.getUrl() + "/" + resource.getId();
     }
 
     public String getHirePurchaseRateUrl(

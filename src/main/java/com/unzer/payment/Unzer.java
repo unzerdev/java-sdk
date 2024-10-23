@@ -1332,6 +1332,16 @@ public class Unzer {
     }
 
     /**
+     * Create a Paypage v2.
+     *
+     * @param paypage
+     * @return
+     */
+    public PaypageV2 updatePaypage(PaypageV2 paypage) {
+        return paypageV2Service.update(paypage);
+    }
+
+    /**
      * Fetch a Paypage v2. Respons contains list of payments created wit the
      * given paypage.
      *

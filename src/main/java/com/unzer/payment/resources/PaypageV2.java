@@ -4,6 +4,7 @@ import com.google.gson.annotations.JsonAdapter;
 import com.google.gson.annotations.SerializedName;
 import com.unzer.payment.BaseResource;
 import com.unzer.payment.communication.JsonDateTimeIso8601Converter;
+import com.unzer.payment.communication.JsonFieldIgnore;
 import com.unzer.payment.models.paypage.*;
 import lombok.AccessLevel;
 import lombok.Data;
@@ -52,13 +53,19 @@ public class PaypageV2 extends BaseResource {
     protected Date expiresAt;
 
     // Response Parameter
+    @JsonFieldIgnore
     @Setter(AccessLevel.PRIVATE)
     private String redirectUrl;
+
+    @JsonFieldIgnore
     @Setter(AccessLevel.PRIVATE)
     private PaypagePayment[] payments;
+
+    @JsonFieldIgnore
     @Setter(AccessLevel.PRIVATE)
     private Integer total;
 
+    @JsonFieldIgnore
     @Setter(AccessLevel.PRIVATE)
     private String qrCodeSvg;
 
