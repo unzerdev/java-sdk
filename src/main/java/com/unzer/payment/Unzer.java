@@ -1332,7 +1332,7 @@ public class Unzer {
     }
 
     /**
-     * Create a Paypage v2.
+     * Update a Paypage v2. (For Linkpay only)
      *
      * @param paypage
      * @return
