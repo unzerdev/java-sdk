@@ -130,6 +130,14 @@ public abstract class AbstractUnzerRestCommunication implements UnzerRestCommuni
         return sendRequestWithBody(createRequest(url, UnzerHttpMethod.PATCH), privateKey, data);
     }
 
+    @Override
+    public String httpPatch(String url, String privateKey, Object data, ApiConfig apiClientConfig)
+            throws HttpCommunicationException {
+        Objects.requireNonNull(url);
+        Objects.requireNonNull(data);
+        return sendRequestWithBody(createRequest(url, UnzerHttpMethod.PATCH), privateKey, data, apiClientConfig);
+    }
+
     private String sendRequestWithBody(UnzerHttpRequest request, String privateKey, Object data)
             throws HttpCommunicationException {
         String json = new JsonParser().toJson(data);
@@ -198,8 +206,6 @@ public abstract class AbstractUnzerRestCommunication implements UnzerRestCommuni
 
     /**
      * @param authentication  the authentication string. Private key or JWT token based on the {@code ApiConfig}
-     * @param request
-     * @param apiClientConfig
      */
     private void addUnzerAuthentication(String authentication, UnzerHttpRequest request, ApiConfig apiClientConfig) {
         if (Objects.requireNonNull(apiClientConfig.getAuthMethod()) == ApiConfig.AuthMethod.BEARER) {

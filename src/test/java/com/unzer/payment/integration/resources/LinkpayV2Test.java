@@ -1,29 +1,20 @@
 package com.unzer.payment.integration.resources;
 
 
-import com.unzer.payment.Unzer;
-import com.unzer.payment.business.Keys;
 import com.unzer.payment.models.paypage.AmountSettings;
 import com.unzer.payment.resources.PaypageV2;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.UUID;
 
-import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * Paypage V2 Test for linkpay specific features.
  */
-public class LinkpayV2Test extends PaypageV2BaseTest {
-
-    @BeforeAll
-    public void setUpBeforeAll() {
-        // Setup single unzer instance for all class tests. -> reusing jwt token stored in unzer instance.
-        unzer = new Unzer(Keys.DEFAULT);
-    }
+class LinkpayV2Test extends PaypageV2BaseTest {
 
     @Test
     void minimumLinkpayCreation() {
@@ -56,5 +47,46 @@ public class LinkpayV2Test extends PaypageV2BaseTest {
         assertNull(paypage.getId());
 
         testPaypageCreation(paypage);
+    }
+
+    @Test
+    void LinkpayUpdate() {
+        PaypageV2 request = new PaypageV2(new BigDecimal("99.99"), "EUR", "charge");
+        request.setType("linkpay");
+
+        PaypageV2 paypage = unzer.createPaypage(request);
+        assertNotNull(paypage.getId());
+
+        // When
+        BigDecimal updateAmount = new BigDecimal("66.66");
+        paypage.setAmount(updateAmount);
+        paypage.setExpiresAt(new Date());
+        PaypageV2 updateResponse = unzer.updatePaypage(paypage);
+
+        // Then
+        assertNotSame(updateResponse, paypage);
+        assertNumberEquals(updateAmount, updateResponse.getAmount());
+        assertEquals("EUR", updateResponse.getCurrency());
+        assertEquals(paypage.getExpiresAt(), updateResponse.getExpiresAt());
+    }
+
+    @Test
+    void LinkpayUpdateWithAmountSettings() {
+        PaypageV2 request = new PaypageV2("EUR", "charge");
+        request.setType("linkpay")
+                .setAmountSettings(new AmountSettings(new BigDecimal("10.00"), new BigDecimal("100.00")));
+
+        PaypageV2 paypage = unzer.createPaypage(request);
+        assertNotNull(paypage.getId());
+
+        // When
+        paypage.setAmountSettings(new AmountSettings(new BigDecimal("22.00"), new BigDecimal("222.00")));
+        PaypageV2 updateResponse = unzer.updatePaypage(paypage);
+
+        // Then
+        assertNotSame(updateResponse, paypage);
+        assertNumberEquals(new BigDecimal("22.00"), updateResponse.getAmountSettings().getMinimum());
+        assertNumberEquals(new BigDecimal("222.00"), updateResponse.getAmountSettings().getMaximum());
+        assertEquals("EUR", updateResponse.getCurrency());
     }
 }
