@@ -1,7 +1,10 @@
 package com.unzer.payment.resources;
 
+import com.google.gson.annotations.JsonAdapter;
 import com.google.gson.annotations.SerializedName;
 import com.unzer.payment.BaseResource;
+import com.unzer.payment.communication.JsonDateTimeIso8601Converter;
+import com.unzer.payment.communication.JsonFieldIgnore;
 import com.unzer.payment.models.paypage.*;
 import lombok.AccessLevel;
 import lombok.Data;
@@ -9,13 +12,14 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.math.BigDecimal;
+import java.util.Date;
 import java.util.HashMap;
 
 @Data
 @NoArgsConstructor
 public class PaypageV2 extends BaseResource {
 
-    private static String URI = "/v2/merchant/paypage";
+    private static final String URI = "/v2/merchant/paypage";
 
     @SerializedName("paypageId")
     private String id;
@@ -34,19 +38,36 @@ public class PaypageV2 extends BaseResource {
      */
     private String mode;
 
+    private AmountSettings amountSettings;
     private Urls urls;
     private Style style;
     private Resources resources;
     private HashMap<String, PaymentMethodConfig> paymentMethodsConfigs;
     private Risk risk;
 
+    // Linkpay only.
+    protected String alias;
+    protected Boolean multiUse;
+
+    @JsonAdapter(value = JsonDateTimeIso8601Converter.class)
+    protected Date expiresAt;
+
     // Response Parameter
+    @JsonFieldIgnore
     @Setter(AccessLevel.PRIVATE)
     private String redirectUrl;
+
+    @JsonFieldIgnore
     @Setter(AccessLevel.PRIVATE)
     private PaypagePayment[] payments;
+
+    @JsonFieldIgnore
     @Setter(AccessLevel.PRIVATE)
     private Integer total;
+
+    @JsonFieldIgnore
+    @Setter(AccessLevel.PRIVATE)
+    private String qrCodeSvg;
 
     public PaypageV2(BigDecimal amount, String currency, String mode) {
         this.amount = amount;
@@ -55,9 +76,19 @@ public class PaypageV2 extends BaseResource {
     }
 
     public PaypageV2(BigDecimal amount, String currency) {
-        this.amount = amount;
-        this.currency = currency;
-        this.mode = "charge";
+        this(amount, currency, "charge");
+    }
+
+    public PaypageV2(String currency, String mode) {
+        this(null, currency, mode);
+    }
+
+    public PaypageV2 setupLinkpay(Date expiresAt, Boolean multiUse, String alias) {
+        this.type = "linkpay";
+        this.expiresAt = expiresAt;
+        this.multiUse = multiUse;
+        this.alias = alias;
+        return this;
     }
 
     @Override
@@ -99,8 +130,20 @@ public class PaypageV2 extends BaseResource {
             this.name = name;
         }
 
-        public String value() {
+        @Override
+        public String toString() {
             return name;
+        }
+    }
+
+    public enum Types {
+        HOSTED,
+        EMBEDDED,
+        LINKPAY;
+
+        @Override
+        public String toString() {
+            return name().toLowerCase();
         }
     }
 }

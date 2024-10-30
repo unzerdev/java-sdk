@@ -24,5 +24,4 @@ public class JsonWebhookEnumConverter
         String jsonValue = json.getAsString();
         return WebhookEventEnum.fromEventName(jsonValue);
     }
-
 }

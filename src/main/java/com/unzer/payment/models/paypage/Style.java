@@ -4,6 +4,7 @@ import lombok.Data;
 
 @Data
 public class Style {
+    private Boolean hideBasket;
     private Boolean hideUnzerLogo;
     private Boolean shadows;
     private String backgroundColor;
@@ -15,5 +16,6 @@ public class Style {
     private String headerColor;
     private String linkColor;
     private String logoImage;
+    private String favicon;
     private String textColor;
 }
