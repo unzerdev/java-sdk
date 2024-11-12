@@ -169,6 +169,8 @@ public class PaymentService {
                 return new PaylaterDirectDebit();
             case TWINT:
                 return new Twint();
+            case OPEN_BANKING:
+                return new OpenBanking();
             default:
                 throw new PaymentException("Type '" + typeId + "' is currently not supported by the SDK");
         }
@@ -221,6 +223,8 @@ public class PaymentService {
                 return new ApiPaylaterInstallment();
             case PAYLATER_DIRECT_DEBIT:
                 return new ApiSepaDirectDebit();
+            case OPEN_BANKING:
+                return new ApiOpenBanking();
             default:
                 throw new PaymentException("Type '" + typeId + "' is currently not supported by the SDK");
         }
