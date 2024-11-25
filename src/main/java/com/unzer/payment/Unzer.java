@@ -199,6 +199,18 @@ public class Unzer {
      * Authorize call with an Authorization object. The Authorization object must
      * have at least an amount, a currency, a typeId.
      *
+     * @param preauthorization Preauthorization object.
+     * @return Authorization with paymentId and authorize id
+     * @throws HttpCommunicationException in case communication to Unzer didn't work
+     */
+    public Preauthorization preauthorize(Preauthorization preauthorization) throws HttpCommunicationException {
+        return (Preauthorization) paymentService.authorize(preauthorization);
+    }
+
+    /**
+     * Authorize call with an Authorization object. The Authorization object must
+     * have at least an amount, a currency, a typeId.
+     *
      * @param authorization Authorization object.
      *                      <br>
      *                      <b>Note:</b> even if <code>MarketplaceAuthorization</code> is used,
