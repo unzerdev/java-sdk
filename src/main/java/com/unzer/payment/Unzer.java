@@ -1012,6 +1012,46 @@ public class Unzer {
         return paymentService.cancelAuthorization(paymentId, cancel);
     }
 
+
+    /**
+     * Cancel (Reverse) the full Pre-Authorization. As there is only one Pre-Authorization for a
+     * Payment id you only need to provide a paymentId
+     *
+     * @param paymentId used for the cancel of n pre-authorization
+     * @return Cancel object
+     * @throws HttpCommunicationException in case communication to Unzer didn't work
+     */
+    public Cancel cancelPreauthorization(String paymentId) throws HttpCommunicationException {
+        return paymentService.cancelPreauthorization(paymentId);
+    }
+
+    /**
+     * Cancel (Reverse) partial amount of Pre-Authorization. As there is only one Pre-Authorization
+     * for a Payment id you only need to provide a paymentId
+     *
+     * @param paymentId used for the cancel of n pre-authorization
+     * @param amount    used for the cancel of n pre-authorization
+     * @return Cancel with id
+     * @throws HttpCommunicationException in case communication to Unzer didn't work
+     */
+    public Cancel cancelPreauthorization(String paymentId, BigDecimal amount)
+            throws HttpCommunicationException {
+        return paymentService.cancelPreauthorization(paymentId, amount);
+    }
+
+    /**
+     * Cancel (Reverse) Pre-Authorize with Cancel object
+     *
+     * @param paymentId used for the cancel of n pre-authorization
+     * @param cancel    object used for the cancelation
+     * @return Cancel with id
+     * @throws HttpCommunicationException in case communication to Unzer didn't work
+     */
+    public Cancel cancelPreauthorization(String paymentId, Cancel cancel)
+            throws HttpCommunicationException {
+        return paymentService.cancelAuthorization(paymentId, cancel);
+    }
+
     /**
      * Cancel (Refund) full Charge
      *

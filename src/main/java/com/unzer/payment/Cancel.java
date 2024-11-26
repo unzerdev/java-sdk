@@ -38,7 +38,7 @@ public class Cancel extends BaseTransaction<Payment> {
 
         return partialResult
                 .replaceAll(TRANSACTION_TYPE_TOKEN, getTransactionType() == null ? TransactionType.AUTHORIZE : getTransactionType())
-                .replaceAll(TRANSACTION_ID_TOKEN, getId() == null ? "" : getId());
+                .replaceAll(TRANSACTION_ID_TOKEN + "/", getId() == null ? "" : getId());
     }
 
     public BigDecimal getAmountGross() {
@@ -89,5 +89,6 @@ public class Cancel extends BaseTransaction<Payment> {
     public interface TransactionType {
         String CHARGES = "charges";
         String AUTHORIZE = "authorize";
+        String PREAUTHORIZE = "preauthorize";
     }
 }

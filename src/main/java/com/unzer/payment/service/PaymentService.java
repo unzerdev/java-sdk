@@ -682,6 +682,25 @@ public class PaymentService {
         return cancel(cancel, urlUtil.getUrl(cancel));
     }
 
+    public Cancel cancelPreauthorization(String paymentId, Cancel cancel)
+            throws HttpCommunicationException {
+        cancel.setPaymentId(paymentId);
+        cancel.setTransactionType(Cancel.TransactionType.PREAUTHORIZE);
+        return cancel(cancel, urlUtil.getUrl(cancel));
+    }
+
+    public Cancel cancelPreauthorization(String paymentId, BigDecimal amount)
+            throws HttpCommunicationException {
+        Cancel cancel = new Cancel();
+        cancel.setAmount(amount);
+        return cancelAuthorization(paymentId, cancel);
+    }
+
+    public Cancel cancelPreauthorization(String paymentId) throws HttpCommunicationException {
+        Cancel cancel = new Cancel();
+        return cancelPreauthorization(paymentId, cancel);
+    }
+
     private Cancel cancel(Cancel cancel, String url) throws HttpCommunicationException {
         String response = restCommunication.httpPost(
                 url, unzer.getPrivateKey(),
