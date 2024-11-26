@@ -41,7 +41,7 @@ public class WebhookTest extends AbstractPaymentTest {
 
     @Test
     public void testRegisterMultiWebhookWithValidEvent() {
-        List<WebhookEventEnum> listWebhookEvents = Arrays.asList(WebhookEventEnum.CHARGE_CANCELED, WebhookEventEnum.AUTHORIZE_CANCELED, WebhookEventEnum.BASKET_CREATE);
+        List<WebhookEventEnum> listWebhookEvents = Arrays.asList(WebhookEventEnum.CHARGE_CANCELED, WebhookEventEnum.AUTHORIZE_CANCELED, WebhookEventEnum.PREAUTHORIZE_CANCELED, WebhookEventEnum.BASKET_CREATE);
         Webhook registerRequest = new Webhook("https://domain.com", listWebhookEvents);
         WebhookList registerResult = getUnzer().registerMultiWebhooks(registerRequest);
         assertNotNull(registerResult);
