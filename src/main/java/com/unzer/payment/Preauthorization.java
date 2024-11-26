@@ -1,12 +1,8 @@
 package com.unzer.payment;
 
 /**
- * Business object for Authorization. Amount, currency and typeId are mandatory parameter to
- * execute an Authorization.
- * <p>
- * The returnUrl is mandatory in case of redirectPayments like Sofort, Paypal, Giropay, Card 3DS
- *
- * @author Unzer E-Com GmbH
+ * Business object for Pre-Authorization. Amount, currency and typeId are mandatory parameter to
+ * execute a Pre-Authorization.
  */
 public class Preauthorization extends Authorization {
 
