@@ -122,6 +122,11 @@ public abstract class AbstractUnzerRestCommunication implements UnzerRestCommuni
         return this.execute(createRequest(url, UnzerHttpMethod.DELETE), privateKey, EMPTY_JSON);
     }
 
+    public String httpDelete(String url, String privateKey, ApiConfig apiClientConfig) throws HttpCommunicationException {
+        Objects.requireNonNull(url);
+        return this.execute(createRequest(url, UnzerHttpMethod.DELETE), privateKey, EMPTY_JSON, apiClientConfig);
+    }
+
     @Override
     public String httpPatch(String url, String privateKey, Object data)
             throws HttpCommunicationException {

@@ -47,6 +47,11 @@ public class HttpClientMock implements UnzerRestCommunication {
     }
 
     @Override
+    public String httpDelete(String url, String privateKey, ApiConfig apiClientConfig) throws HttpCommunicationException {
+        return execute(new HttpDelete(proxyUrl(url)), null);
+    }
+
+    @Override
     public String httpPatch(String url, String privateKey, Object data) {
         return execute(new HttpPatch(proxyUrl(url)), data);
     }
