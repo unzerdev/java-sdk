@@ -71,6 +71,15 @@ class LinkpayV2Test extends PaypageV2BaseTest {
     }
 
     @Test
+    void deleteLinkpay() {
+        PaypageV2 paypage = new PaypageV2("EUR", "charge");
+        paypage.setType("linkpay");
+
+        PaypageV2 createdLinkpay = testPaypageCreation(paypage);
+        unzer.deletePaypage(createdLinkpay);
+    }
+
+    @Test
     void LinkpayUpdateWithAmountSettings() {
         PaypageV2 request = new PaypageV2("EUR", "charge");
         request.setType("linkpay")

@@ -1394,6 +1394,16 @@ public class Unzer {
     }
 
     /**
+     * Update a Paypage v2. (For Linkpay only)
+     *
+     * @param paypage
+     * @return
+     */
+    public PaypageV2 deletePaypage(PaypageV2 paypage) {
+        return paypageV2Service.delete(paypage);
+    }
+
+    /**
      * Fetch a Paypage v2. Respons contains list of payments created wit the
      * given paypage.
      *
