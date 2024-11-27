@@ -1,0 +1,31 @@
+{
+  "id": "s-cnl-1",
+  "isSuccess": true,
+  "isPending": false,
+  "isResumed": false,
+  "isError": false,
+  "card3ds": false,
+  "message": {
+    "code": "COR.000.100.112",
+    "merchant": "Request successfully processed in 'Merchant in Connector Test Mode'",
+    "customer": "Your payments have been successfully processed in sandbox mode."
+  },
+  "amount": "10.0000",
+  "currency": "EUR",
+  "date": "2024-11-26 10:13:30",
+  "resources": {
+    "customerId": "",
+    "paymentId": "s-pay-123",
+    "basketId": "",
+    "metadataId": "",
+    "payPageId": "",
+    "traceId": "178045d5b0ee8ae9e53e2d473ac348cd",
+    "typeId": "s-crd-sfqkiilmvfa6"
+  },
+  "paymentReference": "",
+  "processing": {
+    "uniqueId": "31HA07BC819597C7C56F3FDC976FBAD8",
+    "shortId": "5965.4241.0221",
+    "traceId": "178045d5b0ee8ae9e53e2d473ac348cd"
+  }
+}

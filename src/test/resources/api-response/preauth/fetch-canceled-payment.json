@@ -1,0 +1,41 @@
+{
+  "id": "s-pay-123",
+  "state": {
+    "id": 2,
+    "name": "canceled"
+  },
+  "amount": {
+    "total": "0.0000",
+    "charged": "0.0000",
+    "canceled": "0.0000",
+    "remaining": "0.0000"
+  },
+  "currency": "EUR",
+  "orderId": "",
+  "invoiceId": "",
+  "resources": {
+    "customerId": "",
+    "paymentId": "s-pay-123",
+    "basketId": "",
+    "metadataId": "",
+    "payPageId": "",
+    "traceId": "ab8456a464d40b825cf4e03f53efa634",
+    "typeId": "s-crd-hozaat26pwiq"
+  },
+  "transactions": [
+    {
+      "date": "2024-11-26 14:17:19",
+      "type": "preauthorize",
+      "status": "success",
+      "url": "https://sbx-api.unzer.com/v1/payments/s-pay-123/preauthorize/s-preaut-1",
+      "amount": "10.0000"
+    },
+    {
+      "date": "2024-11-26 14:17:20",
+      "type": "cancel-preauthorize",
+      "status": "success",
+      "url": "https://sbx-api.unzer.com/v1/payments/s-pay-123/preauthorize/s-preaut-1/cancels/s-cnl-1",
+      "amount": "10.0000"
+    }
+  ]
+}

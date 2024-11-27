@@ -1,0 +1,29 @@
+{
+  "id": "s-preaut-1",
+  "isSuccess": false,
+  "isPending": true,
+  "isResumed": false,
+  "isError": false,
+  "card3ds": true,
+  "redirectUrl": "https://sbx-payment.heidelpay.com/v1/redirect/3ds/s-mGa07YTwxvQ2",
+  "message": {
+    "code": "COR.000.200.000",
+    "merchant": "Transaction pending",
+    "customer": "Your payment is currently pending. Please contact us for more information."
+  },
+  "amount": "1.0000",
+  "currency": "EUR",
+  "returnUrl": "https://www.meinShop.de",
+  "date": "2024-01-01 01:01:01",
+  "resources": {
+    "paymentId": "s-pay-123",
+    "traceId": "e7aeaf132ea5ea4f0386be6adb8c944d",
+    "typeId": "s-crd-abc"
+  },
+  "paymentReference": "",
+  "processing": {
+    "uniqueId": "abcdefghabcdefghabcdefghabcdefgh",
+    "shortId": "1234.5678.9012",
+    "traceId": "abcdefghabcdefghabcdefghabcdefgh"
+  }
+}

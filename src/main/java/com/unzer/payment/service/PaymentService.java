@@ -445,8 +445,11 @@ public class PaymentService {
         if (apiTransaction == null) {
             return null;
         }
+        Authorization typedAuthorization = apiTransaction.getType().equalsIgnoreCase(TransactionType.PREAUTHORIZE.apiName())
+                ? new Preauthorization()
+                : new Authorization();
         Authorization authorization =
-                fetchAuthorization(payment, new Authorization(), apiTransaction.getUrl());
+                fetchAuthorization(payment, typedAuthorization, apiTransaction.getUrl());
         authorization.setPayment(payment);
         authorization.setResourceUrl(apiTransaction.getUrl());
         authorization.setType(apiTransaction.getType());
@@ -461,8 +464,14 @@ public class PaymentService {
     }
 
     private ApiTransaction getAuthorizationFromTransactions(List<ApiTransaction> transactions) {
-        List<ApiTransaction> authorizeList =
-                getTypedTransactions(transactions, TransactionType.AUTHORIZE);
+        List<ApiTransaction> authorizeList = transactions
+                .parallelStream()
+                .filter(
+                        t ->
+                                t.getType().equalsIgnoreCase(TransactionType.AUTHORIZE.apiName())
+                                        || t.getType().equalsIgnoreCase(TransactionType.PREAUTHORIZE.apiName())
+                )
+                .collect(Collectors.toList());
         return authorizeList.isEmpty() ? null : authorizeList.get(0);
     }
 
@@ -673,6 +682,25 @@ public class PaymentService {
         return cancel(cancel, urlUtil.getUrl(cancel));
     }
 
+    public Cancel cancelPreauthorization(String paymentId, Cancel cancel)
+            throws HttpCommunicationException {
+        cancel.setPaymentId(paymentId);
+        cancel.setTransactionType(Cancel.TransactionType.PREAUTHORIZE);
+        return cancel(cancel, urlUtil.getUrl(cancel));
+    }
+
+    public Cancel cancelPreauthorization(String paymentId, BigDecimal amount)
+            throws HttpCommunicationException {
+        Cancel cancel = new Cancel();
+        cancel.setAmount(amount);
+        return cancelPreauthorization(paymentId, cancel);
+    }
+
+    public Cancel cancelPreauthorization(String paymentId) throws HttpCommunicationException {
+        Cancel cancel = new Cancel();
+        return cancelPreauthorization(paymentId, cancel);
+    }
+
     private Cancel cancel(Cancel cancel, String url) throws HttpCommunicationException {
         String response = restCommunication.httpPost(
                 url, unzer.getPrivateKey(),
@@ -791,7 +819,7 @@ public class PaymentService {
     }
 
     protected enum TransactionType {
-        AUTHORIZE, CHARGE, CHARGEBACK, PAYOUT, CANCEL_AUTHORIZE, CANCEL_CHARGE;
+        AUTHORIZE, PREAUTHORIZE, CHARGE, CHARGEBACK, PAYOUT, CANCEL_AUTHORIZE, CANCEL_CHARGE;
 
         public String apiName() {
             return this.name().toLowerCase().replaceAll("_", "-");
