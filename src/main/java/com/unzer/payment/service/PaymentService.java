@@ -693,7 +693,7 @@ public class PaymentService {
             throws HttpCommunicationException {
         Cancel cancel = new Cancel();
         cancel.setAmount(amount);
-        return cancelAuthorization(paymentId, cancel);
+        return cancelPreauthorization(paymentId, cancel);
     }
 
     public Cancel cancelPreauthorization(String paymentId) throws HttpCommunicationException {

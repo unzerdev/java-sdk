@@ -196,11 +196,11 @@ public class Unzer {
     }
 
     /**
-     * Authorize call with an Authorization object. The Authorization object must
+     * Pre-Authorize call with a Pre-Authorization object. The Pre-Authorization object must
      * have at least an amount, a currency, a typeId.
      *
      * @param preauthorization Preauthorization object.
-     * @return Authorization with paymentId and authorize id
+     * @return Authorization with paymentId and preauthorize id
      * @throws HttpCommunicationException in case communication to Unzer didn't work
      */
     public Preauthorization preauthorize(Preauthorization preauthorization) throws HttpCommunicationException {
