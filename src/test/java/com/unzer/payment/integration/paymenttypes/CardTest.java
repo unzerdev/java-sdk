@@ -24,7 +24,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.api.DynamicTest.dynamicTest;
 
 
-public class CardTest extends AbstractPaymentTest {
+class CardTest extends AbstractPaymentTest {
 
     @Test
     public void testCreateCardWithMerchantNotPCIDSSCompliant() {
@@ -68,6 +68,25 @@ public class CardTest extends AbstractPaymentTest {
         card = (Card) getUnzer().fetchPaymentType(card.getId());
         assertNotNull(card.getId());
         assertFalse(card.get3ds());
+    }
+
+    @Test
+    public void testPreauthorizeAndPaymentCardType() {
+        Card card = new Card("4444333322221111", "03/99");
+        card.setCvc("123");
+        Unzer unzer = getUnzer();
+        card = unzer.createPaymentType(card);
+        Preauthorization preauthorization = new Preauthorization();
+        preauthorization.setCurrency(Currency.getInstance("EUR"))
+                .setAmount(BigDecimal.ONE)
+                .setTypeId(card.getId())
+                .setReturnUrl(unsafeUrl("https://www.meinShop.de"));
+
+        Preauthorization authorization = unzer.preauthorize(preauthorization);
+        Payment payment = authorization.getPayment();
+        assertNotNull(authorization);
+        assertNotNull(payment);
+        assertNotNull(authorization.getId());
     }
 
     @Test

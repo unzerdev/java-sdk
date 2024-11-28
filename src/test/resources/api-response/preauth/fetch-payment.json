@@ -1,0 +1,34 @@
+{
+  "id": "s-pay-123",
+  "state": {
+    "id": 0,
+    "name": "pending"
+  },
+  "amount": {
+    "total": "1.0000",
+    "charged": "0.0000",
+    "canceled": "0.0000",
+    "remaining": "1.0000"
+  },
+  "currency": "EUR",
+  "orderId": "",
+  "invoiceId": "",
+  "resources": {
+    "customerId": "",
+    "paymentId": "s-pay-123",
+    "basketId": "",
+    "metadataId": "",
+    "payPageId": "",
+    "traceId": "3d97f555122be227f0161b88f15cd4d8",
+    "typeId": "s-crd-przjdsm2vjt2"
+  },
+  "transactions": [
+    {
+      "date": "2024-11-25 10:46:00",
+      "type": "preauthorize",
+      "status": "pending",
+      "url": "https://sbx-api.unzer.com/v1/payments/s-pay-123/preauthorize/s-preaut-1",
+      "amount": "1.0000"
+    }
+  ]
+}

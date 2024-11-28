@@ -63,6 +63,21 @@ public class PaypageService {
         return new JsonParser().fromJson(response, PaypageV2.class);
     }
 
+    public PaypageV2 delete(PaypageV2 paypage) throws HttpCommunicationException {
+        return delete(paypage, urlUtil.getUrl(paypage, UnzerHttpRequest.UnzerHttpMethod.DELETE));
+    }
+
+    public PaypageV2 delete(PaypageV2 paypage, String url) throws HttpCommunicationException {
+        unzer.prepareJwtToken();
+        String response = restCommunication.httpDelete(
+                url,
+                unzer.getJwtToken(),
+                ApiConfigs.PAYPAGE_API
+        );
+
+        return new JsonParser().fromJson(response, PaypageV2.class);
+    }
+
     public PaypageV2 fetch(String paypageId) {
         unzer.prepareJwtToken();
         String response = restCommunication.httpGet(

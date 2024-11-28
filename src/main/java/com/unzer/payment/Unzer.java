@@ -196,6 +196,18 @@ public class Unzer {
     }
 
     /**
+     * Pre-Authorize call with a Pre-Authorization object. The Pre-Authorization object must
+     * have at least an amount, a currency, a typeId.
+     *
+     * @param preauthorization Preauthorization object.
+     * @return Authorization with paymentId and preauthorize id
+     * @throws HttpCommunicationException in case communication to Unzer didn't work
+     */
+    public Preauthorization preauthorize(Preauthorization preauthorization) throws HttpCommunicationException {
+        return (Preauthorization) paymentService.authorize(preauthorization);
+    }
+
+    /**
      * Authorize call with an Authorization object. The Authorization object must
      * have at least an amount, a currency, a typeId.
      *
@@ -1000,6 +1012,46 @@ public class Unzer {
         return paymentService.cancelAuthorization(paymentId, cancel);
     }
 
+
+    /**
+     * Cancel (Reverse) the full Pre-Authorization. As there is only one Pre-Authorization for a
+     * Payment id you only need to provide a paymentId
+     *
+     * @param paymentId used for the cancel of n pre-authorization
+     * @return Cancel object
+     * @throws HttpCommunicationException in case communication to Unzer didn't work
+     */
+    public Cancel cancelPreauthorization(String paymentId) throws HttpCommunicationException {
+        return paymentService.cancelPreauthorization(paymentId);
+    }
+
+    /**
+     * Cancel (Reverse) partial amount of Pre-Authorization. As there is only one Pre-Authorization
+     * for a Payment id you only need to provide a paymentId
+     *
+     * @param paymentId used for the cancel of n pre-authorization
+     * @param amount    used for the cancel of n pre-authorization
+     * @return Cancel with id
+     * @throws HttpCommunicationException in case communication to Unzer didn't work
+     */
+    public Cancel cancelPreauthorization(String paymentId, BigDecimal amount)
+            throws HttpCommunicationException {
+        return paymentService.cancelPreauthorization(paymentId, amount);
+    }
+
+    /**
+     * Cancel (Reverse) Pre-Authorize with Cancel object
+     *
+     * @param paymentId used for the cancel of n pre-authorization
+     * @param cancel    object used for the cancelation
+     * @return Cancel with id
+     * @throws HttpCommunicationException in case communication to Unzer didn't work
+     */
+    public Cancel cancelPreauthorization(String paymentId, Cancel cancel)
+            throws HttpCommunicationException {
+        return paymentService.cancelAuthorization(paymentId, cancel);
+    }
+
     /**
      * Cancel (Refund) full Charge
      *
@@ -1339,6 +1391,16 @@ public class Unzer {
      */
     public PaypageV2 updatePaypage(PaypageV2 paypage) {
         return paypageV2Service.update(paypage);
+    }
+
+    /**
+     * Delete a Paypage v2. (For Linkpay only)
+     *
+     * @param paypage
+     * @return
+     */
+    public PaypageV2 deletePaypage(PaypageV2 paypage) {
+        return paypageV2Service.delete(paypage);
     }
 
     /**

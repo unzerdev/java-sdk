@@ -8,6 +8,11 @@ public enum WebhookEventEnum {
     AUTHORIZE_EXPIRED("authorize.expired"), AUTHORIZE_CANCELED("authorize.canceled"),
     AUTHORIZE_RESUMED("authorize.resumed"),
 
+    PREAUTHORIZE("preauthorize"), PREAUTHORIZE_SUCCEEDED("preauthorize.succeeded"),
+    PREAUTHORIZE_FAILED("preauthorize.failed"), PREAUTHORIZE_PENDING("preauthorize.pending"),
+    PREAUTHORIZE_EXPIRED("preauthorize.expired"), PREAUTHORIZE_CANCELED("preauthorize.canceled"),
+    PREAUTHORIZE_RESUMED("preauthorize.resumed"),
+
     CHARGE("charge"), CHARGE_SUCCEEDED("charge.succeeded"),
     CHARGE_FAILED("charge.failed"), CHARGE_PENDING("charge.pending"),
     CHARGE_EXPIRED("charge.expired"), CHARGE_CANCELED("charge.canceled"),

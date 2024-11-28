@@ -1,0 +1,28 @@
+{
+  "id": "s-chg-2",
+  "isSuccess": true,
+  "isPending": false,
+  "isResumed": false,
+  "isError": false,
+  "card3ds": false,
+  "redirectUrl": "",
+  "message": {
+    "code": "COR.000.000.000",
+    "merchant": "Transaction succeeded",
+    "customer": "Your payments have been successfully processed."
+  },
+  "amount": "10.0000",
+  "currency": "EUR",
+  "returnUrl": "https://unzer.com",
+  "date": "2023-01-31 04:44:41",
+  "resources": {
+    "paymentId": "s-pay-300",
+    "traceId": "b2f9c67bebafa3cd49b3d50f9ff00639",
+    "typeId": "s-obp-q0nucec6itwe"
+  },
+  "processing": {
+    "uniqueId": "31HA07BC8150FAE7F0B65A2095CE0A83",
+    "shortId": "5390.6667.9884",
+    "traceId": "b2f9c67bebafa3cd49b3d50f9ff00639"
+  }
+}
