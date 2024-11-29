@@ -6,6 +6,18 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres
 to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## [5.5.0](https://github.com/unzerdev/java-sdk/compare/5.4.0..5.5.0)
+
+### Added
+
+* Added support for "Open Banking" payment method.
+* Added support for linkpay v2.
+* Added support for `preauthorize` transaction.
+
+### Changed
+
+* Update paypage v2 styling parameter to match API.
+
 ## [5.4.0](https://github.com/unzerdev/java-sdk/compare/5.3.0..5.4.0)
 
 ### Added

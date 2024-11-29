@@ -6,7 +6,7 @@
 
     <groupId>com.unzer.payment</groupId>
     <artifactId>java-sdk</artifactId>
-    <version>5.4.0</version>
+    <version>5.5.0</version>
     <name>Unzer Java SDK</name>
     <description>Unzer SDK provides an easy way to use Unzer Payment API.</description>
     <url>https://docs.unzer.com/</url>
