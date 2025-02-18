@@ -69,6 +69,19 @@ public interface UnzerRestCommunication {
     String httpPut(String url, String privateKey, Object data) throws HttpCommunicationException;
 
     /**
+     * Executes a PUT Request to the given {@code url} authenticated with the given
+     * {@code privateKey}.
+     *
+     * @param url             - the url to be called
+     * @param privateKey      - the private key of the key-pair to used
+     * @param data            - any data object as defined in the com.unzer.payment package
+     * @param apiClientConfig - API config to use.
+     * @return - the Response as application/json, UTF-8
+     * @throws HttpCommunicationException - thrown for any problems occurring in http-communication
+     */
+    String httpPut(String url, String privateKey, Object data, ApiConfig apiClientConfig) throws HttpCommunicationException;
+
+    /**
      * Executes a DELETE Request to the given {@code url} authenticated with the given
      * {@code privateKey}.
      *
