@@ -2,10 +2,7 @@ package com.unzer.payment;
 
 /**
  * Business object for Customer together with billingAddress.
- * <p>
  * firstname and lastname are mandatory to create a new Customer.
- *
- * @author Unzer E-Com GmbH
  */
 public class CustomerV2 extends Customer {
 
