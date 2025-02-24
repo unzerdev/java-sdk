@@ -1,6 +1,7 @@
 package com.unzer.payment;
 
 import com.google.gson.annotations.SerializedName;
+import lombok.EqualsAndHashCode;
 
 import java.util.Date;
 import java.util.Locale;
@@ -12,6 +13,7 @@ import java.util.Locale;
  *
  * @author Unzer E-Com GmbH
  */
+@EqualsAndHashCode(callSuper = false)
 public class Customer extends BaseResource {
     private String id;
     private String firstname;
@@ -182,6 +184,7 @@ public class Customer extends BaseResource {
     }
 
     @Override
+    @EqualsAndHashCode.Include
     public String getResourceUrl() {
         return "/v1/customers/<resourceId>";
     }

@@ -7,6 +7,7 @@ import com.unzer.payment.PaymentException;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
@@ -21,8 +22,21 @@ class CustomerV2Test extends AbstractPaymentTest {
     }
 
     @Test
+    void hashesOfDifferentCustomerVersionsDiffer() {
+        Customer customerV1 = new Customer("Max", "Mustermann");
+        CustomerV2 customerV2 = new CustomerV2("Max", "Mustermann");
+
+        assertNotEquals(customerV1, customerV2);
+        assertNotEquals(customerV1.hashCode(), customerV2.hashCode());
+    }
+
+    private static CustomerV2 initV2Customer() {
+        return new CustomerV2("firstname", "lastname");
+    }
+
+    @Test
     void testFetchCustomerMinimum() {
-        Customer customer = getUnzer().createCustomer(new CustomerV2("firstname", "lastname"));
+        Customer customer = getUnzer().createCustomer(initV2Customer());
         assertNotNull(customer);
         assertNotNull(customer.getId());
 
@@ -33,7 +47,7 @@ class CustomerV2Test extends AbstractPaymentTest {
 
     @Test
     void testUpdateCustomer() {
-        Customer customer = getUnzer().createCustomer(new CustomerV2("firstname", "lastname"));
+        Customer customer = getUnzer().createCustomer(initV2Customer());
         assertNotNull(customer);
         assertNotNull(customer.getId());
         Customer customerToUpdate = new Customer(customer.getFirstname(), customer.getLastname());
@@ -46,7 +60,7 @@ class CustomerV2Test extends AbstractPaymentTest {
 
     @Test
     void testDeleteCustomer() {
-        Customer customer = getUnzer().createCustomer(new CustomerV2("firstname", "lastname"));
+        Customer customer = getUnzer().createCustomer(initV2Customer());
         assertNotNull(customer);
         assertNotNull(customer.getId());
         String deletedCustomerId = getUnzer().deleteCustomer(customer.getId());
