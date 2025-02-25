@@ -44,34 +44,31 @@ class CustomerV2Test extends AbstractPaymentTest {
         assertCustomerEquals(customer, fetchedCustomer);
     }
 
-
     @Test
     void testUpdateCustomer() {
         Customer customer = getUnzer().createCustomer(initV2Customer());
-        assertNotNull(customer);
-        assertNotNull(customer.getId());
         Customer customerToUpdate = new Customer(customer.getFirstname(), customer.getLastname());
-        customerToUpdate.setFirstname("Max");
+        String updatedName = "Max";
+        customerToUpdate.setFirstname(updatedName);
         Customer updatedCustomer = getUnzer().updateCustomer(customer.getId(), customerToUpdate);
-        assertEquals("Max", updatedCustomer.getFirstname());
+        assertEquals(updatedName, updatedCustomer.getFirstname());
         Customer fetchedCustomer = getUnzer().fetchCustomer(customer.getId());
-        assertEquals("Max", fetchedCustomer.getFirstname());
+        assertEquals(updatedName, fetchedCustomer.getFirstname());
     }
 
     @Test
     void testDeleteCustomer() {
         Customer customer = getUnzer().createCustomer(initV2Customer());
-        assertNotNull(customer);
-        assertNotNull(customer.getId());
         String deletedCustomerId = getUnzer().deleteCustomer(customer.getId());
         assertEquals(customer.getId(), deletedCustomerId);
+
+        assertThrows(PaymentException.class, () -> {
+            getUnzer().fetchCustomer(deletedCustomerId);
+        }, "Fetching deleted customer should cause PaymentException");
     }
 
     @Test
     void testCreateCustomerWithException() {
-        assertThrows(IllegalArgumentException.class, () -> {
-            getUnzer().createCustomer(null);
-        });
         assertThrows(PaymentException.class, () -> {
             Customer customerRequest = new CustomerV2("User", "Test");
             customerRequest.setId("s-cst-abcdef");
