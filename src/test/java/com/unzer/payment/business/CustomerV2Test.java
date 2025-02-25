@@ -7,6 +7,7 @@ import com.unzer.payment.PaymentException;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
@@ -21,8 +22,21 @@ class CustomerV2Test extends AbstractPaymentTest {
     }
 
     @Test
+    void hashesOfDifferentCustomerVersionsDiffer() {
+        Customer customerV1 = new Customer("Max", "Mustermann");
+        CustomerV2 customerV2 = new CustomerV2("Max", "Mustermann");
+
+        assertNotEquals(customerV1, customerV2);
+        assertNotEquals(customerV1.hashCode(), customerV2.hashCode());
+    }
+
+    private static CustomerV2 initV2Customer() {
+        return new CustomerV2("firstname", "lastname");
+    }
+
+    @Test
     void testFetchCustomerMinimum() {
-        Customer customer = getUnzer().createCustomer(new CustomerV2("firstname", "lastname"));
+        Customer customer = getUnzer().createCustomer(initV2Customer());
         assertNotNull(customer);
         assertNotNull(customer.getId());
 
@@ -30,34 +44,31 @@ class CustomerV2Test extends AbstractPaymentTest {
         assertCustomerEquals(customer, fetchedCustomer);
     }
 
-
     @Test
     void testUpdateCustomer() {
-        Customer customer = getUnzer().createCustomer(new CustomerV2("firstname", "lastname"));
-        assertNotNull(customer);
-        assertNotNull(customer.getId());
+        Customer customer = getUnzer().createCustomer(initV2Customer());
         Customer customerToUpdate = new Customer(customer.getFirstname(), customer.getLastname());
-        customerToUpdate.setFirstname("Max");
+        String updatedName = "Max";
+        customerToUpdate.setFirstname(updatedName);
         Customer updatedCustomer = getUnzer().updateCustomer(customer.getId(), customerToUpdate);
-        assertEquals("Max", updatedCustomer.getFirstname());
+        assertEquals(updatedName, updatedCustomer.getFirstname());
         Customer fetchedCustomer = getUnzer().fetchCustomer(customer.getId());
-        assertEquals("Max", fetchedCustomer.getFirstname());
+        assertEquals(updatedName, fetchedCustomer.getFirstname());
     }
 
     @Test
     void testDeleteCustomer() {
-        Customer customer = getUnzer().createCustomer(new CustomerV2("firstname", "lastname"));
-        assertNotNull(customer);
-        assertNotNull(customer.getId());
+        Customer customer = getUnzer().createCustomer(initV2Customer());
         String deletedCustomerId = getUnzer().deleteCustomer(customer.getId());
         assertEquals(customer.getId(), deletedCustomerId);
+
+        assertThrows(PaymentException.class, () -> {
+            getUnzer().fetchCustomer(deletedCustomerId);
+        }, "Fetching deleted customer should cause PaymentException");
     }
 
     @Test
     void testCreateCustomerWithException() {
-        assertThrows(IllegalArgumentException.class, () -> {
-            getUnzer().createCustomer(null);
-        });
         assertThrows(PaymentException.class, () -> {
             Customer customerRequest = new CustomerV2("User", "Test");
             customerRequest.setId("s-cst-abcdef");

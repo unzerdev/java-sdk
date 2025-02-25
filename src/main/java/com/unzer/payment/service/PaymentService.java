@@ -107,6 +107,8 @@ public class PaymentService {
     protected Unzer unzer;
     protected JsonParser jsonParser;
 
+    public static final String UUID_RESOURCE_PATTERN = "^[sp]-([a-z]{3}|p24)-[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-5][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}$";
+
     /**
      * Creates the {@code PaymentService} with the given {@code Unzer} facade,
      * bound to the given {@code UnzerRestCommunication} implementation used for
@@ -364,8 +366,7 @@ public class PaymentService {
     }
 
     private static boolean isUUIDResource(String customerId) {
-        String uuidPattern = "^[sp]-([a-z]{3}|p24)-[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-5][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}$";
-        return Pattern.matches(uuidPattern, customerId);
+        return Pattern.matches(UUID_RESOURCE_PATTERN, customerId);
     }
 
     public Customer updateCustomer(String id, Customer customer) throws HttpCommunicationException {

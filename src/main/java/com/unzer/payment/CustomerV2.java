@@ -5,7 +5,6 @@ package com.unzer.payment;
  * firstname and lastname are mandatory to create a new Customer.
  */
 public class CustomerV2 extends Customer {
-
     public CustomerV2(String firstname, String lastname) {
         super(firstname, lastname);
     }
