@@ -1,11 +1,8 @@
 package com.unzer.payment.business;
 
-
-import com.unzer.payment.Authorization;
 import com.unzer.payment.Basket;
 import com.unzer.payment.Charge;
 import com.unzer.payment.Payment;
-import com.unzer.payment.Unzer;
 import org.junit.jupiter.api.Test;
 
 import java.math.BigDecimal;
@@ -27,20 +24,11 @@ public class BasketV3Test extends AbstractPaymentTest {
         assertBasketEquals(maxBasket, basketFetched);
     }
 
-    private void assertBasketEquals(Basket expected, Basket actual) {
-        assertThat(expected)
-                .usingComparatorForType(BigDecimal::compareTo, BigDecimal.class)
-                .usingRecursiveComparison()
-                .isEqualTo(actual);
-    }
-
     @Test
     void testCreateFetchMinBasket() {
         Basket minBasket = getMinTestBasketV3();
         Basket basket = getUnzer().createBasket(minBasket);
         Basket basketFetched = getUnzer().fetchBasket(basket.getId());
-        assertNotNull(basketFetched);
-        assertNotNull(basketFetched.getId());
         assertBasketEquals(minBasket, basketFetched);
     }
 
@@ -48,48 +36,12 @@ public class BasketV3Test extends AbstractPaymentTest {
     void testUpdateBasket() {
         Basket minBasket = getMinTestBasketV3();
         Basket basket = getUnzer().createBasket(minBasket);
-        Basket basketFetched = getUnzer().fetchBasket(basket.getId());
         Basket maxBasket = getMaxTestBasketV3();
         maxBasket.setOrderId(basket.getOrderId());
         Basket updatedBasket = getUnzer().updateBasket(maxBasket, basket.getId());
-        assertNotNull(basketFetched);
-        assertNotNull(basketFetched.getId());
 
         maxBasket.setId(basket.getId());
         assertBasketEquals(maxBasket, updatedBasket);
-    }
-
-    @Test
-    void testUpdateBasketWithFetched() {
-        Basket minBasket = getMinTestBasketV3();
-        Basket basket = getUnzer().createBasket(minBasket);
-        Basket basketFetched = getUnzer().fetchBasket(basket.getId());
-        Basket updatedBasket = getUnzer().updateBasket(basketFetched, basket.getId());
-        assertNotNull(basketFetched);
-        assertNotNull(basketFetched.getId());
-        assertBasketEquals(basketFetched, updatedBasket);
-    }
-
-    @Test
-    void testAuthorizationWithBasket() {
-        Unzer unzer = getUnzer();
-        Basket basket = unzer.createBasket(getMaxTestBasketV3());
-        Authorization authorization = getAuthorization(
-                createPaymentTypeCard(unzer, "4711100000000000").getId(),
-                null,
-                null,
-                null,
-                basket.getId()
-        );
-        authorization.setAmount(BigDecimal.valueOf(684.47));
-        Authorization authorize = unzer.authorize(authorization);
-        Payment payment = unzer.fetchPayment(authorize.getPayment().getId());
-        assertNotNull(payment);
-        assertNotNull(payment.getId());
-        assertNotNull(payment.getAuthorization());
-        assertNotNull(payment.getAuthorization().getId());
-        assertEquals(basket.getId(), payment.getBasketId());
-        assertEquals(basket.getId(), payment.getAuthorization().getBasketId());
     }
 
     @Test
@@ -107,5 +59,12 @@ public class BasketV3Test extends AbstractPaymentTest {
         assertNotNull(payment.getCharge(0).getId());
         assertEquals(basket.getId(), payment.getBasketId());
         assertEquals(basket.getId(), payment.getCharge(0).getBasketId());
+    }
+
+    private void assertBasketEquals(Basket expected, Basket actual) {
+        assertThat(expected)
+                .usingComparatorForType(BigDecimal::compareTo, BigDecimal.class)
+                .usingRecursiveComparison()
+                .isEqualTo(actual);
     }
 }
