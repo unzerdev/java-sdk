@@ -16,7 +16,6 @@ abstract class PaypageV2BaseTest extends AbstractPaymentTest {
 
     @BeforeAll
     public void setUpBeforeAll() {
-        // Setup single unzer instance for all class tests. -> reusing jwt token stored in unzer instance.
         unzer = new Unzer(Keys.DEFAULT);
     }
 
@@ -25,7 +24,6 @@ abstract class PaypageV2BaseTest extends AbstractPaymentTest {
         String id = paypage.getId();
         assertNotNull(redirectUrl);
         assertNotNull(id);
-//        assertTrue(redirectUrl.contains(id));
     }
 
     protected PaypageV2 testPaypageCreation(PaypageV2 paypage) {
