@@ -14,7 +14,7 @@ import static org.junit.jupiter.api.Assertions.*;
 /**
  * Paypage V2 Test for linkpay specific features.
  */
-class LinkpayV2Test extends PaypageV2BaseTest {
+class LinkpayV2Test extends BearerAuthBaseTest {
 
     @Test
     void minimumLinkpayCreation() {

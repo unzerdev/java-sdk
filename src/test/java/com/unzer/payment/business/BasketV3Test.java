@@ -3,6 +3,7 @@ package com.unzer.payment.business;
 import com.unzer.payment.Basket;
 import com.unzer.payment.Charge;
 import com.unzer.payment.Payment;
+import com.unzer.payment.integration.resources.BearerAuthBaseTest;
 import org.junit.jupiter.api.Test;
 
 import java.math.BigDecimal;
@@ -13,7 +14,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-public class BasketV3Test extends AbstractPaymentTest {
+class BasketV3Test extends BearerAuthBaseTest {
     @Test
     void testCreateFetchBasket() {
         Basket maxBasket = getMaxTestBasketV3();
