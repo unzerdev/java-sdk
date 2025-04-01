@@ -99,6 +99,8 @@ class PaypageV2Test extends PaypageV2BaseTest {
                 .setLinkColor("#000000")
                 .setLogoImage("https://logoimage.com")
                 .setShadows(true)
+                .setBasketBackgroundColor("#ffffff")
+                .setPaymentFormBackgroundColor("#0000ff")
                 .setTextColor("#000000");
 
         PaypageV2 paypage = new PaypageV2(new BigDecimal("9.99"), "EUR", "charge");
