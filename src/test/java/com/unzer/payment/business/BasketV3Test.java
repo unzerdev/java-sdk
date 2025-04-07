@@ -19,7 +19,11 @@ class BasketV3Test extends BearerAuthBaseTest {
     void testCreateFetchBasket() {
         Basket maxBasket = getMaxTestBasketV3();
         Basket basket = getUnzer().createBasket(maxBasket);
+
+        // when
         Basket basketFetched = getUnzer().fetchBasket(basket.getId());
+
+        // then
         assertNotNull(basketFetched);
         assertNotNull(basketFetched.getId());
         assertBasketEquals(maxBasket, basketFetched);
@@ -29,7 +33,11 @@ class BasketV3Test extends BearerAuthBaseTest {
     void testCreateFetchMinBasket() {
         Basket minBasket = getMinTestBasketV3();
         Basket basket = getUnzer().createBasket(minBasket);
+
+        // when
         Basket basketFetched = getUnzer().fetchBasket(basket.getId());
+
+        // then
         assertBasketEquals(minBasket, basketFetched);
     }
 
@@ -39,9 +47,11 @@ class BasketV3Test extends BearerAuthBaseTest {
         Basket basket = getUnzer().createBasket(minBasket);
         Basket maxBasket = getMaxTestBasketV3();
         maxBasket.setOrderId(basket.getOrderId());
+
+        // when
         Basket updatedBasket = getUnzer().updateBasket(maxBasket, basket.getId());
 
-        maxBasket.setId(basket.getId());
+        //then
         assertBasketEquals(maxBasket, updatedBasket);
     }
 
@@ -53,7 +63,11 @@ class BasketV3Test extends BearerAuthBaseTest {
                         basket.getId(), null);
         chargeReq.setAmount(BigDecimal.valueOf(684.47));
         Charge charge = getUnzer().charge(chargeReq);
+
+        //when
         Payment payment = getUnzer().fetchPayment(charge.getPayment().getId());
+
+        //then
         assertNotNull(payment);
         assertNotNull(payment.getId());
         assertNotNull(payment.getCharge(0));
