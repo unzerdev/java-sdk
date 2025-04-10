@@ -3,6 +3,7 @@ package com.unzer.payment.service;
 import com.unzer.payment.Authorization;
 import com.unzer.payment.BasePayment;
 import com.unzer.payment.Basket;
+import com.unzer.payment.BasketV3;
 import com.unzer.payment.Cancel;
 import com.unzer.payment.Charge;
 import com.unzer.payment.Chargeback;
@@ -326,15 +327,11 @@ public class PaymentService {
 
     public Customer createCustomer(Customer customer) throws HttpCommunicationException {
         ApiConfig apiConfig = customer instanceof CustomerV2 ? ApiConfigs.PAYMENT_API_BEARER_AUTH : ApiConfigs.PAYMENT_API;
-        String authentication = unzer.getPrivateKey();
-        if (apiConfig.getAuthMethod() == ApiConfig.AuthMethod.BEARER) {
-            unzer.prepareJwtToken();
-            authentication = unzer.getJwtToken();
-        }
+
         String response =
                 restCommunication.httpPost(
                         urlUtil.getUrl(customer),
-                        authentication,
+                        getAuthentication(apiConfig),
                         apiToSdkMapper.map(customer),
                         apiConfig
                 );
@@ -370,11 +367,7 @@ public class PaymentService {
 
     public Customer updateCustomer(String id, Customer customer) throws HttpCommunicationException {
         ApiConfig apiConfig = customer instanceof CustomerV2 ? ApiConfigs.PAYMENT_API_BEARER_AUTH : ApiConfigs.PAYMENT_API;
-        String authentication = unzer.getPrivateKey();
-        if (apiConfig.getAuthMethod() == ApiConfig.AuthMethod.BEARER) {
-            unzer.prepareJwtToken();
-            authentication = unzer.getJwtToken();
-        }
+        String authentication = getAuthentication(apiConfig);
         customer.setId(id);
         restCommunication.httpPut(
                 urlUtil.getUrl(customer),
@@ -386,27 +379,30 @@ public class PaymentService {
     }
 
     public Basket updateBasket(Basket basket) throws HttpCommunicationException {
-        restCommunication.httpPut(urlUtil.getUrl(basket), unzer.getPrivateKey(), basket);
+        ApiConfig apiConfig = basket instanceof BasketV3 ? ApiConfigs.PAYMENT_API_BEARER_AUTH : ApiConfigs.PAYMENT_API;
+        restCommunication.httpPut(urlUtil.getUrl(basket), getAuthentication(apiConfig), basket, apiConfig);
         return fetchBasket(basket.getId());
     }
 
     public Basket fetchBasket(String id) throws HttpCommunicationException {
         String response;
+        boolean isUUID = isUUIDResource(id);
+        ApiConfig apiConfig = isUUID ? ApiConfigs.PAYMENT_API_BEARER_AUTH : ApiConfigs.PAYMENT_API;
 
         try {
-            // Try fetch Basket version 2
-
+            // Try fetch Basket version 2 or 3
+            Basket basket = isUUID ? new BasketV3() : new Basket();
             // basket v2 has totalvaluegross. this object is not sent to api
-            Basket basket = new Basket()
-                    .setId(id)
+            basket.setId(id)
                     .setTotalValueGross(BigDecimal.ONE);
             response = restCommunication.httpGet(
                     urlUtil.getUrl(basket),
-                    unzer.getPrivateKey()
+                    getAuthentication(apiConfig),
+                    apiConfig
             );
         } catch (PaymentException ex) {
             // ... or Basket version 1
-            if (ex.getStatusCode() == 404) { // not found
+            if (ex.getStatusCode() == 404 && !isUUID) { // not found
                 response = restCommunication.httpGet(
                         urlUtil.getUrl(new Basket().setId(id)),
                         unzer.getPrivateKey()
@@ -446,10 +442,12 @@ public class PaymentService {
     }
 
     public Basket createBasket(Basket basket) throws HttpCommunicationException {
+        ApiConfig apiConfig = basket instanceof BasketV3 ? ApiConfigs.PAYMENT_API_BEARER_AUTH : ApiConfigs.PAYMENT_API;
         String response = restCommunication.httpPost(
                 urlUtil.getUrl(basket),
-                unzer.getPrivateKey(),
-                basket
+                getAuthentication(apiConfig),
+                basket,
+                apiConfig
         );
         Basket jsonBasket = jsonParser.fromJson(response, Basket.class);
         basket.setId(jsonBasket.getId());
@@ -896,14 +894,13 @@ public class PaymentService {
         boolean isV2Id = isUUIDResource(customerId);
         ApiConfig apiConfig = isV2Id ? ApiConfigs.PAYMENT_API_BEARER_AUTH : ApiConfigs.PAYMENT_API;
         Customer customer = isV2Id ? new CustomerV2("", "") : new Customer("", "");
-        String authentication = isV2Id ? unzer.getJwtToken() : unzer.getPrivateKey();
-
         customer.setId(customerId);
         customer.setCustomerId(customerId);
+
         String response =
                 restCommunication.httpDelete(
                         urlUtil.getUrl(customer),
-                        authentication,
+                        getAuthentication(apiConfig),
                         apiConfig
                 );
         if (response == null || response.isEmpty()) {
@@ -911,6 +908,15 @@ public class PaymentService {
         }
         ApiIdObject idResponse = new JsonParser().fromJson(response, ApiIdObject.class);
         return idResponse.getId();
+    }
+
+    private String getAuthentication(ApiConfig apiConfig) {
+        String authentication = unzer.getPrivateKey();
+        if (apiConfig.getAuthMethod() == ApiConfig.AuthMethod.BEARER) {
+            unzer.prepareJwtToken();
+            authentication = unzer.getJwtToken();
+        }
+        return authentication;
     }
 
     public Authorization fetchAuthorization(String paymentId) throws HttpCommunicationException {

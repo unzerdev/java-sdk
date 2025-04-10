@@ -4,17 +4,16 @@ package com.unzer.payment.business;
 import com.unzer.payment.Customer;
 import com.unzer.payment.CustomerV2;
 import com.unzer.payment.PaymentException;
+import com.unzer.payment.Unzer;
+import com.unzer.payment.integration.resources.BearerAuthBaseTest;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 
-class CustomerV2Test extends AbstractPaymentTest {
+class CustomerV2Test extends BearerAuthBaseTest {
     @Test
     void testCreateMinimumCustomer() {
-        Customer customer = getUnzer().createCustomer(new CustomerV2("firstname", "lastname"));
+        Customer customer = getUnzer().createCustomer(new CustomerV2("Max", "Mustermann"));
         assertNotNull(customer);
         assertNotNull(customer.getId());
         assertEquals(getMinimumCustomer().getFirstname(), customer.getFirstname());
@@ -58,21 +57,23 @@ class CustomerV2Test extends AbstractPaymentTest {
 
     @Test
     void testDeleteCustomer() {
-        Customer customer = getUnzer().createCustomer(initV2Customer());
-        String deletedCustomerId = getUnzer().deleteCustomer(customer.getId());
+        Unzer unzer = getUnzer();
+        Customer customer = unzer.createCustomer(initV2Customer());
+        String deletedCustomerId = unzer.deleteCustomer(customer.getId());
         assertEquals(customer.getId(), deletedCustomerId);
 
         assertThrows(PaymentException.class, () -> {
-            getUnzer().fetchCustomer(deletedCustomerId);
+            unzer.fetchCustomer(deletedCustomerId);
         }, "Fetching deleted customer should cause PaymentException");
     }
 
     @Test
     void testCreateCustomerWithException() {
+        Customer customerRequest = new CustomerV2("User", "Test");
+        customerRequest.setId("s-cst-abcdef");
+        Unzer unzer = getUnzer();
         assertThrows(PaymentException.class, () -> {
-            Customer customerRequest = new CustomerV2("User", "Test");
-            customerRequest.setId("s-cst-abcdef");
-            getUnzer().createCustomer(customerRequest);
+            unzer.createCustomer(customerRequest);
         });
     }
 }

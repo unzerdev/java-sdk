@@ -20,7 +20,7 @@ import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class PaypageV2Test extends PaypageV2BaseTest {
+class PaypageV2Test extends BearerAuthBaseTest {
 
     @Test
     void minimumPaypageCreation() {

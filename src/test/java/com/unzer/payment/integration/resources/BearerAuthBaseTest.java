@@ -11,7 +11,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-abstract class PaypageV2BaseTest extends AbstractPaymentTest {
+public abstract class BearerAuthBaseTest extends AbstractPaymentTest {
     protected Unzer unzer;
 
     @BeforeAll

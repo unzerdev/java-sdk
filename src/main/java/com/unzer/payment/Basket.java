@@ -1,11 +1,14 @@
 package com.unzer.payment;
 
+import lombok.EqualsAndHashCode;
+
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Currency;
 import java.util.List;
 import java.util.Objects;
 
+@EqualsAndHashCode(callSuper = false)
 public class Basket extends BaseResource implements Resource {
 
     private String id;
@@ -147,6 +150,7 @@ public class Basket extends BaseResource implements Resource {
     }
 
     @Override
+    @EqualsAndHashCode.Include
     protected String getResourceUrl() {
         return Objects.isNull(this.totalValueGross)
                 ? "/v1/baskets/<resourceId>"
