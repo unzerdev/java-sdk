@@ -11,12 +11,11 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-abstract class PaypageV2BaseTest extends AbstractPaymentTest {
+public abstract class BearerAuthBaseTest extends AbstractPaymentTest {
     protected Unzer unzer;
 
     @BeforeAll
     public void setUpBeforeAll() {
-        // Setup single unzer instance for all class tests. -> reusing jwt token stored in unzer instance.
         unzer = new Unzer(Keys.DEFAULT);
     }
 
@@ -25,7 +24,6 @@ abstract class PaypageV2BaseTest extends AbstractPaymentTest {
         String id = paypage.getId();
         assertNotNull(redirectUrl);
         assertNotNull(id);
-//        assertTrue(redirectUrl.contains(id));
     }
 
     protected PaypageV2 testPaypageCreation(PaypageV2 paypage) {

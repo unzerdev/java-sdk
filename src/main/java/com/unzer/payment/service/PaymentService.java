@@ -1,21 +1,102 @@
 package com.unzer.payment.service;
 
-import com.unzer.payment.*;
-import com.unzer.payment.business.paymenttypes.*;
+import com.unzer.payment.Authorization;
+import com.unzer.payment.BasePayment;
+import com.unzer.payment.Basket;
+import com.unzer.payment.BasketV3;
+import com.unzer.payment.Cancel;
+import com.unzer.payment.Charge;
+import com.unzer.payment.Chargeback;
+import com.unzer.payment.Customer;
+import com.unzer.payment.CustomerV2;
+import com.unzer.payment.Metadata;
+import com.unzer.payment.PaylaterInstallmentPlans;
+import com.unzer.payment.Payment;
+import com.unzer.payment.PaymentException;
+import com.unzer.payment.Payout;
+import com.unzer.payment.Preauthorization;
+import com.unzer.payment.Recurring;
+import com.unzer.payment.Shipment;
+import com.unzer.payment.Unzer;
+import com.unzer.payment.business.paymenttypes.HirePurchaseDirectDebit;
+import com.unzer.payment.business.paymenttypes.InstallmentSecuredRatePlan;
+import com.unzer.payment.business.paymenttypes.InvoiceFactoring;
+import com.unzer.payment.business.paymenttypes.InvoiceGuaranteed;
+import com.unzer.payment.business.paymenttypes.SepaDirectDebitGuaranteed;
 import com.unzer.payment.communication.HttpCommunicationException;
 import com.unzer.payment.communication.JsonParser;
 import com.unzer.payment.communication.UnzerRestCommunication;
-import com.unzer.payment.communication.json.*;
+import com.unzer.payment.communication.api.ApiConfig;
+import com.unzer.payment.communication.api.ApiConfigs;
+import com.unzer.payment.communication.json.ApiApplepayResponse;
+import com.unzer.payment.communication.json.ApiAuthorization;
+import com.unzer.payment.communication.json.ApiBancontact;
+import com.unzer.payment.communication.json.ApiCancel;
+import com.unzer.payment.communication.json.ApiCard;
+import com.unzer.payment.communication.json.ApiCharge;
+import com.unzer.payment.communication.json.ApiChargeback;
+import com.unzer.payment.communication.json.ApiCustomer;
+import com.unzer.payment.communication.json.ApiIdObject;
+import com.unzer.payment.communication.json.ApiIdeal;
+import com.unzer.payment.communication.json.ApiInstallmentSecuredRatePlan;
+import com.unzer.payment.communication.json.ApiObject;
+import com.unzer.payment.communication.json.ApiOpenBanking;
+import com.unzer.payment.communication.json.ApiPaylaterInstallment;
+import com.unzer.payment.communication.json.ApiPayment;
+import com.unzer.payment.communication.json.ApiPayout;
+import com.unzer.payment.communication.json.ApiPaypal;
+import com.unzer.payment.communication.json.ApiPis;
+import com.unzer.payment.communication.json.ApiRecurring;
+import com.unzer.payment.communication.json.ApiSepaDirectDebit;
+import com.unzer.payment.communication.json.ApiShipment;
+import com.unzer.payment.communication.json.ApiTransaction;
+import com.unzer.payment.communication.json.JsonInstallmentSecuredRatePlanList;
 import com.unzer.payment.communication.json.paylater.ApiInstallmentPlans;
 import com.unzer.payment.communication.mapper.ApiToSdkConverter;
 import com.unzer.payment.models.PaylaterInvoiceConfig;
 import com.unzer.payment.models.PaylaterInvoiceConfigRequest;
 import com.unzer.payment.models.paylater.InstallmentPlansRequest;
-import com.unzer.payment.paymenttypes.*;
+import com.unzer.payment.paymenttypes.Alipay;
+import com.unzer.payment.paymenttypes.Applepay;
+import com.unzer.payment.paymenttypes.Bancontact;
+import com.unzer.payment.paymenttypes.BasePaymentType;
+import com.unzer.payment.paymenttypes.Card;
+import com.unzer.payment.paymenttypes.ClickToPay;
+import com.unzer.payment.paymenttypes.Eps;
+import com.unzer.payment.paymenttypes.Giropay;
+import com.unzer.payment.paymenttypes.GooglePay;
+import com.unzer.payment.paymenttypes.Ideal;
+import com.unzer.payment.paymenttypes.Invoice;
+import com.unzer.payment.paymenttypes.InvoiceSecured;
+import com.unzer.payment.paymenttypes.Klarna;
+import com.unzer.payment.paymenttypes.OpenBanking;
+import com.unzer.payment.paymenttypes.PayU;
+import com.unzer.payment.paymenttypes.PaylaterDirectDebit;
+import com.unzer.payment.paymenttypes.PaylaterInstallment;
+import com.unzer.payment.paymenttypes.PaylaterInvoice;
+import com.unzer.payment.paymenttypes.PaymentType;
+import com.unzer.payment.paymenttypes.PaymentTypeEnum;
+import com.unzer.payment.paymenttypes.Paypal;
+import com.unzer.payment.paymenttypes.Pis;
+import com.unzer.payment.paymenttypes.PostFinanceCard;
+import com.unzer.payment.paymenttypes.PostFinanceEFinance;
+import com.unzer.payment.paymenttypes.Prepayment;
+import com.unzer.payment.paymenttypes.Przelewy24;
+import com.unzer.payment.paymenttypes.SepaDirectDebit;
+import com.unzer.payment.paymenttypes.SepaDirectDebitSecured;
+import com.unzer.payment.paymenttypes.Sofort;
+import com.unzer.payment.paymenttypes.Twint;
+import com.unzer.payment.paymenttypes.Wechatpay;
 
 import java.math.BigDecimal;
 import java.net.URL;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Currency;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -25,6 +106,8 @@ public class PaymentService {
     protected ApiToSdkConverter apiToSdkMapper = new ApiToSdkConverter();
     protected Unzer unzer;
     protected JsonParser jsonParser;
+
+    public static final String UUID_RESOURCE_PATTERN = "^[sp]-([a-z]{3}|p24)-[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-5][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}$";
 
     /**
      * Creates the {@code PaymentService} with the given {@code Unzer} facade,
@@ -243,54 +326,83 @@ public class PaymentService {
     }
 
     public Customer createCustomer(Customer customer) throws HttpCommunicationException {
+        ApiConfig apiConfig = customer instanceof CustomerV2 ? ApiConfigs.PAYMENT_API_BEARER_AUTH : ApiConfigs.PAYMENT_API;
+
         String response =
-                restCommunication.httpPost(urlUtil.getUrl(customer), unzer.getPrivateKey(),
-                        apiToSdkMapper.map(customer));
+                restCommunication.httpPost(
+                        urlUtil.getUrl(customer),
+                        getAuthentication(apiConfig),
+                        apiToSdkMapper.map(customer),
+                        apiConfig
+                );
         ApiIdObject jsonId = jsonParser.fromJson(response, ApiIdObject.class);
         return fetchCustomer(jsonId.getId());
     }
 
     public Customer fetchCustomer(String customerId)
             throws HttpCommunicationException, PaymentException {
-        Customer customer = new Customer("", "");
+        boolean isV2Id = isUUIDResource(customerId);
+        ApiConfig apiConfig = isV2Id ? ApiConfigs.PAYMENT_API_BEARER_AUTH : ApiConfigs.PAYMENT_API;
+        Customer customer = isV2Id ? new CustomerV2("", "") : new Customer("", "");
+
         customer.setId(customerId);
+
+        String authentication = unzer.getPrivateKey();
+        if (isV2Id) {
+            unzer.prepareJwtToken();
+            authentication = unzer.getJwtToken();
+        }
         String response = restCommunication.httpGet(
                 urlUtil.getUrl(customer),
-                unzer.getPrivateKey()
+                authentication,
+                apiConfig
         );
         ApiCustomer json = jsonParser.fromJson(response, ApiCustomer.class);
         return apiToSdkMapper.mapToBusinessObject(json, new Customer("", ""));
     }
 
+    private static boolean isUUIDResource(String customerId) {
+        return Pattern.matches(UUID_RESOURCE_PATTERN, customerId);
+    }
+
     public Customer updateCustomer(String id, Customer customer) throws HttpCommunicationException {
+        ApiConfig apiConfig = customer instanceof CustomerV2 ? ApiConfigs.PAYMENT_API_BEARER_AUTH : ApiConfigs.PAYMENT_API;
+        String authentication = getAuthentication(apiConfig);
         customer.setId(id);
-        restCommunication.httpPut(urlUtil.getUrl(customer), unzer.getPrivateKey(),
-                apiToSdkMapper.map(customer));
+        restCommunication.httpPut(
+                urlUtil.getUrl(customer),
+                authentication,
+                apiToSdkMapper.map(customer),
+                apiConfig
+        );
         return fetchCustomer(id);
     }
 
     public Basket updateBasket(Basket basket) throws HttpCommunicationException {
-        restCommunication.httpPut(urlUtil.getUrl(basket), unzer.getPrivateKey(), basket);
+        ApiConfig apiConfig = basket instanceof BasketV3 ? ApiConfigs.PAYMENT_API_BEARER_AUTH : ApiConfigs.PAYMENT_API;
+        restCommunication.httpPut(urlUtil.getUrl(basket), getAuthentication(apiConfig), basket, apiConfig);
         return fetchBasket(basket.getId());
     }
 
     public Basket fetchBasket(String id) throws HttpCommunicationException {
         String response;
+        boolean isUUID = isUUIDResource(id);
+        ApiConfig apiConfig = isUUID ? ApiConfigs.PAYMENT_API_BEARER_AUTH : ApiConfigs.PAYMENT_API;
 
         try {
-            // Try fetch Basket version 2
-
+            // Try fetch Basket version 2 or 3
+            Basket basket = isUUID ? new BasketV3() : new Basket();
             // basket v2 has totalvaluegross. this object is not sent to api
-            Basket basket = new Basket()
-                    .setId(id)
+            basket.setId(id)
                     .setTotalValueGross(BigDecimal.ONE);
             response = restCommunication.httpGet(
                     urlUtil.getUrl(basket),
-                    unzer.getPrivateKey()
+                    getAuthentication(apiConfig),
+                    apiConfig
             );
         } catch (PaymentException ex) {
             // ... or Basket version 1
-            if (ex.getStatusCode() == 404) { // not found
+            if (ex.getStatusCode() == 404 && !isUUID) { // not found
                 response = restCommunication.httpGet(
                         urlUtil.getUrl(new Basket().setId(id)),
                         unzer.getPrivateKey()
@@ -330,10 +442,12 @@ public class PaymentService {
     }
 
     public Basket createBasket(Basket basket) throws HttpCommunicationException {
+        ApiConfig apiConfig = basket instanceof BasketV3 ? ApiConfigs.PAYMENT_API_BEARER_AUTH : ApiConfigs.PAYMENT_API;
         String response = restCommunication.httpPost(
                 urlUtil.getUrl(basket),
-                unzer.getPrivateKey(),
-                basket
+                getAuthentication(apiConfig),
+                basket,
+                apiConfig
         );
         Basket jsonBasket = jsonParser.fromJson(response, Basket.class);
         basket.setId(jsonBasket.getId());
@@ -777,19 +891,32 @@ public class PaymentService {
     }
 
     public String deleteCustomer(String customerId) throws HttpCommunicationException {
-        Customer customer = new Customer("a", "b");
+        boolean isV2Id = isUUIDResource(customerId);
+        ApiConfig apiConfig = isV2Id ? ApiConfigs.PAYMENT_API_BEARER_AUTH : ApiConfigs.PAYMENT_API;
+        Customer customer = isV2Id ? new CustomerV2("", "") : new Customer("", "");
         customer.setId(customerId);
         customer.setCustomerId(customerId);
+
         String response =
                 restCommunication.httpDelete(
                         urlUtil.getUrl(customer),
-                        unzer.getPrivateKey()
+                        getAuthentication(apiConfig),
+                        apiConfig
                 );
         if (response == null || response.isEmpty()) {
             throw new PaymentException("Customer '" + customerId + "' cannot be deleted");
         }
         ApiIdObject idResponse = new JsonParser().fromJson(response, ApiIdObject.class);
         return idResponse.getId();
+    }
+
+    private String getAuthentication(ApiConfig apiConfig) {
+        String authentication = unzer.getPrivateKey();
+        if (apiConfig.getAuthMethod() == ApiConfig.AuthMethod.BEARER) {
+            unzer.prepareJwtToken();
+            authentication = unzer.getJwtToken();
+        }
+        return authentication;
     }
 
     public Authorization fetchAuthorization(String paymentId) throws HttpCommunicationException {

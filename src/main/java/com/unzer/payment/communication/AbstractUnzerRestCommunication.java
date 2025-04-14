@@ -17,7 +17,10 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
 
-import static org.apache.hc.core5.http.HttpHeaders.*;
+import static org.apache.hc.core5.http.HttpHeaders.ACCEPT_LANGUAGE;
+import static org.apache.hc.core5.http.HttpHeaders.AUTHORIZATION;
+import static org.apache.hc.core5.http.HttpHeaders.CONTENT_TYPE;
+import static org.apache.hc.core5.http.HttpHeaders.USER_AGENT;
 
 /**
  * Template implementation of the {@code UnzerRestCommunication}. You should
@@ -115,6 +118,13 @@ public abstract class AbstractUnzerRestCommunication implements UnzerRestCommuni
         Objects.requireNonNull(url);
         Objects.requireNonNull(data);
         return sendRequestWithBody(createRequest(url, UnzerHttpMethod.PUT), privateKey, data);
+    }
+
+    public String httpPut(String url, String privateKey, Object data, ApiConfig apiClientConfig)
+            throws HttpCommunicationException {
+        Objects.requireNonNull(url);
+        Objects.requireNonNull(data);
+        return sendRequestWithBody(createRequest(url, UnzerHttpMethod.PUT), privateKey, data, apiClientConfig);
     }
 
     public String httpDelete(String url, String privateKey) throws HttpCommunicationException {

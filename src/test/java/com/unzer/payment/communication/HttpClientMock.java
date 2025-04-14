@@ -1,7 +1,12 @@
 package com.unzer.payment.communication;
 
 import com.unzer.payment.communication.api.ApiConfig;
-import org.apache.hc.client5.http.classic.methods.*;
+import org.apache.hc.client5.http.classic.methods.HttpDelete;
+import org.apache.hc.client5.http.classic.methods.HttpGet;
+import org.apache.hc.client5.http.classic.methods.HttpPatch;
+import org.apache.hc.client5.http.classic.methods.HttpPost;
+import org.apache.hc.client5.http.classic.methods.HttpPut;
+import org.apache.hc.client5.http.classic.methods.HttpUriRequest;
 import org.apache.hc.client5.http.impl.classic.CloseableHttpClient;
 import org.apache.hc.client5.http.impl.classic.HttpClients;
 import org.apache.hc.core5.http.ContentType;
@@ -38,6 +43,11 @@ public class HttpClientMock implements UnzerRestCommunication {
 
     @Override
     public String httpPut(String url, String privateKey, Object data) {
+        return execute(new HttpPut(proxyUrl(url)), data);
+    }
+
+    @Override
+    public String httpPut(String url, String privateKey, Object data, ApiConfig apiClientConfig) throws HttpCommunicationException {
         return execute(new HttpPut(proxyUrl(url)), data);
     }
 
