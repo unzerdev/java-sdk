@@ -1,8 +1,12 @@
 package com.unzer.payment;
 
 /**
- * Business object for Customer together with billingAddress.
- * firstname and lastname are mandatory to create a new Customer.
+ * This is a prototype of the v2 Customer resource.
+ *
+ * This class represents version 2 of Customer resource in the Unzer API.
+ * The version uses bearer authentication for API calls.
+ * Make sure to use the same Unzer instance to use the same JWT token across multiple calls.
+ * Also, the resource ID incorporates UUID and has a length of 42.
  */
 public class CustomerV2 extends Customer {
     public CustomerV2(String firstname, String lastname) {
