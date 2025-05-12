@@ -149,6 +149,13 @@ class PaypageV2Test extends BearerAuthBaseTest {
         testPaypageCreation(paypage);
     }
 
+    @Test
+    void createPaypageWithZeroAmount() {
+        PaypageV2 paypage = new PaypageV2(BigDecimal.ZERO, "EUR", "preauthorize");
+        // when
+        testPaypageCreation(paypage);
+    }
+
     public static Stream<Arguments> getPaymentMethodsConfigs() {
         PaymentMethodConfig enabledConfig = new PaymentMethodConfig(true);
         PaymentMethodConfig disabledConfig = new PaymentMethodConfig(false);
@@ -166,10 +173,6 @@ class PaypageV2Test extends BearerAuthBaseTest {
         HashMap<String, PaymentMethodConfig> defaultEnabled = new HashMap<>();
         defaultEnabled.put("default", enabledConfig);
         defaultEnabled.put("cards", disabledConfig);
-
-        HashMap<String, PaymentMethodConfig> defaultDisabled = new HashMap<>();
-        defaultDisabled.put("default", disabledConfig);
-        defaultDisabled.put("cards", enabledConfig);
 
         HashMap<String, PaymentMethodConfig> withCardConfig = new HashMap<>();
         withCardConfig.put("default", disabledConfig);
