@@ -6,6 +6,14 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres
 to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## [5.6.0](https://github.com/unzerdev/java-sdk/compare/5.5.0..5.6.0)
+
+* Add Styling properties for v2 Paypage `com.unzer.payment.resources.PaypageV2`:
+    * `basketBackgroundColor`
+    * `paymentFormBackgroundColor`
+* Add prototypes for v2 Customer: `com.unzer.payment.CustomerV2`.
+* Add prototypes for v3 Basket: `com.unzer.payment.BasketV3`.
+
 ## [5.5.0](https://github.com/unzerdev/java-sdk/compare/5.4.0..5.5.0)
 
 ### Added
