@@ -14,7 +14,7 @@ jobs:
           java-version: '17'
           distribution: 'temurin'
           cache: maven
-          server-id: ossrh
+          server-id: central
           server-username: MAVEN_USERNAME
           server-password: MAVEN_PASSWORD
           gpg-private-key: ${{ secrets.GPG_PRIVATE_KEY }}
@@ -22,49 +22,6 @@ jobs:
       - name: Publish package
         run: mvn --batch-mode -DskipTests=true deploy
         env:
-          MAVEN_USERNAME: ${{ secrets.OSSRH_USERNAME }}
-          MAVEN_PASSWORD: ${{ secrets.OSSRH_TOKEN }}
+          MAVEN_USERNAME: ${{ secrets.MAVEN_CENTRAL_PUBLISH_USER }}
+          MAVEN_PASSWORD: ${{ secrets.MAVEN_CENTRAL_PUBLISH_TOKEN }}
           GPG_PASSPHRASE: ${{ secrets.GPG_PASSPHRASE }}
-
-  send-email:
-    name: Send release Email
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-      - name: Decode configuration
-        env:
-          CONFIG: ${{ secrets.RELEASE_AUTOMATOR_BASE64_CONFIG }}
-        run: |
-          echo $CONFIG | base64 --decode > release.yaml
-      - name: Run release-automator
-        uses: unzerdev/unzer-tech-toolbox/.github/actions/release-changelog@main
-        with:
-          command: mail
-          version: ${{github.ref_name}}
-
-  generate-tweet:
-    name: Generate tweet
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-      - name: Decode configuration
-        env:
-          CONFIG: ${{ secrets.RELEASE_AUTOMATOR_BASE64_CONFIG }}
-        run: |
-          echo $CONFIG | base64 --decode > release.yaml
-      - name: Run release-automator
-        uses: unzerdev/unzer-tech-toolbox/.github/actions/release-changelog@main
-        with:
-          command: tweet
-          version: ${{github.ref_name}}
-      - name: Copy out tweet file
-        run: |
-          sudo cp target/tweet.txt tweet.txt
-      - name: Attach release notes
-        uses: actions/upload-artifact@v3
-        with:
-          name: tweet
-          path: tweet.txt
-          retention-days: 5
