@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.unzer.payment.communication.JsonParser;
 import com.unzer.payment.models.AdditionalTransactionData;
+import com.unzer.payment.models.EventDependentPayment;
 import com.unzer.payment.models.WeroTransactionData;
 import org.junit.jupiter.api.Test;
 
@@ -17,9 +18,9 @@ class AdditionalTransactionDataWeroTest {
     @Test
     void serializationIncludesWeroDataWithExpectedFieldsAndValues() {
         // Arrange
-        WeroTransactionData.EventDependentPayment edp = new WeroTransactionData.EventDependentPayment()
-                .setCaptureTrigger(WeroTransactionData.CaptureTrigger.SERVICEFULFILMENT)
-                .setAmountPaymentType(WeroTransactionData.AmountPaymentType.PAY)
+        EventDependentPayment edp = new EventDependentPayment()
+                .setCaptureTrigger(EventDependentPayment.CaptureTrigger.SERVICEFULFILMENT)
+                .setAmountPaymentType(EventDependentPayment.AmountPaymentType.PAY)
                 .setMaxAuthToCaptureTime(300)
                 .setMultiCapturesAllowed(false);
 
@@ -71,9 +72,9 @@ class AdditionalTransactionDataWeroTest {
         assertNotNull(atd);
         assertNotNull(atd.getWero());
         assertNotNull(atd.getWero().getEventDependentPayment());
-        WeroTransactionData.EventDependentPayment edp = atd.getWero().getEventDependentPayment();
-        assertEquals(WeroTransactionData.CaptureTrigger.SERVICEFULFILMENT, edp.getCaptureTrigger());
-        assertEquals(WeroTransactionData.AmountPaymentType.PAY, edp.getAmountPaymentType());
+        EventDependentPayment edp = atd.getWero().getEventDependentPayment();
+        assertEquals(EventDependentPayment.CaptureTrigger.SERVICEFULFILMENT, edp.getCaptureTrigger());
+        assertEquals(EventDependentPayment.AmountPaymentType.PAY, edp.getAmountPaymentType());
         assertEquals(300, edp.getMaxAuthToCaptureTime());
         assertFalse(edp.getMultiCapturesAllowed());
     }

@@ -4,6 +4,7 @@ import com.unzer.payment.Authorization;
 import com.unzer.payment.Charge;
 import com.unzer.payment.business.AbstractPaymentTest;
 import com.unzer.payment.models.AdditionalTransactionData;
+import com.unzer.payment.models.EventDependentPayment;
 import com.unzer.payment.models.WeroTransactionData;
 import com.unzer.payment.paymenttypes.Wero;
 import org.junit.jupiter.api.Test;
@@ -60,9 +61,9 @@ class WeroTest extends AbstractPaymentTest {
         URL returnUrl = unsafeUrl("https://www.unzer.com");
 
         // Build Wero additional transaction data
-        WeroTransactionData.EventDependentPayment edp = new WeroTransactionData.EventDependentPayment()
-                .setCaptureTrigger(WeroTransactionData.CaptureTrigger.SERVICEFULFILMENT)
-                .setAmountPaymentType(WeroTransactionData.AmountPaymentType.PAY)
+        EventDependentPayment edp = new EventDependentPayment()
+                .setCaptureTrigger(EventDependentPayment.CaptureTrigger.SERVICEFULFILMENT)
+                .setAmountPaymentType(EventDependentPayment.AmountPaymentType.PAY)
                 .setMaxAuthToCaptureTime(600)
                 .setMultiCapturesAllowed(true);
         AdditionalTransactionData atd = new AdditionalTransactionData()
@@ -89,9 +90,9 @@ class WeroTest extends AbstractPaymentTest {
         URL returnUrl = unsafeUrl("https://www.unzer.com");
 
         // Build Wero additional transaction data
-        WeroTransactionData.EventDependentPayment edp = new WeroTransactionData.EventDependentPayment()
-                .setCaptureTrigger(WeroTransactionData.CaptureTrigger.SERVICEFULFILMENT)
-                .setAmountPaymentType(WeroTransactionData.AmountPaymentType.PAYUPTO)
+        EventDependentPayment edp = new EventDependentPayment()
+                .setCaptureTrigger(EventDependentPayment.CaptureTrigger.SERVICEFULFILMENT)
+                .setAmountPaymentType(EventDependentPayment.AmountPaymentType.PAYUPTO)
                 .setMaxAuthToCaptureTime(300)
                 .setMultiCapturesAllowed(false);
         AdditionalTransactionData atd = new AdditionalTransactionData()

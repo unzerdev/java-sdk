@@ -5,8 +5,8 @@ import com.unzer.payment.Customer;
 import com.unzer.payment.Metadata;
 import com.unzer.payment.business.BasketV2TestData;
 import com.unzer.payment.models.CardTransactionData;
+import com.unzer.payment.models.EventDependentPayment;
 import com.unzer.payment.models.RiskData;
-import com.unzer.payment.models.WeroTransactionData;
 import com.unzer.payment.models.paypage.PaymentMethodConfig;
 import com.unzer.payment.models.paypage.PaypagePayment;
 import com.unzer.payment.models.paypage.Resources;
@@ -177,15 +177,15 @@ class PaypageV2Test extends BearerAuthBaseTest {
                 .setLabel("Paylater");
 
         // Wero configurations with eventDependentPayment
-        WeroTransactionData.EventDependentPayment weroEventDependent1 = new WeroTransactionData.EventDependentPayment()
-                .setCaptureTrigger(WeroTransactionData.CaptureTrigger.SERVICEFULFILMENT)
-                .setAmountPaymentType(WeroTransactionData.AmountPaymentType.PAY)
+        EventDependentPayment weroEventDependent1 = new EventDependentPayment()
+                .setCaptureTrigger(EventDependentPayment.CaptureTrigger.SERVICEFULFILMENT)
+                .setAmountPaymentType(EventDependentPayment.AmountPaymentType.PAY)
                 .setMaxAuthToCaptureTime(600)
                 .setMultiCapturesAllowed(true);
 
-        WeroTransactionData.EventDependentPayment weroEventDependent2 = new WeroTransactionData.EventDependentPayment()
-                .setCaptureTrigger(WeroTransactionData.CaptureTrigger.DELIVERY)
-                .setAmountPaymentType(WeroTransactionData.AmountPaymentType.PAYUPTO)
+        EventDependentPayment weroEventDependent2 = new EventDependentPayment()
+                .setCaptureTrigger(EventDependentPayment.CaptureTrigger.DELIVERY)
+                .setAmountPaymentType(EventDependentPayment.AmountPaymentType.PAYUPTO)
                 .setMaxAuthToCaptureTime(300)
                 .setMultiCapturesAllowed(false);
 
