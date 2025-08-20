@@ -21,7 +21,6 @@ import org.junit.jupiter.params.provider.MethodSource;
 
 import java.math.BigDecimal;
 import java.util.Date;
-import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.stream.Stream;
 
@@ -221,7 +220,7 @@ class PaypageV2Test extends BearerAuthBaseTest {
         withMixedWeroConfig.put("cards", enabledConfig);
         withMixedWeroConfig.put("wero", weroConfig1);
 
-        EnumMap<PaypageV2.MethodName, PaymentMethodConfig> withEnumMethodNames = new EnumMap<>(PaypageV2.MethodName.class);
+        HashMap<PaypageV2.MethodName, PaymentMethodConfig> withEnumMethodNames = new HashMap<>();
         withEnumMethodNames.put(PaypageV2.MethodName.CARDS, enabledConfig);
         withEnumMethodNames.put(PaypageV2.MethodName.PAYPAL, enabledConfig);
         withEnumMethodNames.put(PaypageV2.MethodName.PAYLATER_INSTALLMENT, enabledConfig);
