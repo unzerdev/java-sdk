@@ -1,7 +1,11 @@
 package com.unzer.payment.business;
 
 
-import com.unzer.payment.*;
+import com.unzer.payment.Authorization;
+import com.unzer.payment.BaseTransaction;
+import com.unzer.payment.Cancel;
+import com.unzer.payment.Charge;
+import com.unzer.payment.Unzer;
 import com.unzer.payment.paymenttypes.Card;
 import org.junit.jupiter.api.Test;
 
@@ -13,10 +17,10 @@ import static com.unzer.payment.util.Types.unsafeUrl;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-public class CancelTest extends AbstractPaymentTest {
+class CancelTest extends AbstractPaymentTest {
 
     @Test
-    public void testFetchCancelAuthorizationWithUnzer() {
+    void testFetchCancelAuthorizationWithUnzer() {
         Authorization authorize = getUnzer().authorize(
                 getAuthorization(createPaymentTypeCard(getUnzer(), "4711100000000000").getId(), false));
         Cancel cancelInit = authorize.cancel();
@@ -29,7 +33,7 @@ public class CancelTest extends AbstractPaymentTest {
     }
 
     @Test
-    public void test_fetch_cancel_charge() {
+    void test_fetch_cancel_charge() {
         Unzer unzer = getUnzer();
         Card card = unzer.createPaymentType(new Card("4711100000000000", "03/30").setCvc("123"));
         assertNotNull(card.getId());
@@ -49,7 +53,7 @@ public class CancelTest extends AbstractPaymentTest {
     }
 
     @Test
-    public void testFetchCancelAuthorizationWithPayment() {
+    void testFetchCancelAuthorizationWithPayment() {
         Authorization authorize = getUnzer().authorize(
                 getAuthorization(createPaymentTypeCard(getUnzer(), "4711100000000000").getId(), false));
         Cancel cancelInit = authorize.cancel();
@@ -62,7 +66,7 @@ public class CancelTest extends AbstractPaymentTest {
     }
 
     @Test
-    public void testFetchCancelChargeWithUnzer() {
+    void testFetchCancelChargeWithUnzer() {
         Charge initCharge = getUnzer().charge(BigDecimal.ONE, Currency.getInstance("EUR"),
                 createPaymentTypeCard(getUnzer(), "4711100000000000").getId(),
                 unsafeUrl("https://www.unzer.com"), false);
@@ -77,7 +81,7 @@ public class CancelTest extends AbstractPaymentTest {
     }
 
     @Test
-    public void testCancelChargeWithPayment() {
+    void testCancelChargeWithPayment() {
         Charge initCharge = getUnzer()
                 .charge(BigDecimal.ONE, Currency.getInstance("EUR"),
                         createPaymentTypeCard(getUnzer(), "4711100000000000").getId(),
@@ -93,7 +97,7 @@ public class CancelTest extends AbstractPaymentTest {
     }
 
     @Test
-    public void testCancelChargeWithPaymentReference() {
+    void testCancelChargeWithPaymentReference() {
         Charge initCharge = getUnzer()
                 .charge(BigDecimal.ONE, Currency.getInstance("EUR"),
                         createPaymentTypeCard(getUnzer(), "4711100000000000").getId(),

@@ -1,6 +1,11 @@
 package com.unzer.payment.business;
 
-import com.unzer.payment.*;
+import com.unzer.payment.BasePayment;
+import com.unzer.payment.BaseTransaction;
+import com.unzer.payment.Basket;
+import com.unzer.payment.Cancel;
+import com.unzer.payment.Charge;
+import com.unzer.payment.Payment;
 import com.unzer.payment.communication.HttpCommunicationException;
 import com.unzer.payment.marketplace.MarketplaceCancel;
 import com.unzer.payment.marketplace.MarketplaceCharge;
@@ -23,10 +28,10 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 
-public class CancelAfterChargeTest extends AbstractPaymentTest {
+class CancelAfterChargeTest extends AbstractPaymentTest {
 
     @Test
-    public void testFetchChargeWithId() throws MalformedURLException, HttpCommunicationException {
+    void testFetchChargeWithId() throws MalformedURLException, HttpCommunicationException {
         Charge initCharge = getUnzer().charge(BigDecimal.ONE, Currency.getInstance("EUR"), createPaymentTypeCard(getUnzer(), "4711100000000000").getId(), new URL("https://www.unzer.com"), false);
         Charge charge = getUnzer().fetchCharge(initCharge.getPaymentId(), initCharge.getId());
         assertNotNull(charge);
@@ -36,7 +41,7 @@ public class CancelAfterChargeTest extends AbstractPaymentTest {
 
 
     @Test
-    public void testFullRefundWithId() throws MalformedURLException, HttpCommunicationException {
+    void testFullRefundWithId() throws MalformedURLException, HttpCommunicationException {
         Charge initCharge = getUnzer().charge(BigDecimal.ONE, Currency.getInstance("EUR"), createPaymentTypeCard(getUnzer(), "4711100000000000").getId(), new URL("https://www.unzer.com"), false);
         Cancel cancel = getUnzer().cancelCharge(initCharge.getPaymentId(), initCharge.getId());
         assertNotNull(cancel);
@@ -44,7 +49,7 @@ public class CancelAfterChargeTest extends AbstractPaymentTest {
     }
 
     @Test
-    public void testFullRefundWithCharge() throws MalformedURLException, HttpCommunicationException {
+    void testFullRefundWithCharge() throws MalformedURLException, HttpCommunicationException {
         Charge initCharge = getUnzer().charge(BigDecimal.ONE, Currency.getInstance("EUR"), createPaymentTypeCard(getUnzer(), "4711100000000000").getId(), new URL("https://www.unzer.com"), false);
         Charge charge = getUnzer().fetchCharge(initCharge.getPaymentId(), initCharge.getId());
         Cancel cancel = charge.cancel();
@@ -53,14 +58,14 @@ public class CancelAfterChargeTest extends AbstractPaymentTest {
     }
 
     @Test
-    public void testPartialRefundWithId() throws MalformedURLException, HttpCommunicationException {
+    void testPartialRefundWithId() throws MalformedURLException, HttpCommunicationException {
         Charge initCharge = getUnzer().charge(BigDecimal.ONE, Currency.getInstance("EUR"), createPaymentTypeCard(getUnzer(), "4711100000000000").getId(), new URL("https://www.unzer.com"), false);
         Cancel cancel = getUnzer().cancelCharge(initCharge.getPaymentId(), initCharge.getId(), new BigDecimal("0.1"));
         assertNotNull(cancel);
     }
 
     @Test
-    public void testPartialRefundWithCharge() throws MalformedURLException, HttpCommunicationException {
+    void testPartialRefundWithCharge() throws MalformedURLException, HttpCommunicationException {
         Charge initCharge = getUnzer().charge(BigDecimal.ONE, Currency.getInstance("EUR"), createPaymentTypeCard(getUnzer(), "4711100000000000").getId(), new URL("https://www.unzer.com"), false);
         Charge charge = getUnzer().fetchCharge(initCharge.getPaymentId(), initCharge.getId());
         Cancel cancelExecuted = charge.cancel(new BigDecimal("0.1"));
@@ -70,7 +75,7 @@ public class CancelAfterChargeTest extends AbstractPaymentTest {
     }
 
     @Test
-    public void testCancelAfterChargeChargeWithPaymentReference() throws MalformedURLException, HttpCommunicationException {
+    void testCancelAfterChargeChargeWithPaymentReference() throws MalformedURLException, HttpCommunicationException {
         Charge initCharge = getUnzer().charge(BigDecimal.ONE, Currency.getInstance("EUR"), createPaymentTypeCard(getUnzer(), "4711100000000000").getId(), new URL("https://www.unzer.com"), false);
         Cancel cancelReq = new Cancel();
         cancelReq.setPaymentReference("pmt-ref");
@@ -86,7 +91,7 @@ public class CancelAfterChargeTest extends AbstractPaymentTest {
     }
 
     @Test
-    public void testCancelAfterChargeChargeWithCancelObject() throws MalformedURLException, HttpCommunicationException {
+    void testCancelAfterChargeChargeWithCancelObject() throws MalformedURLException, HttpCommunicationException {
         Charge initCharge = getUnzer().charge(BigDecimal.ONE, Currency.getInstance("EUR"), createPaymentTypeCard(getUnzer(), "4711100000000000").getId(), new URL("https://www.unzer.com"), false);
         Cancel cancelReq = new Cancel();
         cancelReq.setPaymentReference("pmt-ref");
@@ -106,7 +111,7 @@ public class CancelAfterChargeTest extends AbstractPaymentTest {
 
     @Disabled("Needs further configuration in Testdata")
     @Test
-    public void testMarketplaceFullCancelChargeWithCard() throws MalformedURLException, HttpCommunicationException {
+    void testMarketplaceFullCancelChargeWithCard() throws MalformedURLException, HttpCommunicationException {
         String participantId_1 = MARKETPLACE_PARTICIPANT_ID_1;
         String participantId_2 = MARKETPLACE_PARTICIPANT_ID_2;
 
@@ -161,7 +166,7 @@ public class CancelAfterChargeTest extends AbstractPaymentTest {
 
     @Disabled("Needs further configuration in Testdata")
     @Test
-    public void testMarketplacePartialCancelChargeWithCard() throws MalformedURLException, HttpCommunicationException {
+    void testMarketplacePartialCancelChargeWithCard() throws MalformedURLException, HttpCommunicationException {
         String participantId_1 = MARKETPLACE_PARTICIPANT_ID_1;
         String participantId_2 = MARKETPLACE_PARTICIPANT_ID_2;
 

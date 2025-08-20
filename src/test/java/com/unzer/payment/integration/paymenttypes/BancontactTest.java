@@ -15,17 +15,17 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 
-public class BancontactTest extends AbstractPaymentTest {
+class BancontactTest extends AbstractPaymentTest {
 
     @Test
-    public void testCreateBancontactWithoutHolder() {
+    void testCreateBancontactWithoutHolder() {
         Bancontact bacncontact = new Bancontact();
         bacncontact = getUnzer().createPaymentType(bacncontact);
         assertNotNull(bacncontact.getId());
     }
 
     @Test
-    public void testCreateBancontactWithHolder() {
+    void testCreateBancontactWithHolder() {
         Bancontact bancontact = new Bancontact("test holder");
         bancontact = getUnzer().createPaymentType(bancontact);
         assertNotNull(bancontact.getId());
@@ -33,7 +33,7 @@ public class BancontactTest extends AbstractPaymentTest {
     }
 
     @Test
-    public void testChargeBancontactType() {
+    void testChargeBancontactType() {
         Unzer unzer = getUnzer();
         Bancontact bancontact = unzer.createPaymentType(new Bancontact());
         Charge charge = unzer.charge(
@@ -48,7 +48,7 @@ public class BancontactTest extends AbstractPaymentTest {
     }
 
     @Test
-    public void testFetchBancontactType() {
+    void testFetchBancontactType() {
         Bancontact bancontact = getUnzer().createPaymentType(new Bancontact());
         assertNotNull(bancontact.getId());
         Bancontact fetchedBancontact = (Bancontact) getUnzer().fetchPaymentType(bancontact.getId());

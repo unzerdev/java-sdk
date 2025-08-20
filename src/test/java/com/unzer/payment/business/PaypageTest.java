@@ -18,13 +18,15 @@ import java.util.stream.Stream;
 
 import static com.unzer.payment.util.Types.unsafeUrl;
 import static com.unzer.payment.util.Uuid.generateUuid;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.DynamicTest.dynamicTest;
 
-public class PaypageTest extends AbstractPaymentTest {
+class PaypageTest extends AbstractPaymentTest {
 
     @Test
-    public void testMaximumPaypage() {
+    void testMaximumPaypage() {
         Unzer unzer = getUnzer();
 
         Paypage request = getMaximumPaypage(null);
@@ -70,7 +72,7 @@ public class PaypageTest extends AbstractPaymentTest {
     }
 
     @Test
-    public void testPaypage_WithEmptyCssMap() {
+    void testPaypage_WithEmptyCssMap() {
         Unzer unzer = getUnzer();
 
         Paypage request = getMaximumPaypage(null);

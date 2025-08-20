@@ -35,16 +35,16 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.DynamicTest.dynamicTest;
 
 
-public class KlarnaTest extends AbstractPaymentTest {
+class KlarnaTest extends AbstractPaymentTest {
     @Test
-    public void testCreatePaymentType() {
+    void testCreatePaymentType() {
         Klarna klarna = getUnzer().createPaymentType(new Klarna());
         assertNotNull(klarna);
         assertNotNull(klarna.getId());
     }
 
     @Test
-    public void testFetchPaymentType() {
+    void testFetchPaymentType() {
         Klarna paymentType = getUnzer().createPaymentType(new Klarna());
         assertNotNull(paymentType.getId());
 

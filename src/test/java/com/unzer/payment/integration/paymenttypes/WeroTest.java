@@ -7,6 +7,7 @@ import com.unzer.payment.models.AdditionalTransactionData;
 import com.unzer.payment.models.EventDependentPayment;
 import com.unzer.payment.models.WeroTransactionData;
 import com.unzer.payment.paymenttypes.Wero;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.math.BigDecimal;
@@ -16,6 +17,7 @@ import java.util.Currency;
 import static com.unzer.payment.util.Types.unsafeUrl;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
+@Disabled("Missing keypair config")
 class WeroTest extends AbstractPaymentTest {
 
     @Test

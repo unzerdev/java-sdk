@@ -1,8 +1,19 @@
 package com.unzer.payment.integration.paymenttypes;
 
-import com.unzer.payment.*;
+import com.unzer.payment.Authorization;
+import com.unzer.payment.BaseTransaction;
+import com.unzer.payment.Basket;
+import com.unzer.payment.BasketItem;
+import com.unzer.payment.Cancel;
+import com.unzer.payment.Charge;
+import com.unzer.payment.Customer;
+import com.unzer.payment.Unzer;
 import com.unzer.payment.business.AbstractPaymentTest;
-import com.unzer.payment.models.*;
+import com.unzer.payment.models.AdditionalTransactionData;
+import com.unzer.payment.models.CustomerType;
+import com.unzer.payment.models.PaylaterInvoiceConfig;
+import com.unzer.payment.models.RiskData;
+import com.unzer.payment.models.ShippingTransactionData;
 import com.unzer.payment.paymenttypes.PaylaterInvoice;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DynamicTest;
@@ -19,19 +30,22 @@ import java.util.stream.Stream;
 
 import static com.unzer.payment.util.Types.unsafeUrl;
 import static com.unzer.payment.util.Uuid.generateUuid;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.DynamicTest.dynamicTest;
 
 
-public class PaylaterInvoiceTest extends AbstractPaymentTest {
+class PaylaterInvoiceTest extends AbstractPaymentTest {
     @Test
-    public void testCreatePaylaterType() {
+    void testCreatePaylaterType() {
         PaylaterInvoice paylaterInvoice = getUnzer().createPaymentType(new PaylaterInvoice());
         assertNotNull(paylaterInvoice.getId());
     }
 
     @Test
-    public void testFetchPaylaterType() {
+    void testFetchPaylaterType() {
         PaylaterInvoice paylaterInvoice = getUnzer().createPaymentType(new PaylaterInvoice());
         assertNotNull(paylaterInvoice.getId());
 
