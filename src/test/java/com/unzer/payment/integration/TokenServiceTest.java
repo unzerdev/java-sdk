@@ -1,4 +1,4 @@
-package com.unzer.payment.service;
+package com.unzer.payment.integration;
 
 import com.unzer.payment.AuthToken;
 import com.unzer.payment.Unzer;
@@ -6,6 +6,7 @@ import com.unzer.payment.business.AbstractPaymentTest;
 import com.unzer.payment.communication.HttpCommunicationMockUtils;
 import com.unzer.payment.communication.JsonParser;
 import com.unzer.payment.communication.UnzerRestCommunication;
+import com.unzer.payment.service.TokenService;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
