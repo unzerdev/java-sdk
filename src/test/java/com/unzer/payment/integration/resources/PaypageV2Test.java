@@ -6,7 +6,13 @@ import com.unzer.payment.Metadata;
 import com.unzer.payment.business.BasketV2TestData;
 import com.unzer.payment.models.CardTransactionData;
 import com.unzer.payment.models.RiskData;
-import com.unzer.payment.models.paypage.*;
+import com.unzer.payment.models.WeroTransactionData;
+import com.unzer.payment.models.paypage.PaymentMethodConfig;
+import com.unzer.payment.models.paypage.PaypagePayment;
+import com.unzer.payment.models.paypage.Resources;
+import com.unzer.payment.models.paypage.Risk;
+import com.unzer.payment.models.paypage.Style;
+import com.unzer.payment.models.paypage.Urls;
 import com.unzer.payment.resources.PaypageV2;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -18,7 +24,10 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.stream.Stream;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 class PaypageV2Test extends BearerAuthBaseTest {
 
@@ -167,6 +176,25 @@ class PaypageV2Test extends BearerAuthBaseTest {
         PaymentMethodConfig paylaterConfig = (new PaymentMethodConfig(true))
                 .setLabel("Paylater");
 
+        // Wero configurations with eventDependentPayment
+        WeroTransactionData.EventDependentPayment weroEventDependent1 = new WeroTransactionData.EventDependentPayment()
+                .setCaptureTrigger(WeroTransactionData.CaptureTrigger.SERVICEFULFILMENT)
+                .setAmountPaymentType(WeroTransactionData.AmountPaymentType.PAY)
+                .setMaxAuthToCaptureTime(600)
+                .setMultiCapturesAllowed(true);
+
+        WeroTransactionData.EventDependentPayment weroEventDependent2 = new WeroTransactionData.EventDependentPayment()
+                .setCaptureTrigger(WeroTransactionData.CaptureTrigger.DELIVERY)
+                .setAmountPaymentType(WeroTransactionData.AmountPaymentType.PAYUPTO)
+                .setMaxAuthToCaptureTime(300)
+                .setMultiCapturesAllowed(false);
+
+        PaymentMethodConfig weroConfig1 = new PaymentMethodConfig(true, 2)
+                .setEventDependentPayment(weroEventDependent1);
+
+        PaymentMethodConfig weroConfig2 = new PaymentMethodConfig(true)
+                .setEventDependentPayment(weroEventDependent2);
+
         // Prepare Config Maps
         HashMap<String, PaymentMethodConfig> emptyConfig = new HashMap<>();
 
@@ -180,6 +208,17 @@ class PaypageV2Test extends BearerAuthBaseTest {
 
         HashMap<String, PaymentMethodConfig> withPaylaterConfig = new HashMap<>();
         withPaylaterConfig.put("cards", paylaterConfig);
+
+        HashMap<String, PaymentMethodConfig> withWeroConfig1 = new HashMap<>();
+        withWeroConfig1.put("wero", weroConfig1);
+
+        HashMap<String, PaymentMethodConfig> withWeroConfig2 = new HashMap<>();
+        withWeroConfig2.put("wero", weroConfig2);
+
+        HashMap<String, PaymentMethodConfig> withMixedWeroConfig = new HashMap<>();
+        withMixedWeroConfig.put("default", disabledConfig);
+        withMixedWeroConfig.put("cards", enabledConfig);
+        withMixedWeroConfig.put("wero", weroConfig1);
 
         HashMap<PaypageV2.MethodName, PaymentMethodConfig> withEnumMethodNames = new HashMap<>();
         withEnumMethodNames.put(PaypageV2.MethodName.CARDS, enabledConfig);
@@ -202,6 +241,7 @@ class PaypageV2Test extends BearerAuthBaseTest {
         withEnumMethodNames.put(PaypageV2.MethodName.PFCARD, enabledConfig);
         withEnumMethodNames.put(PaypageV2.MethodName.PFEFINANCE, enabledConfig);
         withEnumMethodNames.put(PaypageV2.MethodName.TWINT, enabledConfig);
+        withEnumMethodNames.put(PaypageV2.MethodName.WERO, weroConfig1);
         withEnumMethodNames.put(PaypageV2.MethodName.DEFAULT, enabledConfig);
 
         return Stream.of(
@@ -211,6 +251,9 @@ class PaypageV2Test extends BearerAuthBaseTest {
                 Arguments.of("Method Configs", withCardConfig),
                 Arguments.of("CardSpecificConfig", withCardConfig),
                 Arguments.of("PaylaterConfig", withPaylaterConfig),
+                Arguments.of("WeroConfig with ServiceFulfilment", withWeroConfig1),
+                Arguments.of("WeroConfig with Delivery", withWeroConfig2),
+                Arguments.of("Mixed Config with Wero", withMixedWeroConfig),
                 Arguments.of("Method name enums", withEnumMethodNames)
         );
     }

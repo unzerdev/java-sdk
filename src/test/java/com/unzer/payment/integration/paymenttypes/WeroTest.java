@@ -3,6 +3,8 @@ package com.unzer.payment.integration.paymenttypes;
 import com.unzer.payment.Authorization;
 import com.unzer.payment.Charge;
 import com.unzer.payment.business.AbstractPaymentTest;
+import com.unzer.payment.models.AdditionalTransactionData;
+import com.unzer.payment.models.WeroTransactionData;
 import com.unzer.payment.paymenttypes.Wero;
 import org.junit.jupiter.api.Test;
 
@@ -46,6 +48,64 @@ class WeroTest extends AbstractPaymentTest {
         Wero wero = getUnzer().createPaymentType(new Wero());
         URL returnUrl = unsafeUrl("https://www.unzer.com");
         Authorization authorization = getUnzer().authorize(BigDecimal.ONE, Currency.getInstance("EUR"), wero, returnUrl);
+        assertNotNull(authorization);
+        assertNotNull(authorization.getId());
+        assertNotNull(authorization.getRedirectUrl());
+    }
+
+    @Test
+    void testChargeWeroTypeWithAdditionalTransactionData() {
+        // Create Wero type
+        Wero wero = getUnzer().createPaymentType(new Wero());
+        URL returnUrl = unsafeUrl("https://www.unzer.com");
+
+        // Build Wero additional transaction data
+        WeroTransactionData.EventDependentPayment edp = new WeroTransactionData.EventDependentPayment()
+                .setCaptureTrigger(WeroTransactionData.CaptureTrigger.SERVICEFULFILMENT)
+                .setAmountPaymentType(WeroTransactionData.AmountPaymentType.PAY)
+                .setMaxAuthToCaptureTime(600)
+                .setMultiCapturesAllowed(true);
+        AdditionalTransactionData atd = new AdditionalTransactionData()
+                .setWero(new WeroTransactionData().setEventDependentPayment(edp));
+
+        // Build the charge request explicitly to attach additional transaction data
+        Charge request = new Charge();
+        request.setAmount(BigDecimal.ONE);
+        request.setCurrency(Currency.getInstance("EUR"));
+        request.setTypeId(wero.getId());
+        request.setReturnUrl(returnUrl);
+        request.setAdditionalTransactionData(atd);
+
+        Charge charge = getUnzer().charge(request);
+        assertNotNull(charge);
+        assertNotNull(charge.getId());
+        assertNotNull(charge.getRedirectUrl());
+    }
+
+    @Test
+    void testAuthorizeWeroTypeWithAdditionalTransactionData() {
+        // Create Wero type
+        Wero wero = getUnzer().createPaymentType(new Wero());
+        URL returnUrl = unsafeUrl("https://www.unzer.com");
+
+        // Build Wero additional transaction data
+        WeroTransactionData.EventDependentPayment edp = new WeroTransactionData.EventDependentPayment()
+                .setCaptureTrigger(WeroTransactionData.CaptureTrigger.SERVICEFULFILMENT)
+                .setAmountPaymentType(WeroTransactionData.AmountPaymentType.PAYUPTO)
+                .setMaxAuthToCaptureTime(300)
+                .setMultiCapturesAllowed(false);
+        AdditionalTransactionData atd = new AdditionalTransactionData()
+                .setWero(new WeroTransactionData().setEventDependentPayment(edp));
+
+        // Build the authorization request explicitly to attach additional transaction data
+        Authorization request = new Authorization();
+        request.setAmount(BigDecimal.ONE);
+        request.setCurrency(Currency.getInstance("EUR"));
+        request.setTypeId(wero.getId());
+        request.setReturnUrl(returnUrl);
+        request.setAdditionalTransactionData(atd);
+
+        Authorization authorization = getUnzer().authorize(request);
         assertNotNull(authorization);
         assertNotNull(authorization.getId());
         assertNotNull(authorization.getRedirectUrl());

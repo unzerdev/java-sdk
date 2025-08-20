@@ -2,9 +2,11 @@ package com.unzer.payment.models;
 
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
+import lombok.Data;
 
 import java.util.Objects;
 
+@Data
 @JsonTypeName("additionalTransactionDataModel")
 @JsonTypeInfo(include = JsonTypeInfo.As.WRAPPER_OBJECT, use = JsonTypeInfo.Id.NAME)
 public class AdditionalTransactionData {
@@ -12,6 +14,7 @@ public class AdditionalTransactionData {
     private ShippingTransactionData shipping;
     private RiskData riskData;
     private PaypalData paypal;
+    private WeroTransactionData wero;
 
     /**
      * URL to the merchant's Terms and Conditions Page
@@ -23,32 +26,7 @@ public class AdditionalTransactionData {
      */
     private String privacyPolicyUrl;
 
-    public CardTransactionData getCard() {
-        return card;
-    }
 
-    public AdditionalTransactionData setCard(CardTransactionData card) {
-        this.card = card;
-        return this;
-    }
-
-    public ShippingTransactionData getShipping() {
-        return shipping;
-    }
-
-    public AdditionalTransactionData setShipping(ShippingTransactionData shipping) {
-        this.shipping = shipping;
-        return this;
-    }
-
-    public RiskData getRiskData() {
-        return riskData;
-    }
-
-    public AdditionalTransactionData setRiskData(RiskData riskData) {
-        this.riskData = riskData;
-        return this;
-    }
 
     /**
      * URL to the merchant's Terms and Conditions Page
@@ -80,15 +58,6 @@ public class AdditionalTransactionData {
         return this;
     }
 
-    public PaypalData getPaypal() {
-        return paypal;
-    }
-
-    public AdditionalTransactionData setPaypal(PaypalData paypal) {
-        this.paypal = paypal;
-        return this;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -112,6 +81,9 @@ public class AdditionalTransactionData {
         if (!Objects.equals(paypal, that.paypal)) {
             return false;
         }
+        if (!Objects.equals(wero, that.wero)) {
+            return false;
+        }
         if (!Objects.equals(termsAndConditionUrl, that.termsAndConditionUrl)) {
             return false;
         }
@@ -124,6 +96,7 @@ public class AdditionalTransactionData {
         result = 31 * result + (shipping != null ? shipping.hashCode() : 0);
         result = 31 * result + (riskData != null ? riskData.hashCode() : 0);
         result = 31 * result + (paypal != null ? paypal.hashCode() : 0);
+        result = 31 * result + (wero != null ? wero.hashCode() : 0);
         result = 31 * result + (termsAndConditionUrl != null ? termsAndConditionUrl.hashCode() : 0);
         result = 31 * result + (privacyPolicyUrl != null ? privacyPolicyUrl.hashCode() : 0);
         return result;

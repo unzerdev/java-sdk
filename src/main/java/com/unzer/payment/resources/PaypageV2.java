@@ -5,7 +5,13 @@ import com.google.gson.annotations.SerializedName;
 import com.unzer.payment.BaseResource;
 import com.unzer.payment.communication.JsonDateTimeIso8601Converter;
 import com.unzer.payment.communication.JsonFieldIgnore;
-import com.unzer.payment.models.paypage.*;
+import com.unzer.payment.models.paypage.AmountSettings;
+import com.unzer.payment.models.paypage.PaymentMethodConfig;
+import com.unzer.payment.models.paypage.PaypagePayment;
+import com.unzer.payment.models.paypage.Resources;
+import com.unzer.payment.models.paypage.Risk;
+import com.unzer.payment.models.paypage.Style;
+import com.unzer.payment.models.paypage.Urls;
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -122,7 +128,8 @@ public class PaypageV2 extends BaseResource {
         BANCONTACT("bancontact"),
         PFCARD("pfcard"),
         PFEFINANCE("pfefinance"),
-        TWINT("twint");
+        TWINT("twint"),
+        WERO("wero");
 
         private final String name;
 
