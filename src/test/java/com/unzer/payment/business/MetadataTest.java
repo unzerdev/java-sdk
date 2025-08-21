@@ -1,16 +1,20 @@
 package com.unzer.payment.business;
 
 
-import com.unzer.payment.*;
+import com.unzer.payment.Authorization;
+import com.unzer.payment.Charge;
+import com.unzer.payment.Metadata;
+import com.unzer.payment.Payment;
+import com.unzer.payment.Unzer;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-public class MetadataTest extends AbstractPaymentTest {
+class MetadataTest extends AbstractPaymentTest {
 
     @Test
-    public void testCreateFetchMetadata() {
+    void testCreateFetchMetadata() {
         Metadata metadata = getUnzer().createMetadata(getTestMetadata());
         Metadata metadataFetched = getUnzer().fetchMetadata(metadata.getId());
         assertNotNull(metadataFetched);
@@ -19,7 +23,7 @@ public class MetadataTest extends AbstractPaymentTest {
     }
 
     @Test
-    public void testSortedMetadata() {
+    void testSortedMetadata() {
         Metadata metadataRequest = getTestMetadata(true);
         Metadata metadata = getUnzer().createMetadata(metadataRequest);
         assertEquals("delivery-date", metadata.getMetadataMap().keySet().toArray()[0]);
@@ -31,7 +35,7 @@ public class MetadataTest extends AbstractPaymentTest {
     }
 
     @Test
-    public void testAuthorizationWithMetadata() {
+    void testAuthorizationWithMetadata() {
         Unzer unzer = getUnzer();
         String metadataId = unzer.createMetadata(getTestMetadata()).getId();
         Authorization authorize = unzer.authorize(
@@ -48,7 +52,7 @@ public class MetadataTest extends AbstractPaymentTest {
     }
 
     @Test
-    public void testChargeWithMetadata() {
+    void testChargeWithMetadata() {
         Unzer unzer = getUnzer();
         String metadataId = unzer.createMetadata(getTestMetadata()).getId();
         Charge charge = unzer.charge(

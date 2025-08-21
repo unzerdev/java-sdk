@@ -11,17 +11,17 @@ import java.util.Currency;
 import static com.unzer.payment.util.Types.unsafeUrl;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-public class TwintTest extends AbstractPaymentTest {
+class TwintTest extends AbstractPaymentTest {
 
     @Test
-    public void testCreateTwintManatoryType() {
+    void testCreateTwintManatoryType() {
         Twint twint = new Twint();
         twint = getUnzer().createPaymentType(twint);
         assertNotNull(twint.getId());
     }
 
     @Test
-    public void testChargeTwintType() {
+    void testChargeTwintType() {
         Twint twint = getUnzer().createPaymentType(new Twint());
         Charge charge = getUnzer().charge(BigDecimal.ONE, Currency.getInstance("CHF"), twint.getId(), unsafeUrl("https://www.unzer.com"));
         assertNotNull(charge);
@@ -30,7 +30,7 @@ public class TwintTest extends AbstractPaymentTest {
     }
 
     @Test
-    public void testFetchTwintType() {
+    void testFetchTwintType() {
         Twint twint = getUnzer().createPaymentType(new Twint());
         assertNotNull(twint.getId());
         Twint fetchedTwint = (Twint) getUnzer().fetchPaymentType(twint.getId());

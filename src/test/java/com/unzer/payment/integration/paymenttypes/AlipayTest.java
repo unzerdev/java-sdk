@@ -14,17 +14,17 @@ import static com.unzer.payment.util.Types.unsafeUrl;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 
-public class AlipayTest extends AbstractPaymentTest {
+class AlipayTest extends AbstractPaymentTest {
 
     @Test
-    public void testCreateAlipayManatoryType() {
+    void testCreateAlipayManatoryType() {
         Alipay alipay = new Alipay();
         alipay = getUnzer().createPaymentType(alipay);
         assertNotNull(alipay.getId());
     }
 
     @Test
-    public void testChargeAlipayType() {
+    void testChargeAlipayType() {
         Unzer unzer = getUnzer();
         Alipay alipay = unzer.createPaymentType(new Alipay());
         Charge charge = unzer.charge(
@@ -39,7 +39,7 @@ public class AlipayTest extends AbstractPaymentTest {
     }
 
     @Test
-    public void testFetchAlipayType() {
+    void testFetchAlipayType() {
         Alipay alipay = getUnzer().createPaymentType(new Alipay());
         assertNotNull(alipay.getId());
         Alipay fetchedAlipay = (Alipay) getUnzer().fetchPaymentType(alipay.getId());

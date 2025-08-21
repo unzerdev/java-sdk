@@ -13,17 +13,17 @@ import java.util.Currency;
 import static com.unzer.payment.util.Types.unsafeUrl;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-public class PostFinanceEFinanceTest extends AbstractPaymentTest {
+class PostFinanceEFinanceTest extends AbstractPaymentTest {
 
     @Test
-    public void testCreatePostFinanceEFinanceMandatoryType() {
+    void testCreatePostFinanceEFinanceMandatoryType() {
         PostFinanceEFinance pfEFinance = new PostFinanceEFinance();
         pfEFinance = getUnzer().createPaymentType(pfEFinance);
         assertNotNull(pfEFinance.getId());
     }
 
     @Test
-    public void testChargePostFinanceEFinanceType() {
+    void testChargePostFinanceEFinanceType() {
         Unzer unzer = getUnzer();
         PostFinanceEFinance pfEFinance = unzer.createPaymentType(getPostFinanceEFinance());
         Charge charge = pfEFinance.charge(BigDecimal.ONE, Currency.getInstance("CHF"),
@@ -39,7 +39,7 @@ public class PostFinanceEFinanceTest extends AbstractPaymentTest {
     }
 
     @Test
-    public void testFetchPostFinanceEFinanceType() {
+    void testFetchPostFinanceEFinanceType() {
         Unzer unzer = getUnzer();
         PostFinanceEFinance pfEFinance = unzer.createPaymentType(getPostFinanceEFinance());
         assertNotNull(pfEFinance.getId());

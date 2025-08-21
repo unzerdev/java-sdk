@@ -14,17 +14,17 @@ import java.util.Currency;
 import static com.unzer.payment.util.Types.unsafeUrl;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-public class PisTest extends AbstractPaymentTest {
+class PisTest extends AbstractPaymentTest {
 
     @Test
-    public void testCreatePis() {
+    void testCreatePis() {
         Pis pis = new Pis();
         pis = getUnzer().createPaymentType(pis);
         assertNotNull(pis.getId());
     }
 
     @Test
-    public void testCreatePisWithIbanBic() {
+    void testCreatePisWithIbanBic() {
         Pis pis = new Pis("DE69545100670661762678", "SPFKAT2BXXX");
         pis = getUnzer().createPaymentType(pis);
         assertNotNull(pis.getId());
@@ -54,7 +54,7 @@ public class PisTest extends AbstractPaymentTest {
     }
 
     @Test
-    public void testFetchPisType() {
+    void testFetchPisType() {
         Pis pis = getUnzer().createPaymentType(new Pis());
         assertNotNull(pis.getId());
         Pis fetchedPis = (Pis) getUnzer().fetchPaymentType(pis.getId());

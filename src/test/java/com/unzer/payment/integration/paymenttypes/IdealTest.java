@@ -13,16 +13,16 @@ import java.util.Currency;
 import static com.unzer.payment.util.Types.unsafeUrl;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-public class IdealTest extends AbstractPaymentTest {
+class IdealTest extends AbstractPaymentTest {
 
     @Test
-    public void testCreateIdealManatoryType() {
+    void testCreateIdealManatoryType() {
         Ideal ideal = getUnzer().createPaymentType(getIdeal());
         assertNotNull(ideal.getId());
     }
 
     @Test
-    public void testChargeIdealType() {
+    void testChargeIdealType() {
         Ideal ideal = getUnzer(Keys.LEGACY_PRIVATE_KEY).createPaymentType(getIdeal());
         Charge charge = ideal.charge(BigDecimal.ONE, Currency.getInstance("EUR"),
                 unsafeUrl("https://www.unzer.com"));
@@ -32,7 +32,7 @@ public class IdealTest extends AbstractPaymentTest {
     }
 
     @Test
-    public void testFetchIdealType() {
+    void testFetchIdealType() {
         Ideal ideal = getUnzer().createPaymentType(getIdeal());
         assertNotNull(ideal.getId());
         Ideal fetchedIdeal = (Ideal) getUnzer().fetchPaymentType(ideal.getId());

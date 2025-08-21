@@ -16,7 +16,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 
 @Execution(ExecutionMode.SAME_THREAD)
-public class WebhookTest extends AbstractPaymentTest {
+class WebhookTest extends AbstractPaymentTest {
 
     @BeforeEach
     public void clearDataBeforeTest() {
@@ -31,7 +31,7 @@ public class WebhookTest extends AbstractPaymentTest {
     }
 
     @Test
-    public void testRegisterSingleWebhookWithValidEvent() {
+    void testRegisterSingleWebhookWithValidEvent() {
         Webhook registerRequest = new Webhook("https://domain.com", WebhookEventEnum.AUTHORIZE_CANCELED);
         Webhook registerResult = getUnzer().registerSingleWebhook(registerRequest);
         assertNotNull(registerResult);
@@ -40,7 +40,7 @@ public class WebhookTest extends AbstractPaymentTest {
     }
 
     @Test
-    public void testRegisterMultiWebhookWithValidEvent() {
+    void testRegisterMultiWebhookWithValidEvent() {
         List<WebhookEventEnum> listWebhookEvents = Arrays.asList(WebhookEventEnum.CHARGE_CANCELED, WebhookEventEnum.AUTHORIZE_CANCELED, WebhookEventEnum.PREAUTHORIZE_CANCELED, WebhookEventEnum.BASKET_CREATE);
         Webhook registerRequest = new Webhook("https://domain.com", listWebhookEvents);
         WebhookList registerResult = getUnzer().registerMultiWebhooks(registerRequest);
@@ -53,7 +53,7 @@ public class WebhookTest extends AbstractPaymentTest {
     }
 
     @Test
-    public void testDeleteSingleWebhook() {
+    void testDeleteSingleWebhook() {
         Webhook registerRequest = new Webhook("https://domain.com", WebhookEventEnum.AUTHORIZE_CANCELED);
         Webhook registerResult = getUnzer().registerSingleWebhook(registerRequest);
         assertNotNull(registerResult);
@@ -66,7 +66,7 @@ public class WebhookTest extends AbstractPaymentTest {
     }
 
     @Test
-    public void updateSingleWebhook() {
+    void updateSingleWebhook() {
         Webhook registerRequest = new Webhook("https://domain.com", WebhookEventEnum.AUTHORIZE_CANCELED);
         Webhook registerResult = getUnzer().registerSingleWebhook(registerRequest);
         assertNotNull(registerResult);

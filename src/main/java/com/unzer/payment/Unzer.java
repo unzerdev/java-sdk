@@ -9,12 +9,20 @@ import com.unzer.payment.marketplace.MarketplaceAuthorization;
 import com.unzer.payment.marketplace.MarketplaceCancel;
 import com.unzer.payment.marketplace.MarketplaceCharge;
 import com.unzer.payment.marketplace.MarketplacePayment;
-import com.unzer.payment.models.*;
+import com.unzer.payment.models.AdditionalTransactionData;
+import com.unzer.payment.models.CardTransactionData;
+import com.unzer.payment.models.CustomerType;
+import com.unzer.payment.models.PaylaterInvoiceConfig;
+import com.unzer.payment.models.PaylaterInvoiceConfigRequest;
 import com.unzer.payment.models.paylater.InstallmentPlansRequest;
 import com.unzer.payment.paymenttypes.PaylaterInstallment;
 import com.unzer.payment.paymenttypes.PaymentType;
 import com.unzer.payment.resources.PaypageV2;
-import com.unzer.payment.service.*;
+import com.unzer.payment.service.LinkpayService;
+import com.unzer.payment.service.PaymentService;
+import com.unzer.payment.service.PaypageService;
+import com.unzer.payment.service.TokenService;
+import com.unzer.payment.service.WebhookService;
 import com.unzer.payment.service.marketplace.MarketplacePaymentService;
 import com.unzer.payment.util.JwtHelper;
 import com.unzer.payment.webhook.Webhook;
@@ -23,7 +31,11 @@ import lombok.Getter;
 
 import java.math.BigDecimal;
 import java.net.URL;
-import java.util.*;
+import java.util.Currency;
+import java.util.Date;
+import java.util.List;
+import java.util.Locale;
+import java.util.Objects;
 
 /**
  * {@code Unzer} is a facade to the Unzer REST Api. The facade is
@@ -368,7 +380,10 @@ public class Unzer {
                                    URL returnUrl,
                                    Customer customer, Boolean card3ds)
             throws HttpCommunicationException {
-        return authorize(amount, currency, createPaymentType(paymentType).getId(), returnUrl,
+        if (paymentType.getId() == null) {
+            paymentType = createPaymentType(paymentType);
+        }
+        return authorize(amount, currency, paymentType.getId(), returnUrl,
                 getCustomerId(createCustomerIfPresent(customer)), card3ds);
     }
 

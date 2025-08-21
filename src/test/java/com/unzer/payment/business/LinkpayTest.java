@@ -15,12 +15,14 @@ import java.util.stream.Stream;
 
 import static com.unzer.payment.util.Types.unsafeUrl;
 import static com.unzer.payment.util.Uuid.generateUuid;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.DynamicTest.dynamicTest;
 
-public class LinkpayTest extends AbstractPaymentTest {
+class LinkpayTest extends AbstractPaymentTest {
     @Test
-    public void fetch_linkpay() {
+    void fetch_linkpay() {
         Unzer unzer = getUnzer();
         Linkpay newLinkpay = getMaximumLinkpay(null);
         Linkpay createdLinkpay = unzer.linkpay(newLinkpay);
@@ -31,7 +33,7 @@ public class LinkpayTest extends AbstractPaymentTest {
     }
 
     @Test
-    public void charge_MaximumLinkpay() {
+    void charge_MaximumLinkpay() {
         Unzer unzer = getUnzer();
         Linkpay request = getMaximumLinkpay(null);
         request = unzer.linkpay(request);
@@ -73,7 +75,7 @@ public class LinkpayTest extends AbstractPaymentTest {
     }
 
     @Test
-    public void charge_Linkpay_WithEmptyCssMap() {
+    void charge_Linkpay_WithEmptyCssMap() {
         Unzer unzer = getUnzer();
 
         Linkpay request = getMaximumLinkpay(null);

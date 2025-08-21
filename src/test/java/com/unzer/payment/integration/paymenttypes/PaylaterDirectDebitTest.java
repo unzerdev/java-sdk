@@ -1,6 +1,10 @@
 package com.unzer.payment.integration.paymenttypes;
 
-import com.unzer.payment.*;
+import com.unzer.payment.Authorization;
+import com.unzer.payment.BaseTransaction;
+import com.unzer.payment.Charge;
+import com.unzer.payment.Customer;
+import com.unzer.payment.Unzer;
 import com.unzer.payment.business.AbstractPaymentTest;
 import com.unzer.payment.paymenttypes.PaylaterDirectDebit;
 import org.junit.jupiter.api.Test;
@@ -14,9 +18,9 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 
-public class PaylaterDirectDebitTest extends AbstractPaymentTest {
+class PaylaterDirectDebitTest extends AbstractPaymentTest {
     @Test
-    public void create_and_fetch_payment_type_ok() {
+    void create_and_fetch_payment_type_ok() {
         Unzer unzer = getUnzer();
         PaylaterDirectDebit type = new PaylaterDirectDebit(
                 "DE89370400440532013000",
@@ -32,7 +36,7 @@ public class PaylaterDirectDebitTest extends AbstractPaymentTest {
     }
 
     @Test
-    public void authorize_and_charge_ok() {
+    void authorize_and_charge_ok() {
         Unzer unzer = getUnzer();
         PaylaterDirectDebit type = unzer.createPaymentType(
                 new PaylaterDirectDebit(

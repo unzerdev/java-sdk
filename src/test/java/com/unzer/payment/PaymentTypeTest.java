@@ -6,10 +6,10 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-public class PaymentTypeTest extends AbstractPaymentTest {
+class PaymentTypeTest extends AbstractPaymentTest {
 
     @Test
-    public void testForInvalidPaymentType() {
+    void testForInvalidPaymentType() {
         assertThrows(PaymentException.class, () -> {
             getUnzer().fetchPaymentType("s-xxx-shdshdbshbv");
         });

@@ -11,11 +11,11 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 
-public class JsonDateTimeConverterTest {
+class JsonDateTimeConverterTest {
     private static final JsonDateTimeConverter converter = new JsonDateTimeConverter();
 
     @Test
-    public void date_parsed_fine() {
+    void date_parsed_fine() {
         JsonObject jsonObject = new JsonObject();
         jsonObject.addProperty("date", "1980-12-01");
 
@@ -24,7 +24,7 @@ public class JsonDateTimeConverterTest {
     }
 
     @Test
-    public void dateTime_parsed_fine() {
+    void dateTime_parsed_fine() {
         JsonObject jsonObject = new JsonObject();
         jsonObject.addProperty("date", "1980-12-01 11:59:00");
 
@@ -34,7 +34,7 @@ public class JsonDateTimeConverterTest {
     }
 
     @Test
-    public void getDateTestWrongFormat() {
+    void getDateTestWrongFormat() {
         JsonObject jsonObject = new JsonObject();
         jsonObject.addProperty("date", "1980-12-01 12:00");
 
@@ -44,7 +44,7 @@ public class JsonDateTimeConverterTest {
     }
 
     @Test
-    public void getDateTestInvalidDate() {
+    void getDateTestInvalidDate() {
         JsonObject jsonObject = new JsonObject();
         jsonObject.addProperty("date", "2000-12-32");
 
@@ -54,7 +54,7 @@ public class JsonDateTimeConverterTest {
     }
 
     @Test
-    public void getDateTestInvalidDateTime() {
+    void getDateTestInvalidDateTime() {
         JsonObject jsonObject = new JsonObject();
         jsonObject.addProperty("date", "2000-12-31 25:00:00");
 
@@ -64,7 +64,7 @@ public class JsonDateTimeConverterTest {
     }
 
     @Test
-    public void date_time_converted_with_time() {
+    void date_time_converted_with_time() {
         Date initialDate = new Date(94, Calendar.DECEMBER, 1, 11, 59, 31);
 
         String convertedDate = converter.serialize(initialDate, null, null).getAsString();

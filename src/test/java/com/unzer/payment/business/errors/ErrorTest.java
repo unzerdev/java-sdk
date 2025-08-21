@@ -1,7 +1,12 @@
 package com.unzer.payment.business.errors;
 
 
-import com.unzer.payment.*;
+import com.unzer.payment.Authorization;
+import com.unzer.payment.Charge;
+import com.unzer.payment.Customer;
+import com.unzer.payment.PaymentError;
+import com.unzer.payment.PaymentException;
+import com.unzer.payment.Unzer;
 import com.unzer.payment.business.AbstractPaymentTest;
 import com.unzer.payment.business.Keys;
 import com.unzer.payment.communication.HttpCommunicationException;
@@ -12,11 +17,15 @@ import java.text.ParseException;
 import java.util.List;
 
 import static com.unzer.payment.util.Uuid.generateUuid;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class ErrorTest extends AbstractPaymentTest {
+class ErrorTest extends AbstractPaymentTest {
     @Test
-    public void testKeyMissing() {
+    void testKeyMissing() {
         assertThrows(
                 AssertionError.class,
                 () -> new Unzer(null)
@@ -31,7 +40,7 @@ public class ErrorTest extends AbstractPaymentTest {
     // The given key something is unknown or invalid.
     // The key 's-priv-123' is invalid
     @Test
-    public void testInvalidKey() throws HttpCommunicationException {
+    void testInvalidKey() throws HttpCommunicationException {
         try {
             getUnzer("s-priv-123").authorize(getAuthorization(""));
         } catch (PaymentException e) {
@@ -48,7 +57,7 @@ public class ErrorTest extends AbstractPaymentTest {
     // Card resources can only be created directly with a valid PCI certification.
     // Please contact Unzer to grant permission for PCI level SAQ-D or SAQ-A EP
     @Test
-    public void testPCILevelSaqA() {
+    void testPCILevelSaqA() {
         try {
             getUnzer(Keys.PUBLIC_KEY).createPaymentType(getPaymentTypeCard()); // Prod Sandbox
         } catch (PaymentException e) {
@@ -66,7 +75,7 @@ public class ErrorTest extends AbstractPaymentTest {
     // Payment type '/types/s-crd-jbrjthrghag2' not found
     //FIXME tests nothing
     @Test
-    public void testInvalidAccess() {
+    void testInvalidAccess() {
         Card card = createPaymentTypeCard(getUnzer(), "4711100000000000");
         try {
             getUnzer(Keys.DEFAULT).fetchPaymentType(card.getId());  // Prod-Sandbox
@@ -83,7 +92,7 @@ public class ErrorTest extends AbstractPaymentTest {
     // Invalid return URL
     // Return URL is mandatory
     @Test
-    public void testMissingReturnUrl() throws HttpCommunicationException {
+    void testMissingReturnUrl() throws HttpCommunicationException {
         try {
             Authorization authorization = getAuthorization(createPaymentTypeCard(getUnzer(), "4711100000000000").getId());
             authorization.setReturnUrl(null);
@@ -97,7 +106,7 @@ public class ErrorTest extends AbstractPaymentTest {
     }
 
     @Test
-    public void testPaymentTypeIdInvalid() throws HttpCommunicationException {
+    void testPaymentTypeIdInvalid() throws HttpCommunicationException {
         try {
             getUnzer().authorize(getAuthorization(""));
         } catch (PaymentException e) {
@@ -109,7 +118,7 @@ public class ErrorTest extends AbstractPaymentTest {
     }
 
     @Test
-    public void testFetchNonExistingPayment() {
+    void testFetchNonExistingPayment() {
         try {
             getUnzer().fetchAuthorization("213");
         } catch (PaymentException e) {
@@ -121,14 +130,14 @@ public class ErrorTest extends AbstractPaymentTest {
     }
 
     @Test
-    public void testFetchNonExistingCharge() throws HttpCommunicationException {
+    void testFetchNonExistingCharge() throws HttpCommunicationException {
         Charge charge = getUnzer().charge(getCharge());
         Charge chargeFetched = getUnzer().fetchCharge(charge.getPaymentId(), "s-chg-200");
         assertNull(chargeFetched);
     }
 
     @Test
-    public void testinvalidPutCustomer() throws HttpCommunicationException, ParseException {
+    void testinvalidPutCustomer() throws HttpCommunicationException, ParseException {
         try {
             Customer customer = getUnzer().createCustomer(getMaximumCustomer(generateUuid()));
             Customer customerUpdate = new Customer(customer.getFirstname(), customer.getLastname());
@@ -143,7 +152,7 @@ public class ErrorTest extends AbstractPaymentTest {
     }
 
     @Test
-    public void testCreateInvalidCustomer() throws HttpCommunicationException, ParseException {
+    void testCreateInvalidCustomer() throws HttpCommunicationException, ParseException {
         try {
             Customer customer = getMinimumCustomer();
             customer.setBirthDate(getDate("01.01.1944"));

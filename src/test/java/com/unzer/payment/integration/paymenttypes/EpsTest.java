@@ -12,24 +12,24 @@ import java.util.Currency;
 import static com.unzer.payment.util.Types.unsafeUrl;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-public class EpsTest extends AbstractPaymentTest {
+class EpsTest extends AbstractPaymentTest {
 
     @Test
-    public void testCreateEpsWithoutBicType() {
+    void testCreateEpsWithoutBicType() {
         Eps eps = new Eps();
         eps = getUnzer().createPaymentType(eps);
         assertNotNull(eps.getId());
     }
 
     @Test
-    public void testCreateEpsWithBicType() {
+    void testCreateEpsWithBicType() {
         Eps eps = new Eps("SPFKAT2BXXX");
         eps = getUnzer().createPaymentType(eps);
         assertNotNull(eps.getId());
     }
 
     @Test
-    public void testChargeEpsType() {
+    void testChargeEpsType() {
         Eps eps = getUnzer().createPaymentType(getEps());
         Charge charge = eps.charge(BigDecimal.ONE, Currency.getInstance("EUR"), unsafeUrl("https://www.unzer.com"));
         assertNotNull(charge);
@@ -38,7 +38,7 @@ public class EpsTest extends AbstractPaymentTest {
     }
 
     @Test
-    public void testFetchEpsType() {
+    void testFetchEpsType() {
         Eps eps = getUnzer().createPaymentType(getEps());
         assertNotNull(eps.getId());
         Eps fetchedEps = (Eps) getUnzer().fetchPaymentType(eps.getId());

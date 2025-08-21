@@ -18,7 +18,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.DynamicTest.dynamicTest;
 
 
-public class UrlUtilTest extends AbstractPaymentTest {
+class UrlUtilTest extends AbstractPaymentTest {
     private static final String sbxTypesUrl = "https://sbx-api.unzer.com/v1/types/";
 
     @TestFactory

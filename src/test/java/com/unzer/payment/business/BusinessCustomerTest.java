@@ -11,13 +11,15 @@ import org.junit.jupiter.api.Test;
 import java.text.ParseException;
 
 import static com.unzer.payment.util.Uuid.generateUuid;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
-public class BusinessCustomerTest extends AbstractPaymentTest {
+class BusinessCustomerTest extends AbstractPaymentTest {
 
 
     @Test
-    public void testCreateRegisteredBusinessCustomer() {
+    void testCreateRegisteredBusinessCustomer() {
         Customer customer = getUnzer().createCustomer(getRegisterdMinimumBusinessCustomer());
         assertNotNull(customer);
         assertNotNull(customer.getId());
@@ -25,7 +27,7 @@ public class BusinessCustomerTest extends AbstractPaymentTest {
     }
 
     @Test
-    public void testCreateRegisteredMaximumBusinessCustomer() throws HttpCommunicationException, ParseException {
+    void testCreateRegisteredMaximumBusinessCustomer() throws HttpCommunicationException, ParseException {
         Customer maxCustomer = getRegisterdMaximumBusinessCustomer(generateUuid());
         Customer customer = getUnzer().createCustomer(maxCustomer);
         assertNotNull(customer);
@@ -34,7 +36,7 @@ public class BusinessCustomerTest extends AbstractPaymentTest {
     }
 
     @Test
-    public void testFetchRegisteredMaximumBusinessCustomer() throws HttpCommunicationException, ParseException {
+    void testFetchRegisteredMaximumBusinessCustomer() throws HttpCommunicationException, ParseException {
         Customer customer = getRegisterdMaximumBusinessCustomer(generateUuid());
         customer = getUnzer().createCustomer(customer);
         assertNotNull(customer);
@@ -76,7 +78,7 @@ public class BusinessCustomerTest extends AbstractPaymentTest {
     }
 
     @Test
-    public void testUpdateCustomer() throws HttpCommunicationException, ParseException {
+    void testUpdateCustomer() throws HttpCommunicationException, ParseException {
         Customer customer = getUnzer().createCustomer(getRegisterdMaximumBusinessCustomer(generateUuid()));
         assertNotNull(customer);
         assertNotNull(customer.getId());
@@ -92,7 +94,7 @@ public class BusinessCustomerTest extends AbstractPaymentTest {
     }
 
     @Test
-    public void testDeleteCustomer() throws HttpCommunicationException, ParseException {
+    void testDeleteCustomer() throws HttpCommunicationException, ParseException {
         Customer customer = getUnzer().createCustomer(getRegisterdMaximumBusinessCustomer(generateUuid()));
         assertNotNull(customer);
         assertNotNull(customer.getId());

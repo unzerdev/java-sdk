@@ -13,12 +13,15 @@ import java.util.Currency;
 import java.util.Objects;
 import java.util.Scanner;
 
-import static com.github.tomakehurst.wiremock.client.WireMock.*;
+import static com.github.tomakehurst.wiremock.client.WireMock.get;
+import static com.github.tomakehurst.wiremock.client.WireMock.jsonResponse;
+import static com.github.tomakehurst.wiremock.client.WireMock.post;
+import static com.github.tomakehurst.wiremock.client.WireMock.stubFor;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
 @WireMockTest(httpPort = 8080)
-public class OpenBankingTest {
+class OpenBankingTest {
 
     private static String getResponse(String response) {
         return new Scanner(Objects.requireNonNull(

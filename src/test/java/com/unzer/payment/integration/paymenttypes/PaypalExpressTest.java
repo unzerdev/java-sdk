@@ -18,9 +18,9 @@ import java.util.Currency;
 import static com.unzer.payment.util.Types.unsafeUrl;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class PaypalExpressTest extends AbstractPaymentTest {
+class PaypalExpressTest extends AbstractPaymentTest {
     @Test
-    public void testAuthorize() {
+    void testAuthorize() {
         Unzer unzer = getUnzer();
 
         Paypal type = unzer.createPaymentType(new Paypal());
@@ -44,7 +44,7 @@ public class PaypalExpressTest extends AbstractPaymentTest {
 
 
     @Test
-    public void testCharge() {
+    void testCharge() {
         Unzer unzer = getUnzer();
 
         Paypal type = unzer.createPaymentType(new Paypal());

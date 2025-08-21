@@ -10,12 +10,16 @@ import com.unzer.payment.communication.json.ApiCharge;
 import com.unzer.payment.communication.json.JsonErrorObject;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
-public class JsonParserTest extends AbstractPaymentTest {
+class JsonParserTest extends AbstractPaymentTest {
 
     @Test
-    public void given_an_error_message_then_payment_exception_is_thrown() {
+    void given_an_error_message_then_payment_exception_is_thrown() {
         try {
             JsonParser parser = new JsonParser();
             parser.fromJson(TestData.errorJson(), ApiCharge.class);
@@ -28,41 +32,41 @@ public class JsonParserTest extends AbstractPaymentTest {
     }
 
     @Test
-    public void given_an_error_json_then_fromJson_returnes_jsonerrorobject() {
+    void given_an_error_json_then_fromJson_returnes_jsonerrorobject() {
         assertJsonError(new JsonParser().fromJson(TestData.errorJson(), JsonErrorObject.class));
     }
 
     @Test
-    public void testValidJson() {
+    void testValidJson() {
         assertTrue(new JsonParser().isJsonValid("{\"name\": \"value\"}"));
     }
 
     @Test
-    public void testInvalidJson() {
+    void testInvalidJson() {
         assertFalse(new JsonParser().isJsonValid("This is an error message!"));
     }
 
     @Test
-    public void testNullJson() {
+    void testNullJson() {
         assertThrows(IllegalArgumentException.class, () -> {
             new JsonParser().fromJson(null, Payment.class);
         });
     }
 
     @Test
-    public void testNullClass() {
+    void testNullClass() {
         assertThrows(IllegalArgumentException.class, () -> {
             new JsonParser().fromJson("{\"name\": \"value\"}", null);
         });
     }
 
     @Test
-    public void testNullValidJson() {
+    void testNullValidJson() {
         assertFalse(new JsonParser().isJsonValid(null));
     }
 
     @Test
-    public void testFromInvalidJson() {
+    void testFromInvalidJson() {
         assertThrows(IllegalArgumentException.class, () -> {
             new JsonParser().fromJson("This is an error message!", Payment.class);
         });

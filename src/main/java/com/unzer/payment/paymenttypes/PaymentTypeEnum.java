@@ -42,6 +42,7 @@ public enum PaymentTypeEnum {
     PAYLATER_DIRECT_DEBIT("pdd"),
     TWINT("twt"),
     OPEN_BANKING("obp"),
+    WERO("wro"),
     UNKNOWN("unknown");
 
     private final String shortName;

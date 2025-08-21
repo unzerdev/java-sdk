@@ -3,7 +3,11 @@ package com.unzer.payment.integration.paymenttypes;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.unzer.payment.*;
+import com.unzer.payment.Authorization;
+import com.unzer.payment.Cancel;
+import com.unzer.payment.Charge;
+import com.unzer.payment.PaymentException;
+import com.unzer.payment.Unzer;
 import com.unzer.payment.business.AbstractPaymentTest;
 import com.unzer.payment.paymenttypes.Applepay;
 import com.unzer.payment.paymenttypes.ApplepayHeader;
@@ -19,10 +23,10 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 
 @Disabled("refresh credentials")
-public class ApplepayTest extends AbstractPaymentTest {
+class ApplepayTest extends AbstractPaymentTest {
 
     @Test
-    public void testCreateApplePayTypeFromJson() throws JsonProcessingException {
+    void testCreateApplePayTypeFromJson() throws JsonProcessingException {
         ObjectMapper mapper = new ObjectMapper();
         String applePayData = "{\"version\":\"EC_v1\",\"data\":\"+GfdFIUZV57HNDYWpfFpGnXXXXT7F9ZVRkEwxrulUfLUzUlRpV2XnEpVe9Kf6CZMYCvCAh8vB26lB9oZU+IdppNK9iZXXXXUq0G2X+jPCRxsuNp+eVBCQCLD5YHLcc9xCi7K62Gn2NOX80Q/hXeMVNpgIBmE9f7SjX6r6Oq8mD6ak4sUABRsD3efbKr9/kdFI+n0679p3ca1deqN91r3+XeOPLeErtexoJfwFRpIo85f/FhaoX/MgIzGVQ5KI9+khiR/Bez7aT0yOjMdTIJangkjpSqB9aj5UDDVO3jDryR7+fvWs3+Y9hGG3HoAXqKl3NSZvrSn7fqqJJUpXuaOtyEi9GTvYAq/7cQ34K8XvitAMTcHB17z/vwOlaIO62m6JnigKT2hh5ngFSpqZ6XR2Xxj01EJnJDZiTtauoEPKo27e5kE1H9vaQycYaVyrYxbsecqRSAtWKtGNVdkw927io14LuVEXcoYOTOzieX769MKpsU7lOemqBO8B0eXSsChOC7s3jncwuSGI/k5FyNBrtZawnI1yy39zCF4JtmpqaYuEa43QgKH4pE=\",\"signature\":\"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\",\"header\":{\"ephemeralPublicKey\":\"MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEMtiXUxCDL9zrWc7+rscObEhZy/ED/LvrXmdL3zdQOT/Mk/vvb6OjhXYUfmPgF17zhTAaJrk8jrYDRqHuI/FYMA==\",\"publicKeyHash\":\"zqO5Y3ldWWm4NnIkfGCvJILw30rp3y46Jsf21gE8CNg=\",\"transactionId\":\"4bffc6XXXXf11d3f60fffXXX2f98cbea13b1de7d2efXXXX2fbbb98b18ca6ff20\"}}";
 
@@ -33,7 +37,7 @@ public class ApplepayTest extends AbstractPaymentTest {
     }
 
     @Test
-    public void testCreateApplepayType() {
+    void testCreateApplepayType() {
         Applepay applepay = getApplePay();
 
         Applepay response = getUnzer().createPaymentType(applepay);
@@ -46,7 +50,7 @@ public class ApplepayTest extends AbstractPaymentTest {
     }
 
     @Test
-    public void testCreateApplepayTypeAndFetch() {
+    void testCreateApplepayTypeAndFetch() {
         Applepay applepay = getApplePay();
 
         applepay = getUnzer().createPaymentType(applepay);
@@ -67,7 +71,7 @@ public class ApplepayTest extends AbstractPaymentTest {
     }
 
     @Test
-    public void testAuthorizeApplePayType() {
+    void testAuthorizeApplePayType() {
         Applepay applepay = getUnzer().createPaymentType(getApplePay());
         Authorization authorization = applepay.authorize(BigDecimal.ONE, Currency.getInstance("EUR"), unsafeUrl("https://www.meinShop.de"));
         assertNotNull(authorization);
@@ -76,7 +80,7 @@ public class ApplepayTest extends AbstractPaymentTest {
     }
 
     @Test
-    public void testAuthorizeApplePayTypeAndCancel() {
+    void testAuthorizeApplePayTypeAndCancel() {
         Applepay applepay = getUnzer().createPaymentType(getApplePay());
         Authorization authorization = applepay.authorize(BigDecimal.ONE, Currency.getInstance("EUR"), unsafeUrl("https://www.meinShop.de"));
         Cancel cancel = authorization.cancel();
@@ -87,7 +91,7 @@ public class ApplepayTest extends AbstractPaymentTest {
     }
 
     @Test
-    public void testAuthorizeApplePayTypeWithBigAmount() {
+    void testAuthorizeApplePayTypeWithBigAmount() {
         Applepay applepay = getUnzer().createPaymentType(getApplePay());
         Authorization authorization = applepay.authorize(BigDecimal.valueOf(10000L), Currency.getInstance("EUR"), unsafeUrl("https://www.meinShop.de"));
         assertNotNull(authorization);
@@ -96,7 +100,7 @@ public class ApplepayTest extends AbstractPaymentTest {
     }
 
     @Test
-    public void testAuthorizeApplePayTypeWithZeroAmount() {
+    void testAuthorizeApplePayTypeWithZeroAmount() {
         Applepay applepay = getUnzer().createPaymentType(getApplePay());
 
         try {
@@ -107,7 +111,7 @@ public class ApplepayTest extends AbstractPaymentTest {
     }
 
     @Test
-    public void testAuthorizeApplePayTypeId() {
+    void testAuthorizeApplePayTypeId() {
         Applepay applepay = getUnzer().createPaymentType(getApplePay());
         Authorization authorization = getUnzer().authorize(BigDecimal.ONE, Currency.getInstance("EUR"), applepay.getId(), unsafeUrl("https://www.meinShop.de"));
         assertNotNull(authorization);
@@ -116,7 +120,7 @@ public class ApplepayTest extends AbstractPaymentTest {
     }
 
     @Test
-    public void testAuthorizeApplePayTypeIdAndCancel() {
+    void testAuthorizeApplePayTypeIdAndCancel() {
         Applepay applepay = getUnzer().createPaymentType(getApplePay());
         Authorization authorization = getUnzer().authorize(BigDecimal.ONE, Currency.getInstance("EUR"), applepay.getId(), unsafeUrl("https://www.meinShop.de"));
         Cancel cancel = getUnzer().cancelAuthorization(authorization.getPaymentId());
@@ -127,7 +131,7 @@ public class ApplepayTest extends AbstractPaymentTest {
     }
 
     @Test
-    public void testAuthorizeApplePayTypeIdWithBigAmount() {
+    void testAuthorizeApplePayTypeIdWithBigAmount() {
         Applepay applepay = getUnzer().createPaymentType(getApplePay());
         Authorization authorization = getUnzer().authorize(BigDecimal.valueOf(10000L), Currency.getInstance("EUR"), applepay.getId(), unsafeUrl("https://www.meinShop.de"));
         assertNotNull(authorization);
@@ -136,7 +140,7 @@ public class ApplepayTest extends AbstractPaymentTest {
     }
 
     @Test
-    public void testAuthorizeApplePayTypeIdWithZeroAmount() {
+    void testAuthorizeApplePayTypeIdWithZeroAmount() {
         Applepay applepay = getUnzer().createPaymentType(getApplePay());
 
         try {
@@ -147,7 +151,7 @@ public class ApplepayTest extends AbstractPaymentTest {
     }
 
     @Test
-    public void testChargeApplePayType() {
+    void testChargeApplePayType() {
         Applepay applepay = getUnzer().createPaymentType(getApplePay());
         Charge charge = applepay.charge(BigDecimal.ONE, Currency.getInstance("EUR"), unsafeUrl("https://www.meinShop.de"));
         assertNotNull(charge);
@@ -156,7 +160,7 @@ public class ApplepayTest extends AbstractPaymentTest {
     }
 
     @Test
-    public void testChargeApplePayTypeAndFullCancel() {
+    void testChargeApplePayTypeAndFullCancel() {
         Applepay applepay = getUnzer().createPaymentType(getApplePay());
         Charge charge = applepay.charge(BigDecimal.ONE, Currency.getInstance("EUR"), unsafeUrl("https://www.meinShop.de"));
         Cancel cancel = getUnzer().cancelCharge(charge.getPaymentId(), charge.getId());
@@ -167,7 +171,7 @@ public class ApplepayTest extends AbstractPaymentTest {
     }
 
     @Test
-    public void testChargeApplePayTypeAndPartialCancel() {
+    void testChargeApplePayTypeAndPartialCancel() {
         Applepay applepay = getUnzer().createPaymentType(getApplePay());
         Charge charge = applepay.charge(BigDecimal.TEN, Currency.getInstance("EUR"), unsafeUrl("https://www.meinShop.de"));
         Cancel cancel = getUnzer().cancelCharge(charge.getPaymentId(), charge.getId(), BigDecimal.ONE);
@@ -178,7 +182,7 @@ public class ApplepayTest extends AbstractPaymentTest {
     }
 
     @Test
-    public void testChargeApplePayTypeAndPartialAndFullCancel() {
+    void testChargeApplePayTypeAndPartialAndFullCancel() {
         Applepay applepay = getUnzer().createPaymentType(getApplePay());
         Charge charge = applepay.charge(BigDecimal.TEN, Currency.getInstance("EUR"), unsafeUrl("https://www.meinShop.de"));
         Cancel partialCancel = getUnzer().cancelCharge(charge.getPaymentId(), charge.getId(), BigDecimal.ONE);
@@ -193,7 +197,7 @@ public class ApplepayTest extends AbstractPaymentTest {
     }
 
     @Test
-    public void testChargeApplePayTypeWithBigAmount() {
+    void testChargeApplePayTypeWithBigAmount() {
         Applepay applepay = getUnzer().createPaymentType(getApplePay());
         Charge charge = applepay.charge(BigDecimal.valueOf(10000L), Currency.getInstance("EUR"), unsafeUrl("https://www.meinShop.de"));
         assertNotNull(charge);
@@ -202,7 +206,7 @@ public class ApplepayTest extends AbstractPaymentTest {
     }
 
     @Test
-    public void testChargeApplePayTypeWithZeroAmount() {
+    void testChargeApplePayTypeWithZeroAmount() {
         Applepay applepay = getUnzer().createPaymentType(getApplePay());
         try {
             applepay.charge(BigDecimal.ZERO, Currency.getInstance("EUR"), unsafeUrl("https://www.meinShop.de"));
@@ -212,7 +216,7 @@ public class ApplepayTest extends AbstractPaymentTest {
     }
 
     @Test
-    public void testChargeApplePayTypeId() {
+    void testChargeApplePayTypeId() {
         Applepay applepay = getUnzer().createPaymentType(getApplePay());
         Charge charge = getUnzer().charge(BigDecimal.ONE, Currency.getInstance("EUR"), applepay.getId(), unsafeUrl("https://www.meinShop.de"));
         assertNotNull(charge);
@@ -221,7 +225,7 @@ public class ApplepayTest extends AbstractPaymentTest {
     }
 
     @Test
-    public void testChargeApplePayTypeIdAndFullCancel() {
+    void testChargeApplePayTypeIdAndFullCancel() {
         Applepay applepay = getUnzer().createPaymentType(getApplePay());
         Charge charge = getUnzer().charge(BigDecimal.ONE, Currency.getInstance("EUR"), applepay.getId(), unsafeUrl("https://www.meinShop.de"));
         Cancel cancel = getUnzer().cancelCharge(charge.getPaymentId(), charge.getId());
@@ -232,7 +236,7 @@ public class ApplepayTest extends AbstractPaymentTest {
     }
 
     @Test
-    public void testChargeApplePayTypeIdAndPartialCancel() {
+    void testChargeApplePayTypeIdAndPartialCancel() {
         Unzer unzer = getUnzer();
         Applepay applepay = unzer.createPaymentType(getApplePay());
         Charge charge = unzer.charge(BigDecimal.TEN, Currency.getInstance("EUR"), applepay.getId(), unsafeUrl("https://www.meinShop.de"));
@@ -244,7 +248,7 @@ public class ApplepayTest extends AbstractPaymentTest {
     }
 
     @Test
-    public void testChargeApplePayTypeIdAndPartialAndFullCancel() {
+    void testChargeApplePayTypeIdAndPartialAndFullCancel() {
         Applepay applepay = getUnzer().createPaymentType(getApplePay());
         Charge charge = getUnzer().charge(BigDecimal.TEN, Currency.getInstance("EUR"), applepay.getId(), unsafeUrl("https://www.meinShop.de"));
         Cancel partialCancel = getUnzer().cancelCharge(charge.getPaymentId(), charge.getId(), BigDecimal.ONE);
@@ -259,7 +263,7 @@ public class ApplepayTest extends AbstractPaymentTest {
     }
 
     @Test
-    public void testChargeApplePayTypeIdWithBigAmount() {
+    void testChargeApplePayTypeIdWithBigAmount() {
         Applepay applepay = getUnzer().createPaymentType(getApplePay());
         Charge charge = getUnzer().charge(BigDecimal.valueOf(10000L), Currency.getInstance("EUR"), applepay.getId(), unsafeUrl("https://www.meinShop.de"));
         assertNotNull(charge);
@@ -268,7 +272,7 @@ public class ApplepayTest extends AbstractPaymentTest {
     }
 
     @Test
-    public void testChargeApplePayTypeIdWithZeroAmount() {
+    void testChargeApplePayTypeIdWithZeroAmount() {
         Applepay applepay = getUnzer().createPaymentType(getApplePay());
         try {
             getUnzer().charge(BigDecimal.ZERO, Currency.getInstance("EUR"), applepay.getId(), unsafeUrl("https://www.meinShop.de"));

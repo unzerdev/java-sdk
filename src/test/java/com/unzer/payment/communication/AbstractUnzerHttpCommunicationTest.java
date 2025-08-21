@@ -14,13 +14,13 @@ import java.util.Map;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-public class AbstractUnzerHttpCommunicationTest {
+class AbstractUnzerHttpCommunicationTest {
 
 
     private final String privateKey = "samplekey";
 
     @Test
-    public void testApiErrorsAreTranslatedToPaymentException() {
+    void testApiErrorsAreTranslatedToPaymentException() {
 
         PaymentException exception = null;
         MockUnzerRestCommunication rest = setupRest(errorJson(), 409);
@@ -42,7 +42,7 @@ public class AbstractUnzerHttpCommunicationTest {
     }
 
     @Test
-    public void testhttpGet() throws PaymentException, HttpCommunicationException {
+    void testhttpGet() throws PaymentException, HttpCommunicationException {
 
         MockUnzerRestCommunication rest = setupRest(validJsonResponse(), 200);
 
@@ -52,7 +52,7 @@ public class AbstractUnzerHttpCommunicationTest {
     }
 
     @Test
-    public void testHttpPost() throws PaymentException, HttpCommunicationException {
+    void testHttpPost() throws PaymentException, HttpCommunicationException {
         MockUnzerRestCommunication rest = setupRest(validJsonResponse(), 201);
         String result = rest.httpPost("https://unzer.com", privateKey, sampleData());
         assertEquals(validJsonResponse(), result);
@@ -60,7 +60,7 @@ public class AbstractUnzerHttpCommunicationTest {
     }
 
     @Test
-    public void testhttpPut() throws PaymentException, HttpCommunicationException {
+    void testhttpPut() throws PaymentException, HttpCommunicationException {
         MockUnzerRestCommunication rest = setupRest(validJsonResponse(), 200);
         String result = rest.httpPut("https://unzer.com", privateKey, sampleData());
         assertEquals(validJsonResponse(), result);
@@ -69,7 +69,7 @@ public class AbstractUnzerHttpCommunicationTest {
     }
 
     @Test
-    public void testhttpDelete() throws PaymentException, HttpCommunicationException {
+    void testhttpDelete() throws PaymentException, HttpCommunicationException {
         MockUnzerRestCommunication rest = setupRest(validJsonResponse(), 200);
         String result = rest.httpDelete("https://unzer.com", privateKey);
         assertEquals(validJsonResponse(), result);
@@ -86,7 +86,7 @@ public class AbstractUnzerHttpCommunicationTest {
     }
 
     @Test
-    public void testAuthAndUserAgentHeaderAreSetOnGetRequest() throws PaymentException, HttpCommunicationException {
+    void testAuthAndUserAgentHeaderAreSetOnGetRequest() throws PaymentException, HttpCommunicationException {
 
         MockUnzerRestCommunication rest = setupRest(validJsonResponse(), 200);
 
@@ -97,7 +97,7 @@ public class AbstractUnzerHttpCommunicationTest {
     }
 
     @Test
-    public void testAuthContentTypeAndUserAgentHeaderAndBodiesContentEncodingAreSetOnPostRequest() throws PaymentException, HttpCommunicationException {
+    void testAuthContentTypeAndUserAgentHeaderAndBodiesContentEncodingAreSetOnPostRequest() throws PaymentException, HttpCommunicationException {
 
         MockUnzerRestCommunication rest = setupRest(validJsonResponse(), 200);
 
@@ -110,7 +110,7 @@ public class AbstractUnzerHttpCommunicationTest {
     }
 
     @Test
-    public void testAuthContentTypeAndUserAgentHeaderAndBodiesContentEncodingAreSetOnPutRequest() throws PaymentException, HttpCommunicationException {
+    void testAuthContentTypeAndUserAgentHeaderAndBodiesContentEncodingAreSetOnPutRequest() throws PaymentException, HttpCommunicationException {
 
         MockUnzerRestCommunication rest = setupRest(validJsonResponse(), 200);
 
@@ -123,7 +123,7 @@ public class AbstractUnzerHttpCommunicationTest {
     }
 
     @Test
-    public void testAuthAndUserAgentHeaderAreSetOnDeleteRequest() throws PaymentException, HttpCommunicationException {
+    void testAuthAndUserAgentHeaderAreSetOnDeleteRequest() throws PaymentException, HttpCommunicationException {
 
         MockUnzerRestCommunication rest = setupRest(validJsonResponse(), 200);
 
@@ -135,7 +135,7 @@ public class AbstractUnzerHttpCommunicationTest {
     }
 
     @Test
-    public void testClientIpHeader() {
+    void testClientIpHeader() {
         MockUnzerRestCommunication rest = new MockUnzerRestCommunication(Locale.ITALY, "192.168.1.1");
         rest.responseMockStatus = 200;
         rest.responseMockContent = validJsonResponse();

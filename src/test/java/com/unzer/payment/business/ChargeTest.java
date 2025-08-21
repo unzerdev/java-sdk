@@ -2,7 +2,12 @@ package com.unzer.payment.business;
 
 
 import com.google.gson.GsonBuilder;
-import com.unzer.payment.*;
+import com.unzer.payment.BaseTransaction;
+import com.unzer.payment.Basket;
+import com.unzer.payment.Charge;
+import com.unzer.payment.Customer;
+import com.unzer.payment.Payment;
+import com.unzer.payment.Unzer;
 import com.unzer.payment.communication.HttpCommunicationException;
 import com.unzer.payment.communication.JsonFieldIgnoreStragegy;
 import com.unzer.payment.marketplace.MarketplaceCharge;
@@ -25,12 +30,15 @@ import static com.unzer.payment.business.Keys.DEFAULT;
 import static com.unzer.payment.business.Keys.MARKETPLACE_KEY;
 import static com.unzer.payment.util.Types.unsafeUrl;
 import static com.unzer.payment.util.Uuid.generateUuid;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class ChargeTest extends AbstractPaymentTest {
+class ChargeTest extends AbstractPaymentTest {
 
     @Test
-    public void testChargeWithTypeId() throws MalformedURLException, HttpCommunicationException {
+    void testChargeWithTypeId() throws MalformedURLException, HttpCommunicationException {
         Charge charge = getUnzer().charge(BigDecimal.ONE, Currency.getInstance("EUR"), createPaymentTypeCard(getUnzer(), "4711100000000000").getId(), new URL("https://integration.splitit.com//gateways/Proxy/Execute?publicToken=9e517919-9e3d-4d5f-825e-99f7712eefd1"), false);
         assertNotNull(charge);
         assertNotNull(charge.getId());
@@ -39,7 +47,7 @@ public class ChargeTest extends AbstractPaymentTest {
     }
 
     @Test
-    public void testChargeIsSuccess() throws MalformedURLException, HttpCommunicationException {
+    void testChargeIsSuccess() throws MalformedURLException, HttpCommunicationException {
         Charge charge = getUnzer().charge(BigDecimal.ONE, Currency.getInstance("EUR"), createPaymentTypeCard(getUnzer(), "4711100000000000").getId(), new URL("https://www.unzer.com"), false);
         assertNotNull(charge);
         assertNotNull(charge.getId());
@@ -50,7 +58,7 @@ public class ChargeTest extends AbstractPaymentTest {
     }
 
     @Test
-    public void testChargeWIthInvoiceAndOrderIdIsSuccess() throws MalformedURLException, HttpCommunicationException {
+    void testChargeWIthInvoiceAndOrderIdIsSuccess() throws MalformedURLException, HttpCommunicationException {
         Charge requestCharge = getCharge("1234");
         requestCharge.setCard3ds(Boolean.FALSE);
         requestCharge.setInvoiceId("4567");
@@ -65,7 +73,7 @@ public class ChargeTest extends AbstractPaymentTest {
     }
 
     @Test
-    public void testChargeWithPaymentType() throws MalformedURLException, HttpCommunicationException {
+    void testChargeWithPaymentType() throws MalformedURLException, HttpCommunicationException {
         Unzer unzer = getUnzer(DEFAULT);
         LocalDate locaDateNow = LocalDate.now();
         Card card = new Card("4444333322221111", "12/" + (locaDateNow.getYear() + 1));
@@ -77,7 +85,7 @@ public class ChargeTest extends AbstractPaymentTest {
     }
 
     @Test
-    public void testChargeWithReturnUrl() throws MalformedURLException, HttpCommunicationException {
+    void testChargeWithReturnUrl() throws MalformedURLException, HttpCommunicationException {
         Charge charge = getUnzer().charge(BigDecimal.ONE, Currency.getInstance("EUR"), createPaymentTypeCard(getUnzer(), "4711100000000000").getId(), new URL("https://www.unzer.com"), false);
         assertNotNull(charge);
         assertEquals("COR.000.100.112", charge.getMessage().getCode());
@@ -86,7 +94,7 @@ public class ChargeTest extends AbstractPaymentTest {
     }
 
     @Test
-    public void testChargeWithCustomerTypeReturnUrl() throws MalformedURLException, HttpCommunicationException {
+    void testChargeWithCustomerTypeReturnUrl() throws MalformedURLException, HttpCommunicationException {
         Unzer unzer = getUnzer(DEFAULT);
         LocalDate locaDateNow = LocalDate.now();
         Card card = new Card("4444333322221111", "12/" + (locaDateNow.getYear() + 1));
@@ -99,7 +107,7 @@ public class ChargeTest extends AbstractPaymentTest {
     }
 
     @Test
-    public void testChargeWithCustomerIdReturnUrl() throws MalformedURLException, HttpCommunicationException, ParseException {
+    void testChargeWithCustomerIdReturnUrl() throws MalformedURLException, HttpCommunicationException, ParseException {
         Customer customer = getUnzer().createCustomer(getMaximumCustomer(generateUuid()));
         Charge charge = getUnzer().charge(BigDecimal.ONE, Currency.getInstance("EUR"), createPaymentTypeCard(getUnzer(), "4711100000000000").getId(), new URL("https://www.unzer.com"), customer.getId(), false);
         assertNotNull(charge);
@@ -108,7 +116,7 @@ public class ChargeTest extends AbstractPaymentTest {
     }
 
     @Test
-    public void testChargeReturnPayment() throws MalformedURLException, HttpCommunicationException {
+    void testChargeReturnPayment() throws MalformedURLException, HttpCommunicationException {
         Unzer unzer = getUnzer(DEFAULT);
         LocalDate locaDateNow = LocalDate.now();
         Card card = new Card("4444333322221111", "12/" + (locaDateNow.getYear() + 1));
@@ -123,7 +131,7 @@ public class ChargeTest extends AbstractPaymentTest {
 
     @Disabled("does not throw error")
     @Test
-    public void testChargeSofort() throws MalformedURLException, HttpCommunicationException {
+    void testChargeSofort() throws MalformedURLException, HttpCommunicationException {
         Charge charge = getUnzer().charge(BigDecimal.ONE, Currency.getInstance("EUR"), new Sofort(), new URL("https://www.unzer.com"));
         assertNotNull(charge.getRedirectUrl());
         assertNotNull(charge);
@@ -135,7 +143,7 @@ public class ChargeTest extends AbstractPaymentTest {
     }
 
     @Test
-    public void testChargeOrderId() throws MalformedURLException, HttpCommunicationException {
+    void testChargeOrderId() throws MalformedURLException, HttpCommunicationException {
         String orderId = generateUuid();
         Charge charge = getUnzer().charge(getCharge(orderId, false, null));
         assertNotNull(charge);
@@ -151,7 +159,7 @@ public class ChargeTest extends AbstractPaymentTest {
     }
 
     @Test
-    public void testChargeWith3dsFalse() throws MalformedURLException, HttpCommunicationException {
+    void testChargeWith3dsFalse() throws MalformedURLException, HttpCommunicationException {
         String orderId = generateUuid();
         Charge charge = getUnzer().charge(getCharge(orderId, false, null));
         assertNotNull(charge);
@@ -163,7 +171,7 @@ public class ChargeTest extends AbstractPaymentTest {
     }
 
     @Test
-    public void testChargeWith3dsTrue() throws MalformedURLException, HttpCommunicationException {
+    void testChargeWith3dsTrue() throws MalformedURLException, HttpCommunicationException {
         String orderId = generateUuid();
         Charge charge = getUnzer().charge(getCharge(orderId, true, null));
         assertNotNull(charge);
@@ -175,7 +183,7 @@ public class ChargeTest extends AbstractPaymentTest {
     }
 
     @Test
-    public void testChargeWithPaymentReference() throws MalformedURLException, HttpCommunicationException {
+    void testChargeWithPaymentReference() throws MalformedURLException, HttpCommunicationException {
         String orderId = generateUuid();
         Charge chargeObj = getCharge(orderId, true, null);
         chargeObj.setPaymentReference("pmt-ref");
@@ -186,7 +194,7 @@ public class ChargeTest extends AbstractPaymentTest {
     }
 
     @Test
-    public void testChargeWithChargeObject() throws MalformedURLException, HttpCommunicationException {
+    void testChargeWithChargeObject() throws MalformedURLException, HttpCommunicationException {
         String orderId = generateUuid();
         Charge chargeObj = getCharge(orderId, true, null);
         chargeObj.setPaymentReference("pmt-ref");
@@ -199,7 +207,7 @@ public class ChargeTest extends AbstractPaymentTest {
     }
 
     @Test
-    public void testChargeObjectIsParsableWithGson() {
+    void testChargeObjectIsParsableWithGson() {
         Charge charge = getUnzer().charge(BigDecimal.ONE, Currency.getInstance("EUR"), createPaymentTypeCard(getUnzer(), "4711100000000000").getId(), unsafeUrl("https://integration.splitit.com//gateways/Proxy/Execute?publicToken=9e517919-9e3d-4d5f-825e-99f7712eefd1"), false);
         assertEquals(String.class, new GsonBuilder()
                 .addSerializationExclusionStrategy(new JsonFieldIgnoreStragegy())
@@ -209,7 +217,7 @@ public class ChargeTest extends AbstractPaymentTest {
 
     @Disabled("Needs further configuration in Testdata")
     @Test
-    public void testMarketplaceChargeWithCard() throws MalformedURLException, HttpCommunicationException {
+    void testMarketplaceChargeWithCard() throws MalformedURLException, HttpCommunicationException {
         String participantId_1 = MARKETPLACE_PARTICIPANT_ID_1;
         String participantId_2 = MARKETPLACE_PARTICIPANT_ID_2;
 
@@ -252,7 +260,7 @@ public class ChargeTest extends AbstractPaymentTest {
 
     @Disabled("Needs further configuration in Testdata")
     @Test
-    public void testMarketplaceChargeWithSepaDirectDebit() throws MalformedURLException, HttpCommunicationException {
+    void testMarketplaceChargeWithSepaDirectDebit() throws MalformedURLException, HttpCommunicationException {
         String participantId_1 = MARKETPLACE_PARTICIPANT_ID_1;
         String participantId_2 = MARKETPLACE_PARTICIPANT_ID_2;
 
@@ -294,7 +302,7 @@ public class ChargeTest extends AbstractPaymentTest {
 
     @Disabled("Needs further configuration in Testdata")
     @Test
-    public void testMarketplaceChargeWithSofort() throws MalformedURLException, HttpCommunicationException {
+    void testMarketplaceChargeWithSofort() throws MalformedURLException, HttpCommunicationException {
         String participantId_1 = MARKETPLACE_PARTICIPANT_ID_1;
         String participantId_2 = MARKETPLACE_PARTICIPANT_ID_2;
 

@@ -9,9 +9,9 @@ import org.junit.jupiter.api.Test;
 import static com.unzer.payment.util.Uuid.generateUuid;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-public class ShipmentTest extends AbstractPaymentTest {
+class ShipmentTest extends AbstractPaymentTest {
     @Test
-    public void testAuthorizeWithShipmentNotSameAddressWithInvoiceSecured() {
+    void testAuthorizeWithShipmentNotSameAddressWithInvoiceSecured() {
         assertThrows(PaymentException.class, () -> {
                     Unzer unzer = getUnzer();
                     InvoiceSecured paymentTypeInvoiceSecured = unzer.createPaymentType(new InvoiceSecured());

@@ -1,6 +1,13 @@
 package com.unzer.payment.integration.paymenttypes;
 
-import com.unzer.payment.*;
+import com.unzer.payment.Authorization;
+import com.unzer.payment.BaseTransaction;
+import com.unzer.payment.Basket;
+import com.unzer.payment.BasketItem;
+import com.unzer.payment.Customer;
+import com.unzer.payment.PaymentError;
+import com.unzer.payment.PaymentException;
+import com.unzer.payment.Unzer;
 import com.unzer.payment.business.AbstractPaymentTest;
 import com.unzer.payment.models.AdditionalTransactionData;
 import com.unzer.payment.paymenttypes.Klarna;
@@ -10,26 +17,34 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestFactory;
 
 import java.math.BigDecimal;
-import java.util.*;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Currency;
+import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static com.unzer.payment.util.Types.unsafeUrl;
 import static com.unzer.payment.util.Uuid.generateUuid;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.DynamicTest.dynamicTest;
 
 
-public class KlarnaTest extends AbstractPaymentTest {
+class KlarnaTest extends AbstractPaymentTest {
     @Test
-    public void testCreatePaymentType() {
+    void testCreatePaymentType() {
         Klarna klarna = getUnzer().createPaymentType(new Klarna());
         assertNotNull(klarna);
         assertNotNull(klarna.getId());
     }
 
     @Test
-    public void testFetchPaymentType() {
+    void testFetchPaymentType() {
         Klarna paymentType = getUnzer().createPaymentType(new Klarna());
         assertNotNull(paymentType.getId());
 
@@ -154,6 +169,7 @@ public class KlarnaTest extends AbstractPaymentTest {
 
             Klarna type = unzer.createPaymentType(new Klarna());
             tc.authorization.setTypeId(type.getId());
+            tc.authorization.setOrderId(tc.basket.getOrderId());
 
             Customer customer = unzer.createCustomer(tc.customer);
             tc.authorization.setCustomerId(customer.getId());

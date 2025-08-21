@@ -13,10 +13,10 @@ import java.util.Currency;
 import static com.unzer.payment.util.Types.unsafeUrl;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-public class SofortTest extends AbstractPaymentTest {
+class SofortTest extends AbstractPaymentTest {
 
     @Test
-    public void testCreateSofortManatoryType() {
+    void testCreateSofortManatoryType() {
         Sofort sofort = new Sofort();
         sofort = getUnzer().createPaymentType(sofort);
         assertNotNull(sofort.getId());
@@ -33,7 +33,7 @@ public class SofortTest extends AbstractPaymentTest {
     }
 
     @Test
-    public void testFetchSofortType() {
+    void testFetchSofortType() {
         Sofort sofort = getUnzer().createPaymentType(new Sofort());
         assertNotNull(sofort.getId());
         Sofort fetchedSofort = (Sofort) getUnzer().fetchPaymentType(sofort.getId());

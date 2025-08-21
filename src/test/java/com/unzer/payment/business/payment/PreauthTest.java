@@ -11,11 +11,16 @@ import org.junit.jupiter.api.Test;
 import java.util.Objects;
 import java.util.Scanner;
 
-import static com.github.tomakehurst.wiremock.client.WireMock.*;
-import static org.junit.jupiter.api.Assertions.*;
+import static com.github.tomakehurst.wiremock.client.WireMock.get;
+import static com.github.tomakehurst.wiremock.client.WireMock.jsonResponse;
+import static com.github.tomakehurst.wiremock.client.WireMock.post;
+import static com.github.tomakehurst.wiremock.client.WireMock.stubFor;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertInstanceOf;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @WireMockTest(httpPort = 8080)
-public class PreauthTest {
+class PreauthTest {
     private static String getResponse(String response) {
         return new Scanner(
                 Objects.requireNonNull(
@@ -26,7 +31,7 @@ public class PreauthTest {
     }
 
     @Test
-    public void preauthorize_fetched_successfully() {
+    void preauthorize_fetched_successfully() {
         stubFor(
                 post("/v1/payments/preauthorize/").willReturn(
                         jsonResponse(getResponse("fetch-preauthorize.json"), 200))
@@ -60,7 +65,7 @@ public class PreauthTest {
     }
 
     @Test
-    public void cancel_preauth_transaction() {
+    void cancel_preauth_transaction() {
         stubFor(
                 post("/v1/payments/s-pay-123/preauthorize/cancels").willReturn(
                         jsonResponse(getResponse("cancel-preauthorize.json"), 200))

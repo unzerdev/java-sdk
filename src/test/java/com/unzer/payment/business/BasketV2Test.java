@@ -1,7 +1,12 @@
 package com.unzer.payment.business;
 
 
-import com.unzer.payment.*;
+import com.unzer.payment.Authorization;
+import com.unzer.payment.Basket;
+import com.unzer.payment.BasketItem;
+import com.unzer.payment.Charge;
+import com.unzer.payment.Payment;
+import com.unzer.payment.Unzer;
 import com.unzer.payment.communication.JsonParser;
 import org.assertj.core.data.MapEntry;
 import org.junit.jupiter.api.Test;
@@ -13,11 +18,13 @@ import java.util.List;
 import static com.unzer.payment.business.BasketV2TestData.getMaxTestBasketV2;
 import static com.unzer.payment.business.BasketV2TestData.getMinTestBasketV2;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
-public class BasketV2Test extends AbstractPaymentTest {
+class BasketV2Test extends AbstractPaymentTest {
     @Test
-    public void testCreateFetchBasket() {
+    void testCreateFetchBasket() {
         Basket maxBasket = getMaxTestBasketV2();
         Basket basket = getUnzer().createBasket(maxBasket);
         Basket basketFetched = getUnzer().fetchBasket(basket.getId());
@@ -34,7 +41,7 @@ public class BasketV2Test extends AbstractPaymentTest {
     }
 
     @Test
-    public void testCreateFetchMinBasket() {
+    void testCreateFetchMinBasket() {
         Basket minBasket = getMinTestBasketV2();
         Basket basket = getUnzer().createBasket(minBasket);
         Basket basketFetched = getUnzer().fetchBasket(basket.getId());
@@ -44,7 +51,7 @@ public class BasketV2Test extends AbstractPaymentTest {
     }
 
     @Test
-    public void testUpdateBasket() {
+    void testUpdateBasket() {
         Basket minBasket = getMinTestBasketV2();
         Basket basket = getUnzer().createBasket(minBasket);
         Basket basketFetched = getUnzer().fetchBasket(basket.getId());
@@ -59,7 +66,7 @@ public class BasketV2Test extends AbstractPaymentTest {
     }
 
     @Test
-    public void testUpdateBasketWithFetched() {
+    void testUpdateBasketWithFetched() {
         Basket minBasket = getMinTestBasketV2();
         Basket basket = getUnzer().createBasket(minBasket);
         Basket basketFetched = getUnzer().fetchBasket(basket.getId());
@@ -70,7 +77,7 @@ public class BasketV2Test extends AbstractPaymentTest {
     }
 
     @Test
-    public void testAuthorizationWithBasket() {
+    void testAuthorizationWithBasket() {
         Unzer unzer = getUnzer();
         Basket basket = unzer.createBasket(getMaxTestBasketV2());
         Authorization authorization = getAuthorization(
@@ -92,7 +99,7 @@ public class BasketV2Test extends AbstractPaymentTest {
     }
 
     @Test
-    public void testChargeWithBasket() {
+    void testChargeWithBasket() {
         Basket basket = getUnzer().createBasket(getMaxTestBasketV2());
         Charge chargeReq =
                 getCharge(createPaymentTypeCard(getUnzer(), "4711100000000000").getId(), null, null, null,
@@ -109,7 +116,7 @@ public class BasketV2Test extends AbstractPaymentTest {
     }
 
     @Test
-    public void testTypeEnumUnmarshalling() {
+    void testTypeEnumUnmarshalling() {
         List<MapEntry<String, BasketItem>> validTypeValues = Arrays.asList(
                 MapEntry.entry(null, new BasketItem()),
                 MapEntry.entry("goods", new BasketItem().setType(BasketItem.Type.GOODS)),
@@ -133,7 +140,7 @@ public class BasketV2Test extends AbstractPaymentTest {
     }
 
     @Test
-    public void testInvalidTypeSkipped() {
+    void testInvalidTypeSkipped() {
         String basketItemJson = "{ \"type\": \"invalid-type\" }";
 
         JsonParser jsonParser = new JsonParser();

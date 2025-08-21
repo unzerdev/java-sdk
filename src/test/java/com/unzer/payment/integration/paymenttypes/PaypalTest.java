@@ -14,17 +14,17 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 
-public class PaypalTest extends AbstractPaymentTest {
+class PaypalTest extends AbstractPaymentTest {
 
     @Test
-    public void testCreatePaypalMandatoryType() {
+    void testCreatePaypalMandatoryType() {
         Paypal paypal = new Paypal();
         paypal = getUnzer().createPaymentType(paypal);
         assertNotNull(paypal.getId());
     }
 
     @Test
-    public void testCreatePaypalWithEmail() {
+    void testCreatePaypalWithEmail() {
         Paypal paypal = new Paypal();
         paypal.setEmail("test.user@email.com");
         paypal = getUnzer().createPaymentType(paypal);
@@ -33,7 +33,7 @@ public class PaypalTest extends AbstractPaymentTest {
     }
 
     @Test
-    public void testAuthorizeType() {
+    void testAuthorizeType() {
         Paypal paypal = getUnzer().createPaymentType(new Paypal());
         Authorization authorization = paypal.authorize(BigDecimal.ONE, Currency.getInstance("EUR"),
                 unsafeUrl("https://www.meinShop.de"));
@@ -41,7 +41,7 @@ public class PaypalTest extends AbstractPaymentTest {
     }
 
     @Test
-    public void testChargePaypalType() {
+    void testChargePaypalType() {
         Paypal paypal = getUnzer().createPaymentType(new Paypal());
         Charge charge = paypal.charge(BigDecimal.ONE, Currency.getInstance("EUR"),
                 unsafeUrl("https://www.unzer.com"));
@@ -51,7 +51,7 @@ public class PaypalTest extends AbstractPaymentTest {
     }
 
     @Test
-    public void testFetchPaypalType() {
+    void testFetchPaypalType() {
         Paypal paypal = getUnzer().createPaymentType(new Paypal());
         assertNotNull(paypal.getId());
         Paypal fetchedPaypal = (Paypal) getUnzer().fetchPaymentType(paypal.getId());

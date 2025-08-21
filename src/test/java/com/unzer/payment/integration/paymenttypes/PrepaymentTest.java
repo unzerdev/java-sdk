@@ -12,17 +12,17 @@ import java.util.Currency;
 import static com.unzer.payment.util.Types.unsafeUrl;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-public class PrepaymentTest extends AbstractPaymentTest {
+class PrepaymentTest extends AbstractPaymentTest {
 
     @Test
-    public void testCreatePrepaymentManatoryType() {
+    void testCreatePrepaymentManatoryType() {
         Prepayment prepayment = new Prepayment();
         prepayment = getUnzer().createPaymentType(prepayment);
         assertNotNull(prepayment.getId());
     }
 
     @Test
-    public void testChargePrepaymentType() {
+    void testChargePrepaymentType() {
         Prepayment prepayment = getUnzer().createPaymentType(getPrepayment());
         Charge charge = prepayment.charge(BigDecimal.ONE, Currency.getInstance("EUR"), unsafeUrl("https://www.meinShop.de"));
         assertNotNull(charge);
@@ -35,7 +35,7 @@ public class PrepaymentTest extends AbstractPaymentTest {
     }
 
     @Test
-    public void testFetchPrepaymentType() {
+    void testFetchPrepaymentType() {
         Prepayment prepayment = getUnzer().createPaymentType(getPrepayment());
         assertNotNull(prepayment.getId());
         Prepayment fetchedPrepayment = (Prepayment) getUnzer().fetchPaymentType(prepayment.getId());

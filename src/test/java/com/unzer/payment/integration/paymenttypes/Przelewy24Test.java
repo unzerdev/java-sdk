@@ -13,17 +13,17 @@ import java.util.Currency;
 import static com.unzer.payment.util.Types.unsafeUrl;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-public class Przelewy24Test extends AbstractPaymentTest {
+class Przelewy24Test extends AbstractPaymentTest {
 
     @Test
-    public void testCreatePrzelewy24ManatoryType() {
+    void testCreatePrzelewy24ManatoryType() {
         Przelewy24 p24 = new Przelewy24();
         p24 = getUnzer().createPaymentType(p24);
         assertNotNull(p24.getId());
     }
 
     @Test
-    public void testChargePrzelewy24Type() {
+    void testChargePrzelewy24Type() {
         Przelewy24 p24 = getUnzer(Keys.LEGACY_PRIVATE_KEY).createPaymentType(getPrzelewy24());
         Charge charge = p24.charge(BigDecimal.ONE, Currency.getInstance("PLN"), unsafeUrl("https://www.unzer.com"));
         assertNotNull(charge);
@@ -32,7 +32,7 @@ public class Przelewy24Test extends AbstractPaymentTest {
     }
 
     @Test
-    public void testFetchPrzelewy24Type() {
+    void testFetchPrzelewy24Type() {
         Przelewy24 p24 = getUnzer().createPaymentType(getPrzelewy24());
         assertNotNull(p24.getId());
         Przelewy24 fetchedPrzelewy24 = (Przelewy24) getUnzer().fetchPaymentType(p24.getId());
