@@ -12,5 +12,5 @@ import lombok.Data;
 @JsonTypeName("wero")
 @JsonTypeInfo(include = JsonTypeInfo.As.WRAPPER_OBJECT, use = JsonTypeInfo.Id.NAME)
 public class WeroTransactionData {
-    private EventDependentPayment eventDependentPayment;
+    private WeroEventDependentPayment eventDependentPayment;
 }

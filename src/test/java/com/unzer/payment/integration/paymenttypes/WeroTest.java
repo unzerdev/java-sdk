@@ -4,7 +4,7 @@ import com.unzer.payment.Authorization;
 import com.unzer.payment.Charge;
 import com.unzer.payment.business.AbstractPaymentTest;
 import com.unzer.payment.models.AdditionalTransactionData;
-import com.unzer.payment.models.EventDependentPayment;
+import com.unzer.payment.models.WeroEventDependentPayment;
 import com.unzer.payment.models.WeroTransactionData;
 import com.unzer.payment.paymenttypes.Wero;
 import org.junit.jupiter.api.Disabled;
@@ -63,9 +63,9 @@ class WeroTest extends AbstractPaymentTest {
         URL returnUrl = unsafeUrl("https://www.unzer.com");
 
         // Build Wero additional transaction data
-        EventDependentPayment edp = new EventDependentPayment()
-                .setCaptureTrigger(EventDependentPayment.CaptureTrigger.SERVICEFULFILMENT)
-                .setAmountPaymentType(EventDependentPayment.AmountPaymentType.PAY)
+        WeroEventDependentPayment edp = new WeroEventDependentPayment()
+                .setCaptureTrigger(WeroEventDependentPayment.CaptureTrigger.SERVICEFULFILMENT)
+                .setAmountPaymentType(WeroEventDependentPayment.AmountPaymentType.PAY)
                 .setMaxAuthToCaptureTime(600)
                 .setMultiCapturesAllowed(true);
         AdditionalTransactionData atd = new AdditionalTransactionData()
@@ -92,9 +92,9 @@ class WeroTest extends AbstractPaymentTest {
         URL returnUrl = unsafeUrl("https://www.unzer.com");
 
         // Build Wero additional transaction data
-        EventDependentPayment edp = new EventDependentPayment()
-                .setCaptureTrigger(EventDependentPayment.CaptureTrigger.SERVICEFULFILMENT)
-                .setAmountPaymentType(EventDependentPayment.AmountPaymentType.PAYUPTO)
+        WeroEventDependentPayment edp = new WeroEventDependentPayment()
+                .setCaptureTrigger(WeroEventDependentPayment.CaptureTrigger.SERVICEFULFILMENT)
+                .setAmountPaymentType(WeroEventDependentPayment.AmountPaymentType.PAYUPTO)
                 .setMaxAuthToCaptureTime(300)
                 .setMultiCapturesAllowed(false);
         AdditionalTransactionData atd = new AdditionalTransactionData()

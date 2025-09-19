@@ -1,6 +1,6 @@
 package com.unzer.payment.models.paypage;
 
-import com.unzer.payment.models.EventDependentPayment;
+import com.unzer.payment.models.WeroEventDependentPayment;
 import lombok.Data;
 
 @Data
@@ -14,7 +14,7 @@ public class PaymentMethodConfig {
     private Boolean credentialOnFile = null; // card only.
     private String exemption; // card only.
 
-    private EventDependentPayment eventDependentPayment; // wero only
+    private WeroEventDependentPayment eventDependentPayment; // wero only
 
     public PaymentMethodConfig(boolean enabled, Integer order) {
         this.enabled = enabled;

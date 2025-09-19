@@ -7,7 +7,7 @@ import lombok.Data;
  * Event dependent payment configuration for Wero payments.
  */
 @Data
-public class EventDependentPayment {
+public class WeroEventDependentPayment {
     private CaptureTrigger captureTrigger;
     private AmountPaymentType amountPaymentType;
     /**
