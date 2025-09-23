@@ -21,14 +21,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 class WeroTest extends AbstractPaymentTest {
 
     @Test
-    void testCreateWeroType() {
-        Wero wero = new Wero();
-        wero = getUnzer().createPaymentType(wero);
-        assertNotNull(wero.getId());
-    }
-
-    @Test
-    void testFetchWeroType() {
+    void testCreateAndFetchWeroType() {
         Wero wero = getUnzer().createPaymentType(new Wero());
         assertNotNull(wero.getId());
         Wero fetched = (Wero) getUnzer().fetchPaymentType(wero.getId());
