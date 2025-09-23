@@ -34,10 +34,10 @@ class BasketV2Test extends AbstractPaymentTest {
     }
 
     private void assertBasketEquals(Basket expected, Basket actual) {
-        assertThat(expected)
+        assertThat(actual)
                 .usingComparatorForType(BigDecimal::compareTo, BigDecimal.class)
                 .usingRecursiveComparison()
-                .isEqualTo(actual);
+                .isEqualTo(expected);
     }
 
     @Test
