@@ -16,24 +16,24 @@ import static com.unzer.payment.util.Types.unsafeUrl;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-public class SepaDirectDebitTest extends AbstractPaymentTest {
+class SepaDirectDebitTest extends AbstractPaymentTest {
 
     @Test
-    public void testCreateSepaDirectDebitManatoryType() {
+    void testCreateSepaDirectDebitManatoryType() {
         SepaDirectDebit sdd = new SepaDirectDebit("DE89370400440532013000");
         sdd = getUnzer(Keys.LEGACY_PRIVATE_KEY).createPaymentType(sdd);
         assertNotNull(sdd.getId());
     }
 
     @Test
-    public void testCreateSepaDirectDebitFullType() {
+    void testCreateSepaDirectDebitFullType() {
         SepaDirectDebit sddOriginal = getSepaDirectDebit();
         SepaDirectDebit sddCreated = getUnzer(Keys.LEGACY_PRIVATE_KEY).createPaymentType(sddOriginal);
         assertSddEquals(sddOriginal, sddCreated);
     }
 
     @Test
-    public void testChargeSepaDirectDebitType() {
+    void testChargeSepaDirectDebitType() {
         Unzer unzer = getUnzer(Keys.LEGACY_PRIVATE_KEY);
         SepaDirectDebit sdd = unzer.createPaymentType(getSepaDirectDebit());
         Charge charge = sdd.charge(BigDecimal.ONE, Currency.getInstance("EUR"), unsafeUrl("https://www.unzer.com"));
@@ -46,7 +46,7 @@ public class SepaDirectDebitTest extends AbstractPaymentTest {
     }
 
     @Test
-    public void testFetchSepaDirectDebitType() {
+    void testFetchSepaDirectDebitType() {
         Unzer unzer = getUnzer(Keys.LEGACY_PRIVATE_KEY);
         SepaDirectDebit sdd = unzer.createPaymentType(getSepaDirectDebit());
         assertNotNull(sdd.getId());
@@ -56,7 +56,7 @@ public class SepaDirectDebitTest extends AbstractPaymentTest {
     }
 
     @Test
-    public void testCancelSepaDirectDebitType() {
+    void testCancelSepaDirectDebitType() {
         Unzer unzer = getUnzer(Keys.LEGACY_PRIVATE_KEY);
         SepaDirectDebit sdd = unzer.createPaymentType(getSepaDirectDebit());
         Charge charge = sdd.charge(BigDecimal.ONE, Currency.getInstance("EUR"), unsafeUrl("https://www.unzer.com"));

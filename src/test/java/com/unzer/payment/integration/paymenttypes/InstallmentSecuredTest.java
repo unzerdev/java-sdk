@@ -1,6 +1,12 @@
 package com.unzer.payment.integration.paymenttypes;
 
-import com.unzer.payment.*;
+import com.unzer.payment.Authorization;
+import com.unzer.payment.Basket;
+import com.unzer.payment.Cancel;
+import com.unzer.payment.Charge;
+import com.unzer.payment.Customer;
+import com.unzer.payment.Shipment;
+import com.unzer.payment.Unzer;
 import com.unzer.payment.business.AbstractPaymentTest;
 import com.unzer.payment.business.Keys;
 import com.unzer.payment.business.paymenttypes.InstallmentSecuredRatePlan;
@@ -26,13 +32,15 @@ import static com.unzer.payment.business.BasketV1TestData.getMaxTestBasketV1;
 import static com.unzer.payment.business.BasketV2TestData.getMaxTestBasketV2;
 import static com.unzer.payment.util.Types.unsafeUrl;
 import static com.unzer.payment.util.Uuid.generateUuid;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 
-public class InstallmentSecuredTest extends AbstractPaymentTest {
+class InstallmentSecuredTest extends AbstractPaymentTest {
 
     @Test
-    public void testRateRetrieval() {
+    void testRateRetrieval() {
         BigDecimal effectiveInterestRate = new BigDecimal("5.5").setScale(4, RoundingMode.HALF_UP);
         Date orderDate = getDate("21.06.2019");
         Unzer unzer = getUnzer(Keys.LEGACY_PRIVATE_KEY);
@@ -208,7 +216,7 @@ public class InstallmentSecuredTest extends AbstractPaymentTest {
 
     @Disabled("https://unz.atlassian.net/browse/AHC-5292")
     @Test
-    public void testAuthorizeViaTypeWithIbanBasketV2()
+    void testAuthorizeViaTypeWithIbanBasketV2()
             throws HttpCommunicationException, ParseException {
         InstallmentSecuredRatePlan ratePlan = getInstallmentSecuredRatePlan();
         addIbanInvoiceParameter(ratePlan);
@@ -270,7 +278,7 @@ public class InstallmentSecuredTest extends AbstractPaymentTest {
 
     @Disabled("https://unz.atlassian.net/browse/AHC-5292")
     @Test
-    public void testAuthorizeViaUnzerTypeIdWithIbanBasketV2()
+    void testAuthorizeViaUnzerTypeIdWithIbanBasketV2()
             throws HttpCommunicationException, ParseException, MalformedURLException {
         InstallmentSecuredRatePlan ratePlan = getInstallmentSecuredRatePlan();
         addIbanInvoiceParameter(ratePlan);
@@ -326,7 +334,7 @@ public class InstallmentSecuredTest extends AbstractPaymentTest {
 
     @Disabled("https://unz.atlassian.net/browse/AHC-5292")
     @Test
-    public void testChargeViaAuthorizeBasketV2() throws HttpCommunicationException, ParseException {
+    void testChargeViaAuthorizeBasketV2() throws HttpCommunicationException, ParseException {
         Unzer unzer = getUnzer(Keys.LEGACY_PRIVATE_KEY);
         InstallmentSecuredRatePlan ratePlan =
                 unzer.createPaymentType(getInstallmentSecuredRatePlan());
@@ -386,7 +394,7 @@ public class InstallmentSecuredTest extends AbstractPaymentTest {
 
     @Disabled("https://unz.atlassian.net/browse/AHC-5292")
     @Test
-    public void testFullCancellationBeforeShipmentBasketV2()
+    void testFullCancellationBeforeShipmentBasketV2()
             throws HttpCommunicationException, ParseException {
         Unzer unzer = getUnzer(Keys.LEGACY_PRIVATE_KEY);
         InstallmentSecuredRatePlan ratePlan =
@@ -447,7 +455,7 @@ public class InstallmentSecuredTest extends AbstractPaymentTest {
 
     @Disabled("https://unz.atlassian.net/browse/AHC-5292")
     @Test
-    public void testPartialCancellationBeforeShipmentBasketV2()
+    void testPartialCancellationBeforeShipmentBasketV2()
             throws HttpCommunicationException, ParseException {
         Unzer unzer = getUnzer(Keys.LEGACY_PRIVATE_KEY);
         InstallmentSecuredRatePlan ratePlan =
@@ -510,7 +518,7 @@ public class InstallmentSecuredTest extends AbstractPaymentTest {
 
     @Disabled("https://unz.atlassian.net/browse/AHC-5292")
     @Test
-    public void testShipmentBasketV2() throws HttpCommunicationException, ParseException {
+    void testShipmentBasketV2() throws HttpCommunicationException, ParseException {
         InstallmentSecuredRatePlan ratePlan = getInstallmentSecuredRatePlan();
         addIbanInvoiceParameter(ratePlan);
         Unzer unzer = getUnzer(Keys.LEGACY_PRIVATE_KEY);
@@ -568,7 +576,7 @@ public class InstallmentSecuredTest extends AbstractPaymentTest {
 
     @Disabled("Until https://unz.atlassian.net/browse/AHC-5292 is resolved")
     @Test
-    public void testFullCancelAfterShipmentBasketV2()
+    void testFullCancelAfterShipmentBasketV2()
             throws HttpCommunicationException, ParseException {
         InstallmentSecuredRatePlan ratePlan = getInstallmentSecuredRatePlan();
         addIbanInvoiceParameter(ratePlan);
@@ -646,7 +654,7 @@ public class InstallmentSecuredTest extends AbstractPaymentTest {
 
     @Disabled("https://unz.atlassian.net/browse/AHC-5292")
     @Test
-    public void testAuthorizeHirePurchaseDirectDebitBasketV2()
+    void testAuthorizeHirePurchaseDirectDebitBasketV2()
             throws HttpCommunicationException, ParseException {
         Unzer unzer = getUnzer(Keys.LEGACY_PRIVATE_KEY);
         HttpClientBasedRestCommunication restCommunication = new HttpClientBasedRestCommunication();

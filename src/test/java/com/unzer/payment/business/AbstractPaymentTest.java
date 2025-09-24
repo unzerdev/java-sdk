@@ -1,7 +1,17 @@
 package com.unzer.payment.business;
 
-import com.unzer.payment.*;
+import com.unzer.payment.Address;
+import com.unzer.payment.Authorization;
+import com.unzer.payment.BasketItem;
+import com.unzer.payment.Cancel;
+import com.unzer.payment.Charge;
+import com.unzer.payment.CompanyInfo;
+import com.unzer.payment.Customer;
 import com.unzer.payment.Customer.Salutation;
+import com.unzer.payment.Metadata;
+import com.unzer.payment.Processing;
+import com.unzer.payment.ShippingAddress;
+import com.unzer.payment.Unzer;
 import com.unzer.payment.communication.impl.HttpClientBasedRestCommunication;
 import com.unzer.payment.marketplace.MarketplaceAuthorization;
 import com.unzer.payment.marketplace.MarketplaceCancelBasket;
@@ -27,7 +37,13 @@ import java.text.ParseException;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Currency;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
 
 import static com.unzer.payment.util.Types.unsafeUrl;
 import static com.unzer.payment.util.Uuid.generateUuid;
@@ -236,7 +252,7 @@ public abstract class AbstractPaymentTest {
         customer
                 .setCustomerId(customerId)
                 .setSalutation(Salutation.MR)
-                .setEmail("support@unzer.com")
+                .setEmail("accept@unzer.com")
                 .setMobile("+4315136633669")
                 .setPhone("+4962216471100")
                 .setBirthDate(getDate("03.10.1974"))
@@ -244,8 +260,8 @@ public abstract class AbstractPaymentTest {
                 .setLanguage(Locale.GERMAN)
                 .setShippingAddress(
                         ShippingAddress.of(
-                                getAddress("Mustermann", "Vangerowstraße 18", "Heidelberg", "BW", "69115", "DE"),
-                                ShippingAddress.Type.DIFFERENT_ADDRESS
+                                getAddress(),
+                                ShippingAddress.Type.EQUALS_BILLING
                         )
                 );
         return customer;
@@ -346,7 +362,7 @@ public abstract class AbstractPaymentTest {
     }
 
     protected Address getAddress() {
-        return getAddress("Peter Universum", "Hugo-Junkers-Str. 6", "Frankfurt am Main", "DE-BO", "60386", "DE");
+        return getAddress("Max Mustermann", "Hugo-Junkers-Str. 6", "Frankfurt am Main", "DE-BO", "60386", "DE");
     }
 
     protected Address getAddress(String name, String street, String city, String state, String zip, String country) {

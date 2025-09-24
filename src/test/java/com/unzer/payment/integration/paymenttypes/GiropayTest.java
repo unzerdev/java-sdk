@@ -12,17 +12,17 @@ import java.util.Currency;
 import static com.unzer.payment.util.Types.unsafeUrl;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-public class GiropayTest extends AbstractPaymentTest {
+class GiropayTest extends AbstractPaymentTest {
 
     @Test
-    public void testCreateGiropayManatoryType() {
+    void testCreateGiropayManatoryType() {
         Giropay giropay = new Giropay();
         giropay = getUnzer().createPaymentType(giropay);
         assertNotNull(giropay.getId());
     }
 
     @Test
-    public void testChargeGiropayType() {
+    void testChargeGiropayType() {
         Giropay giropay = getUnzer().createPaymentType(getGiropay());
         Charge charge = giropay.charge(BigDecimal.ONE, Currency.getInstance("EUR"), unsafeUrl("https://www.unzer.com"));
         assertNotNull(charge);
@@ -31,7 +31,7 @@ public class GiropayTest extends AbstractPaymentTest {
     }
 
     @Test
-    public void testFetchGiropayType() {
+    void testFetchGiropayType() {
         Giropay giropay = getUnzer().createPaymentType(getGiropay());
         assertNotNull(giropay.getId());
         Giropay fetchedGiropay = (Giropay) getUnzer().fetchPaymentType(giropay.getId());

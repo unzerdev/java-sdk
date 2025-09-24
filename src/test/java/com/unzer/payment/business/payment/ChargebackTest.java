@@ -1,7 +1,11 @@
 package com.unzer.payment.business.payment;
 
 import com.github.tomakehurst.wiremock.junit5.WireMockTest;
-import com.unzer.payment.*;
+import com.unzer.payment.BaseTransaction;
+import com.unzer.payment.Chargeback;
+import com.unzer.payment.Payment;
+import com.unzer.payment.Processing;
+import com.unzer.payment.Unzer;
 import com.unzer.payment.communication.HttpClientMock;
 import com.unzer.payment.communication.json.JsonMessage;
 import com.unzer.payment.enums.RecurrenceType;
@@ -12,15 +16,23 @@ import org.junit.jupiter.api.Test;
 import java.math.BigDecimal;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Currency;
+import java.util.List;
+import java.util.Locale;
+import java.util.Objects;
+import java.util.Scanner;
 
-import static com.github.tomakehurst.wiremock.client.WireMock.*;
+import static com.github.tomakehurst.wiremock.client.WireMock.get;
+import static com.github.tomakehurst.wiremock.client.WireMock.jsonResponse;
+import static com.github.tomakehurst.wiremock.client.WireMock.stubFor;
 import static com.unzer.payment.util.Types.unsafeUrl;
 import static org.junit.jupiter.api.Assertions.assertIterableEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @WireMockTest(httpPort = 8080)
-public class ChargebackTest {
+class ChargebackTest {
     private static String getResponse(String response) {
         return new Scanner(
                 Objects.requireNonNull(
@@ -31,7 +43,7 @@ public class ChargebackTest {
     }
 
     @Test
-    public void chargeback_fetched_successfully() throws ParseException {
+    void chargeback_fetched_successfully() throws ParseException {
         stubFor(
                 get("/v1/payments/s-pay-286").willReturn(
                         jsonResponse(getResponse("fetch-payment.json"), 200))

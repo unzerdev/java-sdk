@@ -1,6 +1,11 @@
 package com.unzer.payment.business;
 
-import com.unzer.payment.*;
+import com.unzer.payment.Authorization;
+import com.unzer.payment.BaseTransaction;
+import com.unzer.payment.Basket;
+import com.unzer.payment.Customer;
+import com.unzer.payment.Payment;
+import com.unzer.payment.Unzer;
 import com.unzer.payment.communication.HttpCommunicationException;
 import com.unzer.payment.marketplace.MarketplaceAuthorization;
 import com.unzer.payment.marketplace.MarketplacePayment;
@@ -24,10 +29,10 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 
-public class AuthorizationTest extends AbstractPaymentTest {
+class AuthorizationTest extends AbstractPaymentTest {
 
     @Test
-    public void testAuthorizeWithAuthorizationObject() throws MalformedURLException, HttpCommunicationException {
+    void testAuthorizeWithAuthorizationObject() throws MalformedURLException, HttpCommunicationException {
         Authorization authorize = getUnzer().authorize(getAuthorization(createPaymentTypeCard(getUnzer(), "4711100000000000").getId(), false));
         assertNotNull(authorize.getId());
         assertNotNull(authorize);
@@ -36,7 +41,7 @@ public class AuthorizationTest extends AbstractPaymentTest {
     }
 
     @Test
-    public void testAuthorizeWithTypeId() throws MalformedURLException, HttpCommunicationException {
+    void testAuthorizeWithTypeId() throws MalformedURLException, HttpCommunicationException {
         Authorization authorize = getUnzer().authorize(BigDecimal.ONE, Currency.getInstance("EUR"), createPaymentTypeCard(getUnzer(), "4711100000000000").getId(), new URL("https://www.unzer.com"), false);
         assertNotNull(authorize);
         assertNotNull(authorize.getId());
@@ -45,7 +50,7 @@ public class AuthorizationTest extends AbstractPaymentTest {
     }
 
     @Test
-    public void testAuthorizeSuccess() throws MalformedURLException, HttpCommunicationException {
+    void testAuthorizeSuccess() throws MalformedURLException, HttpCommunicationException {
         Authorization authorize = getUnzer().authorize(BigDecimal.ONE, Currency.getInstance("EUR"), createPaymentTypeCard(getUnzer(), "4711100000000000").getId(), new URL("https://www.unzer.com"), false);
         assertNotNull(authorize);
         assertNotNull(authorize.getId());
@@ -55,7 +60,7 @@ public class AuthorizationTest extends AbstractPaymentTest {
     }
 
     @Test
-    public void testAuthorizeWithPaymentType() throws MalformedURLException, HttpCommunicationException {
+    void testAuthorizeWithPaymentType() throws MalformedURLException, HttpCommunicationException {
         Unzer unzer = getUnzer(Keys.DEFAULT);
         LocalDate locaDateNow = LocalDate.now();
         Card card = new Card("4444333322221111", "12/" + (locaDateNow.getYear() + 1));
@@ -67,7 +72,7 @@ public class AuthorizationTest extends AbstractPaymentTest {
     }
 
     @Test
-    public void testAuthorizeReturnPaymentTypeAndCustomer() throws MalformedURLException, HttpCommunicationException {
+    void testAuthorizeReturnPaymentTypeAndCustomer() throws MalformedURLException, HttpCommunicationException {
         Unzer unzer = getUnzer(Keys.DEFAULT);
         LocalDate locaDateNow = LocalDate.now();
         Card card = new Card("4444333322221111", "12/" + (locaDateNow.getYear() + 1));
@@ -82,7 +87,7 @@ public class AuthorizationTest extends AbstractPaymentTest {
     }
 
     @Test
-    public void testAuthorizeWithCustomerId() throws MalformedURLException, HttpCommunicationException, ParseException {
+    void testAuthorizeWithCustomerId() throws MalformedURLException, HttpCommunicationException, ParseException {
         Customer customer = getUnzer().createCustomer(getMaximumCustomer(generateUuid()));
         Authorization authorize = getUnzer().authorize(BigDecimal.ONE, Currency.getInstance("EUR"), createPaymentTypeCard(getUnzer(), "4711100000000000").getId(), new URL("https://www.unzer.com"), customer.getCustomerId(), false);
         assertNotNull(authorize);
@@ -92,7 +97,7 @@ public class AuthorizationTest extends AbstractPaymentTest {
     }
 
     @Test
-    public void testAuthorizeWithReturnUrl() throws MalformedURLException, HttpCommunicationException {
+    void testAuthorizeWithReturnUrl() throws MalformedURLException, HttpCommunicationException {
         Authorization authorize = getUnzer().authorize(BigDecimal.ONE, Currency.getInstance("EUR"), createPaymentTypeCard(getUnzer(), "4711100000000000").getId(), new URL("https://www.unzer.com"), false);
         assertNotNull(authorize);
         assertNotNull(authorize.getId());
@@ -101,7 +106,7 @@ public class AuthorizationTest extends AbstractPaymentTest {
     }
 
     @Test
-    public void testAuthorizeWithCustomerTypeReturnUrl() throws MalformedURLException, HttpCommunicationException {
+    void testAuthorizeWithCustomerTypeReturnUrl() throws MalformedURLException, HttpCommunicationException {
         Unzer unzer = getUnzer(Keys.DEFAULT);
         LocalDate locaDateNow = LocalDate.now();
         Card card = new Card("4444333322221111", "12/" + (locaDateNow.getYear() + 1));
@@ -114,7 +119,7 @@ public class AuthorizationTest extends AbstractPaymentTest {
     }
 
     @Test
-    public void testAuthorizeWithCustomerIdReturnUrl() throws MalformedURLException, HttpCommunicationException, ParseException {
+    void testAuthorizeWithCustomerIdReturnUrl() throws MalformedURLException, HttpCommunicationException, ParseException {
         Customer maxCustomer = getMaximumCustomer(generateUuid());
         Authorization authorize = getUnzer().authorize(BigDecimal.ONE, Currency.getInstance("EUR"), createPaymentTypeCard(getUnzer(), "4711100000000000").getId(), new URL("https://www.unzer.com"), maxCustomer.getId(), false);
         assertNotNull(authorize);
@@ -124,7 +129,7 @@ public class AuthorizationTest extends AbstractPaymentTest {
     }
 
     @Test
-    public void testFetchAuthorization() throws MalformedURLException, HttpCommunicationException {
+    void testFetchAuthorization() throws MalformedURLException, HttpCommunicationException {
         Authorization authorize = getUnzer().authorize(BigDecimal.ONE, Currency.getInstance("EUR"), createPaymentTypeCard(getUnzer(), "4711100000000000").getId(), new URL("https://www.unzer.com"), false);
         assertNotNull(authorize);
         assertNotNull(authorize.getId());
@@ -136,7 +141,7 @@ public class AuthorizationTest extends AbstractPaymentTest {
     }
 
     @Test
-    public void testAuthorizeWithOrderId() throws MalformedURLException, HttpCommunicationException {
+    void testAuthorizeWithOrderId() throws MalformedURLException, HttpCommunicationException {
         String orderId = generateUuid();
         Authorization authorize = getUnzer().authorize(getAuthorization(createPaymentTypeCard(getUnzer(), "4711100000000000").getId(), null, orderId, null, null, false));
         assertNotNull(authorize);
@@ -151,7 +156,7 @@ public class AuthorizationTest extends AbstractPaymentTest {
     }
 
     @Test
-    public void testAuthorizeCard3dsFalse() throws MalformedURLException, HttpCommunicationException {
+    void testAuthorizeCard3dsFalse() throws MalformedURLException, HttpCommunicationException {
         String orderId = generateUuid();
         Authorization authorize = getUnzer().authorize(getAuthorization(createPaymentTypeCard(getUnzer(), "4711100000000000").getId(), null, orderId, null, null, false));
         assertNotNull(authorize);
@@ -167,7 +172,7 @@ public class AuthorizationTest extends AbstractPaymentTest {
     }
 
     @Test
-    public void testAuthorizeCard3dsTrue() throws MalformedURLException, HttpCommunicationException {
+    void testAuthorizeCard3dsTrue() throws MalformedURLException, HttpCommunicationException {
         String orderId = generateUuid();
         Unzer unzer = getUnzer();
         Authorization authorize = unzer.authorize(getAuthorization(createPaymentTypeCard(unzer, "4711100000000000").getId(), null, orderId, null, null, true));
@@ -184,7 +189,7 @@ public class AuthorizationTest extends AbstractPaymentTest {
     }
 
     @Test
-    public void testAuthorizeWithPaymentReference() throws MalformedURLException, HttpCommunicationException {
+    void testAuthorizeWithPaymentReference() throws MalformedURLException, HttpCommunicationException {
         Authorization authorization = getAuthorization(createPaymentTypeCard(getUnzer(), "4711100000000000").getId());
         authorization.setPaymentReference("pmt-ref");
         Authorization authorize = getUnzer().authorize(authorization);
@@ -194,7 +199,7 @@ public class AuthorizationTest extends AbstractPaymentTest {
     }
 
     @Test
-    public void testAuthorizeWithAuthorizeObject() throws MalformedURLException, HttpCommunicationException {
+    void testAuthorizeWithAuthorizeObject() throws MalformedURLException, HttpCommunicationException {
         Authorization authorization = getAuthorization(createPaymentTypeCard(getUnzer(), "4711100000000000").getId());
         authorization.setPaymentReference("pmt-ref");
         authorization.setAmount(new BigDecimal("1.0"));
@@ -207,7 +212,7 @@ public class AuthorizationTest extends AbstractPaymentTest {
 
     @Disabled("Needs further configuration in Testdata")
     @Test
-    public void testMarketplaceAuthorize() throws MalformedURLException, HttpCommunicationException {
+    void testMarketplaceAuthorize() throws MalformedURLException, HttpCommunicationException {
         String participantId_1 = MARKETPLACE_PARTICIPANT_ID_1;
         String participantId_2 = MARKETPLACE_PARTICIPANT_ID_2;
 

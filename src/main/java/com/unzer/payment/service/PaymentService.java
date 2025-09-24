@@ -87,6 +87,7 @@ import com.unzer.payment.paymenttypes.SepaDirectDebitSecured;
 import com.unzer.payment.paymenttypes.Sofort;
 import com.unzer.payment.paymenttypes.Twint;
 import com.unzer.payment.paymenttypes.Wechatpay;
+import com.unzer.payment.paymenttypes.Wero;
 
 import java.math.BigDecimal;
 import java.net.URL;
@@ -254,6 +255,8 @@ public class PaymentService {
                 return new Twint();
             case OPEN_BANKING:
                 return new OpenBanking();
+            case WERO:
+                return new Wero();
             default:
                 throw new PaymentException("Type '" + typeId + "' is currently not supported by the SDK");
         }
@@ -281,6 +284,7 @@ public class PaymentService {
             case KLARNA:
             case CLICK_TO_PAY:
             case TWINT:
+            case WERO:
                 return new ApiIdObject();
             case PAYPAL:
                 return new ApiPaypal();
@@ -953,7 +957,7 @@ public class PaymentService {
         AUTHORIZE, PREAUTHORIZE, CHARGE, CHARGEBACK, PAYOUT, CANCEL_AUTHORIZE, CANCEL_CHARGE;
 
         public String apiName() {
-            return this.name().toLowerCase().replaceAll("_", "-");
+            return this.name().toLowerCase().replace("_", "-");
         }
     }
 }

@@ -14,16 +14,16 @@ import static com.unzer.payment.business.Keys.LEGACY_PRIVATE_KEY;
 import static com.unzer.payment.util.Types.unsafeUrl;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-public class InvoiceTest extends AbstractPaymentTest {
+class InvoiceTest extends AbstractPaymentTest {
 
     @Test
-    public void testCreateInvoiceMandatoryType() {
+    void testCreateInvoiceMandatoryType() {
         Invoice invoice = getUnzer(LEGACY_PRIVATE_KEY).createPaymentType(new Invoice());
         assertNotNull(invoice.getId());
     }
 
     @Test
-    public void testChargeType() {
+    void testChargeType() {
         Invoice invoice = getUnzer(LEGACY_PRIVATE_KEY).createPaymentType(new Invoice());
         Charge charge = invoice.charge(BigDecimal.ONE, Currency.getInstance("EUR"), unsafeUrl("https://www.meinShop.de"));
         assertNotNull(charge);
@@ -31,7 +31,7 @@ public class InvoiceTest extends AbstractPaymentTest {
     }
 
     @Test
-    public void testFetchInvoiceType() {
+    void testFetchInvoiceType() {
         Unzer unzer = getUnzer(LEGACY_PRIVATE_KEY);
         Invoice invoice = unzer.createPaymentType(new Invoice());
         assertNotNull(invoice.getId());

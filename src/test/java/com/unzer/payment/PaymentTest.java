@@ -5,12 +5,14 @@ import org.junit.jupiter.api.Test;
 
 import java.math.BigDecimal;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class PaymentTest {
+class PaymentTest {
 
     @Test
-    public void testIsNotEmpty() {
+    void testIsNotEmpty() {
         Payment payment = new Payment(getUnzer());
         assertFalse(payment.isNotEmpty(""));
         assertFalse(payment.isNotEmpty("   "));
@@ -19,7 +21,7 @@ public class PaymentTest {
     }
 
     @Test
-    public void testChargeOnNullAuthorization() {
+    void testChargeOnNullAuthorization() {
         Payment payment = new Payment(getUnzer());
 
         try {

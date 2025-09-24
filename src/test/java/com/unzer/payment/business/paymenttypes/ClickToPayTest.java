@@ -5,27 +5,23 @@ import com.unzer.payment.Charge;
 import com.unzer.payment.Unzer;
 import com.unzer.payment.communication.HttpClientMock;
 import com.unzer.payment.communication.JsonParser;
-import com.unzer.payment.models.googlepay.IntermediateSigningKey;
-import com.unzer.payment.models.googlepay.SignedKey;
-import com.unzer.payment.models.googlepay.SignedMessage;
 import com.unzer.payment.paymenttypes.ClickToPay;
-import com.unzer.payment.paymenttypes.GooglePay;
-import org.checkerframework.checker.units.qual.C;
 import org.junit.jupiter.api.Test;
 
 import java.math.BigDecimal;
-import java.util.Collections;
 import java.util.Currency;
 import java.util.Objects;
 import java.util.Scanner;
 
-import static com.github.tomakehurst.wiremock.client.WireMock.*;
+import static com.github.tomakehurst.wiremock.client.WireMock.get;
 import static com.github.tomakehurst.wiremock.client.WireMock.jsonResponse;
+import static com.github.tomakehurst.wiremock.client.WireMock.post;
+import static com.github.tomakehurst.wiremock.client.WireMock.stubFor;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
 @WireMockTest(httpPort = 8080)
-public class ClickToPayTest {
+class ClickToPayTest {
 
     private static String getResponse(String response) {
         return new Scanner(Objects.requireNonNull(

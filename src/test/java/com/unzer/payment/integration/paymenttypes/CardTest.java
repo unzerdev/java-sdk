@@ -1,6 +1,13 @@
 package com.unzer.payment.integration.paymenttypes;
 
-import com.unzer.payment.*;
+import com.unzer.payment.Authorization;
+import com.unzer.payment.BaseTransaction;
+import com.unzer.payment.Charge;
+import com.unzer.payment.Payment;
+import com.unzer.payment.PaymentException;
+import com.unzer.payment.Preauthorization;
+import com.unzer.payment.Recurring;
+import com.unzer.payment.Unzer;
 import com.unzer.payment.business.AbstractPaymentTest;
 import com.unzer.payment.communication.impl.HttpClientBasedRestCommunication;
 import com.unzer.payment.enums.RecurrenceType;
@@ -20,14 +27,19 @@ import java.util.stream.Stream;
 
 import static com.unzer.payment.business.Keys.ALT_LEGACY_PRIVATE_KEY;
 import static com.unzer.payment.util.Types.unsafeUrl;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.DynamicTest.dynamicTest;
 
 
 class CardTest extends AbstractPaymentTest {
 
     @Test
-    public void testCreateCardWithMerchantNotPCIDSSCompliant() {
+    void testCreateCardWithMerchantNotPCIDSSCompliant() {
         assertThrows(PaymentException.class, () -> {
             Card card = new Card("4444333322221111", "03/20");
             card.setCvc("123");
@@ -37,7 +49,7 @@ class CardTest extends AbstractPaymentTest {
     }
 
     @Test
-    public void testCreateCardType() {
+    void testCreateCardType() {
         Card card = new Card("4444333322221111", "03/99");
         card.setCvc("123");
         card.setCardHolder("Beethoven");
@@ -58,7 +70,7 @@ class CardTest extends AbstractPaymentTest {
     }
 
     @Test
-    public void testCreateCardTypeWith3DSFlag() {
+    void testCreateCardTypeWith3DSFlag() {
         Card card = new Card("4444333322221111", "03/99");
         card.setCvc("123");
         card.set3ds(false);
@@ -71,7 +83,7 @@ class CardTest extends AbstractPaymentTest {
     }
 
     @Test
-    public void testPreauthorizeAndPaymentCardType() {
+    void testPreauthorizeAndPaymentCardType() {
         Card card = new Card("4444333322221111", "03/99");
         card.setCvc("123");
         Unzer unzer = getUnzer();
@@ -90,7 +102,7 @@ class CardTest extends AbstractPaymentTest {
     }
 
     @Test
-    public void testAuthorizeAndPaymentCardType() {
+    void testAuthorizeAndPaymentCardType() {
         Card card = new Card("4444333322221111", "03/99");
         card.setCvc("123");
         card = getUnzer().createPaymentType(card);
@@ -102,7 +114,7 @@ class CardTest extends AbstractPaymentTest {
     }
 
     @Test
-    public void testChargeCardType() {
+    void testChargeCardType() {
         Card card = new Card("4444333322221111", "03/99");
         card.setCvc("123");
         card = getUnzer().createPaymentType(card);
@@ -111,7 +123,7 @@ class CardTest extends AbstractPaymentTest {
     }
 
     @Test
-    public void testChargeCardTypeWith3ds() {
+    void testChargeCardTypeWith3ds() {
         Card card = new Card(VISA_3DS_ENABLED_CARD_NUMBER, "03/99");
         card.setCvc("123");
         card = getUnzer().createPaymentType(card);
@@ -120,7 +132,7 @@ class CardTest extends AbstractPaymentTest {
     }
 
     @Test
-    public void testFetchCardType() {
+    void testFetchCardType() {
         Card card = new Card("4444333322221111", "03/2099");
         card.setCvc("123");
         card.setCardHolder("Mozart");
@@ -154,7 +166,7 @@ class CardTest extends AbstractPaymentTest {
     }
 
     @Test
-    public void testCardMailEmptyWhenNotSending() {
+    void testCardMailEmptyWhenNotSending() {
         Card card = new Card("4444333322221111", "03/99");
         card.setCvc("123");
         card = getUnzer().createPaymentType(card);
@@ -163,7 +175,7 @@ class CardTest extends AbstractPaymentTest {
     }
 
     @Test
-    public void testCardMailNotEmptyWhenSending() {
+    void testCardMailNotEmptyWhenSending() {
         Card card = new Card("4444333322221111", "03/99");
         card.setCvc("123");
         card.setEmail(MAIL_STRING);
@@ -177,7 +189,7 @@ class CardTest extends AbstractPaymentTest {
 
     @Disabled("PAPI disallows removing email")
     @Test
-    public void testCardMailEmptyWhenOverridingWithNull() {
+    void testCardMailEmptyWhenOverridingWithNull() {
         Card card = new Card("4444333322221111", "03/99");
         card.setCvc("123");
         card.setEmail(MAIL_STRING);
@@ -195,7 +207,7 @@ class CardTest extends AbstractPaymentTest {
     }
 
     @Test
-    public void testCardMailOverridingWithValue() {
+    void testCardMailOverridingWithValue() {
         Unzer unzer = getUnzer();
         Card card = new Card("4444333322221111", "03/99");
         card.setCvc("123");
@@ -215,7 +227,7 @@ class CardTest extends AbstractPaymentTest {
     }
 
     @Test
-    public void testCardMailInvalidValue() {
+    void testCardMailInvalidValue() {
         Card card = new Card("4444333322221111", "03/99");
         card.setCvc("123");
         card.setEmail(INVALID_MAIL_STRING);
@@ -230,7 +242,7 @@ class CardTest extends AbstractPaymentTest {
     }
 
     @Test
-    public void testCardRegisterRecurring() {
+    void testCardRegisterRecurring() {
         Card card = new Card(VISA_3DS_ENABLED_CARD_NUMBER, "03/99");
         card.setCvc("123");
         card = getUnzer().createPaymentType(card);
@@ -242,7 +254,7 @@ class CardTest extends AbstractPaymentTest {
     }
 
     @Test
-    public void testCardRegisterRecurringAdditionalPaymentInformationScheduled() {
+    void testCardRegisterRecurringAdditionalPaymentInformationScheduled() {
         Card card = new Card(VISA_3DS_ENABLED_CARD_NUMBER, "03/99");
         card.setCvc("123");
         card = getUnzer().createPaymentType(card);
@@ -255,7 +267,7 @@ class CardTest extends AbstractPaymentTest {
     }
 
     @Test
-    public void testCardRegisterRecurringAdditionalPaymentInformationUnscheduled() {
+    void testCardRegisterRecurringAdditionalPaymentInformationUnscheduled() {
         Card card = new Card(VISA_3DS_ENABLED_CARD_NUMBER, "03/99");
         card.setCvc("123");
         card = getUnzer().createPaymentType(card);
@@ -268,7 +280,7 @@ class CardTest extends AbstractPaymentTest {
     }
 
     @Test
-    public void testCardAuthorizeAdditionalTransactionDataRecurrenceOneClick() {
+    void testCardAuthorizeAdditionalTransactionDataRecurrenceOneClick() {
         Card card = new Card(VISA_3DS_ENABLED_CARD_NUMBER, "03/99");
         card.setCvc("123");
         card = getUnzer().createPaymentType(card);
@@ -282,7 +294,7 @@ class CardTest extends AbstractPaymentTest {
     }
 
     @Test
-    public void testCardAuthorizeAdditionalTransactionDataRecurrenceOneClickWithout3DS() {
+    void testCardAuthorizeAdditionalTransactionDataRecurrenceOneClickWithout3DS() {
         Card card = new Card(VISA_3DS_ENABLED_CARD_NUMBER, "03/99");
         card.setCvc("123");
         card = getUnzer().createPaymentType(card);
@@ -297,7 +309,7 @@ class CardTest extends AbstractPaymentTest {
     }
 
     @Test
-    public void testCardChargeAdditionalTransactionDataRecurrenceOneClick() {
+    void testCardChargeAdditionalTransactionDataRecurrenceOneClick() {
         Card card = new Card(VISA_3DS_ENABLED_CARD_NUMBER, "03/99");
         card.setCvc("123");
         card = getUnzer().createPaymentType(card);
@@ -311,7 +323,7 @@ class CardTest extends AbstractPaymentTest {
     }
 
     @Test
-    public void testCardChargeAdditionalTransactionDataRecurrenceOneClickWithout3DS() {
+    void testCardChargeAdditionalTransactionDataRecurrenceOneClickWithout3DS() {
         Card card = new Card(VISA_3DS_ENABLED_CARD_NUMBER, "03/99");
         card.setCvc("123");
         card = getUnzer().createPaymentType(card);
@@ -326,7 +338,7 @@ class CardTest extends AbstractPaymentTest {
     }
 
     @Test
-    public void testCardAuthorizeAdditionalTransactionDataRecurrenceScheduled() {
+    void testCardAuthorizeAdditionalTransactionDataRecurrenceScheduled() {
         Card card = new Card(VISA_3DS_ENABLED_CARD_NUMBER, "03/99");
         card.setCvc("123");
         card = getUnzer().createPaymentType(card);
@@ -340,7 +352,7 @@ class CardTest extends AbstractPaymentTest {
     }
 
     @Test
-    public void testCardAuthorizeAdditionalTransactionDataRecurrenceScheduledWithout3DS() {
+    void testCardAuthorizeAdditionalTransactionDataRecurrenceScheduledWithout3DS() {
         Card card = new Card(VISA_3DS_ENABLED_CARD_NUMBER, "03/99");
         card.setCvc("123");
         card = getUnzer().createPaymentType(card);
@@ -355,7 +367,7 @@ class CardTest extends AbstractPaymentTest {
     }
 
     @Test
-    public void testCardChargeAdditionalTransactionDataRecurrenceScheduled() {
+    void testCardChargeAdditionalTransactionDataRecurrenceScheduled() {
         Card card = new Card(VISA_3DS_ENABLED_CARD_NUMBER, "03/99");
         card.setCvc("123");
         card = getUnzer().createPaymentType(card);
@@ -369,7 +381,7 @@ class CardTest extends AbstractPaymentTest {
     }
 
     @Test
-    public void testCardChargeAdditionalTransactionDataRecurrenceScheduledWithout3DS() {
+    void testCardChargeAdditionalTransactionDataRecurrenceScheduledWithout3DS() {
         Card card = new Card(VISA_3DS_ENABLED_CARD_NUMBER, "03/99");
         card.setCvc("123");
         card = getUnzer().createPaymentType(card);
@@ -384,7 +396,7 @@ class CardTest extends AbstractPaymentTest {
     }
 
     @Test
-    public void testCardAuthorizeAdditionalTransactionDataRecurrenceUnscheduled() {
+    void testCardAuthorizeAdditionalTransactionDataRecurrenceUnscheduled() {
         Card card = new Card(VISA_3DS_ENABLED_CARD_NUMBER, "03/99");
         card.setCvc("123");
         card = getUnzer().createPaymentType(card);
@@ -398,7 +410,7 @@ class CardTest extends AbstractPaymentTest {
     }
 
     @Test
-    public void testCardAuthorizeAdditionalTransactionDataRecurrenceUnscheduledWithout3DS() {
+    void testCardAuthorizeAdditionalTransactionDataRecurrenceUnscheduledWithout3DS() {
         Card card = new Card(VISA_3DS_ENABLED_CARD_NUMBER, "03/99");
         card.setCvc("123");
         card = getUnzer().createPaymentType(card);
@@ -413,7 +425,7 @@ class CardTest extends AbstractPaymentTest {
     }
 
     @Test
-    public void testCardChargeAdditionalTransactionDataRecurrenceUnscheduled() {
+    void testCardChargeAdditionalTransactionDataRecurrenceUnscheduled() {
         Card card = new Card(VISA_3DS_ENABLED_CARD_NUMBER, "03/99");
         card.setCvc("123");
         card = getUnzer().createPaymentType(card);
@@ -427,7 +439,7 @@ class CardTest extends AbstractPaymentTest {
     }
 
     @Test
-    public void testCardChargeAdditionalTransactionDataRecurrenceUnscheduledWithout3DS() {
+    void testCardChargeAdditionalTransactionDataRecurrenceUnscheduledWithout3DS() {
         Card card = new Card(VISA_3DS_ENABLED_CARD_NUMBER, "03/99");
         card.setCvc("123");
         card = getUnzer().createPaymentType(card);

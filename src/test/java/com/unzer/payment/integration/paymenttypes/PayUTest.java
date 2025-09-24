@@ -19,10 +19,10 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.DynamicTest.dynamicTest;
 
-public class PayUTest extends AbstractPaymentTest {
+class PayUTest extends AbstractPaymentTest {
 
     @Test
-    public void create_payment_type() {
+    void create_payment_type() {
         Unzer unzer = getUnzer();
 
         PayU payU = new PayU();
