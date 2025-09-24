@@ -23,27 +23,29 @@ import static com.unzer.payment.business.BasketV2TestData.getMinTestBasketV2;
 import static com.unzer.payment.business.Keys.LEGACY_PRIVATE_KEY;
 import static com.unzer.payment.util.Types.unsafeUrl;
 import static com.unzer.payment.util.Uuid.generateUuid;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 
-public class SepaDirectDebitSecuredTest extends AbstractPaymentTest {
+class SepaDirectDebitSecuredTest extends AbstractPaymentTest {
 
     @Test
-    public void testCreateSepaDirectDebitSecuredManatoryType() {
+    void testCreateSepaDirectDebitSecuredManatoryType() {
         SepaDirectDebitSecured sdd = new SepaDirectDebitSecured("DE89370400440532013000");
         sdd = getUnzer(LEGACY_PRIVATE_KEY).createPaymentType(sdd);
         assertNotNull(sdd.getId());
     }
 
     @Test
-    public void testCreateSepaDirectDebitSecuredFullType() {
+    void testCreateSepaDirectDebitSecuredFullType() {
         SepaDirectDebitSecured sddOriginal = getSepaDirectDebitSecured();
         SepaDirectDebitSecured sddCreated = getUnzer(LEGACY_PRIVATE_KEY).createPaymentType(sddOriginal);
         assertSddEquals(sddOriginal, sddCreated);
     }
 
     @Test
-    public void testFetchSepaDirectDebitSecuredType() {
+    void testFetchSepaDirectDebitSecuredType() {
         Unzer unzer = getUnzer(LEGACY_PRIVATE_KEY);
         SepaDirectDebitSecured sdd = unzer.createPaymentType(getSepaDirectDebitSecured());
         assertNotNull(sdd.getId());

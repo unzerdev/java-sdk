@@ -10,18 +10,20 @@ import java.net.URISyntaxException;
 import java.util.Collections;
 
 import static com.unzer.payment.util.ApplePayAdapterUtil.doesUrlContainValidDomainName;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 
 @Execution(ExecutionMode.SAME_THREAD)
-public class ApplePayAdapterTest {
+class ApplePayAdapterTest {
     @BeforeEach
     public void setDefaultValues() {
         ApplePayAdapterUtil.setCustomAppleValidationUrls(ApplePayAdapterUtil.DEFAULT_VALIDATION_URLS);
     }
 
     @Test
-    public void ifAllParametersAreNullThrowError() {
+    void ifAllParametersAreNullThrowError() {
         assertThrows(NullPointerException.class, () -> ApplePayAdapterUtil.validateApplePayMerchant(
                 null,
                 null,
@@ -30,7 +32,7 @@ public class ApplePayAdapterTest {
     }
 
     @Test
-    public void doesUrlsContainValidDomainName() throws URISyntaxException {
+    void doesUrlsContainValidDomainName() throws URISyntaxException {
         assertTrue(doesUrlContainValidDomainName("https://www.apple-pay-gateway.apple.com/"));
         assertTrue(doesUrlContainValidDomainName("https://cn-apple-pay-gateway.apple.com/"));
 
@@ -39,7 +41,7 @@ public class ApplePayAdapterTest {
     }
 
     @Test
-    public void customValidationUrls() throws URISyntaxException {
+    void customValidationUrls() throws URISyntaxException {
         ApplePayAdapterUtil.setCustomAppleValidationUrls(Collections.singletonList("google.com"));
         assertTrue(doesUrlContainValidDomainName("https://www.google.com"));
         assertFalse(doesUrlContainValidDomainName("https://www.apple-pay-gateway.apple.com/"));

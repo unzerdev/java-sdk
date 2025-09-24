@@ -1,7 +1,13 @@
 package com.unzer.payment.integration.paymenttypes;
 
 
-import com.unzer.payment.*;
+import com.unzer.payment.Basket;
+import com.unzer.payment.Cancel;
+import com.unzer.payment.Charge;
+import com.unzer.payment.PaymentError;
+import com.unzer.payment.PaymentException;
+import com.unzer.payment.Shipment;
+import com.unzer.payment.Unzer;
 import com.unzer.payment.business.AbstractPaymentTest;
 import com.unzer.payment.business.Keys;
 import com.unzer.payment.communication.HttpCommunicationException;
@@ -29,10 +35,13 @@ import static com.unzer.payment.business.BasketV2TestData.getMaxTestBasketV2;
 import static com.unzer.payment.business.BasketV2TestData.getMinTestBasketV2;
 import static com.unzer.payment.util.Types.unsafeUrl;
 import static com.unzer.payment.util.Uuid.generateUuid;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.DynamicTest.dynamicTest;
 
-public class InvoiceSecuredTest extends AbstractPaymentTest {
+class InvoiceSecuredTest extends AbstractPaymentTest {
 
     @Test
     @Disabled("deprecated")
@@ -64,7 +73,7 @@ public class InvoiceSecuredTest extends AbstractPaymentTest {
     }
 
     @Test
-    public void testCreateInvoiceSecuredMandatoryType() {
+    void testCreateInvoiceSecuredMandatoryType() {
         InvoiceSecured invoice = getUnzer(Keys.LEGACY_PRIVATE_KEY).createPaymentType(getInvoiceSecured());
         assertNotNull(invoice.getId());
     }
@@ -101,7 +110,7 @@ public class InvoiceSecuredTest extends AbstractPaymentTest {
     }
 
     @Test
-    public void testChargeTypeWithInvalidCurrencyBasketV2() {
+    void testChargeTypeWithInvalidCurrencyBasketV2() {
         InvoiceSecured invoice = getUnzer(Keys.LEGACY_PRIVATE_KEY).createPaymentType(getInvoiceSecured());
         Basket basket = getMinTestBasketV2();
         assertThrows(PaymentException.class, () -> {
@@ -111,7 +120,7 @@ public class InvoiceSecuredTest extends AbstractPaymentTest {
 
 
     @Test
-    public void testChargeTypeDifferentAddresses() {
+    void testChargeTypeDifferentAddresses() {
         InvoiceSecured invoice = getUnzer(Keys.LEGACY_PRIVATE_KEY).createPaymentType(getInvoiceSecured());
         assertThrows(PaymentException.class, () -> {
             invoice.charge(BigDecimal.TEN, Currency.getInstance("EUR"), unsafeUrl("https://www.meinShop.de"), getMaximumCustomer(generateUuid()));
@@ -147,7 +156,7 @@ public class InvoiceSecuredTest extends AbstractPaymentTest {
 
 
     @Test
-    public void testFetchInvoiceSecuredType() {
+    void testFetchInvoiceSecuredType() {
         InvoiceSecured invoice = getUnzer(Keys.LEGACY_PRIVATE_KEY).createPaymentType(getInvoiceSecured());
         assertNotNull(invoice.getId());
         InvoiceSecured fetchedInvoiceSecured = (InvoiceSecured) getUnzer(Keys.LEGACY_PRIVATE_KEY).fetchPaymentType(invoice.getId());

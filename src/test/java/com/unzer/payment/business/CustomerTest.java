@@ -17,13 +17,16 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static com.unzer.payment.util.Uuid.generateUuid;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.DynamicTest.dynamicTest;
 
-public class CustomerTest extends AbstractPaymentTest {
+class CustomerTest extends AbstractPaymentTest {
 
     @Test
-    public void testCreateMinimumCustomer() {
+    void testCreateMinimumCustomer() {
         Customer customer = getUnzer().createCustomer(getMinimumCustomer());
         assertNotNull(customer);
         assertNotNull(customer.getId());
@@ -32,7 +35,7 @@ public class CustomerTest extends AbstractPaymentTest {
     }
 
     @Test
-    public void testCreateMaximumCustomer() {
+    void testCreateMaximumCustomer() {
         Customer maxCustomer = getMaximumCustomer(generateUuid());
         Customer customer = getUnzer().createCustomer(maxCustomer);
         assertNotNull(customer);
@@ -41,7 +44,7 @@ public class CustomerTest extends AbstractPaymentTest {
     }
 
     @Test
-    public void testCreateMaximumMrsCustomer() {
+    void testCreateMaximumMrsCustomer() {
         Customer maxMrsCustomer = getMaximumMrsCustomer(generateUuid());
         Customer customer = getUnzer().createCustomer(maxMrsCustomer);
         assertNotNull(customer);
@@ -50,7 +53,7 @@ public class CustomerTest extends AbstractPaymentTest {
     }
 
     @Test
-    public void testCreateMaximumUnknownCustomer() {
+    void testCreateMaximumUnknownCustomer() {
         Customer unknownMrsCustomer = getMaximumUnknownCustomer(generateUuid());
         Customer customer = getUnzer().createCustomer(unknownMrsCustomer);
         assertNotNull(customer);
@@ -59,7 +62,7 @@ public class CustomerTest extends AbstractPaymentTest {
     }
 
     @Test
-    public void testFetchCustomerMinimum() {
+    void testFetchCustomerMinimum() {
         Customer customer = getUnzer().createCustomer(getMinimumCustomer());
         assertNotNull(customer);
         assertNotNull(customer.getId());
@@ -69,7 +72,7 @@ public class CustomerTest extends AbstractPaymentTest {
     }
 
     @Test
-    public void testFetchCustomerMaximum() {
+    void testFetchCustomerMaximum() {
         Customer expectedCustomer = getMaximumCustomer(generateUuid());
         Customer customer = getUnzer().createCustomer(expectedCustomer);
         assertNotNull(customer);
@@ -80,7 +83,7 @@ public class CustomerTest extends AbstractPaymentTest {
     }
 
     @Test
-    public void testUpdateCustomer() {
+    void testUpdateCustomer() {
         Customer customer = getUnzer().createCustomer(getMaximumCustomer(generateUuid()));
         assertNotNull(customer);
         assertNotNull(customer.getId());
@@ -93,7 +96,7 @@ public class CustomerTest extends AbstractPaymentTest {
     }
 
     @Test
-    public void testDeleteCustomer() {
+    void testDeleteCustomer() {
         Customer customer = getUnzer().createCustomer(getMaximumCustomer(generateUuid()));
         assertNotNull(customer);
         assertNotNull(customer.getId());
@@ -102,7 +105,7 @@ public class CustomerTest extends AbstractPaymentTest {
     }
 
     @Test
-    public void testCreateCustomerWithException() {
+    void testCreateCustomerWithException() {
         assertThrows(IllegalArgumentException.class, () -> {
             getUnzer().createCustomer(null);
         });
@@ -146,7 +149,7 @@ public class CustomerTest extends AbstractPaymentTest {
     }
 
     @Test
-    public void testCustomerBirthdate() {
+    void testCustomerBirthdate() {
         Unzer unzer = getUnzer();
 
         Date birthdate = new Date(94, Calendar.DECEMBER, 1, 11, 59, 31);

@@ -21,6 +21,6 @@ class ApiConfigTest {
     @Test
     void getPaypageServiceConfig() {
         assertEquals("https://paypage.unzer.com", ApiConfigs.PAYPAGE_API.getBaseUrl());
-        assertEquals("https://paypage.test.unzer.io", ApiConfigs.PAYPAGE_API.getTestBaseUrl());
+        assertEquals("https://paypage.test.unzer.com", ApiConfigs.PAYPAGE_API.getTestBaseUrl());
     }
 }

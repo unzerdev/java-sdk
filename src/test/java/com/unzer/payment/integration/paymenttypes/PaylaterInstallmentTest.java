@@ -1,6 +1,13 @@
 package com.unzer.payment.integration.paymenttypes;
 
-import com.unzer.payment.*;
+import com.unzer.payment.Authorization;
+import com.unzer.payment.BaseTransaction;
+import com.unzer.payment.Basket;
+import com.unzer.payment.BasketItem;
+import com.unzer.payment.Cancel;
+import com.unzer.payment.Charge;
+import com.unzer.payment.Customer;
+import com.unzer.payment.PaylaterInstallmentPlans;
 import com.unzer.payment.business.AbstractPaymentTest;
 import com.unzer.payment.communication.HttpCommunicationException;
 import com.unzer.payment.models.CustomerType;
@@ -17,13 +24,18 @@ import java.util.List;
 
 import static com.unzer.payment.util.Types.unsafeUrl;
 import static com.unzer.payment.util.Uuid.generateUuid;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 
-public class PaylaterInstallmentTest extends AbstractPaymentTest {
+class PaylaterInstallmentTest extends AbstractPaymentTest {
 
     @Test
-    public void testRateRetrievalUrl() {
+    void testRateRetrievalUrl() {
         BigDecimal amount = new BigDecimal("33.33");
         InstallmentPlansRequest request =
                 new InstallmentPlansRequest(amount, "EUR", "DE", CustomerType.B2C);
@@ -35,7 +47,7 @@ public class PaylaterInstallmentTest extends AbstractPaymentTest {
     }
 
     @Test
-    public void testFetchInstallmentPlans() {
+    void testFetchInstallmentPlans() {
         BigDecimal amount = new BigDecimal("99.99");
         InstallmentPlansRequest request =
                 new InstallmentPlansRequest(amount, "EUR", "DE", CustomerType.B2C);
@@ -66,7 +78,7 @@ public class PaylaterInstallmentTest extends AbstractPaymentTest {
     }
 
     @Test
-    public void testCreatePaylaterInstallmentTypeWithAllParameter() {
+    void testCreatePaylaterInstallmentTypeWithAllParameter() {
         PaylaterInstallmentPlans installmentPlans = getPaylaterInstallmentPlans();
         InstallmentPlan selectedPlan = installmentPlans.getPlans().get(0);
 
@@ -103,7 +115,7 @@ public class PaylaterInstallmentTest extends AbstractPaymentTest {
     }
 
     @Test
-    public void testAuthorize() throws HttpCommunicationException, ParseException {
+    void testAuthorize() throws HttpCommunicationException, ParseException {
         PaylaterInstallmentPlans installmentPlans = getPaylaterInstallmentPlans();
         InstallmentPlan selectedPlan = installmentPlans.getPlans().get(0);
 
@@ -158,7 +170,7 @@ public class PaylaterInstallmentTest extends AbstractPaymentTest {
     }
 
     @Test
-    public void testFullCharge() throws HttpCommunicationException, ParseException {
+    void testFullCharge() throws HttpCommunicationException, ParseException {
         PaylaterInstallmentPlans installmentPlans = getPaylaterInstallmentPlans();
         InstallmentPlan selectedPlan = installmentPlans.getPlans().get(0);
 
@@ -188,7 +200,7 @@ public class PaylaterInstallmentTest extends AbstractPaymentTest {
     }
 
     @Test
-    public void testPartialCharge() throws HttpCommunicationException, ParseException {
+    void testPartialCharge() throws HttpCommunicationException, ParseException {
         PaylaterInstallmentPlans installmentPlans = getPaylaterInstallmentPlans();
         InstallmentPlan selectedPlan = installmentPlans.getPlans().get(0);
 
@@ -222,7 +234,7 @@ public class PaylaterInstallmentTest extends AbstractPaymentTest {
     }
 
     @Test
-    public void testFullCancelAfterAuthorization() throws HttpCommunicationException, ParseException {
+    void testFullCancelAfterAuthorization() throws HttpCommunicationException, ParseException {
         PaylaterInstallmentPlans installmentPlans = getPaylaterInstallmentPlans();
         InstallmentPlan selectedPlan = installmentPlans.getPlans().get(0);
 
@@ -253,7 +265,7 @@ public class PaylaterInstallmentTest extends AbstractPaymentTest {
     }
 
     @Test
-    public void testFullCancelAfterCharge() throws HttpCommunicationException, ParseException {
+    void testFullCancelAfterCharge() throws HttpCommunicationException, ParseException {
         PaylaterInstallmentPlans installmentPlans = getPaylaterInstallmentPlans();
         InstallmentPlan selectedPlan = installmentPlans.getPlans().get(0);
 
@@ -286,7 +298,7 @@ public class PaylaterInstallmentTest extends AbstractPaymentTest {
     }
 
     @Test
-    public void testPartialCancelAfterCharge() throws HttpCommunicationException, ParseException {
+    void testPartialCancelAfterCharge() throws HttpCommunicationException, ParseException {
         PaylaterInstallmentPlans installmentPlans = getPaylaterInstallmentPlans();
         InstallmentPlan selectedPlan = installmentPlans.getPlans().get(0);
 

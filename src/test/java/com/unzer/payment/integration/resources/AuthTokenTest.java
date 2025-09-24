@@ -7,13 +7,15 @@ import org.junit.jupiter.api.Test;
 
 import java.util.regex.Pattern;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 
-public class AuthTokenTest extends AbstractPaymentTest {
+class AuthTokenTest extends AbstractPaymentTest {
 
     @Test
-    public void createTokenWithPrivateKey() {
+    void createTokenWithPrivateKey() {
         AuthToken autTokenResponse = getUnzer().createAuthToken();
         assertNull(autTokenResponse.getId());
         assertNotNull(autTokenResponse.getAccessToken());

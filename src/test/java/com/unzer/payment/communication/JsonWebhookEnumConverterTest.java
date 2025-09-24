@@ -8,10 +8,10 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
-public class JsonWebhookEnumConverterTest {
+class JsonWebhookEnumConverterTest {
 
     @Test
-    public void testDeserializeWithInvalidJson() {
+    void testDeserializeWithInvalidJson() {
         JsonWebhookEnumConverter converter = new JsonWebhookEnumConverter();
 
         WebhookEventEnum webhookEventEnum = converter.deserialize(null, null, null);
