@@ -2,12 +2,14 @@ package com.unzer.payment.business;
 
 
 import com.unzer.payment.Authorization;
+import com.unzer.payment.BasePayment;
 import com.unzer.payment.BaseTransaction;
 import com.unzer.payment.Cancel;
 import com.unzer.payment.Charge;
 import com.unzer.payment.Customer;
 import com.unzer.payment.Payment;
 import com.unzer.payment.PaymentException;
+import com.unzer.payment.Paypage;
 import com.unzer.payment.Unzer;
 import com.unzer.payment.communication.HttpCommunicationException;
 import com.unzer.payment.paymenttypes.Card;
@@ -35,6 +37,26 @@ class PaymentTest extends AbstractPaymentTest {
         assertNotNull(payment.getAuthorization());
         assertNotNull(payment.getAuthorization().getId());
         assertNotNull(payment.getPaymentState());
+    }
+
+    @Test
+    void testFetchPaymentMapsCreateState() {
+        // given
+        Paypage paypageRequest = new Paypage();
+        paypageRequest.setAmount(new BigDecimal("500.5"));
+        paypageRequest.setCurrency(Currency.getInstance("EUR"));
+        paypageRequest.setAction("charge");
+        paypageRequest.setReturnUrl(unsafeUrl("https://www.unzer.com/"));
+
+        Paypage paypage = getUnzer().paypage(paypageRequest);
+
+        // when
+        Payment payment = getUnzer().fetchPayment(paypage.getPaymentId());
+
+        // then
+        assertNotNull(payment);
+        assertNotNull(payment.getPaymentState());
+        assertEquals(BasePayment.State.CREATE, payment.getPaymentState());
     }
 
     @Test

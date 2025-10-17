@@ -225,6 +225,6 @@ public abstract class BasePayment extends BaseResource {
     }
 
     public enum State {
-        PENDING, COMPLETED, CANCELED, PARTLY, PAYMENT_REVIEW, CHARGEBACK
+        PENDING, COMPLETED, CANCELED, PARTLY, PAYMENT_REVIEW, CHARGEBACK, CREATE
     }
 }
