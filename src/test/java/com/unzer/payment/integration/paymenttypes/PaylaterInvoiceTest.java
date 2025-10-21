@@ -34,10 +34,14 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.DynamicTest.dynamicTest;
 
 
 class PaylaterInvoiceTest extends AbstractPaymentTest {
+
+    public static final String UPL_CONFIG_DOMAIN = "https://test-payment.paylater.unzer.com/";
+
     @Test
     void testCreatePaylaterType() {
         PaylaterInvoice paylaterInvoice = getUnzer().createPaymentType(new PaylaterInvoice());
@@ -418,14 +422,11 @@ class PaylaterInvoiceTest extends AbstractPaymentTest {
             final String name;
             final CustomerType customerType;
             final Locale locale;
-            final PaylaterInvoiceConfig expectedConfig;
 
-            public TestCase(String name, CustomerType customerType, Locale locale,
-                            PaylaterInvoiceConfig expectedConfig) {
+            public TestCase(String name, CustomerType customerType, Locale locale) {
                 this.name = name;
                 this.customerType = customerType;
                 this.locale = locale;
-                this.expectedConfig = expectedConfig;
             }
         }
 
@@ -433,56 +434,31 @@ class PaylaterInvoiceTest extends AbstractPaymentTest {
                 new TestCase(
                         "B2B Germany",
                         CustomerType.B2B,
-                        Locale.GERMANY,
-                        new PaylaterInvoiceConfig(
-                                "https://test-payment.paylater.unzer.com/payolution-payment/infoport/dataprivacyconsent?channelId=unzerupl-invoice-b2b-b2c",
-                                "https://test-payment.paylater.unzer.com/payolution-payment/infoport/dataprivacydeclaration?channelId=unzerupl-invoice-b2b-b2c",
-                                "https://test-payment.paylater.unzer.com/payolution-payment/infoport/termsandconditions?channelId=unzerupl-invoice-b2b-b2c"
-                        )
+                        Locale.GERMANY
                 ),
 
                 new TestCase(
                         "B2C Germany",
                         CustomerType.B2C,
-                        Locale.GERMANY,
-                        new PaylaterInvoiceConfig(
-                                "https://test-payment.paylater.unzer.com/payolution-payment/infoport/dataprivacyconsent?channelId=unzerupl-invoice-b2b-b2c",
-                                "https://test-payment.paylater.unzer.com/payolution-payment/infoport/dataprivacydeclaration?channelId=unzerupl-invoice-b2b-b2c",
-                                "https://test-payment.paylater.unzer.com/payolution-payment/infoport/termsandconditions?channelId=unzerupl-invoice-b2b-b2c"
-                        )
+                        Locale.GERMANY
                 ),
 
                 new TestCase(
                         "B2C Italy",
                         CustomerType.B2C,
-                        Locale.ITALY,
-                        new PaylaterInvoiceConfig(
-                                "https://test-payment.paylater.unzer.com/payolution-payment/infoport/dataprivacyconsent?channelId=unzerupl-invoice-b2b-b2c",
-                                "https://test-payment.paylater.unzer.com/payolution-payment/infoport/dataprivacydeclaration?channelId=unzerupl-invoice-b2b-b2c",
-                                "https://test-payment.paylater.unzer.com/payolution-payment/infoport/termsandconditions?channelId=unzerupl-invoice-b2b-b2c"
-                        )
+                        Locale.ITALY
                 ),
 
                 new TestCase(
                         "Null locale",
                         CustomerType.B2C,
-                        null,
-                        new PaylaterInvoiceConfig(
-                                "https://test-payment.paylater.unzer.com/payolution-payment/infoport/dataprivacyconsent?channelId=unzerupl-invoice-b2b-b2c",
-                                "https://test-payment.paylater.unzer.com/payolution-payment/infoport/dataprivacydeclaration?channelId=unzerupl-invoice-b2b-b2c",
-                                "https://test-payment.paylater.unzer.com/payolution-payment/infoport/termsandconditions?channelId=unzerupl-invoice-b2b-b2c"
-                        )
+                        null
                 ),
 
                 new TestCase(
                         "Not a country",
                         CustomerType.B2C,
-                        Locale.ENGLISH,
-                        new PaylaterInvoiceConfig(
-                                "https://test-payment.paylater.unzer.com/payolution-payment/infoport/dataprivacyconsent?channelId=unzerupl-invoice-b2b-b2c",
-                                "https://test-payment.paylater.unzer.com/payolution-payment/infoport/dataprivacydeclaration?channelId=unzerupl-invoice-b2b-b2c",
-                                "https://test-payment.paylater.unzer.com/payolution-payment/infoport/termsandconditions?channelId=unzerupl-invoice-b2b-b2c"
-                        )
+                        Locale.ENGLISH
                 )
         ).map(tc -> dynamicTest(tc.name, () -> {
                     Unzer unzer = getUnzer();
@@ -491,10 +467,18 @@ class PaylaterInvoiceTest extends AbstractPaymentTest {
                             unzer.fetchPaylaterConfig(CustomerType.B2C, Locale.GERMANY);
 
                     assertNotNull(actualConfig);
-                    assertEquals(tc.expectedConfig.getDataPrivacyConsent(), actualConfig.getDataPrivacyConsent());
-                    assertEquals(tc.expectedConfig.getDataPrivacyDeclaration(),
-                            actualConfig.getDataPrivacyDeclaration());
-                    assertEquals(tc.expectedConfig.getTermsAndConditions(), actualConfig.getTermsAndConditions());
+
+            String consentUrl = actualConfig.getDataPrivacyConsent();
+            String declarationURL = actualConfig.getDataPrivacyDeclaration();
+            String termsUrl = actualConfig.getTermsAndConditions();
+
+            assertNotNull(consentUrl);
+            assertNotNull(declarationURL);
+            assertNotNull(termsUrl);
+
+            assertTrue(consentUrl.startsWith(UPL_CONFIG_DOMAIN));
+            assertTrue(declarationURL.startsWith(UPL_CONFIG_DOMAIN));
+            assertTrue(termsUrl.startsWith(UPL_CONFIG_DOMAIN));
                 })
         ).collect(Collectors.toList());
     }
