@@ -1,7 +1,36 @@
 package com.unzer.payment.communication.mapper;
 
-import com.unzer.payment.*;
-import com.unzer.payment.communication.json.*;
+import com.unzer.payment.Authorization;
+import com.unzer.payment.BasePayment;
+import com.unzer.payment.BaseTransaction;
+import com.unzer.payment.Cancel;
+import com.unzer.payment.CommercialSector;
+import com.unzer.payment.CompanyInfo;
+import com.unzer.payment.Customer;
+import com.unzer.payment.Linkpay;
+import com.unzer.payment.PaylaterInstallmentPlans;
+import com.unzer.payment.Payout;
+import com.unzer.payment.Paypage;
+import com.unzer.payment.Processing;
+import com.unzer.payment.Recurring;
+import com.unzer.payment.Shipment;
+import com.unzer.payment.communication.json.ApiAuthorization;
+import com.unzer.payment.communication.json.ApiCancel;
+import com.unzer.payment.communication.json.ApiCustomer;
+import com.unzer.payment.communication.json.ApiIdObject;
+import com.unzer.payment.communication.json.ApiInitPayment;
+import com.unzer.payment.communication.json.ApiLinkpay;
+import com.unzer.payment.communication.json.ApiObject;
+import com.unzer.payment.communication.json.ApiPayment;
+import com.unzer.payment.communication.json.ApiPayout;
+import com.unzer.payment.communication.json.ApiPaypage;
+import com.unzer.payment.communication.json.ApiRecurring;
+import com.unzer.payment.communication.json.ApiShipment;
+import com.unzer.payment.communication.json.JsonCompanyInfo;
+import com.unzer.payment.communication.json.JsonProcessing;
+import com.unzer.payment.communication.json.JsonResources;
+import com.unzer.payment.communication.json.JsonState;
+import com.unzer.payment.communication.json.TransactionStatus;
 import com.unzer.payment.communication.json.paylater.ApiInstallmentPlans;
 import com.unzer.payment.marketplace.MarketplaceCancel;
 import com.unzer.payment.paymenttypes.PaymentType;
@@ -480,7 +509,7 @@ public class ApiToSdkConverter {
             return null;
         }
 
-        if (src.getId() >= 0 && src.getId() <= 5) {
+        if (src.getId() >= 0 && src.getId() <= BasePayment.State.values().length - 1) {
             return BasePayment.State.values()[src.getId()];
         }
 
