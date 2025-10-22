@@ -509,7 +509,7 @@ public class ApiToSdkConverter {
             return null;
         }
 
-        if (src.getId() >= 0 && src.getId() <= 6) {
+        if (src.getId() >= 0 && src.getId() <= BasePayment.State.values().length - 1) {
             return BasePayment.State.values()[src.getId()];
         }
 
