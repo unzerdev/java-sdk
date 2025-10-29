@@ -6,6 +6,12 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres
 to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## [5.8.1](https://github.com/unzerdev/java-sdk/compare/5.8.0..5.8.1)
+
+## Changed
+
+* Fix the issue that payment state "create" is not mapped and returns `null` as a consequence.
+
 ## [5.8.0](https://github.com/unzerdev/java-sdk/compare/5.7.0..5.8.0)
 
 ## Added
