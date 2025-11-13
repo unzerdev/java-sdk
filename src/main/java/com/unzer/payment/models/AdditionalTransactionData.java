@@ -15,6 +15,7 @@ public class AdditionalTransactionData {
     private RiskData riskData;
     private PaypalData paypal;
     private WeroTransactionData wero;
+    private OnlineTransfereTransactionData onlineTransfer;
 
     /**
      * URL to the merchant's Terms and Conditions Page
