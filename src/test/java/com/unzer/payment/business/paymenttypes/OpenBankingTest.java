@@ -18,6 +18,7 @@ import static com.github.tomakehurst.wiremock.client.WireMock.jsonResponse;
 import static com.github.tomakehurst.wiremock.client.WireMock.post;
 import static com.github.tomakehurst.wiremock.client.WireMock.stubFor;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
 @WireMockTest(httpPort = 8080)
@@ -95,5 +96,8 @@ class OpenBankingTest {
 
 
         Charge charge = unzer.charge(BigDecimal.TEN, Currency.getInstance("EUR"), type);
+        assertNotNull(charge.getAdditionalTransactionData());
+        assertNotNull(charge.getAdditionalTransactionData().getOnlineTransfer());
+        assertEquals("2025-12-12 10:40:41", charge.getAdditionalTransactionData().getOnlineTransfer().getTargetDueDate());
     }
 }
