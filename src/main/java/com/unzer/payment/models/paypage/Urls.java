@@ -13,4 +13,5 @@ public class Urls {
     private String returnPending;
     private String returnFailure;
     private String returnCancel;
+    private String subscriptionAgreement;
 }
