@@ -84,6 +84,7 @@ class PaypageV2Test extends BearerAuthBaseTest {
         urls.setReturnPending("https://returnpending.com");
         urls.setReturnFailure("https://returnfailure.com");
         urls.setReturnCancel("https://returncancel.com");
+        urls.setSubscriptionAgreement("https://subscriptionagreement.com");
 
         PaypageV2 paypage = new PaypageV2(new BigDecimal("9.99"), "EUR", "charge");
         paypage.setUrls(urls);
