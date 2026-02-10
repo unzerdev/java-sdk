@@ -3,6 +3,10 @@
 
 name: Unit tests
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 on:
   pull_request:
   workflow_dispatch:
@@ -30,6 +34,7 @@ jobs:
           UNZER_NO3DS_PRIVATE_KEY: ${{ secrets.UNZER_NO3DS_PRIVATE_KEY }}
           UNZER_LEGACY_PRIVATE_KEY: ${{ secrets.UNZER_LEGACY_PRIVATE_KEY }}
           UNZER_ALT_LEGACY_PRIVATE_KEY: ${{ secrets.UNZER_ALT_LEGACY_PRIVATE_KEY }}
+          UNZER_ONE_PRIVATE_KEY: ${{ secrets.UNZER_ONE_PRIVATE_KEY }}
         run: |
           mvn -B test --batch-mode --fail-at-end \
           -DdefaultPublicKey="$UNZER_PUBLIC_KEY" \
