@@ -18,7 +18,6 @@ import org.junit.jupiter.api.TestFactory;
 
 import java.math.BigDecimal;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.Currency;
 import java.util.List;
@@ -155,14 +154,7 @@ class KlarnaTest extends AbstractPaymentTest {
                                         .setPrivacyPolicyUrl("https://unzer.com")
                                         .setTermsAndConditionsUrl("https://unzer.com")
                         ),
-
-                        Collections.singletonList(
-                                new PaymentError(
-                                        "system error( possible incorrect/missing input data)",
-                                        "An unexpected error occurred. Please contact us for more information.",
-                                        "COR.100.370.111"
-                                )
-                        )
+                        null
                 )
         ).map(tc -> dynamicTest(tc.name, () -> {
             Unzer unzer = getUnzer();

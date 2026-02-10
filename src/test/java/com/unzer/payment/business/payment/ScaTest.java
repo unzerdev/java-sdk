@@ -39,6 +39,8 @@ class ScaTest {
                 jsonResponse(getResponse("create-sca.json"), 200)));
         stubFor(get("/v1/payments/s-pay-123").willReturn(
                 jsonResponse(getResponse("fetch-payment.json"), 200)));
+        stubFor(get("/v1/payments/s-pay-123/sca/s-sca-1").willReturn(
+                jsonResponse(getResponse("fetch-sca.json"), 200)));
 
         Unzer unzer = new Unzer(new HttpClientMock(), "s-priv-key");
 
@@ -78,6 +80,8 @@ class ScaTest {
                 jsonResponse(getResponse("authorize-with-sca.json"), 200)));
         stubFor(get("/v1/payments/s-pay-123").willReturn(
                 jsonResponse(getResponse("fetch-payment.json"), 200)));
+        stubFor(get("/v1/payments/s-pay-123/sca/s-sca-1").willReturn(
+                jsonResponse(getResponse("fetch-sca.json"), 200)));
 
         Unzer unzer = new Unzer(new HttpClientMock(), "s-private-key");
 
@@ -97,6 +101,8 @@ class ScaTest {
                 jsonResponse(getResponse("charge-with-sca.json"), 200)));
         stubFor(get("/v1/payments/s-pay-123").willReturn(
                 jsonResponse(getResponse("fetch-payment.json"), 200)));
+        stubFor(get("/v1/payments/s-pay-123/sca/s-sca-1").willReturn(
+                jsonResponse(getResponse("fetch-sca.json"), 200)));
 
         Unzer unzer = new Unzer(new HttpClientMock(), "s-private-key");
 
