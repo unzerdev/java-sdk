@@ -1,0 +1,28 @@
+{
+  "id": "s-sca-1",
+  "isSuccess": true,
+  "isPending": false,
+  "isResumed": false,
+  "isError": false,
+  "redirectUrl": "https://payment.unzer.com/sca/redirect",
+  "message": {
+    "code": "COR.000.000.000",
+    "merchant": "SCA transaction created",
+    "customer": "Your SCA authentication has been initiated."
+  },
+  "amount": "100.0000",
+  "currency": "EUR",
+  "returnUrl": "https://unzer.com",
+  "date": "2024-01-31 10:00:00",
+  "resources": {
+    "paymentId": "s-pay-123",
+    "traceId": "abc123trace",
+    "typeId": "s-crd-123"
+  },
+  "paymentReference": "SCA-REF-001",
+  "processing": {
+    "uniqueId": "31HA07BC8150ABC7F0B65A2095CE0A83",
+    "shortId": "1234.5678.9012",
+    "traceId": "abc123trace"
+  }
+}
