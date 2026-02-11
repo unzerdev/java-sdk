@@ -41,7 +41,8 @@ jobs:
           -DdefaultPrivateKey="$UNZER_DEFAULT_PRIVATE_KEY" \
           -Dno3dsPrivateKey="$UNZER_NO3DS_PRIVATE_KEY" \
           -DlegacyPrivateKey="$UNZER_LEGACY_PRIVATE_KEY" \
-          -DaltLegacyPrivateKey="$UNZER_ALT_LEGACY_PRIVATE_KEY"
+          -DaltLegacyPrivateKey="$UNZER_ALT_LEGACY_PRIVATE_KEY" \
+          -DunzerOnePrivateKey="$UNZER_ONE_PRIVATE_KEY"
 
       - name: Publish Test Report
         if: success() || failure()
