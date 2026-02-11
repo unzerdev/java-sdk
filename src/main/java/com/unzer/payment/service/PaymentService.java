@@ -497,7 +497,6 @@ public class PaymentService {
         ApiSCA jsonSca = jsonParser.fromJson(response, ApiSCA.class);
         sca = (Sca) apiToSdkMapper.mapToBusinessObject(jsonSca, sca);
         sca.setPayment(fetchPayment(jsonSca.getResources().getPaymentId()));
-        sca.setUnzer(unzer);
         return sca;
     }
 
@@ -522,7 +521,7 @@ public class PaymentService {
     }
 
     /**
-     * Authorize with SCA - returns Authorization object.
+     * Authorize on an SCA - returns an Authorization object.
      * POST /v1/payments/{paymentId}/sca/authorize
      */
     public Authorization authorizeSca(String paymentId, Authorization authorization) throws HttpCommunicationException {
@@ -544,7 +543,7 @@ public class PaymentService {
     }
 
     /**
-     * Charge with SCA - returns Charge object.
+     * Charge on an SCA - returns Charge object.
      * POST /v1/payments/{paymentId}/sca/charges
      */
     public Charge chargeSca(String paymentId, Charge charge) throws HttpCommunicationException {

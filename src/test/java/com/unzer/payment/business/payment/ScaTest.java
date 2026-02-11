@@ -8,9 +8,12 @@ import com.unzer.payment.Unzer;
 import com.unzer.payment.communication.HttpClientMock;
 import org.junit.jupiter.api.Test;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.math.BigDecimal;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.util.Currency;
 import java.util.Objects;
 import java.util.Scanner;
@@ -26,11 +29,13 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 @WireMockTest(httpPort = 8080)
 class ScaTest {
     private static String getResponse(String response) {
-        return new Scanner(
-                Objects.requireNonNull(
-                        ScaTest.class.getResourceAsStream("/api-response/sca/" + response)))
-                .useDelimiter("\\A")
-                .next();
+        try (InputStream is = Objects.requireNonNull(
+                ScaTest.class.getResourceAsStream("/api-response/sca/" + response));
+             Scanner scanner = new Scanner(is, StandardCharsets.UTF_8.name())) {
+            return scanner.useDelimiter("\\A").next();
+        } catch (IOException e) {
+            throw new RuntimeException("Failed to read test response file: " + response, e);
+        }
     }
 
     @Test
