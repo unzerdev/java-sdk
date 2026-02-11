@@ -546,8 +546,8 @@ public class Unzer {
      * @return SCA transaction object
      * @throws HttpCommunicationException if communication fails
      */
-    public Sca fetchSCA(String paymentId, String scaId) throws HttpCommunicationException {
-        return paymentService.fetchSCA(paymentId, scaId);
+    public Sca fetchSca(String paymentId, String scaId) throws HttpCommunicationException {
+        return paymentService.fetchSca(paymentId, scaId);
     }
 
     /**
@@ -559,7 +559,7 @@ public class Unzer {
      * @throws HttpCommunicationException if communication fails
      */
     public Authorization authorizeSca(String paymentId, Authorization authorization) throws HttpCommunicationException {
-        return paymentService.authorizeWithSCA(paymentId, authorization);
+        return paymentService.authorizeSca(paymentId, authorization);
     }
 
     /**
@@ -571,7 +571,7 @@ public class Unzer {
      * @throws HttpCommunicationException if communication fails
      */
     public Charge chargeSca(String paymentId, Charge charge) throws HttpCommunicationException {
-        return paymentService.chargeWithSCA(paymentId, charge);
+        return paymentService.chargeSca(paymentId, charge);
     }
 
     /**

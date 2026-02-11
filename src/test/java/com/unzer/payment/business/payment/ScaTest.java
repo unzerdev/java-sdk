@@ -67,7 +67,7 @@ class ScaTest {
                 jsonResponse(getResponse("fetch-payment.json"), 200)));
 
         Unzer unzer = new Unzer(new HttpClientMock(), "s-private-key");
-        Sca sca = unzer.fetchSCA("s-pay-123", "s-sca-1");
+        Sca sca = unzer.fetchSca("s-pay-123", "s-sca-1");
 
         assertNotNull(sca);
         assertEquals("s-sca-1", sca.getId());
@@ -75,7 +75,7 @@ class ScaTest {
     }
 
     @Test
-    void authorizeWithSCA_returns_authorization() {
+    void authorizeSca_returns_authorization() {
         stubFor(post("/v1/payments/s-pay-123/sca/authorize").willReturn(
                 jsonResponse(getResponse("authorize-with-sca.json"), 200)));
         stubFor(get("/v1/payments/s-pay-123").willReturn(
@@ -96,7 +96,7 @@ class ScaTest {
     }
 
     @Test
-    void chargeWithSCA_returns_charge() {
+    void chargeSca_returns_charge() {
         stubFor(post("/v1/payments/s-pay-123/sca/charges").willReturn(
                 jsonResponse(getResponse("charge-with-sca.json"), 200)));
         stubFor(get("/v1/payments/s-pay-123").willReturn(

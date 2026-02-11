@@ -505,7 +505,7 @@ public class PaymentService {
      * Fetch SCA transaction.
      * GET /v1/payments/{paymentId}/sca/{scaId}
      */
-    public Sca fetchSCA(String paymentId, String scaId) throws HttpCommunicationException {
+    public Sca fetchSca(String paymentId, String scaId) throws HttpCommunicationException {
         Sca sca = new Sca();
         sca.setPaymentId(paymentId);
         sca.setId(scaId);
@@ -525,7 +525,7 @@ public class PaymentService {
      * Authorize with SCA - returns Authorization object.
      * POST /v1/payments/{paymentId}/sca/authorize
      */
-    public Authorization authorizeWithSCA(String paymentId, Authorization authorization) throws HttpCommunicationException {
+    public Authorization authorizeSca(String paymentId, Authorization authorization) throws HttpCommunicationException {
         authorization.setPaymentId(paymentId);
 
         String url = urlUtil.getRestUrl() + "payments/" + paymentId + "/sca/authorize";
@@ -547,7 +547,7 @@ public class PaymentService {
      * Charge with SCA - returns Charge object.
      * POST /v1/payments/{paymentId}/sca/charges
      */
-    public Charge chargeWithSCA(String paymentId, Charge charge) throws HttpCommunicationException {
+    public Charge chargeSca(String paymentId, Charge charge) throws HttpCommunicationException {
         charge.setPaymentId(paymentId);
 
         String url = urlUtil.getRestUrl() + "payments/" + paymentId + "/sca/charges";
@@ -615,7 +615,7 @@ public class PaymentService {
         );
 
         sdkPayment.setSca(
-                fetchSCA(
+                fetchSca(
                         sdkPayment,
                         getScaFromTransactions(apiPayment.getTransactions())
                 )
@@ -690,7 +690,7 @@ public class PaymentService {
         return authorizeList.isEmpty() ? null : authorizeList.get(0);
     }
 
-    private Sca fetchSCA(Payment payment, ApiTransaction apiTransaction)
+    private Sca fetchSca(Payment payment, ApiTransaction apiTransaction)
             throws HttpCommunicationException {
         if (apiTransaction == null) {
             return null;
