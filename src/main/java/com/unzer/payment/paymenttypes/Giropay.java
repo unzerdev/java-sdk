@@ -15,7 +15,9 @@ import java.util.Currency;
  * Giropay business object
  *
  * @author Unzer E-Com GmbH
+ * @deprecated Giropay payment type is no longer supported and will be removed in a future version.
  */
+@Deprecated
 public class Giropay extends BasePaymentType {
     @Override
     public String getResourceUrl() {
@@ -44,5 +46,4 @@ public class Giropay extends BasePaymentType {
             throws HttpCommunicationException {
         return getUnzer().charge(amount, currency, this, returnUrl, customer);
     }
-
 }
