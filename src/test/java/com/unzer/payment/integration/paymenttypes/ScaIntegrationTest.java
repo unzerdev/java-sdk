@@ -2,6 +2,7 @@ package com.unzer.payment.integration.paymenttypes;
 
 import com.unzer.payment.Authorization;
 import com.unzer.payment.Charge;
+import com.unzer.payment.Payment;
 import com.unzer.payment.PaymentException;
 import com.unzer.payment.Sca;
 import com.unzer.payment.Unzer;
@@ -51,6 +52,22 @@ class ScaIntegrationTest extends AbstractPaymentTest {
         assertNotNull(fetched);
         assertEquals(created.getId(), fetched.getId());
         assertEquals(created.getPaymentId(), fetched.getPaymentId());
+    }
+
+    @Test
+    void testFetchPaymentWithSca() {
+        // Create SCA transaction
+        Sca sca = createCardAndSca();
+        assertScaCreated(sca);
+
+        // Fetch the payment - SCA should be included
+        Payment payment = getUnzer().fetchPayment(sca.getPaymentId());
+
+        assertNotNull(payment, "Payment should not be null");
+        assertNotNull(payment.getSca(), "Payment should contain SCA transaction");
+        assertEquals(sca.getId(), payment.getSca().getId(), "SCA ID should match");
+        assertEquals(sca.getPaymentId(), payment.getSca().getPaymentId(), "Payment ID should match");
+        assertEquals(sca.getProcessing().getUniqueId(), payment.getSca().getProcessing().getUniqueId(), "Unique ID should match");
     }
 
     @ParameterizedTest(name = "Incomplete SCA should fail for {0}")
