@@ -21,8 +21,8 @@
   "transactions": [
     {
       "date": "2024-01-31 10:00:00",
-      "type": "sca",
-      "url": "https://sbx-api.unzer.com/v1/payments/s-pay-123/sca/s-sca-1",
+      "type": "strong_customer_authentication",
+      "url": "http://localhost:8080/v1/payments/s-pay-123/sca/s-sca-1",
       "amount": "100.0000"
     }
   ]

@@ -34,8 +34,8 @@ class ScaIntegrationTest extends AbstractPaymentTest {
     }
 
     @Test
-    void testCreateSCA() {
-        Sca result = createCardAndSCA();
+    void testCreateSca() {
+        Sca result = createCardAndSca();
 
         assertNotNull(result);
         assertNotNull(result.getId());
@@ -45,7 +45,7 @@ class ScaIntegrationTest extends AbstractPaymentTest {
 
     @Test
     void testFetchSca() {
-        Sca created = createCardAndSCA();
+        Sca created = createCardAndSca();
         Sca fetched = getUnzer().fetchSca(created.getPaymentId(), created.getId());
 
         assertNotNull(fetched);
@@ -56,7 +56,7 @@ class ScaIntegrationTest extends AbstractPaymentTest {
     @ParameterizedTest(name = "Incomplete SCA should fail for {0}")
     @ValueSource(strings = {"authorize", "charge"})
     void testPaymentWithIncompleteSCA(String operationType) {
-        Sca sca = createCardAndSCA();
+        Sca sca = createCardAndSca();
         assertScaCreated(sca);
 
         // Use the cardId from the SCA transaction
@@ -84,7 +84,7 @@ class ScaIntegrationTest extends AbstractPaymentTest {
 
     // Helper methods
 
-    private Sca createCardAndSCA() {
+    private Sca createCardAndSca() {
         Card card = new Card(VISA_3DS_ENABLED_CARD_NUMBER, TEST_CARD_EXPIRY, TEST_CARD_CVC);
         card = getUnzer().createPaymentType(card);
 

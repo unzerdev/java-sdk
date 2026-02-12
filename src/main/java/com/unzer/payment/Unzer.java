@@ -547,7 +547,7 @@ public class Unzer {
      * @throws HttpCommunicationException if communication fails
      */
     public Sca fetchSca(String paymentId, String scaId) throws HttpCommunicationException {
-        return paymentService.fetchSca(paymentId, scaId);
+        return paymentService.fetchSca(paymentId);
     }
 
     /**
