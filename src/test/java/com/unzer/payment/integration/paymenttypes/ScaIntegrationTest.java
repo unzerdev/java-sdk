@@ -46,12 +46,12 @@ class ScaIntegrationTest extends AbstractPaymentTest {
 
     @Test
     void testFetchSca() {
-        Sca created = createCardAndSca();
-        Sca fetched = getUnzer().fetchSca(created.getPaymentId(), created.getId());
+        Sca sca = createCardAndSca();
+        Sca fetched = getUnzer().fetchSca(sca.getPaymentId());
 
         assertNotNull(fetched);
-        assertEquals(created.getId(), fetched.getId());
-        assertEquals(created.getPaymentId(), fetched.getPaymentId());
+        assertEquals(sca.getId(), fetched.getId());
+        assertEquals(sca.getPaymentId(), fetched.getPaymentId());
     }
 
     @Test

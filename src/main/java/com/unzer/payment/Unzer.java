@@ -542,11 +542,10 @@ public class Unzer {
      * Fetch existing SCA transaction.
      *
      * @param paymentId Payment ID
-     * @param scaId     SCA transaction ID
      * @return SCA transaction object
      * @throws HttpCommunicationException if communication fails
      */
-    public Sca fetchSca(String paymentId, String scaId) throws HttpCommunicationException {
+    public Sca fetchSca(String paymentId) throws HttpCommunicationException {
         return paymentService.fetchSca(paymentId);
     }
 

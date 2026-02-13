@@ -72,7 +72,7 @@ class ScaTest {
                 jsonResponse(getResponse("fetch-payment.json"), 200)));
 
         Unzer unzer = new Unzer(new HttpClientMock(), "s-private-key");
-        Sca sca = unzer.fetchSca("s-pay-123", "s-sca-1");
+        Sca sca = unzer.fetchSca("s-pay-123");
 
         assertNotNull(sca);
         assertEquals("s-sca-1", sca.getId());
