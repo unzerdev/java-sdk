@@ -11,7 +11,7 @@ import java.util.Currency;
 import java.util.List;
 
 /**
- * Business object for a Payment. A Payment is the object that holds toghether several
+ * Business object for a Payment. A Payment is the object that holds together several
  * requests over time. This means that a payment belongs to one offer from the merchant.
  * <p>
  * Within the Payment you also find the list of Charges, Cancels and the Authorization object.
@@ -20,6 +20,7 @@ import java.util.List;
  */
 public class Payment extends BasePayment {
 
+    private Sca sca;
     private Authorization authorization;
     private List<Charge> chargesList;
     private List<Cancel> cancelList;
@@ -235,6 +236,14 @@ public class Payment extends BasePayment {
 
     public void setChargebackList(List<Chargeback> chargebackList) {
         this.chargebackList = chargebackList;
+    }
+
+    public Sca getSca() {
+        return sca;
+    }
+
+    public void setSca(Sca sca) {
+        this.sca = sca;
     }
 
     @Override

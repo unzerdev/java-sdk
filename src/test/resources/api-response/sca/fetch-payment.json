@@ -1,0 +1,29 @@
+{
+  "id": "s-pay-123",
+  "state": {
+    "id": 0,
+    "name": "pending"
+  },
+  "amount": {
+    "total": "100.0000",
+    "charged": "0.0000",
+    "canceled": "0.0000",
+    "remaining": "100.0000"
+  },
+  "currency": "EUR",
+  "orderId": "order-123",
+  "resources": {
+    "customerId": "",
+    "paymentId": "s-pay-123",
+    "typeId": "s-crd-123",
+    "traceId": "trace-123"
+  },
+  "transactions": [
+    {
+      "date": "2024-01-31 10:00:00",
+      "type": "strong_customer_authentication",
+      "url": "http://localhost:8080/v1/payments/s-pay-123/sca/s-sca-1",
+      "amount": "100.0000"
+    }
+  ]
+}

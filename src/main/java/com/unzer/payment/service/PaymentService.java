@@ -16,6 +16,7 @@ import com.unzer.payment.PaymentException;
 import com.unzer.payment.Payout;
 import com.unzer.payment.Preauthorization;
 import com.unzer.payment.Recurring;
+import com.unzer.payment.Sca;
 import com.unzer.payment.Shipment;
 import com.unzer.payment.Unzer;
 import com.unzer.payment.business.paymenttypes.HirePurchaseDirectDebit;
@@ -47,6 +48,7 @@ import com.unzer.payment.communication.json.ApiPayout;
 import com.unzer.payment.communication.json.ApiPaypal;
 import com.unzer.payment.communication.json.ApiPis;
 import com.unzer.payment.communication.json.ApiRecurring;
+import com.unzer.payment.communication.json.ApiSCA;
 import com.unzer.payment.communication.json.ApiSepaDirectDebit;
 import com.unzer.payment.communication.json.ApiShipment;
 import com.unzer.payment.communication.json.ApiTransaction;
@@ -479,6 +481,77 @@ public class PaymentService {
         return authorization;
     }
 
+    /**
+     * Create SCA (Strong Customer Authentication) transaction.
+     * POST /v1/payments/sca
+     */
+    public Sca sca(Sca sca) throws HttpCommunicationException {
+        String url = urlUtil.getRestUrl() + "payments/sca";
+
+        String response = restCommunication.httpPost(
+                url,
+                unzer.getPrivateKey(),
+                apiToSdkMapper.map(sca)
+        );
+
+        ApiSCA jsonSca = jsonParser.fromJson(response, ApiSCA.class);
+        sca = (Sca) apiToSdkMapper.mapToBusinessObject(jsonSca, sca);
+        sca.setPayment(fetchPayment(jsonSca.getResources().getPaymentId()));
+        return sca;
+    }
+
+    /**
+     * Fetch SCA transaction.
+     * GET /v1/payments/{paymentId}/sca/{scaId}
+     */
+    public Sca fetchSca(String paymentId) throws HttpCommunicationException {
+        return fetchPayment(paymentId).getSca();
+    }
+
+    /**
+     * Authorize on an SCA - returns an Authorization object.
+     * POST /v1/payments/{paymentId}/sca/authorize
+     */
+    public Authorization authorizeSca(String paymentId, Authorization authorization) throws HttpCommunicationException {
+        authorization.setPaymentId(paymentId);
+
+        String url = urlUtil.getRestUrl() + "payments/" + paymentId + "/sca/authorize";
+
+        String response = restCommunication.httpPost(
+                url,
+                unzer.getPrivateKey(),
+                apiToSdkMapper.map(authorization)
+        );
+
+        ApiAuthorization jsonAuth = jsonParser.fromJson(response, ApiAuthorization.class);
+        authorization = (Authorization) apiToSdkMapper.mapToBusinessObject(jsonAuth, authorization);
+        authorization.setPayment(fetchPayment(paymentId));
+        authorization.setUnzer(unzer);
+        return authorization;
+    }
+
+    /**
+     * Charge on an SCA - returns Charge object.
+     * POST /v1/payments/{paymentId}/sca/charges
+     */
+    public Charge chargeSca(String paymentId, Charge charge) throws HttpCommunicationException {
+        charge.setPaymentId(paymentId);
+
+        String url = urlUtil.getRestUrl() + "payments/" + paymentId + "/sca/charges";
+
+        String response = restCommunication.httpPost(
+                url,
+                unzer.getPrivateKey(),
+                apiToSdkMapper.map(charge)
+        );
+
+        ApiCharge jsonCharge = jsonParser.fromJson(response, ApiCharge.class);
+        charge = (Charge) apiToSdkMapper.mapToBusinessObject(jsonCharge, charge);
+        charge.setPayment(fetchPayment(paymentId));
+        charge.setUnzer(unzer);
+        return charge;
+    }
+
     public Payment fetchPayment(String paymentId) throws HttpCommunicationException {
         Payment payment = new Payment(unzer);
         return fetchPayment(payment, paymentId);
@@ -525,6 +598,13 @@ public class PaymentService {
                 fetchChargebackList(
                         sdkPayment,
                         getTypedTransactions(apiPayment.getTransactions(), TransactionType.CHARGEBACK)
+                )
+        );
+
+        sdkPayment.setSca(
+                fetchSca(
+                        sdkPayment,
+                        getScaFromTransactions(apiPayment.getTransactions())
                 )
         );
         return sdkPayment;
@@ -595,6 +675,49 @@ public class PaymentService {
                 )
                 .collect(Collectors.toList());
         return authorizeList.isEmpty() ? null : authorizeList.get(0);
+    }
+
+    private Sca fetchSca(Payment payment, ApiTransaction apiTransaction)
+            throws HttpCommunicationException {
+        if (apiTransaction == null) {
+            return null;
+        }
+
+        Sca sca = new Sca();
+
+        // Workaround: URL may have double slash instead of /sca/
+        String urlString = updateScaFetchUrl(apiTransaction);
+
+        String response = restCommunication.httpGet(
+                urlString,
+                unzer.getPrivateKey()
+        );
+
+        ApiSCA jsonSca = jsonParser.fromJson(response, ApiSCA.class);
+        sca = (Sca) apiToSdkMapper.mapToBusinessObject(jsonSca, sca);
+        sca.setPayment(payment);
+        sca.setResourceUrl(apiTransaction.getUrl());
+        sca.setType(apiTransaction.getType());
+        return sca;
+    }
+
+    /**
+     * // e.g., "/payments/s-pay-123//s-sca-1" or "/payments/p-pay-123//p-sca-1" should be "/payments/{id}/sca/{sca-id}"
+     *
+     * @param apiTransaction
+     * @return
+     */
+    private static String updateScaFetchUrl(ApiTransaction apiTransaction) {
+        String urlString = apiTransaction.getUrl().toString();
+        if (urlString.contains("/payments/") && urlString.contains("-sca-")) {
+            urlString = urlString.replaceAll("//([sp]-sca-)", "/sca/$1");
+        }
+        return urlString;
+    }
+
+    private ApiTransaction getScaFromTransactions(List<ApiTransaction> transactions) {
+        List<ApiTransaction> scaList = getTypedTransactions(transactions, TransactionType.STRONG_CUSTOMER_AUTHENTICATION);
+        return scaList.isEmpty() ? null : scaList.get(0);
     }
 
     private List<Charge> fetchChargeList(
@@ -954,9 +1077,13 @@ public class PaymentService {
     }
 
     protected enum TransactionType {
-        AUTHORIZE, PREAUTHORIZE, CHARGE, CHARGEBACK, PAYOUT, CANCEL_AUTHORIZE, CANCEL_CHARGE;
+        AUTHORIZE, PREAUTHORIZE, CHARGE, CHARGEBACK, PAYOUT, CANCEL_AUTHORIZE, CANCEL_CHARGE, STRONG_CUSTOMER_AUTHENTICATION;
 
         public String apiName() {
+            // STRONG_CUSTOMER_AUTHENTICATION uses underscores, not hyphens
+            if (this == STRONG_CUSTOMER_AUTHENTICATION) {
+                return "strong_customer_authentication";
+            }
             return this.name().toLowerCase().replace("_", "-");
         }
     }

@@ -508,6 +508,72 @@ public class Unzer {
     }
 
     /**
+     * Create an SCA transaction at the root level.
+     *
+     * @param sca SCA transaction object
+     * @return SCA with paymentId and sca id
+     * @throws HttpCommunicationException if communication fails
+     */
+    public Sca sca(Sca sca) throws HttpCommunicationException {
+        return paymentService.sca(sca);
+    }
+
+    /**
+     * Create an SCA transaction with convenience parameters.
+     *
+     * @param amount    Amount for the SCA
+     * @param currency  Currency for the SCA
+     * @param typeId    Payment type ID
+     * @param returnUrl Return URL after SCA completion
+     * @return SCA with paymentId and sca id
+     * @throws HttpCommunicationException if communication fails
+     */
+    public Sca sca(BigDecimal amount, Currency currency, String typeId, URL returnUrl)
+            throws HttpCommunicationException {
+        Sca sca = new Sca();
+        sca.setAmount(amount);
+        sca.setCurrency(currency);
+        sca.setTypeId(typeId);
+        sca.setReturnUrl(returnUrl);
+        return paymentService.sca(sca);
+    }
+
+    /**
+     * Fetch existing SCA transaction.
+     *
+     * @param paymentId Payment ID
+     * @return SCA transaction object
+     * @throws HttpCommunicationException if communication fails
+     */
+    public Sca fetchSca(String paymentId) throws HttpCommunicationException {
+        return paymentService.fetchSca(paymentId);
+    }
+
+    /**
+     * Authorize with SCA.
+     *
+     * @param paymentId     Payment ID
+     * @param authorization Authorization object with authorization details
+     * @return Authorization resulting from the SCA
+     * @throws HttpCommunicationException if communication fails
+     */
+    public Authorization authorizeSca(String paymentId, Authorization authorization) throws HttpCommunicationException {
+        return paymentService.authorizeSca(paymentId, authorization);
+    }
+
+    /**
+     * Charge with SCA.
+     *
+     * @param paymentId Payment ID
+     * @param charge    Charge object with charge details
+     * @return Charge resulting from the SCA
+     * @throws HttpCommunicationException if communication fails
+     */
+    public Charge chargeSca(String paymentId, Charge charge) throws HttpCommunicationException {
+        return paymentService.chargeSca(paymentId, charge);
+    }
+
+    /**
      * Charge call with a typeId that was created using the Javascript or Mobile SDK
      *
      * @param amount   Amount usd for the charge
