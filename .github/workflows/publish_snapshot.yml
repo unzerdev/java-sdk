@@ -1,0 +1,97 @@
+name: "[Manual] Publish Snapshot Version"
+on:
+  workflow_dispatch:
+    inputs:
+      version_increment:
+        description: 'Version part to increment (patch, minor, major)'
+        required: true
+        default: 'patch'
+        type: choice
+        options:
+          - patch
+          - minor
+          - major
+
+jobs:
+  publish-snapshot:
+    name: Publish Snapshot to Maven Central
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Maven Central Repository
+        uses: actions/setup-java@v3
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+          cache: maven
+          server-id: central
+          server-username: MAVEN_USERNAME
+          server-password: MAVEN_PASSWORD
+          gpg-private-key: ${{ secrets.GPG_PRIVATE_KEY }}
+          gpg-passphrase: GPG_PASSPHRASE
+
+      - name: Get current version
+        id: get_version
+        run: |
+          CURRENT_VERSION=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)
+          echo "current_version=$CURRENT_VERSION" >> $GITHUB_OUTPUT
+          echo "Current version: $CURRENT_VERSION"
+
+      - name: Calculate next snapshot version
+        id: calc_version
+        run: |
+          CURRENT_VERSION="${{ steps.get_version.outputs.current_version }}"
+          # Remove -SNAPSHOT if it exists
+          BASE_VERSION="${CURRENT_VERSION%-SNAPSHOT}"
+
+          # Split version into parts
+          IFS='.' read -r major minor patch <<< "$BASE_VERSION"
+
+          # Increment based on input
+          case "${{ github.event.inputs.version_increment }}" in
+            major)
+              major=$((major + 1))
+              minor=0
+              patch=0
+              ;;
+            minor)
+              minor=$((minor + 1))
+              patch=0
+              ;;
+            patch)
+              patch=$((patch + 1))
+              ;;
+          esac
+
+          NEW_VERSION="${major}.${minor}.${patch}-SNAPSHOT"
+          echo "snapshot_version=$NEW_VERSION" >> $GITHUB_OUTPUT
+          echo "Next snapshot version: $NEW_VERSION"
+
+      - name: Update version in pom.xml
+        run: |
+          mvn versions:set -DnewVersion=${{ steps.calc_version.outputs.snapshot_version }} -DgenerateBackupPoms=false
+
+      - name: Verify version update
+        run: |
+          NEW_VERSION=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)
+          echo "Updated version: $NEW_VERSION"
+          if [ "$NEW_VERSION" != "${{ steps.calc_version.outputs.snapshot_version }}" ]; then
+            echo "Version update failed!"
+            exit 1
+          fi
+
+      - name: Build and deploy snapshot
+        run: mvn --batch-mode -DskipTests=true clean deploy
+        env:
+          MAVEN_USERNAME: ${{ secrets.MAVEN_CENTRAL_PUBLISH_USER }}
+          MAVEN_PASSWORD: ${{ secrets.MAVEN_CENTRAL_PUBLISH_TOKEN }}
+          GPG_PASSPHRASE: ${{ secrets.GPG_PASSPHRASE }}
+
+      - name: Summary
+        run: |
+          echo "### Snapshot Published! :rocket:" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "**Version:** \`${{ steps.calc_version.outputs.snapshot_version }}\`" >> $GITHUB_STEP_SUMMARY
+          echo "**Current Version:** \`${{ steps.get_version.outputs.current_version }}\`" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "The snapshot version is now available in Maven Central Snapshots repository." >> $GITHUB_STEP_SUMMARY
