@@ -6,6 +6,20 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres
 to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## [5.9.0](https://github.com/unzerdev/java-sdk/compare/5.8.2..5.9.0)
+
+### Added
+
+* Added support for SCA (Strong Customer Authentication) transaction type.
+    * New `SCA` business object for handling SCA transactions
+    * New methods in `Unzer` facade: `sca()`, `fetchSCA()`, `authorizeWithSCA()`, `chargeWithSCA()`
+    * SCA transactions can be used for 3DS2 authentication flows
+* Added `subscriptionAgreement` URL field to PayPage V2 request (`com.unzer.payment.resources.PaypageV2`).
+
+### Deprecated
+
+* Deprecated Giropay payment type (`com.unzer.payment.paymenttypes.Giropay`).
+
 ## [5.8.2](https://github.com/unzerdev/java-sdk/compare/5.8.1..5.8.2)
 
 ## Changed
