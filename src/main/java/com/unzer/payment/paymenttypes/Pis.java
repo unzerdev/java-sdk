@@ -12,10 +12,12 @@ import java.net.URL;
 import java.util.Currency;
 
 /**
- * Paypal business object
+ * Pis business object
  *
  * @author Unzer E-Com GmbH
+ * @deprecated PIS (Unzer Bank Transfer) payment type is no longer supported and will be removed in a future version.
  */
+@Deprecated
 public class Pis extends BasePaymentType {
 
     private String iban;
