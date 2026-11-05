@@ -33,6 +33,16 @@ class SepaDirectDebitTest extends AbstractPaymentTest {
     }
 
     @Test
+    void testCreateRecurringSepaDirectDebitType() {
+        Unzer unzer = getUnzer(Keys.LEGACY_PRIVATE_KEY);
+        SepaDirectDebit sdd = unzer.createPaymentType(getSepaDirectDebit().recurring(true));
+        assertNotNull(sdd.getId());
+
+        SepaDirectDebit fetchedSdd = (SepaDirectDebit) unzer.fetchPaymentType(sdd.getId());
+        assertEquals(Boolean.TRUE, fetchedSdd.getRecurring());
+    }
+
+    @Test
     void testChargeSepaDirectDebitType() {
         Unzer unzer = getUnzer(Keys.LEGACY_PRIVATE_KEY);
         SepaDirectDebit sdd = unzer.createPaymentType(getSepaDirectDebit());
