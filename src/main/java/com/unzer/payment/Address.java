@@ -12,6 +12,7 @@ public class Address {
     private String zip;
     private String city;
     private String country;
+    private String company;
 
     public String getName() {
         return name;
@@ -64,6 +65,15 @@ public class Address {
 
     public Address setCountry(String country) {
         this.country = country;
+        return this;
+    }
+
+    public String getCompany() {
+        return company;
+    }
+
+    public Address setCompany(String company) {
+        this.company = company;
         return this;
     }
 
