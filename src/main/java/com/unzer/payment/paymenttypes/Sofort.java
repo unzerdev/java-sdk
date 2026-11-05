@@ -11,6 +11,13 @@ import java.math.BigDecimal;
 import java.net.URL;
 import java.util.Currency;
 
+/**
+ * Sofort business object
+ *
+ * @author Unzer E-Com GmbH
+ * @deprecated Sofort payment type is no longer supported and will be removed in a future version.
+ */
+@Deprecated
 public class Sofort extends BasePaymentType {
 
     @Override
