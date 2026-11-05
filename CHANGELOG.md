@@ -6,6 +6,15 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres
 to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+
+### Deprecated
+
+* Deprecated PIS / Unzer Bank Transfer payment type (`com.unzer.payment.paymenttypes.Pis`)
+  and the corresponding `PaymentTypeEnum.PIS` constant. This does **not** affect the separate
+  Open Banking payment type (`com.unzer.payment.paymenttypes.OpenBanking` /
+  `PaymentTypeEnum.OPEN_BANKING`), which remains fully supported.
+
 ## [5.9.0](https://github.com/unzerdev/java-sdk/compare/5.8.2..5.9.0)
 
 ### Added
