@@ -6,6 +6,12 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres
 to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+
+### Added
+
+* Added optional `company` field to `com.unzer.payment.Address` (used for both billing and shipping addresses). The field is nullable and omitted from the request when unset.
+
 ## [5.9.0](https://github.com/unzerdev/java-sdk/compare/5.8.2..5.9.0)
 
 ### Added
