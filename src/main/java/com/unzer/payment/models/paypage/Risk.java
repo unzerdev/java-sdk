@@ -13,5 +13,5 @@ public class Risk {
     private Date registrationDate;
     private String customerGroup;
     private Integer confirmedOrders;
-    private double confirmedAmount;
+    private Double confirmedAmount;
 }
