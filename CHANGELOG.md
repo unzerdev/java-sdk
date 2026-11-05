@@ -6,7 +6,12 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres
 to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
-## [Unreleased]
+## [5.10.0](https://github.com/unzerdev/java-sdk/compare/5.9.0..5.10.0)
+
+### Added
+
+* `recurring` flag on `SepaDirectDebit` (`com.unzer.payment.paymenttypes.SepaDirectDebit`) for registering a payment type for recurring (mandate-based) collection.
+* Optional `company` field on `Address` (`com.unzer.payment.Address`), used for billing and shipping addresses.
 
 ### Deprecated
 
@@ -14,6 +19,11 @@ to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
   and the corresponding `PaymentTypeEnum.PIS` constant. This does **not** affect the separate
   Open Banking payment type (`com.unzer.payment.paymenttypes.OpenBanking` /
   `PaymentTypeEnum.OPEN_BANKING`), which remains fully supported.
+* Deprecated `Sofort` payment type (`com.unzer.payment.paymenttypes.Sofort`) and the `PaymentTypeEnum` constants `SOFORT`, `GIROPAY`, `INVOICE` and `HIRE_PURCHASE_RATE_PLAN`. Use `PaylaterInvoice` instead of Invoice and `PaylaterInstallment` instead of Hire Purchase.
+
+### Fixed
+
+* `confirmedAmount` on the PayPage V2 `Risk` object (`com.unzer.payment.models.paypage.Risk`) is now a nullable `Double` and is omitted from the request body when unset, instead of always defaulting to `0.0`.
 
 ## [5.9.0](https://github.com/unzerdev/java-sdk/compare/5.8.2..5.9.0)
 
