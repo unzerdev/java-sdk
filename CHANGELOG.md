@@ -6,12 +6,6 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres
 to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
-## [Unreleased]
-
-### Fixed
-
-* `confirmedAmount` on the PayPage V2 `Risk` object (`com.unzer.payment.models.paypage.Risk`) is now a nullable `Double` and is omitted from the request body when it was never set, instead of always defaulting to `0.0`.
-
 ## [5.9.0](https://github.com/unzerdev/java-sdk/compare/5.8.2..5.9.0)
 
 ### Added
