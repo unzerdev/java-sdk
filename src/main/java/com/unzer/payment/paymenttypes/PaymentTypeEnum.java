@@ -6,9 +6,11 @@ public enum PaymentTypeEnum {
     CARD("crd"),
     CLICK_TO_PAY("ctp"),
     EPS("eps"),
+    @Deprecated
     GIROPAY("gro"),
     GOOGLE_PAY("gop"),
     IDEAL("idl"),
+    @Deprecated
     INVOICE("ivc"),
     @Deprecated
     INVOICE_GUARANTEED("ivg"),
@@ -25,11 +27,13 @@ public enum PaymentTypeEnum {
     SEPA_DIRECT_DEBIT_GUARANTEED("ddg"),
     @Deprecated
     SEPA_DIRECT_DEBIT_SECURED("dds"),
+    @Deprecated
     SOFORT("sft"),
     PIS("pis"),
     ALIPAY("ali"),
     WECHATPAY("wcp"),
     APPLEPAY("apl"),
+    @Deprecated
     HIRE_PURCHASE_RATE_PLAN("hdd"),
     @Deprecated
     INSTALLMENT_SECURED_RATE_PLAN("ins"),

@@ -6,6 +6,16 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres
 to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+
+### Deprecated
+
+* Deprecated Sofort payment type (`com.unzer.payment.paymenttypes.Sofort`).
+* Deprecated `PaymentTypeEnum.SOFORT`.
+* Deprecated `PaymentTypeEnum.GIROPAY`.
+* Deprecated `PaymentTypeEnum.INVOICE`. Use `PaymentTypeEnum.UNZER_PAYLATER_INVOICE` (`com.unzer.payment.paymenttypes.PaylaterInvoice`) instead.
+* Deprecated `PaymentTypeEnum.HIRE_PURCHASE_RATE_PLAN`. Use `PaymentTypeEnum.PAYLATER_INSTALLMENT` (`com.unzer.payment.paymenttypes.PaylaterInstallment`) instead.
+
 ## [5.9.0](https://github.com/unzerdev/java-sdk/compare/5.8.2..5.9.0)
 
 ### Added
