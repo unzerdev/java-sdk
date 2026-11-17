@@ -29,6 +29,7 @@ public enum PaymentTypeEnum {
     SEPA_DIRECT_DEBIT_SECURED("dds"),
     @Deprecated
     SOFORT("sft"),
+    @Deprecated
     PIS("pis"),
     ALIPAY("ali"),
     WECHATPAY("wcp"),
