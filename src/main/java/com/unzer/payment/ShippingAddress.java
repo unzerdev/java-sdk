@@ -20,7 +20,8 @@ public class ShippingAddress extends Address {
                 .setStreet(address.getStreet())
                 .setCity(address.getCity())
                 .setZip(address.getZip())
-                .setState(address.getState());
+                .setState(address.getState())
+                .setCompany(address.getCompany());
     }
 
     public Type getShippingType() {
