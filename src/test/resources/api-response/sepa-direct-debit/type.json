@@ -1,0 +1,12 @@
+{
+  "id": "s-sdd-giqxlgfvwjb7",
+  "method": "sepa-direct-debit",
+  "recurring": true,
+  "iban": "DE89370400440532013000",
+  "bic": "COBADEFFXXX",
+  "holder": "Max Mustermann",
+  "geoLocation": {
+    "clientIp": "0:0:0:0:0:0:0:1",
+    "countryIsoA2": ""
+  }
+}
