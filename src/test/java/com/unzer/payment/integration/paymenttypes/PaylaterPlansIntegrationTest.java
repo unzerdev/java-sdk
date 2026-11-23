@@ -55,15 +55,16 @@ class PaylaterPlansIntegrationTest extends AbstractPaymentTest {
 
     // 12. Invalid-input error paths. Validation is delegated to PAPI; the SDK surfaces its
     // PaymentException unchanged, carrying the standard Unzer error envelope
-    // (code + merchantMessage + customerMessage), as confirmed against the live endpoints.
+    // (code + merchantMessage + customerMessage).
     //
-    // NOTE: the exact getCode() per case was NOT pinned here. The endpoints are live and return
-    // the standard error envelope, but the concrete validation codes could not be observed from
-    // this environment (no valid sandbox key available locally; the real key is a CI secret, and
-    // every unauthenticated/invalid-key request is short-circuited to an auth error before
-    // validation runs). The first CI run with the real sandbox key must confirm and pin the
-    // actual code(s) per case. Until then we assert the contract: a PaymentException whose error
-    // list is non-empty and whose entries carry a code and a merchant message.
+    // We assert the contract only: a PaymentException whose error list is non-empty and whose
+    // first entry carries a code and a merchant message. We deliberately do NOT pin a specific
+    // getCode() value -- the concrete codes are a backend detail and pinning them is too brittle.
+    //
+    // Example of an observed sandbox envelope (illustrative only, NOT a pinned expectation):
+    //   code            = "API.720.100.001"
+    //   merchantMessage = "The given payment method plans is not found."
+    //   customerMessage = "Invalid payment method. Please contact us for more information."
     @ParameterizedTest
     @EnumSource(value = PaylaterPlanType.class, names = {"INVOICE", "DIRECT_DEBIT"})
     void testNegativeAmountIsRejectedByPapi(PaylaterPlanType type) {
@@ -104,6 +105,5 @@ class PaylaterPlansIntegrationTest extends AbstractPaymentTest {
         PaymentError error = errors.get(0);
         assertNotNull(error.getCode());
         assertNotNull(error.getMerchantMessage());
-        // TODO(CI): pin error.getCode() to the observed value per case from the first live CI run.
     }
 }
