@@ -1,14 +1,14 @@
 package com.unzer.payment.integration.paymenttypes;
 
 import com.unzer.payment.BaseTransaction;
-import com.unzer.payment.PaylaterPlans;
+import com.unzer.payment.PaymentError;
 import com.unzer.payment.PaymentException;
+import com.unzer.payment.PaylaterPlans;
 import com.unzer.payment.business.AbstractPaymentTest;
 import com.unzer.payment.models.CustomerType;
 import com.unzer.payment.models.paylater.InstallmentPlan;
 import com.unzer.payment.models.paylater.PaylaterPlanType;
 import com.unzer.payment.models.paylater.PaylaterPlansRequest;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.EnumSource;
 
@@ -23,13 +23,13 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 /**
  * Sandbox integration tests for the Paylater invoice and direct-debit {@code /plans} endpoints.
- * Disabled until the PAPI endpoints leave WIP (CC-4014); they require live endpoints and sandbox
- * credentials. Mirrors {@link PaylaterInstallmentTest#testFetchInstallmentPlans()}.
+ * Authenticates exactly like {@link PaylaterInstallmentTest} via {@link #getUnzer()} (the
+ * {@code defaultPrivateKey} system property / CI secret). Mirrors
+ * {@link PaylaterInstallmentTest#testFetchInstallmentPlans()}.
  */
-@Disabled("Enable once paylater-invoice / paylater-direct-debit /plans endpoints leave WIP (CC-4014)")
 class PaylaterPlansIntegrationTest extends AbstractPaymentTest {
 
-    // 11. Happy path invoice + direct-debit.
+    // 11. Happy path invoice + direct-debit: real plans with non-null secciUrl.
     @ParameterizedTest
     @EnumSource(value = PaylaterPlanType.class, names = {"INVOICE", "DIRECT_DEBIT"})
     void testFetchPlans(PaylaterPlanType type) {
@@ -54,7 +54,16 @@ class PaylaterPlansIntegrationTest extends AbstractPaymentTest {
     }
 
     // 12. Invalid-input error paths. Validation is delegated to PAPI; the SDK surfaces its
-    // PaymentException unchanged. TODO: pin the concrete getCode() values once endpoints are live.
+    // PaymentException unchanged, carrying the standard Unzer error envelope
+    // (code + merchantMessage + customerMessage), as confirmed against the live endpoints.
+    //
+    // NOTE: the exact getCode() per case was NOT pinned here. The endpoints are live and return
+    // the standard error envelope, but the concrete validation codes could not be observed from
+    // this environment (no valid sandbox key available locally; the real key is a CI secret, and
+    // every unauthenticated/invalid-key request is short-circuited to an auth error before
+    // validation runs). The first CI run with the real sandbox key must confirm and pin the
+    // actual code(s) per case. Until then we assert the contract: a PaymentException whose error
+    // list is non-empty and whose entries carry a code and a merchant message.
     @ParameterizedTest
     @EnumSource(value = PaylaterPlanType.class, names = {"INVOICE", "DIRECT_DEBIT"})
     void testNegativeAmountIsRejectedByPapi(PaylaterPlanType type) {
@@ -88,7 +97,13 @@ class PaylaterPlansIntegrationTest extends AbstractPaymentTest {
     private void assertPapiRejects(PaylaterPlansRequest request, PaylaterPlanType type) {
         PaymentException exception = assertThrows(PaymentException.class,
                 () -> getUnzer().fetchPaylaterPlans(request, type));
-        assertNotNull(exception.getPaymentErrorList());
-        assertFalse(exception.getPaymentErrorList().isEmpty());
+
+        List<PaymentError> errors = exception.getPaymentErrorList();
+        assertNotNull(errors);
+        assertFalse(errors.isEmpty());
+        PaymentError error = errors.get(0);
+        assertNotNull(error.getCode());
+        assertNotNull(error.getMerchantMessage());
+        // TODO(CI): pin error.getCode() to the observed value per case from the first live CI run.
     }
 }
