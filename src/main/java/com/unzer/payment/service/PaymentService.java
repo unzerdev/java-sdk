@@ -11,6 +11,7 @@ import com.unzer.payment.Customer;
 import com.unzer.payment.CustomerV2;
 import com.unzer.payment.Metadata;
 import com.unzer.payment.PaylaterInstallmentPlans;
+import com.unzer.payment.PaylaterPlans;
 import com.unzer.payment.Payment;
 import com.unzer.payment.PaymentException;
 import com.unzer.payment.Payout;
@@ -58,6 +59,8 @@ import com.unzer.payment.communication.mapper.ApiToSdkConverter;
 import com.unzer.payment.models.PaylaterInvoiceConfig;
 import com.unzer.payment.models.PaylaterInvoiceConfigRequest;
 import com.unzer.payment.models.paylater.InstallmentPlansRequest;
+import com.unzer.payment.models.paylater.PaylaterPlanType;
+import com.unzer.payment.models.paylater.PaylaterPlansRequest;
 import com.unzer.payment.paymenttypes.Alipay;
 import com.unzer.payment.paymenttypes.Applepay;
 import com.unzer.payment.paymenttypes.Bancontact;
@@ -130,11 +133,23 @@ public class PaymentService {
         this.jsonParser = new JsonParser();
     }
 
+    public PaylaterPlans fetchPaylaterPlans(
+            PaylaterPlansRequest plansRequest, PaylaterPlanType type
+    ) throws HttpCommunicationException {
+        String response = restCommunication.httpGet(
+                this.urlUtil.getPlanUrl(plansRequest, type),
+                unzer.getPrivateKey()
+        );
+
+        ApiInstallmentPlans json = jsonParser.fromJson(response, ApiInstallmentPlans.class);
+        return apiToSdkMapper.mapToBusinessObject(new PaylaterPlans(), json);
+    }
+
     public PaylaterInstallmentPlans fetchPaylaterInstallmentPlans(
             InstallmentPlansRequest installmentPlansRequest
     ) throws HttpCommunicationException {
         String response = restCommunication.httpGet(
-                this.urlUtil.getInstallmentPlanUrl(installmentPlansRequest),
+                this.urlUtil.getPlanUrl(installmentPlansRequest, PaylaterPlanType.INSTALLMENT),
                 unzer.getPrivateKey()
         );
 

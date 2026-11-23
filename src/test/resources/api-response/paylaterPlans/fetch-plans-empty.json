@@ -1,0 +1,10 @@
+{
+  "id": "s-inv-empty",
+  "amount": "50.00",
+  "currency": "EUR",
+  "plans": [],
+  "isSuccess": true,
+  "isPending": false,
+  "isResumed": false,
+  "isError": false
+}

@@ -8,7 +8,22 @@ to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
 
+### Added
+
+* Added support for fetching Paylater **Invoice** and **Direct Debit** (CCD2) plans via the new
+  `Unzer#fetchPaylaterPlans(PaylaterPlansRequest, PaylaterPlanType)` method. Each returned plan
+  exposes its `secciUrl`; the SECCI PDF locale follows the configured `Locale` (`Accept-Language`).
+    * New enum `com.unzer.payment.models.paylater.PaylaterPlanType`
+      (`INSTALLMENT`, `INVOICE`, `DIRECT_DEBIT`) carrying the request URL segment.
+    * New request model `com.unzer.payment.models.paylater.PaylaterPlansRequest`.
+    * New result model `com.unzer.payment.PaylaterPlans`.
+
 ### Deprecated
+
+* Deprecated `Unzer#fetchPaylaterInstallmentPlans(InstallmentPlansRequest)` in favour of
+  `Unzer#fetchPaylaterPlans(PaylaterPlansRequest, PaylaterPlanType.INSTALLMENT)`. The old method,
+  `InstallmentPlansRequest` and `PaylaterInstallmentPlans` remain as backward-compatible aliases.
+
 
 * Deprecated PIS / Unzer Bank Transfer payment type (`com.unzer.payment.paymenttypes.Pis`)
   and the corresponding `PaymentTypeEnum.PIS` constant. This does **not** affect the separate

@@ -8,7 +8,7 @@ import com.unzer.payment.CommercialSector;
 import com.unzer.payment.CompanyInfo;
 import com.unzer.payment.Customer;
 import com.unzer.payment.Linkpay;
-import com.unzer.payment.PaylaterInstallmentPlans;
+import com.unzer.payment.PaylaterPlans;
 import com.unzer.payment.Payout;
 import com.unzer.payment.Paypage;
 import com.unzer.payment.Processing;
@@ -520,9 +520,10 @@ public class ApiToSdkConverter {
         return out.map(out, src);
     }
 
-    public PaylaterInstallmentPlans mapToBusinessObject(PaylaterInstallmentPlans installmentPlans,
-                                                        ApiInstallmentPlans jsonInstallmentPlans) {
-        installmentPlans.setStatus(extractStatus(jsonInstallmentPlans));
-        return installmentPlans.map(installmentPlans, jsonInstallmentPlans);
+    public <T extends PaylaterPlans> T mapToBusinessObject(T paylaterPlans,
+                                                           ApiInstallmentPlans jsonPlans) {
+        paylaterPlans.setStatus(extractStatus(jsonPlans));
+        paylaterPlans.map(paylaterPlans, jsonPlans);
+        return paylaterPlans;
     }
 }

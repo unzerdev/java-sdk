@@ -15,6 +15,8 @@ import com.unzer.payment.models.CustomerType;
 import com.unzer.payment.models.PaylaterInvoiceConfig;
 import com.unzer.payment.models.PaylaterInvoiceConfigRequest;
 import com.unzer.payment.models.paylater.InstallmentPlansRequest;
+import com.unzer.payment.models.paylater.PaylaterPlanType;
+import com.unzer.payment.models.paylater.PaylaterPlansRequest;
 import com.unzer.payment.paymenttypes.PaylaterInstallment;
 import com.unzer.payment.paymenttypes.PaymentType;
 import com.unzer.payment.resources.PaypageV2;
@@ -1580,10 +1582,28 @@ public class Unzer {
     }
 
     /**
+     * Fetch the available Paylater plans (installment, invoice or direct debit) for the given
+     * request. The SECCI PDF locale follows the configured {@code Locale} via the
+     * {@code Accept-Language} header.
+     *
+     * @param plansRequest Contains information for the requested plans.
+     * @param type         Selects which Paylater plans endpoint to query.
+     * @return Response contains a list of available plans the customer can choose from.
+     * @throws HttpCommunicationException generic Payment API communication error
+     */
+    public PaylaterPlans fetchPaylaterPlans(
+            PaylaterPlansRequest plansRequest, PaylaterPlanType type) throws HttpCommunicationException {
+        return paymentService.fetchPaylaterPlans(plansRequest, type);
+    }
+
+    /**
      * @param installmentPlansRequest Contains information for requested plan.
      * @return Response contains a list of available installment plans the customer can choose from.
      * @throws HttpCommunicationException generic Payment API communication error
+     * @deprecated Use {@link #fetchPaylaterPlans(PaylaterPlansRequest, PaylaterPlanType)} with
+     * {@link PaylaterPlanType#INSTALLMENT} instead.
      */
+    @Deprecated
     public PaylaterInstallmentPlans fetchPaylaterInstallmentPlans(
             InstallmentPlansRequest installmentPlansRequest) throws HttpCommunicationException {
         return paymentService.fetchPaylaterInstallmentPlans(installmentPlansRequest);
