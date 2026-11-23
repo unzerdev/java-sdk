@@ -92,7 +92,8 @@ public class PaylaterPlans {
                     .setNominalInterestRate(plan.getNominalInterestRate())
                     .setEffectiveInterestRate(plan.getEffectiveInterestRate())
                     .setInstallmentRates(planRates)
-                    .setSecciUrl(plan.getSecciUrl()));
+                    .setSecciUrl(plan.getSecciUrl())
+                    .setMinimumInstallmentFee(plan.getMinimumInstallmentFee()));
         });
     }
 

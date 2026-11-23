@@ -58,6 +58,9 @@ class PaylaterInstallmentTest {
         assertEquals(new BigDecimal("101.3100"), plans.get(0).getTotalAmount());
         assertEquals(new BigDecimal("110.4000"), plans.get(4).getTotalAmount());
 
+        assertEquals(new BigDecimal("2.50").setScale(4), plans.get(0).getMinimumInstallmentFee());
+        assertEquals(new BigDecimal("0.00").setScale(4), plans.get(1).getMinimumInstallmentFee());
+
         plans.forEach(plan -> {
             assertNotNull(plan.getSecciUrl());
             assertEquals(plan.getNumberOfRates(), plan.getInstallmentRates().size());

@@ -17,6 +17,9 @@ to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
       (`INSTALLMENT`, `INVOICE`, `DIRECT_DEBIT`) carrying the request URL segment.
     * New request model `com.unzer.payment.models.paylater.PaylaterPlansRequest`.
     * New result model `com.unzer.payment.PaylaterPlans`.
+* Exposed `minimumInstallmentFee` on `com.unzer.payment.models.paylater.InstallmentPlan`; it is now
+  mapped from the API response for both the new `fetchPaylaterPlans` and the legacy
+  `fetchPaylaterInstallmentPlans` flows.
 
 ### Deprecated
 
