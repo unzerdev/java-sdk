@@ -24,7 +24,6 @@ to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
   `Unzer#fetchPaylaterPlans(PaylaterPlansRequest, PaylaterPlanType.INSTALLMENT)`. The old method,
   `InstallmentPlansRequest` and `PaylaterInstallmentPlans` remain as backward-compatible aliases.
 
-
 * Deprecated PIS / Unzer Bank Transfer payment type (`com.unzer.payment.paymenttypes.Pis`)
   and the corresponding `PaymentTypeEnum.PIS` constant. This does **not** affect the separate
   Open Banking payment type (`com.unzer.payment.paymenttypes.OpenBanking` /

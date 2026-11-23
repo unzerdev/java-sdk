@@ -15,4 +15,9 @@ public class InstallmentPlansRequest extends PaylaterPlansRequest {
                                    CustomerType customerType) {
         super(amount, currency, country, customerType);
     }
+
+    @Override
+    public String getUrl() {
+        return getUrl(PaylaterPlanType.INSTALLMENT);
+    }
 }

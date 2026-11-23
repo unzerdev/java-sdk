@@ -35,7 +35,9 @@ public class PaylaterPlansRequest implements Resource {
 
     @Override
     public String getUrl() {
-        return getUrl(PaylaterPlanType.INSTALLMENT);
+        throw new UnsupportedOperationException(
+                "PaylaterPlansRequest has no implied plan type; use getUrl(PaylaterPlanType) "
+                        + "or Unzer#fetchPaylaterPlans(PaylaterPlansRequest, PaylaterPlanType)");
     }
 
     public String getUrl(PaylaterPlanType type) {
@@ -56,7 +58,7 @@ public class PaylaterPlansRequest implements Resource {
         }
         if (customerType != null) {
             base.append("&customerType=");
-            base.append(customerType);
+            base.append(encode(customerType.toString()));
         }
 
         return base.toString();

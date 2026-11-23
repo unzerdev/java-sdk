@@ -30,8 +30,6 @@ import static com.github.tomakehurst.wiremock.client.WireMock.get;
 import static com.github.tomakehurst.wiremock.client.WireMock.jsonResponse;
 import static com.github.tomakehurst.wiremock.client.WireMock.stubFor;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -218,7 +216,7 @@ class PaylaterPlansTest {
         PaylaterInstallmentPlans plans = unzer.fetchPaylaterInstallmentPlans(
                 new InstallmentPlansRequest(AMOUNT, "EUR", "DE", CustomerType.B2C));
 
-        assertInstanceOf(PaylaterInstallmentPlans.class, plans);
+        assertNotNull(plans);
         assertEquals("Tx-xyz", plans.getId());
         assertEquals(new BigDecimal("99.99").setScale(4), plans.getAmount());
         assertEquals(Currency.getInstance("EUR"), plans.getCurrency());
