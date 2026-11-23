@@ -99,6 +99,26 @@ class PaylaterPlansTest {
                 request.getUrl(PaylaterPlanType.INVOICE));
     }
 
+    // Pass-through injection safety: special characters are URL-encoded into a single value
+    // instead of spawning extra query parameters, so PAPI receives one (invalid) value to reject.
+    @Test
+    void encodes_optional_params_as_single_value() {
+        PaylaterPlansRequest request =
+                new PaylaterPlansRequest(new BigDecimal("33.33"), "EUR&country=DE", "D E", CustomerType.B2C);
+
+        assertEquals(
+                "/v1/types/paylater-invoice/plans?amount=33.33&currency=EUR%26country%3DDE&country=D+E&customerType=B2C",
+                request.getUrl(PaylaterPlanType.INVOICE));
+    }
+
+    // Null amount is serialized (not dereferenced) so rejection stays API-side, no NPE.
+    @Test
+    void null_amount_is_serialized_not_dereferenced() {
+        PaylaterPlansRequest request = new PaylaterPlansRequest(null, null, null, null);
+
+        assertEquals("/v1/types/paylater-invoice/plans?amount=null", request.getUrl(PaylaterPlanType.INVOICE));
+    }
+
     private static Stream<Arguments> topLevelExpectations() {
         return Stream.of(
                 Arguments.of(PaylaterPlanType.INVOICE, "fetch-invoice-plans.json",

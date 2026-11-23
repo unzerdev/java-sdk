@@ -3,7 +3,10 @@ package com.unzer.payment.models.paylater;
 import com.unzer.payment.Resource;
 import com.unzer.payment.models.CustomerType;
 
+import java.io.UnsupportedEncodingException;
 import java.math.BigDecimal;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.Objects;
 
 /**
@@ -41,15 +44,15 @@ public class PaylaterPlansRequest implements Resource {
         StringBuilder base = new StringBuilder("/v1/types/")
                 .append(type.getSegment())
                 .append("/plans?amount=")
-                .append(amount.toString());
+                .append(String.valueOf(amount));
 
         if (currency != null) {
             base.append("&currency=");
-            base.append(currency);
+            base.append(encode(currency));
         }
         if (country != null) {
             base.append("&country=");
-            base.append(country);
+            base.append(encode(country));
         }
         if (customerType != null) {
             base.append("&customerType=");
@@ -57,5 +60,13 @@ public class PaylaterPlansRequest implements Resource {
         }
 
         return base.toString();
+    }
+
+    private static String encode(String value) {
+        try {
+            return URLEncoder.encode(value, StandardCharsets.UTF_8.name());
+        } catch (UnsupportedEncodingException e) {
+            throw new IllegalStateException(e);
+        }
     }
 }
