@@ -8,6 +8,7 @@ import com.unzer.payment.CommercialSector;
 import com.unzer.payment.CompanyInfo;
 import com.unzer.payment.Customer;
 import com.unzer.payment.Linkpay;
+import com.unzer.payment.PaylaterInstallmentPlans;
 import com.unzer.payment.PaylaterPlans;
 import com.unzer.payment.Payout;
 import com.unzer.payment.Paypage;
@@ -525,5 +526,16 @@ public class ApiToSdkConverter {
         paylaterPlans.setStatus(extractStatus(jsonPlans));
         paylaterPlans.map(paylaterPlans, jsonPlans);
         return paylaterPlans;
+    }
+
+    /**
+     * @deprecated Use {@link #mapToBusinessObject(PaylaterPlans, ApiInstallmentPlans)} instead.
+     * Kept as a binary-compatible overload for callers of the previous installment-specific method.
+     */
+    @Deprecated
+    public PaylaterInstallmentPlans mapToBusinessObject(PaylaterInstallmentPlans installmentPlans,
+                                                        ApiInstallmentPlans jsonInstallmentPlans) {
+        mapToBusinessObject((PaylaterPlans) installmentPlans, jsonInstallmentPlans);
+        return installmentPlans;
     }
 }
