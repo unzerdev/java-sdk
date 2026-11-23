@@ -41,17 +41,17 @@ class PaylaterPlansTest {
 
     private static final BigDecimal AMOUNT = new BigDecimal("99.99");
 
-    private static String fixture(String name) {
+    private static final String INSTALLMENT_FIXTURE =
+            "/api-response/paylaterInstallment/fetch-installment-plans.json";
+
+    private static String read(String resourcePath) {
         return new Scanner(Objects.requireNonNull(
-                PaylaterPlansTest.class.getResourceAsStream("/api-response/paylaterPlans/" + name)))
+                PaylaterPlansTest.class.getResourceAsStream(resourcePath)))
                 .useDelimiter("\\A").next();
     }
 
-    private static String installmentFixture() {
-        return new Scanner(Objects.requireNonNull(
-                PaylaterPlansTest.class.getResourceAsStream(
-                        "/api-response/paylaterInstallment/fetch-installment-plans.json")))
-                .useDelimiter("\\A").next();
+    private static String fixture(String name) {
+        return read("/api-response/paylaterPlans/" + name);
     }
 
     private static Unzer stubbedUnzer(String segment, String fixtureBody) {
@@ -129,19 +129,22 @@ class PaylaterPlansTest {
 
     private static Stream<Arguments> topLevelExpectations() {
         return Stream.of(
-                Arguments.of(PaylaterPlanType.INVOICE, "fetch-invoice-plans.json",
+                Arguments.of(PaylaterPlanType.INSTALLMENT, INSTALLMENT_FIXTURE,
+                        "Tx-xyz", new BigDecimal("99.99"), "EUR", 5),
+                Arguments.of(PaylaterPlanType.INVOICE, "/api-response/paylaterPlans/fetch-invoice-plans.json",
                         "s-inv-xyz", new BigDecimal("149.50"), "EUR", 2),
-                Arguments.of(PaylaterPlanType.DIRECT_DEBIT, "fetch-direct-debit-plans.json",
+                Arguments.of(PaylaterPlanType.DIRECT_DEBIT, "/api-response/paylaterPlans/fetch-direct-debit-plans.json",
                         "s-ddg-xyz", new BigDecimal("200.00"), "CHF", 2)
         );
     }
 
-    // 4. Fetch + mapping (parameterized invoice + direct-debit) & 5. secciUrl parsing.
+    // 4. Fetch + mapping via the new generic method, parameterized over ALL THREE plan types
+    //    (installment, invoice, direct-debit) & 5. secciUrl parsing.
     @ParameterizedTest
     @MethodSource("topLevelExpectations")
-    void fetches_and_maps_plans(PaylaterPlanType type, String fixture, String expectedId,
+    void fetches_and_maps_plans(PaylaterPlanType type, String fixturePath, String expectedId,
                                 BigDecimal expectedAmount, String expectedCurrency, int expectedPlanCount) {
-        Unzer unzer = stubbedUnzer(type.getSegment(), fixture(fixture));
+        Unzer unzer = stubbedUnzer(type.getSegment(), read(fixturePath));
 
         PaylaterPlans plans = unzer.fetchPaylaterPlans(defaultRequest(), type);
 
@@ -205,11 +208,11 @@ class PaylaterPlansTest {
                 EnumSet.allOf(PaylaterPlanType.class));
     }
 
-    // 9. Backward compatibility.
+    // 9. Backward compatibility: the original installment flow mapped end-to-end.
     @Test
     void fetchPaylaterInstallmentPlans_still_hits_installment_endpoint() {
         stubFor(get("/v1/types/paylater-installment/plans?amount=99.99&currency=EUR&country=DE&customerType=B2C")
-                .willReturn(jsonResponse(installmentFixture(), 200)));
+                .willReturn(jsonResponse(read(INSTALLMENT_FIXTURE), 200)));
         Unzer unzer = new Unzer(new HttpClientMock(), "s-private-key");
 
         PaylaterInstallmentPlans plans = unzer.fetchPaylaterInstallmentPlans(
@@ -217,7 +220,10 @@ class PaylaterPlansTest {
 
         assertInstanceOf(PaylaterInstallmentPlans.class, plans);
         assertEquals("Tx-xyz", plans.getId());
-        assertFalse(plans.getPlans().isEmpty());
+        assertEquals(new BigDecimal("99.99").setScale(4), plans.getAmount());
+        assertEquals(Currency.getInstance("EUR"), plans.getCurrency());
+        assertEquals(BaseTransaction.Status.SUCCESS, plans.getStatus());
+        assertEquals(5, plans.getPlans().size());
         plans.getPlans().forEach(plan -> assertNotNull(plan.getSecciUrl()));
     }
 
