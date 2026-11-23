@@ -119,6 +119,14 @@ class PaylaterPlansTest {
         assertEquals("/v1/types/paylater-invoice/plans?amount=null", request.getUrl(PaylaterPlanType.INVOICE));
     }
 
+    // A BigDecimal in positive-exponent notation ("1E+3") must not have its '+' decoded as a space.
+    @Test
+    void encodes_amount_with_positive_exponent() {
+        PaylaterPlansRequest request = new PaylaterPlansRequest(new BigDecimal("1E+3"), null, null, null);
+
+        assertEquals("/v1/types/paylater-invoice/plans?amount=1E%2B3", request.getUrl(PaylaterPlanType.INVOICE));
+    }
+
     private static Stream<Arguments> topLevelExpectations() {
         return Stream.of(
                 Arguments.of(PaylaterPlanType.INVOICE, "fetch-invoice-plans.json",

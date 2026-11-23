@@ -44,7 +44,7 @@ public class PaylaterPlansRequest implements Resource {
         StringBuilder base = new StringBuilder("/v1/types/")
                 .append(type.getSegment())
                 .append("/plans?amount=")
-                .append(String.valueOf(amount));
+                .append(encode(String.valueOf(amount)));
 
         if (currency != null) {
             base.append("&currency=");
