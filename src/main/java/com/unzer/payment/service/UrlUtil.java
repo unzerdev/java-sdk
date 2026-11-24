@@ -6,6 +6,8 @@ import com.unzer.payment.communication.api.ApiConfig;
 import com.unzer.payment.communication.api.ApiConfigs;
 import com.unzer.payment.models.PaylaterInvoiceConfigRequest;
 import com.unzer.payment.models.paylater.InstallmentPlansRequest;
+import com.unzer.payment.models.paylater.PaylaterPlanType;
+import com.unzer.payment.models.paylater.PaylaterPlansRequest;
 
 import java.math.BigDecimal;
 import java.text.NumberFormat;
@@ -71,8 +73,16 @@ public class UrlUtil {
         return apiEndpoint + configRequest.getRequestUrl();
     }
 
+    public String getPlanUrl(PaylaterPlansRequest plansRequest, PaylaterPlanType type) {
+        return apiEndpoint + plansRequest.getUrl(type);
+    }
+
+    /**
+     * @deprecated Use {@link #getPlanUrl(PaylaterPlansRequest, PaylaterPlanType)} instead.
+     */
+    @Deprecated
     public String getInstallmentPlanUrl(InstallmentPlansRequest installmentPlansRequest) {
-        return apiEndpoint + installmentPlansRequest.getUrl();
+        return getPlanUrl(installmentPlansRequest, PaylaterPlanType.INSTALLMENT);
     }
 
     private static class Format {

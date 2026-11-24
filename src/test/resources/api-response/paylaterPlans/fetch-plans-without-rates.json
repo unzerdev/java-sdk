@@ -1,0 +1,19 @@
+{
+  "id": "s-inv-norates",
+  "amount": "80.00",
+  "currency": "EUR",
+  "plans": [
+    {
+      "numberOfRates": 1,
+      "totalAmount": "80.00",
+      "nominalInterestRate": 0.00,
+      "effectiveInterestRate": 0.00,
+      "minimumInstallmentFee": "0.00",
+      "secciUrl": "https://test-payment.paylater.unzer.com/payolution-payment/infoport/creditagreementdraft/s-inv-norates?duration=1"
+    }
+  ],
+  "isSuccess": true,
+  "isPending": false,
+  "isResumed": false,
+  "isError": false
+}

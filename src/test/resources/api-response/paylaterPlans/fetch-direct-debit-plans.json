@@ -1,0 +1,95 @@
+{
+  "id": "s-ddg-xyz",
+  "amount": "200.00",
+  "currency": "CHF",
+  "plans": [
+    {
+      "numberOfRates": 4,
+      "totalAmount": "204.00",
+      "nominalInterestRate": 7.95,
+      "effectiveInterestRate": 8.24,
+      "minimumInstallmentFee": "0.00",
+      "secciUrl": "https://test-payment.paylater.unzer.com/payolution-payment/infoport/creditagreementdraft/s-ddg-xyz?duration=4",
+      "installmentRates": [
+        {
+          "date": "2024-06-20",
+          "rate": "51.00"
+        },
+        {
+          "date": "2024-07-20",
+          "rate": "51.00"
+        },
+        {
+          "date": "2024-08-20",
+          "rate": "51.00"
+        },
+        {
+          "date": "2024-09-20",
+          "rate": "51.00"
+        }
+      ]
+    },
+    {
+      "numberOfRates": 12,
+      "totalAmount": "210.00",
+      "nominalInterestRate": 7.95,
+      "effectiveInterestRate": 8.31,
+      "minimumInstallmentFee": "0.00",
+      "secciUrl": "https://test-payment.paylater.unzer.com/payolution-payment/infoport/creditagreementdraft/s-ddg-xyz?duration=12",
+      "installmentRates": [
+        {
+          "date": "2024-06-20",
+          "rate": "17.50"
+        },
+        {
+          "date": "2024-07-20",
+          "rate": "17.50"
+        },
+        {
+          "date": "2024-08-20",
+          "rate": "17.50"
+        },
+        {
+          "date": "2024-09-20",
+          "rate": "17.50"
+        },
+        {
+          "date": "2024-10-20",
+          "rate": "17.50"
+        },
+        {
+          "date": "2024-11-20",
+          "rate": "17.50"
+        },
+        {
+          "date": "2024-12-20",
+          "rate": "17.50"
+        },
+        {
+          "date": "2025-01-20",
+          "rate": "17.50"
+        },
+        {
+          "date": "2025-02-20",
+          "rate": "17.50"
+        },
+        {
+          "date": "2025-03-20",
+          "rate": "17.50"
+        },
+        {
+          "date": "2025-04-20",
+          "rate": "17.50"
+        },
+        {
+          "date": "2025-05-20",
+          "rate": "17.50"
+        }
+      ]
+    }
+  ],
+  "isSuccess": true,
+  "isPending": false,
+  "isResumed": false,
+  "isError": false
+}

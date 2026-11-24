@@ -18,4 +18,20 @@ public class InstallmentPlan {
     private BigDecimal effectiveInterestRate;
     private List<InstallmentPlanRate> installmentRates;
     private URL secciUrl;
+    private BigDecimal minimumInstallmentFee;
+
+    /**
+     * Backward-compatible constructor preserving the original signature from before
+     * {@code minimumInstallmentFee} was added (leaves that field {@code null}).
+     */
+    public InstallmentPlan(BigDecimal totalAmount, int numberOfRates, BigDecimal nominalInterestRate,
+                           BigDecimal effectiveInterestRate, List<InstallmentPlanRate> installmentRates,
+                           URL secciUrl) {
+        this.totalAmount = totalAmount;
+        this.numberOfRates = numberOfRates;
+        this.nominalInterestRate = nominalInterestRate;
+        this.effectiveInterestRate = effectiveInterestRate;
+        this.installmentRates = installmentRates;
+        this.secciUrl = secciUrl;
+    }
 }

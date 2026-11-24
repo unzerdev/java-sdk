@@ -1,0 +1,67 @@
+{
+  "id": "s-inv-xyz",
+  "amount": "149.50",
+  "currency": "EUR",
+  "plans": [
+    {
+      "numberOfRates": 3,
+      "totalAmount": "151.20",
+      "nominalInterestRate": 8.95,
+      "effectiveInterestRate": 9.33,
+      "minimumInstallmentFee": "0.00",
+      "secciUrl": "https://test-payment.paylater.unzer.com/payolution-payment/infoport/creditagreementdraft/s-inv-xyz?duration=3",
+      "installmentRates": [
+        {
+          "date": "2024-06-20",
+          "rate": "50.40"
+        },
+        {
+          "date": "2024-07-20",
+          "rate": "50.40"
+        },
+        {
+          "date": "2024-08-20",
+          "rate": "50.40"
+        }
+      ]
+    },
+    {
+      "numberOfRates": 6,
+      "totalAmount": "153.00",
+      "nominalInterestRate": 8.95,
+      "effectiveInterestRate": 9.45,
+      "minimumInstallmentFee": "0.00",
+      "secciUrl": "https://test-payment.paylater.unzer.com/payolution-payment/infoport/creditagreementdraft/s-inv-xyz?duration=6",
+      "installmentRates": [
+        {
+          "date": "2024-06-20",
+          "rate": "25.50"
+        },
+        {
+          "date": "2024-07-20",
+          "rate": "25.50"
+        },
+        {
+          "date": "2024-08-20",
+          "rate": "25.50"
+        },
+        {
+          "date": "2024-09-20",
+          "rate": "25.50"
+        },
+        {
+          "date": "2024-10-20",
+          "rate": "25.50"
+        },
+        {
+          "date": "2024-11-20",
+          "rate": "25.50"
+        }
+      ]
+    }
+  ],
+  "isSuccess": true,
+  "isPending": false,
+  "isResumed": false,
+  "isError": false
+}
