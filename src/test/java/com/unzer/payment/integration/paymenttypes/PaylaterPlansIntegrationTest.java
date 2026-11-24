@@ -71,10 +71,21 @@ class PaylaterPlansIntegrationTest extends AbstractPaymentTest {
         assertPapiRejects(new PaylaterPlansRequest(new BigDecimal("-10.00"), "EUR", "DE", CustomerType.B2C), type);
     }
 
+    // Zero is a valid amount: PAPI accepts it and returns a successful (possibly empty) plans
+    // response rather than an error envelope.
     @ParameterizedTest
     @EnumSource(value = PaylaterPlanType.class, names = {"INVOICE", "DIRECT_DEBIT"})
-    void testZeroAmountIsRejectedByPapi(PaylaterPlanType type) {
-        assertPapiRejects(new PaylaterPlansRequest(BigDecimal.ZERO, "EUR", "DE", CustomerType.B2C), type);
+    void testZeroAmountIsAcceptedByPapi(PaylaterPlanType type) {
+        PaylaterPlansRequest request =
+                new PaylaterPlansRequest(BigDecimal.ZERO, "EUR", "DE", CustomerType.B2C);
+
+        PaylaterPlans plans = getUnzer().fetchPaylaterPlans(request, type);
+
+        assertNotNull(plans.getId());
+        assertNumberEquals(BigDecimal.ZERO, plans.getAmount());
+        assertEquals(Currency.getInstance("EUR"), plans.getCurrency());
+        assertEquals(BaseTransaction.Status.SUCCESS, plans.getStatus());
+        assertNotNull(plans.getPlans());
     }
 
     @ParameterizedTest
