@@ -23,7 +23,7 @@ to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
 ### Fixed
 
-* `confirmedAmount` on the PayPage V2 `Risk` object (`com.unzer.payment.models.paypage.Risk`) is now a nullable `Double` and is omitted from the request body when unset, instead of always defaulting to `0.0`.
+* `confirmedAmount` on the PayPage V2 `Risk` object (`com.unzer.payment.models.paypage.Risk`) is now a nullable `Double` and is omitted from the request body when unset, instead of always defaulting to `0.0`. **Note:** `getConfirmedAmount()` now returns `Double` instead of primitive `double`; callers assigning the result to a primitive `double` will get a `NullPointerException` when the value was never set.
 
 ## [5.9.0](https://github.com/unzerdev/java-sdk/compare/5.8.2..5.9.0)
 
