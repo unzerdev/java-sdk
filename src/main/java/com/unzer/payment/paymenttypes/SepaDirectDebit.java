@@ -47,7 +47,7 @@ public class SepaDirectDebit extends BasePaymentType {
      * <p>This is unrelated to {@code recurrenceType} on charges/authorizations, which is
      * card-specific.</p>
      *
-     * <p>The fluent return value is a convenience over the Lombok-generated
+     * <p>The fluent return value is a convenience over the
      * {@link #setRecurring(Boolean)} setter, which keeps working.</p>
      *
      * @param recurring {@code true} to register the type for recurring collection
